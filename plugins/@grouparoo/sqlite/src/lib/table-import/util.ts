@@ -13,9 +13,11 @@ export function makeWhereClause(matchCondition: MatchCondition) {
   switch (filterOperation) {
     case FilterOperation.Exists:
       op = "IS NOT NULL";
+      match = null;
       break;
     case FilterOperation.NotExists:
       op = "IS NULL";
+      match = null;
       break;
     case FilterOperation.Equal:
       op = "=";
@@ -55,9 +57,9 @@ export function makeWhereClause(matchCondition: MatchCondition) {
   const key = transform
     ? `${transform}(CAST("${columnName}" as TEXT))`
     : `"${columnName}"`;
-  if (match) {
+  if (match !== null) {
     match = Array.isArray(match) ? `(${buildValueList(match)})` : `"${match}"`;
   }
 
-  return ` ${key} ${op} ${match ? match : ""}`;
+  return ` ${key} ${op} ${match !== null ? match : ""}`;
 }

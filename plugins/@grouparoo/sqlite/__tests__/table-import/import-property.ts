@@ -207,7 +207,7 @@ describe("sqlite/table/recordProperty", () => {
           sourceMapping,
           aggregationMethod: "average",
         });
-        expect(fixedLengthFloat(value)).toEqual(1.48);
+        expect(fixedLengthFloat(value)).toEqual(1.63);
       });
       test("count", async () => {
         const value = await getPropertyValue({
@@ -223,7 +223,7 @@ describe("sqlite/table/recordProperty", () => {
           sourceMapping,
           aggregationMethod: "sum",
         });
-        expect(fixedLengthFloat(value)).toEqual(10.38);
+        expect(fixedLengthFloat(value)).toEqual(11.38);
       });
       test("min", async () => {
         const value = await getPropertyValue({
@@ -231,7 +231,7 @@ describe("sqlite/table/recordProperty", () => {
           sourceMapping,
           aggregationMethod: "min",
         });
-        expect(value).toEqual(1.42);
+        expect(value).toEqual(1);
       });
       test("max", async () => {
         const value = await getPropertyValue({
@@ -240,7 +240,7 @@ describe("sqlite/table/recordProperty", () => {
           aggregationMethod: "max",
         });
         //sqlite evaluates null as the max here
-        expect(value).toEqual("");
+        expect(value).toEqual(2.23);
       });
 
       describe("dates", () => {
@@ -251,7 +251,7 @@ describe("sqlite/table/recordProperty", () => {
             sourceMapping,
             aggregationMethod: "count",
           });
-          expect(value).toEqual(7);
+          expect(value).toEqual(6);
         });
         test("min", async () => {
           const value = await getPropertyValue({
@@ -259,8 +259,7 @@ describe("sqlite/table/recordProperty", () => {
             sourceMapping,
             aggregationMethod: "min",
           });
-          //sqlite evaluates null values
-          expect(value).toEqual("");
+          expect(value).toEqual("2020/02/01");
         });
         test("max", async () => {
           const value = await getPropertyValue({
@@ -292,17 +291,7 @@ describe("sqlite/table/recordProperty", () => {
 
     describe("exists", () => {
       const op = "exists";
-      test("integer", async () => {
-        const value = await getPropertyValue(
-          {
-            column,
-            sourceMapping,
-            aggregationMethod,
-          },
-          [{ op, key: "id" }]
-        );
-        expect(value).toEqual(7);
-      });
+
       test("string", async () => {
         const value = await getPropertyValue(
           {
@@ -312,102 +301,23 @@ describe("sqlite/table/recordProperty", () => {
           },
           [{ op, key: "purchase" }]
         );
-        expect(value).toEqual(7);
-      });
-      test("date", async () => {
-        const value = await getPropertyValue(
-          {
-            column,
-            sourceMapping,
-            aggregationMethod,
-          },
-          [{ op, key: "date" }]
-        );
-        expect(value).toEqual(7);
-      });
-      test("timestamp", async () => {
-        const value = await getPropertyValue(
-          {
-            column,
-            sourceMapping,
-            aggregationMethod,
-          },
-          [{ op, key: "stamp" }]
-        );
-        expect(value).toEqual(7);
-      });
-      test("float", async () => {
-        const value = await getPropertyValue(
-          {
-            column,
-            sourceMapping,
-            aggregationMethod,
-          },
-          [{ op, key: "amount" }]
-        );
-        expect(value).toEqual(7);
+        expect(value).toEqual(6);
       });
     });
-    // TO DO: NOT EXIST NOT WORKING AS EXPECTED
-    // describe.only("does not exist", () => {
-    //   const op = "notExists";
-    //   test("integer", async () => {
-    //     const value = await getPropertyValue(
-    //       {
-    //         column,
-    //         sourceMapping,
-    //         aggregationMethod,
-    //       },
-    //       [{ op, key: "id" }]
-    //     );
-    //     expect(value).toEqual(0);
-    //   });
-    //   test("string", async () => {
-    //     const value = await getPropertyValue(
-    //       {
-    //         column,
-    //         sourceMapping,
-    //         aggregationMethod,
-    //       },
-    //       [{ op, key: "purchase" }]
-    //     );
-    //     expect(value).toEqual(0);
-    //   });
-    //   test("date", async () => {
-    //     const value = await getPropertyValue(
-    //       {
-    //         column,
-    //         sourceMapping,
-    //         aggregationMethod,
-    //       },
-    //       [{ op, key: "date" }]
-    //     );
-    //     expect(value).toEqual(0);
-    //   });
-    //   test("timestamp", async () => {
-    //     const value = await getPropertyValue(
-    //       {
-    //         column,
-    //         sourceMapping,
-    //         aggregationMethod,
-    //       },
-    //       [{ op, key: "stamp" }]
-    //     );
-    //     expect(value).toEqual(0);
-    //   });
-    //   test("float", async () => {
-    //     const value = await getPropertyValue(
-    //       {
-    //         column,
-    //         sourceMapping,
-    //         aggregationMethod,
-    //       },
-    //       [{ op, key: "amount" }]
-    //     );
-    //     expect(value).toEqual(0);
-    //   });
-    // });
-    //////
+    describe("does not exist", () => {
+      const op = "notExists";
+      test("string", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase" }]
+        );
+        expect(value).toEqual(1);
+      });
+    });
     describe("equals", () => {
       const op = "eq";
       test("integer", async () => {
@@ -500,7 +410,7 @@ describe("sqlite/table/recordProperty", () => {
           },
           [{ op, key: "purchase", match: "Apple" }]
         );
-        expect(value).toEqual(5);
+        expect(value).toEqual(4);
       });
       test("string is case sensitive", async () => {
         const value = await getPropertyValue(
@@ -511,7 +421,7 @@ describe("sqlite/table/recordProperty", () => {
           },
           [{ op, key: "purchase", match: "apple" }]
         );
-        expect(value).toEqual(7);
+        expect(value).toEqual(6);
       });
       test("date", async () => {
         const value = await getPropertyValue(
@@ -522,7 +432,7 @@ describe("sqlite/table/recordProperty", () => {
           },
           [{ op, key: "date", match: "2020/02/15" }]
         );
-        expect(value).toEqual(6);
+        expect(value).toEqual(5);
       });
       test("timestamp", async () => {
         const value = await getPropertyValue(
@@ -640,7 +550,7 @@ describe("sqlite/table/recordProperty", () => {
           },
           [{ op, key: "purchase", match: "Oran" }]
         );
-        expect(value).toEqual(5);
+        expect(value).toEqual(4);
       });
       test("string is case sensitive", async () => {
         const value = await getPropertyValue(
@@ -651,7 +561,7 @@ describe("sqlite/table/recordProperty", () => {
           },
           [{ op, key: "purchase", match: "oran" }]
         );
-        expect(value).toEqual(5);
+        expect(value).toEqual(4);
       });
       test("date", async () => {
         const value = await getPropertyValue(
@@ -662,7 +572,7 @@ describe("sqlite/table/recordProperty", () => {
           },
           [{ op, key: "date", match: "2020/02/15" }]
         );
-        expect(value).toEqual(6);
+        expect(value).toEqual(5);
       });
       test("timestamp", async () => {
         const value = await getPropertyValue(
@@ -824,7 +734,7 @@ describe("sqlite/table/recordProperty", () => {
           },
           [{ op, key: "amount", match: "1.54" }]
         );
-        expect(value).toEqual(3);
+        expect(value).toEqual(2);
       });
     });
 
@@ -850,7 +760,7 @@ describe("sqlite/table/recordProperty", () => {
           },
           [{ op, key: "purchase", match: "Apple" }]
         );
-        expect(value).toEqual(1);
+        expect(value).toEqual(0);
       });
       test("string is case sensitive", async () => {
         const value = await getPropertyValue(
@@ -872,7 +782,7 @@ describe("sqlite/table/recordProperty", () => {
           },
           [{ op, key: "date", match: "2020/02/15" }]
         );
-        expect(value).toEqual(4);
+        expect(value).toEqual(3);
       });
       test("timestamp", async () => {
         const value = await getPropertyValue(
@@ -894,7 +804,7 @@ describe("sqlite/table/recordProperty", () => {
           },
           [{ op, key: "amount", match: "1.54" }]
         );
-        expect(value).toEqual(2);
+        expect(value).toEqual(3);
       });
     });
   });
