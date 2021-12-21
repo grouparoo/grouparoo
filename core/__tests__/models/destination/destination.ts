@@ -223,6 +223,24 @@ describe("models/destination", () => {
       await group.destroy();
     });
 
+    test("deleting a destination sets related export's destinationId to null", async () => {
+      destination = await Destination.create({
+        name: "bye destination",
+        type: "test-plugin-export",
+        appId: app.id,
+        modelId: model.id,
+      });
+
+      const _export = await helper.factories.export(null, destination);
+      await _export.complete();
+      expect(_export.destinationId).toBe(destination.id);
+
+      await destination.destroy();
+
+      await _export.reload();
+      expect(_export.destinationId).toBeNull();
+    });
+
     test("destinations require a valid modelId", async () => {
       expect(
         Destination.create({
