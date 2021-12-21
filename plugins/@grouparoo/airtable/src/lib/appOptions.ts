@@ -36,8 +36,8 @@ export const AirtableAppOptionsOptions: Array<AppOptionsOption> = [
     type: "text",
     displayName: "Airtable API Host",
     required: false,
-    defaultValue: "https://api.airtable.com",
-    placeholder: "https://api.airtable.com",
+    defaultValue: DEFAULT_AIRTABLE_API,
+    placeholder: DEFAULT_AIRTABLE_API,
     description: "Host for the Airtable API",
   },
 ];
