@@ -11,6 +11,7 @@ const DESTINATIONS = {
 };
 
 const execSync = require("../../shared/exec");
+const { sleep } = require("../../shared/util");
 const path = require("path");
 const cp = require("child_process");
 
@@ -50,11 +51,14 @@ class DestinationPuppeteer {
     }
     this.rooCmd = path.join(PROJECT_ROOT, "cli", "dist", "grouparoo.js");
     this.cwd = path.join(PROJECT_ROOT, "apps", APP_TO_RUN);
+    this.server = null;
   }
 
   async run() {
     await this.demo();
     await this.config();
+    await this.screenshots();
+    await this.close();
   }
 
   async demo() {
@@ -77,6 +81,8 @@ class DestinationPuppeteer {
   async config() {
     return new Promise((done, failed) => {
       const start = cp.spawn(this.rooCmd, ["config"], { cwd: this.cwd });
+      this.server = start;
+      this.serverRunning = true;
       start.stdout.on("data", function (data) {
         const output = data.toString();
         if (output.indexOf("Opening Grouparoo Config in web browser") >= 0) {
@@ -97,5 +103,20 @@ class DestinationPuppeteer {
         }
       });
     });
+  }
+
+  async close() {
+    if (this.server) {
+      this.server.kill();
+      let count = 0;
+      while (this.server.exitCode === null && count < 1000) {
+        await sleep(10);
+        count++;
+      }
+    }
+  }
+
+  async screenshots() {
+    await sleep(10 * 1000);
   }
 }
