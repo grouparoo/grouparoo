@@ -111,8 +111,7 @@ async function createTables() {
   }
 }
 
-//TO DO: This could probably be cleaned up
-async function fillTable(tableName, fileName) {
+async function fillTable(tableName: string, fileName: string) {
   const filePath = path.resolve(path.join(__dirname, "..", "data", fileName));
   const rows = parse(fs.readFileSync(filePath), { columns: true });
   for (const i in rows) {
