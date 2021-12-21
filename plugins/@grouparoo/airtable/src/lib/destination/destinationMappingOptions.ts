@@ -102,6 +102,6 @@ function mapTypesFromAirtableToGrouparoo(
     case AirtablePropertyTypes.SINGLELINE:
       return "string";
     default:
-      return "string";
+      return null;
   }
 }

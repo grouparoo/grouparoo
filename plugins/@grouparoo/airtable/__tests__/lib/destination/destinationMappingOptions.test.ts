@@ -82,7 +82,7 @@ describe('Test Destination Mapping Options Method', () => {
       )?.type,
     ).toEqual('string');
     expect(
-      value.properties.known.find(prop => prop.key == 'UNKNOWN')?.type,
-    ).toEqual('string');
+      value.properties.known.find(prop => prop.key == 'UNKNOWN')
+    ).toBeUndefined();
   });
 });
