@@ -742,7 +742,7 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @AfterDestroy
-  static async unlinkRelatedExports(instance: Destination) {
+  static async unassociateRelatedExports(instance: Destination) {
     return Export.update(
       { destinationId: null },
       { where: { destinationId: instance.id } }
