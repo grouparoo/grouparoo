@@ -119,7 +119,7 @@ const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
         <Col>
           <ModelOverviewDestinations
             destinations={destinations}
-            disabled={!destinations.length && !groups.length}
+            disabled={!canCreateSecondarySource}
           />
         </Col>
       </Row>
