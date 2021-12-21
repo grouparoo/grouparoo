@@ -47,7 +47,7 @@ describe("test grouparoo records", () => {
 
       // make a group
       group = await helper.factories.group();
-      await group.update({ type: "calculated", name: "test group" });
+      await group.update({ name: "test group" });
       await group.setRules([
         { key: "email", match: "%@example.com", operation: { op: "like" } },
       ]);

@@ -232,7 +232,7 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
     runCliCommand: Function,
     groupName = "everyone"
   ) {
-    return runCliCommand(`generate group:manual ${groupName} --overwrite`);
+    return runCliCommand(`generate group ${groupName} --overwrite`);
   }
 
   export async function generatePropertyToBootstrap(

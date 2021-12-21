@@ -956,7 +956,7 @@ describe("modules/codeConfig", () => {
     });
   });
 
-  describe("GrouparooRecord columns in calculated group rules", () => {
+  describe("GrouparooRecord columns in group rules", () => {
     beforeAll(async () => {
       api.codeConfig.allowLockedModelChanges = true;
       const { errors, seenIds } = await loadConfigDirectory(
@@ -1024,7 +1024,7 @@ describe("modules/codeConfig", () => {
     });
   });
 
-  describe("Dates in calculated group rules", () => {
+  describe("Dates in group rules", () => {
     beforeAll(async () => {
       api.codeConfig.allowLockedModelChanges = true;
       const { errors, seenIds } = await loadConfigDirectory(

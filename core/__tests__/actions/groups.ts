@@ -61,7 +61,6 @@ describe("actions/groups", () => {
       connection.params = {
         csrfToken,
         name: "new group",
-        type: "manual",
         modelId: model.id,
       };
       const { error, group } = await specHelper.runAction<GroupCreate>(
@@ -71,7 +70,6 @@ describe("actions/groups", () => {
       expect(error).toBeUndefined();
       expect(group.id).toBeTruthy();
       expect(group.name).toBe("new group");
-      expect(group.type).toBe("manual");
       expect(configSpy).toBeCalledTimes(1);
       id = group.id;
     });
@@ -208,7 +206,7 @@ describe("actions/groups", () => {
       expect(configSpy).toBeCalledTimes(1);
     });
 
-    describe("calculated group", () => {
+    describe("rules", () => {
       let group: Group;
       let mario: GrouparooRecord;
       let luigi: GrouparooRecord;
@@ -219,8 +217,7 @@ describe("actions/groups", () => {
 
       beforeEach(async () => {
         group = await Group.create({
-          name: "test calculated group",
-          type: "calculated",
+          name: "test group",
           modelId: model.id,
           rules: {},
         });
@@ -374,7 +371,6 @@ describe("actions/groups", () => {
 
     beforeAll(async () => {
       group = new Group({
-        type: "manual",
         name: "test group",
         modelId: model.id,
       });
@@ -409,7 +405,6 @@ describe("actions/groups", () => {
       connection.params = {
         csrfToken,
         name: "new group",
-        type: "manual",
       };
       const { error } = await specHelper.runAction("group:create", connection);
       expect(error.code).toBe("AUTHORIZATION_ERROR");

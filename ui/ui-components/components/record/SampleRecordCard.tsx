@@ -412,9 +412,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
                 return (
                   <Fragment key={`group-${group.id}`}>
                     <Link
-                      href={`/model/${group.modelId}/group/${group.id}/${
-                        group.type === "calculated" ? "rules" : "edit"
-                      }`}
+                      href={`/model/${group.modelId}/group/${group.id}/rules`}
                     >
                       {group.name}
                     </Link>

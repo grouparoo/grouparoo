@@ -211,8 +211,8 @@ describe("models/destination - with custom exportRecord plugin", () => {
         userId: [1001],
         email: ["newemail@example.com"],
       });
-      await groupA.addRecord(record);
-      await groupB.addRecord(record);
+      await GroupMember.create({ recordId: record.id, groupId: groupA.id });
+      await GroupMember.create({ recordId: record.id, groupId: groupB.id });
 
       const oldExport = await helper.factories.export(record, destination, {
         newRecordProperties: {
@@ -291,7 +291,7 @@ describe("models/destination - with custom exportRecord plugin", () => {
         userId: [1001],
         email: ["newemail@example.com"],
       });
-      await groupA.addRecord(record);
+      await GroupMember.create({ recordId: record.id, groupId: groupA.id });
 
       // create a previous export
       const _export = await Export.create({
@@ -407,7 +407,7 @@ describe("models/destination - with custom exportRecord plugin", () => {
         userId: [1002],
         email: ["newemail@example.com"],
       });
-      await groupA.addRecord(record);
+      await GroupMember.create({ recordId: record.id, groupId: groupA.id });
 
       await destination.exportRecord(record);
 
@@ -437,7 +437,7 @@ describe("models/destination - with custom exportRecord plugin", () => {
       await destination.updateTracking("group", group.id);
 
       const record = await helper.factories.record();
-      await group.addRecord(record);
+      await GroupMember.create({ recordId: record.id, groupId: group.id });
 
       // create a previous export
       const _export = await Export.create({
@@ -481,7 +481,7 @@ describe("models/destination - with custom exportRecord plugin", () => {
       await destination.updateTracking("group", group.id);
 
       const record = await helper.factories.record();
-      await group.addRecord(record);
+      await GroupMember.create({ recordId: record.id, groupId: group.id });
 
       const destinationGroupMemberships = {};
       destinationGroupMemberships[group.id] = group.name;
@@ -619,8 +619,8 @@ describe("models/destination - with custom exportRecord plugin", () => {
       );
 
       const record = await helper.factories.record();
-      await groupA.addRecord(record);
-      await groupB.addRecord(record);
+      await GroupMember.create({ recordId: record.id, groupId: groupA.id });
+      await GroupMember.create({ recordId: record.id, groupId: groupB.id });
 
       const oldExport = await helper.factories.export(record, destination, {
         newRecordProperties: {},
@@ -674,8 +674,8 @@ describe("models/destination - with custom exportRecord plugin", () => {
         );
 
         const record = await helper.factories.record();
-        await groupA.addRecord(record);
-        await groupB.addRecord(record);
+        await GroupMember.create({ recordId: record.id, groupId: groupA.id });
+        await GroupMember.create({ recordId: record.id, groupId: groupB.id });
 
         const oldExport = await helper.factories.export(record, destination, {
           newRecordProperties: {},
@@ -712,7 +712,7 @@ describe("models/destination - with custom exportRecord plugin", () => {
     test("if an export has the same data as the previous export, and force=false, it will not be sent to the destination", async () => {
       const record = await helper.factories.record();
       const group = await helper.factories.group();
-      await group.addRecord(record);
+      await GroupMember.create({ recordId: record.id, groupId: group.id });
       await destination.updateTracking("group", group.id);
 
       const oldExport = await Export.create({
@@ -751,7 +751,7 @@ describe("models/destination - with custom exportRecord plugin", () => {
     test("if an export has the same data as the previous export, and force=true, it will be sent to the destination", async () => {
       const record = await helper.factories.record();
       const group = await helper.factories.group();
-      await group.addRecord(record);
+      await GroupMember.create({ recordId: record.id, groupId: group.id });
       await destination.updateTracking("group", group.id);
 
       const oldExport = await Export.create({
@@ -793,7 +793,7 @@ describe("models/destination - with custom exportRecord plugin", () => {
         email: ["newEmail@example.com"],
       });
       const group = await helper.factories.group();
-      await group.addRecord(record);
+      await GroupMember.create({ recordId: record.id, groupId: group.id });
       await destination.updateTracking("group", group.id);
 
       await destination.setMapping({
@@ -836,7 +836,7 @@ describe("models/destination - with custom exportRecord plugin", () => {
           email: ["newEmail@example.com"],
         });
         const group = await helper.factories.group();
-        await group.addRecord(record);
+        await GroupMember.create({ recordId: record.id, groupId: group.id });
         await destination.updateTracking("group", group.id);
 
         await destination.setMapping({
@@ -1227,7 +1227,7 @@ describe("models/destination - with custom exportRecord plugin", () => {
         );
 
         record = await helper.factories.record();
-        await group.addRecord(record);
+        await GroupMember.create({ recordId: record.id, groupId: group.id });
       });
 
       afterAll(async () => {

@@ -246,7 +246,6 @@ describe("integration/runs/mailchimp-export-contacts", () => {
     await group.update({
       name: "mailchimp people",
       matchType: "all",
-      type: "calculated",
     });
     await group.setRules([
       { key: "email", match: "%@%", operation: { op: "iLike" } },

@@ -63,7 +63,6 @@ describe("models/run", () => {
       teamMember = await helper.factories.teamMember(team);
       schedule = await helper.factories.schedule(source);
 
-      await group.update({ type: "calculated" });
       await group.setRules(
         group.fromConvenientRules([
           { key: "grouparooId", operation: { op: "exists" } },

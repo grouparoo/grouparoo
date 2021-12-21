@@ -4,6 +4,7 @@ import {
   Group,
   GrouparooModel,
   Destination,
+  GroupMember,
 } from "../../../src";
 import { Op } from "sequelize";
 
@@ -26,7 +27,7 @@ describe("models/record", () => {
     modelDestination = await helper.factories.destination();
     otherDestination = await helper.factories.destination();
 
-    await group.addRecord(record);
+    await GroupMember.create({ recordId: record.id, groupId: group.id });
     await groupDestination.updateTracking("group", group.id);
     await modelDestination.updateTracking("model");
   });

@@ -11,6 +11,7 @@ import {
   Export,
   RecordProperty,
   Errors,
+  GroupMember,
 } from "../../src";
 
 describe("models/export", () => {
@@ -253,7 +254,7 @@ describe("models/export", () => {
     });
 
     const group = await helper.factories.group();
-    await group.addRecord(record);
+    await GroupMember.create({ recordId: record.id, groupId: group.id });
 
     const destination = await helper.factories.destination();
     await destination.updateTracking("group", group.id);
@@ -324,7 +325,7 @@ describe("models/export", () => {
     await record.update({ state: "ready" });
 
     const group = await helper.factories.group();
-    await group.addRecord(record);
+    await GroupMember.create({ recordId: record.id, groupId: group.id });
 
     const destination = await helper.factories.destination();
     await destination.updateTracking("group", group.id);
@@ -366,7 +367,7 @@ describe("models/export", () => {
   test("exports can be marked as having changes or not", async () => {
     await Export.truncate();
     const group = await helper.factories.group();
-    await group.addRecord(record);
+    await GroupMember.create({ recordId: record.id, groupId: group.id });
     await destination.updateTracking("group", group.id);
 
     const oldExport = await Export.create({

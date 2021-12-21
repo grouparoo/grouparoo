@@ -1,7 +1,6 @@
 {
   "id": "high_value_automotive",
   "class": "Group",
-  "type": "calculated",
   "modelId": "users",
   "name": "High Value with Recent Automotive Purchase",
   "rules": [

@@ -28,7 +28,6 @@ Object {
     },
   ],
   "state": "ready",
-  "type": "calculated",
   "updatedAt": Any<Number>,
 }
 `;
@@ -174,7 +173,6 @@ Object {
         },
       ],
       "state": "ready",
-      "type": "calculated",
       "updatedAt": Any<Number>,
     },
   ],

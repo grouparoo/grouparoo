@@ -1,7 +1,6 @@
 {
   "id": "high_value",
   "class": "Group",
-  "type": "calculated",
   "modelId": "users",
   "name": "High Value",
   "rules": [

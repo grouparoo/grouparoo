@@ -11,6 +11,7 @@ import { Group } from "../../models/Group";
 import { TopLevelGroupRules } from "../../modules/topLevelGroupRules";
 import { Property } from "../../models/Property";
 import { ConfigWriter } from "../configWriter";
+import { Deprecation } from "../deprecation";
 
 export async function loadGroup(
   configObject: GroupConfigurationObject,
@@ -18,7 +19,7 @@ export async function loadGroup(
   validate = false
 ): Promise<IdsByClass> {
   let isNew = false;
-  validateConfigObjectKeys(Group, configObject, ["rules"]);
+  validateConfigObjectKeys(Group, configObject, ["rules", "type"]);
 
   let group = await Group.scope(null).findOne({
     where: {
@@ -34,13 +35,11 @@ export async function loadGroup(
     group = await Group.create({
       id: configObject.id,
       name: configObject.name,
-      type: configObject.type,
       modelId: configObject.modelId,
     });
   }
 
   await group.update({
-    type: configObject.type,
     name: configObject.name,
     modelId: configObject.modelId,
     locked: ConfigWriter.getLockKey(configObject),
@@ -85,6 +84,16 @@ export async function loadGroup(
 
   if (previousState === "deleted") {
     await group.run();
+  }
+
+  if (!!configObject["type"]) {
+    if (configObject["type"] === "manual") {
+      throw new Error(
+        "There are manual Groups. Grouparoo v0.8 removes support for Manual Groups.  Please remove them and try again."
+      );
+    } else {
+      Deprecation.warnRemoved("config", "Group", "type");
+    }
   }
 
   logModel(group, validate ? "validated" : isNew ? "created" : "updated");

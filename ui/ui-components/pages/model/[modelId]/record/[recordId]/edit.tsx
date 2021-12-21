@@ -137,46 +137,6 @@ export default function Page(props) {
     }
   }
 
-  async function handleRemove(group) {
-    setLoading(true);
-    const { success }: Actions.GroupRemoveRecord = await execApi(
-      "put",
-      `/group/${group.id}/remove`,
-      {
-        recordId: record.id,
-      }
-    );
-    if (success) {
-      successHandler.set({
-        message: `Record Removed from Group ${group.name}`,
-      });
-      load();
-    }
-    setLoading(false);
-  }
-
-  async function handleAdd(event) {
-    const form = event.currentTarget;
-    event.preventDefault();
-    const groupId = form.elements[0].value;
-
-    setLoading(true);
-    const { success }: Actions.GroupAddRecord = await execApi(
-      "put",
-      `/group/${groupId}/add`,
-      {
-        recordId: record.id,
-      }
-    );
-    if (success) {
-      successHandler.set({
-        message: `Record added to Group!`,
-      });
-      load();
-    }
-    setLoading(false);
-  }
-
   const groupMembershipIds = groups.map((g) => g.id);
 
   if (properties.length === 0) {
@@ -365,21 +325,6 @@ export default function Page(props) {
           <ListGroup>
             {groups.map((group) => (
               <ListGroup.Item key={`groupMember-${group.id}`} variant="info">
-                {group.type === "manual" ? (
-                  <>
-                    <LoadingButton
-                      loading={loading}
-                      size="sm"
-                      variant="danger"
-                      onClick={() => {
-                        handleRemove(group);
-                      }}
-                    >
-                      X
-                    </LoadingButton>
-                    &nbsp; &nbsp;
-                  </>
-                ) : null}
                 {grouparooUiEdition() !== "config" ? (
                   <EnterpriseLink
                     href={`/model/${group.modelId}/group/${group.id}/members`}
@@ -392,49 +337,6 @@ export default function Page(props) {
               </ListGroup.Item>
             ))}
           </ListGroup>
-
-          {grouparooUiEdition() !== "config" && (
-            <>
-              <hr />
-
-              <Form onSubmit={(event) => handleAdd(event)} autoComplete="off">
-                <Row>
-                  <Col md={9}>
-                    <Form.Group controlId="groupId">
-                      <Form.Label>Add Group</Form.Label>
-                      <Form.Control as="select" disabled={loading}>
-                        {allGroups.map((group) => {
-                          const disabled =
-                            group.type !== "manual" ||
-                            groupMembershipIds.includes(group.id);
-                          return (
-                            <option
-                              disabled={disabled}
-                              value={group.id}
-                              key={`group-${group.id}`}
-                            >
-                              {group.name}
-                            </option>
-                          );
-                        })}
-                      </Form.Control>
-                    </Form.Group>
-                  </Col>
-                  <Col md={3}>
-                    <div style={{ paddingTop: 34 }} />
-                    <LoadingButton
-                      variant="outline-primary"
-                      size="sm"
-                      type="submit"
-                      loading={loading}
-                    >
-                      Add
-                    </LoadingButton>
-                  </Col>
-                </Row>
-              </Form>
-            </>
-          )}
         </Col>
 
         <Col>

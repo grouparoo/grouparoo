@@ -74,7 +74,6 @@ export default function Page(props) {
         <thead>
           <tr>
             <th>Name</th>
-            <th>Type</th>
             {grouparooUiEdition() !== "config" && <th>Records</th>}
             <th>State</th>
             {grouparooUiEdition() !== "config" && <th>Calculated At</th>}
@@ -87,21 +86,12 @@ export default function Page(props) {
             return (
               <tr key={`group-${group.id}`}>
                 <td>
-                  {group.type === "calculated" ? (
-                    <Link
-                      href={`/model/${group.modelId}/group/${group.id}/rules`}
-                    >
-                      <a>{group.name}</a>
-                    </Link>
-                  ) : (
-                    <Link
-                      href={`/model/${group.modelId}/group/${group.id}/edit`}
-                    >
-                      <a>{group.name}</a>
-                    </Link>
-                  )}
+                  <Link
+                    href={`/model/${group.modelId}/group/${group.id}/rules`}
+                  >
+                    <a>{group.name}</a>
+                  </Link>
                 </td>
-                <td>{group.type}</td>
                 {grouparooUiEdition() !== "config" && (
                   <td>{group.recordsCount}</td>
                 )}

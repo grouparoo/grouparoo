@@ -21,7 +21,6 @@ describe("actions/totals", () => {
     });
 
     const group = new Group({
-      type: "manual",
       name: "test group",
       modelId: model.id,
     });

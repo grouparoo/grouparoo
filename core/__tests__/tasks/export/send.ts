@@ -51,9 +51,13 @@ describe("tasks/export:send", () => {
     beforeAll(async () => {
       record = await helper.factories.record();
       await record.addOrUpdateProperties({ email: ["mario@example.com"] });
+      await record.import();
+      await record.update({ state: "ready" });
 
-      group = await helper.factories.group({ type: "manual" });
-      await group.addRecord(record);
+      group = await helper.factories.group();
+      await group.setRules([
+        { key: "grouparooId", operation: { op: "exists" } },
+      ]);
 
       destination = await helper.factories.destination();
       await destination.updateTracking("group", group.id);

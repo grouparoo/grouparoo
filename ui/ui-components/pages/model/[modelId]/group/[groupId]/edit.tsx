@@ -106,7 +106,7 @@ export default function Page(props) {
         ]}
       />
 
-      {group.type === "calculated" && grouparooUiEdition() !== "config" && (
+      {grouparooUiEdition() !== "config" && (
         <Row>
           <Col>
             <strong>Last Member Calculation</strong>:{" "}
@@ -144,20 +144,6 @@ export default function Page(props) {
                 <Form.Control.Feedback type="invalid">
                   Name is required
                 </Form.Control.Feedback>
-              </Form.Group>
-
-              <Form.Group controlId="type">
-                <Form.Label>Group Type</Form.Label>
-                <Form.Control
-                  as="select"
-                  name="type"
-                  value={group.type}
-                  disabled
-                  onChange={update}
-                >
-                  <option>manual</option>
-                  <option>calculated</option>
-                </Form.Control>
               </Form.Group>
 
               <Form.Group controlId="matchType">

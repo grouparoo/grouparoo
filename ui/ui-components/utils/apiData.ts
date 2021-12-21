@@ -155,14 +155,12 @@ import {
   ExportProcessorsList,
 } from "@grouparoo/core/src/actions/exportProcessors";
 import {
-  GroupAddRecord,
   GroupCountComponentMembers,
   GroupCountPotentialMembers,
   GroupCreate,
   GroupDestroy,
   GroupEdit,
   GroupListDestinations,
-  GroupRemoveRecord,
   GroupRun,
   GroupView,
   GroupsList,
@@ -433,9 +431,6 @@ export namespace Actions {
     typeof ExportProcessorsList.prototype.runWithinTransaction
   >;
 
-  export type GroupAddRecord = AsyncReturnType<
-    typeof GroupAddRecord.prototype.runWithinTransaction
-  >;
   export type GroupCountComponentMembers = AsyncReturnType<
     typeof GroupCountComponentMembers.prototype.runWithinTransaction
   >;
@@ -453,9 +448,6 @@ export namespace Actions {
   >;
   export type GroupListDestinations = AsyncReturnType<
     typeof GroupListDestinations.prototype.runWithinTransaction
-  >;
-  export type GroupRemoveRecord = AsyncReturnType<
-    typeof GroupRemoveRecord.prototype.runWithinTransaction
   >;
   export type GroupRun = AsyncReturnType<
     typeof GroupRun.prototype.runWithinTransaction

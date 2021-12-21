@@ -1,7 +1,6 @@
 {
   "id": "high_value_accounts",
   "class": "Group",
-  "type": "calculated",
   "modelId": "accounts",
   "name": "High Value Accounts",
   "rules": [
