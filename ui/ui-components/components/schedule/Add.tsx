@@ -22,7 +22,7 @@ export default function AddScheduleForm(props) {
   if (source.state === "draft") {
     return (
       <span>
-        Cannot add schedule until Source is
+        Cannot add Schedule until Source is
         <StateBadge state="ready" marginBottom={0} />
       </span>
     );

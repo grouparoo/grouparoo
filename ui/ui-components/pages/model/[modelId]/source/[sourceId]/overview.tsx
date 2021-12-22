@@ -74,7 +74,7 @@ export default function Page({
 
       <PageHeader
         icon={source.app.icon}
-        title={`${source.name} - Overview`}
+        title={source.name}
         badges={sourceBadges}
       />
 
