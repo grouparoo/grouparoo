@@ -58,7 +58,10 @@ const FormMappingSelector: React.FC<Props> = ({
   useEffect(() => {
     // The preview changes if one of the source options has changed
     // So we reset the selected column
-    setSelectedColumn("");
+    if (!previewColumns.length) return;
+    setSelectedColumn(
+      (selectedColumn) => previewColumns.find((c) => c === selectedColumn) || ""
+    );
   }, [previewColumns]);
 
   const columnExample = useMemo<string>(
