@@ -15,6 +15,7 @@ export function makeWhereClause(
 
   // find the column
   const column = columns[columnName];
+  console.info(columns);
   if (!column) {
     throw `column name not found: ${columnName}`;
   }
