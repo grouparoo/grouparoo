@@ -12,20 +12,24 @@ import AppIcon from "../components/AppIcon";
 import StateBadge from "../components/badges/StateBadge";
 import { Models, Actions } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
-import { ErrorHandler } from "../utils/errorHandler";
-import { SuccessHandler } from "../utils/successHandler";
 import LinkButton from "../components/LinkButton";
 import LoadingButton from "../components/LoadingButton";
 import { grouparooUiEdition } from "../utils/uiEdition";
 import { formatName } from "../utils/formatName";
+import { GrouparooNextPage } from "../types/app";
 
-export default function Page(props) {
-  const {
-    errorHandler,
-    successHandler,
-  }: { errorHandler: ErrorHandler; successHandler: SuccessHandler } = props;
+interface Props {
+  apps: Models.AppType[];
+  total: number;
+}
+
+const Page: GrouparooNextPage<Props> = ({
+  errorHandler,
+  successHandler,
+  ...props
+}) => {
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { execApi } = UseApi(undefined, errorHandler);
   const [apps, setApps] = useState<Models.AppType[]>(props.apps);
   const [total, setTotal] = useState<number>(props.total);
   const [loading, setLoading] = useState(false);
@@ -189,11 +193,16 @@ export default function Page(props) {
       </LinkButton>
     </>
   );
-}
+};
 
 Page.getInitialProps = async (ctx) => {
   const { execApi } = UseApi(ctx);
   const { limit, offset } = ctx.query;
-  const { apps, total } = await execApi("get", `/apps`, { limit, offset });
+  const { apps, total } = await execApi<Actions.AppsList>("get", `/apps`, {
+    limit,
+    offset,
+  });
   return { apps, total };
 };
+
+export default Page;

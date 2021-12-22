@@ -9,15 +9,19 @@ import LoadingTable from "../components/LoadingTable";
 import ModelIcon from "../components/ModelIcon";
 import { Models, Actions } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
-import { ErrorHandler } from "../utils/errorHandler";
 import GrouparooLink from "../components/GrouparooLink";
 import StateBadge from "../components/badges/StateBadge";
 import LinkButton from "../components/LinkButton";
+import { GrouparooNextPage } from "../types/app";
 
-export default function Page(props) {
-  const { errorHandler }: { errorHandler: ErrorHandler } = props;
+interface Props {
+  models: Models.GrouparooModelType[];
+  total: number;
+}
+
+const Page: GrouparooNextPage<Props> = ({ errorHandler, ...props }) => {
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { execApi } = UseApi(undefined, errorHandler);
   const [models, setModels] = useState<Models.GrouparooModelType[]>(
     props.models
   );
@@ -113,11 +117,15 @@ export default function Page(props) {
       </LinkButton>
     </>
   );
-}
+};
 
 Page.getInitialProps = async (ctx) => {
   const { execApi } = UseApi(ctx);
   const { limit, offset } = ctx.query;
-  const { models, total } = await execApi("get", `/models`, { limit, offset });
+  const { models, total } = await execApi<Actions.ModelsList>(
+    "get",
+    `/models`,
+    { limit, offset }
+  );
   return { models, total };
 };

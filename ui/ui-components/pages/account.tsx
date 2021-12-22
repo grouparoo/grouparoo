@@ -5,21 +5,19 @@ import { Form, Row, Col } from "react-bootstrap";
 import RecordImageFromEmail from "../components/visualizations/RecordImageFromEmail";
 import LoadingButton from "../components/LoadingButton";
 import { Models, Actions } from "../utils/apiData";
-import { ErrorHandler } from "../utils/errorHandler";
-import { SuccessHandler } from "../utils/successHandler";
-import { SessionHandler } from "../utils/sessionHandler";
+import { GrouparooNextPage } from "../types/app";
 
-export default function Page(props) {
-  const {
-    errorHandler,
-    successHandler,
-    sessionHandler,
-  }: {
-    errorHandler: ErrorHandler;
-    successHandler: SuccessHandler;
-    sessionHandler: SessionHandler;
-  } = props;
-  const { execApi } = UseApi(props, errorHandler);
+interface Props {
+  teamMember: Models.TeamMemberType;
+}
+
+const Page: GrouparooNextPage<Props> = ({
+  errorHandler,
+  successHandler,
+  sessionHandler,
+  ...props
+}) => {
+  const { execApi } = UseApi(undefined, errorHandler);
   const [loading, setLoading] = useState(false);
   const [teamMember, setTeamMember] = useState<Models.TeamMemberType>(
     props.teamMember
@@ -120,10 +118,12 @@ export default function Page(props) {
       </Row>
     </>
   );
-}
+};
 
 Page.getInitialProps = async (ctx) => {
   const { execApi } = UseApi(ctx);
   const { teamMember }: Actions.AccountView = await execApi("get", `/account`);
   return { teamMember };
 };
+
+export default Page;

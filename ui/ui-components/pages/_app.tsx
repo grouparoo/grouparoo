@@ -1,6 +1,6 @@
-import App from "next/app";
 import { AxiosError } from "axios";
-import type { AppContext } from "next/app";
+import App from "next/app";
+import type { AppContext, AppProps } from "next/app";
 
 import { UseApi } from "../hooks/useApi";
 
@@ -10,19 +10,24 @@ import PageTransition from "../components/PageTransition";
 import StatusSubscription from "../components/StatusSubscription";
 import "../components/Icons";
 
+import { GrouparooNextPageProps, GrouparooWebAppProps } from "../types/app";
+
 import { Actions } from "../utils/apiData";
 import * as eventHandlers from "../utils/eventHandlers";
 
-export default function GrouparooWebApp(props) {
+export default function GrouparooWebApp(
+  props: AppProps & GrouparooWebAppProps & { err: any }
+) {
   const { Component, pageProps, err, hydrationError } = props;
 
-  const combinedProps = Object.assign({}, pageProps || {}, {
+  const combinedProps: GrouparooNextPageProps = {
+    ...pageProps,
+    ...eventHandlers,
     navigation: props.navigation,
     navigationMode: props.navigationMode,
     clusterName: props.clusterName,
     currentTeamMember: props.currentTeamMember,
-    ...eventHandlers,
-  });
+  };
 
   return (
     <Injection {...combinedProps}>
