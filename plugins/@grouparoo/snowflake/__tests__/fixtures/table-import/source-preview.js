@@ -7,7 +7,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
   .query({
     requestId: /.+/g,
     warehouse: "COMPUTE_WH",
-    databaseName: "SAMPLE_SOURCES",
+    databaseName: "SAMPLE_SOURCES_001",
     schemaName: "PUBLIC",
   })
   .once()
@@ -26,7 +26,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
         remMeValidityInSeconds: 0,
         healthCheckInterval: 45,
         newClientForUpgrade: null,
-        sessionId: 11812616058679962,
+        sessionId: 11812616058680338,
         parameters: [
           {
             name: "TIMESTAMP_OUTPUT_FORMAT",
@@ -73,7 +73,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           { name: "TIMESTAMP_LTZ_OUTPUT_FORMAT", value: "" },
         ],
         sessionInfo: {
-          databaseName: "SAMPLE_SOURCES",
+          databaseName: "SAMPLE_SOURCES_001",
           schemaName: "PUBLIC",
           warehouseName: "COMPUTE_WH",
           roleName: "SYSADMIN",
@@ -94,7 +94,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
       "Content-Type",
       "application/json",
       "Date",
-      "Wed, 22 Dec 2021 18:53:30 GMT",
+      "Wed, 22 Dec 2021 22:35:19 GMT",
       "Expect-CT",
       "enforce, max-age=3600",
       "Strict-Transport-Security",
@@ -173,7 +173,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
         rowtype: [
           {
             name: "ID",
-            database: "SAMPLE_SOURCES",
+            database: "SAMPLE_SOURCES_001",
             schema: "PUBLIC",
             table: "PURCHASES",
             scale: 0,
@@ -186,7 +186,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           },
           {
             name: "PROFILE_ID",
-            database: "SAMPLE_SOURCES",
+            database: "SAMPLE_SOURCES_001",
             schema: "PUBLIC",
             table: "PURCHASES",
             scale: 0,
@@ -199,7 +199,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           },
           {
             name: "PURCHASE",
-            database: "SAMPLE_SOURCES",
+            database: "SAMPLE_SOURCES_001",
             schema: "PUBLIC",
             table: "PURCHASES",
             scale: null,
@@ -212,7 +212,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           },
           {
             name: "AMOUNT",
-            database: "SAMPLE_SOURCES",
+            database: "SAMPLE_SOURCES_001",
             schema: "PUBLIC",
             table: "PURCHASES",
             scale: null,
@@ -225,7 +225,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           },
           {
             name: "DATE",
-            database: "SAMPLE_SOURCES",
+            database: "SAMPLE_SOURCES_001",
             schema: "PUBLIC",
             table: "PURCHASES",
             scale: null,
@@ -238,7 +238,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           },
           {
             name: "STAMP",
-            database: "SAMPLE_SOURCES",
+            database: "SAMPLE_SOURCES_001",
             schema: "PUBLIC",
             table: "PURCHASES",
             scale: 9,
@@ -264,9 +264,9 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
         ],
         total: 10,
         returned: 10,
-        queryId: "01a11fcd-0601-82ce-0029-f783001de3b6",
+        queryId: "01a120ab-0601-82ce-0029-f783001de6a2",
         databaseProvider: null,
-        finalDatabaseName: "SAMPLE_SOURCES",
+        finalDatabaseName: "SAMPLE_SOURCES_001",
         finalSchemaName: "PUBLIC",
         finalWarehouseName: "COMPUTE_WH",
         finalRoleName: "SYSADMIN",
@@ -274,7 +274,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
         arrayBindSupported: false,
         statementTypeId: 4096,
         version: 1,
-        sendResultTime: 1640199211036,
+        sendResultTime: 1640212519593,
         queryResultFormat: "json",
       },
       code: null,
@@ -287,7 +287,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
       "Content-Type",
       "application/json",
       "Date",
-      "Wed, 22 Dec 2021 18:53:31 GMT",
+      "Wed, 22 Dec 2021 22:35:19 GMT",
       "Expect-CT",
       "enforce, max-age=3600",
       "Strict-Transport-Security",

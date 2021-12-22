@@ -7,7 +7,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
   .query({
     requestId: /.+/g,
     warehouse: "COMPUTE_WH",
-    databaseName: "SAMPLE_SOURCES",
+    databaseName: "SAMPLE_SOURCES_001",
     schemaName: "PUBLIC",
   })
   .once()
@@ -26,7 +26,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
         remMeValidityInSeconds: 0,
         healthCheckInterval: 45,
         newClientForUpgrade: null,
-        sessionId: 11812616058680022,
+        sessionId: 11812616058680058,
         parameters: [
           {
             name: "TIMESTAMP_OUTPUT_FORMAT",
@@ -73,7 +73,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
           { name: "TIMESTAMP_LTZ_OUTPUT_FORMAT", value: "" },
         ],
         sessionInfo: {
-          databaseName: "SAMPLE_SOURCES",
+          databaseName: "SAMPLE_SOURCES_001",
           schemaName: "PUBLIC",
           warehouseName: "COMPUTE_WH",
           roleName: "SYSADMIN",
@@ -94,7 +94,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
       "Content-Type",
       "application/json",
       "Date",
-      "Wed, 22 Dec 2021 18:57:02 GMT",
+      "Wed, 22 Dec 2021 22:34:55 GMT",
       "Expect-CT",
       "enforce, max-age=3600",
       "Strict-Transport-Security",
@@ -173,7 +173,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
         rowtype: [
           {
             name: "FIRST_NAME",
-            database: "SAMPLE_SOURCES",
+            database: "SAMPLE_SOURCES_001",
             schema: "PUBLIC",
             table: "PROFILES",
             byteLength: 16777216,
@@ -188,9 +188,9 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
         rowset: [["Erie"]],
         total: 1,
         returned: 1,
-        queryId: "01a11fd1-0601-82ce-0029-f783001de3ea",
+        queryId: "01a120aa-0601-82ce-0029-f783001de55a",
         databaseProvider: null,
-        finalDatabaseName: "SAMPLE_SOURCES",
+        finalDatabaseName: "SAMPLE_SOURCES_001",
         finalSchemaName: "PUBLIC",
         finalWarehouseName: "COMPUTE_WH",
         finalRoleName: "SYSADMIN",
@@ -198,7 +198,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
         arrayBindSupported: false,
         statementTypeId: 4096,
         version: 1,
-        sendResultTime: 1640199422483,
+        sendResultTime: 1640212495583,
         queryResultFormat: "json",
       },
       code: null,
@@ -211,7 +211,7 @@ nock("https://xyz12345.us-east-1.snowflakecomputing.com:443", {
       "Content-Type",
       "application/json",
       "Date",
-      "Wed, 22 Dec 2021 18:57:02 GMT",
+      "Wed, 22 Dec 2021 22:34:55 GMT",
       "Expect-CT",
       "enforce, max-age=3600",
       "Strict-Transport-Security",
