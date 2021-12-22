@@ -89,7 +89,11 @@ describe("models/record", () => {
 
       source = await helper.factories.source();
       await source.setOptions({ table: "test table" });
-      await source.bootstrapUniqueProperty("userId", "integer", "id");
+      await source.bootstrapUniqueProperty({
+        key: "userId",
+        type: "integer",
+        mappedColumn: "id",
+      });
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
 
@@ -282,7 +286,11 @@ describe("models/record", () => {
       beforeAll(async () => {
         source = await helper.factories.source();
         await source.setOptions({ table: "test table" });
-        await source.bootstrapUniqueProperty("userId", "integer", "id");
+        await source.bootstrapUniqueProperty({
+          key: "userId",
+          type: "integer",
+          mappedColumn: "id",
+        });
         await source.setMapping({ id: "userId" });
         await source.update({ state: "ready" });
 
@@ -815,7 +823,11 @@ describe("models/record", () => {
         modelId: model.id,
       });
       await source.setOptions({ table: "test table" });
-      await source.bootstrapUniqueProperty("userId", "integer", "id");
+      await source.bootstrapUniqueProperty({
+        key: "userId",
+        type: "integer",
+        mappedColumn: "id",
+      });
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
 
@@ -939,7 +951,11 @@ describe("models/record", () => {
         type: "import-from-test-template-app",
         modelId: model.id,
       });
-      await source.bootstrapUniqueProperty("userId", "integer", "id");
+      await source.bootstrapUniqueProperty({
+        key: "userId",
+        type: "integer",
+        mappedColumn: "id",
+      });
       await source.setOptions({ table: "users" });
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });

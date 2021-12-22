@@ -213,20 +213,22 @@ export class SourceBootstrapUniqueProperty extends AuthenticatedAction {
     this.permission = { topic: "source", mode: "write" };
     this.inputs = {
       id: { required: true },
-      key: { required: true },
-      type: { required: true },
+      key: { required: false },
+      type: { required: false },
       mappedColumn: { required: true },
+      sourceOptions: { required: false },
     };
   }
 
   async runWithinTransaction({ params }) {
     const source = await Source.findById(params.id);
 
-    const property = await source.bootstrapUniqueProperty(
-      params.key,
-      params.type,
-      params.mappedColumn
-    );
+    const property = await source.bootstrapUniqueProperty({
+      mappedColumn: params.mappedColumn,
+      key: params.key,
+      type: params.type,
+      sourceOptions: params.sourceOptions,
+    });
 
     await ConfigWriter.run();
 

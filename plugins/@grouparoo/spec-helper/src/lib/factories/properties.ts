@@ -25,7 +25,11 @@ export default async (
   const source = (await SourceFactory(null, { modelId: model.id })) as Source;
 
   await source.setOptions({ table: "__test_table" });
-  await source.bootstrapUniqueProperty("userId", "integer", "id");
+  await source.bootstrapUniqueProperty({
+    key: "userId",
+    type: "integer",
+    mappedColumn: "id",
+  });
   await source.setMapping({ userId: "userId" });
   await source.update({ state: "ready" });
 

@@ -32,7 +32,11 @@ describe("models/source/sortByDependencies", () => {
       modelId: model.id,
     });
     await usersTable.setOptions({ table: "users" });
-    await usersTable.bootstrapUniqueProperty("userId", "integer", "id");
+    await usersTable.bootstrapUniqueProperty({
+      key: "userId",
+      type: "integer",
+      mappedColumn: "id",
+    });
     await usersTable.setMapping({ id: "userId" });
     await usersTable.update({ state: "ready" });
 

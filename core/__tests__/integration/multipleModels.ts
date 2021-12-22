@@ -37,12 +37,12 @@ describe("multiple models", () => {
     const app = await App.findOne();
     source = await helper.factories.source(app, { modelId: model.id });
     await source.setOptions({ table: "admin-users" });
-    await source.bootstrapUniqueProperty(
-      "adminUserId",
-      "integer",
-      "id",
-      "adminUserId"
-    );
+    await source.bootstrapUniqueProperty({
+      key: "adminUserId",
+      type: "integer",
+      mappedColumn: "id",
+      id: "adminUserId",
+    });
     await source.setMapping({ id: "adminUserId" });
     await source.update({ state: "ready" });
 

@@ -37,7 +37,11 @@ describe("actions/properties", () => {
 
     source = await helper.factories.source();
     await source.setOptions({ table: "test table" });
-    await source.bootstrapUniqueProperty("userId", "integer", "id");
+    await source.bootstrapUniqueProperty({
+      key: "userId",
+      type: "integer",
+      mappedColumn: "id",
+    });
     await source.setMapping({ id: "userId" });
     await source.update({ state: "ready" });
   });
@@ -411,7 +415,11 @@ describe("actions/properties", () => {
 
         source2 = await helper.factories.source(null, { modelId: model2.id });
         await source2.setOptions({ table: "test table" });
-        await source2.bootstrapUniqueProperty("adminId", "integer", "id");
+        await source2.bootstrapUniqueProperty({
+          key: "adminId",
+          type: "integer",
+          mappedColumn: "id",
+        });
         await source2.setMapping({ id: "adminId" });
         await source2.update({ state: "ready" });
       });

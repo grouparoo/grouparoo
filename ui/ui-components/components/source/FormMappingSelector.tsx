@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Col, Form, Row } from "react-bootstrap";
+import { useForm } from "react-hook-form";
 import FormInputContainer from "../lib/form/FormInputContainer";
 import { Models } from "../../utils/apiData";
-import { useForm } from "react-hook-form";
 
 const renderExamples = (exampleText?: string) => (
   <div style={{ visibility: exampleText ? "visible" : "hidden" }}>
@@ -18,7 +18,6 @@ interface Props {
   properties: Models.PropertyType[];
   propertyExamples: Record<string, string[]>;
   source: Models.SourceType;
-  types: string[];
   register: ReturnType<typeof useForm>["register"];
 }
 
@@ -31,7 +30,6 @@ const FormMappingSelector: React.FC<Props> = ({
   propertyExamples,
   register,
   source,
-  types,
 }) => {
   const [selectedProperty, setSelectedProperty] = useState<Models.PropertyType>(
     () =>
@@ -54,8 +52,14 @@ const FormMappingSelector: React.FC<Props> = ({
   }, [preview]);
 
   const [selectedColumn, setSelectedColumn] = useState<string>(
-    () => columnName || previewColumns?.[0]
+    () => columnName || previewColumns?.[0] || ""
   );
+
+  useEffect(() => {
+    // The preview changes if one of the source options has changed
+    // So we reset the selected column
+    setSelectedColumn("");
+  }, [previewColumns]);
 
   const columnExample = useMemo<string>(
     () =>
@@ -102,7 +106,7 @@ const FormMappingSelector: React.FC<Props> = ({
 
   return (
     <Row>
-      <Col xs={12} lg={6}>
+      <Col lg={hasAvailableProperties ? 6 : 12}>
         <FormInputContainer
           controlId="mapping_source_column"
           label="Source Column"
@@ -111,7 +115,7 @@ const FormMappingSelector: React.FC<Props> = ({
           <Form.Control
             as="select"
             required
-            disabled={disabled}
+            disabled={disabled || !previewColumns.length}
             value={selectedColumn}
             onChange={(e) => {
               setSelectedColumn(e.target.value);
@@ -132,7 +136,7 @@ const FormMappingSelector: React.FC<Props> = ({
         {renderExamples(columnExample)}
       </Col>
       <Col>
-        {hasAvailableProperties ? (
+        {hasAvailableProperties && (
           <>
             <FormInputContainer
               controlId="mapping_property"
@@ -168,52 +172,6 @@ const FormMappingSelector: React.FC<Props> = ({
               </Form.Control>
             </FormInputContainer>
             {!!availableProperties.length && renderExamples(propertyExample)}
-          </>
-        ) : (
-          <>
-            <FormInputContainer
-              controlId="key"
-              label="Grouparoo Property Key"
-              required
-            >
-              <Form.Control
-                required
-                type="text"
-                placeholder="Property Key"
-                disabled={disabled}
-                name="bootstrap.propertyKey"
-                ref={register}
-              />
-              <Form.Control.Feedback type="invalid">
-                Key is required
-              </Form.Control.Feedback>
-            </FormInputContainer>
-
-            <FormInputContainer controlId="type" label="Property Type" required>
-              <Form.Control
-                as="select"
-                required
-                disabled={disabled}
-                name="bootstrap.propertyType"
-                ref={register}
-                defaultValue={types?.find((type) => type === "integer")}
-              >
-                <option value={""} disabled>
-                  Select a type
-                </option>
-                {types?.map((type) => (
-                  <option key={`type-${type}`}>{type}</option>
-                ))}
-              </Form.Control>
-            </FormInputContainer>
-
-            <p>
-              This will create a Unique Property for{" "}
-              <code>{source.modelName}</code> Records that will be mapped to the
-              Source Column <code>{selectedColumn}</code>. This Record Property
-              must be mapped to a unique Source Column, meaning only one record
-              in the data will have this value. Usually, this is an ID or email.
-            </p>
           </>
         )}
       </Col>

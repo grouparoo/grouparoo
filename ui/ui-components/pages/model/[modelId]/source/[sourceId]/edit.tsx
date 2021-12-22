@@ -23,10 +23,6 @@ import FormMappingSelector from "../../../../../components/source/FormMappingSel
 import { createSchedule } from "../../../../../components/schedule/Add";
 
 interface FormData {
-  bootstrap?: {
-    propertyKey: string;
-    propertyType: string;
-  };
   mapping?: {
     sourceColumn: string;
     propertyKey: string;
@@ -41,7 +37,6 @@ interface Props {
   scheduleCount: number;
   source: Models.SourceType;
   totalSources: number;
-  types: string[];
 }
 
 interface InjectedProps extends NextPageContext {
@@ -57,7 +52,6 @@ const Page: NextPage<Props & InjectedProps> = ({
   sourceHandler,
   scheduleCount,
   totalSources,
-  types,
   ...props
 }) => {
   const router = useRouter();
@@ -140,27 +134,23 @@ const Page: NextPage<Props & InjectedProps> = ({
     event.preventDefault();
     setLoading(true);
 
-    const isBootstrappingUniqueProperty =
-      data.bootstrap?.propertyKey && data.bootstrap?.propertyType;
+    const isBootstrappingUniqueProperty = !data.mapping?.propertyKey;
     let bootstrapSuccess = false;
+    let mapping: Record<string, string>;
 
     // Unique Property is being created and need to bootstrap?
     if (isBootstrappingUniqueProperty) {
-      const payload = {
-        key: data.bootstrap.propertyKey,
-        type: data.bootstrap.propertyType,
-        mappedColumn: data.mapping.sourceColumn,
-      };
-
       const bootstrapResponse: Actions.SourceBootstrapUniqueProperty =
-        await execApi(
-          "post",
-          `/source/${source.id}/bootstrapUniqueProperty`,
-          payload
-        );
+        await execApi("post", `/source/${source.id}/bootstrapUniqueProperty`, {
+          mappedColumn: data.mapping.sourceColumn,
+          sourceOptions: source.options,
+        });
 
       if (bootstrapResponse?.property) {
         bootstrapSuccess = true;
+        mapping = {
+          [data.mapping.sourceColumn]: bootstrapResponse.property.key,
+        };
         const prrResponse = await execApi<Actions.PropertiesList>(
           "get",
           `/properties`,
@@ -178,22 +168,20 @@ const Page: NextPage<Props & InjectedProps> = ({
         }
       } else if (!Object.keys(bootstrapResponse).length) {
         errorHandler.set({
-          message: "Unable to create mapping.",
+          message: "Unable to map to property.",
         });
         setLoading(false);
         return;
       }
     }
 
-    const mapping = bootstrapSuccess
-      ? {
-          [data.mapping.sourceColumn]: data.bootstrap.propertyKey,
-        }
-      : data.mapping?.propertyKey
-      ? {
-          [data.mapping.sourceColumn]: data.mapping.propertyKey,
-        }
-      : source.mapping;
+    if (!mapping) {
+      mapping = data.mapping?.propertyKey
+        ? {
+            [data.mapping.sourceColumn]: data.mapping.propertyKey,
+          }
+        : source.mapping;
+    }
 
     const state =
       source.connection.skipSourceMapping ||
@@ -547,7 +535,6 @@ const Page: NextPage<Props & InjectedProps> = ({
                     propertyExamples={propertyExamples}
                     register={register}
                     source={source}
-                    types={types}
                   />
                   <hr />
                 </>
@@ -637,8 +624,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
       modelId: source?.modelId,
     });
 
-  const { types } = await execApi("get", `/propertyOptions`);
-
   const { total: scheduleCount } = await execApi<Actions.SchedulesList>(
     "get",
     `/schedules`,
@@ -655,7 +640,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
       source,
       scheduleCount,
       totalSources,
-      types,
     },
   };
 };
