@@ -5,19 +5,28 @@ const DESTINATIONS = {
   mailchimp: {
     demo: "--mailchimp",
     app: "mailchimpapp",
-    model: "users",
-    destination: "mailchimp",
+    destinations: {
+      "mailchimp-export-contacts": {
+        model: "users",
+        id: "mailchimp",
+      },
+    },
   },
 };
 
 const execSync = require("../../shared/exec");
 const { sleep } = require("../../shared/util");
 const path = require("path");
+const fs = require("fs-extra");
 const cp = require("child_process");
+const puppeteer = require("puppeteer");
 
 const PROJECT_ROOT = path.resolve(path.join(__dirname, "..", "..", ".."));
 const APP_TO_RUN = "staging-community";
 const VERBOSE = true;
+const HOST = "http://localhost:3000";
+const HEADLESS = false;
+const PAGESIZE = { width: 1200, height: 800 };
 
 module.exports.cmd = async function (vargs) {
   console.log("Destinations:");
@@ -25,7 +34,7 @@ module.exports.cmd = async function (vargs) {
   for (const key of Object.keys(DESTINATIONS)) {
     try {
       console.log(key);
-      const runner = new DestinationPuppeteer(key);
+      const runner = new Service(key);
       await runner.run();
       results.push({ key });
     } catch (error) {
@@ -43,22 +52,45 @@ module.exports.cmd = async function (vargs) {
   }
 };
 
-class DestinationPuppeteer {
-  constructor(key) {
-    this.data = DESTINATIONS[key];
+class Service {
+  constructor(serviceKey) {
+    this.data = DESTINATIONS[serviceKey];
     if (!this.data) {
-      throw new Error(`Unknown destination: ${key}`);
+      throw new Error(`Unknown destination: ${serviceKey}`);
     }
     this.rooCmd = path.join(PROJECT_ROOT, "cli", "dist", "grouparoo.js");
     this.cwd = path.join(PROJECT_ROOT, "apps", APP_TO_RUN);
+    this.dirPath = path.join(
+      PROJECT_ROOT,
+      "tools",
+      "screenshots",
+      "output",
+      "destinations",
+      serviceKey
+    );
     this.server = null;
+    this.page = null;
+    this.browser = null;
   }
 
   async run() {
-    await this.demo();
-    await this.config();
-    await this.screenshots();
-    await this.close();
+    try {
+      await this.open();
+      await this.demo();
+      await this.config();
+      for (const destKey of Object.keys(this.data.destinations)) {
+        const dest = new Destination(this, destKey);
+        await dest.screenshots();
+      }
+    } finally {
+      await this.close();
+    }
+  }
+
+  async open() {
+    if (fs.existsSync(this.dirPath)) {
+      fs.rmSync(this.dirPath, { recursive: true, force: true });
+    }
   }
 
   async demo() {
@@ -82,7 +114,6 @@ class DestinationPuppeteer {
     return new Promise((done, failed) => {
       const start = cp.spawn(this.rooCmd, ["config"], { cwd: this.cwd });
       this.server = start;
-      this.serverRunning = true;
       start.stdout.on("data", function (data) {
         const output = data.toString();
         if (output.indexOf("Opening Grouparoo Config in web browser") >= 0) {
@@ -106,6 +137,10 @@ class DestinationPuppeteer {
   }
 
   async close() {
+    if (this.browser) {
+      await this.browser.close();
+    }
+    this.page = null;
     if (this.server) {
       this.server.kill();
       let count = 0;
@@ -113,10 +148,83 @@ class DestinationPuppeteer {
         await sleep(10);
         count++;
       }
+      this.server = null;
     }
   }
 
+  async goto(path) {
+    if (!this.browser) {
+      this.browser = await puppeteer.launch({
+        headless: HEADLESS,
+        defaultViewport: PAGESIZE,
+      });
+    }
+    if (!this.page) {
+      this.page = await this.browser.newPage();
+    }
+    const url = `${HOST}${path}`;
+    await this.page.goto(url);
+    // no alerts
+    await this.page.waitForFunction(
+      () => !document.querySelector(".alert-warning")
+    );
+  }
+}
+
+class Destination {
+  constructor(service, destKey) {
+    this.service = service;
+    this.data = service.data.destinations[destKey];
+    this.shotDir = path.join(service.dirPath, destKey);
+  }
+
+  async goto(path) {
+    return this.service.goto(path);
+  }
+
+  async form(fields) {
+    const page = this.service.page;
+    for (const field of Object.keys(fields)) {
+      const value = fields[field];
+      const selector = `input[name="${field}"]`;
+      const input = await page.waitForSelector(selector);
+      // await page.$eval(selector, (el) => (el.value = value));
+      await input.type(value);
+    }
+
+    await page.click('button[type="submit"]');
+    await page.waitForNavigation();
+  }
+
+  async pickModel() {
+    const page = this.service.page;
+    // pick full model
+    await page.select("#form select", "__model");
+    // wait for preview
+    await page.waitForXPath("//h5[contains(text(), 'Sample Record')]");
+  }
+
+  async screenshot(name) {
+    // TODO: page in sub element
+    const page = this.service.page;
+    const filePath = path.join(this.shotDir, `${name}.png`);
+    const dirPath = path.dirname(filePath);
+    fs.mkdirpSync(dirPath);
+    await page.screenshot({ path: filePath, fullPage: true });
+  }
+
   async screenshots() {
-    await sleep(10 * 1000);
+    const appPath = `/app/${this.service.data.app}`;
+    const destPath = `/model/${this.data.model}/destination/${this.data.id}`;
+    const recordPath = `/model/${this.data.model}/record/new`;
+    await this.goto(recordPath);
+    await this.form({ value: "12" });
+    await this.goto(`${appPath}/edit`);
+    await this.screenshot("app-options");
+    await this.goto(`${destPath}/edit`);
+    await this.screenshot("destination-options");
+    await this.goto(`${destPath}/data`);
+    await this.pickModel();
+    await this.screenshot("destination-data");
   }
 }

@@ -9,6 +9,7 @@
     "node": ">=12.0.0 <17.0.0"
   },
   "dependencies": {
+    "fs-extra": "10.0.0",
     "glob": "7.1.7",
     "mustache": "4.0.1",
     "prettier": "2.0.2",
