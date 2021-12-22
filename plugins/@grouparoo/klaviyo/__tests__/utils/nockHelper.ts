@@ -35,6 +35,11 @@ export const updater = {
     );
 
     nockCall = nockCall.replaceAll(
+      `"Submitted new deletion task for customer."`,
+      `{ results: "Submitted new deletion task for customer." }`
+    );
+
+    nockCall = nockCall.replaceAll(
       realEnv.KLAVIYO_PUBLIC_TOKEN,
       nockEnv.KLAVIYO_PUBLIC_TOKEN
     );

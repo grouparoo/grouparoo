@@ -43,7 +43,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
   })
   .once()
-  .reply(202, "Submitted new deletion task for customer.", [
+  .reply(202, { results: "Submitted new deletion task for customer." }, [
     "Date",
     "Tue, 21 Dec 2021 14:56:37 GMT",
     "Content-Type",
@@ -2810,7 +2810,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
   })
   .once()
-  .reply(202, "Submitted new deletion task for customer.", [
+  .reply(202, { results: "Submitted new deletion task for customer." }, [
     "Date",
     "Tue, 21 Dec 2021 14:57:56 GMT",
     "Content-Type",
@@ -2900,7 +2900,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
   })
   .once()
-  .reply(202, "Submitted new deletion task for customer.", [
+  .reply(202, { results: "Submitted new deletion task for customer." }, [
     "Date",
     "Tue, 21 Dec 2021 14:57:57 GMT",
     "Content-Type",
@@ -3458,7 +3458,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
   })
   .once()
-  .reply(202, "Submitted new deletion task for customer.", [
+  .reply(202, { results: "Submitted new deletion task for customer." }, [
     "Date",
     "Tue, 21 Dec 2021 14:58:26 GMT",
     "Content-Type",
@@ -3634,7 +3634,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
   })
   .once()
-  .reply(202, "Submitted new deletion task for customer.", [
+  .reply(202, { results: "Submitted new deletion task for customer." }, [
     "Date",
     "Tue, 21 Dec 2021 14:58:28 GMT",
     "Content-Type",
