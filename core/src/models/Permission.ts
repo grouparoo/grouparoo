@@ -38,6 +38,10 @@ export const PermissionTopics = [
 
 export type ActionPermissionTopic = typeof PermissionTopics[number] | "*";
 export type ActionPermissionMode = "read" | "write";
+export type ActionPermission = {
+  topic: ActionPermissionTopic;
+  mode: ActionPermissionMode;
+};
 
 @Table({ tableName: "permissions", paranoid: false })
 export class Permission extends LoggedModel<Permission> {

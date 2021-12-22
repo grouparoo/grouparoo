@@ -1,4 +1,4 @@
-import { config } from "actionhero";
+import { config, ParamsFrom } from "actionhero";
 import Sequelize from "sequelize";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Op } from "sequelize";
@@ -12,6 +12,7 @@ import { RecordProperty } from "../models/RecordProperty";
 import { Run } from "../models/Run";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
+import { ActionPermission } from "../models/Permission";
 
 const modelClasses = {
   Group,
@@ -24,7 +25,7 @@ const modelClasses = {
   Run,
   Team,
   TeamMember,
-};
+} as const;
 
 function dateString(d: Date | string) {
   if (typeof d === "string") {
@@ -50,20 +51,19 @@ function generateDates(
 }
 
 export class TotalsAction extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "totals";
-    this.description = "return counts for a model";
-    this.outputExample = {};
-    this.permission = { topic: "system", mode: "read" };
-    this.inputs = {
-      model: { required: true },
-    };
-  }
+  name = "totals";
+  description = "return counts for a model";
+  outputExample = {};
+  permission: ActionPermission = { topic: "system", mode: "read" };
+  inputs = {
+    model: { required: true },
+  };
 
-  async runWithinTransaction({ params }: { params: { model: string } }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<TotalsAction> }) {
     const dates = generateDates();
-    const model: typeof Run = modelClasses[params.model]; // TODO: the type really could be any model
+    //@ts-ignore
+    const model: typeof Run = // TODO: the type really could be any model
+      modelClasses[params.model as keyof typeof modelClasses];
     if (!model) throw new Error(`cannot return totals for ${params.model}`);
 
     const total = await model.count();

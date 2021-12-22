@@ -2,16 +2,15 @@ import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { SetupStep } from "../models/SetupStep";
 import { AsyncReturnType } from "type-fest";
 import { APIData } from "../modules/apiData";
+import { ActionPermission } from "../models/Permission";
+import { ParamsFrom } from "actionhero";
 
 export class SetupStepsList extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "setupSteps:list";
-    this.description = "List the SetupSteps and their status";
-    this.permission = { topic: "setupStep", mode: "read" };
-    this.outputExample = {};
-    this.inputs = { modelId: { required: false } };
-  }
+  name = "setupSteps:list";
+  description = "List the SetupSteps and their status";
+  permission: ActionPermission = { topic: "setupStep", mode: "read" };
+  outputExample = {};
+  inputs = { modelId: { required: false } };
 
   isWriteTransaction() {
     // setupStep.performCheck() can do an update
@@ -34,19 +33,20 @@ export class SetupStepsList extends AuthenticatedAction {
 }
 
 export class SetupStepEdit extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "setupStep:edit";
-    this.description = "List the SetupSteps and their status";
-    this.permission = { topic: "setupStep", mode: "write" };
-    this.outputExample = {};
-    this.inputs = {
-      id: { required: true },
-      skipped: { required: false, formatter: APIData.ensureBoolean },
-    };
-  }
+  name = "setupStep:edit";
+  description = "List the SetupSteps and their status";
+  permission: ActionPermission = { topic: "setupStep", mode: "write" };
+  outputExample = {};
+  inputs = {
+    id: { required: true },
+    skipped: { required: false, formatter: APIData.ensureBoolean },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<SetupStepEdit>;
+  }) {
     const setupStep = await SetupStep.findById(params.id);
 
     if (params.skipped !== null) {

@@ -6,29 +6,32 @@ import { TeamMember } from "../models/TeamMember";
 import { Setting } from "../models/Setting";
 import { GrouparooSubscription } from "../modules/grouparooSubscription";
 import { APIData } from "../modules/apiData";
+import { ActionPermission } from "../models/Permission";
+import { ParamsFrom } from "actionhero";
 
 export class TeamInitialize extends CLSAction {
-  constructor() {
-    super();
-    this.name = "team:initialize";
-    this.description = "create the first team with the first team member";
-    this.permission = { topic: "team", mode: "write" };
-    this.outputExample = {};
-    this.inputs = {
-      firstName: { required: true },
-      lastName: { required: true },
-      password: { required: true },
-      email: { required: true },
-      companyName: { required: false },
-      subscribed: {
-        required: false,
-        default: true,
-        formatter: APIData.ensureBoolean,
-      },
-    };
-  }
+  name = "team:initialize";
+  description = "create the first team with the first team member";
+  permission: ActionPermission = { topic: "team", mode: "write" };
+  outputExample = {};
+  inputs = {
+    firstName: { required: true },
+    lastName: { required: true },
+    password: { required: true },
+    email: { required: true },
+    companyName: { required: false },
+    subscribed: {
+      required: false,
+      default: true,
+      formatter: APIData.ensureBoolean,
+    },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<TeamInitialize>;
+  }) {
     let team: Team;
     let teamMember: TeamMember;
 
@@ -71,14 +74,10 @@ export class TeamInitialize extends CLSAction {
 }
 
 export class TeamsList extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "teams:list";
-    this.description = "list all the teams";
-    this.outputExample = {};
-    this.permission = { topic: "team", mode: "read" };
-    this.inputs = {};
-  }
+  name = "teams:list";
+  description = "list all the teams";
+  outputExample = {};
+  permission: ActionPermission = { topic: "team", mode: "read" };
 
   async runWithinTransaction() {
     const teams = await Team.findAll();
@@ -89,21 +88,18 @@ export class TeamsList extends AuthenticatedAction {
 }
 
 export class TeamCreate extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "team:create";
-    this.description = "create a team";
-    this.outputExample = {};
-    this.permission = { topic: "team", mode: "write" };
-    this.inputs = {
-      name: { required: true },
-      permissionAllRead: { required: false, default: true },
-      permissionAllWrite: { required: false, default: false },
-      permissions: { required: false, formatter: APIData.ensureObject },
-    };
-  }
+  name = "team:create";
+  description = "create a team";
+  outputExample = {};
+  permission: ActionPermission = { topic: "team", mode: "write" };
+  inputs = {
+    name: { required: true },
+    permissionAllRead: { required: false, default: true },
+    permissionAllWrite: { required: false, default: false },
+    permissions: { required: false, formatter: APIData.ensureArray },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<TeamCreate> }) {
     const team = new Team(params);
     await team.save();
     if (params.permissions) await team.setPermissions(params.permissions);
@@ -113,24 +109,21 @@ export class TeamCreate extends AuthenticatedAction {
 }
 
 export class TeamEdit extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "team:edit";
-    this.description = "edit a team";
-    this.outputExample = {};
-    this.permission = { topic: "team", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-      name: { required: false },
-      permissionAllRead: { required: false },
-      permissionAllWrite: { required: false },
-      disabledPermissionAllRead: { required: false },
-      disabledPermissionAllWrite: { required: false },
-      permissions: { required: false, formatter: APIData.ensureObject },
-    };
-  }
+  name = "team:edit";
+  description = "edit a team";
+  outputExample = {};
+  permission: ActionPermission = { topic: "team", mode: "write" };
+  inputs = {
+    id: { required: true },
+    name: { required: false },
+    permissionAllRead: { required: false },
+    permissionAllWrite: { required: false },
+    disabledPermissionAllRead: { required: false },
+    disabledPermissionAllWrite: { required: false },
+    permissions: { required: false, formatter: APIData.ensureArray },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<TeamEdit> }) {
     const team = await Team.findById(params.id);
     const updateParams = Object.assign({}, params);
     if (params.disabledPermissionAllRead) updateParams.permissionAllRead = null;
@@ -147,18 +140,15 @@ export class TeamEdit extends AuthenticatedAction {
 }
 
 export class TeamView extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "team:view";
-    this.description = "view a team and members";
-    this.outputExample = {};
-    this.permission = { topic: "team", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "team:view";
+  description = "view a team and members";
+  outputExample = {};
+  permission: ActionPermission = { topic: "team", mode: "read" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<TeamView> }) {
     const team = await Team.findOne({
       where: { id: params.id },
       include: [{ model: TeamMember }],
@@ -177,18 +167,15 @@ export class TeamView extends AuthenticatedAction {
 }
 
 export class TeamDestroy extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "team:destroy";
-    this.description = "destroy a team";
-    this.outputExample = {};
-    this.permission = { topic: "team", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "team:destroy";
+  description = "destroy a team";
+  outputExample = {};
+  permission: ActionPermission = { topic: "team", mode: "write" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<TeamDestroy> }) {
     const team = await Team.findById(params.id);
     await team.destroy();
     return { success: true };

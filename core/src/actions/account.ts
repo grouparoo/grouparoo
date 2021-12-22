@@ -1,15 +1,14 @@
+import { ParamsFrom } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { TeamMember } from "../models/TeamMember";
+import { ActionPermission } from "../models/Permission";
 
 export class AccountView extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "account:view";
-    this.description = "view your account details";
-    this.permission = { topic: "*", mode: "read" };
-    this.outputExample = {};
-    this.inputs = {};
-  }
+  name = "account:view";
+  description = "view your account details";
+  permission: ActionPermission = { topic: "*", mode: "read" };
+  outputExample = {};
+  inputs = {};
 
   async runWithinTransaction({
     session: { teamMember },
@@ -26,25 +25,22 @@ export class AccountView extends AuthenticatedAction {
 }
 
 export class AccountEdit extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "account:edit";
-    this.description = "edit your account details";
-    this.permission = { topic: "*", mode: "write" };
-    this.outputExample = {};
-    this.inputs = {
-      firstName: { required: false },
-      lastName: { required: false },
-      password: { required: false },
-      email: { required: false },
-    };
-  }
+  name = "account:edit";
+  description = "edit your account details";
+  permission: ActionPermission = { topic: "*", mode: "write" };
+  outputExample = {};
+  inputs = {
+    firstName: { required: false },
+    lastName: { required: false },
+    password: { required: false },
+    email: { required: false },
+  };
 
   async runWithinTransaction({
     params,
     session: { teamMember },
   }: {
-    params: { [key: string]: string };
+    params: ParamsFrom<AccountEdit>;
     session: { teamMember: TeamMember };
   }) {
     await teamMember.update(params);

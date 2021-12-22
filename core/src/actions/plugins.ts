@@ -1,46 +1,35 @@
+import path from "path";
+import fs from "fs";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { OptionallyAuthenticatedAction } from "../classes/actions/optionallyAuthenticatedAction";
 import { listPlugins, install, uninstall } from "../modules/plugins";
-import { api } from "actionhero";
-import path from "path";
-import fs from "fs";
+import { api, ParamsFrom } from "actionhero";
 import { APIData } from "../modules/apiData";
+import { ActionPermission } from "../models/Permission";
 
 const restartSleepTime = 100;
 
 export class PluginsList extends OptionallyAuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "plugins:list";
-    this.description =
-      "I will return a list of the installed and available grouparoo plugins";
-    this.permission = { topic: "system", mode: "read" };
-    this.inputs = {
-      includeInstalled: {
-        required: false,
-        formatter: APIData.ensureBoolean,
-      },
-      includeAvailable: {
-        required: false,
-        formatter: APIData.ensureBoolean,
-      },
-      includeVersions: {
-        required: false,
-        formatter: APIData.ensureBoolean,
-      },
-    };
-    this.outputExample = {};
-  }
+  name = "plugins:list";
+  description =
+    "I will return a list of the installed and available grouparoo plugins";
+  permission: ActionPermission = { topic: "system", mode: "read" };
+  inputs = {
+    includeInstalled: {
+      required: false,
+      formatter: APIData.ensureBoolean,
+    },
+    includeAvailable: {
+      required: false,
+      formatter: APIData.ensureBoolean,
+    },
+    includeVersions: {
+      required: false,
+      formatter: APIData.ensureBoolean,
+    },
+  };
 
-  async runWithinTransaction({
-    params,
-  }: {
-    params: {
-      includeInstalled: boolean;
-      includeAvailable: boolean;
-      includeVersions: boolean;
-    };
-  }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<PluginsList> }) {
     return {
       plugins: await listPlugins(
         params.includeInstalled,
@@ -52,26 +41,22 @@ export class PluginsList extends OptionallyAuthenticatedAction {
 }
 
 export class PluginInstall extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "plugin:install";
-    this.description = "I install a Grouparoo plugin";
-    this.permission = { topic: "system", mode: "write" };
-    this.inputs = {
-      plugin: { required: true },
-      restart: {
-        required: false,
-        default: false,
-        formatter: APIData.ensureBoolean,
-      },
-    };
-    this.outputExample = {};
-  }
+  name = "plugin:install";
+  description = "I install a Grouparoo plugin";
+  permission: ActionPermission = { topic: "system", mode: "write" };
+  inputs = {
+    plugin: { required: true },
+    restart: {
+      required: false,
+      default: false,
+      formatter: APIData.ensureBoolean,
+    },
+  };
 
   async runWithinTransaction({
     params,
   }: {
-    params: { plugin: string; restart: boolean };
+    params: ParamsFrom<PluginInstall>;
   }): Promise<{ success: boolean; checkIn?: number }> {
     const response = await install(params.plugin);
 
@@ -85,26 +70,22 @@ export class PluginInstall extends AuthenticatedAction {
 }
 
 export class PluginUninstall extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "plugin:uninstall";
-    this.description = "I uninstall a Grouparoo plugin";
-    this.permission = { topic: "system", mode: "write" };
-    this.inputs = {
-      plugin: { required: true },
-      restart: {
-        required: false,
-        default: false,
-        formatter: APIData.ensureBoolean,
-      },
-    };
-    this.outputExample = {};
-  }
+  name = "plugin:uninstall";
+  description = "I uninstall a Grouparoo plugin";
+  permission: ActionPermission = { topic: "system", mode: "write" };
+  inputs = {
+    plugin: { required: true },
+    restart: {
+      required: false,
+      default: false,
+      formatter: APIData.ensureBoolean,
+    },
+  };
 
   async runWithinTransaction({
     params,
   }: {
-    params: { plugin: string; restart: boolean };
+    params: ParamsFrom<PluginUninstall>;
   }) {
     const response = await uninstall(params.plugin);
 

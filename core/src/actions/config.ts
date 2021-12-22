@@ -4,24 +4,26 @@ import { spawnPromise } from "../modules/spawnPromise";
 import { ConfigUser } from "../modules/configUser";
 import { ConfigWriter } from "../modules/configWriter";
 import { APIData } from "../modules/apiData";
+import { ActionPermission } from "../models/Permission";
+import { ParamsFrom } from "actionhero";
 
 export class ConfigValidate extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "config:validate";
-    this.description = "I validate the local config";
-    this.permission = { topic: "app", mode: "write" };
-    this.inputs = {
-      local: {
-        required: true,
-        default: "false",
-        formatter: APIData.ensureBoolean,
-      },
-    };
-    this.outputExample = {};
-  }
+  name = "config:validate";
+  description = "I validate the local config";
+  permission: ActionPermission = { topic: "app", mode: "write" };
+  inputs = {
+    local: {
+      required: true,
+      default: "false",
+      formatter: APIData.ensureBoolean,
+    },
+  };
 
-  async runWithinTransaction({ params }: { params: { local: boolean } }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<ConfigValidate>;
+  }) {
     return spawnPromise("./node_modules/.bin/grouparoo", [
       "validate",
       params.local === true ? `--validate` : null,
@@ -30,22 +32,18 @@ export class ConfigValidate extends AuthenticatedAction {
 }
 
 export class ConfigApply extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "config:apply";
-    this.description = "I apply the local config";
-    this.permission = { topic: "system", mode: "write" };
-    this.inputs = {
-      local: {
-        required: true,
-        default: false,
-        formatter: APIData.ensureBoolean,
-      },
-    };
-    this.outputExample = {};
-  }
+  name = "config:apply";
+  description = "I apply the local config";
+  permission: ActionPermission = { topic: "system", mode: "write" };
+  inputs = {
+    local: {
+      required: true,
+      default: false,
+      formatter: APIData.ensureBoolean,
+    },
+  };
 
-  async runWithinTransaction({ params }: { params: { local: boolean } }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<ConfigApply> }) {
     return spawnPromise("./node_modules/.bin/grouparoo", [
       "apply",
       params.local === true ? `--validate` : null,
@@ -54,19 +52,19 @@ export class ConfigApply extends AuthenticatedAction {
 }
 
 export class ConfigGenerate extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "config:generate";
-    this.description = "I generate a new config file";
-    this.permission = { topic: "system", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-      parentId: { required: false },
-    };
-    this.outputExample = {};
-  }
+  name = "config:generate";
+  description = "I generate a new config file";
+  permission: ActionPermission = { topic: "system", mode: "write" };
+  inputs = {
+    id: { required: true },
+    parentId: { required: false },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<ConfigGenerate>;
+  }) {
     return spawnPromise("./node_modules/.bin/grouparoo", [
       "generate",
       params.id,
@@ -76,20 +74,20 @@ export class ConfigGenerate extends AuthenticatedAction {
 }
 
 export class ConfigUserCreate extends OptionallyAuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "config:user:create";
-    this.description = "I write user details to a .local file.";
-    this.permission = { topic: "system", mode: "write" };
-    this.inputs = {
-      email: { required: true },
-      company: { required: true },
-      subscribed: { required: false },
-    };
-    this.outputExample = {};
-  }
+  name = "config:user:create";
+  description = "I write user details to a .local file.";
+  permission: ActionPermission = { topic: "system", mode: "write" };
+  inputs = {
+    email: { required: true },
+    company: { required: true },
+    subscribed: { required: false, formatter: APIData.ensureBoolean },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<ConfigUserCreate>;
+  }) {
     if (process.env.GROUPAROO_RUN_MODE !== "cli:config") {
       throw new Error("Action only available in config mode.");
     }

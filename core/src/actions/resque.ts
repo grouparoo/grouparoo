@@ -1,21 +1,25 @@
 import os from "os";
 import { ErrorPayload } from "node-resque";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
-import { api, task, chatRoom } from "actionhero";
+import {
+  api,
+  task,
+  chatRoom,
+  ActionheroLogLevel,
+  ParamsFrom,
+} from "actionhero";
 import { CLS } from "../modules/cls";
 import { StatusReporters } from "../modules/statusReporters";
 import { Status } from "../modules/status";
 import { APIData } from "../modules/apiData";
+import { ActionPermission } from "../models/Permission";
 
 // Helper Classes for Permissions
 
 abstract class ResqueActionWrite extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.permission = { topic: "resque", mode: "write" };
-    this.logLevel = "debug";
-    this.toDocument = false;
-  }
+  permission: ActionPermission = { topic: "resque", mode: "write" };
+  logLevel: ActionheroLogLevel = "debug";
+  toDocument = false;
 
   isWriteTransaction() {
     // because it doesn't use the database
@@ -40,20 +44,14 @@ abstract class ResqueActionWrite extends AuthenticatedAction {
 }
 
 abstract class ResqueActionRead extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.permission = { topic: "resque", mode: "read" };
-    this.logLevel = "debug";
-    this.toDocument = false;
-  }
+  permission: ActionPermission = { topic: "resque", mode: "read" };
+  logLevel: ActionheroLogLevel = "debug";
+  toDocument = false;
 }
 
 export class ResqueRedisInfo extends ResqueActionRead {
-  constructor() {
-    super();
-    this.name = "resque:redisInfo";
-    this.description = "I return the results of redis info";
-  }
+  name = "resque:redisInfo";
+  description = "I return the results of redis info";
 
   async runWithinTransaction() {
     const redisInfo = await api.resque.queue.connection.redis.info();
@@ -64,11 +62,8 @@ export class ResqueRedisInfo extends ResqueActionRead {
 }
 
 export class ResqueResqueDetails extends ResqueActionRead {
-  constructor() {
-    super();
-    this.name = "resque:resqueDetails";
-    this.description = "I return the results of api.tasks.details";
-  }
+  name = "resque:resqueDetails";
+  description = "I return the results of api.tasks.details";
 
   async runWithinTransaction() {
     const resqueDetails = await task.details();
@@ -79,11 +74,8 @@ export class ResqueResqueDetails extends ResqueActionRead {
 }
 
 export class ResqueLoadWorkerQueues extends ResqueActionRead {
-  constructor() {
-    super();
-    this.name = "resque:loadWorkerQueues";
-    this.description = "I return the results of api.tasks.workers";
-  }
+  name = "resque:loadWorkerQueues";
+  description = "I return the results of api.tasks.workers";
 
   async runWithinTransaction() {
     return { workerQueues: await task.workers() };
@@ -91,16 +83,17 @@ export class ResqueLoadWorkerQueues extends ResqueActionRead {
 }
 
 export class ResqueForceCleanWorker extends ResqueActionWrite {
-  constructor() {
-    super();
-    this.name = "resque:forceCleanWorker";
-    this.description = "I remove a worker from resque";
-    this.inputs = {
-      workerName: { required: true },
-    };
-  }
+  name = "resque:forceCleanWorker";
+  description = "I remove a worker from resque";
+  inputs = {
+    workerName: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<ResqueForceCleanWorker>;
+  }) {
     const generatedErrorPayload: ErrorPayload =
       await api.resque.queue.forceCleanWorker(params.workerName);
     await this.calculateResqueMetrics();
@@ -109,11 +102,8 @@ export class ResqueForceCleanWorker extends ResqueActionWrite {
 }
 
 export class ResqueFailedCount extends ResqueActionRead {
-  constructor() {
-    super();
-    this.name = "resque:resqueFailedCount";
-    this.description = "I return a count of failed jobs";
-  }
+  name = "resque:resqueFailedCount";
+  description = "I return a count of failed jobs";
 
   async runWithinTransaction() {
     return { failedCount: await task.failedCount() };
@@ -121,28 +111,25 @@ export class ResqueFailedCount extends ResqueActionRead {
 }
 
 export class ResqueQueued extends ResqueActionRead {
-  constructor() {
-    super();
-    this.name = "resque:queued";
-    this.description = "I list enqueued jobs";
-    this.inputs = {
-      queue: {
-        required: true,
-      },
-      offset: {
-        required: true,
-        formatter: APIData.ensureNumber,
-        default: 0,
-      },
-      limit: {
-        required: true,
-        formatter: APIData.ensureNumber,
-        default: 100,
-      },
-    };
-  }
+  name = "resque:queued";
+  description = "I list enqueued jobs";
+  inputs = {
+    queue: {
+      required: true,
+    },
+    offset: {
+      required: true,
+      formatter: APIData.ensureNumber,
+      default: 0,
+    },
+    limit: {
+      required: true,
+      formatter: APIData.ensureNumber,
+      default: 100,
+    },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<ResqueQueued> }) {
     const queueLength = await api.resque.queue.length(params.queue);
     const jobs = await task.queued(
       params.queue,
@@ -155,40 +142,42 @@ export class ResqueQueued extends ResqueActionRead {
 }
 
 export class ResqueDelQueue extends ResqueActionWrite {
-  constructor() {
-    super();
-    this.name = "resque:delQueue";
-    this.description = "I delete a queue";
-    this.inputs = {
-      queue: { required: true },
-    };
-  }
+  name = "resque:delQueue";
+  description = "I delete a queue";
+  inputs = {
+    queue: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<ResqueDelQueue>;
+  }) {
     return { deleted: await task.delQueue(params.queue) };
   }
 }
 
 export class ResqueResqueFailed extends ResqueActionRead {
-  constructor() {
-    super();
-    this.name = "resque:resqueFailed";
-    this.description = "I return failed jobs";
-    this.inputs = {
-      offset: {
-        required: true,
-        formatter: APIData.ensureNumber,
-        default: 0,
-      },
-      limit: {
-        required: true,
-        formatter: APIData.ensureNumber,
-        default: 100,
-      },
-    };
-  }
+  name = "resque:resqueFailed";
+  description = "I return failed jobs";
+  inputs = {
+    offset: {
+      required: true,
+      formatter: APIData.ensureNumber,
+      default: 0,
+    },
+    limit: {
+      required: true,
+      formatter: APIData.ensureNumber,
+      default: 100,
+    },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<ResqueResqueFailed>;
+  }) {
     const failed = await task.failed(
       params.offset,
       params.offset + params.limit - 1
@@ -201,19 +190,20 @@ export class ResqueResqueFailed extends ResqueActionRead {
 }
 
 export class ResqueRemoveFailed extends ResqueActionWrite {
-  constructor() {
-    super();
-    this.name = "resque:removeFailed";
-    this.description = "I remove a failed job";
-    this.inputs = {
-      id: {
-        required: true,
-        formatter: APIData.ensureNumber,
-      },
-    };
-  }
+  name = "resque:removeFailed";
+  description = "I remove a failed job";
+  inputs = {
+    id: {
+      required: true,
+      formatter: APIData.ensureNumber,
+    },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<ResqueRemoveFailed>;
+  }) {
     const failed = await task.failed(params.id, params.id);
     if (!failed) throw Error("failed job not found");
     await task.removeFailed(failed[0]);
@@ -222,13 +212,10 @@ export class ResqueRemoveFailed extends ResqueActionWrite {
 }
 
 export class ResqueRemoveAllFailed extends ResqueActionWrite {
-  constructor() {
-    super();
-    this.name = "resque:removeAllFailed";
-    this.description = "I remove all failed jobs";
-  }
+  name = "resque:removeAllFailed";
+  description = "I remove all failed jobs";
 
-  async runWithinTransaction() {
+  async runWithinTransaction(): Promise<void> {
     const failed = await task.failed(0, 0);
     if (failed && failed.length > 0) {
       const failedJob = failed[0];
@@ -240,19 +227,20 @@ export class ResqueRemoveAllFailed extends ResqueActionWrite {
 }
 
 export class ResqueRetryAndRemoveFailed extends ResqueActionWrite {
-  constructor() {
-    super();
-    this.name = "resque:retryAndRemoveFailed";
-    this.description = "I retry a failed job";
-    this.inputs = {
-      id: {
-        required: true,
-        formatter: APIData.ensureNumber,
-      },
-    };
-  }
+  name = "resque:retryAndRemoveFailed";
+  description = "I retry a failed job";
+  inputs = {
+    id: {
+      required: true,
+      formatter: APIData.ensureNumber,
+    },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<ResqueRetryAndRemoveFailed>;
+  }) {
     const failed = await task.failed(params.id, params.id);
     if (!failed) throw new Error("failed job not found");
     await task.retryAndRemoveFailed(failed[0]);
@@ -261,13 +249,10 @@ export class ResqueRetryAndRemoveFailed extends ResqueActionWrite {
 }
 
 export class ResqueRetryAndRemoveAllFailed extends ResqueActionWrite {
-  constructor() {
-    super();
-    this.name = "resque:retryAndRemoveAllFailed";
-    this.description = "I retry all failed jobs";
-  }
+  name = "resque:retryAndRemoveAllFailed";
+  description = "I retry all failed jobs";
 
-  async runWithinTransaction() {
+  async runWithinTransaction(): Promise<void> {
     const failed = await task.failed(0, 0);
     if (failed && failed.length > 0) {
       const failedJob = failed[0];
@@ -279,11 +264,8 @@ export class ResqueRetryAndRemoveAllFailed extends ResqueActionWrite {
 }
 
 export class ResqueLocks extends ResqueActionRead {
-  constructor() {
-    super();
-    this.name = "resque:locks";
-    this.description = "I return all locks";
-  }
+  name = "resque:locks";
+  description = "I return all locks";
 
   async runWithinTransaction() {
     return { locks: await task.locks() };
@@ -291,42 +273,44 @@ export class ResqueLocks extends ResqueActionRead {
 }
 
 export class ResqueDelLock extends ResqueActionWrite {
-  constructor() {
-    super();
-    this.name = "resque:delLock";
-    this.description = "I delete a lock";
-    this.inputs = {
-      lock: { required: true },
-    };
-  }
+  name = "resque:delLock";
+  description = "I delete a lock";
+  inputs = {
+    lock: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<ResqueDelLock>;
+  }) {
     return { count: await task.delLock(params.lock) };
   }
 }
 
 export class ResqueDelayedJobs extends ResqueActionRead {
-  constructor() {
-    super();
-    this.name = "resque:delayedjobs";
-    this.description = "I return paginated lists of delayedjobs";
-    this.inputs = {
-      offset: {
-        required: true,
-        formatter: APIData.ensureNumber,
-        default: 0,
-      },
-      limit: {
-        required: true,
-        formatter: APIData.ensureNumber,
-        default: 100,
-      },
-    };
-  }
+  name = "resque:delayedjobs";
+  description = "I return paginated lists of delayedjobs";
+  inputs = {
+    offset: {
+      required: true,
+      formatter: APIData.ensureNumber,
+      default: 0,
+    },
+    limit: {
+      required: true,
+      formatter: APIData.ensureNumber,
+      default: 100,
+    },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<ResqueDelayedJobs>;
+  }) {
     const timestamps = [];
-    const delayedjobs = {};
+    const delayedjobs: Record<number, any> = {};
 
     const allTimestamps = await task.timestamps();
     if (allTimestamps.length === 0) {
@@ -339,8 +323,7 @@ export class ResqueDelayedJobs extends ResqueActionRead {
       }
     }
 
-    for (const j in timestamps) {
-      const timestamp = timestamps[j];
+    for (const timestamp of timestamps) {
       delayedjobs[timestamp] = await task.delayedAt(timestamp);
     }
 
@@ -349,23 +332,24 @@ export class ResqueDelayedJobs extends ResqueActionRead {
 }
 
 export class ResqueDelDelayed extends ResqueActionWrite {
-  constructor() {
-    super();
-    this.name = "resque:delDelayed";
-    this.description = "I delete a delayed job";
-    this.inputs = {
-      timestamp: {
-        required: true,
-        formatter: APIData.ensureNumber,
-      },
-      count: {
-        required: true,
-        formatter: APIData.ensureNumber,
-      },
-    };
-  }
+  name = "resque:delDelayed";
+  description = "I delete a delayed job";
+  inputs = {
+    timestamp: {
+      required: true,
+      formatter: APIData.ensureNumber,
+    },
+    count: {
+      required: true,
+      formatter: APIData.ensureNumber,
+    },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<ResqueDelDelayed>;
+  }) {
     const delayed = await task.delayedAt(params.timestamp);
     if (delayed.tasks.length === 0 || !delayed.tasks[params.count]) {
       throw new Error("delayed job not found");
@@ -379,23 +363,24 @@ export class ResqueDelDelayed extends ResqueActionWrite {
 }
 
 export class ResqueRunDelayed extends ResqueActionWrite {
-  constructor() {
-    super();
-    this.name = "resque:runDelayed";
-    this.description = "I run a delayed job now";
-    this.inputs = {
-      timestamp: {
-        required: true,
-        formatter: APIData.ensureNumber,
-      },
-      count: {
-        required: true,
-        formatter: APIData.ensureNumber,
-      },
-    };
-  }
+  name = "resque:runDelayed";
+  description = "I run a delayed job now";
+  inputs = {
+    timestamp: {
+      required: true,
+      formatter: APIData.ensureNumber,
+    },
+    count: {
+      required: true,
+      formatter: APIData.ensureNumber,
+    },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<ResqueRunDelayed>;
+  }) {
     const delayed = await task.delayedAt(params.timestamp);
     if (delayed.tasks.length === 0 || !delayed.tasks[params.count]) {
       throw new Error("delayed job not found");

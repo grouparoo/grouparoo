@@ -1,21 +1,20 @@
+import { ParamsFrom } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { ApiKey } from "../models/ApiKey";
+import { ActionPermission } from "../models/Permission";
 import { APIData } from "../modules/apiData";
 
 export class ApiKeysList extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "apiKeys:list";
-    this.description = "list all the apiKeys";
-    this.outputExample = {};
-    this.permission = { topic: "apiKey", mode: "read" };
-    this.inputs = {
-      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
-      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
-    };
-  }
+  name = "apiKeys:list";
+  description = "list all the apiKeys";
+  outputExample = {};
+  permission: ActionPermission = { topic: "apiKey", mode: "read" };
+  inputs = {
+    limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+    offset: { required: true, default: 0, formatter: APIData.ensureNumber },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<ApiKeysList> }) {
     const total = await ApiKey.count();
 
     const apiKeys = await ApiKey.findAll({
@@ -31,21 +30,18 @@ export class ApiKeysList extends AuthenticatedAction {
 }
 
 export class ApiKeyCreate extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "apiKey:create";
-    this.description = "create an apiKey";
-    this.outputExample = {};
-    this.permission = { topic: "apiKey", mode: "write" };
-    this.inputs = {
-      name: { required: true },
-      permissionAllRead: { required: false },
-      permissionAllWrite: { required: false },
-      permissions: { required: false, formatter: APIData.ensureObject },
-    };
-  }
+  name = "apiKey:create";
+  description = "create an apiKey";
+  outputExample = {};
+  permission: ActionPermission = { topic: "apiKey", mode: "write" };
+  inputs = {
+    name: { required: true },
+    permissionAllRead: { required: false },
+    permissionAllWrite: { required: false },
+    permissions: { required: false, formatter: APIData.ensureArray },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<ApiKeyCreate> }) {
     const apiKey = new ApiKey(params);
     await apiKey.save();
     if (params.permissions) await apiKey.setPermissions(params.permissions);
@@ -55,24 +51,21 @@ export class ApiKeyCreate extends AuthenticatedAction {
 }
 
 export class ApiKeyEdit extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "apiKey:edit";
-    this.description = "edit an apiKey";
-    this.outputExample = {};
-    this.permission = { topic: "apiKey", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-      name: { required: false },
-      permissionAllRead: { required: false },
-      permissionAllWrite: { required: false },
-      disabledPermissionAllRead: { required: false },
-      disabledPermissionAllWrite: { required: false },
-      permissions: { required: false, formatter: APIData.ensureObject },
-    };
-  }
+  name = "apiKey:edit";
+  description = "edit an apiKey";
+  outputExample = {};
+  permission: ActionPermission = { topic: "apiKey", mode: "write" };
+  inputs = {
+    id: { required: true },
+    name: { required: false },
+    permissionAllRead: { required: false },
+    permissionAllWrite: { required: false },
+    disabledPermissionAllRead: { required: false },
+    disabledPermissionAllWrite: { required: false },
+    permissions: { required: false, formatter: APIData.ensureArray },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<ApiKeyEdit> }) {
     const apiKey = await ApiKey.findById(params.id);
     const updateParams = Object.assign({}, params);
     if (params.disabledPermissionAllRead) {
@@ -90,36 +83,34 @@ export class ApiKeyEdit extends AuthenticatedAction {
 }
 
 export class ApiKeyView extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "apiKey:view";
-    this.description = "view an apiKey";
-    this.outputExample = {};
-    this.permission = { topic: "apiKey", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "apiKey:view";
+  description = "view an apiKey";
+  outputExample = {};
+  permission: ActionPermission = { topic: "apiKey", mode: "read" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<ApiKeyView> }) {
     const apiKey = await ApiKey.findById(params.id);
     return { apiKey: await apiKey.apiData() };
   }
 }
 
 export class ApiKeyDestroy extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "apiKey:destroy";
-    this.description = "destroy an apiKey";
-    this.outputExample = {};
-    this.permission = { topic: "apiKey", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "apiKey:destroy";
+  description = "destroy an apiKey";
+  outputExample = {};
+  permission: ActionPermission = { topic: "apiKey", mode: "write" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<ApiKeyDestroy>;
+  }) {
     const apiKey = await ApiKey.findById(params.id);
     await apiKey.destroy();
     return { success: true };

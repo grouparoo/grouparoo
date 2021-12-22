@@ -7,32 +7,35 @@ import { buildPropertyFilterDictionary } from "../modules/filterOpsDictionary";
 import { APIData } from "../modules/apiData";
 import { Op, WhereAttributeHash } from "sequelize";
 import { Source } from "../models/Source";
+import { ActionPermission } from "../models/Permission";
+import { ParamsFrom } from "actionhero";
 
 export class SchedulesList extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "schedules:list";
-    this.description = "list all the schedules";
-    this.outputExample = {};
-    this.permission = { topic: "source", mode: "read" };
-    this.inputs = {
-      modelId: { required: false },
-      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
-      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
-      state: { required: false },
-      order: {
-        required: false,
-        formatter: APIData.ensureObject,
-        default: [
-          ["name", "desc"],
-          ["createdAt", "desc"],
-        ],
-      },
-    };
-  }
+  name = "schedules:list";
+  description = "list all the schedules";
+  outputExample = {};
+  permission: ActionPermission = { topic: "source", mode: "read" };
+  inputs = {
+    modelId: { required: false },
+    limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+    offset: { required: true, default: 0, formatter: APIData.ensureNumber },
+    state: { required: false },
+    order: {
+      required: false,
+      formatter: APIData.ensureArray,
+      default: [
+        ["name", "desc"],
+        ["createdAt", "desc"],
+      ],
+    },
+  };
 
-  async runWithinTransaction({ params }) {
-    const where = {};
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<SchedulesList>;
+  }) {
+    const where: WhereAttributeHash = {};
     const sourceIds: string[] = [];
     if (params.state) where["state"] = params.state;
 
@@ -66,18 +69,15 @@ export class SchedulesList extends AuthenticatedAction {
 }
 
 export class ScheduleRun extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "schedule:run";
-    this.description = "run a schedule either importing or exporting data";
-    this.outputExample = {};
-    this.permission = { topic: "source", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "schedule:run";
+  description = "run a schedule either importing or exporting data";
+  outputExample = {};
+  permission: ActionPermission = { topic: "source", mode: "write" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<ScheduleRun> }) {
     const schedule = await Schedule.findById(params.id);
 
     const runningRun = await Run.findOne({
@@ -91,26 +91,19 @@ export class ScheduleRun extends AuthenticatedAction {
 }
 
 export class SchedulesRun extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "schedules:run";
-    this.description = "run all schedules";
-    this.outputExample = {};
-    this.permission = { topic: "source", mode: "write" };
-    this.inputs = {
-      scheduleIds: { required: false, formatter: APIData.ensureObject },
-      modelId: { required: false },
-    };
-  }
+  name = "schedules:run";
+  description = "run all schedules";
+  outputExample = {};
+  permission: ActionPermission = { topic: "source", mode: "write" };
+  inputs = {
+    scheduleIds: { required: false, formatter: APIData.ensureArray },
+    modelId: { required: false },
+  };
 
-  async runWithinTransaction({
-    params,
-  }: {
-    params: { scheduleIds?: string[]; modelId?: string };
-  }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<SchedulesRun> }) {
     const runs: Run[] = [];
-
     const where: WhereAttributeHash = {};
+
     if (params.scheduleIds && params.scheduleIds.length > 0) {
       where["id"] = { [Op.in]: params.scheduleIds };
     }
@@ -143,33 +136,34 @@ export class SchedulesRun extends AuthenticatedAction {
 }
 
 export class ScheduleCreate extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "schedule:create";
-    this.description = "create a schedule";
-    this.outputExample = {};
-    this.permission = { topic: "source", mode: "write" };
-    this.inputs = {
-      name: { required: false },
-      sourceId: { required: true },
-      recurring: { required: true, formatter: APIData.ensureBoolean },
-      confirmRecords: {
-        required: false,
-        formatter: APIData.ensureBoolean,
-      },
-      state: { required: false },
-      refreshEnabled: { required: false, formatter: APIData.ensureBoolean },
-      options: { required: false, formatter: APIData.ensureObject },
-      recurringFrequency: {
-        required: true,
-        default: 0,
-        formatter: APIData.ensureNumber,
-      },
-      filters: { required: false, formatter: APIData.ensureObject },
-    };
-  }
+  name = "schedule:create";
+  description = "create a schedule";
+  outputExample = {};
+  permission: ActionPermission = { topic: "source", mode: "write" };
+  inputs = {
+    name: { required: false },
+    sourceId: { required: true },
+    recurring: { required: true, formatter: APIData.ensureBoolean },
+    confirmRecords: {
+      required: false,
+      formatter: APIData.ensureBoolean,
+    },
+    state: { required: false },
+    refreshEnabled: { required: false, formatter: APIData.ensureBoolean },
+    options: { required: false, formatter: APIData.ensureObject },
+    recurringFrequency: {
+      required: true,
+      default: 0,
+      formatter: APIData.ensureNumber,
+    },
+    filters: { required: false, formatter: APIData.ensureArray },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<ScheduleCreate>;
+  }) {
     const schedule = await Schedule.create({
       name: params.name,
       sourceId: params.sourceId,
@@ -194,30 +188,27 @@ export class ScheduleCreate extends AuthenticatedAction {
 }
 
 export class ScheduleEdit extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "schedule:edit";
-    this.description = "edit a schedule";
-    this.outputExample = {};
-    this.permission = { topic: "source", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-      name: { required: false },
-      sourceId: { required: false },
-      recurring: { required: false, formatter: APIData.ensureBoolean },
-      refreshEnabled: { required: false, formatter: APIData.ensureBoolean },
-      confirmRecords: {
-        required: false,
-        formatter: APIData.ensureBoolean,
-      },
-      state: { required: false },
-      options: { required: false, formatter: APIData.ensureObject },
-      recurringFrequency: { required: false, formatter: APIData.ensureNumber },
-      filters: { required: false, formatter: APIData.ensureObject },
-    };
-  }
+  name = "schedule:edit";
+  description = "edit a schedule";
+  outputExample = {};
+  permission: ActionPermission = { topic: "source", mode: "write" };
+  inputs = {
+    id: { required: true },
+    name: { required: false },
+    sourceId: { required: false },
+    recurring: { required: false, formatter: APIData.ensureBoolean },
+    refreshEnabled: { required: false, formatter: APIData.ensureBoolean },
+    confirmRecords: {
+      required: false,
+      formatter: APIData.ensureBoolean,
+    },
+    state: { required: false },
+    options: { required: false, formatter: APIData.ensureObject },
+    recurringFrequency: { required: false, formatter: APIData.ensureNumber },
+    filters: { required: false, formatter: APIData.ensureArray },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<ScheduleEdit> }) {
     const schedule = await Schedule.findById(params.id);
     // these timing options are validated separately, and should be set first
     if (params.recurringFrequency || params.recurring) {
@@ -248,18 +239,19 @@ export class ScheduleEdit extends AuthenticatedAction {
 }
 
 export class ScheduleFilterOptions extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "schedule:filterOptions";
-    this.description = "view a the filter options for a schedule";
-    this.outputExample = {};
-    this.permission = { topic: "source", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "schedule:filterOptions";
+  description = "view a the filter options for a schedule";
+  outputExample = {};
+  permission: ActionPermission = { topic: "source", mode: "read" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<ScheduleFilterOptions>;
+  }) {
     const schedule = await Schedule.findById(params.id);
     const options = await FilterHelper.pluginFilterOptions(schedule);
     return {
@@ -270,18 +262,15 @@ export class ScheduleFilterOptions extends AuthenticatedAction {
 }
 
 export class ScheduleView extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "schedule:view";
-    this.description = "view a schedule";
-    this.outputExample = {};
-    this.permission = { topic: "source", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "schedule:view";
+  description = "view a schedule";
+  outputExample = {};
+  permission: ActionPermission = { topic: "source", mode: "read" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<ScheduleView> }) {
     const schedule = await Schedule.findById(params.id);
     return {
       schedule: await schedule.apiData(),
@@ -291,18 +280,19 @@ export class ScheduleView extends AuthenticatedAction {
 }
 
 export class ScheduleDestroy extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "schedule:destroy";
-    this.description = "destroy a schedule";
-    this.outputExample = {};
-    this.permission = { topic: "source", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "schedule:destroy";
+  description = "destroy a schedule";
+  outputExample = {};
+  permission: ActionPermission = { topic: "source", mode: "write" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<ScheduleDestroy>;
+  }) {
     const schedule = await Schedule.findById(params.id);
     await schedule.destroy();
     await ConfigWriter.run();

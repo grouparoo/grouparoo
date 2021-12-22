@@ -5,7 +5,7 @@ import { SessionCreate } from "../../src/actions/session";
 import {
   SourceBootstrapUniqueProperty,
   SourceConnectionApps,
-  sourceConnectionOptions,
+  SourceConnectionOptions,
   SourceCreate,
   SourceDefaultPropertyOptions,
   SourceDestroy,
@@ -164,7 +164,7 @@ describe("actions/sources", () => {
         id,
       };
       const { error, options } =
-        await specHelper.runAction<sourceConnectionOptions>(
+        await specHelper.runAction<SourceConnectionOptions>(
           "source:connectionOptions",
           connection
         );

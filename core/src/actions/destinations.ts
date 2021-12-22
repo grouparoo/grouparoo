@@ -1,5 +1,4 @@
-import { api } from "actionhero";
-import { CLS } from "../modules/cls";
+import { api, ParamsFrom } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Destination } from "../models/Destination";
 import { App } from "../models/App";
@@ -13,32 +12,35 @@ import { destinationTypeConversions } from "../modules/destinationTypeConversion
 import { AsyncReturnType } from "type-fest";
 import { ConfigWriter } from "../modules/configWriter";
 import { APIData } from "../modules/apiData";
+import { ActionPermission } from "../models/Permission";
+import { WhereAttributeHash } from "sequelize/types";
 
 export class DestinationsList extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "destinations:list";
-    this.description = "list all the destinations";
-    this.outputExample = {};
-    this.permission = { topic: "destination", mode: "read" };
-    this.inputs = {
-      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
-      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
-      state: { required: false },
-      modelId: { required: false },
-      order: {
-        required: false,
-        formatter: APIData.ensureObject,
-        default: [
-          ["name", "desc"],
-          ["createdAt", "desc"],
-        ],
-      },
-    };
-  }
+  name = "destinations:list";
+  description = "list all the destinations";
+  outputExample = {};
+  permission: ActionPermission = { topic: "destination", mode: "read" };
+  inputs = {
+    limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+    offset: { required: true, default: 0, formatter: APIData.ensureNumber },
+    state: { required: false },
+    modelId: { required: false },
+    order: {
+      required: false,
+      formatter: APIData.ensureArray,
+      default: [
+        ["name", "desc"],
+        ["createdAt", "desc"],
+      ],
+    },
+  };
 
-  async runWithinTransaction({ params }) {
-    const where = {};
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<DestinationsList>;
+  }) {
+    const where: WhereAttributeHash = {};
 
     if (params.state) where["state"] = params.state;
     if (params.modelId) where["modelId"] = params.modelId;
@@ -60,15 +62,11 @@ export class DestinationsList extends AuthenticatedAction {
 }
 
 export class DestinationConnectionApps extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "destinations:connectionApps";
-    this.description =
-      "enumerate the connection and app pairs for creating a new destination";
-    this.outputExample = {};
-    this.permission = { topic: "destination", mode: "read" };
-    this.inputs = {};
-  }
+  name = "destinations:connectionApps";
+  description =
+    "enumerate the connection and app pairs for creating a new destination";
+  outputExample = {};
+  permission: ActionPermission = { topic: "destination", mode: "read" };
 
   async runWithinTransaction() {
     const connectionApps: Array<{
@@ -114,30 +112,34 @@ export class DestinationConnectionApps extends AuthenticatedAction {
 }
 
 export class DestinationCreate extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "destination:create";
-    this.description = "create a destination";
-    this.outputExample = {};
-    this.permission = { topic: "destination", mode: "write" };
-    this.inputs = {
-      name: { required: false },
-      type: { required: true },
-      modelId: { required: true },
-      state: { required: false },
-      appId: { required: true },
-      options: { required: false, formatter: APIData.ensureObject },
-      mapping: {
-        required: false,
-        formatter: APIData.ensureObject,
-        default: {},
-      },
-      syncMode: { required: false },
-      destinationGroupMemberships: { required: false },
-    };
-  }
+  name = "destination:create";
+  description = "create a destination";
+  outputExample = {};
+  permission: ActionPermission = { topic: "destination", mode: "write" };
+  inputs = {
+    name: { required: false },
+    type: { required: true },
+    modelId: { required: true },
+    state: { required: false },
+    appId: { required: true },
+    options: { required: false, formatter: APIData.ensureObject },
+    mapping: {
+      required: false,
+      formatter: APIData.ensureObject,
+      default: {},
+    },
+    syncMode: { required: false },
+    destinationGroupMemberships: {
+      required: false,
+      formatter: APIData.ensureObject,
+    },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<DestinationCreate>;
+  }) {
     const destination = await Destination.create({
       name: params.name,
       type: params.type,
@@ -162,27 +164,34 @@ export class DestinationCreate extends AuthenticatedAction {
 }
 
 export class DestinationEdit extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "destination:edit";
-    this.description = "edit a destination";
-    this.outputExample = {};
-    this.permission = { topic: "destination", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-      name: { required: false },
-      state: { required: false },
-      options: { required: false, formatter: APIData.ensureObject },
-      mapping: { required: false, formatter: APIData.ensureObject },
-      syncMode: { required: false },
-      destinationGroupMemberships: { required: false },
-      groupId: { required: false },
-      collection: { required: false },
-      triggerExport: { required: false, formatter: APIData.ensureBoolean },
-    };
-  }
+  name = "destination:edit";
+  description = "edit a destination";
+  outputExample = {};
+  permission: ActionPermission = { topic: "destination", mode: "write" };
+  inputs = {
+    id: { required: true },
+    name: { required: false },
+    state: { required: false },
+    options: { required: false, formatter: APIData.ensureObject },
+    mapping: { required: false, formatter: APIData.ensureObject },
+    syncMode: { required: false },
+    destinationGroupMemberships: {
+      required: false,
+      formatter: APIData.ensureObject,
+    },
+    groupId: { required: false },
+    collection: {
+      required: false,
+      formatter: (p: unknown) => p as Destination["collection"],
+    },
+    triggerExport: { required: false, formatter: APIData.ensureBoolean },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<DestinationEdit>;
+  }) {
     const destination = await Destination.findById(params.id);
     if (params.options) await destination.setOptions(params.options);
     if (params.mapping) {
@@ -197,9 +206,6 @@ export class DestinationEdit extends AuthenticatedAction {
     // do not set groupId or collection here, that's handled within the updateTracking method
     await destination.update({
       name: params.name,
-      type: params.type,
-      modelId: params.modelId,
-      appId: params.appId,
       state: params.state,
       syncMode: params.syncMode,
     });
@@ -230,19 +236,20 @@ export class DestinationEdit extends AuthenticatedAction {
 }
 
 export class DestinationConnectionOptions extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "destination:connectionOptions";
-    this.description = "return option choices from this destination";
-    this.outputExample = {};
-    this.permission = { topic: "destination", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-      options: { required: false, formatter: APIData.ensureObject },
-    };
-  }
+  name = "destination:connectionOptions";
+  description = "return option choices from this destination";
+  outputExample = {};
+  permission: ActionPermission = { topic: "destination", mode: "read" };
+  inputs = {
+    id: { required: true },
+    options: { required: false, formatter: APIData.ensureObject },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<DestinationConnectionOptions>;
+  }) {
     const destination = await Destination.findById(params.id);
     return {
       options: await destination.destinationConnectionOptions(params.options),
@@ -251,26 +258,25 @@ export class DestinationConnectionOptions extends AuthenticatedAction {
 }
 
 export class DestinationMappingOptions extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "destination:mappingOptions";
-    this.description = "return option choices from this destination mapping";
-    this.outputExample = {};
-    this.permission = { topic: "destination", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "destination:mappingOptions";
+  description = "return option choices from this destination mapping";
+  outputExample = {};
+  permission: ActionPermission = { topic: "destination", mode: "read" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<DestinationMappingOptions>;
+  }) {
     const destination = await Destination.findById(params.id);
     const options = await destination.destinationMappingOptions(false); // never use cache when displaying to the user
 
-    const _destinationTypeConversions: { [key: string]: Array<string> } = {};
-    for (const k in destinationTypeConversions) {
-      _destinationTypeConversions[k] = Object.keys(
-        destinationTypeConversions[k]
-      );
+    const _destinationTypeConversions: Record<string, any> = {};
+    for (const [k, v] of Object.entries(destinationTypeConversions)) {
+      _destinationTypeConversions[k] = Object.keys(v);
     }
 
     return { options, destinationTypeConversions: _destinationTypeConversions };
@@ -278,19 +284,20 @@ export class DestinationMappingOptions extends AuthenticatedAction {
 }
 
 export class DestinationExportArrayProperties extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "destination:exportArrayProperties";
-    this.description =
-      "get the list of record properties this destination can handle as arrays";
-    this.outputExample = {};
-    this.permission = { topic: "destination", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "destination:exportArrayProperties";
+  description =
+    "get the list of record properties this destination can handle as arrays";
+  outputExample = {};
+  permission: ActionPermission = { topic: "destination", mode: "read" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<DestinationExportArrayProperties>;
+  }) {
     const destination = await Destination.findById(params.id);
     return {
       exportArrayProperties: await destination.getExportArrayProperties(),
@@ -299,35 +306,36 @@ export class DestinationExportArrayProperties extends AuthenticatedAction {
 }
 
 export class DestinationView extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "destination:view";
-    this.description = "view a destination";
-    this.permission = { topic: "destination", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "destination:view";
+  description = "view a destination";
+  permission: ActionPermission = { topic: "destination", mode: "read" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<DestinationView>;
+  }) {
     const destination = await Destination.findById(params.id);
     return { destination: await destination.apiData() };
   }
 }
 
 export class DestinationExport extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "destination:export";
-    this.description =
-      "export the members of the groups tracked by this destination";
-    this.permission = { topic: "destination", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "destination:export";
+  description = "export the members of the groups tracked by this destination";
+  permission: ActionPermission = { topic: "destination", mode: "write" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<DestinationExport>;
+  }) {
     const destination = await Destination.findById(params.id);
     await destination.exportMembers();
     return { success: true };
@@ -335,28 +343,28 @@ export class DestinationExport extends AuthenticatedAction {
 }
 
 export class DestinationRecordPreview extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "destination:recordPreview";
-    this.description =
-      "view a preview of a record being exported to this destination";
-    this.outputExample = {};
-    this.permission = { topic: "destination", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-      collection: { required: false },
-      groupId: { required: false },
-      modelId: { required: false },
-      recordId: { required: false },
-      mapping: { required: false, formatter: APIData.ensureObject },
-      destinationGroupMemberships: {
-        required: false,
-        formatter: APIData.ensureObject,
-      },
-    };
-  }
+  name = "destination:recordPreview";
+  description = "view a preview of a record being exported to this destination";
+  outputExample = {};
+  permission: ActionPermission = { topic: "destination", mode: "read" };
+  inputs = {
+    id: { required: true },
+    collection: { required: false },
+    groupId: { required: false },
+    modelId: { required: false },
+    recordId: { required: false },
+    mapping: { required: false, formatter: APIData.ensureObject },
+    destinationGroupMemberships: {
+      required: false,
+      formatter: APIData.ensureObject,
+    },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<DestinationRecordPreview>;
+  }) {
     const destination = await Destination.findById(params.id);
 
     let record: GrouparooRecord;
@@ -416,24 +424,24 @@ export class DestinationRecordPreview extends AuthenticatedAction {
 }
 
 export class DestinationDestroy extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "destination:destroy";
-    this.description = "destroy a destination";
-    this.outputExample = {};
-    this.permission = { topic: "destination", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-      force: {
-        required: true,
-        default: false,
-        formatter: (p: string | boolean) =>
-          p.toString().toLowerCase() === "true",
-      },
-    };
-  }
+  name = "destination:destroy";
+  description = "destroy a destination";
+  outputExample = {};
+  permission: ActionPermission = { topic: "destination", mode: "write" };
+  inputs = {
+    id: { required: true },
+    force: {
+      required: true,
+      default: false,
+      formatter: (p: string | boolean) => p.toString().toLowerCase() === "true",
+    },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<DestinationDestroy>;
+  }) {
     const destination = await Destination.findById(params.id);
     if (params.force) {
       await destination.destroy();

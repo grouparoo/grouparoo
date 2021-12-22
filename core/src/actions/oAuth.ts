@@ -1,5 +1,5 @@
 import "isomorphic-fetch";
-import { Action, config } from "actionhero";
+import { Action, config, ParamsFrom } from "actionhero";
 import { oAuthProvider, oAuthIdentity } from "../modules/oAuth";
 import { CLSAction } from "../classes/actions/clsAction";
 import { plugin } from "../modules/plugin";
@@ -11,12 +11,9 @@ export type TelemetryError = {
 };
 
 export class OAuthListProviders extends Action {
-  constructor() {
-    super();
-    this.name = "oAuth:listProviders";
-    this.description = "list the available oAuth Providers";
-    this.outputExample = {};
-  }
+  name = "oAuth:listProviders";
+  description = "list the available oAuth Providers";
+  outputExample = {};
 
   async run() {
     const fullUrl = `${config.oAuth.host}/api/v1/oauth/providers`;
@@ -31,23 +28,20 @@ export class OAuthListProviders extends Action {
 }
 
 export class OAuthClientStart extends CLSAction {
-  constructor() {
-    super();
-    this.name = "oAuth:client:start";
-    this.description =
-      "start the oauth flow and redirect the user to the oauth provider";
-    this.outputExample = {};
-    this.inputs = {
-      id: { required: false },
-      provider: { required: true },
-      type: { required: true },
-    };
-  }
+  name = "oAuth:client:start";
+  description =
+    "start the oauth flow and redirect the user to the oauth provider";
+  outputExample = {};
+  inputs = {
+    id: { required: false },
+    provider: { required: true },
+    type: { required: true },
+  };
 
   async runWithinTransaction({
     params,
   }: {
-    params: { id: string; provider: string; type: string };
+    params: ParamsFrom<OAuthClientStart>;
   }) {
     const oauthRequest = await OAuthRequest.create({
       id: params.id,
@@ -83,17 +77,17 @@ export class OAuthClientStart extends CLSAction {
 }
 
 export class OAuthClientEdit extends CLSAction {
-  constructor() {
-    super();
-    this.name = "oAuth:client:edit";
-    this.description =
-      "edit an oAuth request given the requestId and token pair";
-    this.inputs = {
-      requestId: { required: true },
-    };
-  }
+  name = "oAuth:client:edit";
+  description = "edit an oAuth request given the requestId and token pair";
+  inputs = {
+    requestId: { required: true },
+  };
 
-  async runWithinTransaction({ params }: { params: { requestId: string } }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<OAuthClientEdit>;
+  }) {
     const oAuthRequest = await OAuthRequest.findById(params.requestId);
     const customerId = (await plugin.readSetting("telemetry", "customer-id"))
       .value;
@@ -122,16 +116,17 @@ export class OAuthClientEdit extends CLSAction {
 }
 
 export class OAuthClientView extends CLSAction {
-  constructor() {
-    super();
-    this.name = "oAuth:client:view";
-    this.description = "view and oAuth request";
-    this.inputs = {
-      requestId: { required: true },
-    };
-  }
+  name = "oAuth:client:view";
+  description = "view and oAuth request";
+  inputs = {
+    requestId: { required: true },
+  };
 
-  async runWithinTransaction({ params }: { params: { requestId: string } }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<OAuthClientView>;
+  }) {
     const oAuthRequest = await OAuthRequest.findById(params.requestId);
     return { oAuthRequest: await oAuthRequest.apiData() };
   }

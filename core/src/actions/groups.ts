@@ -2,36 +2,35 @@ import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Group, GROUP_RULE_LIMIT } from "../models/Group";
 import { PropertyOpsDictionary } from "../modules/ruleOpsDictionary";
 import { TopLevelGroupRules } from "../modules/topLevelGroupRules";
-import { GrouparooRecord } from "../models/GrouparooRecord";
 import { GroupMember } from "../models/GroupMember";
 import { ConfigWriter } from "../modules/configWriter";
 import { APIData } from "../modules/apiData";
+import { ActionPermission } from "../models/Permission";
+import { WhereAttributeHash } from "sequelize";
+import { ParamsFrom } from "actionhero";
 
 export class GroupsList extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "groups:list";
-    this.description = "list all the groups";
-    this.outputExample = {};
-    this.permission = { topic: "group", mode: "read" };
-    this.inputs = {
-      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
-      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
-      state: { required: false },
-      modelId: { required: false },
-      order: {
-        required: false,
-        formatter: APIData.ensureObject,
-        default: [
-          ["name", "desc"],
-          ["createdAt", "desc"],
-        ],
-      },
-    };
-  }
+  name = "groups:list";
+  description = "list all the groups";
+  outputExample = {};
+  permission: ActionPermission = { topic: "group", mode: "read" };
+  inputs = {
+    limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+    offset: { required: true, default: 0, formatter: APIData.ensureNumber },
+    state: { required: false },
+    modelId: { required: false },
+    order: {
+      required: false,
+      formatter: APIData.ensureArray,
+      default: [
+        ["name", "desc"],
+        ["createdAt", "desc"],
+      ],
+    },
+  };
 
-  async runWithinTransaction({ params }) {
-    const where = {};
+  async runWithinTransaction({ params }: { params: ParamsFrom<GroupsList> }) {
+    const where: WhereAttributeHash = {};
 
     if (params.state) where["state"] = params.state;
     if (params.modelId) where["modelId"] = params.modelId;
@@ -53,14 +52,10 @@ export class GroupsList extends AuthenticatedAction {
 }
 
 export class GroupsRuleOptions extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "groups:ruleOptions";
-    this.description = "send the options about groups to the UI";
-    this.outputExample = {};
-    this.permission = { topic: "group", mode: "read" };
-    this.inputs = {};
-  }
+  name = "groups:ruleOptions";
+  description = "send the options about groups to the UI";
+  outputExample = {};
+  permission: ActionPermission = { topic: "group", mode: "read" };
 
   async runWithinTransaction() {
     return {
@@ -72,22 +67,19 @@ export class GroupsRuleOptions extends AuthenticatedAction {
 }
 
 export class GroupCreate extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "group:create";
-    this.description = "create a group";
-    this.outputExample = {};
-    this.permission = { topic: "group", mode: "write" };
-    this.inputs = {
-      name: { required: true },
-      modelId: { required: true },
-      matchType: { required: true, default: "all" },
-      rules: { required: false, formatter: APIData.ensureObject },
-      state: { required: false },
-    };
-  }
+  name = "group:create";
+  description = "create a group";
+  outputExample = {};
+  permission: ActionPermission = { topic: "group", mode: "write" };
+  inputs = {
+    name: { required: true },
+    modelId: { required: true },
+    matchType: { required: true, default: "all" },
+    rules: { required: false, formatter: APIData.ensureArray },
+    state: { required: false },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<GroupCreate> }) {
     const group = await Group.create({
       name: params.name,
       modelId: params.modelId,
@@ -105,21 +97,18 @@ export class GroupCreate extends AuthenticatedAction {
 }
 
 export class GroupEdit extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "group:edit";
-    this.description = "edit a group";
-    this.outputExample = {};
-    this.permission = { topic: "group", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-      name: { required: false },
-      matchType: { required: false },
-      rules: { required: false, formatter: APIData.ensureObject },
-    };
-  }
+  name = "group:edit";
+  description = "edit a group";
+  outputExample = {};
+  permission: ActionPermission = { topic: "group", mode: "write" };
+  inputs = {
+    id: { required: true },
+    name: { required: false },
+    matchType: { required: false },
+    rules: { required: false, formatter: APIData.ensureArray },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<GroupEdit> }) {
     const group = await Group.findById(params.id);
     await group.update(params);
     if (params.rules) await group.setRules(params.rules);
@@ -132,18 +121,15 @@ export class GroupEdit extends AuthenticatedAction {
 }
 
 export class GroupRun extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "group:run";
-    this.description = "recalculate the members for a group";
-    this.outputExample = {};
-    this.permission = { topic: "group", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "group:run";
+  description = "recalculate the members for a group";
+  outputExample = {};
+  permission: ActionPermission = { topic: "group", mode: "write" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<GroupRun> }) {
     const group = await Group.findById(params.id);
     await group.run();
     return { success: true };
@@ -151,18 +137,15 @@ export class GroupRun extends AuthenticatedAction {
 }
 
 export class GroupView extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "group:view";
-    this.description = "view a group and members";
-    this.outputExample = {};
-    this.permission = { topic: "group", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "group:view";
+  description = "view a group and members";
+  outputExample = {};
+  permission: ActionPermission = { topic: "group", mode: "read" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<GroupView> }) {
     const group = await Group.findById(params.id);
     const responseGroup = await group.apiData();
     responseGroup.rules = group.toConvenientRules(await group.getRules());
@@ -171,34 +154,26 @@ export class GroupView extends AuthenticatedAction {
 }
 
 export class GroupCountComponentMembers extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "group:countComponentMembers";
-    this.description =
-      "return the counts of records which exist due to a certain rule";
-    this.outputExample = {};
-    this.permission = { topic: "group", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-      rules: { required: false },
-    };
-  }
+  name = "group:countComponentMembers";
+  description =
+    "return the counts of records which exist due to a certain rule";
+  outputExample = {};
+  permission: ActionPermission = { topic: "group", mode: "read" };
+  inputs = {
+    id: { required: true },
+    rules: { required: false, formatter: APIData.ensureArray },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<GroupCountComponentMembers>;
+  }) {
     const group = await Group.findById(params.id);
-
-    let rules;
-    if (params.rules) {
-      try {
-        rules = params.rules.map((r) => JSON.parse(r));
-      } catch (e) {
-        rules = params.rules;
-      }
-    }
 
     const { componentCounts, funnelCounts } =
       await group.countComponentMembersFromRules(
-        group.fromConvenientRules(rules)
+        group.fromConvenientRules(params.rules)
       );
 
     return { componentCounts, funnelCounts };
@@ -206,33 +181,24 @@ export class GroupCountComponentMembers extends AuthenticatedAction {
 }
 
 export class GroupCountPotentialMembers extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "group:countPotentialMembers";
-    this.description =
-      "return the count of records that would match these rules";
-    this.outputExample = {};
-    this.permission = { topic: "group", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-      rules: { required: false },
-    };
-  }
+  name = "group:countPotentialMembers";
+  description = "return the count of records that would match these rules";
+  outputExample = {};
+  permission: ActionPermission = { topic: "group", mode: "read" };
+  inputs = {
+    id: { required: true },
+    rules: { required: false, formatter: APIData.ensureArray },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<GroupCountPotentialMembers>;
+  }) {
     const group = await Group.findById(params.id);
 
-    let rules;
-    if (params.rules) {
-      try {
-        rules = params.rules.map((r) => JSON.parse(r));
-      } catch (e) {
-        rules = params.rules;
-      }
-    }
-
     const count = await group.countPotentialMembers(
-      group.fromConvenientRules(rules)
+      group.fromConvenientRules(params.rules)
     );
 
     return { count };
@@ -240,18 +206,19 @@ export class GroupCountPotentialMembers extends AuthenticatedAction {
 }
 
 export class GroupListDestinations extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "group:listDestinations";
-    this.description = "list the destinations interested in this group";
-    this.outputExample = {};
-    this.permission = { topic: "group", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "group:listDestinations";
+  description = "list the destinations interested in this group";
+  outputExample = {};
+  permission: ActionPermission = { topic: "group", mode: "read" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<GroupListDestinations>;
+  }) {
     const group = await Group.findById(params.id);
 
     const destinations = await group.$get("destinations");
@@ -263,23 +230,20 @@ export class GroupListDestinations extends AuthenticatedAction {
 }
 
 export class GroupDestroy extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "group:destroy";
-    this.description = "destroy a group";
-    this.outputExample = {};
-    this.permission = { topic: "group", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-      force: {
-        required: true,
-        default: false,
-        formatter: APIData.ensureBoolean,
-      },
-    };
-  }
+  name = "group:destroy";
+  description = "destroy a group";
+  outputExample = {};
+  permission: ActionPermission = { topic: "group", mode: "write" };
+  inputs = {
+    id: { required: true },
+    force: {
+      required: true,
+      default: false,
+      formatter: APIData.ensureBoolean,
+    },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<GroupDestroy> }) {
     const group = await Group.findById(params.id);
     await Group.ensureNotInUse(group);
 

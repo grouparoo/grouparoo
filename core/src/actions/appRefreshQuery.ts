@@ -1,19 +1,23 @@
+import { ParamsFrom } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { AppRefreshQuery } from "../models/AppRefreshQuery";
+import { ActionPermission } from "../models/Permission";
 import { Run } from "../models/Run";
 import { ConfigWriter } from "../modules/configWriter";
 
 export class AppRefreshQueryRun extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "appRefreshQuery:run";
-    this.description =
-      "run an appRefreshQuery to check for new data and enqueue schedules if needed";
-    this.outputExample = {};
-    this.permission = { topic: "app", mode: "write" };
-    this.inputs = { id: { required: true } };
-  }
-  async runWithinTransaction({ params }) {
+  name = "appRefreshQuery:run";
+  description =
+    "run an appRefreshQuery to check for new data and enqueue schedules if needed";
+  outputExample = {};
+  permission: ActionPermission = { topic: "app", mode: "write" };
+  inputs = { id: { required: true } };
+
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<AppRefreshQueryRun>;
+  }) {
     let valueUpdated: Boolean = false;
     const appRefreshQuery = await AppRefreshQuery.findById(params.id);
     if (!appRefreshQuery)
@@ -43,21 +47,22 @@ export class AppRefreshQueryRun extends AuthenticatedAction {
 }
 
 export class AppRefreshQueryCreate extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "appRefreshQuery:create";
-    this.description = "create an app refresh query";
-    this.outputExample = {};
-    this.permission = { topic: "app", mode: "write" };
-    this.inputs = {
-      appId: { required: true },
-      refreshQuery: { required: false },
-      recurringFrequency: { required: false },
-      state: { required: false },
-    };
-  }
+  name = "appRefreshQuery:create";
+  description = "create an app refresh query";
+  outputExample = {};
+  permission: ActionPermission = { topic: "app", mode: "write" };
+  inputs = {
+    appId: { required: true },
+    refreshQuery: { required: false },
+    recurringFrequency: { required: false },
+    state: { required: false },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<AppRefreshQueryCreate>;
+  }) {
     const appRefreshQuery = await AppRefreshQuery.create({
       appId: params.appId,
     });
@@ -76,21 +81,23 @@ export class AppRefreshQueryCreate extends AuthenticatedAction {
 }
 
 export class AppRefreshQueryEdit extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "appRefreshQuery:edit";
-    this.description = "edit an app query refresh";
-    this.outputExample = {};
-    this.permission = { topic: "app", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-      appId: { required: false },
-      refreshQuery: { required: false },
-      recurringFrequency: { required: false },
-      state: { required: false },
-    };
-  }
-  async runWithinTransaction({ params }) {
+  name = "appRefreshQuery:edit";
+  description = "edit an app query refresh";
+  outputExample = {};
+  permission: ActionPermission = { topic: "app", mode: "write" };
+  inputs = {
+    id: { required: true },
+    appId: { required: false },
+    refreshQuery: { required: false },
+    recurringFrequency: { required: false },
+    state: { required: false },
+  };
+
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<AppRefreshQueryEdit>;
+  }) {
     const appRefreshQuery = await AppRefreshQuery.findById(params.id);
     await appRefreshQuery.update(params);
 
@@ -112,19 +119,20 @@ export class AppRefreshQueryEdit extends AuthenticatedAction {
 }
 
 export class AppRefreshQueryTest extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "appRefreshQuery:test";
-    this.description = "test the query for a given appRefreshQuery";
-    this.permission = { topic: "app", mode: "write" };
-    this.outputExample = {};
-    this.inputs = {
-      id: { required: true },
-      refreshQuery: { required: false },
-    };
-  }
+  name = "appRefreshQuery:test";
+  description = "test the query for a given appRefreshQuery";
+  permission: ActionPermission = { topic: "app", mode: "write" };
+  outputExample = {};
+  inputs = {
+    id: { required: true },
+    refreshQuery: { required: false },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<AppRefreshQueryTest>;
+  }) {
     const appRefreshQuery = await AppRefreshQuery.findById(params.id);
 
     const test = await appRefreshQuery.test(params.refreshQuery);
@@ -138,36 +146,38 @@ export class AppRefreshQueryTest extends AuthenticatedAction {
 }
 
 export class AppRefreshQueryView extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "appRefreshQuery:view";
-    this.description = "view an app refresh query";
-    this.outputExample = {};
-    this.permission = { topic: "app", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "appRefreshQuery:view";
+  description = "view an app refresh query";
+  outputExample = {};
+  permission: ActionPermission = { topic: "app", mode: "read" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<AppRefreshQueryView>;
+  }) {
     const appRefreshQuery = await AppRefreshQuery.findById(params.id);
     return { appRefreshQuery: await appRefreshQuery.apiData() };
   }
 }
 
 export class AppRefreshQueryDestroy extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "appRefreshQuery:destroy";
-    this.description = "destroy an appRefreshQuery";
-    this.outputExample = {};
-    this.permission = { topic: "app", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "appRefreshQuery:destroy";
+  description = "destroy an appRefreshQuery";
+  outputExample = {};
+  permission: ActionPermission = { topic: "app", mode: "write" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<AppRefreshQueryDestroy>;
+  }) {
     const appRefreshQuery = await AppRefreshQuery.findById(params.id);
     await appRefreshQuery.destroy();
 
