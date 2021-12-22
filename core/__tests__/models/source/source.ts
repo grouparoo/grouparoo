@@ -863,6 +863,22 @@ describe("models/source", () => {
       await property.destroy();
     });
 
+    test("bootstrapUniqueProperty without key and type will create a new unique property with generated key and guessed type", async () => {
+      const mappedColumn = "email";
+      const property = await source.bootstrapUniqueProperty({
+        mappedColumn,
+        sourceOptions: await source.getOptions(),
+      });
+
+      expect(property.key).toBe(`${model.name.toLowerCase()}_${mappedColumn}`);
+      expect(property.type).toBe("email");
+      expect(property.isArray).toBe(false);
+      expect(property.state).toBe("ready");
+      expect(property.unique).toBe(true);
+
+      await property.destroy();
+    });
+
     test("the plugin provides uniquePropertyBootstrapOptions", async () => {
       const property = await Property.findOne({
         where: { key: "userId" },
