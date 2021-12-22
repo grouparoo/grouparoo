@@ -204,13 +204,28 @@ class Destination {
     await page.waitForXPath("//h5[contains(text(), 'Sample Record')]");
   }
 
-  async screenshot(name) {
-    // TODO: page in sub element
+  async screenshot(name, options = {}) {
     const page = this.service.page;
     const filePath = path.join(this.shotDir, `${name}.png`);
     const dirPath = path.dirname(filePath);
+    const selector = options.selector;
     fs.mkdirpSync(dirPath);
-    await page.screenshot({ path: filePath, fullPage: true });
+    if (!selector) {
+      await page.screenshot({ path: filePath, fullPage: true });
+    } else {
+      const border = options.border || 0;
+      await page.waitForSelector(selector);
+      const element = await page.$(selector);
+      const box = await element.boundingBox(); // { x, y, width, height }
+      const x = box.x - border;
+      const y = box.y - border;
+      const width = box.width + border * 2;
+      const height = box.height + border * 2;
+      await page.screenshot({
+        path: filePath,
+        clip: { x, y, width, height },
+      });
+    }
   }
 
   async screenshots() {
@@ -220,11 +235,19 @@ class Destination {
     await this.goto(recordPath);
     await this.form({ value: "12" });
     await this.goto(`${appPath}/edit`);
-    await this.screenshot("app-options");
+    await this.screenshot("app-options-full");
     await this.goto(`${destPath}/edit`);
-    await this.screenshot("destination-options");
+    await this.screenshot("destination-options-full");
     await this.goto(`${destPath}/data`);
     await this.pickModel();
-    await this.screenshot("destination-data");
+    await this.screenshot("destination-data-full");
+    await this.screenshot("destination-data-records", {
+      selector: "#destinationRecords",
+      border: 10,
+    });
+    await this.screenshot("destination-data-groups", {
+      selector: "#destinationGroups",
+      border: 10,
+    });
   }
 }
