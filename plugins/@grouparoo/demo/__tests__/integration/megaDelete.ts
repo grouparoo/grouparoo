@@ -15,8 +15,6 @@ if (fs.existsSync(path.join(dir, "config"))) {
 }
 
 describe("create and delete", () => {
-  let packName: string;
-
   it("loads demo commands", async () => {
     const { stdout } = await spawnPromise(bin, ["help"]);
     expect(stdout).toContain("demo [options]");
@@ -79,6 +77,7 @@ export async function spawnPromise(
         PWD: undefined,
         ACTIONHERO_CONFIG: undefined,
         GROUPAROO_SPEC_HELPER: undefined,
+        TS_JEST: undefined,
       },
     });
 
