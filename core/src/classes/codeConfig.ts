@@ -209,8 +209,11 @@ export function validateConfigObjectKeys(
   if (errors.length > 0) throw new Error(errors.join(", "));
 }
 
+/**
+ * Log a Sequelize Model
+ */
 export function logModel(
-  instance,
+  instance: any,
   mode: "created" | "updated" | "deleted" | "validated",
   name?: string
 ) {
@@ -307,10 +310,14 @@ export function validateConfigObjects(
   for (const configObject of configObjects) {
     if (!configObject.id) {
       errors.push(
+        //@ts-ignore
         (configObject["name"]
-          ? `"${configObject["name"]}"`
-          : configObject["key"]
-          ? `"${configObject["key"]}"`
+          ? //@ts-ignore
+            `"${configObject["name"]}"`
+          : //@ts-ignore
+          configObject["key"]
+          ? //@ts-ignore
+            `"${configObject["key"]}"`
           : "A config object") + " is missing an ID"
       );
     }
@@ -357,15 +364,17 @@ export async function getDirectParentId(configObject: ConfigurationObject) {
     source: "appId",
     property: "sourceId",
     teammember: "teamId",
-  };
+  } as const;
 
-  const parentKey = parentKeys[cleanClass(configObject)];
+  const parentKey =
+    parentKeys[cleanClass(configObject) as keyof typeof parentKeys];
   if (!parentKey) return null;
 
-  const parentId = configObject[parentKey];
+  // @ts-ignore
+  const parentId: string = configObject[parentKey];
   if (!parentId) return null;
 
-  return parentId as string;
+  return parentId;
 }
 
 export async function getParentIds(
@@ -382,7 +391,9 @@ export async function getParentIds(
   // special cases
   // - property with mustache dependency
 
+  // @ts-ignore
   if (configObject["options"]) {
+    // @ts-ignore
     for (const [k, v] of Object.entries(configObject["options"])) {
       if (
         cleanClass(configObject) === "property" &&
@@ -406,6 +417,7 @@ export async function getParentIds(
   for (const i in keys) {
     if (keys[i].match(/.+Id$/)) {
       const _class = keys[i].replace(/Id$/, "");
+      // @ts-ignore
       const value = configObject[keys[i]];
       prerequisiteIds.push(`${_class}:${value}`);
     }
@@ -414,11 +426,14 @@ export async function getParentIds(
   const objectContainers = ["options", "source", "destination"];
   const validContainerKeys = ["propertyId"];
   objectContainers.map((_container) => {
+    // @ts-ignore
     if (configObject[_container]) {
+      // @ts-ignore
       const containerKeys = Object.keys(configObject[_container]);
       for (const i in containerKeys) {
         if (validContainerKeys.includes(containerKeys[i])) {
           prerequisiteIds.push(
+            // @ts-ignore
             `property:${configObject[_container][containerKeys[i]]}`
           );
         }
@@ -428,7 +443,9 @@ export async function getParentIds(
 
   const arrayContainers = ["rules"];
   arrayContainers.map((_container) => {
+    // @ts-ignore
     for (const i in configObject[_container]) {
+      // @ts-ignore
       const record = configObject[_container][i];
       const recordKeys = Object.keys(record);
       for (const j in recordKeys) {
@@ -446,11 +463,13 @@ export async function getParentIds(
     }
   });
 
+  // @ts-ignore
   if (configObject["mapping"]) {
     const autoBootstrappedProperty = getAutoBootstrappedProperty(
       configObject as SourceConfigurationObject,
       otherConfigObjects
     );
+    // @ts-ignore
     const mappingValues = Object.values(configObject["mapping"]);
     for (const value of mappingValues) {
       if (!autoBootstrappedProperty || value !== autoBootstrappedProperty.id)
@@ -458,14 +477,18 @@ export async function getParentIds(
     }
   }
 
+  // @ts-ignore
   if (configObject["destinationGroupMemberships"]) {
     const groupIds: string[] = Object.values(
+      // @ts-ignore
       configObject["destinationGroupMemberships"]
     );
     groupIds.forEach((v) => prerequisiteIds.push(`group:${v}`));
   }
 
+  // @ts-ignore
   if (configObject["properties"]) {
+    // @ts-ignore
     const propertyIds: string[] = Object.keys(configObject["properties"]);
     propertyIds.forEach((v) => prerequisiteIds.push(`property:${v}`));
   }
@@ -507,7 +530,7 @@ export function sortConfigObjectsWithIds(
   return sortedConfigObjectsWithIds.filter(uniqueArrayValues);
 }
 
-function uniqueArrayValues(value, index, self) {
+function uniqueArrayValues(value: any, index: number, self: any[]) {
   return self.indexOf(value) === index;
 }
 
