@@ -20,7 +20,7 @@ export default function GrouparooWebApp(
 ) {
   const { Component, pageProps, err, hydrationError } = props;
 
-  const combinedProps: GrouparooNextPageProps = {
+  const combinedProps: GrouparooNextPageProps<any> = {
     ...pageProps,
     ...eventHandlers,
     navigation: props.navigation,
