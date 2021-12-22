@@ -30,6 +30,7 @@ export default function Page(props) {
     run,
     pluginOptions,
     filterOptions,
+    filterOptionDescriptions,
   }: {
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
@@ -37,6 +38,7 @@ export default function Page(props) {
     run: Models.RunType;
     pluginOptions: Actions.ScheduleView["pluginOptions"];
     filterOptions: Actions.ScheduleFilterOptions["options"];
+    filterOptionDescriptions: Actions.ScheduleFilterOptions["optionDescriptions"];
   } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
@@ -48,6 +50,8 @@ export default function Page(props) {
   const [recurringFrequencyMinutes, setRecurringFrequencyMinutes] = useState(
     schedule.recurringFrequency / (60 * 1000)
   );
+
+  console.log(filterOptionDescriptions);
 
   async function edit(event) {
     event.preventDefault();
@@ -488,7 +492,7 @@ export default function Page(props) {
                                             <option
                                               key={`op-opt-${localFilter.key}-${op}`}
                                             >
-                                              {op}
+                                              {filterOptionDescriptions[op]}
                                             </option>
                                           ))
                                       : null}
@@ -601,15 +605,20 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   const { sourceId, modelId } = ctx.query;
   const { execApi } = UseApi(ctx);
   const { source } = await execApi("get", `/source/${sourceId}`);
+  let filterOptions = {};
+  let filterOptionDescriptions = {};
   ensureMatchingModel("Source", source.modelId, modelId.toString());
   const { schedule, pluginOptions } = await execApi(
     "get",
     `/schedule/${source.schedule.id}`
   );
-  const { options: filterOptions } = await execApi(
+  const filterResponse = await execApi(
     "get",
     `/schedule/${source.schedule.id}/filterOptions`
   );
+  filterOptions = filterResponse.options;
+  filterOptionDescriptions = filterResponse.optionDescriptions;
+
   const { runs } = await execApi("get", `/runs`, {
     id: source.schedule.id,
     limit: 1,
@@ -620,6 +629,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     schedule,
     pluginOptions,
     filterOptions,
+    filterOptionDescriptions,
     run: runs ? runs[0] : null,
   };
 };
