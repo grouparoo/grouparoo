@@ -39,14 +39,14 @@
     "axios": "0.24.0",
     "bootstrap": "4.6.0",
     "isomorphic-fetch": "3.0.0",
-    "jest": "27.4.3",
+    "jest": "27.4.5",
     "jest-mock-axios": "4.5.0",
     "md5": "2.3.0",
     "moment": "2.29.1",
     "next": "12.0.7",
     "nprogress": "0.2.0",
     "pluralize": "8.0.0",
-    "prettier": "2.5.0",
+    "prettier": "2.5.1",
     "prop-types": "15.7.2",
     "react": "17.0.2",
     "react-bootstrap": "1.6.4",
@@ -59,9 +59,9 @@
     "sass": "1.44.0",
     "stacktrace-js": "2.0.2",
     "swagger-ui-dist": "4.1.2",
-    "ts-jest": "27.1.1",
+    "ts-jest": "27.1.2",
     "type-fest": "2.8.0",
-    "typescript": "4.5.2"
+    "typescript": "4.5.4"
   },
   "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a",
   "dependencies": {

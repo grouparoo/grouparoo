@@ -33,7 +33,7 @@
     "faker": "5.5.3",
     "fs-extra": "10.0.0",
     "nock": "13.2.1",
-    "prettier": "2.5.0",
+    "prettier": "2.5.1",
     "sequelize": "6.11.0",
     "uuid": "8.3.2"
   },
@@ -42,10 +42,10 @@
     "@types/faker": "*",
     "@types/jest": "*",
     "@types/node": "*",
-    "actionhero": "28.0.4",
-    "jest": "27.4.3",
-    "ts-jest": "27.1.1",
-    "typescript": "4.5.2"
+    "actionhero": "28.1.1",
+    "jest": "27.4.5",
+    "ts-jest": "27.1.2",
+    "typescript": "4.5.4"
   },
   "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"
 }

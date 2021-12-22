@@ -38,15 +38,15 @@
     "@types/jest": "*",
     "@types/node": "*",
     "@types/pg": "*",
-    "actionhero": "28.0.4",
+    "actionhero": "28.1.1",
     "csv-parse": "4.16.3",
     "fs-extra": "10.0.0",
-    "jest": "27.4.3",
-    "prettier": "2.5.0",
+    "jest": "27.4.5",
+    "prettier": "2.5.1",
     "sequelize": "6.11.0",
-    "ts-jest": "27.1.1",
+    "ts-jest": "27.1.2",
     "type-fest": "2.8.0",
-    "typescript": "4.5.2"
+    "typescript": "4.5.4"
   },
   "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"
 }

@@ -43,10 +43,10 @@
   "devDependencies": {
     "@types/fs-extra": "*",
     "@types/node": "*",
-    "prettier": "2.5.0",
+    "prettier": "2.5.1",
     "ts-node": "10.4.0",
     "type-fest": "2.8.0",
-    "typescript": "4.5.2"
+    "typescript": "4.5.4"
   },
   "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"
 }
