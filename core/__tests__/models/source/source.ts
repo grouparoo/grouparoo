@@ -879,6 +879,41 @@ describe("models/source", () => {
       await property.destroy();
     });
 
+    test("bootstrapUniqueProperty without with conflicting generated key will resolve with indexed key", async () => {
+      const mappedColumn = "id";
+      const key = `${model.name.toLowerCase()}_${mappedColumn}`;
+      let i: number;
+
+      for (i = 0; i < 10; i++) {
+        const propKey = `${key}${i ? "_" + i : ""}`;
+        await Property.create(
+          {
+            sourceId: source.id,
+            id: `some-id-${i}`,
+            key: propKey,
+            type: "string",
+            unique: false,
+            isArray: false,
+            state: "ready",
+          },
+          { hooks: false }
+        );
+      }
+
+      const property = await source.bootstrapUniqueProperty({
+        mappedColumn,
+        sourceOptions: await source.getOptions(),
+      });
+
+      expect(property.key).toBe(`${key}_${i}`);
+      expect(property.type).toBe("integer");
+      expect(property.isArray).toBe(false);
+      expect(property.state).toBe("ready");
+      expect(property.unique).toBe(true);
+
+      await property.destroy();
+    });
+
     test("the plugin provides uniquePropertyBootstrapOptions", async () => {
       const property = await Property.findOne({
         where: { key: "userId" },
