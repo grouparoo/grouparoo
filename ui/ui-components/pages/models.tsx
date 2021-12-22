@@ -129,3 +129,5 @@ Page.getInitialProps = async (ctx) => {
   );
   return { models, total };
 };
+
+export default Page;
