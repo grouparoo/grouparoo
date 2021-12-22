@@ -13,6 +13,7 @@ import {
 } from "../../models/Property";
 import { GrouparooRecord } from "../../models/GrouparooRecord";
 import { App } from "../../models/App";
+import { GrouparooModel } from "../../models/GrouparooModel";
 import { Option } from "../../models/Option";
 import { OptionHelper } from "../optionHelper";
 import { MappingHelper } from "../mappingHelper";
@@ -26,7 +27,6 @@ import {
   RecordPropertyPluginMethodResponse,
 } from "../../classes/plugin";
 import { TableSpeculation } from "../tableSpeculation";
-import { GrouparooModel } from "../..";
 
 export namespace SourceOps {
   /**
