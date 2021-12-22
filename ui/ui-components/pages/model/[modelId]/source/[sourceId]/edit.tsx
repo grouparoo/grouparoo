@@ -2,7 +2,7 @@ import { GetServerSideProps, NextPage, NextPageContext } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState, useEffect, useMemo } from "react";
-import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
+import { Row, Col, Form, Badge, Alert, Card } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { UseApi } from "../../../../../hooks/useApi";
@@ -21,6 +21,7 @@ import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import FormMappingSelector from "../../../../../components/source/FormMappingSelector";
 import { createSchedule } from "../../../../../components/schedule/Add";
+import ManagedCard from "../../../../../components/lib/ManagedCard";
 
 interface FormData {
   mapping?: {
@@ -302,7 +303,7 @@ const Page: NextPage<Props & InjectedProps> = ({
       />
 
       <Row>
-        <Col>
+        <Col className="mb-4">
           <Form id="form" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
             <fieldset disabled={Boolean(source.locked)}>
               <Form.Group controlId="name">
@@ -516,10 +517,9 @@ const Page: NextPage<Props & InjectedProps> = ({
                 </Row>
               ) : null}
 
-              <hr />
-
               {source.previewAvailable && (
                 <>
+                  <hr />
                   <h3>{isPrimarySource ? "Primary Key Mapping" : "Mapping"}</h3>
                   <p>
                     Mapping sets the foreign key between your Source and
@@ -536,17 +536,34 @@ const Page: NextPage<Props & InjectedProps> = ({
                     register={register}
                     source={source}
                   />
-                  <hr />
                 </>
               )}
 
-              <h3>Example Data</h3>
+              <hr />
 
-              {previewColumns.length === 0 && !loading ? (
-                <p>No preview</p>
-              ) : null}
+              <LoadingButton variant="primary" type="submit" loading={loading}>
+                Update
+              </LoadingButton>
+              <br />
+              <br />
+              <LoadingButton
+                loading={loading}
+                variant="danger"
+                size="sm"
+                onClick={() => {
+                  handleDelete();
+                }}
+              >
+                Delete
+              </LoadingButton>
+            </fieldset>
+          </Form>
+        </Col>
+        <Col xl="7">
+          <ManagedCard title="Example Data">
+            <Card.Body>
+              {previewColumns.length === 0 && !loading ? <>No preview</> : null}
               {previewColumns.length === 0 && loading ? <Loader /> : null}
-
               <div style={{ overflow: "auto" }}>
                 <LoadingTable loading={previewLoading} size="sm">
                   <thead>
@@ -573,26 +590,8 @@ const Page: NextPage<Props & InjectedProps> = ({
                   </tbody>
                 </LoadingTable>
               </div>
-
-              <br />
-
-              <LoadingButton variant="primary" type="submit" loading={loading}>
-                Update
-              </LoadingButton>
-              <br />
-              <br />
-              <LoadingButton
-                loading={loading}
-                variant="danger"
-                size="sm"
-                onClick={() => {
-                  handleDelete();
-                }}
-              >
-                Delete
-              </LoadingButton>
-            </fieldset>
-          </Form>
+            </Card.Body>
+          </ManagedCard>
         </Col>
       </Row>
     </>

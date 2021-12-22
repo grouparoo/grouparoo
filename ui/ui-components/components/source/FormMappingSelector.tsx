@@ -5,9 +5,9 @@ import FormInputContainer from "../lib/form/FormInputContainer";
 import { Models } from "../../utils/apiData";
 
 const renderExamples = (exampleText?: string) => (
-  <div style={{ visibility: exampleText ? "visible" : "hidden" }}>
+  <p>
     <strong>Example Data:</strong> {exampleText}
-  </div>
+  </p>
 );
 
 interface Props {
@@ -109,7 +109,7 @@ const FormMappingSelector: React.FC<Props> = ({
 
   return (
     <Row>
-      <Col lg={hasAvailableProperties ? 6 : 12}>
+      <Col md={hasAvailableProperties ? 6 : 12} xl={12}>
         <FormInputContainer
           controlId="mapping_source_column"
           label="Source Column"
@@ -136,7 +136,7 @@ const FormMappingSelector: React.FC<Props> = ({
             ))}
           </Form.Control>
         </FormInputContainer>
-        {renderExamples(columnExample)}
+        {columnExample && renderExamples(columnExample)}
       </Col>
       <Col>
         {hasAvailableProperties && (
