@@ -1,5 +1,8 @@
 import path from "path";
-import { ConfigTemplate } from "../classes/configTemplate";
+import {
+  ConfigTemplate,
+  ConfigTemplateParams,
+} from "../classes/configTemplate";
 
 export class GroupTemplate extends ConfigTemplate {
   constructor() {
@@ -32,8 +35,8 @@ export class GroupTemplate extends ConfigTemplate {
     this.destinationDir = "groups";
   }
 
-  async run({ params }) {
-    if (params.rules) params.rules = JSON.parse(params.rules);
+  async run({ params }: { params: ConfigTemplateParams }) {
+    if (params.rules) params.rules = JSON.parse(params.rules.toString());
 
     return this.mustacheAllFiles(params);
   }

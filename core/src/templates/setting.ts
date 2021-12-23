@@ -1,5 +1,8 @@
 import path from "path";
-import { ConfigTemplate } from "../classes/configTemplate";
+import {
+  ConfigTemplate,
+  ConfigTemplateParams,
+} from "../classes/configTemplate";
 import { plugin } from "../modules/plugin";
 
 export class SettingTemplate extends ConfigTemplate {
@@ -35,11 +38,11 @@ export class SettingTemplate extends ConfigTemplate {
     };
   }
 
-  async run({ params }) {
+  async run({ params }: { params: ConfigTemplateParams }) {
     if (params["plugin-name"] && params.key) {
-      const setting = await plugin.readSetting(
-        params["plugin-name"],
-        params.key
+      await plugin.readSetting(
+        params["plugin-name"].toString(),
+        params.key.toString()
       );
     }
 

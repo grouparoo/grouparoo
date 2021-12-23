@@ -126,7 +126,7 @@ export class ApiKey extends LoggedModel<ApiKey> {
   }
 
   @BeforeSave
-  static async noUpdateIfLocked(instance) {
+  static async noUpdateIfLocked(instance: ApiKey) {
     await LockableHelper.beforeSave(instance);
   }
 
@@ -163,7 +163,7 @@ export class ApiKey extends LoggedModel<ApiKey> {
   }
 
   @BeforeDestroy
-  static async noDestroyIfLocked(instance) {
+  static async noDestroyIfLocked(instance: ApiKey) {
     await LockableHelper.beforeDestroy(instance);
   }
 
