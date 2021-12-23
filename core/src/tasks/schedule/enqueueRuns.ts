@@ -1,24 +1,30 @@
 import { Schedule } from "../../models/Schedule";
 import { CLSTask } from "../../classes/tasks/clsTask";
+import { ParamsFrom } from "actionhero";
+import { APIData } from "../../modules/apiData";
 
 export class ScheduleEnqueueRuns extends CLSTask {
-  constructor() {
-    super();
-    this.name = "schedules:enqueueRuns";
-    this.description = "check all schedules and run them if it is time";
-    this.frequency =
-      process.env.GROUPAROO_RUN_MODE === "cli:run" ? 0 : 1000 * 60; // Run every minute
-    this.queue = "schedules";
-    this.inputs = {
-      ignoreDeltas: { required: false, default: false },
-      runIfNotRecurring: { required: false, default: false },
-    };
-  }
+  name = "schedules:enqueueRuns";
+  description = "check all schedules and run them if it is time";
+  frequency = process.env.GROUPAROO_RUN_MODE === "cli:run" ? 0 : 1000 * 60; // Run every minute
+  queue = "schedules";
+  inputs = {
+    ignoreDeltas: {
+      required: false,
+      default: false,
+      formatter: APIData.ensureBoolean,
+    },
+    runIfNotRecurring: {
+      required: false,
+      default: false,
+      formatter: APIData.ensureBoolean,
+    },
+  };
 
-  async runWithinTransaction(params) {
-    const ignoreDeltas: boolean =
+  async runWithinTransaction(params: ParamsFrom<ScheduleEnqueueRuns>) {
+    const ignoreDeltas =
       params.ignoreDeltas === undefined ? false : params.ignoreDeltas;
-    const runIfNotRecurring: boolean =
+    const runIfNotRecurring =
       params.runIfNotRecurring === undefined ? false : params.runIfNotRecurring;
 
     const schedules = await Schedule.scope(null).findAll({

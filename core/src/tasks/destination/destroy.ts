@@ -1,25 +1,24 @@
-import { config } from "actionhero";
+import { config, ParamsFrom } from "actionhero";
 import { Destination } from "../../models/Destination";
 import { Run } from "../../models/Run";
 import { Export } from "../../models/Export";
 import { CLSTask } from "../../classes/tasks/clsTask";
 
 export class DestinationDestroy extends CLSTask {
-  constructor() {
-    super();
-    this.name = "destination:destroy";
-    this.description =
-      "untrack the group, wait for the exports, and then delete the destination";
-    this.frequency = 0;
-    this.queue = "destinations";
-    this.inputs = {
-      destinationId: { required: true },
-    };
-  }
+  name = "destination:destroy";
+  description =
+    "untrack the group, wait for the exports, and then delete the destination";
+  frequency = 0;
+  queue = "destinations";
+  inputs = {
+    destinationId: { required: true },
+  };
 
-  async runWithinTransaction(params) {
+  async runWithinTransaction({
+    destinationId,
+  }: ParamsFrom<DestinationDestroy>) {
     const destination = await Destination.scope(null).findOne({
-      where: { id: params.destinationId, state: "deleted" },
+      where: { id: destinationId, state: "deleted" },
     });
 
     // the destination may have been force-deleted

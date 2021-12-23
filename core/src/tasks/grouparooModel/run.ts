@@ -1,4 +1,4 @@
-import { config } from "actionhero";
+import { config, ParamsFrom } from "actionhero";
 import { Run } from "../../models/Run";
 import { GrouparooModel } from "../../models/GrouparooModel";
 import { GrouparooRecord } from "../../models/GrouparooRecord";
@@ -8,22 +8,17 @@ import { GroupMember } from "../../models/GroupMember";
 import { GroupOps } from "../../modules/ops/group";
 
 export class RunModel extends CLSTask {
-  constructor() {
-    super();
-    this.name = "grouparooModel:run";
-    this.description =
-      "build imports that will check and sync all records of this model";
-    this.frequency = 0;
-    this.queue = "runs";
-    this.inputs = {
-      runId: { required: true },
-    };
-  }
+  name = "grouparooModel:run";
+  description =
+    "build imports that will check and sync all records of this model";
+  frequency = 0;
+  queue = "runs";
+  inputs = {
+    runId: { required: true },
+  };
 
-  async runWithinTransaction(params) {
-    const run = await Run.scope(null).findOne({
-      where: { id: params.runId },
-    });
+  async runWithinTransaction({ runId }: ParamsFrom<RunModel>) {
+    const run = await Run.scope(null).findOne({ where: { id: runId } });
 
     if (!run) return;
     if (run.state === "stopped") return;

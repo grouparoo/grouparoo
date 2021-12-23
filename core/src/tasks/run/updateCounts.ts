@@ -4,14 +4,10 @@ import Moment from "moment";
 import { CLSTask } from "../../classes/tasks/clsTask";
 
 export class UpdateRunCounts extends CLSTask {
-  constructor() {
-    super();
-    this.name = "runs:updateCounts";
-    this.description = "Update the counts of imports and records for runs";
-    this.frequency = 1000 * 15;
-    this.queue = "runs";
-    this.inputs = {};
-  }
+  name = "runs:updateCounts";
+  description = "Update the counts of imports and records for runs";
+  frequency = 1000 * 15;
+  queue = "runs";
 
   async runWithinTransaction() {
     const since = Moment().subtract(1, "day").toDate();
@@ -32,7 +28,7 @@ export class UpdateRunCounts extends CLSTask {
       },
     });
 
-    let errors: Error[] = [];
+    const errors: Error[] = [];
     for (const run of runs) {
       try {
         await run.updateTotals();
@@ -42,7 +38,9 @@ export class UpdateRunCounts extends CLSTask {
     }
 
     if (errors.length > 0) {
-      const error = new Error(`Error updating runs: ${errors.join(", ")}`);
+      const error: Error & { errors?: Error[] } = new Error(
+        `Error updating runs: ${errors.join(", ")}`
+      );
       error["errors"] = errors;
       throw error;
     }

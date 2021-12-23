@@ -1,5 +1,7 @@
-import { log, env, config, task, Task } from "actionhero";
+import { log, env, config, task, Task, ParamsFrom } from "actionhero";
+import { Worker } from "node-resque";
 import { Import } from "../../models/Import";
+import { APIData } from "../../modules/apiData";
 import { APM } from "../../modules/apm";
 import { CLS } from "../../modules/cls";
 
@@ -9,23 +11,22 @@ export class ImportAssociateRecord extends Task {
   // This Task extends Task rather than CLSTask as we want to be able to view newly created records happening in parallel to this task/transaction
   // We still want things to be in a transaction, so we wrap the run method custom
   // This Task has no side effects
-  constructor() {
-    super();
-    this.name = "import:associateRecord";
-    this.description = "find or create the record this import is about";
-    this.frequency = 0;
-    this.queue = "imports";
-    this.plugins = ["QueueLock", "JobLock"];
-    this.pluginOptions = { JobLock: { reEnqueue: false } };
-    this.inputs = {
-      importId: { required: true },
-      attempts: { required: true, default: 0 },
-    };
-  }
 
-  async run(params, worker) {
-    const { importId, attempts }: { importId: string; attempts: number } =
-      params;
+  name = "import:associateRecord";
+  description = "find or create the record this import is about";
+  frequency = 0;
+  queue = "imports";
+  plugins = ["QueueLock", "JobLock"];
+  pluginOptions = { JobLock: { reEnqueue: false } };
+  inputs = {
+    importId: { required: true },
+    attempts: { required: true, default: 0, formatter: APIData.ensureNumber },
+  };
+
+  async run(
+    { importId, attempts }: ParamsFrom<ImportAssociateRecord>,
+    worker: Worker
+  ) {
     let _import: Import;
 
     return APM.wrap(this.name, "task", worker, async () => {

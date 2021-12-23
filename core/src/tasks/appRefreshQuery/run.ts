@@ -1,22 +1,18 @@
+import { ParamsFrom } from "actionhero";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { AppRefreshQuery } from "../../models/AppRefreshQuery";
 
 export class AppRefreshQueryRun extends CLSTask {
-  constructor() {
-    super();
-    this.name = "appRefreshQuery:run";
-    this.description =
-      "run a single appRefreshQuery and update values/trigger schedules if needed";
-    this.frequency = 0;
-    this.queue = "apps";
-    this.inputs = { appRefreshQueryId: { required: true } };
-  }
+  name = "appRefreshQuery:run";
+  description =
+    "run a single appRefreshQuery and update values/trigger schedules if needed";
+  frequency = 0;
+  queue = "apps";
+  inputs = { appRefreshQueryId: { required: true } };
 
   async runWithinTransaction({
     appRefreshQueryId,
-  }: {
-    appRefreshQueryId: string;
-  }) {
+  }: ParamsFrom<AppRefreshQueryRun>) {
     const appRefreshQuery = await AppRefreshQuery.findOne({
       where: { id: appRefreshQueryId },
     });

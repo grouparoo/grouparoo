@@ -1,24 +1,22 @@
-import { log, config } from "actionhero";
+import { log, config, ParamsFrom } from "actionhero";
 import { Destination } from "../../models/Destination";
 import { ExportOps } from "../../modules/ops/export";
 import { RetryableTask } from "../../classes/tasks/retryableTask";
 import { plugin } from "../../modules/plugin";
 import { CLS } from "../../modules/cls";
+import { APIData } from "../../modules/apiData";
 
 export class EnqueueExports extends RetryableTask {
-  constructor() {
-    super();
-    this.name = "export:enqueue";
-    this.description =
-      "check for pending exports and enqueue other tasks to send them";
-    this.frequency = 1000 * 10;
-    this.queue = "exports";
-    this.inputs = {
-      count: { required: false, default: 0 },
-    };
-  }
+  name = "export:enqueue";
+  description =
+    "check for pending exports and enqueue other tasks to send them";
+  frequency = 1000 * 10;
+  queue = "exports";
+  inputs = {
+    count: { required: false, default: 0, formatter: APIData.ensureNumber },
+  };
 
-  async runWithinTransaction(params) {
+  async runWithinTransaction(params: ParamsFrom<EnqueueExports>) {
     const count = params.count || 0;
     const limit: number = config.batchSize.exports;
 

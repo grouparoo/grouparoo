@@ -4,23 +4,23 @@ import { Op } from "sequelize";
 import { Option } from "../../models/Option";
 import { Mapping } from "../../models/Mapping";
 import { CLSTask } from "../../classes/tasks/clsTask";
+import { ParamsFrom } from "actionhero";
+import { APIData } from "../../modules/apiData";
 
 export class ExportSendBatches extends CLSTask {
-  constructor() {
-    super();
-    this.name = "export:sendBatch";
-    this.description = "send the batch of exports to the destination";
-    this.frequency = 0;
-    this.queue = "exports";
-    this.inputs = {
-      destinationId: { required: true },
-      exportIds: { required: true },
-    };
-  }
+  name = "export:sendBatch";
+  description = "send the batch of exports to the destination";
+  frequency = 0;
+  queue = "exports";
+  inputs = {
+    destinationId: { required: true },
+    exportIds: { required: true, formatter: APIData.ensureArray },
+  };
 
-  async runWithinTransaction(params) {
-    const destinationId: string = params.destinationId;
-    const exportIds: string[] = params.exportIds;
+  async runWithinTransaction({
+    destinationId,
+    exportIds,
+  }: ParamsFrom<ExportSendBatches>) {
     let _exports: Export[] = [];
 
     if (exportIds.length === 0) return;

@@ -9,13 +9,10 @@ import { OAuthRequest } from "../../models/OAuthRequest";
 import { CLSTask } from "../../classes/tasks/clsTask";
 
 export class Sweeper extends CLSTask {
-  constructor() {
-    super();
-    this.name = "sweeper";
-    this.description = "clear old database entries";
-    this.frequency = 1000 * 60 * 30; // every half hour
-    this.queue = "system";
-  }
+  name = "sweeper";
+  description = "clear old database entries";
+  frequency = 1000 * 60 * 30; // every half hour
+  queue = "system";
 
   log(model: string, count: number, days: number) {
     if (count === 0) {

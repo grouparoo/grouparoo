@@ -8,15 +8,12 @@ import { CLS } from "../../modules/cls";
 import Sequelize from "sequelize";
 
 export class GrouparooRecordsEnqueueExports extends CLSTask {
-  constructor() {
-    super();
-    this.name = "records:enqueueExports";
-    this.description =
-      "If a record is ready and has an import that has not exported, enqueue record:export for them";
-    this.frequency = 1000 * 10;
-    this.queue = "records";
-    this.inputs = {};
-  }
+  name = "records:enqueueExports";
+  description =
+    "If a record is ready and has an import that has not exported, enqueue record:export for them";
+  frequency = 1000 * 10;
+  queue = "records";
+  inputs = {};
 
   async runWithinTransaction() {
     const limit: number = config.batchSize.imports;

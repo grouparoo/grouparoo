@@ -1,22 +1,20 @@
+import { ParamsFrom } from "actionhero";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { App } from "../../models/App";
 
 export class AppDestroy extends CLSTask {
-  constructor() {
-    super();
-    this.name = "app:destroy";
-    this.description =
-      "wait for dependencies to finish being deleted, then delete the app";
-    this.frequency = 0;
-    this.queue = "apps";
-    this.inputs = {
-      appId: { required: true },
-    };
-  }
+  name = "app:destroy";
+  description =
+    "wait for dependencies to finish being deleted, then delete the app";
+  frequency = 0;
+  queue = "apps";
+  inputs = {
+    appId: { required: true },
+  };
 
-  async runWithinTransaction(params) {
+  async runWithinTransaction({ appId }: ParamsFrom<AppDestroy>) {
     const app = await App.scope(null).findOne({
-      where: { id: params.appId, state: "deleted" },
+      where: { id: appId, state: "deleted" },
     });
 
     // the app may have been force-deleted

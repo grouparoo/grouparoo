@@ -1,26 +1,23 @@
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { Group } from "../../models/Group";
 import { Run } from "../../models/Run";
-import { config } from "actionhero";
+import { config, ParamsFrom } from "actionhero";
 
 export class GroupDestroy extends CLSTask {
-  constructor() {
-    super();
-    this.name = "group:destroy";
-    this.description =
-      "kick off a run to remove all group members, and then delete the group when empty";
-    this.frequency = 0;
-    this.queue = "groups";
-    this.inputs = {
-      groupId: { required: true },
-    };
-  }
+  name = "group:destroy";
+  description =
+    "kick off a run to remove all group members, and then delete the group when empty";
+  frequency = 0;
+  queue = "groups";
+  inputs = {
+    groupId: { required: true },
+  };
 
-  async runWithinTransaction(params) {
+  async runWithinTransaction({ groupId }: ParamsFrom<GroupDestroy>) {
     const limit: number = config.batchSize.imports;
 
     const group = await Group.scope(null).findOne({
-      where: { id: params.groupId, state: "deleted" },
+      where: { id: groupId, state: "deleted" },
     });
     if (!group) return; // the group may have been force-deleted
 

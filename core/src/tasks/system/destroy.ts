@@ -9,13 +9,10 @@ import { RecordOps } from "../../modules/ops/record";
 import { GrouparooModel } from "../../models/GrouparooModel";
 
 export class DestroySweeper extends CLSTask {
-  constructor() {
-    super();
-    this.name = "destroy";
-    this.description = "enqueue destroy tasks for models waiting to be deleted";
-    this.frequency = 1000 * 30;
-    this.queue = "system";
-  }
+  name = "destroy";
+  description = "enqueue destroy tasks for models waiting to be deleted";
+  frequency = 1000 * 30;
+  queue = "system";
 
   async runWithinTransaction() {
     // -- GROUPS --

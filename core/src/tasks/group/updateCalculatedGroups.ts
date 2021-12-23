@@ -5,14 +5,10 @@ import Moment from "moment";
 import { CLSTask } from "../../classes/tasks/clsTask";
 
 export class GroupsUpdateCalculatedGroups extends CLSTask {
-  constructor() {
-    super();
-    this.name = "group:updateCalculatedGroups";
-    this.description = "enqueue an update of groups that to be updated";
-    this.frequency =
-      process.env.GROUPAROO_RUN_MODE === "cli:run" ? 0 : 1000 * 60 * 5; // Run every 5 minutes
-    this.queue = "groups";
-  }
+  name = "group:updateCalculatedGroups";
+  description = "enqueue an update of groups that to be updated";
+  frequency = process.env.GROUPAROO_RUN_MODE === "cli:run" ? 0 : 1000 * 60 * 5; // Run every 5 minutes
+  queue = "groups";
 
   async runWithinTransaction() {
     const setting = await plugin.readSetting(
