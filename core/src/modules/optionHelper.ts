@@ -67,9 +67,10 @@ export namespace OptionHelper {
   ) {
     delete instance.__options;
 
+    const filteredOptions = filterEmptyOptions(options);
     const sanitizedOptions = await replaceObfuscatedPasswords(
       instance,
-      options,
+      filteredOptions,
       false
     );
 
@@ -410,6 +411,16 @@ export namespace OptionHelper {
     }
 
     return defaultOptions;
+  }
+
+  export function filterEmptyOptions(options: SimpleOptions) {
+    const opts = Object.assign({}, options);
+
+    Object.keys(opts).forEach((k) => {
+      if (opts[k] === "") delete opts[k];
+    });
+
+    return opts;
   }
 
   export async function getOptionsToObfuscate(
