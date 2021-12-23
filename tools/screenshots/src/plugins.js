@@ -13,6 +13,20 @@ const APPS = {
       },
     },
   },
+  salesforce: {
+    demo: "--salesforce",
+    app: "salesforce",
+    destinations: {
+      "salesforce-export-objects": {
+        model: "users",
+        id: "salesforce_contacts",
+      },
+      "salesforce-export-accounts": {
+        model: "accounts",
+        id: "salesforce_accounts",
+      },
+    },
+  },
 };
 
 const { Service, Browser } = require("./puppet");
