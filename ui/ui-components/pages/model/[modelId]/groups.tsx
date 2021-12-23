@@ -1,11 +1,11 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import { useState } from "react";
 import type { NextPageContext } from "next";
 import { UseApi } from "../../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../../hooks/URLParams";
 import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
-import Link from "../../../components/GrouparooLink";
 import Pagination from "../../../components/Pagination";
 import LoadingTable from "../../../components/LoadingTable";
 import StateBadge from "../../../components/badges/StateBadge";
@@ -87,7 +87,9 @@ export default function Page(props) {
               <tr key={`group-${group.id}`}>
                 <td>
                   <Link
-                    href={`/model/${group.modelId}/group/${group.id}/rules`}
+                    href={`/model/${group.modelId}/group/${group.id}/${
+                      grouparooUiEdition() === "community" ? "members" : "rules"
+                    }`}
                   >
                     <a>{group.name}</a>
                   </Link>
