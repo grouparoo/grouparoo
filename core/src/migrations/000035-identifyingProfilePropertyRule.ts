@@ -17,7 +17,7 @@ export default {
     );
 
     if (results.length === 1) {
-      const rule = results[0];
+      const rule: Record<string, any> = results[0];
       await queryInterface.sequelize.query(
         `update "profilePropertyRules" set identifying=true where guid='${rule["guid"]}'`
       );

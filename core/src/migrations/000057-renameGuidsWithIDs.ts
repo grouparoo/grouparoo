@@ -27,15 +27,14 @@ const tables = {
   sources: ["appGuid"],
   teamMembers: ["teamGuid"],
   teams: [],
-};
+} as const;
 
 import Sequelize from "sequelize";
 
 export default {
   up: async (queryInterface: Sequelize.QueryInterface) => {
-    for (const table in tables) {
+    for (const [table, cols] of Object.entries(tables)) {
       await queryInterface.renameColumn(table, "guid", "id");
-      const cols = tables[table];
       for (const j in cols) {
         const oldName = cols[j];
         const newName = oldName.replace("Guid", "Id");
@@ -45,9 +44,8 @@ export default {
   },
 
   down: async (queryInterface: Sequelize.QueryInterface) => {
-    for (const table in tables) {
+    for (const [table, cols] of Object.entries(tables)) {
       await queryInterface.renameColumn(table, "id", "guid");
-      const cols = tables[table];
       for (const j in cols) {
         const newName = cols[j];
         const oldName = newName.replace("Guid", "Id");

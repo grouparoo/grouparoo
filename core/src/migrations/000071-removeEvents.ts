@@ -12,17 +12,20 @@ export default {
       `DELETE FROM "permissions" WHERE topic = 'event'`
     );
 
-    const [apps] = await queryInterface.sequelize.query(
-      `SELECT * FROM "apps" WHERE type = 'events'`
-    );
-    for (const app of apps) {
-      const [sources] = await queryInterface.sequelize.query(
-        `SELECT * FROM "sources" WHERE "appId" = '${app["id"]}'`
+    const [apps]: [Record<string, any>[], unknown] =
+      await queryInterface.sequelize.query(
+        `SELECT * FROM "apps" WHERE type = 'events'`
       );
-      for (const source of sources) {
-        const [properties] = await queryInterface.sequelize.query(
-          `SELECT * FROM "properties" WHERE "sourceId" = '${source["id"]}'`
+    for (const app of apps) {
+      const [sources]: [Record<string, any>[], unknown] =
+        await queryInterface.sequelize.query(
+          `SELECT * FROM "sources" WHERE "appId" = '${app["id"]}'`
         );
+      for (const source of sources) {
+        const [properties]: [Record<string, any>[], unknown] =
+          await queryInterface.sequelize.query(
+            `SELECT * FROM "properties" WHERE "sourceId" = '${source["id"]}'`
+          );
 
         for (const property of properties) {
           await queryInterface.sequelize.query(
