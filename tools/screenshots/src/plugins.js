@@ -1,7 +1,8 @@
 // run demo command to set up the world
 // run grouparoo config
 // take screenshots of the destination
-const DESTINATIONS = {
+
+const APPS = {
   mailchimp: {
     demo: "--mailchimp",
     app: "mailchimpapp",
@@ -17,9 +18,9 @@ const DESTINATIONS = {
 const { Service, Browser } = require("./puppet");
 
 module.exports.cmd = async function (vargs) {
-  console.log("Destinations:");
+  console.log("Apps:");
   const results = [];
-  for (const key of Object.keys(DESTINATIONS)) {
+  for (const key of Object.keys(APPS)) {
     try {
       console.log(key);
       const runner = new Runner(key);
@@ -41,12 +42,12 @@ module.exports.cmd = async function (vargs) {
 };
 
 class Runner {
-  constructor(serviceKey) {
-    this.data = DESTINATIONS[serviceKey];
+  constructor(appKey) {
+    this.data = APPS[appKey];
     if (!this.data) {
-      throw new Error(`Unknown destination: ${serviceKey}`);
+      throw new Error(`Unknown destination: ${appKey}`);
     }
-    this.service = new Service(this.data.demo, ["destinations", serviceKey]);
+    this.service = new Service(this.data.demo, ["plugins", appKey]);
   }
 
   async run() {
@@ -56,6 +57,8 @@ class Runner {
   async screenshots() {
     const app = new App(this.service, this.data);
     await app.screenshots();
+
+    // TODO: sources
 
     for (const destKey of Object.keys(this.data.destinations)) {
       const data = this.data.destinations[destKey];

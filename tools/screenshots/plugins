@@ -2,10 +2,10 @@
 const argv = require("yargs")
   .help("h")
   .alias("h", "help")
-  .example("$0", "generate screenshots for destinations")
+  .example("$0", "generate screenshots for plugins")
   .usage("Usage: $0").argv;
 
-require("./src/destinations")
+require("./src/plugins")
   .cmd(argv)
   .then(
     () => {
