@@ -46,14 +46,4 @@ describe("integration/refreshQuery/redshift", () => {
       })
     ).rejects.toThrow(/please provide a query/);
   });
-  it("shows a good error with a query that has too many sql statements", async () => {
-    const app = await App.findOne();
-    await expect(
-      AppRefreshQuery.create({
-        appId: app.id,
-        refreshQuery: "SELECT 'hi' as name, SELECT id FROM demo.users LIMIT 1;",
-        state: "ready",
-      })
-    ).rejects.toThrow(/only provide a single query/);
-  });
 });
