@@ -232,12 +232,28 @@ class Destination {
     const appPath = `/app/${this.service.data.app}`;
     const destPath = `/model/${this.data.model}/destination/${this.data.id}`;
     const recordPath = `/model/${this.data.model}/record/new`;
+
+    // make sure there is a preview
     await this.goto(recordPath);
     await this.form({ value: "12" });
+
+    // app options
     await this.goto(`${appPath}/edit`);
-    await this.screenshot("app-options-full");
+    await this.screenshot("app-edit-full");
+    await this.screenshot("app-edit-options", {
+      selector: "#appOptions",
+      border: 10,
+    });
+
+    // destination options
     await this.goto(`${destPath}/edit`);
-    await this.screenshot("destination-options-full");
+    await this.screenshot("destination-edit-full");
+    await this.screenshot("destination-edit-options", {
+      selector: "#destinationOptions",
+      border: 10,
+    });
+
+    // destination data
     await this.goto(`${destPath}/data`);
     await this.pickModel();
     await this.screenshot("destination-data-full");
