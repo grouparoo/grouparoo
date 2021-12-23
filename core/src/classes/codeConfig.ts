@@ -63,7 +63,6 @@ export interface DestinationConfigurationObject extends ConfigurationObject {
 
 export interface GroupConfigurationObject extends ConfigurationObject {
   name: string;
-  type: string;
   modelId: string;
   rules?: GroupRuleWithKey[];
 }

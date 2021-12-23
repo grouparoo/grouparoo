@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/core",
   "description": "The Grouparoo Core",
-  "version": "0.7.8-alpha.0",
+  "version": "0.8.0-alpha.0",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -36,7 +36,7 @@
     "@types/fs-extra": "*",
     "@types/node": "*",
     "@types/validator": "*",
-    "actionhero": "28.0.4",
+    "actionhero": "28.1.1",
     "ah-sequelize-plugin": "3.2.0",
     "bcryptjs": "2.4.3",
     "cls-hooked": "4.2.2",
@@ -46,7 +46,7 @@
     "form-data": "4.0.0",
     "fs-extra": "10.0.0",
     "glob": "7.2.0",
-    "grouparoo": "0.7.8-alpha.0",
+    "grouparoo": "0.8.0-alpha.0",
     "ioredis": "4.28.2",
     "ioredis-mock": "5.8.1",
     "isomorphic-fetch": "3.0.0",
@@ -60,7 +60,7 @@
     "pg": "8.7.1",
     "pg-hstore": "2.3.4",
     "pluralize": "8.0.0",
-    "prettier": "2.5.0",
+    "prettier": "2.5.1",
     "reflect-metadata": "0.1.13",
     "semver": "7.3.5",
     "sequelize": "6.11.0",
@@ -72,10 +72,10 @@
     "uuid": "8.3.2",
     "validator": "13.7.0",
     "winston": "3.3.3",
-    "ws": "8.3.0"
+    "ws": "8.4.0"
   },
   "devDependencies": {
-    "@grouparoo/spec-helper": "0.7.8-alpha.0",
+    "@grouparoo/spec-helper": "0.8.0-alpha.0",
     "@types/isomorphic-fetch": "0.0.35",
     "@types/jest": "*",
     "@types/pacote": "11.1.1",
@@ -83,13 +83,13 @@
     "@types/semver": "7.3.9",
     "@types/tar": "6.1.1",
     "csv-parse": "4.16.3",
-    "jest": "27.4.3",
+    "jest": "27.4.5",
     "jest-fetch-mock": "3.0.3",
     "nock": "13.2.1",
-    "ts-jest": "27.1.1",
+    "ts-jest": "27.1.2",
     "type-fest": "2.8.0",
     "typedoc": "0.22.10",
-    "typescript": "4.5.2"
+    "typescript": "4.5.4"
   },
   "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"
 }

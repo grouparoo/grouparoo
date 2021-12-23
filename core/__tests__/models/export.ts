@@ -11,6 +11,7 @@ import {
   Export,
   RecordProperty,
   Errors,
+  GroupMember,
 } from "../../src";
 
 describe("models/export", () => {
@@ -64,6 +65,21 @@ describe("models/export", () => {
   test("export apiData includes the destination name", async () => {
     const apiData = await _export.apiData();
     expect(apiData.destinationName).toBe(destination.name);
+  });
+
+  test("export apiData includes the model id", async () => {
+    const apiData = await _export.apiData();
+    expect(apiData.modelId).toBe(record.modelId);
+  });
+
+  test("apiData can be retrieved for an export with a null destination", async () => {
+    const oldExport = await helper.factories.export();
+    await oldExport.update({ destinationId: null });
+
+    const apiData = await oldExport.apiData(true);
+    expect(apiData.id).toBe(oldExport.id);
+    expect(apiData.destination).toBeUndefined();
+    expect(apiData.destinationName).toBeNull();
   });
 
   test("an export can be deserialized returning Grouparoo types", async () => {
@@ -253,7 +269,7 @@ describe("models/export", () => {
     });
 
     const group = await helper.factories.group();
-    await group.addRecord(record);
+    await GroupMember.create({ recordId: record.id, groupId: group.id });
 
     const destination = await helper.factories.destination();
     await destination.updateTracking("group", group.id);
@@ -324,7 +340,7 @@ describe("models/export", () => {
     await record.update({ state: "ready" });
 
     const group = await helper.factories.group();
-    await group.addRecord(record);
+    await GroupMember.create({ recordId: record.id, groupId: group.id });
 
     const destination = await helper.factories.destination();
     await destination.updateTracking("group", group.id);
@@ -366,7 +382,7 @@ describe("models/export", () => {
   test("exports can be marked as having changes or not", async () => {
     await Export.truncate();
     const group = await helper.factories.group();
-    await group.addRecord(record);
+    await GroupMember.create({ recordId: record.id, groupId: group.id });
     await destination.updateTracking("group", group.id);
 
     const oldExport = await Export.create({

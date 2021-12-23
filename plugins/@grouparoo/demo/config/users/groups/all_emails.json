@@ -1,7 +1,6 @@
 {
   "id": "all_emails",
   "class": "Group",
-  "type": "calculated",
   "modelId": "users",
   "name": "All Emails",
   "rules": [

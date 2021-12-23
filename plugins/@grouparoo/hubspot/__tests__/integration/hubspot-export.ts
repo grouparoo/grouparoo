@@ -235,7 +235,6 @@ describe("integration/runs/hubspot", () => {
     await group.update({
       name: list1,
       matchType: "all",
-      type: "calculated",
     });
     await group.setRules([
       { key: "email", match: "%@%", operation: { op: "iLike" } },

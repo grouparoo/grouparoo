@@ -6,6 +6,8 @@ import {
   Export,
   ExportProcessor,
   plugin,
+  Session,
+  OAuthRequest,
 } from "../../../src";
 import { api, task, specHelper } from "actionhero";
 
@@ -198,6 +200,54 @@ describe("tasks/sweeper", () => {
 
       count = await Log.count();
       expect(count).toBe(1);
+    });
+
+    test("it will delete old sessions", async () => {
+      await Session.truncate();
+      const session = await Session.create({
+        teamMemberId: "foo",
+        fingerprint: "foo",
+        expiresAt: new Date().getTime(),
+      });
+
+      session.set({ createdAt: new Date(0) }, { raw: true });
+      session.changed("createdAt", true);
+      await session.save({
+        silent: true,
+        fields: ["createdAt"],
+      });
+
+      let count = await Session.count();
+      expect(count).toBe(1);
+
+      await specHelper.runTask("sweeper", {});
+
+      count = await Session.count();
+      expect(count).toBe(0);
+    });
+
+    test("it will delete old oAuthRequests", async () => {
+      await OAuthRequest.truncate();
+      const oAuthRequest = await OAuthRequest.create({
+        provider: "github",
+        type: "user",
+        token: "foo",
+      });
+
+      oAuthRequest.set({ createdAt: new Date(0) }, { raw: true });
+      oAuthRequest.changed("createdAt", true);
+      await oAuthRequest.save({
+        silent: true,
+        fields: ["createdAt"],
+      });
+
+      let count = await OAuthRequest.count();
+      expect(count).toBe(1);
+
+      await specHelper.runTask("sweeper", {});
+
+      count = await OAuthRequest.count();
+      expect(count).toBe(0);
     });
   });
 });

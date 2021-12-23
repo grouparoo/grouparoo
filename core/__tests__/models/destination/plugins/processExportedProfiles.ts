@@ -6,6 +6,7 @@ import {
   Export,
   ExportProcessor,
   GrouparooModel,
+  GroupMember,
   Setting,
 } from "../../../../src";
 import { api, specHelper } from "actionhero";
@@ -208,7 +209,7 @@ describe("models/destination - with custom processExportedRecords", () => {
       await record.addOrUpdateProperties({
         email: ["newemail@example.com"],
       });
-      await groupA.addRecord(record);
+      await GroupMember.create({ recordId: record.id, groupId: groupA.id });
 
       await destination.exportRecord(record);
       await specHelper.runTask("export:enqueue", {});

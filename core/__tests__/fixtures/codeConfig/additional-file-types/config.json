@@ -2,7 +2,6 @@
   "id": "email_group",
   "name": "People with Email Addresses",
   "class": "Group",
-  "type": "calculated",
   "rules": [
     {
       "propertyId": "user_id",

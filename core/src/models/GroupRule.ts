@@ -5,11 +5,17 @@ import {
   ForeignKey,
   BelongsTo,
   BeforeSave,
+  DataType,
 } from "sequelize-typescript";
 import { Group } from "./Group";
 import { Property } from "./Property";
 import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
+import {
+  GroupRuleOpType,
+  RelativeMatchDirectionType,
+  RelativeMatchUnitType,
+} from "../modules/ruleOpsDictionary";
 
 @Table({ tableName: "groupRules", paranoid: false })
 export class GroupRule extends CommonModel<GroupRule> {
@@ -37,17 +43,17 @@ export class GroupRule extends CommonModel<GroupRule> {
   match: string;
 
   @AllowNull(false)
-  @Column
-  op: string;
+  @Column(DataType.STRING)
+  op: GroupRuleOpType;
 
   @Column
   relativeMatchNumber: number;
 
-  @Column
-  relativeMatchUnit: string;
+  @Column(DataType.STRING)
+  relativeMatchUnit: RelativeMatchUnitType;
 
-  @Column
-  relativeMatchDirection: string;
+  @Column(DataType.STRING)
+  relativeMatchDirection: RelativeMatchDirectionType;
 
   @BelongsTo(() => Group)
   schedule: Group;

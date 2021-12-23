@@ -5,6 +5,7 @@ import { Export } from "../../models/Export";
 import { ExportProcessor } from "../../models/ExportProcessor";
 import { Log } from "../../models/Log";
 import { Session } from "../../models/Session";
+import { OAuthRequest } from "../../models/OAuthRequest";
 import { CLSTask } from "../../classes/tasks/clsTask";
 
 export class Sweeper extends CLSTask {
@@ -65,8 +66,12 @@ export class Sweeper extends CLSTask {
     response = await Log.sweep();
     this.log("log", response.count, response.days);
 
-    // --- Sessions ---
+    // --- SESSIONS ---
     response = await Session.sweep();
     this.log("session", response.count, response.days);
+
+    // OAUTH REQUESTS
+    response = await OAuthRequest.sweep(limit);
+    this.log("oAuthRequest", response.count, response.days);
   }
 }

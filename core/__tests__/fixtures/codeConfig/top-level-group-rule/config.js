@@ -11,7 +11,6 @@ module.exports = async function getConfig() {
       id: "group_exists",
       name: "People that exist",
       class: "Group",
-      type: "calculated",
       modelId: "mod_profiles",
       rules: [
         {
@@ -25,7 +24,6 @@ module.exports = async function getConfig() {
       id: "group_recent",
       name: "People that have been recently added",
       class: "Group",
-      type: "calculated",
       modelId: "mod_profiles",
       rules: [
         {

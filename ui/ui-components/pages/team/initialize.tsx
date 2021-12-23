@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 import { Form, Card } from "react-bootstrap";
 import LoadingButton from "../../components/LoadingButton";
 import { Actions } from "../../utils/apiData";
-import { createSession } from "../../components/session/SignIn";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { SuccessHandler } from "../../utils/successHandler";
 import { SessionHandler } from "../../utils/sessionHandler";
@@ -35,18 +34,15 @@ export default function TeamInitializePage(props) {
       data
     );
     if (response?.team) {
-      const sessionData = {
-        email: data.email,
-        password: data.password,
-      };
-
-      const teamMember = await createSession(
-        sessionData,
-        sessionHandler,
-        execApi
+      const response: Actions.SessionCreate = await execApi(
+        "post",
+        `/session`,
+        data
       );
 
-      if (teamMember) {
+      if (response?.teamMember) {
+        window.localStorage.setItem("session:csrfToken", response.csrfToken);
+        sessionHandler.set(response.teamMember);
         successHandler.set({ message: "Welcome to Grouparoo" });
         router.push(`/setup`);
       }

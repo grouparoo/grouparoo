@@ -106,7 +106,7 @@ async function runExport({
 
 describe("pipedrive/exportRecord", () => {
   beforeAll(async () => {
-    client = await connect(appOptions);
+    client = await connect(appId, appOptions);
     fieldMap = await getKnownFieldMap(
       client,
       "person",

@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { api, specHelper, config } from "actionhero";
+import { specHelper, config } from "actionhero";
 import {
   Log,
   GrouparooRecord,
@@ -10,11 +10,12 @@ import {
 } from "../../../src";
 import { SharedGroupTests } from "../../utils/prepareSharedGroupTest";
 import { GroupOps } from "../../../src/modules/ops/group";
+import { GroupRuleWithKey } from "../../../src/models/Group";
 
 describe("models/group", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
-  describe("calculated groups", () => {
+  describe("groups calculations", () => {
     let run: Run;
     let group: Group;
     let mario: GrouparooRecord;
@@ -42,7 +43,7 @@ describe("models/group", () => {
       process.env.GROUPAROO_RUN_MODE = undefined;
     });
 
-    test("an empty calculated group can be created", async () => {
+    test("an empty group can be created", async () => {
       const members = await group.$get("groupMembers");
       expect(members.length).toBe(0);
       expect(group.state).toBe("draft");
@@ -51,6 +52,7 @@ describe("models/group", () => {
     test("setting rules outside of the dictionary will fail", async () => {
       await expect(
         group.setRules([
+          //@ts-ignore We are checking something explicitly not in the type
           { key: "firstName", match: "nobody", operation: { op: "wacky" } },
         ])
       ).rejects.toThrow(
@@ -315,7 +317,7 @@ describe("models/group", () => {
         );
       });
 
-      test("does not return for calculated groups without relative rules", async () => {
+      test("does not return for groups without relative rules", async () => {
         await group.setRules([
           {
             key: "ltv",
@@ -325,18 +327,25 @@ describe("models/group", () => {
         ]);
         expect(await group.nextCalculatedAt()).toBeNull();
       });
-
-      test("does not return for manual groups", async () => {
-        await group.setRules([]);
-        await group.update({ type: "manual" });
-        expect(await group.nextCalculatedAt()).toBeNull();
-      });
     });
 
     test("runUpdateMembers with a destination will create imports for all members and include a destinationId in _meta", async () => {
-      await group.update({ type: "manual", state: "ready" });
-      await group.addRecord(mario);
-      await group.addRecord(luigi);
+      await group.setRules([
+        { key: "lastName", operation: { op: "eq" }, match: "Mario" },
+      ]);
+      await GroupOps.updateRecords([mario.id], "group", group.id); // make an import
+      await GroupOps.updateRecords([luigi.id], "group", group.id); // make an import
+      await GroupMember.create({ recordId: mario.id, groupId: group.id });
+      await GroupMember.create({ recordId: luigi.id, groupId: group.id });
+
+      await mario.reload();
+      await luigi.reload();
+      await peach.reload();
+      await toad.reload();
+      await mario.update({ state: "ready" });
+      await luigi.update({ state: "ready" });
+      await toad.update({ state: "ready" });
+      await peach.update({ state: "ready" });
 
       let imports = await Import.findAll();
       expect(imports.length).toBe(2);
@@ -383,7 +392,7 @@ describe("models/group", () => {
       await secondRun.destroy();
     });
 
-    test("adding and removing members from a calculated group produces log entries", async () => {
+    test("adding and removing members from a group produces log entries", async () => {
       await Log.truncate();
 
       await group.update({ matchType: "all" });
@@ -453,7 +462,7 @@ describe("models/group", () => {
     describe("convenientRules", () => {
       describe("fromConvenientRules", () => {
         test("exists", async () => {
-          const convenientRules = [
+          const convenientRules: GroupRuleWithKey[] = [
             { key: "email", operation: { op: "exists" } },
           ];
           const rules = [
@@ -464,7 +473,7 @@ describe("models/group", () => {
         });
 
         test("notExists", async () => {
-          const convenientRules = [
+          const convenientRules: GroupRuleWithKey[] = [
             { key: "email", operation: { op: "notExists" } },
           ];
           const rules = [
@@ -475,7 +484,7 @@ describe("models/group", () => {
         });
 
         test("relative_gt", async () => {
-          const convenientRules = [
+          const convenientRules: GroupRuleWithKey[] = [
             {
               key: "lastLoginAt",
               operation: { op: "relative_gt" },
@@ -497,7 +506,7 @@ describe("models/group", () => {
         });
 
         test("relative_lt", async () => {
-          const convenientRules = [
+          const convenientRules: GroupRuleWithKey[] = [
             {
               key: "lastLoginAt",
               operation: { op: "relative_lt" },
@@ -524,7 +533,7 @@ describe("models/group", () => {
           const convenientRules = [
             { type: "email", key: "email", operation: { op: "exists" } },
           ];
-          const rules = [
+          const rules: GroupRuleWithKey[] = [
             {
               type: "email",
               key: "email",
@@ -540,7 +549,7 @@ describe("models/group", () => {
           const convenientRules = [
             { type: "email", key: "email", operation: { op: "notExists" } },
           ];
-          const rules = [
+          const rules: GroupRuleWithKey[] = [
             {
               type: "email",
               key: "email",
@@ -562,7 +571,7 @@ describe("models/group", () => {
               relativeMatchUnit: "days",
             },
           ];
-          const rules = [
+          const rules: GroupRuleWithKey[] = [
             {
               type: "date",
               key: "lastLoginAt",
@@ -586,7 +595,7 @@ describe("models/group", () => {
               relativeMatchUnit: "days",
             },
           ];
-          const rules = [
+          const rules: GroupRuleWithKey[] = [
             {
               type: "date",
               key: "lastLoginAt",
@@ -622,40 +631,7 @@ describe("models/group", () => {
     });
 
     describe("#updateProfilesMembership", () => {
-      describe("manual group", () => {
-        test("manual groups leave memberships where they are", async () => {
-          await group.update({ type: "manual" });
-          await group.addRecord(mario);
-
-          let members = await group.$get("groupMembers");
-          expect(members.length).toBe(1);
-
-          let belongs = await group.updateRecordsMembership([mario]);
-          expect(belongs).toEqual({ [mario.id]: true });
-
-          belongs = await group.updateRecordsMembership([luigi]);
-          expect(belongs).toEqual({ [luigi.id]: false });
-        });
-
-        test("manual groups will remove members if the group is deleted", async () => {
-          await group.update({ type: "manual", state: "deleted" });
-          await group.addRecord(mario);
-
-          let members = await group.$get("groupMembers");
-          expect(members.length).toBe(1);
-
-          let belongs = await group.updateRecordsMembership([mario]);
-          expect(belongs).toEqual({ [mario.id]: false });
-
-          belongs = await group.updateRecordsMembership([luigi]);
-          expect(belongs).toEqual({ [luigi.id]: false });
-
-          members = await group.$get("groupMembers");
-          expect(members.length).toBe(0);
-        });
-      });
-
-      describe("calculated group", () => {
+      describe("group", () => {
         test("groups with no rules will not have members added", async () => {
           await group.setRules([]);
           const belongs = await group.updateRecordsMembership([mario]);
@@ -754,7 +730,7 @@ describe("models/group", () => {
       test("it can return a count of records which would match an arbitrary rule set", async () => {
         await group.update({ matchType: "all" });
         await group.setRules([]);
-        const rules = [
+        const rules: GroupRuleWithKey[] = [
           {
             key: "lastLoginAt",
             match: new Date(100000).getTime(),
@@ -772,7 +748,7 @@ describe("models/group", () => {
         await group.update({ matchType: "all" });
         await group.setRules([]);
 
-        const rules = [
+        const rules: GroupRuleWithKey[] = [
           {
             key: "firstName",
             match: "%",

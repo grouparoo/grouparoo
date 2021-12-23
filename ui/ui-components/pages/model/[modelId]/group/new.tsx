@@ -25,17 +25,14 @@ export default function NewGroup(props) {
 
   async function onSubmit(data) {
     setLoading(true);
-    const state = data.type === "manual" ? "ready" : "draft";
-    const response: Actions.GroupCreate = await execApi(
-      "post",
-      `/group`,
-      Object.assign({}, data, { state, modelId: model.id })
-    );
+    const response: Actions.GroupCreate = await execApi("post", `/group`, {
+      ...data,
+      state: "draft",
+      modelId: model.id,
+    });
     if (response?.group) {
-      const path = response.group.type === "calculated" ? "rules" : "edit";
       router.push(
-        `/model/[modelId]/group/[groupId]/${path}`,
-        `/model/${response.group.modelId}/group/${response.group.id}/${path}`
+        `/model/${response.group.modelId}/group/${response.group.id}/rules`
       );
     } else {
       setLoading(false);
@@ -66,19 +63,6 @@ export default function NewGroup(props) {
           <Form.Control.Feedback type="invalid">
             Name is required
           </Form.Control.Feedback>
-        </Form.Group>
-
-        <Form.Group>
-          <Form.Label>Group Type</Form.Label>
-          <Form.Control
-            as="select"
-            name="type"
-            ref={register}
-            disabled={loading}
-          >
-            <option>calculated</option>
-            <option>manual</option>
-          </Form.Control>
         </Form.Group>
 
         <LoadingButton variant="primary" type="submit" loading={loading}>

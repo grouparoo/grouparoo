@@ -145,10 +145,6 @@ export default function Page(props) {
     setLoading(false);
   }
 
-  if (group.type === "manual") {
-    return <p>Group is not calculated</p>;
-  }
-
   let rowChanges = false;
 
   const propertiesAndTopLevelGroupRules = properties.concat(

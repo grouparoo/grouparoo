@@ -77,8 +77,7 @@ export namespace SharedGroupTests {
 
   export async function beforeEach() {
     group = await Group.create({
-      name: "test calculated group",
-      type: "calculated",
+      name: "test group",
       modelId: "mod_profiles",
       rules: {},
     });

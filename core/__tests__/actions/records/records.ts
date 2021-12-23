@@ -11,6 +11,7 @@ import {
   RecordProperty,
   GrouparooModel,
   Destination,
+  GroupMember,
 } from "../../../src";
 import { SessionCreate } from "../../../src/actions/session";
 import {
@@ -21,7 +22,6 @@ import {
   RecordsList,
   RecordView,
 } from "../../../src/actions/records";
-import { GroupAddRecord, GroupRemoveRecord } from "../../../src/actions/groups";
 import { ConfigWriter } from "../../../src/modules/configWriter";
 import { RecordOps } from "../../../src/modules/ops/record";
 
@@ -368,60 +368,22 @@ describe("actions/records", () => {
       let record: GrouparooRecord;
 
       beforeAll(async () => {
+        record = new GrouparooRecord({ modelId: model.id });
+        await record.save();
+
         group = new Group({
           name: "new group",
-          type: "manual",
           modelId: model.id,
         });
         await group.save();
         await group.update({ state: "ready" });
-      });
-
-      beforeAll(async () => {
-        record = new GrouparooRecord({ modelId: model.id });
-        await record.save();
+        await GroupMember.create({ recordId: record.id, groupId: group.id });
       });
 
       afterAll(async () => {
+        await GroupMember.truncate();
         await group.destroy();
         await record.destroy();
-      });
-
-      test("a writer can add a record to a manual group", async () => {
-        connection.params = {
-          csrfToken,
-          id: group.id,
-          recordId: record.id,
-        };
-        const { error, success } = await specHelper.runAction<GroupAddRecord>(
-          "group:addRecord",
-          connection
-        );
-        expect(error).toBeUndefined();
-        expect(success).toBeTruthy();
-      });
-
-      test("a writer cannot add a record to a calculated group", async () => {
-        const calculatedGroup = new Group({
-          name: "robot group",
-          type: "calculated",
-          modelId: model.id,
-        });
-        await calculatedGroup.save();
-
-        connection.params = {
-          csrfToken,
-          id: calculatedGroup.id,
-          recordId: record.id,
-        };
-        const { error } = await specHelper.runAction<GroupAddRecord>(
-          "group:addRecord",
-          connection
-        );
-        expect(error.message).toMatch(
-          /only manual groups can have membership manipulated by this action/
-        );
-        await calculatedGroup.destroy();
       });
 
       test("the record lists group memberships", async () => {
@@ -450,30 +412,6 @@ describe("actions/records", () => {
         expect(error).toBeUndefined();
         expect(records.length).toBe(1);
         expect(total).toBe(1);
-      });
-
-      test("a writer can remove a record from a manual group", async () => {
-        connection.params = {
-          csrfToken,
-          id: group.id,
-          recordId: record.id,
-        };
-        const { error, success } =
-          await specHelper.runAction<GroupRemoveRecord>(
-            "group:removeRecord",
-            connection
-          );
-        expect(error).toBeUndefined();
-        expect(success).toBeTruthy();
-
-        connection.params = {
-          csrfToken,
-          id: record.id,
-        };
-        const { error: removeError, groups } =
-          await specHelper.runAction<RecordView>("record:view", connection);
-        expect(removeError).toBeUndefined();
-        expect(groups.length).toBe(0);
       });
     });
 
@@ -523,7 +461,6 @@ describe("actions/records", () => {
       beforeAll(async () => {
         group = new Group({
           name: "VIP people",
-          type: "manual",
           modelId: model.id,
         });
         await group.save();
@@ -576,19 +513,8 @@ describe("actions/records", () => {
         );
         peach = response.record;
 
-        connection.params = {
-          csrfToken,
-          id: group.id,
-          recordId: mario.id,
-        };
-        await specHelper.runAction("group:addRecord", connection);
-
-        connection.params = {
-          csrfToken,
-          id: group.id,
-          recordId: peach.id,
-        };
-        await specHelper.runAction("group:addRecord", connection);
+        await GroupMember.create({ groupId: group.id, recordId: mario.id });
+        await GroupMember.create({ groupId: group.id, recordId: peach.id });
       }, 10 * 1000);
 
       afterAll(async () => {
@@ -603,6 +529,7 @@ describe("actions/records", () => {
       });
 
       afterAll(async () => {
+        await GroupMember.truncate();
         await group.destroy();
       });
 

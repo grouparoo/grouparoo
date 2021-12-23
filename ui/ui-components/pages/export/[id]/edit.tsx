@@ -37,11 +37,15 @@ export default function Page({
             State: <StateBadge state={_export.state} marginBottom={0} />
             <br />
             Destination:{" "}
-            <EnterpriseLink
-              href={`/model/${_export.destination.modelId}/destination/${_export.destination.id}/edit`}
-            >
-              <a>{_export.destination.name}</a>
-            </EnterpriseLink>
+            {_export.destination ? (
+              <EnterpriseLink
+                href={`/model/${_export.destination.modelId}/destination/${_export.destination.id}/edit`}
+              >
+                <a>{_export.destination.name}</a>
+              </EnterpriseLink>
+            ) : (
+              <Badge variant="secondary">deleted</Badge>
+            )}
             <br />
             {_export.exportProcessorId ? (
               <>
@@ -56,14 +60,14 @@ export default function Page({
             ) : null}
             Record:{" "}
             <Link
-              href={`/model/${_export.destination.modelId}/record/${_export.recordId}/edit`}
+              href={`/model/${_export.modelId}/record/${_export.recordId}/edit`}
             >
               <a>{_export.recordId}</a>
             </Link>
             <br />
             Model:{" "}
-            <Link href={`/model/${_export.destination.modelId}/edit`}>
-              <a>{_export.destination.modelId}</a>
+            <Link href={`/model/${_export.modelId}/edit`}>
+              <a>{_export.modelId}</a>
             </Link>
             <br />
             To Delete?{" "}

@@ -1,7 +1,6 @@
 {
   "id": "owners",
   "class": "Group",
-  "type": "calculated",
   "modelId": "admins",
   "name": "Owners",
   "rules": [

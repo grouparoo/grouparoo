@@ -59,7 +59,6 @@ describe("actions/runs", () => {
 
   test("runs for just a group can be listed", async () => {
     const group = await helper.factories.group();
-    await group.update({ type: "calculated" });
     await group.setRules([{ key: "grouparooId", operation: { op: "exists" } }]);
     await group.update({ state: "ready" }); // creates a run
 

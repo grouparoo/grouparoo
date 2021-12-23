@@ -44,8 +44,7 @@ describe("bin/generate", () => {
 
     const output = messages.join(" ");
     expect(output).toContain(`Available Templates:`);
-    expect(output).toContain(`group:calculated`);
-    expect(output).toContain(`group:manual`);
+    expect(output).toContain(`group`);
     expect(output).toContain(`setting`);
   });
 
@@ -57,21 +56,20 @@ describe("bin/generate", () => {
 
     const output = messages.join(" ");
     expect(output).toContain(`Available Templates:`);
-    expect(output).toContain(`group:calculated`);
-    expect(output).toContain(`group:manual`);
+    expect(output).toContain(`group`);
     expect(output).not.toContain(`setting`);
   });
 
   test("the generate command can write a new file", async () => {
     const command = new Generate();
     const toStop = await command.run({
-      params: { template: "group:calculated", id: "new-group" },
+      params: { template: "group", id: "new-group" },
     });
     expect(toStop).toBe(true);
 
     const file = `${process.env.GROUPAROO_CONFIG_DIR}/groups/new-group.js`;
     const output = messages.join(" ");
-    expect(output).toContain("generate group:calculated");
+    expect(output).toContain("generate group");
     expect(output).toContain(`wrote ${file}`);
 
     const contents = fs.readFileSync(file).toString();
@@ -82,7 +80,7 @@ describe("bin/generate", () => {
   test("the generate command will fail if the file exists", async () => {
     const command = new Generate();
     await command.run({
-      params: { template: "group:calculated", id: "new-group" },
+      params: { template: "group", id: "new-group" },
     });
 
     const output = messages.join(" ");
@@ -95,7 +93,7 @@ describe("bin/generate", () => {
     const command = new Generate();
     await command.run({
       params: {
-        template: "group:calculated",
+        template: "group",
         id: "new-group",
         overwrite: true,
       },
@@ -110,7 +108,7 @@ describe("bin/generate", () => {
     const command = new Generate();
     await command.run({
       params: {
-        template: "group:calculated",
+        template: "group",
         id: "New Group",
         overwrite: true,
       },
@@ -127,7 +125,7 @@ describe("bin/generate", () => {
     const command = new Generate();
     await command.run({
       params: {
-        template: "group:calculated",
+        template: "group",
         id: "new-group",
         overwrite: true,
       },

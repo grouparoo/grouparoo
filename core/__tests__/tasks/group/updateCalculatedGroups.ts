@@ -28,9 +28,8 @@ describe("tasks/group:updateCalculatedGroups", () => {
       expect(setting.value).toBe("1440");
     });
 
-    describe("calculated groups with relative rules", () => {
+    describe("groups with relative rules", () => {
       beforeAll(async () => {
-        await group.update({ type: "calculated" });
         await group.setRules([
           {
             key: "lastLoginAt",
@@ -125,9 +124,8 @@ describe("tasks/group:updateCalculatedGroups", () => {
       });
     });
 
-    describe("calculated groups without relative rules", () => {
+    describe("groups without relative rules", () => {
       beforeAll(async () => {
-        await group.update({ type: "calculated" });
         await group.setRules([
           {
             key: "ltv",
@@ -135,26 +133,6 @@ describe("tasks/group:updateCalculatedGroups", () => {
             match: "3",
           },
         ]);
-      });
-
-      test("running it will not enqueue an update for groups that have never been calculated", async () => {
-        await group.update({ state: "ready", calculatedAt: null });
-        await specHelper.runTask("group:updateCalculatedGroups", {});
-        const runs = await Run.findAll({ where: { creatorId: group.id } });
-        expect(runs.length).toBe(0);
-      });
-
-      test("running it will not enqueue an update for groups that were last recalculated in the far past", async () => {
-        await group.update({ state: "ready", calculatedAt: new Date(0) }); // ~1970 or so
-        await specHelper.runTask("group:updateCalculatedGroups", {});
-        const runs = await Run.findAll({ where: { creatorId: group.id } });
-        expect(runs.length).toBe(0);
-      });
-    });
-
-    describe("manual groups", () => {
-      beforeAll(async () => {
-        await group.update({ type: "manual" });
       });
 
       test("running it will not enqueue an update for groups that have never been calculated", async () => {

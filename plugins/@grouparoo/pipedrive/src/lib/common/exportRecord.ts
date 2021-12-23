@@ -14,8 +14,17 @@ export const getExportRecordWithErrorHandling: (
     return await callback(args);
   } catch (error) {
     // look for the rate limit exceeded status code.
+    let retryIn = Math.floor(Math.random() * 10) + 1;
+
     if (error?.response?.status === 429) {
-      const retryIn = Math.floor(Math.random() * 10) + 1;
+      const dailyRequestsLeftStr =
+        error.response.headers["x-daily-requests-left"];
+      if (dailyRequestsLeftStr) {
+        const dailyRequestsLeft = parseInt(dailyRequestsLeftStr);
+        if (dailyRequestsLeft < 3) {
+          retryIn = 24 * 60 * 60; // 1 day
+        }
+      }
       return { error, success: false, retryDelay: 1000 * retryIn };
     }
     throw error;

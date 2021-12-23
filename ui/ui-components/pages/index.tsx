@@ -31,7 +31,7 @@ export default function Page(props) {
         <Row>
           <Col style={{ textAlign: "center" }}>
             <Image
-              style={{ maxHeight: 50, margin: 40 }}
+              style={{ maxHeight: 80, margin: 40 }}
               src="/public/images/logo/logo-and-wordmark-black-words.svg"
             />
             <br />

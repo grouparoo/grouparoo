@@ -14,6 +14,7 @@ Object {
       "force": true,
       "hasChanges": true,
       "id": null,
+      "modelId": Any<String>,
       "newGroups": Array [
         "Literally Everyone",
       ],
@@ -72,7 +73,6 @@ Object {
         },
       ],
       "state": "updating",
-      "type": "calculated",
       "updatedAt": Any<Number>,
     },
   ],
@@ -175,6 +175,7 @@ Object {
       "force": true,
       "hasChanges": true,
       "id": null,
+      "modelId": Any<String>,
       "newGroups": Array [
         "Literally Everyone",
       ],
@@ -233,7 +234,6 @@ Object {
         },
       ],
       "state": "updating",
-      "type": "calculated",
       "updatedAt": Any<Number>,
     },
   ],

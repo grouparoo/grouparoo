@@ -3,6 +3,7 @@ import { Initializer } from "actionhero";
 import { DestinationSyncMode, plugin } from "@grouparoo/core";
 
 import { test } from "../lib/test";
+import { parallelism } from "../lib/parallelism";
 import { AppTemplate } from "@grouparoo/app-templates/dist/app";
 import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
 
@@ -53,7 +54,7 @@ export class Plugins extends Initializer {
               description: "Pipedrive API token",
             },
           ],
-          methods: { test },
+          methods: { test, parallelism },
         },
       ],
       connections: [

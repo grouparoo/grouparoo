@@ -40,7 +40,6 @@ describe("record sync", () => {
   beforeEach(async () => {
     record = await helper.factories.record();
     group = await helper.factories.group();
-    await group.update({ type: "calculated" });
     destination = await helper.factories.destination();
   });
 
@@ -131,7 +130,6 @@ describe("record sync", () => {
 
       beforeEach(async () => {
         otherGroup = await helper.factories.group();
-        await otherGroup.update({ type: "calculated" });
         await otherGroup.setRules([
           { key: "grouparooId", match: "rec%", operation: { op: "like" } },
         ]);

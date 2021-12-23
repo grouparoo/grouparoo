@@ -1,8 +1,9 @@
+import { Op } from "sequelize";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Export } from "../models/Export";
 import { ExportOps } from "../modules/ops/export";
 import { Destination } from "../models/Destination";
-import { Op } from "sequelize";
+import { GrouparooRecord } from "../models/GrouparooRecord";
 import { APIData } from "../modules/apiData";
 
 export class ExportsList extends AuthenticatedAction {
@@ -42,15 +43,23 @@ export class ExportsList extends AuthenticatedAction {
       where["state"] = params.state;
     }
 
-    const _exports = await Export.findAll({
+    const { rows: _exports, count: total } = await Export.findAndCountAll({
       where,
-      include: [{ model: Destination, where: { state: { [Op.ne]: "draft" } } }],
+      include: [
+        {
+          model: Destination,
+          where: { state: { [Op.ne]: "draft" } },
+          required: false,
+        },
+        {
+          model: GrouparooRecord,
+          attributes: ["modelId"],
+        },
+      ],
       limit: params.limit,
       offset: params.offset,
       order: params.order,
     });
-
-    const total = await Export.count({ where });
 
     return {
       total,

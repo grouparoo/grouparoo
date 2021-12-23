@@ -8,6 +8,7 @@ import {
   Export,
   Group,
   GrouparooModel,
+  GroupMember,
   Log,
   Mapping,
   Option,
@@ -220,6 +221,24 @@ describe("models/destination", () => {
       expect(count).toBe(0);
 
       await group.destroy();
+    });
+
+    test("deleting a destination sets related export's destinationId to null", async () => {
+      destination = await Destination.create({
+        name: "bye destination",
+        type: "test-plugin-export",
+        appId: app.id,
+        modelId: model.id,
+      });
+
+      const _export = await helper.factories.export(null, destination);
+      await _export.complete();
+      expect(_export.destinationId).toBe(destination.id);
+
+      await destination.destroy();
+
+      await _export.reload();
+      expect(_export.destinationId).toBeNull();
     });
 
     test("destinations require a valid modelId", async () => {
@@ -955,7 +974,7 @@ describe("models/destination", () => {
           userId: [1],
           email: ["yoshi@example.com"],
         });
-        await group.addRecord(record);
+        await GroupMember.create({ recordId: record.id, groupId: group.id });
         await destination.updateTracking("group", group.id);
 
         const mapping = {
@@ -985,7 +1004,7 @@ describe("models/destination", () => {
           email: ["yoshi@example.com"],
           ltv: [123],
         });
-        await group.addRecord(record);
+        await GroupMember.create({ recordId: record.id, groupId: group.id });
         await destination.updateTracking("group", group.id);
 
         const mapping = {
@@ -1013,7 +1032,7 @@ describe("models/destination", () => {
           await irrelevantDestination.updateTracking("group", otherGroup.id);
 
           const record = await helper.factories.record();
-          await group.addRecord(record);
+          await GroupMember.create({ recordId: record.id, groupId: group.id });
 
           // before the destinations are ready
           await destination.updateTracking("group", group.id);
@@ -1047,7 +1066,8 @@ describe("models/destination", () => {
           );
 
           await destination.updateTracking("none");
-          await group.removeRecord(record);
+          await GroupMember.destroy({ where: { recordId: record.id } });
+
           await otherGroupDestination.updateTracking("none");
           await otherGroupDestination.destroy();
           await modelDestination.updateTracking("none");
