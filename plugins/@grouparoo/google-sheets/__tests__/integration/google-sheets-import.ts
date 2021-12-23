@@ -210,7 +210,7 @@ describe("integration/runs/google-sheets", () => {
         key: "email",
         type: "string",
         unique: true,
-        options: { column: "email" },
+        options: { column: "email", aggregationMethod: "exact" },
         state: "ready",
       };
 
@@ -220,7 +220,7 @@ describe("integration/runs/google-sheets", () => {
       expect(property.id).toBeTruthy();
 
       // check the pluginOptions
-      expect(pluginOptions.length).toBe(1);
+      expect(pluginOptions.length).toBe(2);
       expect(pluginOptions[0].key).toBe("column");
       expect(pluginOptions[0].required).toBe(true);
       expect(pluginOptions[0].options[0].key).toBe("id");
@@ -230,7 +230,7 @@ describe("integration/runs/google-sheets", () => {
       session.params = {
         csrfToken,
         id: property.id,
-        options: { column: "email" },
+        options: { column: "email", aggregationMethod: "exact" },
       };
       const { error: editError } = await specHelper.runAction(
         "property:edit",
@@ -366,7 +366,8 @@ describe("integration/runs/google-sheets", () => {
         const foundAssociateTasks = await specHelper.findEnqueuedTasks(
           "import:associateRecord"
         );
-        expect(foundAssociateTasks.length).toEqual(20);
+
+        expect(foundAssociateTasks.length).toEqual(10);
 
         await Promise.all(
           foundAssociateTasks.map((t) =>
@@ -406,12 +407,12 @@ describe("integration/runs/google-sheets", () => {
         // check the results of the run
         const recordsCount = await GrouparooRecord.count();
         expect(recordsCount).toBe(10);
-
         await run.updateTotals();
+
         expect(run.state).toBe("complete");
-        expect(run.importsCreated).toBe(10);
+        expect(run.importsCreated).toBe(0);
         expect(run.recordsCreated).toBe(0);
-        expect(run.recordsImported).toBe(10);
+        expect(run.recordsImported).toBe(0);
         expect(run.percentComplete).toBe(100);
       },
       helper.longTime

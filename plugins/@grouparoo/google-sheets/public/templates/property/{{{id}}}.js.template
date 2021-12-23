@@ -10,6 +10,7 @@ exports.default = async function buildConfig() {
       isArray: false, // Is this an Array Property?
       options: {
         column: "...", // The column to use for this Property - e.g. `column: "first_name"`
+        aggregationMethod: "exact"
       },
     },
   ];

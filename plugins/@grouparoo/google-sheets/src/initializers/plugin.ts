@@ -1,13 +1,15 @@
 import { Initializer } from "actionhero";
-import { plugin } from "@grouparoo/core";
+import { AggregationMethod, plugin } from "@grouparoo/core";
 
 import { test } from "../lib/test";
 
 import { sourcePreview } from "../lib/sheet-import/sourcePreview";
 import { records } from "../lib/sheet-import/records";
 import { propertyOptions } from "../lib/sheet-import/propertyOptions";
-import { uniquePropertyBootstrapOptions } from "../lib/sheet-import/uniquePropertyBootstrapOptions";
+import { uniquePropertyBootstrapOptions } from "@grouparoo/csv/dist/lib/uniquePropertyBootstrapOptions";
 import { sourceRunPercentComplete } from "../lib/sheet-import/sourceRunPercentComplete";
+import { recordProperty } from "../lib/sheet-import/recordProperty";
+import { recordProperties } from "../lib/sheet-import/recordProperties";
 
 import {
   GoogleSheetAppTemplate,
@@ -64,6 +66,7 @@ export class Plugins extends Initializer {
           direction: "import",
           description: "Import or update Records from a Google Sheet.",
           apps: ["google-sheets"],
+          groupAggregations: [AggregationMethod.Exact],
           options: [
             {
               key: "sheet_url",
@@ -73,13 +76,14 @@ export class Plugins extends Initializer {
                 "The url of the Google Sheet, with the gid (tab) included.",
             },
           ],
-          groupAggregations: [],
           methods: {
             sourcePreview,
             propertyOptions,
             records,
             sourceRunPercentComplete,
             uniquePropertyBootstrapOptions,
+            recordProperty,
+            recordProperties,
           },
         },
       ],

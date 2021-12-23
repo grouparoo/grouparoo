@@ -12,7 +12,8 @@ const uniqueTimestamp = new Date().getTime().toString();
 function readEnv(filePath) {
   return dotenv.parse(fs.readFileSync(filePath));
 }
-export function loadAppOptions(newNock: boolean = false): SimpleAppOptions {
+export function loadAppOptions(): SimpleAppOptions {
+  const newNock: boolean = !!process.env.NOCK;
   let envFile;
   if (newNock) {
     envFile = realPath;
