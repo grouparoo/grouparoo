@@ -1,13 +1,14 @@
 import path from "path";
 import fs from "fs";
+import http from "http";
 import { Initializer, Connection, api, log, config, route } from "actionhero";
 
 declare module "actionhero" {
   export interface Api {
     next: {
       app?: any;
-      render?: (Connection) => void;
-      handle?: (req, res) => void;
+      render?: (Connection: Connection) => void;
+      handle?: (req: http.ClientRequest, res: http.ServerResponse) => void;
     };
   }
 }

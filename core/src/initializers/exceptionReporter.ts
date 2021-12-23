@@ -20,7 +20,9 @@ export class GrouparooExceptionReporter extends Initializer {
         error instanceof ValidationError ||
         error instanceof UniqueConstraintError
       ) {
+        // @ts-ignore
         const sql: string = error["sql"];
+        // @ts-ignore
         const parameters: string[] = error["parameters"];
         log("Problematic SQL statement", "warning", { sql, parameters });
       }
