@@ -3,12 +3,12 @@ import * as REPL from "repl";
 import { api, env, CLI } from "actionhero";
 
 export class Console extends CLI {
+  name = "console";
+  description =
+    "Start an interactive REPL session with the api object in-scope";
+
   constructor() {
     super();
-    this.name = "console";
-    this.description =
-      "Start an interactive REPL session with the api object in-scope";
-
     GrouparooCLI.timestampOption(this);
   }
 

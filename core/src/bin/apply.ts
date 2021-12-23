@@ -1,5 +1,5 @@
 import { GrouparooCLI } from "../modules/cli";
-import { CLI, config, log, api } from "actionhero";
+import { CLI, config, log, api, ParamsFrom } from "actionhero";
 import { CLS } from "../modules/cls";
 import {
   loadConfigObjects,
@@ -12,20 +12,20 @@ import { Migrations } from "ah-sequelize-plugin/dist/modules/migrations";
 import { SettingOps } from "../modules/ops/setting";
 
 export class Apply extends CLI {
+  name = "apply";
+  description = "Apply changes from code config";
+  inputs = {
+    local: {
+      description:
+        "Disable external validation. You can optionally pass object IDs to only disable external validation for those specific config objects and their dependents.",
+      letter: "l",
+      variadic: true,
+      placeholder: "object ids",
+    },
+  };
+
   constructor() {
     super();
-    this.name = "apply";
-    this.description = "Apply changes from code config";
-    this.inputs = {
-      local: {
-        description:
-          "Disable external validation. You can optionally pass object IDs to only disable external validation for those specific config objects and their dependents.",
-        letter: "l",
-        variadic: true,
-        placeholder: "object ids",
-      },
-    };
-
     GrouparooCLI.timestampOption(this);
   }
 
@@ -34,7 +34,7 @@ export class Apply extends CLI {
     GrouparooCLI.setNextDevelopmentMode();
   };
 
-  async run({ params }) {
+  async run({ params }: { params: ParamsFrom<Apply> }) {
     GrouparooCLI.logCLI(this.name);
 
     const configDir = await getConfigDir(true);
@@ -60,7 +60,7 @@ export class Apply extends CLI {
         );
 
         // start the config apply process
-        const canExternallyValidate = params.local !== true;
+        const canExternallyValidate = params.local.toString() !== "true";
         const locallyValidateIds =
           Array.isArray(params.local) && (new Set(params.local) as Set<string>);
 

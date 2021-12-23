@@ -1,29 +1,29 @@
 import { GrouparooCLI } from "../modules/cli";
 import { GrouparooRecord, RecordProperty, Property } from "..";
-import { CLI } from "actionhero";
+import { CLI, ParamsFrom } from "actionhero";
 import { Op } from "sequelize";
 
 export class SyncCLI extends CLI {
+  name = "sync <recordProperty>";
+  description =
+    "Sync (import & export) a GrouparooRecord.  You can provide a GrouparooRecord id or a unique GrouparooRecord Property";
+  inputs = {
+    property: {
+      description:
+        "Choose the name of the Property to find the GrouparooRecord by (i.e.: email_address)",
+      letter: "p",
+    },
+    "no-export": {
+      default: false,
+      description: "Skip exporting the record",
+      letter: "n",
+      flag: true,
+    },
+  };
+  example = `grouparoo sync person@example.com --property email`;
+
   constructor() {
     super();
-    this.name = "sync <recordProperty>";
-    this.description =
-      "Sync (import & export) a GrouparooRecord.  You can provide a GrouparooRecord id or a unique GrouparooRecord Property";
-    this.inputs = {
-      property: {
-        description:
-          "Choose the name of the Property to find the GrouparooRecord by (i.e.: email_address)",
-        letter: "p",
-      },
-      "no-export": {
-        default: false,
-        description: "Skip exporting the record",
-        letter: "n",
-        flag: true,
-      },
-    };
-    this.example = `grouparoo sync person@example.com --property email`;
-
     GrouparooCLI.timestampOption(this);
     GrouparooCLI.jsonOption(this);
   }
@@ -33,7 +33,16 @@ export class SyncCLI extends CLI {
     GrouparooCLI.setNextDevelopmentMode();
   };
 
-  async run({ params }) {
+  async run({
+    params,
+  }: {
+    params: ParamsFrom<SyncCLI> & {
+      export?: boolean;
+      recordProperty?: string;
+      json?: string;
+      _arguments: string[];
+    };
+  }) {
     const [recordProperty] = params._arguments || [];
     if (recordProperty) params.recordProperty = recordProperty;
 
@@ -95,9 +104,9 @@ export class SyncCLI extends CLI {
     if (params.json) {
       GrouparooCLI.logger.log(JSON.stringify({ properties, groups, exports }));
     } else {
-      const propertyStatus = {};
-      const groupStatus = {};
-      const exportStatus = {};
+      const propertyStatus: Record<string, any> = {};
+      const groupStatus: Record<string, any> = {};
+      const exportStatus: Record<string, any> = {};
       for (const k in properties)
         propertyStatus[k] = [properties[k].values.join(", ")];
       for (const i in groups) groupStatus[groups[i].name] = [];

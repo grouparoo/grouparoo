@@ -1,42 +1,42 @@
 import { GrouparooCLI } from "../modules/cli";
-import { CLI, Task, api, config } from "actionhero";
+import { CLI, Task, api, config, ParamsFrom } from "actionhero";
 import { Reset } from "../modules/reset";
 import { Worker } from "node-resque";
 
 export class RunCLI extends CLI {
+  name = "run";
+  description =
+    "Run all Schedules, Runs, Imports and Exports pending in this cluster.  Use GROUPAROO_LOG_LEVEL env to set log level.";
+  inputs = {
+    reset: {
+      default: false,
+      description:
+        "[DANGER] Empty the cluster of all GrouparooRecord data before starting the run? Equivalent to `grouparoo reset data`",
+      letter: "r",
+      flag: true,
+    },
+    "reset-high-watermarks": {
+      default: false,
+      description: "Should we run all Schedules from the beginning?",
+      letter: "m",
+      flag: true,
+    },
+    "no-export": {
+      default: false,
+      description: "Skip exporting the records",
+      letter: "n",
+      flag: true,
+    },
+    web: {
+      default: false,
+      description: "Enable the web server during this run?",
+      letter: "w",
+      flag: true,
+    },
+  };
+
   constructor() {
     super();
-    this.name = "run";
-    this.description =
-      "Run all Schedules, Runs, Imports and Exports pending in this cluster.  Use GROUPAROO_LOG_LEVEL env to set log level.";
-    this.inputs = {
-      reset: {
-        default: false,
-        description:
-          "[DANGER] Empty the cluster of all GrouparooRecord data before starting the run? Equivalent to `grouparoo reset data`",
-        letter: "r",
-        flag: true,
-      },
-      "reset-high-watermarks": {
-        default: false,
-        description: "Should we run all Schedules from the beginning?",
-        letter: "m",
-        flag: true,
-      },
-      "no-export": {
-        default: false,
-        description: "Skip exporting the records",
-        letter: "n",
-        flag: true,
-      },
-      web: {
-        default: false,
-        description: "Enable the web server during this run?",
-        letter: "w",
-        flag: true,
-      },
-    };
-
     GrouparooCLI.timestampOption(this);
   }
 
@@ -45,7 +45,14 @@ export class RunCLI extends CLI {
     GrouparooCLI.setNextDevelopmentMode();
   };
 
-  async run({ params }) {
+  async run({
+    params,
+  }: {
+    params: ParamsFrom<RunCLI> & {
+      export?: string;
+      resetHighWatermarks?: string;
+    };
+  }) {
     GrouparooCLI.logCLI(this.name, false);
     this.checkWorkers();
 
@@ -72,7 +79,7 @@ export class RunCLI extends CLI {
     }
   }
 
-  async runTasks(params) {
+  async runTasks(params: ParamsFrom<RunCLI>) {
     const tasks = {
       "appRefreshQueries:check": {},
       "schedules:enqueueRuns": {
@@ -83,8 +90,8 @@ export class RunCLI extends CLI {
       "group:updateCalculatedGroups": {},
     };
 
-    for (const name in tasks) {
-      const args = tasks[name];
+    // for (const name in tasks) {
+    for (const [name, args] of Object.entries(tasks)) {
       const task: Task = api.tasks.tasks[name];
       await task.run(args, {} as Worker);
     }

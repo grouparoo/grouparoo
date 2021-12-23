@@ -2,12 +2,12 @@ import { GrouparooCLI } from "../modules/cli";
 import { CLI } from "actionhero";
 
 export class Start extends CLI {
+  name = "start";
+  description =
+    "Run the Grouparoo server.  Use GROUPAROO_LOG_LEVEL env to set log level.";
+
   constructor() {
     super();
-    this.name = "start";
-    this.description =
-      "Run the Grouparoo server.  Use GROUPAROO_LOG_LEVEL env to set log level.";
-
     GrouparooCLI.timestampOption(this);
   }
 
