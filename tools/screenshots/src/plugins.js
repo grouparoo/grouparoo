@@ -32,17 +32,13 @@ const APPS = {
 const { Service, Browser } = require("./puppet");
 
 module.exports.cmd = async function (vargs) {
-  console.log("Apps:");
   const results = [];
-  for (const key of Object.keys(APPS)) {
-    try {
-      console.log(key);
-      const runner = new Runner(key);
-      await runner.run();
-      results.push({ key });
-    } catch (error) {
-      results.push({ key, error });
-    }
+  const inputApps = vargs["_"] || [];
+  const appKeys = inputApps.length > 0 ? inputApps : Object.keys(APPS);
+  console.log(`Apps: ${appKeys.join(", ")}`);
+
+  for (const key of appKeys) {
+    results.push(await cmdApp(key));
   }
   console.log("\n-------------\n");
   for (const result of results) {
@@ -55,11 +51,22 @@ module.exports.cmd = async function (vargs) {
   }
 };
 
+async function cmdApp(key) {
+  try {
+    console.log(key);
+    const runner = new Runner(key);
+    await runner.run();
+    return { key };
+  } catch (error) {
+    return { key, error };
+  }
+}
+
 class Runner {
   constructor(appKey) {
     this.data = APPS[appKey];
     if (!this.data) {
-      throw new Error(`Unknown destination: ${appKey}`);
+      throw new Error(`Unknown app: ${appKey}`);
     }
     this.service = new Service(this.data.demo, ["plugins", appKey]);
   }

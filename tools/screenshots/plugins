@@ -2,8 +2,9 @@
 const argv = require("yargs")
   .help("h")
   .alias("h", "help")
-  .example("$0", "generate screenshots for plugins")
-  .usage("Usage: $0").argv;
+  .example("$0", "generate screenshots for destinations")
+  .demandCommand(0)
+  .usage("Usage: [apps...]").argv;
 
 require("./src/plugins")
   .cmd(argv)
