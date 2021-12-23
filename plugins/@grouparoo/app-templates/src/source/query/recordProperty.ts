@@ -80,10 +80,6 @@ export const getRecordProperty: GetRecordPropertyMethod = ({
 export const validateGenericQuery: ValidateQueryMethod = ({ query }) => {
   const lowerCaseSQL = (query || "").toLowerCase().trim();
 
-  if (lowerCaseSQL.indexOf(";") >= 0) {
-    throw new Error("Only provide a single query");
-  }
-
   if (lowerCaseSQL.indexOf("--") >= 0) {
     throw new Error("Please remove any comments from the query");
   }
