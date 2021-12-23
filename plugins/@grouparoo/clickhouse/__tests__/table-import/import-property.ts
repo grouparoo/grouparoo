@@ -207,7 +207,7 @@ describe("clickhouse/table/recordProperty", () => {
           sourceMapping,
           aggregationMethod: "average",
         });
-        expect(round2dp(value as number)).toEqual(1.73);
+        expect(round2dp(value as number)).toEqual(1.63);
       });
       test("count", async () => {
         const value = await getPropertyValue({
@@ -215,7 +215,7 @@ describe("clickhouse/table/recordProperty", () => {
           sourceMapping,
           aggregationMethod: "count",
         });
-        expect(value).toEqual(6);
+        expect(value).toEqual(7);
       });
       test("sum", async () => {
         const value = await getPropertyValue({
@@ -223,7 +223,7 @@ describe("clickhouse/table/recordProperty", () => {
           sourceMapping,
           aggregationMethod: "sum",
         });
-        expect(round2dp(value as number)).toEqual(10.38);
+        expect(round2dp(value as number)).toEqual(11.38);
       });
       test("min", async () => {
         const value = await getPropertyValue({
@@ -231,7 +231,7 @@ describe("clickhouse/table/recordProperty", () => {
           sourceMapping,
           aggregationMethod: "min",
         });
-        expect(value).toEqual(1.42);
+        expect(value).toEqual(1);
       });
       test("max", async () => {
         const value = await getPropertyValue({
@@ -250,7 +250,7 @@ describe("clickhouse/table/recordProperty", () => {
             sourceMapping,
             aggregationMethod: "count",
           });
-          expect(value).toEqual(6);
+          expect(value).toEqual(7);
         });
         test("min", async () => {
           const value = await getPropertyValue({
@@ -287,9 +287,36 @@ describe("clickhouse/table/recordProperty", () => {
     //   relativeMatchUnit?: string;
     //   relativeMatchDirection?: string;
     // }
+    describe("exists", () => {
+      const op = "exists";
 
-    //TODO: EXISTS/NOTEXISTS
+      test("string", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase" }]
+        );
+        expect(value).toEqual(6);
+      });
+    });
+    describe("does not exist", () => {
+      const op = "notExists";
 
+      test("string", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase" }]
+        );
+        expect(value).toEqual(1);
+      });
+    });
     describe("equals", () => {
       const op = "eq";
       test("integer", async () => {
@@ -371,7 +398,7 @@ describe("clickhouse/table/recordProperty", () => {
           },
           [{ op, key: "id", match: "15" }]
         );
-        expect(value).toEqual(5);
+        expect(value).toEqual(6);
       });
       test("string", async () => {
         const value = await getPropertyValue(
@@ -404,7 +431,7 @@ describe("clickhouse/table/recordProperty", () => {
           },
           [{ op, key: "date", match: "2020-02-15" }]
         );
-        expect(value).toEqual(5);
+        expect(value).toEqual(6);
       });
       test("timestamp", async () => {
         const value = await getPropertyValue(
@@ -415,7 +442,7 @@ describe("clickhouse/table/recordProperty", () => {
           },
           [{ op, key: "stamp", match: "2020-02-15 12:13:14" }]
         );
-        expect(value).toEqual(5);
+        expect(value).toEqual(6);
       });
       test("float", async () => {
         const value = await getPropertyValue(
@@ -426,7 +453,7 @@ describe("clickhouse/table/recordProperty", () => {
           },
           [{ op, key: "amount", match: "1.54" }]
         );
-        expect(value).toEqual(4);
+        expect(value).toEqual(5);
       });
     });
 
@@ -659,7 +686,7 @@ describe("clickhouse/table/recordProperty", () => {
           },
           [{ op, key: "id", match: "15" }]
         );
-        expect(value).toEqual(2);
+        expect(value).toEqual(3);
       });
       test("string", async () => {
         const value = await getPropertyValue(
@@ -692,7 +719,7 @@ describe("clickhouse/table/recordProperty", () => {
           },
           [{ op, key: "date", match: "2020-02-15" }]
         );
-        expect(value).toEqual(2);
+        expect(value).toEqual(3);
       });
       test("timestamp", async () => {
         const value = await getPropertyValue(
@@ -703,7 +730,7 @@ describe("clickhouse/table/recordProperty", () => {
           },
           [{ op, key: "stamp", match: "2020-02-15 12:13:14" }]
         );
-        expect(value).toEqual(2);
+        expect(value).toEqual(3);
       });
       test("float", async () => {
         const value = await getPropertyValue(
@@ -784,7 +811,7 @@ describe("clickhouse/table/recordProperty", () => {
           },
           [{ op, key: "amount", match: "1.54" }]
         );
-        expect(value).toEqual(2);
+        expect(value).toEqual(3);
       });
     });
   });

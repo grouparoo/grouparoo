@@ -113,7 +113,6 @@ export function makeWhereClause(
     ? `${transform}(\`${columnName}\`)`
     : `\`${columnName}\``;
 
-  // put the values and types in the array if there is a match
   if (match) params.push(match);
   if (match) types.push(dataType);
 

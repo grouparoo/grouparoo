@@ -286,8 +286,36 @@ describe("mysql/table/recordProperty", () => {
     //   relativeMatchDirection?: string;
     // }
 
-    // TODO: EXISTS/NOT EXISTS
+    describe.only("exists", () => {
+      const op = "exists";
 
+      test("string", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase" }]
+        );
+        expect(value).toEqual(6);
+      });
+    });
+    describe("does not exist", () => {
+      const op = "notExists";
+
+      test("string", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase" }]
+        );
+        expect(value).toEqual(1);
+      });
+    });
     describe("equals", () => {
       const op = "eq";
       test("integer", async () => {

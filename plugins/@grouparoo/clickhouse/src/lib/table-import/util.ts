@@ -66,9 +66,12 @@ export function makeWhereClause(
   switch (filterOperation) {
     case FilterOperation.Exists:
       op = "IS NOT NULL";
+      match = null;
       break;
     case FilterOperation.NotExists:
       op = "IS NULL";
+      match = null;
+      break;
     case FilterOperation.Equal:
       op = "==";
       break;
@@ -105,9 +108,11 @@ export function makeWhereClause(
   }
 
   if (!transform) {
-    match = values
-      ? values.map((v) => castValue(v, type, dataType))
-      : castValue(value, type, dataType);
+    if (!!match) {
+      match = values
+        ? values.map((v) => castValue(v, type, dataType))
+        : castValue(value, type, dataType);
+    }
   }
 
   const key = transform
@@ -115,10 +120,17 @@ export function makeWhereClause(
     : `\`${columnName}\``;
 
   if (!isCast || transform) {
-    if (match) params.push(match);
+    if (!!match) {
+      params.push(match);
+    }
   }
 
-  return ` ${key} ${op} ${
-    Array.isArray(match) ? "(?)" : isCast && !transform ? match : "?"
-  }`;
+  function buildMatchString(match) {
+    if (!match) return "";
+    if (Array.isArray(match)) return "(?)";
+    if (isCast && !transform) return match;
+    return "?";
+  }
+
+  return ` ${key} ${op} ${buildMatchString(match)}`;
 }
