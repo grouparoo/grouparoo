@@ -216,195 +216,203 @@ export default function Page(props) {
               </p>
 
               <hr />
-              <strong>
-                Options for a <code>{destination.connection.displayName}</code>{" "}
-                destination
-              </strong>
-              <br />
-              <br />
+              <div id="destinationOptions">
+                <strong>
+                  Options for a{" "}
+                  <code>{destination.connection.displayName}</code> destination
+                </strong>
+                <br />
+                <br />
 
-              {loadingOptions ? (
-                <Alert variant="warning">
-                  <Loader size="sm" /> Loading options from{" "}
-                  {destination.app.type}
-                </Alert>
-              ) : null}
+                {loadingOptions ? (
+                  <Alert variant="warning">
+                    <Loader size="sm" /> Loading options from{" "}
+                    {destination.app.type}
+                  </Alert>
+                ) : null}
 
-              {Object.keys(destination.connection.options).length === 0 ? (
-                <p>No options for this type of destination</p>
-              ) : null}
+                {Object.keys(destination.connection.options).length === 0 ? (
+                  <p>No options for this type of destination</p>
+                ) : null}
 
-              {destination.connection.options.map((opt) => {
-                return (
-                  <Form.Group
-                    key={`group-${opt.key}`}
-                    controlId={`_opt~${opt.key}`}
-                  >
-                    <Form.Label>
-                      {opt.required ? (
-                        <>
-                          <Badge variant="info">required</Badge>&nbsp;
-                        </>
-                      ) : null}
-                      <code>{opt.displayName || opt.key}</code>
-                    </Form.Label>
-                    {(() => {
-                      if (connectionOptions[opt.key]?.type === "typeahead") {
-                        return (
+                {destination.connection.options.map((opt) => {
+                  return (
+                    <Form.Group
+                      key={`group-${opt.key}`}
+                      controlId={`_opt~${opt.key}`}
+                    >
+                      <Form.Label>
+                        {opt.required ? (
                           <>
-                            <Typeahead
-                              id="typeahead"
-                              labelKey="key"
-                              disabled={loading || loadingOptions}
-                              onChange={(selected) => {
-                                updateOption(opt.key, selected[0]?.key);
-                              }}
-                              options={connectionOptions[opt.key]?.options.map(
-                                (k, idx) => {
+                            <Badge variant="info">required</Badge>&nbsp;
+                          </>
+                        ) : null}
+                        <code>{opt.displayName || opt.key}</code>
+                      </Form.Label>
+                      {(() => {
+                        if (connectionOptions[opt.key]?.type === "typeahead") {
+                          return (
+                            <>
+                              <Typeahead
+                                id="typeahead"
+                                labelKey="key"
+                                disabled={loading || loadingOptions}
+                                onChange={(selected) => {
+                                  updateOption(opt.key, selected[0]?.key);
+                                }}
+                                options={connectionOptions[
+                                  opt.key
+                                ]?.options.map((k, idx) => {
                                   return {
                                     key: k,
                                     descriptions:
                                       connectionOptions[k]?.descriptions[idx],
                                   };
+                                })}
+                                placeholder={
+                                  opt.placeholder || `Select ${opt.key}`
                                 }
-                              )}
-                              placeholder={
-                                opt.placeholder || `Select ${opt.key}`
-                              }
-                              renderMenuItemChildren={(opt, props, idx) => {
-                                return [
-                                  <span key={`opt-${idx}-key`}>
-                                    {opt.key}
-                                    <br />
-                                  </span>,
-                                  <small
-                                    key={`opt-${idx}-descriptions`}
-                                    className="text-small"
-                                  >
-                                    {opt.descriptions ? (
-                                      <em>
-                                        Descriptions:{" "}
-                                        {opt.descriptions.join(", ")}
-                                      </em>
-                                    ) : null}
-                                  </small>,
-                                ];
-                              }}
-                              defaultSelected={
-                                destination.options[opt.key]
-                                  ? [destination.options[opt.key]]
-                                  : undefined
-                              }
-                            />
-                            <Form.Text className="text-muted">
-                              {opt.description}
-                            </Form.Text>
-                          </>
-                        );
-                      } else if (connectionOptions[opt.key]?.type === "list") {
-                        return (
-                          <>
-                            <Form.Control
-                              as="select"
-                              required={opt.required}
-                              disabled={loading || loadingOptions}
-                              defaultValue={
-                                destination.options[opt.key]?.toString() || ""
-                              }
-                              onChange={(e) =>
-                                updateOption(
-                                  e.target.id.replace("_opt~", ""),
-                                  e.target.value
-                                )
-                              }
-                            >
-                              <option value={""} disabled>
-                                Select an option
-                              </option>
-                              {connectionOptions[opt.key].options.map(
-                                (o, idx) => (
-                                  <option key={`opt~${opt.key}-${o}`} value={o}>
-                                    {o}{" "}
-                                    {connectionOptions[opt.key]?.descriptions &&
-                                    connectionOptions[opt.key]?.descriptions[
-                                      idx
-                                    ]
-                                      ? ` | ${
-                                          connectionOptions[opt.key]
-                                            ?.descriptions[idx]
-                                        }`
-                                      : null}
-                                  </option>
-                                )
-                              )}
-                            </Form.Control>
-                            <Form.Text className="text-muted">
-                              {opt.description}
-                            </Form.Text>
-                          </>
-                        );
-                      } else if (
-                        connectionOptions[opt.key]?.type === "pending"
-                      ) {
-                        return (
-                          <>
-                            <Form.Control
-                              size="sm"
-                              disabled
-                              type="text"
-                              value="pending another selection"
-                            ></Form.Control>
-                          </>
-                        );
-                      } else {
-                        return (
-                          <>
-                            <Form.Control
-                              required={opt.required}
-                              type={
-                                connectionOptions[opt.key]?.type === "password"
-                                  ? "password"
-                                  : "text" // textarea not supported here
-                              }
-                              disabled={loading || loadingOptions}
-                              defaultValue={destination.options[
-                                opt.key
-                              ]?.toString()}
-                              placeholder={opt.placeholder}
-                              onChange={(e) =>
-                                updateOption(
-                                  e.target.id.replace("_opt~", ""),
-                                  e.target.value
-                                )
-                              }
-                            />
-                            <Form.Text className="text-muted">
-                              {opt.description}
-                            </Form.Text>
-                          </>
-                        );
-                      }
-                    })()}
-                  </Form.Group>
-                );
-              })}
+                                renderMenuItemChildren={(opt, props, idx) => {
+                                  return [
+                                    <span key={`opt-${idx}-key`}>
+                                      {opt.key}
+                                      <br />
+                                    </span>,
+                                    <small
+                                      key={`opt-${idx}-descriptions`}
+                                      className="text-small"
+                                    >
+                                      {opt.descriptions ? (
+                                        <em>
+                                          Descriptions:{" "}
+                                          {opt.descriptions.join(", ")}
+                                        </em>
+                                      ) : null}
+                                    </small>,
+                                  ];
+                                }}
+                                defaultSelected={
+                                  destination.options[opt.key]
+                                    ? [destination.options[opt.key]]
+                                    : undefined
+                                }
+                              />
+                              <Form.Text className="text-muted">
+                                {opt.description}
+                              </Form.Text>
+                            </>
+                          );
+                        } else if (
+                          connectionOptions[opt.key]?.type === "list"
+                        ) {
+                          return (
+                            <>
+                              <Form.Control
+                                as="select"
+                                required={opt.required}
+                                disabled={loading || loadingOptions}
+                                defaultValue={
+                                  destination.options[opt.key]?.toString() || ""
+                                }
+                                onChange={(e) =>
+                                  updateOption(
+                                    e.target.id.replace("_opt~", ""),
+                                    e.target.value
+                                  )
+                                }
+                              >
+                                <option value={""} disabled>
+                                  Select an option
+                                </option>
+                                {connectionOptions[opt.key].options.map(
+                                  (o, idx) => (
+                                    <option
+                                      key={`opt~${opt.key}-${o}`}
+                                      value={o}
+                                    >
+                                      {o}{" "}
+                                      {connectionOptions[opt.key]
+                                        ?.descriptions &&
+                                      connectionOptions[opt.key]?.descriptions[
+                                        idx
+                                      ]
+                                        ? ` | ${
+                                            connectionOptions[opt.key]
+                                              ?.descriptions[idx]
+                                          }`
+                                        : null}
+                                    </option>
+                                  )
+                                )}
+                              </Form.Control>
+                              <Form.Text className="text-muted">
+                                {opt.description}
+                              </Form.Text>
+                            </>
+                          );
+                        } else if (
+                          connectionOptions[opt.key]?.type === "pending"
+                        ) {
+                          return (
+                            <>
+                              <Form.Control
+                                size="sm"
+                                disabled
+                                type="text"
+                                value="pending another selection"
+                              ></Form.Control>
+                            </>
+                          );
+                        } else {
+                          return (
+                            <>
+                              <Form.Control
+                                required={opt.required}
+                                type={
+                                  connectionOptions[opt.key]?.type ===
+                                  "password"
+                                    ? "password"
+                                    : "text" // textarea not supported here
+                                }
+                                disabled={loading || loadingOptions}
+                                defaultValue={destination.options[
+                                  opt.key
+                                ]?.toString()}
+                                placeholder={opt.placeholder}
+                                onChange={(e) =>
+                                  updateOption(
+                                    e.target.id.replace("_opt~", ""),
+                                    e.target.value
+                                  )
+                                }
+                              />
+                              <Form.Text className="text-muted">
+                                {opt.description}
+                              </Form.Text>
+                            </>
+                          );
+                        }
+                      })()}
+                    </Form.Group>
+                  );
+                })}
 
-              {environmentVariableOptions.length > 0 ? (
-                <Row>
-                  <Col>
-                    <p>
-                      Environment Variable Options for Destinations:{" "}
-                      {environmentVariableOptions.sort().map((envOpt) => (
-                        <Badge key={`envOpt-${envOpt}`} variant="info">
-                          {envOpt}
-                        </Badge>
-                      ))}
-                    </p>
-                    <br />
-                  </Col>
-                </Row>
-              ) : null}
-
+                {environmentVariableOptions.length > 0 ? (
+                  <Row>
+                    <Col>
+                      <p>
+                        Environment Variable Options for Destinations:{" "}
+                        {environmentVariableOptions.sort().map((envOpt) => (
+                          <Badge key={`envOpt-${envOpt}`} variant="info">
+                            {envOpt}
+                          </Badge>
+                        ))}
+                      </p>
+                      <br />
+                    </Col>
+                  </Row>
+                ) : null}
+              </div>
               <br />
 
               <LoadingButton variant="primary" type="submit" loading={loading}>
