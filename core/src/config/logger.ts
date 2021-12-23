@@ -54,7 +54,7 @@ export const test = {
 // helpers for building the winston loggers
 
 function buildConsoleLogger(level = "info") {
-  const formats = [];
+  const formats: any[] = [];
 
   if (!disableColor()) formats.push(winston.format.colorize());
   if (!disableTimestamps()) formats.push(winston.format.timestamp());
@@ -69,7 +69,7 @@ function buildConsoleLogger(level = "info") {
     })
   );
 
-  return function (config) {
+  return function () {
     return winston.createLogger({
       format: winston.format.combine(...formats),
       level,

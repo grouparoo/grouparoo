@@ -23,7 +23,7 @@ Sequelize.useCLS(cls.createNamespace("grouparoo-cls"));
 require("pg").defaults.parseInt8 = true;
 
 export const DEFAULT = {
-  [namespace]: (config) => {
+  [namespace]: (config: Record<string, any>) => {
     const env = process.env.NODE_ENV ?? "development";
     let storage: string; //only for sqlite
     let dialect = process.env.DB_DIALECT;

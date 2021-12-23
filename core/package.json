@@ -75,7 +75,7 @@
     "ws": "8.4.0"
   },
   "devDependencies": {
-    "@grouparoo/spec-helper": "0.8.0-alpha.5",
+    "@types/cls-hooked": "4.3.3",
     "@types/isomorphic-fetch": "0.0.35",
     "@types/jest": "*",
     "@types/pacote": "11.1.2",
