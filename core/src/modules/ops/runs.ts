@@ -9,6 +9,7 @@ import { Import } from "../../models/Import";
 import { Op } from "sequelize";
 import { log, api, task } from "actionhero";
 import { Log } from "../../models/Log";
+import { TaskInputs } from "actionhero/dist/classes/task";
 
 export namespace RunOps {
   /**
@@ -69,7 +70,16 @@ export namespace RunOps {
    * Great for drawing charts!
    */
   export async function quantizedTimeline(run: Run, steps = 25) {
-    const data = [];
+    const data: {
+      lastBoundary: number;
+      nextBoundary: number;
+      steps: {
+        associate: number;
+        recordsUpdated: number;
+        groupsUpdated: number;
+        exported: number;
+      };
+    }[] = [];
     const start = run.createdAt.getTime();
 
     const lastProcessedImport = await Import.findOne({
@@ -93,7 +103,6 @@ export namespace RunOps {
     const stepSize = Math.floor((end - start) / steps);
     const boundaries = [start - stepSize * 2];
     let i = 1;
-    let foundDestinationNames = [];
     while (i <= steps + 4) {
       const lastBoundary = boundaries[i - 1];
       const nextBoundary = lastBoundary + stepSize;
@@ -132,13 +141,6 @@ export namespace RunOps {
 
       data.push(timeData);
       i++;
-    }
-
-    // add back points for destinations that were not found at this interval
-    for (const i in data) {
-      foundDestinationNames.forEach((destinationName) => {
-        if (!data[i].steps[destinationName]) data[i].steps[destinationName] = 0;
-      });
     }
 
     return data;
@@ -249,7 +251,7 @@ export namespace RunOps {
    * Is there already a task enqueued to process this run?
    */
   export async function isRunEnqueued(taskName: string, runId: string) {
-    let found = [];
+    let found: TaskInputs = [];
 
     // normal queues
     const queues = await api.resque.queue.queues();
@@ -276,6 +278,9 @@ export namespace RunOps {
       if (payload.class === taskName) found = found.concat(payload);
     }
 
-    return found.filter((t) => t.args[0].runId === runId).length > 0;
+    return (
+      found.filter((t: TaskInputs[number]) => t.args[0].runId === runId)
+        .length > 0
+    );
   }
 }

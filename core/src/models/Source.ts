@@ -153,8 +153,8 @@ export class Source extends LoggedModel<Source> {
     return OptionHelper.getPlugin(this);
   }
 
-  async parameterizedOptions(run?: Run): Promise<SimpleSourceOptions> {
-    const parameterizedOptions = {};
+  async parameterizedOptions(run?: Run) {
+    const parameterizedOptions: SimpleSourceOptions = {};
     const options = await this.getOptions();
     const keys = Object.keys(options);
     for (const i in keys) {
@@ -487,7 +487,7 @@ export class Source extends LoggedModel<Source> {
   }
 
   @BeforeDestroy
-  static async noDestroyIfLocked(instance) {
+  static async noDestroyIfLocked(instance: Source) {
     await LockableHelper.beforeDestroy(instance);
   }
 

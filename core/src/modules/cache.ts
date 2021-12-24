@@ -32,7 +32,10 @@ export interface ObjectCacheInvalidateMethod {
 async function getCacheValue({
   valueKey,
   read,
-}): Promise<{ cached: boolean; value: any }> {
+}: {
+  valueKey: string;
+  read: boolean;
+}) {
   if (!read) {
     return { cached: false, value: undefined };
   }
@@ -48,7 +51,7 @@ async function getCacheValue({
   }
 }
 
-function makeObjectKey({ objectId }) {
+function makeObjectKey({ objectId }: { objectId: string }) {
   objectId = (objectId || "").toString().trim();
   if (!objectId) {
     throw new Error(`objectId required`);
@@ -78,6 +81,7 @@ function makeCacheString(cacheKey: CacheKey) {
       const keys = Object.keys(cacheKey);
       let buffer = "";
       for (const key of keys) {
+        //@ts-ignore
         const value = makeCacheString(cacheKey[key]);
         buffer += `/${key}:${value}`;
       }
@@ -87,7 +91,13 @@ function makeCacheString(cacheKey: CacheKey) {
   return cacheKey.toString();
 }
 
-export function makeBaseCacheKey({ objectId, cacheKey }): string {
+export function makeBaseCacheKey({
+  objectId,
+  cacheKey,
+}: {
+  objectId: string;
+  cacheKey: CacheKey;
+}): string {
   const objectKey = makeObjectKey({ objectId });
 
   const data = makeCacheString(cacheKey);
@@ -116,7 +126,7 @@ export const objectCacheInvalidate: ObjectCacheInvalidateMethod = async ({
   const objectKey = makeObjectKey({ objectId });
   const prefix = `${cache.redisPrefix}${objectKey}`;
   const keys = await client.keys(prefix + "*");
-  const jobs = [];
+  const jobs: Promise<any>[] = [];
   keys.forEach((key: string) => {
     jobs.push(client.del(key));
   });

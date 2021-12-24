@@ -9,7 +9,6 @@ import {
   BeforeDestroy,
   DefaultScope,
   BelongsTo,
-  AfterSave,
   Default,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
@@ -22,12 +21,8 @@ import { CLS } from "../modules/cls";
 
 const STATES = ["draft", "ready"] as const;
 
-const STATE_TRANSITIONS = [
-  {
-    from: "draft",
-    to: "ready",
-    checks: [],
-  },
+const STATE_TRANSITIONS: StateMachine.StateTransition[] = [
+  { from: "draft", to: "ready", checks: [] },
 ];
 
 @DefaultScope(() => ({

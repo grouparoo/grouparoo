@@ -102,7 +102,7 @@ export namespace RecordOps {
         "stateChangedAt",
         "createdAt",
         "updatedAt",
-      ];
+      ] as const;
 
       timeFields.forEach((field) => {
         if (hash[key][field] < recordProperties[i][field]) {
@@ -755,7 +755,10 @@ export namespace RecordOps {
         source instanceof Source ? source.modelId : undefined
       )
     ).filter((p) => p.unique === true);
-    const uniquePropertiesHash = {};
+    const uniquePropertiesHash: Record<
+      string,
+      (string | boolean | number | Date)[]
+    > = {};
 
     uniqueProperties.forEach((property) => {
       if (hash[property.key] !== null && hash[property.key] !== undefined) {
@@ -987,7 +990,10 @@ export namespace RecordOps {
       // transfer properties, keeping the newest values
       const properties = await record.getProperties();
       const otherProperties = await otherRecord.getProperties();
-      const newProperties = {};
+      const newProperties: Record<
+        string,
+        (string | number | boolean | Date)[]
+      > = {};
       for (const key in otherProperties) {
         if (
           !properties[key] ||

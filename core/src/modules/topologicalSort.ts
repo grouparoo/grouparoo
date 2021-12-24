@@ -28,9 +28,9 @@ export type Graph = { [key: string]: string[] };
 export function topologicalSort(graph: Graph) {
   const result: string[] = [];
   const errors: string[] = [];
-  const visited = [];
-  const temp = [];
-  for (var node in graph) {
+  const visited: Record<string, boolean> = {};
+  const temp: Record<string, boolean> = {};
+  for (const node in graph) {
     if (!visited[node] && !temp[node]) {
       topologicalSortHelper(node, visited, temp, graph, result, errors);
     }
@@ -42,9 +42,9 @@ export function topologicalSort(graph: Graph) {
 }
 
 function topologicalSortHelper(
-  node,
-  visited,
-  temp,
+  node: string,
+  visited: Record<string, boolean>,
+  temp: Record<string, boolean>,
   graph: Graph,
   result: string[],
   errors: string[]

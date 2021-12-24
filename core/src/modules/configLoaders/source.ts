@@ -63,7 +63,7 @@ export async function loadSource(
 
   let bootstrappedProperty: Property;
   let mappedRecordProperty: Property;
-  let mapping = {};
+  let mapping: Record<string, string> = {};
 
   async function setMapping() {
     if (configObject.mapping) {
@@ -100,6 +100,7 @@ export async function loadSource(
       if (!property || !property.options) throw error;
       const mappedColumn = Object.values(property.options)[0];
       bootstrappedProperty = await source.bootstrapUniqueProperty({
+        // @ts-ignore
         key: property.key || property["name"],
         type: property.type as typeof PropertyTypes[number],
         mappedColumn,

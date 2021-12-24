@@ -138,7 +138,7 @@ export class Setting extends LoggedModel<Setting> {
   }
 
   @BeforeSave
-  static async noUpdateIfLocked(instance) {
+  static async noUpdateIfLocked(instance: Setting) {
     await LockableHelper.beforeSave(instance);
   }
 
@@ -159,7 +159,7 @@ export class Setting extends LoggedModel<Setting> {
   }
 
   @BeforeDestroy
-  static async noDestroyIfLocked(instance) {
+  static async noDestroyIfLocked(instance: Setting) {
     await LockableHelper.beforeDestroy(instance);
   }
 }

@@ -1,6 +1,6 @@
 import { api, config } from "actionhero";
 import Moment from "moment";
-import Sequelize, { Op, WhereAttributeHash } from "sequelize";
+import Sequelize, { Op, WhereAttributeHash, Includeable } from "sequelize";
 import {
   AfterDestroy,
   AllowNull,
@@ -56,7 +56,7 @@ const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 export interface GroupRuleWithKey {
   key?: string;
-  type?: string;
+  type?: Property["type"];
   topLevel?: boolean;
   operation: { op: GroupRuleOpType; description?: string };
   match?: string | number | boolean;
@@ -75,7 +75,7 @@ const STATES = [
   "deleted",
 ] as const;
 // we have no checks, as those are managed by the lifecycle methods below (and tasks)
-const STATE_TRANSITIONS = [
+const STATE_TRANSITIONS: StateMachine.StateTransition[] = [
   { from: "draft", to: "ready", checks: [] },
   { from: "draft", to: "initializing", checks: [] },
   { from: "draft", to: "deleted", checks: [] },
@@ -230,12 +230,15 @@ export class Group extends LoggedModel<Group> {
         include: [Source],
       });
 
-      if (!property && !topLevelRuleKeys.includes(key)) {
+      if (
+        !property &&
+        !topLevelRuleKeys.includes(key as typeof topLevelRuleKeys[number])
+      ) {
         throw new Error(`cannot find property ${key}`);
       }
 
       let type = property?.type;
-      if (topLevelRuleKeys.includes(key)) {
+      if (topLevelRuleKeys.includes(key as typeof topLevelRuleKeys[number])) {
         type = TopLevelGroupRules.find((tlgr) => tlgr.key === key).type as
           | "string"
           | "date";
@@ -311,7 +314,9 @@ export class Group extends LoggedModel<Group> {
     const convenientRules = PropertyOpsDictionary._convenientRules;
 
     for (const i in rules) {
+      //@ts-ignore
       if (convenientRules[rules[i].operation.op]) {
+        //@ts-ignore
         const convenientRule = convenientRules[rules[i].operation.op];
         if (convenientRule.operation.op)
           rules[i].operation.op = convenientRule.operation.op;
@@ -340,7 +345,9 @@ export class Group extends LoggedModel<Group> {
       for (const k in convenientRules) {
         if (
           !rules[i].relativeMatchNumber &&
+          //@ts-ignore
           convenientRules[k].operation.op === rules[i].operation.op &&
+          //@ts-ignore
           convenientRules[k].match === rules[i].match
         ) {
           rules[i] = Object.assign(rules[i], {
@@ -445,7 +452,7 @@ export class Group extends LoggedModel<Group> {
   ) {
     if (!rules) rules = await this.getRules();
 
-    const include = [];
+    const include: Includeable[] = [];
     const wheres: WhereAttributeHash[] = [];
     const localNumbers = [].concat(numbers);
 
@@ -465,8 +472,8 @@ export class Group extends LoggedModel<Group> {
         relativeMatchUnit,
       } = rule;
       let { match } = rule;
-      const localWhereGroup = {};
-      let rawValueMatch = {};
+      const localWhereGroup: WhereAttributeHash = {};
+      let rawValueMatch: WhereAttributeHash = {};
 
       const property = await Property.findOne({
         where: { key },
@@ -485,6 +492,7 @@ export class Group extends LoggedModel<Group> {
         }
 
         // rewrite null matches
+        // @ts-ignore
         rawValueMatch[Op[operation.op]] =
           match.toString().toLocaleLowerCase() === "null" ? null : match;
 
@@ -504,6 +512,7 @@ export class Group extends LoggedModel<Group> {
         ) // i.e.: Moment().add(3, 'days')
           .toDate()
           .getTime();
+        // @ts-ignore
         rawValueMatch[Op[operation.op]] = timestamp;
       } else {
         throw new Error("either match or relativeMatch is required");
@@ -511,6 +520,7 @@ export class Group extends LoggedModel<Group> {
 
       if (!topLevel) {
         // when we are considering a record property
+        // @ts-ignore
         localWhereGroup[Op.and] = [
           Sequelize.where(
             Sequelize.cast(
@@ -528,8 +538,11 @@ export class Group extends LoggedModel<Group> {
         if (!topLevelGroupRule)
           throw new Error(`cannot find TopLevelGroupRule where for key ${key}`);
 
+        // @ts-ignore
         if (rawValueMatch[Op[operation.op]] && type === "date") {
+          // @ts-ignore
           rawValueMatch[Op[operation.op]] = new Date(
+            // @ts-ignore
             parseInt(rawValueMatch[Op[operation.op]])
           ).getTime();
         }
@@ -538,6 +551,7 @@ export class Group extends LoggedModel<Group> {
           [topLevelGroupRule.column]: rawValueMatch,
           modelId: this.modelId,
         };
+        // @ts-ignore
         localWhereGroup[Op.and] = [topLevelWhere];
       }
 
@@ -546,8 +560,10 @@ export class Group extends LoggedModel<Group> {
       if (relativeMatchNumber && !match && !topLevel) {
         const todayBoundWhereGroup = {};
         const todayBoundMatch = {};
+        // @ts-ignore
         todayBoundMatch[Op[operation.op === "gt" ? "lte" : "gte"]] =
           new Date().getTime();
+        // @ts-ignore
         todayBoundWhereGroup[Op.and] = Sequelize.where(
           Sequelize.cast(
             Sequelize.col(`${alias}.rawValue`),
@@ -556,6 +572,7 @@ export class Group extends LoggedModel<Group> {
           todayBoundMatch
         );
 
+        // @ts-ignore
         localWhereGroup[Op.and].push(todayBoundWhereGroup);
       }
 
@@ -608,6 +625,7 @@ export class Group extends LoggedModel<Group> {
         const affirmativeArrayMatch = Sequelize.literal(
           `"RecordMultipleAssociationShim"."id" NOT IN (SELECT "recordId" FROM "recordProperties" WHERE ${whereClause})`
         );
+        // @ts-ignore
         localWhereGroup[Op.and].push(affirmativeArrayMatch);
       }
 
@@ -630,7 +648,8 @@ export class Group extends LoggedModel<Group> {
     if (rules.length === 0) wheres.push({ id: "" });
 
     const joinType = matchType === "all" ? Op.and : Op.or;
-    const whereContainer = {};
+    const whereContainer: WhereAttributeHash = {};
+    // @ts-ignore
     whereContainer[joinType] = wheres;
 
     return { where: whereContainer, include };
@@ -717,7 +736,7 @@ export class Group extends LoggedModel<Group> {
   }
 
   @BeforeSave
-  static async noUpdateIfLocked(instance) {
+  static async noUpdateIfLocked(instance: Group) {
     await LockableHelper.beforeSave(instance, ["state", "calculatedAt"]);
   }
 
@@ -741,7 +760,7 @@ export class Group extends LoggedModel<Group> {
   }
 
   @BeforeDestroy
-  static async noDestroyIfLocked(instance) {
+  static async noDestroyIfLocked(instance: Group) {
     await LockableHelper.beforeDestroy(instance);
   }
 

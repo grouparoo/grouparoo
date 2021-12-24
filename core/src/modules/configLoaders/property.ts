@@ -42,6 +42,7 @@ export async function loadProperty(
     isNew = true;
     property = await Property.create({
       id: configObject.id,
+      //@ts-ignore
       key: configObject.key || configObject["name"],
       type: configObject.type,
       sourceId: source.id,
@@ -52,6 +53,7 @@ export async function loadProperty(
 
   await property.update({
     type: configObject.type,
+    //@ts-ignore
     key: configObject.key || configObject["name"],
     unique: configObject.unique,
     isArray: configObject.isArray,
@@ -74,6 +76,7 @@ export async function loadProperty(
     await property.setFilters(configObject.filters, externallyValidate);
   }
 
+  //@ts-ignore
   if (!!configObject["identifying"]) {
     Deprecation.warnRemoved("config", "Property", "identifying");
   }

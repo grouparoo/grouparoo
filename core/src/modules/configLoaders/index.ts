@@ -59,6 +59,7 @@ export function getSeenIds(configObjects: AnyConfigurationObject[]) {
   return configObjects.reduce((agg, co) => {
     const klass = cleanClass(co);
     if (co.id && klass) {
+      //@ts-ignore
       agg[klass]?.push(co.id);
     }
     return agg;
@@ -192,7 +193,7 @@ export async function processConfigObjects(
     // If something we wrong while sorting, log the messages and return. We
     // aren't going to process the config objects if we can't be confident we're
     // doing it in the right order.
-    error.message.split("\n").map((msg) => {
+    error.message.split("\n").map((msg: string) => {
       if (msg.startsWith("unknownNodeId")) {
         msg = `Could not find object with ID: ${msg.slice(14).split(":")[1]}`;
       }
@@ -346,6 +347,7 @@ export async function processConfigObjects(
         throw new Error(
           `Sequelize Database Error with Config object for ${
             configObject?.class
+            //@ts-ignore
           } \`${configObject["key"] || configObject["name"]}\`(${
             configObject.id
           }).  Cannot validate additional objects.`
@@ -355,6 +357,7 @@ export async function processConfigObjects(
       const { message, fields } = GrouparooErrorSerializer(error);
 
       const errorMessage = `[ config ] error with ${configObject?.class} \`${
+        //@ts-ignore
         configObject["key"] || configObject["name"]
       }\` (${configObject.id}): ${message}`;
 
@@ -373,7 +376,9 @@ export async function processConfigObjects(
 
     // should set ids in all cases
     for (const className in ids) {
+      //@ts-ignore
       const newIds = ids[className];
+      //@ts-ignore
       seenIds[className].push(...newIds);
     }
   }

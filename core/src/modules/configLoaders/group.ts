@@ -55,20 +55,24 @@ export async function loadGroup(
     const calculatesWithDate = ["lte", "gt", "lt", "gte", "eq", "ne"];
 
     for (const i in rules) {
+      //@ts-ignore
       if (rules[i]["propertyId"]) {
         let ruleKey: string, ruleType: string;
         const topLevelProperty = TopLevelGroupRules.find(
+          //@ts-ignore
           (r) => r.key === rules[i]["propertyId"]
         );
         if (topLevelProperty) {
           ruleKey = topLevelProperty.key;
           ruleType = topLevelProperty.type;
         } else {
+          //@ts-ignore
           const property = await Property.findById(rules[i]["propertyId"]);
           ruleKey = property.key;
           ruleType = property.type;
         }
 
+        //@ts-ignore
         delete rules[i]["propertyId"];
         rules[i].key = ruleKey;
 
@@ -100,7 +104,9 @@ export async function loadGroup(
     await group.run();
   }
 
+  //@ts-ignore
   if (!!configObject["type"]) {
+    //@ts-ignore
     if (configObject["type"] === "manual") {
       throw new Error(
         "There are manual Groups. Grouparoo v0.8 removes support for Manual Groups.  Please remove them and try again."

@@ -28,6 +28,7 @@ import { Run } from "../../models/Run";
 import { MappingHelper } from "../mappingHelper";
 import { RecordPropertyOps } from "./recordProperty";
 import { Option } from "../../models/Option";
+import { RecordPropertyType } from "./record";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -125,7 +126,7 @@ export namespace DestinationOps {
   ) {
     const recordProperties = await record.getProperties();
     const mappingKeys = Object.keys(mapping);
-    const mappedRecordProperties = {};
+    const mappedRecordProperties: Record<string, any> = {};
     const destinationMappingOptions =
       await destination.destinationMappingOptions();
     for (const k of mappingKeys) {
@@ -641,7 +642,10 @@ export namespace DestinationOps {
     }
   }
 
-  function logExportError(destination: Destination, error: Error) {
+  function logExportError(
+    destination: Destination,
+    error: Error & { recordId?: string }
+  ) {
     const recordId = error["recordId"]; // it might have one of these
     log(
       `ExportError  Destination: ${destination.id} - ${
@@ -1000,11 +1004,14 @@ export namespace DestinationOps {
     key: "oldRecordProperties" | "newRecordProperties"
   ) {
     const response: { [key: string]: any } = {};
-    const rawProperties = JSON.parse(_export["dataValues"][key]);
+    const rawProperties: Record<string, any> = JSON.parse(
+      //@ts-ignore
+      _export["dataValues"][key]
+    );
     const destinationMappingOptions =
       await destination.destinationMappingOptions();
     for (const k in rawProperties) {
-      const type: string = rawProperties[k].type;
+      const type: Property["type"] = rawProperties[k].type;
       const value = _export[key][k];
       let destinationType: DestinationMappingOptionsResponseType = "any";
 
@@ -1043,17 +1050,17 @@ export namespace DestinationOps {
    * Format Grouparoo's record properties to the type the destination wants.
    */
   export function formatOutgoingRecordProperties(
-    value: any,
-    grouparooType: string,
+    value: unknown,
+    grouparooType: Property["type"],
     destinationType: DestinationMappingOptionsResponseType
   ) {
     if (!grouparooType) return null;
     if (value === null || value === undefined) return value;
 
     const conversionBatch = destinationTypeConversions[grouparooType];
-    const converter: Function = conversionBatch
-      ? conversionBatch[destinationType]
-      : null;
+    const converter: (p: unknown) => DestinationMappingOptionsResponseType =
+      //@ts-ignore
+      conversionBatch ? conversionBatch[destinationType] : null;
 
     if (converter) {
       return converter(value);

@@ -75,11 +75,11 @@ export namespace GrouparooCLI {
    * We also want more fine-grained control of log display for the terminal.
    */
   export namespace logger {
-    export function log(message) {
+    export function log(message: string) {
       console.log(message);
     }
 
-    export function error(message) {
+    export function error(message: string) {
       console.error(message);
     }
 
@@ -152,7 +152,7 @@ export namespace GrouparooCLI {
         | FinalSummaryReporters.Sources.SourceData[]
         | FinalSummaryReporters.Destinations.DestinationData[]
         | FinalSummaryReporters.Warnings.WarningData[],
-      logBlock
+      logBlock: string
     ) {
       if (categorySummary.length === 0) {
         GrouparooCLI.logger.log(`${cyanBold("|")} None affected`);
@@ -178,6 +178,7 @@ export namespace GrouparooCLI {
             for (const property in category) {
               if (property !== "name") {
                 GrouparooCLI.logger.log(
+                  //@ts-ignore
                   `${cyanBold("|")}     ${category[property]}`
                 );
               }
@@ -186,12 +187,14 @@ export namespace GrouparooCLI {
             for (const property in category) {
               if (property !== "name") {
                 GrouparooCLI.logger.log(
+                  //@ts-ignore
                   category[property] === null
                     ? `${cyanBold("|")}   * ${deCamelAndCapitalize(
                         property
                       )}: none`
                     : `${cyanBold("|")}   * ${deCamelAndCapitalize(
                         property
+                        //@ts-ignore
                       )}: ${category[property]}`
                 );
               }

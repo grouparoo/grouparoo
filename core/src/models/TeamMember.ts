@@ -97,7 +97,7 @@ export class TeamMember extends LoggedModel<TeamMember> {
   }
 
   @BeforeSave
-  static async noUpdateIfLocked(instance) {
+  static async noUpdateIfLocked(instance: TeamMember) {
     await LockableHelper.beforeSave(instance, ["lastLoginAt"]);
   }
 
@@ -107,7 +107,7 @@ export class TeamMember extends LoggedModel<TeamMember> {
   }
 
   @BeforeDestroy
-  static async noDestroyIfLocked(instance) {
+  static async noDestroyIfLocked(instance: TeamMember) {
     await LockableHelper.beforeDestroy(instance);
   }
 }

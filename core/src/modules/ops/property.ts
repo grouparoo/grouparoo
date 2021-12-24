@@ -133,7 +133,7 @@ export namespace PropertyOps {
     // does this rule have any mustache variables depended on?
     for (const key in ruleOptions) {
       const mustacheString = ruleOptions[key];
-      const mustacheVariables: string[] = Mustache.parse(mustacheString)
+      const mustacheVariables: string[] = Mustache.parse(String(mustacheString))
         .filter((chunk) => chunk[0] === "&")
         .map((chunk) => chunk[1]);
       properties

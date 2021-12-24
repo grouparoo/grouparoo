@@ -17,7 +17,7 @@ import { CommonModel } from "../classes/commonModel";
 
 const STATES = ["draft", "pending", "ready"] as const;
 
-const STATE_TRANSITIONS = [
+const STATE_TRANSITIONS: StateMachine.StateTransition[] = [
   { from: "draft", to: "ready", checks: [] },
   { from: "draft", to: "pending", checks: [] },
   { from: "pending", to: "ready", checks: [] },

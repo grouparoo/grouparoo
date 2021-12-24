@@ -1,4 +1,12 @@
-import { api, config, action, Connection, chatRoom, env } from "actionhero";
+import {
+  api,
+  config,
+  action,
+  Connection,
+  chatRoom,
+  env,
+  ActionProcessor,
+} from "actionhero";
 import { CLS } from "../cls";
 import { ApiKey } from "../../models/ApiKey";
 import { Team } from "../../models/Team";
@@ -11,7 +19,7 @@ export const AuthenticatedActionMiddleware: action.ActionMiddleware = {
   name: "authenticated-action",
   global: false,
   priority: 1000,
-  preProcessor: async (data) => {
+  preProcessor: async (data: ActionProcessor<any>) => {
     if (data.params.apiKey) {
       return authenticateApiKey(data);
     } else {
@@ -25,7 +33,7 @@ export const OptionallyAuthenticatedActionMiddleware: action.ActionMiddleware =
     name: "optionally-authenticated-action",
     global: false,
     priority: 1000,
-    preProcessor: async (data) => {
+    preProcessor: async (data: ActionProcessor<any>) => {
       if (data.params.apiKey) {
         return authenticateApiKey(data);
       } else {
@@ -44,7 +52,7 @@ export const ChatRoomMiddleware: chatRoom.ChatMiddleware = {
 
 // authenticate a web user with session cookie & csrfToken
 async function authenticateTeamMemberFromSession(
-  data: { [key: string]: any },
+  data: ActionProcessor<any>,
   optional: boolean
 ) {
   return await CLS.wrap(
@@ -99,14 +107,16 @@ async function authenticateTeamMemberFromSession(
 
 // Authenticate user from file in .local directory
 async function authenticateConfigUser(
-  data: { [key: string]: any },
+  data: ActionProcessor<any>,
   optional: boolean
 ) {
   if (optional) return;
   try {
     const user = await ConfigUser.get();
     if (user?.email !== true) {
-      const error = new Error("Config user not properly set.");
+      const error: Error & { code?: string } = new Error(
+        "Config user not properly set."
+      );
       error["code"] = "AUTHENTICATION_ERROR";
       throw error;
     }
@@ -117,10 +127,10 @@ async function authenticateConfigUser(
 
 // Conditionally choose auth method based on run mode.
 async function authenticateTeamMember(
-  data: { [key: string]: any },
+  data: ActionProcessor<any>,
   optional: boolean
 ) {
-  let error: Error;
+  let error: Error & { code?: string };
 
   if (
     process.env.GROUPAROO_RUN_MODE === "cli:config" &&
@@ -146,7 +156,7 @@ async function authenticateTeamMember(
 }
 
 // authenticate an API Request
-async function authenticateApiKey(data: { [key: string]: any }) {
+async function authenticateApiKey(data: ActionProcessor<any>) {
   await CLS.wrap(async () => {
     const apiKey = await ApiKey.findOne({
       where: { apiKey: data.params.apiKey },

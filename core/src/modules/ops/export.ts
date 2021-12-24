@@ -41,7 +41,7 @@ export namespace ExportOps {
   export function deserializeExportRecordProperties(
     serializedStringifiedProperties: string
   ): ExportRecordProperties {
-    const response = {};
+    const response: ExportRecordProperties = {};
     const serializedProperties: ExportRecordPropertiesWithType =
       serializedStringifiedProperties
         ? JSON.parse(serializedStringifiedProperties)

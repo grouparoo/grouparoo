@@ -66,7 +66,9 @@ export async function loadDestination(
   const options = extractNonNullParts(configObject, "options");
   if (options) await destination.setOptions(options);
 
-  let mapping = {};
+  let mapping: Record<string, string> = {};
+  let destinationGroupMemberships: Record<string, string> = {};
+
   const sanitizedMappings = extractNonNullParts(configObject, "mapping");
   for (const key in sanitizedMappings) {
     const property = await getParentByName(Property, sanitizedMappings[key]);
@@ -74,7 +76,6 @@ export async function loadDestination(
   }
   await destination.setMapping(mapping, externallyValidate, false);
 
-  let destinationGroupMemberships = {};
   const sanitizedDestinationGroupMemberships = extractNonNullParts(
     configObject,
     "destinationGroupMemberships"

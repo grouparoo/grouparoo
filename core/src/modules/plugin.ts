@@ -180,7 +180,7 @@ export namespace plugin {
     row: { [remoteKey: string]: any }
   ) {
     const mappingKeys = Object.keys(mapping);
-    const mappedRecordProperties = {};
+    const mappedRecordProperties: Record<string, any[]> = {};
     mappingKeys.forEach((k) => {
       mappedRecordProperties[mapping[k]] = Array.isArray(row[k])
         ? row[k]
@@ -211,7 +211,7 @@ export namespace plugin {
     const mappingKeys = Object.keys(mapping);
 
     for (const row of rows) {
-      const mappedRecordProperties = {};
+      const mappedRecordProperties: Record<string, any[]> = {};
       mappingKeys.forEach((k) => {
         mappedRecordProperties[mapping[k]] = Array.isArray(row[k])
           ? row[k]
@@ -264,7 +264,7 @@ export namespace plugin {
         id: "",
         creatorId: "",
         creatorType: "",
-        error: null,
+        error: null as string,
         state: "mocked",
         createdAt: expandDates(new Date(0)),
         updatedAt: expandDates(new Date(0)),
@@ -303,11 +303,9 @@ export namespace plugin {
   /**
    * Takes a record and returns data with the values from the properties and current time.
    */
-  export async function getRecordData(
-    record: GrouparooRecord
-  ): Promise<{ [remoteKey: string]: any }> {
+  export async function getRecordData(record: GrouparooRecord) {
     // TODO: we could do these types better to be string | number | etc | Array<string | etc>
-    const data = {
+    const dates = {
       now: expandDates(new Date()),
       createdAt: expandDates(record.createdAt),
       updatedAt: expandDates(record.updatedAt),
@@ -315,17 +313,20 @@ export namespace plugin {
 
     const properties = await record.getProperties();
 
-    for (const key in properties) {
-      data[key] =
-        properties[key].values.length === 1
-          ? properties[key].values[0] instanceof Date
-            ? expandDates(properties[key].values[0] as Date)
-            : properties[key].values[0]
-          : properties[key].values
-              .map((value) => (value || "").toString())
-              .join(", ");
+    const propertyData: Record<
+      string,
+      string | number | boolean | ReturnType<typeof expandDates>
+    > = {};
+    for (const [key, property] of Object.entries(properties)) {
+      propertyData[key] =
+        property.values.length === 1
+          ? property.values[0] instanceof Date
+            ? expandDates(property.values[0] as Date)
+            : property.values[0]
+          : property.values.map((value) => (value || "").toString()).join(", ");
     }
-    return data;
+
+    return Object.assign(dates, propertyData);
   }
 
   /**
@@ -358,7 +359,7 @@ export namespace plugin {
       (p) => p.isArray === false
     );
 
-    const data = {};
+    const data: Record<string, string> = {};
     properties.forEach((rule) => {
       data[rule.key] = `{{{ ${rule.id} }}}`;
     });
@@ -379,7 +380,7 @@ export namespace plugin {
 
     const properties = await Property.findAllWithCache(modelId);
 
-    const data = {};
+    const data: Record<string, string> = {};
     properties.forEach((rule) => {
       data[rule.id] = `{{{ ${rule.key} }}}`;
     });

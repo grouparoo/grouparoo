@@ -62,7 +62,9 @@ export namespace OptionHelper {
   }
 
   export async function setOptions(
-    instance: Source | Destination | Schedule | Property | App,
+    instance: (Source | Destination | Schedule | Property | App) & {
+      afterSetOptions?: Function;
+    },
     options: SimpleOptions
   ) {
     delete instance.__options;
@@ -191,7 +193,10 @@ export namespace OptionHelper {
   }
 
   export async function validateOptions(
-    instance: Source | Destination | Schedule | Property | App,
+    instance: (Source | Destination | Schedule | Property | App) & {
+      name?: string;
+      key?: string;
+    },
     options: SimpleOptions,
     allowEmpty = false
   ) {
@@ -323,7 +328,10 @@ export namespace OptionHelper {
   }
 
   async function getInstanceType(
-    instance: Source | Destination | Schedule | Property | App
+    instance: (Source | Destination | Schedule | Property | App) & {
+      type?: string;
+      sourceId?: string;
+    }
   ) {
     let type = instance["type"];
 

@@ -26,7 +26,7 @@ export namespace ConfigUser {
 
   async function subscribe(email: string, subscribed: boolean = true) {
     if (!subscribed) return null;
-    await GrouparooSubscription({ email, subscribed });
+    return GrouparooSubscription({ email, subscribed });
   }
 
   async function storeCompanyName(company: string) {

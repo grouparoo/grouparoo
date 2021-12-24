@@ -53,7 +53,7 @@ export const ExportStates = [
   "complete", // OK!
 ] as const;
 
-const STATE_TRANSITIONS = [
+const STATE_TRANSITIONS: StateMachine.StateTransition[] = [
   { from: "draft", to: "pending", checks: [] },
   { from: "draft", to: "canceled", checks: [] },
   { from: "pending", to: "processing", checks: [] },
@@ -181,7 +181,10 @@ export class Export extends CommonModel<Export> {
   @BelongsTo(() => GrouparooRecord)
   record: GrouparooRecord;
 
-  async setError(error: Error, retryDelay?: number) {
+  async setError(
+    error: Error & { errorLevel?: Export["errorLevel"] },
+    retryDelay?: number
+  ) {
     const maxExportAttempts = parseInt(
       (await plugin.readSetting("core", "exports-max-retries-count")).value
     );
@@ -240,7 +243,7 @@ export class Export extends CommonModel<Export> {
     const destination =
       this.destination ?? (await this.$get("destination", { scope: null }));
 
-    const record = this.record ?? (await this.$get("record"));
+    const record: GrouparooRecord = this.record || (await this.$get("record"));
 
     return {
       id: this.id,
@@ -292,7 +295,7 @@ export class Export extends CommonModel<Export> {
   }
 
   @BeforeSave
-  static ensureErrorLevel(instance) {
+  static ensureErrorLevel(instance: Export) {
     if (instance.errorMessage && !instance.errorLevel) {
       instance.errorLevel = "error";
     }

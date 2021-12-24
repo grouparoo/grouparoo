@@ -27,6 +27,7 @@ import {
   RecordPropertyPluginMethodResponse,
 } from "../../classes/plugin";
 import { TableSpeculation } from "../tableSpeculation";
+import { RecordPropertyType } from "./record";
 
 export namespace SourceOps {
   /**
@@ -102,7 +103,7 @@ export namespace SourceOps {
       appOptions?: OptionHelper.SimpleOptions;
       sourceOptions?: OptionHelper.SimpleOptions;
       sourceMapping?: MappingHelper.Mappings;
-      recordProperties?: {};
+      recordProperties?: RecordPropertyType;
     } = {}
   ) {
     if (property.state !== "ready" && !propertyOptionsOverride) return;
@@ -654,6 +655,7 @@ export namespace SourceOps {
 
     const counts: { [sourceId: string]: number } = {};
     countsBySource.forEach((record) => {
+      //@ts-ignore
       counts[record.sourceId] = record["count"];
     });
 

@@ -4,10 +4,8 @@ import {
   AfterDestroy,
   AfterSave,
   AllowNull,
-  BeforeCreate,
   BeforeDestroy,
   BeforeSave,
-  BeforeUpdate,
   BelongsTo,
   Column,
   DataType,
@@ -41,19 +39,19 @@ import { RecordProperty } from "./RecordProperty";
 import { Run } from "./Run";
 import { Source } from "./Source";
 
-export function propertyJSToSQLType(jsType: string) {
-  const map = {
-    boolean: config.sequelize.dialect === "sqlite" ? "text" : "boolean", // there is no boolean type in SQLite
-    date: "bigint", // we store things via timestamps in the DB
-    email: "text",
-    float: "float",
-    integer: "bigint",
-    phoneNumber: "text",
-    string: "text",
-    url: "text",
-  };
+const jsMap = {
+  boolean: config.sequelize.dialect === "sqlite" ? "text" : "boolean", // there is no boolean type in SQLite
+  date: "bigint", // we store things via timestamps in the DB
+  email: "text",
+  float: "float",
+  integer: "bigint",
+  phoneNumber: "text",
+  string: "text",
+  url: "text",
+} as const;
 
-  return map[jsType];
+export function propertyJSToSQLType(jsType: keyof typeof jsMap) {
+  return jsMap[jsType];
 }
 
 export const PropertyTypes = [
@@ -335,7 +333,7 @@ export class Property extends LoggedModel<Property> {
 
   static async findOneWithCache(value: string, modelId?: string, key = "id") {
     const properties = await Property.findAllWithCache(modelId);
-    let property = properties.find((p) => p[key] === value);
+    let property = properties.find((p) => p.key === value);
 
     if (!property) {
       property = await Property.findOne({
@@ -421,6 +419,7 @@ export class Property extends LoggedModel<Property> {
 
       if (valueCounts.length > 0) {
         throw new Error(
+          //@ts-ignore
           `cannot make this property unique as there are ${valueCounts[0]["count"]} records with the value \'${valueCounts[0]["rawValue"]}\'`
         );
       }
@@ -552,7 +551,7 @@ export class Property extends LoggedModel<Property> {
   }
 
   @BeforeDestroy
-  static async noDestroyIfLocked(instance) {
+  static async noDestroyIfLocked(instance: Property) {
     await LockableHelper.beforeDestroy(instance);
   }
 

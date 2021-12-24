@@ -195,6 +195,6 @@ export class GroupMember extends CommonModel<GroupMember> {
   }
 }
 
-function uniqueArrayValues(value, index, self) {
+function uniqueArrayValues(value: any, index: number, self: any[]) {
   return self.indexOf(value) === index;
 }

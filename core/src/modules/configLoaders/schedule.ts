@@ -26,7 +26,9 @@ export async function loadSchedule(
       "schedule.confirmProfiles",
       "schedule.confirmRecords"
     );
+    //@ts-ignore
     configObject.confirmRecords = configObject["confirmProfiles"];
+    //@ts-ignore
     delete configObject["confirmProfiles"];
   }
 

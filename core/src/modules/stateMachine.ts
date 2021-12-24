@@ -9,7 +9,11 @@ export namespace StateMachine {
   }
 
   export async function transition(
-    instance: Model,
+    instance: Model & {
+      state: string;
+      _previousDataValues?: { state?: string };
+      constructor?: { defaultState?: string };
+    },
     transitions: Array<StateTransition>
   ) {
     const klass = modelName(instance);

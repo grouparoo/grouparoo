@@ -1,4 +1,4 @@
-import Sequelize, { Op } from "sequelize";
+import Sequelize, { Op, WhereAttributeHash } from "sequelize";
 import { GrouparooRecord } from "./GrouparooRecord";
 import {
   Table,
@@ -43,7 +43,7 @@ const RUN_CREATORS = [
 
 const STATES = ["draft", "running", "complete", "stopped"] as const;
 // we have no checks, as those are managed by the lifecycle methods below (and tasks)
-const STATE_TRANSITIONS = [
+const STATE_TRANSITIONS: StateMachine.StateTransition[] = [
   { from: "draft", to: "running", checks: [] },
   { from: "draft", to: "complete", checks: [] },
   { from: "draft", to: "stopped", checks: [] },
@@ -199,7 +199,7 @@ export class Run extends CommonModel<Run> {
       "runs-previous-can-include-errors"
     );
 
-    const where = {
+    const where: WhereAttributeHash = {
       creatorId: this.creatorId,
       importsCreated: { [Op.gt]: 0 },
       id: { [Op.not]: this.id },

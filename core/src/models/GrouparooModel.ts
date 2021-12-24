@@ -27,7 +27,7 @@ export const ModelTypes = ["profile", "account", "custom"] as const;
 export type ModelType = typeof ModelTypes[number];
 
 const STATES = ["ready", "deleted"] as const;
-const STATE_TRANSITIONS = [
+const STATE_TRANSITIONS: StateMachine.StateTransition[] = [
   { from: "draft", to: "ready", checks: [] },
   { from: "ready", to: "deleted", checks: [] },
   {
@@ -149,7 +149,7 @@ export class GrouparooModel extends LoggedModel<GrouparooModel> {
   }
 
   @BeforeDestroy
-  static async noDestroyIfLocked(instance) {
+  static async noDestroyIfLocked(instance: GrouparooModel) {
     await LockableHelper.beforeDestroy(instance);
   }
 
