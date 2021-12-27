@@ -356,7 +356,7 @@ export default function Page(props) {
                     <span className="text-primary">{destination.name}</span>?
                   </h5>
                   <br />
-                  <div id="destinationRecords">
+                  <div data-screenshotid="destinationRecords">
                     {/* Required Vars */}
 
                     {mappingOptions?.properties?.required.length > 0 ? (
@@ -689,7 +689,7 @@ export default function Page(props) {
                     ) : null}
                   </div>
                   <br />
-                  <div id="destinationGroups">
+                  <div data-screenshotid="destinationGroups">
                     {mappingOptions?.labels?.group && (
                       <>
                         <h6>{mappingOptions?.labels?.group.plural}</h6>

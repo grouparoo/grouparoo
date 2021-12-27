@@ -160,7 +160,7 @@ export default function Page(props) {
                   <option>{app.type}</option>
                 </Form.Control>
               </Form.Group>
-              <div id="appOptions">
+              <div data-screenshotid="appOptions">
                 {pluginOptions.length > 0 ? (
                   <>
                     <div className="mb-3">

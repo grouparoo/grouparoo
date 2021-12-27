@@ -102,7 +102,7 @@ class App extends Browser {
     await this.goto(`${appPath}/edit`);
     await this.screenshot("app-edit-full");
     await this.screenshot("app-edit-options", {
-      selector: "#appOptions",
+      selector: "[data-screenshotid=appOptions]",
       border: 10,
     });
   }
@@ -134,7 +134,7 @@ class Destination extends Browser {
     await this.goto(`${destPath}/edit`);
     await this.screenshot("destination-edit-full");
     await this.screenshot("destination-edit-options", {
-      selector: "#destinationOptions",
+      selector: "[data-screenshotid=destinationOptions]",
       border: 10,
     });
 
@@ -143,11 +143,11 @@ class Destination extends Browser {
     await this.pickModel();
     await this.screenshot("destination-data-full");
     await this.screenshot("destination-data-records", {
-      selector: "#destinationRecords",
+      selector: "[data-screenshotid=destinationRecords]",
       border: 10,
     });
     await this.screenshot("destination-data-groups", {
-      selector: "#destinationGroups",
+      selector: "[data-screenshotid=destinationGroups]",
       border: 10,
     });
   }

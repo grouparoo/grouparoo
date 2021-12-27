@@ -216,7 +216,7 @@ export default function Page(props) {
               </p>
 
               <hr />
-              <div id="destinationOptions">
+              <div data-screenshotid="destinationOptions">
                 <strong>
                   Options for a{" "}
                   <code>{destination.connection.displayName}</code> destination
