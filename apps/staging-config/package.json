@@ -2,24 +2,24 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/app-staging-config",
   "description": "A simple app to demonstrate working with the Config UI",
-  "version": "0.7.8-alpha.0",
+  "version": "0.8.0-alpha.1",
   "license": "MPL-2.0",
   "private": true,
   "engines": {
     "node": ">=12.0.0 <17.0.0"
   },
   "dependencies": {
-    "@grouparoo/calculated-property": "0.7.8-alpha.0",
-    "@grouparoo/core": "0.7.8-alpha.0",
-    "@grouparoo/demo": "0.7.8-alpha.0",
-    "@grouparoo/postgres": "0.7.8-alpha.0",
-    "@grouparoo/sqlite": "0.7.8-alpha.0"
+    "@grouparoo/calculated-property": "0.8.0-alpha.1",
+    "@grouparoo/core": "0.8.0-alpha.1",
+    "@grouparoo/demo": "0.8.0-alpha.1",
+    "@grouparoo/postgres": "0.8.0-alpha.1",
+    "@grouparoo/sqlite": "0.8.0-alpha.1"
   },
   "devDependencies": {
-    "@grouparoo/spec-helper": "0.7.8-alpha.0",
-    "@grouparoo/ui-config": "0.7.8-alpha.0",
-    "grouparoo": "0.7.8-alpha.0",
-    "jest": "27.4.3"
+    "@grouparoo/spec-helper": "0.8.0-alpha.1",
+    "@grouparoo/ui-config": "0.8.0-alpha.1",
+    "grouparoo": "0.8.0-alpha.1",
+    "jest": "27.4.5"
   },
   "scripts": {
     "dev": "rm -f grouparoo_config.sqlite && cd node_modules/@grouparoo/core && DATABASE_URL=\"sqlite://grouparoo_config.sqlite\" NEXT_DEVELOPMENT_MODE=true GROUPAROO_RUN_MODE=\"cli:config\" WORKERS=0 ./bin/dev",

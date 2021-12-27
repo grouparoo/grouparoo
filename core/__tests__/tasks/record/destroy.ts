@@ -1,14 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { Op } from "sequelize";
 import { api, task, specHelper } from "actionhero";
-import {
-  Property,
-  RecordProperty,
-  GrouparooRecord,
-  Group,
-  Export,
-  Import,
-} from "../../../src";
+import { Property, RecordProperty, Export, GroupMember } from "../../../src";
 
 describe("tasks/record:destroy", () => {
   helper.grouparooTestServer({
@@ -62,11 +55,10 @@ describe("tasks/record:destroy", () => {
 
   test("exports records and removes them from groups before destroying (group destination)", async () => {
     const record = await helper.factories.record();
-
     const destination = await helper.factories.destination();
-    const group: Group = await helper.factories.group();
+    const group = await helper.factories.group();
+    await GroupMember.create({ groupId: group.id, recordId: record.id });
 
-    await group.addRecord(record);
     await RecordProperty.update(
       { state: "ready" },
       { where: { recordId: record.id } }

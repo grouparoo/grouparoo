@@ -1,10 +1,12 @@
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { api, specHelper, utils, config } from "actionhero";
+import { GroupOps } from "../../../src/modules/ops/group";
 import {
   Destination,
   Export,
   GrouparooModel,
   GrouparooRecord,
+  GroupMember,
   Run,
 } from "./../../../src";
 
@@ -77,7 +79,9 @@ describe("tasks/destination:destroy", () => {
 
   test("a destination with pending group exports cannot be deleted", async () => {
     const group = await helper.factories.group();
-    await group.addRecord(mario);
+    await group.setRules([{ key: "grouparooId", operation: { op: "exists" } }]);
+    await GroupOps.updateRecords([mario.id], "group", group.id); // make an import
+    await GroupMember.create({ groupId: group.id, recordId: mario.id }); // add the member
     const { newRun: run } = await destination.updateTracking("group", group.id);
 
     await specHelper.runTask("group:run", { runId: run.id });
@@ -93,12 +97,15 @@ describe("tasks/destination:destroy", () => {
     await group.reload();
     expect(group.state).toBe("ready");
     expect(run.state).toBe("complete");
+    expect((await mario.$get("groups")).map((g) => g.id)).toEqual([group.id]);
 
     // create exports
     const exportTasks = await specHelper.findEnqueuedTasks("record:export");
+    expect(exportTasks.length).toBe(1);
     await Promise.all(
       exportTasks.map((t) => specHelper.runTask("record:export", t.args[0]))
     );
+    expect(await Export.count()).toBe(1);
 
     // can't delete (has exports)
     await specHelper.runTask("destination:destroy", {

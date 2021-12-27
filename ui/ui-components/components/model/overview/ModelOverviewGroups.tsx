@@ -11,11 +11,8 @@ const GroupInfo: React.FC<{ group: Models.GroupType }> = ({ group }) => {
     <EntityInfoContainer>
       <EntityInfoHeader
         entity={group}
-        href={`/model/${group.modelId}/group/${group.id}/${
-          group.type === "calculated" ? "rules" : "edit"
-        }`}
+        href={`/model/${group.modelId}/group/${group.id}/rules`}
       />
-      <div>{group.type}</div>
       <div>Records: {group.recordsCount || 0}</div>
     </EntityInfoContainer>
   );

@@ -28,7 +28,6 @@ describe("tasks/record:checkReady", () => {
 
   beforeAll(async () => {
     group = await helper.factories.group();
-    await group.update({ type: "calculated" });
     await group.setRules([
       {
         key: "lastName",

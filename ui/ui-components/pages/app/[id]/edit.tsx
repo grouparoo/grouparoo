@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useState, Fragment } from "react";
 import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
@@ -176,11 +176,9 @@ export default function Page(props) {
                       <p className="mb-0">
                         Available environment variables for apps:{" "}
                         {environmentVariableOptions.sort().map((envOpt) => (
-                          <>
-                            <Badge key={`envOpt-${envOpt}`} variant="info">
-                              {envOpt}
-                            </Badge>{" "}
-                          </>
+                          <Fragment key={`envOpt-${envOpt}`}>
+                            <Badge variant="info">{envOpt}</Badge>{" "}
+                          </Fragment>
                         ))}
                       </p>
                     )}
@@ -346,7 +344,7 @@ export default function Page(props) {
             <Row>
               <Col md={3}>
                 <LoadingButton
-                  variant="outline-secondary"
+                  variant="outline-info"
                   size="sm"
                   onClick={test}
                   loading={testLoading}

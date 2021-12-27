@@ -1,11 +1,18 @@
+import os from "os";
+import fs from "fs";
+import path from "path";
+import { Op } from "sequelize";
+import { ensureDir } from "fs-extra";
 import { helper } from "@grouparoo/spec-helper";
+import * as actionhero from "actionhero";
 import {
   Destination,
   GrouparooRecord,
   Export,
   RecordProperty,
+  Errors,
+  GroupMember,
 } from "../../src";
-import { Op } from "sequelize";
 
 describe("models/export", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -58,6 +65,21 @@ describe("models/export", () => {
   test("export apiData includes the destination name", async () => {
     const apiData = await _export.apiData();
     expect(apiData.destinationName).toBe(destination.name);
+  });
+
+  test("export apiData includes the model id", async () => {
+    const apiData = await _export.apiData();
+    expect(apiData.modelId).toBe(record.modelId);
+  });
+
+  test("apiData can be retrieved for an export with a null destination", async () => {
+    const oldExport = await helper.factories.export();
+    await oldExport.update({ destinationId: null });
+
+    const apiData = await oldExport.apiData(true);
+    expect(apiData.id).toBe(oldExport.id);
+    expect(apiData.destination).toBeUndefined();
+    expect(apiData.destinationName).toBeNull();
   });
 
   test("an export can be deserialized returning Grouparoo types", async () => {
@@ -247,7 +269,7 @@ describe("models/export", () => {
     });
 
     const group = await helper.factories.group();
-    await group.addRecord(record);
+    await GroupMember.create({ recordId: record.id, groupId: group.id });
 
     const destination = await helper.factories.destination();
     await destination.updateTracking("group", group.id);
@@ -318,7 +340,7 @@ describe("models/export", () => {
     await record.update({ state: "ready" });
 
     const group = await helper.factories.group();
-    await group.addRecord(record);
+    await GroupMember.create({ recordId: record.id, groupId: group.id });
 
     const destination = await helper.factories.destination();
     await destination.updateTracking("group", group.id);
@@ -360,7 +382,7 @@ describe("models/export", () => {
   test("exports can be marked as having changes or not", async () => {
     await Export.truncate();
     const group = await helper.factories.group();
-    await group.addRecord(record);
+    await GroupMember.create({ recordId: record.id, groupId: group.id });
     await destination.updateTracking("group", group.id);
 
     const oldExport = await Export.create({
@@ -527,6 +549,136 @@ describe("models/export", () => {
       const remaining = await Export.findAll();
       expect(remaining.length).toBe(1);
       expect(remaining[0].id).toBe(exports[0].id);
+    });
+  });
+
+  describe("logExports", () => {
+    let oldLogPath = process.env.GROUPAROO_EXPORT_LOG;
+    const workerId = process.env.JEST_WORKER_ID;
+
+    const logPath = `${os.tmpdir()}/test/${workerId}/exports.log`;
+
+    let _export: Export;
+
+    beforeAll(async () => {
+      await ensureDir(path.dirname(logPath));
+      if (fs.existsSync(logPath)) fs.rmSync(logPath);
+      process.env.GROUPAROO_EXPORT_LOG = logPath;
+    });
+
+    afterAll(() => {
+      process.env.GROUPAROO_EXPORT_LOG = oldLogPath;
+    });
+
+    let logMsgs: string[] = [];
+    let spies = [];
+    beforeEach(async () => {
+      logMsgs = [];
+      spies.push(
+        jest
+          .spyOn(actionhero, "log")
+          .mockImplementation((message) => logMsgs.push(message))
+      );
+    });
+
+    afterEach(async () => {
+      spies.map((s) => s.mockRestore());
+    });
+
+    test("Exports will not be logged to file on creation or common updates", async () => {
+      _export = await helper.factories.export();
+      await _export.update({ startedAt: new Date(), sendAt: new Date() });
+
+      _export.force = true;
+      await _export.save();
+
+      expect(fs.existsSync(logPath)).toBe(false);
+    });
+
+    test("Exports will be logged to file when successfully completed", async () => {
+      await _export.complete();
+
+      expect(fs.existsSync(logPath)).toBe(true);
+
+      const logs = fs.readFileSync(logPath, "utf-8");
+      const lines = logs.split("\n");
+      expect(lines.length).toBe(2);
+
+      const loggedObj = JSON.parse(lines[0]);
+      expect(loggedObj.id).toBe(_export.id);
+      expect(loggedObj.state).toBe("complete");
+      expect(loggedObj.recordId).toBe(_export.recordId);
+      expect(loggedObj.timestamp).toBeDefined();
+
+      expect(logMsgs.join(" ")).not.toContain("[ export ]");
+    });
+
+    test("Exports will be logged to file when failed", async () => {
+      _export = await helper.factories.export();
+      await _export.setError(
+        new Errors.InfoError("Something terribly wrong happened")
+      );
+
+      const logs = fs.readFileSync(logPath, "utf-8");
+      const lines = logs.split("\n");
+      expect(lines.length).toBe(3);
+
+      const loggedObj = JSON.parse(lines[1]);
+      expect(loggedObj.id).toBe(_export.id);
+      expect(loggedObj.state).toBe("failed");
+      expect(loggedObj.errorMessage).toBe("Something terribly wrong happened");
+      expect(loggedObj.errorLevel).toBe("info");
+      expect(loggedObj.recordId).toBe(_export.recordId);
+      expect(loggedObj.timestamp).toBeDefined();
+
+      expect(logMsgs.join(" ")).not.toContain("[ export ]");
+    });
+
+    test("Exports will be logged to file when canceled", async () => {
+      _export = await helper.factories.export();
+      await _export.update({ state: "canceled" });
+
+      const logs = fs.readFileSync(logPath, "utf-8");
+      const lines = logs.split("\n");
+      expect(lines.length).toBe(4);
+
+      const loggedObj = JSON.parse(lines[2]);
+      expect(loggedObj.id).toBe(_export.id);
+      expect(loggedObj.state).toBe("canceled");
+      expect(loggedObj.recordId).toBe(_export.recordId);
+      expect(loggedObj.timestamp).toBeDefined();
+
+      expect(logMsgs.join(" ")).not.toContain("[ export ]");
+    });
+
+    test("Exports will not be logged if GROUPAROO_EXPORT_LOG is not set", async () => {
+      delete process.env.GROUPAROO_EXPORT_LOG;
+
+      fs.rmSync(logPath);
+
+      _export = await helper.factories.export();
+      await _export.complete();
+
+      expect(fs.existsSync(logPath)).toBe(false);
+      expect(logMsgs.join(" ")).not.toContain("[ export ]");
+    });
+
+    test("Exports will be logged to stdout if GROUPAROO_EXPORT_LOG is set to `stdout`", async () => {
+      process.env.GROUPAROO_EXPORT_LOG = "stdout";
+
+      _export = await helper.factories.export();
+      await _export.complete();
+
+      expect(fs.existsSync(logPath)).toBe(false);
+      const logMsg = logMsgs.find((m) => m.startsWith("[ export ]"));
+      expect(logMsg).toBeTruthy();
+      const data = logMsg.split("[ export ] ")[1];
+
+      const loggedObj = JSON.parse(data);
+      expect(loggedObj.id).toBe(_export.id);
+      expect(loggedObj.state).toBe("complete");
+      expect(loggedObj.recordId).toBe(_export.recordId);
+      expect(loggedObj.timestamp).toBeDefined();
     });
   });
 

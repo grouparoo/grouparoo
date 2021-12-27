@@ -7,6 +7,7 @@ import {
   Group,
   DestinationMappingOptionsResponseType,
   GrouparooModel,
+  GroupMember,
 } from "../../../../src";
 import { DestinationOps } from "../../../../src/modules/ops/destination";
 import { api } from "actionhero";
@@ -516,11 +517,11 @@ describe("models/destination", () => {
         });
 
         group = await helper.factories.group();
-        await group.addRecord(mario);
+        await GroupMember.create({ recordId: mario.id, groupId: group.id });
       });
 
       afterAll(async () => {
-        await group.removeRecord(mario);
+        await GroupMember.destroy({ where: { recordId: mario.id } });
         await group.destroy();
         await mario.destroy();
       });

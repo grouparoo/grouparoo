@@ -26,7 +26,7 @@ async function runDestinationMappingOptions({}) {
 
 describe("pipedrive/destinationMappingOptions", () => {
   test("can fetch custom Organization fields", async () => {
-    const client = await connect(appOptions);
+    const client = await connect(appId, appOptions);
     const fields = await fetchKnownFields("organization", client);
 
     const text = fields.find((f) => f.key === "text_field");
@@ -78,7 +78,7 @@ describe("pipedrive/destinationMappingOptions", () => {
   });
 
   test("does not fetch unsupported custom Organization fields", async () => {
-    const client = await connect(appOptions);
+    const client = await connect(appId, appOptions);
     const fields = await fetchKnownFields("organization", client);
 
     const multipleOption = fields.find(

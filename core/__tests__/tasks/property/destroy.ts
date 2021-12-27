@@ -58,7 +58,7 @@ describe("tasks/property:destroy", () => {
       await property.setOptions({ column: "col" });
       await property.update({ state: "ready" });
 
-      const group: Group = await helper.factories.group({ type: "calculated" });
+      const group: Group = await helper.factories.group();
       await group.setRules([
         { key: "test_property", match: "%", operation: { op: "like" } },
       ]);

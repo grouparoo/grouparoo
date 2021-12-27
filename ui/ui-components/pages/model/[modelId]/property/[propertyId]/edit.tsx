@@ -66,8 +66,11 @@ export default function Page(props) {
   if (hydrationError) errorHandler.set({ message: hydrationError });
 
   useEffect(() => {
+    setProperty(props.property);
+    setPluginOptions(props.pluginOptions);
+    setLocalFilters(makeLocal(props.property.filters));
     newRuleDefaults();
-  }, []);
+  }, [propertyId]);
 
   useEffect(() => {
     updatePluginOptions();
@@ -75,7 +78,7 @@ export default function Page(props) {
     return () => {
       clearTimeout(timer);
     };
-  }, [JSON.stringify(property.options)]);
+  }, [property.id, JSON.stringify(property.options)]);
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -205,7 +208,7 @@ export default function Page(props) {
     setLocalFilters(_localFilters);
   }
 
-  if (property.id === "") {
+  if (!property?.id) {
     return <Loader />;
   }
 

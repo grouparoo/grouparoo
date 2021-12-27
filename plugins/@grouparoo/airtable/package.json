@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/airtable",
   "description": "The Grouparoo airtable Plugin",
-  "version": "0.7.8-alpha.0",
+  "version": "0.8.0-alpha.1",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -29,8 +29,8 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@grouparoo/app-templates": "0.7.8-alpha.0",
-    "@grouparoo/core": "0.7.8-alpha.0",
+    "@grouparoo/app-templates": "0.8.0-alpha.1",
+    "@grouparoo/core": "0.8.0-alpha.1",
     "actionhero": "28.0.4",
     "airtable": "0.11.1",
     "axios": "0.24.0"
@@ -38,8 +38,8 @@
   "devDependencies": {
     "@babel/preset-typescript": "7.16.0",
     "@babel/core": "7.16.5",
-    "@grouparoo/core": "0.7.8-alpha.0",
-    "@grouparoo/spec-helper": "0.7.8-alpha.0",
+    "@grouparoo/core": "0.8.0-alpha.1",
+    "@grouparoo/spec-helper": "0.8.0-alpha.1",
     "@types/jest": "27.0.3",
     "@types/node": "16.11.9",
     "actionhero": "28.0.4",
@@ -51,6 +51,5 @@
     "type-fest": "2.6.0",
     "typescript": "4.5.2"
   },
-
   "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"
 }

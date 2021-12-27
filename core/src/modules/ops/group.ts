@@ -54,83 +54,66 @@ export namespace GroupOps {
       },
     });
 
-    if (group.type === "manual") {
-      if (group.state === "deleted") {
-        await GroupMember.destroy({
-          where: { id: { [Op.in]: existingMemberships.map((gm) => gm.id) } },
-        });
-      } else {
-        for (const record of records) {
-          response[record.id] = existingMemberships.find(
-            (gm) => gm.recordId === record.id
-          )
-            ? true
-            : false;
-        }
-      }
+    const rules = await group.getRules();
+
+    if (Object.keys(rules).length == 0) {
+      await GroupMember.destroy({
+        where: { id: { [Op.in]: existingMemberships.map((gm) => gm.id) } },
+      });
       return response;
     } else {
-      const rules = await group.getRules();
+      const { where, include } = await group._buildGroupMemberQueryParts(
+        rules,
+        group.matchType
+      );
 
-      if (Object.keys(rules).length == 0) {
-        await GroupMember.destroy({
-          where: { id: { [Op.in]: existingMemberships.map((gm) => gm.id) } },
-        });
-        return response;
-      } else {
-        const { where, include } = await group._buildGroupMemberQueryParts(
-          rules,
-          group.matchType
+      // and includes this record
+      if (!where[Op.and]) where[Op.and] = [];
+      where[Op.and].push({ id: { [Op.in]: records.map((p) => p.id) } });
+
+      const matchedRecords = await RecordMultipleAssociationShim.findAll({
+        attributes: ["id"],
+        where,
+        include,
+      });
+
+      const bulkCreateRecordIds: string[] = [];
+      const bulkDestroyRecordIds: string[] = [];
+      for (const record of records) {
+        const belongs = matchedRecords.find((p) => p.id === record.id)
+          ? true
+          : false;
+        response[record.id] = belongs;
+        const existingMembership = existingMemberships.find(
+          (gm) => gm.recordId === record.id
         );
 
-        // and includes this record
-        if (!where[Op.and]) where[Op.and] = [];
-        where[Op.and].push({ id: { [Op.in]: records.map((p) => p.id) } });
-
-        const matchedRecords = await RecordMultipleAssociationShim.findAll({
-          attributes: ["id"],
-          where,
-          include,
-        });
-
-        const bulkCreateRecordIds: string[] = [];
-        const bulkDestroyRecordIds: string[] = [];
-        for (const record of records) {
-          const belongs = matchedRecords.find((p) => p.id === record.id)
-            ? true
-            : false;
-          response[record.id] = belongs;
-          const existingMembership = existingMemberships.find(
-            (gm) => gm.recordId === record.id
-          );
-
-          if (belongs && !existingMembership) {
-            bulkCreateRecordIds.push(record.id);
-          }
-          if (!belongs && existingMembership) {
-            bulkDestroyRecordIds.push(record.id);
-          }
+        if (belongs && !existingMembership) {
+          bulkCreateRecordIds.push(record.id);
         }
-
-        if (bulkCreateRecordIds.length > 0) {
-          await GroupMember.bulkCreate(
-            bulkCreateRecordIds.map((recordId) => {
-              return { recordId, groupId: group.id };
-            })
-          );
+        if (!belongs && existingMembership) {
+          bulkDestroyRecordIds.push(record.id);
         }
-
-        if (bulkDestroyRecordIds.length > 0) {
-          await GroupMember.destroyWithLogs({
-            where: {
-              recordId: { [Op.in]: bulkDestroyRecordIds },
-              groupId: group.id,
-            },
-          });
-        }
-
-        return response;
       }
+
+      if (bulkCreateRecordIds.length > 0) {
+        await GroupMember.bulkCreate(
+          bulkCreateRecordIds.map((recordId) => {
+            return { recordId, groupId: group.id };
+          })
+        );
+      }
+
+      if (bulkDestroyRecordIds.length > 0) {
+        await GroupMember.destroyWithLogs({
+          where: {
+            recordId: { [Op.in]: bulkDestroyRecordIds },
+            groupId: group.id,
+          },
+        });
+      }
+
+      return response;
     }
   }
 
@@ -202,43 +185,31 @@ export namespace GroupOps {
     let records: RecordMultipleAssociationShim[];
     const rules = await group.getRules();
 
-    if (group.type === "manual") {
-      records = await group.$get("records", {
-        attributes: ["id", "createdAt"],
-        limit,
-        offset,
-        where: highWaterMark
-          ? { createdAt: { [Op.gte]: highWaterMark } }
-          : undefined,
-        order: [["createdAt", "asc"]],
-      });
-    } else {
-      // if there are no group rules, there's nothing to do
-      if (Object.keys(rules).length === 0) {
-        return { groupMembersCount: 0, nextHighWaterMark: 0, nextOffset: 0 };
-      }
-
-      const { where, include } = await group._buildGroupMemberQueryParts(
-        rules,
-        group.matchType,
-        "ready"
-      );
-
-      where["createdAt"] = { [Op.and]: [{ [Op.lt]: run.createdAt }] };
-      if (highWaterMark) {
-        where["createdAt"][Op.and].push({ [Op.gte]: highWaterMark });
-      }
-
-      records = await RecordMultipleAssociationShim.findAll({
-        attributes: ["id", "createdAt"],
-        where,
-        include,
-        limit,
-        offset,
-        order: [["createdAt", "asc"]],
-        subQuery: false,
-      });
+    // if there are no group rules, there's nothing to do
+    if (Object.keys(rules).length === 0) {
+      return { groupMembersCount: 0, nextHighWaterMark: 0, nextOffset: 0 };
     }
+
+    const { where, include } = await group._buildGroupMemberQueryParts(
+      rules,
+      group.matchType,
+      "ready"
+    );
+
+    where["createdAt"] = { [Op.and]: [{ [Op.lt]: run.createdAt }] };
+    if (highWaterMark) {
+      where["createdAt"][Op.and].push({ [Op.gte]: highWaterMark });
+    }
+
+    records = await RecordMultipleAssociationShim.findAll({
+      attributes: ["id", "createdAt"],
+      where,
+      include,
+      limit,
+      offset,
+      order: [["createdAt", "asc"]],
+      subQuery: false,
+    });
 
     let nextHighWaterMark = 0;
     if (records.length > 0) {

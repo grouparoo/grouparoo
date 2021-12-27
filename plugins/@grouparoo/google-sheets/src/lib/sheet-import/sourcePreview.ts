@@ -1,21 +1,34 @@
-import Spreadsheet from "./spreadsheet";
 import {
   SourcePreviewMethod,
-  SourcePreviewMethodResponseRow,
+  SimpleSourceOptions,
+  SimpleAppOptions,
 } from "@grouparoo/core";
+import { previewCSV } from "@grouparoo/csv/dist/lib/shared/previewCSV";
+import { downloadAndRefreshFile } from "./downloadAndRefreshFile";
 
 export const sourcePreview: SourcePreviewMethod = async ({
   appOptions,
   sourceOptions,
+  sourceId,
+}: {
+  appOptions: SimpleAppOptions;
+  sourceOptions: SimpleSourceOptions;
+  sourceId: string;
 }) => {
-  return sheetPreview({ appOptions, sourceOptions });
+  return remoteImportPreview(sourceId, appOptions, sourceOptions);
 };
 
-export async function sheetPreview({
-  appOptions,
-  sourceOptions,
-}): Promise<Array<SourcePreviewMethodResponseRow>> {
-  const sheet = new Spreadsheet(appOptions, sourceOptions.sheet_url || "");
-  const rows = await sheet.read({ limit: 10, offset: 0 });
-  return rows;
+export async function remoteImportPreview(
+  sourceId: string,
+  appOptions: SimpleAppOptions,
+  sourceOptions: SimpleSourceOptions
+) {
+  if (!sourceOptions.sheet_url) return [];
+
+  const localPath = await downloadAndRefreshFile(
+    sourceId,
+    appOptions,
+    sourceOptions
+  );
+  return previewCSV(localPath);
 }

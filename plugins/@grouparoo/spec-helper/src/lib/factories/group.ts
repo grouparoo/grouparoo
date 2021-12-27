@@ -12,7 +12,6 @@ const data = async (props: { modelId?: string } = {}) => {
 
   const defaultProps = {
     name: `group ${faker.company.companyName()} - ${Math.random()}`,
-    type: "manual",
     modelId: model.id,
 
     createdAt: new Date(),

@@ -4,10 +4,7 @@ import { plugin } from "../modules/plugin";
 import { App } from "../models/App";
 import { getPluginManifest } from "../modules/pluginDetails";
 import { ConfigTemplate } from "../classes/configTemplate";
-import {
-  CalculatedGroupTemplate,
-  ManualGroupTemplate,
-} from "../templates/group";
+import { GroupTemplate } from "../templates/group";
 import { ApiKeyTemplate } from "../templates/apiKey";
 import { ModelTemplate } from "../templates/model";
 import { TeamTemplate } from "../templates/team";
@@ -59,8 +56,7 @@ export class Plugins extends Initializer {
       templates: [
         SettingTemplate,
         ModelTemplate,
-        CalculatedGroupTemplate,
-        ManualGroupTemplate,
+        GroupTemplate,
         ApiKeyTemplate,
         TeamTemplate,
         TeamMemberTemplate,

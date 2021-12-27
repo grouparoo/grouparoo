@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/ui-enterprise",
   "description": "The Grouparoo Enterprise Web UI",
-  "version": "0.7.8-alpha.0",
+  "version": "0.8.0-alpha.1",
   "license": "UNLICENSED",
   "private": false,
   "publishConfig": {
@@ -37,22 +37,22 @@
     "react-hook-form": "6.15.5"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.7.8-alpha.0",
-    "@grouparoo/spec-helper": "0.7.8-alpha.0",
-    "@grouparoo/ui-components": "0.7.8-alpha.0",
+    "@grouparoo/core": "0.8.0-alpha.1",
+    "@grouparoo/spec-helper": "0.8.0-alpha.1",
+    "@grouparoo/ui-components": "0.8.0-alpha.1",
     "@types/jest": "*",
     "@types/react": "*",
     "@types/react-dom": "*",
-    "actionhero": "28.0.4",
+    "actionhero": "28.1.1",
     "enzyme": "3.11.0",
     "eslint": "7.32.0",
     "eslint-config-next": "12.0.4",
-    "jest": "27.4.3",
+    "jest": "27.4.5",
     "jest-environment-webdriver": "grouparoo/jest-webdriver#jest-v27-webdriver",
-    "prettier": "2.5.0",
+    "prettier": "2.5.1",
     "prop-types": "15.7.2",
-    "ts-jest": "27.1.1",
-    "typescript": "4.5.2"
+    "ts-jest": "27.1.2",
+    "typescript": "4.5.4"
   },
   "acceptDependencies": {
     "react": "^16 || ^17",

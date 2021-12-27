@@ -143,7 +143,7 @@ export const getDestinationMappingOptions: (
 ) => DestinationMappingOptionsMethod =
   (type: EntityType) =>
   async ({ appOptions, appId }) => {
-    const client = await connect(appOptions);
+    const client = await connect(appId, appOptions);
     const allKnown = await getKnownFields(
       client,
       type,

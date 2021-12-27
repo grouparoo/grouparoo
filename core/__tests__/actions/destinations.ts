@@ -9,6 +9,7 @@ import {
   App,
   Property,
   GrouparooModel,
+  GroupMember,
 } from "../../src";
 import {
   DestinationConnectionApps,
@@ -326,7 +327,7 @@ describe("actions/destinations", () => {
         });
 
         group = await helper.factories.group();
-        await group.addRecord(record);
+        await GroupMember.create({ recordId: record.id, groupId: group.id });
       });
 
       test("an administrator can add a group to be tracked", async () => {

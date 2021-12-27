@@ -311,7 +311,6 @@ describe("integration/runs/sqlite", () => {
     group = await helper.factories.group();
     await group.update({
       matchType: "all",
-      type: "calculated",
     });
     await group.setRules([
       {

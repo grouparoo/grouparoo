@@ -182,23 +182,25 @@ export default function ExportsList(props) {
                     ) : null}
                     Record:{" "}
                     <Link
-                      href={`/model/${_export.destination.modelId}/record/${_export.recordId}/edit`}
+                      href={`/model/${_export.modelId}/record/${_export.recordId}/edit`}
                     >
                       <a>{_export.recordId}</a>
                     </Link>
                     <br />
                     Destination:{" "}
-                    <EnterpriseLink
-                      href={`/model/${_export.destination.modelId}/destination/${_export.destination.id}/edit`}
-                    >
-                      <a>{_export.destination.name}</a>
-                    </EnterpriseLink>
+                    {_export.destination ? (
+                      <EnterpriseLink
+                        href={`/model/${_export.destination.modelId}/destination/${_export.destination.id}/edit`}
+                      >
+                        <a>{_export.destination.name}</a>
+                      </EnterpriseLink>
+                    ) : (
+                      <Badge variant="secondary">deleted</Badge>
+                    )}
                     <br />
                     Model:{" "}
-                    <EnterpriseLink
-                      href={`/model/${_export.destination.modelId}/edit`}
-                    >
-                      <a>{_export.destination.modelId}</a>
+                    <EnterpriseLink href={`/model/${_export.modelId}/edit`}>
+                      <a>{_export.modelId}</a>
                     </EnterpriseLink>
                     <br />
                     To Delete?{" "}

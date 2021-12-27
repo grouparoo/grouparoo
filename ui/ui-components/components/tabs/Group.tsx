@@ -3,21 +3,21 @@ import { Models } from "../../utils/apiData";
 import { grouparooUiEdition } from "../../utils/uiEdition";
 
 export default function GroupTabs({ group }: { group: Models.GroupType }) {
-  let tabs = ["edit", "rules"];
+  let tabs = [];
+  let defaultTab = "rules";
 
-  if (grouparooUiEdition() === "enterprise") {
-    tabs.push("members", "destinations", "runs", "logs");
+  switch (grouparooUiEdition()) {
+    case "community":
+      tabs = ["members"];
+      defaultTab = "members";
+      break;
+    case "config":
+      tabs = ["edit", "rules"];
+      break;
+    case "enterprise":
+      tabs = ["edit", "rules", "members", "destinations", "runs", "logs"];
+      break;
   }
 
-  if (group.type === "manual") {
-    tabs.splice(tabs.indexOf("rules"), 1);
-  }
-
-  return (
-    <Tabs
-      name={group.name}
-      tabs={tabs}
-      defaultTab={group.type === "calculated" ? "rules" : "edit"}
-    />
-  );
+  return <Tabs name={group.name} tabs={tabs} defaultTab={defaultTab} />;
 }

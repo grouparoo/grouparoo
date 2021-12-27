@@ -244,7 +244,6 @@ describe("models/property", () => {
 
     const group = await helper.factories.group();
     expect(group.state).toBe("ready");
-    await group.update({ type: "calculated" });
     await group.setRules([
       {
         key: property.key,
@@ -515,7 +514,7 @@ describe("models/property", () => {
     await source.destroy();
   });
 
-  test("a property cannot be deleted if a calculated group is using it", async () => {
+  test("a property cannot be deleted if a group is using it", async () => {
     const source = await helper.factories.source();
     await source.setOptions({ table: "some table" });
     await source.setMapping({ id: "userId" });
@@ -530,7 +529,7 @@ describe("models/property", () => {
     await property.setOptions({ column: "thing" });
     await property.update({ state: "ready" });
 
-    const group = await helper.factories.group({ type: "calculated" });
+    const group = await helper.factories.group();
     await group.setRules([
       { key: "thing", match: "%", operation: { op: "like" } },
     ]);

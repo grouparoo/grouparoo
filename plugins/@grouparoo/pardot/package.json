@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/pardot",
   "description": "The Grouparoo Pardot Plugin",
-  "version": "0.7.8-alpha.0",
+  "version": "0.8.0-alpha.1",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -28,25 +28,25 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@grouparoo/app-templates": "0.7.8-alpha.0",
+    "@grouparoo/app-templates": "0.8.0-alpha.1",
     "axios": "0.24.0",
     "form-data": "4.0.0",
     "jsforce": "1.11.0"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.7.8-alpha.0",
-    "@grouparoo/spec-helper": "0.7.8-alpha.0",
+    "@grouparoo/core": "0.8.0-alpha.1",
+    "@grouparoo/spec-helper": "0.8.0-alpha.1",
     "@types/jest": "*",
     "@types/node": "*",
-    "actionhero": "28.0.4",
+    "actionhero": "28.1.1",
     "dotenv": "10.0.0",
     "fs-extra": "10.0.0",
-    "jest": "27.4.3",
+    "jest": "27.4.5",
     "nock": "13.2.1",
-    "prettier": "2.5.0",
+    "prettier": "2.5.1",
     "sequelize": "6.11.0",
-    "ts-jest": "27.1.1",
-    "typescript": "4.5.2"
+    "ts-jest": "27.1.2",
+    "typescript": "4.5.4"
   },
   "gitHead": "fde75653f20bf5c26b7457ea37682d9ca55f0786"
 }

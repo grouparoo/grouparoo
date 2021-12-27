@@ -73,7 +73,6 @@ module.exports = async function getConfig() {
       name: "People with Email Addresses",
       class: "Group",
       modelId: "mod_profiles",
-      type: "calculated",
       rules: [
         {
           propertyId: "missing_record_property",

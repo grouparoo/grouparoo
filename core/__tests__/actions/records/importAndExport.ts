@@ -58,7 +58,7 @@ describe("actions/records", () => {
     let destination: Destination;
 
     beforeAll(async () => {
-      group = await helper.factories.group({ type: "calculated" });
+      group = await helper.factories.group();
       await group.setRules([
         { key: "firstName", match: "Mario", operation: { op: "eq" } },
       ]);

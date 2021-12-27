@@ -140,6 +140,15 @@ describe("models/option", () => {
       expect(await OptionHelper.getOptions(app)).toEqual(opts);
     });
 
+    test("empty options will be ignored", async () => {
+      const opts = { fileId: "abcdba", password: "" };
+      await OptionHelper.setOptions(app, opts);
+
+      const options = await OptionHelper.getOptions(app);
+      expect(options["fileId"]).toEqual(opts.fileId);
+      expect(options["password"]).toBeUndefined();
+    });
+
     test("I will see passwords by default for Apps", async () => {
       const opts = { fileId: "abc123", password: "SECRET" };
       await OptionHelper.setOptions(app, opts);

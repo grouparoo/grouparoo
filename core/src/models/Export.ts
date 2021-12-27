@@ -8,7 +8,11 @@ import {
   ForeignKey,
   DataType,
   Default,
+  AfterUpdate,
 } from "sequelize-typescript";
+import path from "path";
+import { appendFile } from "fs-extra";
+import { api, config, log } from "actionhero";
 import { Destination } from "./Destination";
 import { GrouparooRecord } from "./GrouparooRecord";
 import { plugin } from "../modules/plugin";
@@ -17,11 +21,11 @@ import { QueryTypes } from "sequelize";
 import { ExportOps } from "../modules/ops/export";
 import { APIData } from "../modules/apiData";
 import { StateMachine } from "../modules/stateMachine";
-import { api, config } from "actionhero";
 import { ExportProcessor } from "./ExportProcessor";
 import { Errors } from "../modules/errors";
 import { PropertyTypes } from "./Property";
 import { CommonModel } from "../classes/commonModel";
+import { getParentPath } from "../modules/pluginDetails";
 
 /**
  * The GrouparooRecord Properties in their normal data types (string, boolean, date, etc)
@@ -68,7 +72,6 @@ export class Export extends CommonModel<Export> {
     return "exp";
   }
 
-  @AllowNull(false)
   @ForeignKey(() => Destination)
   @Column
   destinationId: string;
@@ -237,19 +240,23 @@ export class Export extends CommonModel<Export> {
     const destination =
       this.destination ?? (await this.$get("destination", { scope: null }));
 
+    const record = this.record ?? (await this.$get("record"));
+
     return {
       id: this.id,
-      destination: includeDestination
-        ? {
-            id: destination.id,
-            state: destination.state,
-            name: destination.name,
-            groupId: destination.groupId,
-            modelId: destination.modelId,
-          }
-        : undefined,
+      destination:
+        includeDestination && destination
+          ? {
+              id: destination.id,
+              state: destination.state,
+              name: destination.name,
+              groupId: destination.groupId,
+              modelId: destination.modelId,
+            }
+          : undefined,
       destinationName: destination ? destination.name : null,
       recordId: this.recordId,
+      modelId: record?.modelId,
       exportProcessorId: this.exportProcessorId,
       state: this.state,
       force: this.force,
@@ -291,6 +298,33 @@ export class Export extends CommonModel<Export> {
     }
   }
 
+  @AfterUpdate
+  static async logExport(instance: Export) {
+    if (!process.env.GROUPAROO_EXPORT_LOG) return;
+
+    if (
+      instance.changed("state") &&
+      ["canceled", "failed", "complete"].includes(instance.state)
+    ) {
+      const exportData = {
+        ...(await instance.apiData(false)),
+        timestamp: APIData.formatDate(new Date()),
+      };
+
+      const message = JSON.stringify(exportData);
+
+      if (process.env.GROUPAROO_EXPORT_LOG === "stdout") {
+        log(`[ export ] ${message}`);
+      } else {
+        const logPath = path.isAbsolute(process.env.GROUPAROO_EXPORT_LOG)
+          ? process.env.GROUPAROO_EXPORT_LOG
+          : path.join(getParentPath(), process.env.GROUPAROO_EXPORT_LOG);
+
+        await appendFile(logPath, `${message}\n`);
+      }
+    }
+  }
+
   static async sweep(limit: number) {
     const days = 90; // keep all exports for at least 90 days
     const whereDate = Moment()
@@ -302,7 +336,7 @@ export class Export extends CommonModel<Export> {
     let responseCountWithNoRecord: number;
     let responseCountWithNoDestination: number;
 
-    // 1. Delete Complete Exports for the GrouparooRecord older than the oldest complete Export for this Record+Destination
+    // 1. Delete Complete Exports for the GrouparooRecord older than the newest complete Export for this Record+Destination
     const rowsWithCompleteExport: { id: string }[] = await api.sequelize.query(
       `
       DELETE FROM exports

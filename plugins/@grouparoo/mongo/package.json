@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/mongo",
   "description": "The Grouparoo MongoDB Plugin",
-  "version": "0.7.8-alpha.0",
+  "version": "0.8.0-alpha.1",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -28,22 +28,22 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@grouparoo/app-templates": "0.7.8-alpha.0",
+    "@grouparoo/app-templates": "0.8.0-alpha.1",
     "mongodb": "4.2.1"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.7.8-alpha.0",
-    "@grouparoo/spec-helper": "0.7.8-alpha.0",
+    "@grouparoo/core": "0.8.0-alpha.1",
+    "@grouparoo/spec-helper": "0.8.0-alpha.1",
     "@types/jest": "*",
     "@types/node": "*",
-    "actionhero": "28.0.4",
+    "actionhero": "28.1.1",
     "dotenv": "10.0.0",
     "fs-extra": "10.0.0",
-    "jest": "27.4.3",
-    "prettier": "2.5.0",
+    "jest": "27.4.5",
+    "prettier": "2.5.1",
     "sequelize": "6.11.0",
-    "ts-jest": "27.1.1",
-    "typescript": "4.5.2"
+    "ts-jest": "27.1.2",
+    "typescript": "4.5.4"
   },
   "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"
 }

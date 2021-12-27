@@ -28,7 +28,6 @@ Object {
     },
   ],
   "state": "ready",
-  "type": "calculated",
   "updatedAt": Any<Number>,
 }
 `;
@@ -45,6 +44,7 @@ Object {
   "force": true,
   "hasChanges": true,
   "id": null,
+  "modelId": "mod_profiles",
   "newGroups": Array [
     "remote_group_name",
   ],
@@ -120,6 +120,7 @@ Object {
       "force": true,
       "hasChanges": true,
       "id": null,
+      "modelId": Any<String>,
       "newGroups": Array [
         "remote_group_name",
       ],
@@ -174,7 +175,6 @@ Object {
         },
       ],
       "state": "ready",
-      "type": "calculated",
       "updatedAt": Any<Number>,
     },
   ],
