@@ -57,6 +57,7 @@ jobs:
             - core/node_modules
             - node_modules
             - tools/merger/node_modules
+            - tools/screenshots/node_modules
             - ui/ui-community/node_modules
             - ui/ui-components/node_modules
             - ui/ui-config/node_modules
