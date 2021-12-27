@@ -2,34 +2,10 @@
 // run grouparoo config
 // take screenshots of the destination
 
-const APPS = {
-  mailchimp: {
-    demo: "--mailchimp",
-    app: "mailchimpapp",
-    destinations: {
-      "mailchimp-export-contacts": {
-        model: "users",
-        id: "mailchimp",
-      },
-    },
-  },
-  salesforce: {
-    demo: "--salesforce",
-    app: "salesforce",
-    destinations: {
-      "salesforce-export-objects": {
-        model: "users",
-        id: "salesforce_contacts",
-      },
-      "salesforce-export-accounts": {
-        model: "accounts",
-        id: "salesforce_accounts",
-      },
-    },
-  },
-};
-
 const { Service, Browser } = require("./puppet");
+const { readConfig } = require("./util");
+
+const APPS = readConfig("plugins");
 
 module.exports.cmd = async function (vargs) {
   const results = [];
