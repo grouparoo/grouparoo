@@ -31,25 +31,26 @@
   "dependencies": {
     "@grouparoo/app-templates": "0.8.0-alpha.1",
     "@grouparoo/core": "0.8.0-alpha.1",
-    "actionhero": "28.0.4",
+    "actionhero": "28.1.1",
     "airtable": "0.11.1",
     "axios": "0.24.0"
   },
   "devDependencies": {
-    "@babel/preset-typescript": "7.16.0",
-    "@babel/core": "7.16.5",
     "@grouparoo/core": "0.8.0-alpha.1",
     "@grouparoo/spec-helper": "0.8.0-alpha.1",
-    "@types/jest": "27.0.3",
-    "@types/node": "16.11.9",
-    "actionhero": "28.0.4",
-    "jest": "27.3.1",
+    "@types/jest": "*",
+    "@types/node": "*",
+    "actionhero": "28.1.1",
+    "dotenv": "10.0.0",
+    "fs-extra": "10.0.0",
+    "jest": "27.4.5",
     "jest-mock-extended": "2.0.4",
     "nock": "13.2.1",
-    "prettier": "2.4.1",
-    "ts-jest": "27.0.7",
-    "type-fest": "2.6.0",
-    "typescript": "4.5.2"
+    "prettier": "2.5.1",
+    "sequelize": "6.11.0",
+    "ts-jest": "27.1.2",
+    "type-fest": "2.8.0",
+    "typescript": "4.5.4"
   },
   "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"
 }
