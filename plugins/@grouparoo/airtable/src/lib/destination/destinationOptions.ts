@@ -4,13 +4,9 @@ import {
   PluginOptionType,
   SimpleDestinationOptions,
 } from "@grouparoo/core";
-import {
-  AirtablePropertyTypes,
-  ApiTable,
-  Table,
-  TableField,
-} from "../client/models";
+import { TableField } from "../client/models";
 import { IClient } from "../client/interfaces/iClient";
+import { mapTypesFromAirtableToGrouparoo } from "./destinationMappingOptions";
 
 export interface AirtableDestinationOptions extends SimpleDestinationOptions {
   tableId: string;
@@ -123,19 +119,5 @@ class DestinationOptionsHandler {
 }
 
 export const tableFieldIsWritable = (field: TableField): boolean => {
-  // TODO: probably many more here or other way to cehcl (Permission?)
-  switch (field.type) {
-    case AirtablePropertyTypes.email:
-      return true;
-    case AirtablePropertyTypes.singleLineText:
-      return true;
-    case AirtablePropertyTypes.date:
-      return true;
-    case AirtablePropertyTypes.number:
-      return true;
-    case AirtablePropertyTypes.multipleSelects:
-      return true;
-    default:
-      return false;
-  }
+  return !!mapTypesFromAirtableToGrouparoo(field.type);
 };
