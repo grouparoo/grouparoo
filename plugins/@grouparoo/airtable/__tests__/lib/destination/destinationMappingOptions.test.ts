@@ -60,32 +60,32 @@ describe("Test Destination Mapping Options Method", () => {
     expect(value.properties.allowOptionalFromProperties).toBeFalsy();
     expect(
       value.properties.known.find(
-        (prop) => prop.key == AirtablePropertyTypes.MULTISELECT
+        (prop) => prop.key == AirtablePropertyTypes.multipleSelects
       )?.type
     ).toEqual("string");
     expect(
       value.properties.known.find(
-        (prop) => prop.key == AirtablePropertyTypes.CHECKBOX
+        (prop) => prop.key == AirtablePropertyTypes.checkbox
       )?.type
     ).toEqual("boolean");
     expect(
       value.properties.known.find(
-        (prop) => prop.key == AirtablePropertyTypes.DATE
+        (prop) => prop.key == AirtablePropertyTypes.date
       )?.type
     ).toEqual("date");
     expect(
       value.properties.known.find(
-        (prop) => prop.key == AirtablePropertyTypes.EMAIL
+        (prop) => prop.key == AirtablePropertyTypes.email
       )?.type
     ).toEqual("email");
     expect(
       value.properties.known.find(
-        (prop) => prop.key == AirtablePropertyTypes.SINGLELINE
+        (prop) => prop.key == AirtablePropertyTypes.singleLineText
       )?.type
     ).toEqual("string");
     expect(
       value.properties.known.find(
-        (prop) => prop.key == AirtablePropertyTypes.MULTILINE
+        (prop) => prop.key == AirtablePropertyTypes.multilineText
       )?.type
     ).toEqual("string");
     expect(

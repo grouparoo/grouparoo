@@ -15,17 +15,43 @@ export type Table = {
   fields: TableField[];
 };
 export type TableField = {
-  type: string;
-  id: string;
+  type: AirtablePropertyTypes;
   name: string;
 };
+//https://airtable.com/api/meta
 export enum AirtablePropertyTypes {
-  SINGLELINE = "singleLineText",
-  MULTILINE = "multilineText",
-  CHECKBOX = "checkbox",
-  DATE = "date",
-  EMAIL = "email",
-  MULTISELECT = "multipleSelects",
+  autoNumber = "autoNumber",
+  barcode = "barcode",
+  button = "button",
+  checkbox = "checkbox",
+  count = "count",
+  createdBy = "createdBy",
+  createdTime = "createdTime",
+  currency = "currency",
+  date = "date",
+  dateTime = "dateTime",
+  duration = "duration",
+  email = "email",
+  externalSyncSource = "externalSyncSource",
+  formula = "formula",
+  lastModifiedBy = "lastModifiedBy",
+  lastModifiedTime = "lastModifiedTime",
+  multilineText = "multilineText",
+  multipleAttachments = "multipleAttachments",
+  multipleCollaborators = "multipleCollaborators",
+  multipleLookupValues = "multipleLookupValues",
+  multipleRecordLinks = "multipleRecordLinks",
+  multipleSelects = "multipleSelects",
+  number = "number",
+  percent = "percent",
+  phoneNumber = "phoneNumber",
+  rating = "rating",
+  richText = "richText",
+  rollup = "rollup",
+  singleCollaborator = "singleCollaborator",
+  singleLineText = "singleLineText",
+  singleSelect = "singleSelect",
+  url = "url",
 }
 export type CreateRecord<TFields> = Pick<
   RecordData<Partial<TFields>>,

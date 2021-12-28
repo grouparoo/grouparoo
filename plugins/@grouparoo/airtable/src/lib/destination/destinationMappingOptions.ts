@@ -8,30 +8,31 @@ import { AirtableDestinationOptions } from "./destinationOptions";
 
 const singleAirtableProperty = "Airtable Record Property";
 const pluralAirtableProperty = "Airtable Record Properties";
-export const destinationMappingOptions: DestinationMappingOptionsMethod<IClient> =
-  async ({ connection, destinationOptions }) => {
-    const { tableId, primaryKey } =
-      destinationOptions as AirtableDestinationOptions;
-    const table: Table = await connection.getTable(tableId);
-    const required = getRequiredFields(table, primaryKey);
-    const requiredFieldsNames = required.map(
-      (requiredField) => requiredField.key
-    );
-    const known = getTableFields(table, requiredFieldsNames);
-    return {
-      labels: {
-        property: {
-          singular: singleAirtableProperty,
-          plural: pluralAirtableProperty,
-        },
+export const destinationMappingOptions: DestinationMappingOptionsMethod<
+  IClient
+> = async ({ connection, destinationOptions }) => {
+  const { tableId, primaryKey } =
+    destinationOptions as AirtableDestinationOptions;
+  const table: Table = await connection.getTable(tableId);
+  const required = getRequiredFields(table, primaryKey);
+  const requiredFieldsNames = required.map(
+    (requiredField) => requiredField.key
+  );
+  const known = getTableFields(table, requiredFieldsNames);
+  return {
+    labels: {
+      property: {
+        singular: singleAirtableProperty,
+        plural: pluralAirtableProperty,
       },
-      properties: {
-        required: required,
-        known: known,
-        allowOptionalFromProperties: false,
-      },
-    };
+    },
+    properties: {
+      required: required,
+      known: known,
+      allowOptionalFromProperties: false,
+    },
   };
+};
 
 function getRequiredFields(
   table: Table,
@@ -89,17 +90,17 @@ function mapTypesFromAirtableToGrouparoo(
   airtableType: string
 ): DestinationMappingOptionsResponseType {
   switch (airtableType) {
-    case AirtablePropertyTypes.MULTISELECT:
+    case AirtablePropertyTypes.multipleSelects:
       return "string";
-    case AirtablePropertyTypes.CHECKBOX:
+    case AirtablePropertyTypes.checkbox:
       return "boolean";
-    case AirtablePropertyTypes.DATE:
+    case AirtablePropertyTypes.date:
       return "date";
-    case AirtablePropertyTypes.EMAIL:
+    case AirtablePropertyTypes.email:
       return "email";
-    case AirtablePropertyTypes.MULTILINE:
+    case AirtablePropertyTypes.multilineText:
       return "string";
-    case AirtablePropertyTypes.SINGLELINE:
+    case AirtablePropertyTypes.singleLineText:
       return "string";
     default:
       return null;
