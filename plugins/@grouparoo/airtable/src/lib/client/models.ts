@@ -40,7 +40,7 @@ export enum AirtablePropertyTypes {
   dateTime = "dateTime",
   duration = "duration",
   email = "email",
-  externalSyncSource = "externalSyncSource",
+  externalSyncSource = "externalSyncSource", // Can't make test table with this
   formula = "formula",
   lastModifiedBy = "lastModifiedBy",
   lastModifiedTime = "lastModifiedTime",

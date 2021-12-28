@@ -8,12 +8,9 @@ const appOptions = loadAppOptions(newNock);
 const tableData = loadTableData(newNock);
 const airtableOptions = new AirtableAppOptions(appOptions);
 
-// uses the defualt data from the Marketing tables (see .env.example)
+// uses the defualt data from the tables (see .env.example)
 
-const primaryKey = "Campaign";
-const keyValues = ["Branded keywords", "Lookalikes"];
-
-// tblEPDCwyMJU8ok0q
+const unknownKeys = ["Unknown", "Other"];
 
 describe("Client Functions", () => {
   describe("Metadata Calls", () => {
@@ -63,8 +60,13 @@ describe("Client Functions", () => {
     });
   });
 
-  describe("Campaign Table", () => {
-    const { campaignsId: tableId, campaignsName: tableName } = tableData;
+  describe("Table with Data", () => {
+    const {
+      allId: tableId,
+      allName: tableName,
+      allPrimaryKey: primaryKey,
+      allKnownKeys: knownKeys,
+    } = tableData;
 
     test("Get Table by name", async () => {
       const client = new Client(airtableOptions);
@@ -81,19 +83,41 @@ describe("Client Functions", () => {
       expect(table).not.toBeNull();
       expect(table.idOrName).toEqual(tableId);
 
-      const string = table.fields.find((f) => f.name === "Status");
-      expect(string.type).toEqual("singleLineText");
-
-      const date = table.fields.find((f) => f.name === "Start date");
-      expect(date.type).toEqual("singleLineText"); // TODO: Meta is smarter
-
-      const ref = table.fields.find((f) => f.name === "💼 Ad sets");
-      expect(ref.type).toEqual("multipleSelects"); // TODO: Meta is smarter?
-
-      const lookup = table.fields.find(
-        (f) => f.name === "📈 Results (from 📈 Results table)"
-      );
-      expect(lookup.type).toEqual("multipleSelects"); // TODO: Meta is smarter?
+      // TODO: meta much smarter and leave many off
+      expect(table.fields).toEqual([
+        { name: "f_autoNumber", type: "number" },
+        { name: "f_barcode", type: "barcode" },
+        { name: "f_button", type: "button" },
+        { name: "f_checkbox", type: "checkbox" },
+        { name: "f_count", type: "number" },
+        { name: "f_createdBy", type: "singleCollaborator" },
+        { name: "f_createdTime", type: "singleLineText" },
+        { name: "f_currency", type: "number" },
+        { name: "f_date", type: "singleLineText" },
+        { name: "f_dateTime", type: "singleLineText" },
+        { name: "f_duration", type: "number" },
+        { name: "f_email", type: "singleLineText" },
+        { name: "f_formula", type: "singleLineText" },
+        { name: "f_lastModifiedBy", type: "singleCollaborator" },
+        { name: "f_lastModifiedTime", type: "singleLineText" },
+        { name: "f_multilineText", type: "singleLineText" },
+        { name: "f_multipleAttachments", type: "multipleAttachments" },
+        { name: "f_multipleCollaborators", type: "multipleCollaborators" },
+        { name: "f_multipleLookupValues", type: "multipleSelects" },
+        { name: "f_multipleRecordLinks", type: "multipleSelects" },
+        { name: "f_multipleSelects", type: "multipleSelects" },
+        { name: "f_number", type: "number" },
+        { name: "f_percent", type: "number" },
+        { name: "f_phoneNumber", type: "singleLineText" },
+        { name: "f_rating", type: "number" },
+        { name: "f_richText", type: "singleLineText" },
+        { name: "f_rollup", type: "number" },
+        { name: "f_singleCollaborator", type: "singleCollaborator" },
+        { name: "f_singleLineText", type: "singleLineText" },
+        { name: "f_singleSelect", type: "singleLineText" },
+        { name: "f_url", type: "singleLineText" },
+        { name: "Name", type: "singleLineText" },
+      ]);
     });
 
     test("Successful List Records", async () => {
@@ -107,45 +131,19 @@ describe("Client Functions", () => {
       const records = await client.listRecordsByField(
         tableId,
         primaryKey,
-        keyValues
+        knownKeys.concat(unknownKeys)
       );
-      expect(records.length).toEqual(keyValues.length);
-    });
-  });
-
-  describe("Results Table", () => {
-    const { resultsId: tableId, resultsName: tableName } = tableData;
-
-    test("Get Table by name", async () => {
-      const client = new Client(airtableOptions);
-      const table = await client.getTable(tableName);
-      expect(table).not.toBeNull();
-      expect(table.idOrName).toEqual(tableName);
-      // TODO META: expect(response.idOrName).toEqual(tableId);
-    });
-
-    test("Get Table by id", async () => {
-      const client = new Client(airtableOptions);
-      const table = await client.getTable(tableId);
-      expect(table).not.toBeNull();
-      expect(table.idOrName).toEqual(tableId);
-
-      const number = table.fields.find((f) => f.name === "Impressions");
-      expect(number.type).toEqual("number");
-
-      const currency = table.fields.find((f) => f.name === "Spend");
-      expect(currency.type).toEqual("number"); // TODO: Meta is smarter
-    });
-
-    test("Successful List Records", async () => {
-      const client = new Client(airtableOptions);
-      const records = await client.listRecords(tableId);
-      expect(records.length).toBeGreaterThan(0);
+      expect(records.length).toEqual(knownKeys.length);
     });
   });
 
   describe("Empty Table", () => {
-    const { emptyId: tableId, emptyName: tableName } = tableData;
+    const {
+      emptyId: tableId,
+      emptyName: tableName,
+      emptyPrimaryKey: primaryKey,
+      emptyKnownKeys: knownKeys,
+    } = tableData;
 
     test("Get Table by name", async () => {
       const client = new Client(airtableOptions);
@@ -162,27 +160,31 @@ describe("Client Functions", () => {
       expect(table.idOrName).toEqual(tableId);
 
       // It doesn't know anything because there are no rows
+      // META: expect most of the ones from above
 
       expect(table.fields.length).toBe(0);
-      // META: expect(table.fields.length).toBe(4);
 
-      const string = table.fields.find((f) => f.name === "Name");
+      const string = table.fields.find((f) => f.name === primaryKey);
       expect(string).toBeUndefined();
-      // META: expect(string.type).toEqual("singleLineText");
 
-      const select = table.fields.find((f) => f.name === "Status");
+      const select = table.fields.find((f) => f.name === "f_number");
       expect(select).toBeUndefined();
-      // META:  expect(select.type).toEqual("singleSelect");
-
-      const lines = table.fields.find((f) => f.name === "Notes");
-      expect(lines).toBeUndefined();
-      // META: expect(lines.type).toEqual("multiLineText");
     });
 
     test("Successful List Records", async () => {
       const client = new Client(airtableOptions);
       const records = await client.listRecords(tableId);
       expect(records.length).toBe(0);
+    });
+
+    test("Successful List Records by ID", async () => {
+      const client = new Client(airtableOptions);
+      const records = await client.listRecordsByField(
+        tableId,
+        primaryKey,
+        knownKeys.concat(unknownKeys)
+      );
+      expect(records.length).toEqual(0);
     });
   });
 });

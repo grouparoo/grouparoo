@@ -149,6 +149,17 @@ export class Client implements IClient {
    * @returns {Promise<Table>} - A Promise of a Airtable Table Object
    */
   async getTable(tableId: string): Promise<Table> {
+    const table = await this.getTableRaw(tableId);
+    if (table) {
+      // sort the fields
+      const fields = table.fields || [];
+      const sorted = fields.sort((a, b) => a.name.localeCompare(b.name));
+      table.fields = sorted;
+    }
+    return table;
+  }
+
+  private async getTableRaw(tableId: string): Promise<Table> {
     const meta = await this.hasMeta();
     if (meta) {
       const tables = await this.listTables();
@@ -262,15 +273,38 @@ export class Client implements IClient {
 
 function typeFromValue(value) {
   if (Array.isArray(value)) {
-    return AirtablePropertyTypes.multipleSelects;
-  }
-  if (value instanceof Date) {
+    const first: any = value[0];
+    if (first) {
+      // what's in there?
+      switch (typeof first) {
+        case "string":
+        case "number":
+        case "boolean":
+          // even though they could be lookup values
+          return AirtablePropertyTypes.multipleSelects;
+        case "object":
+          if (first.filename) return AirtablePropertyTypes.multipleAttachments;
+          if (first.email) return AirtablePropertyTypes.multipleCollaborators;
+          return null;
+        default:
+          return null;
+      }
+    }
   }
   switch (typeof value) {
     case "string":
+      // We could try and inspect formats for phone and email and such, but not worth it
       return AirtablePropertyTypes.singleLineText;
     case "number":
       return AirtablePropertyTypes.number;
+    case "boolean":
+      return AirtablePropertyTypes.checkbox;
+    case "object":
+      if (value.text) return AirtablePropertyTypes.barcode;
+      if (value.label) return AirtablePropertyTypes.button;
+      if (value.email) return AirtablePropertyTypes.singleCollaborator;
+      if (value.specialValue) return null; // seen as rollup, maybe formula?
+      return null;
     default:
       return null;
   }

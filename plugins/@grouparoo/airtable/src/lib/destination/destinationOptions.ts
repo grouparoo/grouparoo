@@ -119,5 +119,5 @@ class DestinationOptionsHandler {
 }
 
 export const tableFieldIsWritable = (field: TableField): boolean => {
-  return !!mapTypesFromAirtableToGrouparoo(field.type);
+  return !!mapTypesFromAirtableToGrouparoo(field);
 };

@@ -25,12 +25,14 @@ export function loadAppOptions(newNock: boolean = false): SimpleAppOptions {
 }
 
 export function loadTableData(newNock: boolean = false): {
-  campaignsId: string;
-  campaignsName: string;
-  resultsId: string;
-  resultsName: string;
+  allId: string;
+  allName: string;
+  allPrimaryKey: string;
+  allKnownKeys: string[];
   emptyId: string;
   emptyName: string;
+  emptyPrimaryKey: string;
+  emptyKnownKeys: string[];
 } {
   let envFile;
   if (newNock) {
@@ -40,12 +42,14 @@ export function loadTableData(newNock: boolean = false): {
   }
   const parsed = readEnv(envFile);
   return {
-    campaignsId: parsed.AIRTABLE_CAMPAIGNS_TABLE_ID,
-    campaignsName: parsed.AIRTABLE_CAMPAIGNS_TABLE_NAME,
-    resultsId: parsed.AIRTABLE_RESULTS_TABLE_ID,
-    resultsName: parsed.AIRTABLE_RESULTS_TABLE_NAME,
+    allId: parsed.AIRTABLE_ALL_TABLE_ID,
+    allName: "All",
+    allPrimaryKey: "Name",
+    allKnownKeys: ["Brian", "Evan", "Andy"],
     emptyId: parsed.AIRTABLE_EMPTY_TABLE_ID,
-    emptyName: parsed.AIRTABLE_EMPTY_TABLE_NAME,
+    emptyName: "Empty",
+    emptyPrimaryKey: "Name",
+    emptyKnownKeys: [],
   };
 }
 

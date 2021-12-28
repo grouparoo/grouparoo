@@ -33,47 +33,31 @@ describe("Export Array Properties Test", () => {
     });
   });
 
-  describe("Campaigns Table", () => {
-    // TODO: META uses ID
-    const { campaignsName: tableName } = tableData;
-    const primaryKey = "Campaign";
+  describe("Table with Data", () => {
+    // TODO: META uses ID and have less data here (only selects?)
+    const { allName: tableName, allPrimaryKey: primaryKey } = tableData;
     const destinationOptions = { tableId: tableName, primaryKey };
 
-    test("get array properties", async () => {
+    test("get mapping options", async () => {
       const props = await getArrayProperties(destinationOptions);
       const sorted = props.sort();
       expect(sorted).toEqual([
-        "Next steps (from 📈 Results 2)",
-        "Platform (from 💼 Ad sets table)",
-        "💼 Ad sets",
-        "📈 Results (from 📈 Results table)",
+        "f_multipleLookupValues",
+        "f_multipleRecordLinks",
+        "f_multipleSelects",
       ]);
     });
   });
 
-  describe("Results Table", () => {
-    // TODO: META uses ID
-    const { resultsName: tableName } = tableData;
-    const primaryKey = "Name";
-    const destinationOptions = { tableId: tableName, primaryKey };
-
-    test("get mapping options", async () => {
-      const props = await getArrayProperties(destinationOptions);
-      const sorted = props.sort();
-      expect(sorted).toEqual(["📣 Campaigns (from 📣 Campaigns table)"]);
-    });
-  });
-
   describe("Empty Table", () => {
-    // TODO: META uses ID
-    const { emptyName: tableName } = tableData;
-    const primaryKey = "Name";
+    // TODO: META uses ID and will have full data here
+    const { emptyName: tableName, emptyPrimaryKey: primaryKey } = tableData;
     const destinationOptions = { tableId: tableName, primaryKey };
 
     test("get mapping options", async () => {
       const props = await getArrayProperties(destinationOptions);
       const sorted = props.sort();
-      expect(sorted.length).toEqual(0);
+      expect(sorted.length).toEqual(0); // I know nothing!
     });
   });
 

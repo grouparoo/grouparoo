@@ -30,10 +30,9 @@ describe("Test Destination Mapping Options Method", () => {
     });
   });
 
-  describe("Campaigns Table", () => {
+  describe("Table with Data", () => {
     // TODO: META uses ID
-    const { campaignsName: tableName } = tableData;
-    const primaryKey = "Campaign";
+    const { allName: tableName, allPrimaryKey: primaryKey } = tableData;
     const destinationOptions = { tableId: tableName, primaryKey };
 
     test("get mapping options", async () => {
@@ -45,57 +44,42 @@ describe("Test Destination Mapping Options Method", () => {
       expect(optional).toEqual(false);
 
       expect(required.length).toEqual(1);
-      const key = required[0];
-      expect(key.type).toEqual("string");
-      expect(key.key).toEqual(primaryKey);
+      expect(required).toEqual([{ key: "Name", type: "string" }]);
 
-      let property;
-      property = known.find((p) => p.key === primaryKey);
-      expect(property).toBeFalsy(); // shouldn't have this one
-      property = known.find((p) => p.key === "Status");
-      expect(property.type).toEqual("string");
-      property = known.find((p) => p.key === "End date");
-      expect(property.type).toEqual("string"); // META should be smarter
-      property = known.find(
-        (p) => p.key === "📈 Results (from 📈 Results table)"
-      );
-      expect(property.type).toEqual("string"); // META should leave it off
-    });
-  });
-
-  describe("Results Table", () => {
-    // TODO: META uses ID
-    const { resultsName: tableName } = tableData;
-    const primaryKey = "Name";
-    const destinationOptions = { tableId: tableName, primaryKey };
-
-    test("get mapping options", async () => {
-      const value = await getMappingOptions(destinationOptions);
-      const optional = value.properties.allowOptionalFromProperties;
-      const required = value.properties.required;
-      const known = value.properties.known;
-
-      expect(optional).toEqual(false);
-
-      expect(required.length).toEqual(1);
-      const key = required[0];
-      expect(key.type).toEqual("string");
-      expect(key.key).toEqual(primaryKey);
-
-      let property;
-      property = known.find((p) => p.key === primaryKey);
-      expect(property).toBeFalsy(); // shouldn't have this one
-      property = known.find((p) => p.key === "Clicks");
-      expect(property.type).toEqual("number");
-      property = known.find((p) => p.key === "CPA");
-      expect(property.type).toEqual("number"); // META should leave off formula
+      // TODO: meta many less and better types
+      expect(known).toEqual([
+        { type: "number", key: "f_autoNumber", important: true },
+        { type: "string", key: "f_barcode", important: true },
+        { type: "boolean", key: "f_checkbox", important: true },
+        { type: "number", key: "f_count", important: true },
+        { type: "string", key: "f_createdTime", important: true },
+        { type: "number", key: "f_currency", important: true },
+        { type: "string", key: "f_date", important: true },
+        { type: "string", key: "f_dateTime", important: true },
+        { type: "number", key: "f_duration", important: true },
+        { type: "string", key: "f_email", important: true },
+        { type: "string", key: "f_formula", important: true },
+        { type: "string", key: "f_lastModifiedTime", important: true },
+        { type: "string", key: "f_multilineText", important: true },
+        { type: "string", key: "f_multipleLookupValues", important: true },
+        { type: "string", key: "f_multipleRecordLinks", important: true },
+        { type: "string", key: "f_multipleSelects", important: true },
+        { type: "number", key: "f_number", important: true },
+        { type: "number", key: "f_percent", important: true },
+        { type: "string", key: "f_phoneNumber", important: true },
+        { type: "number", key: "f_rating", important: true },
+        { type: "string", key: "f_richText", important: true },
+        { type: "number", key: "f_rollup", important: true },
+        { type: "string", key: "f_singleLineText", important: true },
+        { type: "string", key: "f_singleSelect", important: true },
+        { type: "string", key: "f_url", important: true },
+      ]);
     });
   });
 
   describe("Empty Table", () => {
     // TODO: META uses ID
-    const { emptyName: tableName } = tableData;
-    const primaryKey = "Name";
+    const { emptyName: tableName, emptyPrimaryKey: primaryKey } = tableData;
     const destinationOptions = { tableId: tableName, primaryKey };
 
     test("get mapping options", async () => {
@@ -113,6 +97,7 @@ describe("Test Destination Mapping Options Method", () => {
       expect(key.key).toEqual(primaryKey);
 
       // don't know any other ones!
+      // TODO: meta will have more
       expect(known.length).toEqual(0);
     });
   });

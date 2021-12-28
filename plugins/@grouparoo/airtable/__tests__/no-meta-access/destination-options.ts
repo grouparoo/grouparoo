@@ -28,9 +28,9 @@ describe("Destination Options Tests", () => {
     });
   });
 
-  describe("Campaigns table", () => {
-    const { campaignsName: tableName } = tableData;
-    const primaryKey = "Campaign";
+  describe("Table with Data", () => {
+    // TODO: Meta uses ID
+    const { allName: tableName, allPrimaryKey: primaryKey } = tableData;
 
     test("New Options", async () => {
       const result = await runDestinationOptions({
@@ -40,8 +40,8 @@ describe("Destination Options Tests", () => {
       const table = result.tableId;
       const key = result.primaryKey;
 
-      expect(table.type).toEqual("text");
-      expect(key.type).toEqual("pending");
+      expect(table).toEqual({ type: "text" });
+      expect(key).toEqual({ type: "pending", options: [] });
     });
 
     test("Table Selected", async () => {
@@ -52,13 +52,39 @@ describe("Destination Options Tests", () => {
       const table = result.tableId;
       const key = result.primaryKey;
 
-      expect(table.type).toEqual("text");
-
-      expect(key.type).toEqual("typeahead");
-      expect(key.options.length).toBeGreaterThanOrEqual(5);
-      const index = key.options.indexOf(primaryKey);
-      expect(index).toBeGreaterThanOrEqual(0);
-      expect(key.descriptions).toBeUndefined();
+      expect(table).toEqual({ type: "text" });
+      // TODO: Meta will have less here
+      expect(key).toEqual({
+        type: "typeahead",
+        options: [
+          "Name",
+          "f_autoNumber",
+          "f_barcode",
+          "f_checkbox",
+          "f_count",
+          "f_createdTime",
+          "f_currency",
+          "f_date",
+          "f_dateTime",
+          "f_duration",
+          "f_email",
+          "f_formula",
+          "f_lastModifiedTime",
+          "f_multilineText",
+          "f_multipleLookupValues",
+          "f_multipleRecordLinks",
+          "f_multipleSelects",
+          "f_number",
+          "f_percent",
+          "f_phoneNumber",
+          "f_rating",
+          "f_richText",
+          "f_rollup",
+          "f_singleLineText",
+          "f_singleSelect",
+          "f_url",
+        ],
+      });
     });
   });
 
@@ -73,8 +99,8 @@ describe("Destination Options Tests", () => {
       const table = result.tableId;
       const key = result.primaryKey;
 
-      expect(table.type).toEqual("text");
-      expect(key.type).toEqual("pending");
+      expect(table).toEqual({ type: "text" });
+      expect(key).toEqual({ type: "pending", options: [] });
     });
 
     test("Table Selected", async () => {
@@ -85,9 +111,10 @@ describe("Destination Options Tests", () => {
       const table = result.tableId;
       const key = result.primaryKey;
 
-      expect(table.type).toEqual("text");
-      // can't figure it out!
-      expect(key.type).toEqual("text");
+      // TODO: Meta will have full info here
+
+      expect(table).toEqual({ type: "text" });
+      expect(key).toEqual({ type: "text" }); // can't figure it out!
     });
   });
 });
