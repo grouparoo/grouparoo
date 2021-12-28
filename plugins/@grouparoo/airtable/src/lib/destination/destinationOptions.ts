@@ -1,6 +1,7 @@
 import {
   DestinationOptionsMethod,
   DestinationOptionsMethodResponse,
+  PluginOptionType,
   SimpleDestinationOptions,
 } from "@grouparoo/core";
 import {
@@ -20,45 +21,83 @@ export const destinationOptions: DestinationOptionsMethod<IClient> = async ({
   connection,
   destinationOptions,
 }) => {
-  const optionHandler = new DestinationOptionsHandler(connection);
-
-  return await optionHandler.getDestinationOptions(
+  const optionHandler = new DestinationOptionsHandler(
+    connection,
     destinationOptions as AirtableDestinationOptions
   );
+  return optionHandler.getDestinationOptions();
 };
+
+interface OptionGetter {
+  type: PluginOptionType;
+  options?: string[];
+  descriptions?: string[];
+}
 
 class DestinationOptionsHandler {
   private client: IClient;
-  constructor(connection: IClient) {
+  private options: AirtableDestinationOptions;
+  private meta: boolean;
+  constructor(
+    connection: IClient,
+    destinationOptions: AirtableDestinationOptions
+  ) {
     this.client = connection;
+    this.options = destinationOptions;
+    this.meta = null;
   }
 
-  public async getDestinationOptions(
-    destinationOptions: AirtableDestinationOptions
-  ): Promise<DestinationOptionsMethodResponse> {
+  public async getDestinationOptions(): Promise<DestinationOptionsMethodResponse> {
+    const { access } = await this.client.checkMeta();
+    this.meta = access;
+
     const out: DestinationOptionsMethodResponse = {};
-    Object.assign(out, await this.getRecordOptions(destinationOptions));
+    out.tableId = await this.getTableOptions();
+    out.primaryKey = await this.getKeyOptions();
     return out;
   }
 
-  private async getTables(): Promise<Map<string, ApiTable>> {
+  private async getTableOptions(): Promise<OptionGetter> {
+    const tableId = this.options.tableId;
+    if (!this.meta) {
+      // can't inspect, put in the name!
+      return { type: "text" };
+    }
+    const sortedTables = await this.getTablesAndIds();
+    const options = sortedTables.map((value) => value.option);
+    if (!options.includes(tableId)) {
+      this.options.tableId = "";
+      this.options.primaryKey = "";
+    }
+    const descriptions = sortedTables.map((value) => value.description);
+    return { type: "list", options, descriptions };
+  }
+
+  private async getKeyOptions(): Promise<OptionGetter> {
+    const tableId = this.options.tableId;
+    const primaryKey = this.options.primaryKey;
+    if (!tableId) {
+      // hasn't set yet
+      return { type: "pending", options: [] };
+    }
+
+    const options = await this.getTableFields(tableId);
+    if (options.length === 0) {
+      return { type: "text" };
+    }
+    if (!options.includes(primaryKey)) {
+      this.options.primaryKey = "";
+    }
+
+    return { type: "typeahead", options };
+  }
+
+  private async getTablesAndIds(): Promise<
+    Array<{ option: string; description: string }>
+  > {
     const tables = await this.client.listTables();
-    return new Map(tables.map((table) => [table.id, table]));
-  }
-
-  private async getSchema(tableId: string): Promise<string[]> {
-    return this.getTableFields(tableId);
-  }
-
-  private async getRecordOptions(
-    destinationOptions: AirtableDestinationOptions
-  ): Promise<DestinationOptionsMethodResponse> {
-    const out: DestinationOptionsMethodResponse = {
-      tableId: { type: "list", options: [], descriptions: [] },
-      primaryKey: { type: "pending", options: [] },
-    };
-    const tables = await this.getTables();
-    const sortedTables = Array.from(tables)
+    const mapped = new Map(tables.map((table) => [table.id, table]));
+    const sortedTables = Array.from(mapped)
       .map(([, table]) => {
         return {
           option: table.id,
@@ -66,27 +105,11 @@ class DestinationOptionsHandler {
         };
       })
       .sort((a, b) => a.description.localeCompare(b.description));
-
-    out.tableId.options = sortedTables.map((value) => value.option);
-    out.tableId.descriptions = sortedTables.map((value) => value.description);
-
-    const tableId = destinationOptions.tableId;
-    if (tableId) {
-      const fields = await this.getSchema(tableId);
-      out.primaryKey.type = "typeahead";
-      out.primaryKey.options = fields;
-      if (!fields.includes(destinationOptions.primaryKey)) {
-        destinationOptions.primaryKey = "";
-      }
-    } else {
-      destinationOptions.tableId = "";
-      destinationOptions.primaryKey = "";
-    }
-    return out;
+    return sortedTables;
   }
 
   private async getTableFields(tableId: string): Promise<string[]> {
-    const table = await this.getTableById(tableId);
+    const table = await this.client.getTable(tableId);
     const names = [];
     if (table.fields) {
       for (const property of table.fields) {
@@ -97,14 +120,10 @@ class DestinationOptionsHandler {
     }
     return [...new Set(names.sort())];
   }
-
-  private async getTableById(tableId: string): Promise<Table> {
-    return this.client.getTable(tableId);
-  }
 }
 
 export const tableFieldIsWritable = (field: TableField): boolean => {
-  // TODO: probably many more here
+  // TODO: probably many more here or other way to cehcl (Permission?)
   switch (field.type) {
     case AirtablePropertyTypes.email:
       return true;
@@ -112,9 +131,11 @@ export const tableFieldIsWritable = (field: TableField): boolean => {
       return true;
     case AirtablePropertyTypes.date:
       return true;
+    case AirtablePropertyTypes.number:
+      return true;
+    case AirtablePropertyTypes.multipleSelects:
+      return true;
     default:
       return false;
   }
 };
-
-export { DestinationOptionsHandler };

@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { loadAppOptions, updater } from "../util/nockHelper";
+import { loadAppOptions, updater } from "../utils/nockHelper";
 import { appTest } from "../../src/lib/appTest";
 import { connect } from "../../src/lib/connect";
 

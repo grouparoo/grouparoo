@@ -29,6 +29,8 @@ export function loadTableData(newNock: boolean = false): {
   campaignsName: string;
   resultsId: string;
   resultsName: string;
+  emptyId: string;
+  emptyName: string;
 } {
   let envFile;
   if (newNock) {
@@ -42,6 +44,8 @@ export function loadTableData(newNock: boolean = false): {
     campaignsName: parsed.AIRTABLE_CAMPAIGNS_TABLE_NAME,
     resultsId: parsed.AIRTABLE_RESULTS_TABLE_ID,
     resultsName: parsed.AIRTABLE_RESULTS_TABLE_NAME,
+    emptyId: parsed.AIRTABLE_EMPTY_TABLE_ID,
+    emptyName: parsed.AIRTABLE_EMPTY_TABLE_NAME,
   };
 }
 

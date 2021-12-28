@@ -1,6 +1,6 @@
 import { Client } from "../../src/lib/client/client";
 import { helper } from "@grouparoo/spec-helper";
-import { loadAppOptions, loadTableData, updater } from "../util/nockHelper";
+import { loadAppOptions, loadTableData, updater } from "../utils/nockHelper";
 import { AirtableAppOptions } from "../../src/lib/appOptions";
 
 const { newNock } = helper.useNock(__filename, updater);
