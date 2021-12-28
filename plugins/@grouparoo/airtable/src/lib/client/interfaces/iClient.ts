@@ -1,10 +1,19 @@
-import { CreateRecord, HealthResponse, Table } from "../models";
+import {
+  ApiTable,
+  CreateRecord,
+  HealthResponse,
+  MetaResponse,
+  Table,
+} from "../models";
 import { FieldSet, Record, RecordData, Records } from "airtable";
 
 export interface IClient {
   health(): Promise<HealthResponse>;
 
-  listTables(): Promise<Table[]>;
+  checkMeta(): Promise<MetaResponse>;
+  hasMeta(): Promise<boolean>;
+
+  listTables(): Promise<ApiTable[]>;
 
   getTable(tableId: string): Promise<Table>;
 

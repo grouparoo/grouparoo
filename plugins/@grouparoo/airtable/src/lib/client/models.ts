@@ -1,17 +1,25 @@
 import { RecordData } from "airtable/lib/record_data";
-import { FieldSet } from "airtable";
 
 export interface HealthResponse {
+  success: boolean;
+  message: string;
+}
+export interface MetaResponse {
   body: any;
   statusCode: number;
+  error: string;
+  access: boolean;
 }
 export type ListTablesResponse = {
-  tables: Table[];
+  tables: ApiTable[];
 };
-export type Table = {
+export type ApiTable = {
   id: string;
   name: string;
-  primaryFieldId: string;
+  fields: TableField[];
+};
+export type Table = {
+  idOrName: string;
   fields: TableField[];
 };
 export type TableField = {

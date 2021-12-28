@@ -4,7 +4,7 @@ export const DEFAULT_AIRTABLE_API = "https://api.airtable.com";
 export class AirtableAppOptions implements SimpleAppOptions {
   apiKey: string;
   baseId: string;
-  airtableHost: string;
+  airtableHost?: string;
   constructor(simpleOptions: SimpleAppOptions) {
     this.apiKey = simpleOptions.apiKey ? simpleOptions.apiKey.toString() : "";
     this.baseId = simpleOptions.baseId ? simpleOptions.baseId.toString() : "";

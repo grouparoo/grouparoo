@@ -3,7 +3,12 @@ import {
   DestinationOptionsMethodResponse,
   SimpleDestinationOptions,
 } from "@grouparoo/core";
-import { AirtablePropertyTypes, Table, TableField } from "../client/models";
+import {
+  AirtablePropertyTypes,
+  ApiTable,
+  Table,
+  TableField,
+} from "../client/models";
 import { IClient } from "../client/interfaces/iClient";
 
 export interface AirtableDestinationOptions extends SimpleDestinationOptions {
@@ -36,7 +41,7 @@ class DestinationOptionsHandler {
     return out;
   }
 
-  private async getTables(): Promise<Map<string, Table>> {
+  private async getTables(): Promise<Map<string, ApiTable>> {
     const tables = await this.client.listTables();
     return new Map(tables.map((table) => [table.id, table]));
   }
@@ -99,12 +104,13 @@ class DestinationOptionsHandler {
 }
 
 export const tableFieldIsWritable = (field: TableField): boolean => {
+  // TODO: probably many more here
   switch (field.type) {
-    case AirtablePropertyTypes.EMAIL:
+    case AirtablePropertyTypes.email:
       return true;
-    case AirtablePropertyTypes.SINGLELINE:
+    case AirtablePropertyTypes.singleLineText:
       return true;
-    case AirtablePropertyTypes.DATE:
+    case AirtablePropertyTypes.date:
       return true;
     default:
       return false;
