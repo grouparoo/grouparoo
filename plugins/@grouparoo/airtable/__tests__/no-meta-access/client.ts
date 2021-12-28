@@ -66,7 +66,7 @@ describe("Client Functions", () => {
   describe("Campaign Table", () => {
     const { campaignsId: tableId, campaignsName: tableName } = tableData;
 
-    test("Get Campaign Table by name", async () => {
+    test("Get Table by name", async () => {
       const client = new Client(airtableOptions);
       const table = await client.getTable(tableName);
       expect(table).not.toBeNull();
@@ -75,7 +75,7 @@ describe("Client Functions", () => {
       // TODO META: expect(response.idOrName).toEqual(tableId);
     });
 
-    test("Get Campaign Table by id", async () => {
+    test("Get Table by id", async () => {
       const client = new Client(airtableOptions);
       const table = await client.getTable(tableId);
       expect(table).not.toBeNull();
@@ -141,6 +141,48 @@ describe("Client Functions", () => {
       const client = new Client(airtableOptions);
       const records = await client.listRecords(tableId);
       expect(records.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe("Empty Table", () => {
+    const { emptyId: tableId, emptyName: tableName } = tableData;
+
+    test("Get Table by name", async () => {
+      const client = new Client(airtableOptions);
+      const table = await client.getTable(tableName);
+      expect(table).not.toBeNull();
+      expect(table.idOrName).toEqual(tableName);
+      // TODO META: expect(response.idOrName).toEqual(tableId);
+    });
+
+    test("Get Table by id", async () => {
+      const client = new Client(airtableOptions);
+      const table = await client.getTable(tableId);
+      expect(table).not.toBeNull();
+      expect(table.idOrName).toEqual(tableId);
+
+      // It doesn't know anything because there are no rows
+
+      expect(table.fields.length).toBe(0);
+      // META: expect(table.fields.length).toBe(4);
+
+      const string = table.fields.find((f) => f.name === "Name");
+      expect(string).toBeUndefined();
+      // META: expect(string.type).toEqual("singleLineText");
+
+      const select = table.fields.find((f) => f.name === "Status");
+      expect(select).toBeUndefined();
+      // META:  expect(select.type).toEqual("singleSelect");
+
+      const lines = table.fields.find((f) => f.name === "Notes");
+      expect(lines).toBeUndefined();
+      // META: expect(lines.type).toEqual("multiLineText");
+    });
+
+    test("Successful List Records", async () => {
+      const client = new Client(airtableOptions);
+      const records = await client.listRecords(tableId);
+      expect(records.length).toBe(0);
     });
   });
 });
