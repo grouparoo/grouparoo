@@ -59,7 +59,6 @@ describe("Destination Options Tests", () => {
         options: [
           "Name",
           "f_autoNumber",
-          "f_barcode",
           "f_checkbox",
           "f_count",
           "f_createdTime",

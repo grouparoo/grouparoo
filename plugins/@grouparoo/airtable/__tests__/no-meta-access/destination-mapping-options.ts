@@ -49,7 +49,6 @@ describe("Test Destination Mapping Options Method", () => {
       // TODO: meta many less and better types
       expect(known).toEqual([
         { type: "number", key: "f_autoNumber", important: true },
-        { type: "string", key: "f_barcode", important: true },
         { type: "boolean", key: "f_checkbox", important: true },
         { type: "number", key: "f_count", important: true },
         { type: "string", key: "f_createdTime", important: true },
