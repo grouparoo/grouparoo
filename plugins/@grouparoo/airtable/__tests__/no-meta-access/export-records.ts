@@ -81,7 +81,7 @@ describe("airtable/exportRecords", () => {
   });
 
   afterAll(async () => {
-    //await cleanUp(true);
+    await cleanUp(true);
   });
 
   test("will not create record if sync mode does not allow it", async () => {
