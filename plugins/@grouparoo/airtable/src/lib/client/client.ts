@@ -172,7 +172,9 @@ export class Client implements IClient {
     const table = await this.getTableRaw(tableId);
     if (table) {
       // sort the fields
-      const fields = table.fields || [];
+      const fields = (table.fields || []).map((f) => {
+        return { name: f.name, type: f.type };
+      });
       const sorted = fields.sort((a, b) => a.name.localeCompare(b.name));
       table.fields = sorted;
     }

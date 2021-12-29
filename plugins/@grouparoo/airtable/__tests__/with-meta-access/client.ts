@@ -5,9 +5,9 @@ import * as utils from "../utils/shared";
 import { AirtableAppOptions } from "../../src/lib/appOptions";
 import { IClient } from "../../src/lib/client/interfaces/iClient";
 
-helper.useNock(__filename, getUpdater("BASIC"));
-const appOptions = loadAppOptions("BASIC");
-const tableData = loadTableData("BASIC");
+helper.useNock(__filename, getUpdater("META"));
+const appOptions = loadAppOptions("META");
+const tableData = loadTableData("META");
 const airtableOptions = new AirtableAppOptions(appOptions);
 
 // uses the defualt data from the tables (see .env.example)
@@ -34,14 +34,13 @@ describe("Client Functions", () => {
     test("Meta", async () => {
       const client = new Client(airtableOptions);
       const response = await client.checkMeta();
-      expect(response.access).toEqual(false);
+      expect(response.access).toEqual(true);
     });
 
     test("List Tables", async () => {
       const client = new Client(airtableOptions);
-      await expect(client.listTables()).rejects.toThrow(
-        /Request failed with status code 404/
-      );
+      const response = await client.listTables();
+      expect(response.length).toBeGreaterThanOrEqual(3);
     });
 
     test("Unknown Table", async () => {
@@ -72,7 +71,7 @@ describe("Client Functions", () => {
     test("Get Table by name", async () => {
       const table = await client.getTable(tableName);
       expect(table).not.toBeNull();
-      expect(table.idOrName).toEqual(tableName);
+      expect(table.idOrName).toEqual(tableId);
     });
 
     test("Get Table by id", async () => {
@@ -81,37 +80,37 @@ describe("Client Functions", () => {
       expect(table.idOrName).toEqual(tableId);
 
       expect(table.fields).toEqual([
-        { name: "f_autoNumber", type: "number" },
+        { name: "f_autoNumber", type: "autoNumber" },
         { name: "f_barcode", type: "barcode" },
         { name: "f_button", type: "button" },
         { name: "f_checkbox", type: "checkbox" },
-        { name: "f_count", type: "number" },
-        { name: "f_createdBy", type: "singleCollaborator" },
-        { name: "f_createdTime", type: "singleLineText" },
-        { name: "f_currency", type: "number" },
-        { name: "f_date", type: "singleLineText" },
-        { name: "f_dateTime", type: "singleLineText" },
-        { name: "f_duration", type: "number" },
-        { name: "f_email", type: "singleLineText" },
-        { name: "f_formula", type: "singleLineText" },
-        { name: "f_lastModifiedBy", type: "singleCollaborator" },
-        { name: "f_lastModifiedTime", type: "singleLineText" },
-        { name: "f_multilineText", type: "singleLineText" },
+        { name: "f_count", type: "count" },
+        { name: "f_createdBy", type: "createdBy" },
+        { name: "f_createdTime", type: "createdTime" },
+        { name: "f_currency", type: "currency" },
+        { name: "f_date", type: "date" },
+        { name: "f_dateTime", type: "dateTime" },
+        { name: "f_duration", type: "duration" },
+        { name: "f_email", type: "email" },
+        { name: "f_formula", type: "formula" },
+        { name: "f_lastModifiedBy", type: "lastModifiedBy" },
+        { name: "f_lastModifiedTime", type: "lastModifiedTime" },
+        { name: "f_multilineText", type: "multilineText" },
         { name: "f_multipleAttachments", type: "multipleAttachments" },
         { name: "f_multipleCollaborators", type: "multipleCollaborators" },
-        { name: "f_multipleLookupValues", type: "multipleSelects" },
-        { name: "f_multipleRecordLinks", type: "multipleSelects" },
+        { name: "f_multipleLookupValues", type: "multipleLookupValues" },
+        { name: "f_multipleRecordLinks", type: "multipleRecordLinks" },
         { name: "f_multipleSelects", type: "multipleSelects" },
         { name: "f_number", type: "number" },
-        { name: "f_percent", type: "number" },
-        { name: "f_phoneNumber", type: "singleLineText" },
-        { name: "f_rating", type: "number" },
-        { name: "f_richText", type: "singleLineText" },
-        { name: "f_rollup", type: "number" },
+        { name: "f_percent", type: "percent" },
+        { name: "f_phoneNumber", type: "phoneNumber" },
+        { name: "f_rating", type: "rating" },
+        { name: "f_richText", type: "richText" },
+        { name: "f_rollup", type: "rollup" },
         { name: "f_singleCollaborator", type: "singleCollaborator" },
         { name: "f_singleLineText", type: "singleLineText" },
-        { name: "f_singleSelect", type: "singleLineText" },
-        { name: "f_url", type: "singleLineText" },
+        { name: "f_singleSelect", type: "singleSelect" },
+        { name: "f_url", type: "url" },
         { name: "Name", type: "singleLineText" },
       ]);
     });
@@ -148,7 +147,7 @@ describe("Client Functions", () => {
     test("Get Table by name", async () => {
       const table = await client.getTable(tableName);
       expect(table).not.toBeNull();
-      expect(table.idOrName).toEqual(tableName);
+      expect(table.idOrName).toEqual(tableId);
     });
 
     test("Get Table by id", async () => {
@@ -156,13 +155,40 @@ describe("Client Functions", () => {
       expect(table).not.toBeNull();
       expect(table.idOrName).toEqual(tableId);
 
-      expect(table.fields.length).toBe(0);
-
-      const string = table.fields.find((f) => f.name === primaryKey);
-      expect(string).toBeUndefined();
-
-      const select = table.fields.find((f) => f.name === "f_number");
-      expect(select).toBeUndefined();
+      expect(table.fields).toEqual([
+        { name: "f_autoNumber", type: "autoNumber" },
+        { name: "f_barcode", type: "barcode" },
+        { name: "f_button", type: "button" },
+        { name: "f_checkbox", type: "checkbox" },
+        { name: "f_count", type: "count" },
+        { name: "f_createdBy", type: "createdBy" },
+        { name: "f_createdTime", type: "createdTime" },
+        { name: "f_currency", type: "currency" },
+        { name: "f_date", type: "date" },
+        { name: "f_dateTime", type: "dateTime" },
+        { name: "f_duration", type: "duration" },
+        { name: "f_email", type: "email" },
+        { name: "f_formula", type: "formula" },
+        { name: "f_lastModifiedBy", type: "lastModifiedBy" },
+        { name: "f_lastModifiedTime", type: "lastModifiedTime" },
+        { name: "f_multilineText", type: "multilineText" },
+        { name: "f_multipleAttachments", type: "multipleAttachments" },
+        { name: "f_multipleCollaborators", type: "multipleCollaborators" },
+        { name: "f_multipleLookupValues", type: "multipleLookupValues" },
+        { name: "f_multipleRecordLinks", type: "multipleRecordLinks" },
+        { name: "f_multipleSelects", type: "multipleSelects" },
+        { name: "f_number", type: "number" },
+        { name: "f_percent", type: "percent" },
+        { name: "f_phoneNumber", type: "phoneNumber" },
+        { name: "f_rating", type: "rating" },
+        { name: "f_richText", type: "richText" },
+        { name: "f_rollup", type: "rollup" },
+        { name: "f_singleCollaborator", type: "singleCollaborator" },
+        { name: "f_singleLineText", type: "singleLineText" },
+        { name: "f_singleSelect", type: "singleSelect" },
+        { name: "f_url", type: "url" },
+        { name: "Name", type: "singleLineText" },
+      ]);
     });
 
     test("Successful List Records", async () => {
