@@ -1,10 +1,10 @@
 import { helper } from "@grouparoo/spec-helper";
-import { loadAppOptions, updater } from "../utils/nockHelper";
+import { loadAppOptions, getUpdater } from "../utils/nockHelper";
 import { appTest } from "../../src/lib/appTest";
 import { connect } from "../../src/lib/connect";
 
-const { newNock } = helper.useNock(__filename, updater);
-const appOptions = loadAppOptions(newNock);
+helper.useNock(__filename, getUpdater("BASIC"));
+const appOptions = loadAppOptions("BASIC");
 
 describe("Plugin Test Connection Scenarios", () => {
   test("Successful Health Check", async () => {

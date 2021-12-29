@@ -1,13 +1,13 @@
 import { Client } from "../../src/lib/client/client";
 import { helper } from "@grouparoo/spec-helper";
-import { loadAppOptions, loadTableData, updater } from "../utils/nockHelper";
+import { loadAppOptions, getUpdater, loadTableData } from "../utils/nockHelper";
 import * as utils from "../utils/shared";
 import { AirtableAppOptions } from "../../src/lib/appOptions";
 import { IClient } from "../../src/lib/client/interfaces/iClient";
 
-const { newNock } = helper.useNock(__filename, updater);
-const appOptions = loadAppOptions(newNock);
-const tableData = loadTableData(newNock);
+helper.useNock(__filename, getUpdater("BASIC"));
+const appOptions = loadAppOptions("BASIC");
+const tableData = loadTableData("BASIC");
 const airtableOptions = new AirtableAppOptions(appOptions);
 
 // uses the defualt data from the tables (see .env.example)

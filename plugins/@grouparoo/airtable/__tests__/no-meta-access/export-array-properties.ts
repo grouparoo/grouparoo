@@ -1,14 +1,14 @@
 import "@grouparoo/spec-helper";
-import { loadAppOptions, updater, loadTableData } from "../utils/nockHelper";
+import { loadAppOptions, getUpdater, loadTableData } from "../utils/nockHelper";
 import { helper } from "@grouparoo/spec-helper";
 import * as utils from "../utils/shared";
 import { connect } from "../../src/lib/connect";
 
 import { exportArrayProperties as methodToTest } from "../../src/lib/destination/exportArrayProperties";
 
-const { newNock } = helper.useNock(__filename, updater);
-const appOptions = loadAppOptions(newNock);
-const tableData = loadTableData(newNock);
+helper.useNock(__filename, getUpdater("BASIC"));
+const appOptions = loadAppOptions("BASIC");
+const tableData = loadTableData("BASIC");
 let connection;
 
 async function getArrayProperties(destinationOptions) {

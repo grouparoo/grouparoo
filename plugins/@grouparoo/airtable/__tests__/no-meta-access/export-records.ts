@@ -1,14 +1,15 @@
 import { helper } from "@grouparoo/spec-helper";
 import { exportBatch } from "../../src/lib/destination/exportRecords";
-import { loadAppOptions, updater, loadTableData } from "../utils/nockHelper";
+import { loadAppOptions, getUpdater, loadTableData } from "../utils/nockHelper";
 import * as utils from "../utils/shared";
 import { connect } from "../../src/lib/connect";
 import { IClient } from "../../src/lib/client/interfaces/iClient";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 
-const { newNock } = helper.useNock(__filename, updater);
-const appOptions = loadAppOptions(newNock);
-const { emptyId: tableId, emptyName: tableName } = loadTableData(newNock);
+helper.useNock(__filename, getUpdater("BASIC"));
+const appOptions = loadAppOptions("BASIC");
+const tableData = loadTableData("BASIC");
+const { emptyId: tableId, emptyName: tableName } = tableData;
 const destinationOptions = { tableId: tableName, primaryKey: "Name" };
 
 let client: IClient;
