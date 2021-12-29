@@ -63,6 +63,31 @@ export const updater = {
       nockCall = nockCall.replace(new RegExp(realEnv[key], "gi"), nockEnv[key]);
     }
 
+    const hasMeta =
+      nockCall.includes("/v0/meta/bases") && nockCall.includes(".reply(200");
+    if (hasMeta) {
+      const useBaseId = nockEnv.AIRTABLE_BASE_ID;
+      const err = new Error(`Could not replace bases: ${nockCall}`);
+      // replace the bases list
+      const replyIndex = nockCall.indexOf('.reply(200, {"bases":');
+      if (replyIndex < 0) {
+        throw err;
+      }
+      const rest = nockCall.substring(replyIndex);
+      const endIndex = rest.indexOf("\n");
+      if (endIndex < 0) {
+        throw err;
+      }
+      // 12 = start of {"bases":
+      // 3 = ", [" at end of line
+      const reply = rest.substring(12, endIndex - 3);
+      JSON.parse(reply); // just to make sure it parses
+      nockCall = nockCall.replace(
+        reply,
+        `{"bases":[{"id":"${useBaseId}","name":"[CI Test] Marketing Campaign Tracking","permissionLevel":"create"}]}`
+      );
+    }
+
     return nockCall;
   },
 };

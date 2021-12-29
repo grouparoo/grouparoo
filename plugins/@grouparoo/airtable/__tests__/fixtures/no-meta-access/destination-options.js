@@ -1,7 +1,92 @@
 const nock = require("nock");
 
 nock("https://api.airtable.com:443", { encodedQueryParams: true })
+  .get("/v0/appA1Qak1T4cGoiP7/tbln73pmkdKl4Khj1")
+  .query({})
+  .once()
+  .reply(
+    200,
+    ["1f8b0800000000000003ab562a4a4dce2f4a2956b28a8ead0500dad1d38e0e000000"],
+    [
+      "access-control-allow-headers",
+      "authorization,content-length,content-type,user-agent,x-airtable-application-id,x-airtable-user-agent,x-api-version,x-requested-with",
+      "access-control-allow-methods",
+      "DELETE,GET,OPTIONS,PATCH,POST,PUT",
+      "access-control-allow-origin",
+      "*",
+      "airtable-uncompressed-content-length",
+      "14",
+      "content-encoding",
+      "gzip",
+      "Content-Type",
+      "application/json; charset=utf-8",
+      "Date",
+      "Wed, 29 Dec 2021 22:01:23 GMT",
+      "Server",
+      "Tengine",
+      "Set-Cookie",
+      "brw=brwbAFUqvBPhwGRhb; path=/; expires=Thu, 29 Dec 2022 22:01:23 GMT; domain=.airtable.com; samesite=none; secure",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "X-Content-Type-Options",
+      "nosniff",
+      "X-Frame-Options",
+      "DENY",
+      "Content-Length",
+      "34",
+      "Connection",
+      "Close",
+    ]
+  );
+nock("https://api.airtable.com:443", { encodedQueryParams: true })
   .get("/v0/meta/bases")
+  .once()
+  .reply(
+    200,
+    {
+      bases: [
+        {
+          id: "appA1Qak1T4cGoiP7",
+          name: "[CI Test] Marketing Campaign Tracking",
+          permissionLevel: "create",
+        },
+      ],
+    },
+    [
+      "access-control-allow-headers",
+      "authorization,content-length,content-type,user-agent,x-airtable-application-id,x-airtable-user-agent,x-api-version,x-requested-with",
+      "access-control-allow-methods",
+      "DELETE,GET,OPTIONS,PATCH,POST,PUT",
+      "access-control-allow-origin",
+      "*",
+      "airtable-uncompressed-content-length",
+      "1015",
+      "Content-Type",
+      "application/json; charset=utf-8",
+      "Date",
+      "Wed, 29 Dec 2021 22:01:23 GMT",
+      "Server",
+      "Tengine",
+      "Set-Cookie",
+      "brw=brwvenPYlgRFZ6fUJ; path=/; expires=Thu, 29 Dec 2022 22:01:23 GMT; domain=.airtable.com; samesite=none; secure",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "X-Content-Type-Options",
+      "nosniff",
+      "X-Frame-Options",
+      "DENY",
+      "Content-Length",
+      "1015",
+      "Connection",
+      "Close",
+    ]
+  );
+nock("https://api.airtable.com:443", { encodedQueryParams: true })
+  .get("/v0/meta/bases/appA1Qak1T4cGoiP7/tables")
   .once()
   .reply(404, { error: { type: "NOT_FOUND" } }, [
     "access-control-allow-headers",
@@ -13,13 +98,13 @@ nock("https://api.airtable.com:443", { encodedQueryParams: true })
     "Content-Type",
     "application/json; charset=utf-8",
     "Date",
-    "Wed, 29 Dec 2021 02:50:44 GMT",
+    "Wed, 29 Dec 2021 22:01:24 GMT",
     "ETag",
     'W/"1e-3T2XZ8YB2JlzFYjAqmnw+s2G3pA"',
     "Server",
     "Tengine",
     "Set-Cookie",
-    "brw=brwPKndcFmYDteMqb; path=/; expires=Thu, 29 Dec 2022 02:50:44 GMT; domain=.airtable.com; samesite=none; secure",
+    "brw=brwrnef0Ju3lTttkd; path=/; expires=Thu, 29 Dec 2022 22:01:23 GMT; domain=.airtable.com; samesite=none; secure",
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains; preload",
     "Vary",
@@ -36,6 +121,51 @@ nock("https://api.airtable.com:443", { encodedQueryParams: true })
 nock("https://api.airtable.com:443", { encodedQueryParams: true })
   .get("/v0/meta/bases")
   .once()
+  .reply(
+    200,
+    {
+      bases: [
+        {
+          id: "appA1Qak1T4cGoiP7",
+          name: "[CI Test] Marketing Campaign Tracking",
+          permissionLevel: "create",
+        },
+      ],
+    },
+    [
+      "access-control-allow-headers",
+      "authorization,content-length,content-type,user-agent,x-airtable-application-id,x-airtable-user-agent,x-api-version,x-requested-with",
+      "access-control-allow-methods",
+      "DELETE,GET,OPTIONS,PATCH,POST,PUT",
+      "access-control-allow-origin",
+      "*",
+      "airtable-uncompressed-content-length",
+      "1015",
+      "Content-Type",
+      "application/json; charset=utf-8",
+      "Date",
+      "Wed, 29 Dec 2021 22:01:24 GMT",
+      "Server",
+      "Tengine",
+      "Set-Cookie",
+      "brw=brw5w8jomEI18rDm0; path=/; expires=Thu, 29 Dec 2022 22:01:24 GMT; domain=.airtable.com; samesite=none; secure",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "X-Content-Type-Options",
+      "nosniff",
+      "X-Frame-Options",
+      "DENY",
+      "Content-Length",
+      "1015",
+      "Connection",
+      "Close",
+    ]
+  );
+nock("https://api.airtable.com:443", { encodedQueryParams: true })
+  .get("/v0/meta/bases/appA1Qak1T4cGoiP7/tables")
+  .once()
   .reply(404, { error: { type: "NOT_FOUND" } }, [
     "access-control-allow-headers",
     "authorization,content-length,content-type,user-agent,x-airtable-application-id,x-airtable-user-agent,x-api-version,x-requested-with",
@@ -46,13 +176,13 @@ nock("https://api.airtable.com:443", { encodedQueryParams: true })
     "Content-Type",
     "application/json; charset=utf-8",
     "Date",
-    "Wed, 29 Dec 2021 02:50:45 GMT",
+    "Wed, 29 Dec 2021 22:01:24 GMT",
     "ETag",
     'W/"1e-3T2XZ8YB2JlzFYjAqmnw+s2G3pA"',
     "Server",
     "Tengine",
     "Set-Cookie",
-    "brw=brwzpt1NAKe1EX5zK; path=/; expires=Thu, 29 Dec 2022 02:50:44 GMT; domain=.airtable.com; samesite=none; secure",
+    "brw=brwqdtvQ9xOqLmmkn; path=/; expires=Thu, 29 Dec 2022 22:01:24 GMT; domain=.airtable.com; samesite=none; secure",
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains; preload",
     "Vary",
@@ -69,6 +199,51 @@ nock("https://api.airtable.com:443", { encodedQueryParams: true })
 nock("https://api.airtable.com:443", { encodedQueryParams: true })
   .get("/v0/meta/bases")
   .once()
+  .reply(
+    200,
+    {
+      bases: [
+        {
+          id: "appA1Qak1T4cGoiP7",
+          name: "[CI Test] Marketing Campaign Tracking",
+          permissionLevel: "create",
+        },
+      ],
+    },
+    [
+      "access-control-allow-headers",
+      "authorization,content-length,content-type,user-agent,x-airtable-application-id,x-airtable-user-agent,x-api-version,x-requested-with",
+      "access-control-allow-methods",
+      "DELETE,GET,OPTIONS,PATCH,POST,PUT",
+      "access-control-allow-origin",
+      "*",
+      "airtable-uncompressed-content-length",
+      "1015",
+      "Content-Type",
+      "application/json; charset=utf-8",
+      "Date",
+      "Wed, 29 Dec 2021 22:01:25 GMT",
+      "Server",
+      "Tengine",
+      "Set-Cookie",
+      "brw=brw8mXFa6Syf2vxFs; path=/; expires=Thu, 29 Dec 2022 22:01:25 GMT; domain=.airtable.com; samesite=none; secure",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "X-Content-Type-Options",
+      "nosniff",
+      "X-Frame-Options",
+      "DENY",
+      "Content-Length",
+      "1015",
+      "Connection",
+      "Close",
+    ]
+  );
+nock("https://api.airtable.com:443", { encodedQueryParams: true })
+  .get("/v0/meta/bases/appA1Qak1T4cGoiP7/tables")
+  .once()
   .reply(404, { error: { type: "NOT_FOUND" } }, [
     "access-control-allow-headers",
     "authorization,content-length,content-type,user-agent,x-airtable-application-id,x-airtable-user-agent,x-api-version,x-requested-with",
@@ -79,13 +254,13 @@ nock("https://api.airtable.com:443", { encodedQueryParams: true })
     "Content-Type",
     "application/json; charset=utf-8",
     "Date",
-    "Wed, 29 Dec 2021 02:50:45 GMT",
+    "Wed, 29 Dec 2021 22:01:25 GMT",
     "ETag",
     'W/"1e-3T2XZ8YB2JlzFYjAqmnw+s2G3pA"',
     "Server",
     "Tengine",
     "Set-Cookie",
-    "brw=brwUt5HluKO5N2v5s; path=/; expires=Thu, 29 Dec 2022 02:50:45 GMT; domain=.airtable.com; samesite=none; secure",
+    "brw=brwVT4cPOQ342Nlei; path=/; expires=Thu, 29 Dec 2022 22:01:25 GMT; domain=.airtable.com; samesite=none; secure",
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains; preload",
     "Vary",
@@ -122,11 +297,11 @@ nock("https://api.airtable.com:443", { encodedQueryParams: true })
       "Content-Type",
       "application/json; charset=utf-8",
       "Date",
-      "Wed, 29 Dec 2021 02:50:45 GMT",
+      "Wed, 29 Dec 2021 22:01:25 GMT",
       "Server",
       "Tengine",
       "Set-Cookie",
-      "brw=brwOncWupnYP3ivLT; path=/; expires=Thu, 29 Dec 2022 02:50:45 GMT; domain=.airtable.com; samesite=none; secure",
+      "brw=brwvD4yWhQdW0ND99; path=/; expires=Thu, 29 Dec 2022 22:01:25 GMT; domain=.airtable.com; samesite=none; secure",
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -144,6 +319,51 @@ nock("https://api.airtable.com:443", { encodedQueryParams: true })
 nock("https://api.airtable.com:443", { encodedQueryParams: true })
   .get("/v0/meta/bases")
   .once()
+  .reply(
+    200,
+    {
+      bases: [
+        {
+          id: "appA1Qak1T4cGoiP7",
+          name: "[CI Test] Marketing Campaign Tracking",
+          permissionLevel: "create",
+        },
+      ],
+    },
+    [
+      "access-control-allow-headers",
+      "authorization,content-length,content-type,user-agent,x-airtable-application-id,x-airtable-user-agent,x-api-version,x-requested-with",
+      "access-control-allow-methods",
+      "DELETE,GET,OPTIONS,PATCH,POST,PUT",
+      "access-control-allow-origin",
+      "*",
+      "airtable-uncompressed-content-length",
+      "1015",
+      "Content-Type",
+      "application/json; charset=utf-8",
+      "Date",
+      "Wed, 29 Dec 2021 22:01:26 GMT",
+      "Server",
+      "Tengine",
+      "Set-Cookie",
+      "brw=brwPszjjUrphzD757; path=/; expires=Thu, 29 Dec 2022 22:01:26 GMT; domain=.airtable.com; samesite=none; secure",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "X-Content-Type-Options",
+      "nosniff",
+      "X-Frame-Options",
+      "DENY",
+      "Content-Length",
+      "1015",
+      "Connection",
+      "Close",
+    ]
+  );
+nock("https://api.airtable.com:443", { encodedQueryParams: true })
+  .get("/v0/meta/bases/appA1Qak1T4cGoiP7/tables")
+  .once()
   .reply(404, { error: { type: "NOT_FOUND" } }, [
     "access-control-allow-headers",
     "authorization,content-length,content-type,user-agent,x-airtable-application-id,x-airtable-user-agent,x-api-version,x-requested-with",
@@ -154,13 +374,13 @@ nock("https://api.airtable.com:443", { encodedQueryParams: true })
     "Content-Type",
     "application/json; charset=utf-8",
     "Date",
-    "Wed, 29 Dec 2021 02:50:46 GMT",
+    "Wed, 29 Dec 2021 22:01:27 GMT",
     "ETag",
     'W/"1e-3T2XZ8YB2JlzFYjAqmnw+s2G3pA"',
     "Server",
     "Tengine",
     "Set-Cookie",
-    "brw=brwrDnO4ooPWsg5mp; path=/; expires=Thu, 29 Dec 2022 02:50:46 GMT; domain=.airtable.com; samesite=none; secure",
+    "brw=brwXhoXSzX0Tp71c4; path=/; expires=Thu, 29 Dec 2022 22:01:27 GMT; domain=.airtable.com; samesite=none; secure",
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains; preload",
     "Vary",
@@ -177,6 +397,51 @@ nock("https://api.airtable.com:443", { encodedQueryParams: true })
 nock("https://api.airtable.com:443", { encodedQueryParams: true })
   .get("/v0/meta/bases")
   .once()
+  .reply(
+    200,
+    {
+      bases: [
+        {
+          id: "appA1Qak1T4cGoiP7",
+          name: "[CI Test] Marketing Campaign Tracking",
+          permissionLevel: "create",
+        },
+      ],
+    },
+    [
+      "access-control-allow-headers",
+      "authorization,content-length,content-type,user-agent,x-airtable-application-id,x-airtable-user-agent,x-api-version,x-requested-with",
+      "access-control-allow-methods",
+      "DELETE,GET,OPTIONS,PATCH,POST,PUT",
+      "access-control-allow-origin",
+      "*",
+      "airtable-uncompressed-content-length",
+      "1015",
+      "Content-Type",
+      "application/json; charset=utf-8",
+      "Date",
+      "Wed, 29 Dec 2021 22:01:28 GMT",
+      "Server",
+      "Tengine",
+      "Set-Cookie",
+      "brw=brwYdzWjkcGNisjbA; path=/; expires=Thu, 29 Dec 2022 22:01:27 GMT; domain=.airtable.com; samesite=none; secure",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "X-Content-Type-Options",
+      "nosniff",
+      "X-Frame-Options",
+      "DENY",
+      "Content-Length",
+      "1015",
+      "Connection",
+      "Close",
+    ]
+  );
+nock("https://api.airtable.com:443", { encodedQueryParams: true })
+  .get("/v0/meta/bases/appA1Qak1T4cGoiP7/tables")
+  .once()
   .reply(404, { error: { type: "NOT_FOUND" } }, [
     "access-control-allow-headers",
     "authorization,content-length,content-type,user-agent,x-airtable-application-id,x-airtable-user-agent,x-api-version,x-requested-with",
@@ -187,13 +452,13 @@ nock("https://api.airtable.com:443", { encodedQueryParams: true })
     "Content-Type",
     "application/json; charset=utf-8",
     "Date",
-    "Wed, 29 Dec 2021 02:50:47 GMT",
+    "Wed, 29 Dec 2021 22:01:28 GMT",
     "ETag",
     'W/"1e-3T2XZ8YB2JlzFYjAqmnw+s2G3pA"',
     "Server",
     "Tengine",
     "Set-Cookie",
-    "brw=brwvJfQuTHeeIwLs6; path=/; expires=Thu, 29 Dec 2022 02:50:47 GMT; domain=.airtable.com; samesite=none; secure",
+    "brw=brwIWSWW1iiWzqnJZ; path=/; expires=Thu, 29 Dec 2022 22:01:28 GMT; domain=.airtable.com; samesite=none; secure",
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains; preload",
     "Vary",
@@ -228,11 +493,11 @@ nock("https://api.airtable.com:443", { encodedQueryParams: true })
       "Content-Type",
       "application/json; charset=utf-8",
       "Date",
-      "Wed, 29 Dec 2021 02:50:48 GMT",
+      "Wed, 29 Dec 2021 22:01:28 GMT",
       "Server",
       "Tengine",
       "Set-Cookie",
-      "brw=brwoNuDqi5tW8w064; path=/; expires=Thu, 29 Dec 2022 02:50:48 GMT; domain=.airtable.com; samesite=none; secure",
+      "brw=brw37NbCDyv0izxmy; path=/; expires=Thu, 29 Dec 2022 22:01:28 GMT; domain=.airtable.com; samesite=none; secure",
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",

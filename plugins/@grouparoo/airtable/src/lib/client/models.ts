@@ -5,9 +5,8 @@ export interface HealthResponse {
   message: string;
 }
 export interface MetaResponse {
-  body: any;
-  statusCode: number;
-  error: string;
+  message: string;
+  health: boolean;
   access: boolean;
 }
 export type ListTablesResponse = {

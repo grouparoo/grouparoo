@@ -1,7 +1,9 @@
 import { Client } from "../../src/lib/client/client";
 import { helper } from "@grouparoo/spec-helper";
 import { loadAppOptions, loadTableData, updater } from "../utils/nockHelper";
+import * as utils from "../utils/shared";
 import { AirtableAppOptions } from "../../src/lib/appOptions";
+import { IClient } from "../../src/lib/client/interfaces/iClient";
 
 const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
@@ -22,7 +24,7 @@ describe("Client Functions", () => {
 
     test("Unauthorized Health Response", async () => {
       const client = new Client(
-        Object.assign({}, airtableOptions, { apiKey: "badkey" })
+        Object.assign({}, airtableOptions, { apiKey: "keyBad" })
       );
 
       const response = await client.health();
@@ -61,6 +63,7 @@ describe("Client Functions", () => {
   });
 
   describe("Table with Data", () => {
+    let client: IClient;
     const {
       allId: tableId,
       allName: tableName,
@@ -68,8 +71,11 @@ describe("Client Functions", () => {
       allKnownKeys: knownKeys,
     } = tableData;
 
+    beforeAll(async () => {
+      client = new Client(airtableOptions);
+    });
+
     test("Get Table by name", async () => {
-      const client = new Client(airtableOptions);
       const table = await client.getTable(tableName);
       expect(table).not.toBeNull();
       expect(table.idOrName).toEqual(tableName);
@@ -78,7 +84,6 @@ describe("Client Functions", () => {
     });
 
     test("Get Table by id", async () => {
-      const client = new Client(airtableOptions);
       const table = await client.getTable(tableId);
       expect(table).not.toBeNull();
       expect(table.idOrName).toEqual(tableId);
@@ -121,13 +126,11 @@ describe("Client Functions", () => {
     });
 
     test("Successful List Records", async () => {
-      const client = new Client(airtableOptions);
       const records = await client.listRecords(tableId);
       expect(records.length).toBeGreaterThan(0);
     });
 
     test("Successful List Records by ID", async () => {
-      const client = new Client(airtableOptions);
       const records = await client.listRecordsByField(
         tableId,
         primaryKey,
@@ -138,6 +141,7 @@ describe("Client Functions", () => {
   });
 
   describe("Empty Table", () => {
+    let client: IClient;
     const {
       emptyId: tableId,
       emptyName: tableName,
@@ -145,8 +149,12 @@ describe("Client Functions", () => {
       emptyKnownKeys: knownKeys,
     } = tableData;
 
+    beforeAll(async () => {
+      client = new Client(airtableOptions);
+      await utils.cleanUp(client, tableId, false);
+    });
+
     test("Get Table by name", async () => {
-      const client = new Client(airtableOptions);
       const table = await client.getTable(tableName);
       expect(table).not.toBeNull();
       expect(table.idOrName).toEqual(tableName);
@@ -154,7 +162,6 @@ describe("Client Functions", () => {
     });
 
     test("Get Table by id", async () => {
-      const client = new Client(airtableOptions);
       const table = await client.getTable(tableId);
       expect(table).not.toBeNull();
       expect(table.idOrName).toEqual(tableId);
@@ -172,13 +179,11 @@ describe("Client Functions", () => {
     });
 
     test("Successful List Records", async () => {
-      const client = new Client(airtableOptions);
       const records = await client.listRecords(tableId);
       expect(records.length).toBe(0);
     });
 
     test("Successful List Records by ID", async () => {
-      const client = new Client(airtableOptions);
       const records = await client.listRecordsByField(
         tableId,
         primaryKey,

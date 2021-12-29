@@ -22,11 +22,11 @@ export class Client implements IClient {
   private metaAccess: boolean;
   constructor(appOptions: AirtableAppOptions) {
     this.apiKey = appOptions.apiKey;
+    this.baseId = (appOptions.baseId || "").toString().trim();
     this.baseClient = new Airtable({
       apiKey: appOptions.apiKey,
       endpointUrl: appOptions.airtableHost,
-    }).base(appOptions.baseId);
-    this.baseId = appOptions.baseId;
+    }).base(this.baseId);
     this.apiURL = new URL(appOptions.airtableHost);
     this.metaChecked = null;
     this.metaAccess = null;
@@ -37,23 +37,42 @@ export class Client implements IClient {
     };
   }
   async health(): Promise<HealthResponse> {
-    const meta = await this.checkMeta();
-    if (!meta.access) {
-      const error = meta.error;
-      const statusCode = meta.statusCode || "Unknown";
-      switch (meta.statusCode) {
+    const { health, message } = await this.checkMeta();
+    return { success: health, message };
+  }
+
+  async checkMeta(): Promise<MetaResponse> {
+    const bases = [];
+    try {
+      const metaEndpoint = new URL("/v0/meta/bases", this.apiURL);
+      const metaResponse = await Axios.get(metaEndpoint.href, {
+        headers: this.defaultHeaders(),
+      });
+      metaResponse.data.bases.forEach((base) => {
+        bases.push(base.id);
+      });
+    } catch (err) {
+      const statusCode = err?.response?.status || "Unknown";
+      const error = getErrorMessage(err);
+      switch (statusCode) {
         case 401:
-          return { success: false, message: `${error}. Invalid API Key` };
+          return {
+            health: false,
+            access: false,
+            message: `${error}. Invalid API Key`,
+          };
         case 404:
           // doesn't have meta access
           return {
-            success: true,
+            health: true,
+            access: false,
             message:
               "API key valid, but account does not have meta API access. Verify base id manually.",
           };
         default:
           return {
-            success: false,
+            health: false,
+            access: false,
             message: `${error}. Status code: ${statusCode}`,
           };
       }
@@ -61,46 +80,48 @@ export class Client implements IClient {
 
     try {
       const tables = await this.listTables();
-      const message = `Meta API access confirmed. Tables found: ${tables.length}`;
-      return { success: true, message };
+      return {
+        health: true,
+        access: true,
+        message: `Meta API access confirmed. Tables found: ${tables.length}`,
+      };
     } catch (err) {
       const statusCode = err?.response?.status || "Unknown";
       const error = getErrorMessage(err);
       switch (statusCode) {
+        case 401:
+          return {
+            health: false,
+            access: false,
+            message: `${error}. Invalid API Key`,
+          };
         case 404:
           // only got here because we have meta access
-          // so that means missing base id
-          return { success: false, message: `${error}. Invalid Base Id` };
+          // so that means the base id is bad _or_ that base doens't have meta access
+          if (bases.indexOf(this.baseId) >= 0) {
+            // known base id, but not meta access on this base
+            return {
+              health: true,
+              access: false,
+              message:
+                "API key valid and base found, but base does not have meta API access.",
+            };
+          } else {
+            // unknown base if
+            return {
+              health: false,
+              access: false,
+              message: `${error}. Base Id not found in list of known base ids`,
+            };
+          }
         default:
           return {
-            success: false,
+            health: false,
+            access: false,
             message: `${error}. Status code: ${statusCode}`,
           };
       }
     }
-  }
-
-  async checkMeta(): Promise<MetaResponse> {
-    const metaEndpoint = new URL("/v0/meta/bases", this.apiURL);
-    return Axios.get<MetaResponse>(metaEndpoint.href, {
-      headers: this.defaultHeaders(),
-    })
-      .then((resp) => {
-        return {
-          body: resp.data,
-          statusCode: resp.status,
-          error: null,
-          access: true,
-        };
-      })
-      .catch((err) => {
-        return {
-          body: err?.response?.data,
-          statusCode: err?.response?.status,
-          error: getErrorMessage(err),
-          access: false,
-        };
-      });
   }
 
   async hasMeta(): Promise<boolean> {

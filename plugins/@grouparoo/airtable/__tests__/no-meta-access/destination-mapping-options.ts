@@ -1,5 +1,6 @@
 import "@grouparoo/spec-helper";
 import { loadAppOptions, updater, loadTableData } from "../utils/nockHelper";
+import * as utils from "../utils/shared";
 import { helper } from "@grouparoo/spec-helper";
 import { connect } from "../../src/lib/connect";
 import { destinationMappingOptions as methodToTest } from "../../src/lib/destination/destinationMappingOptions";
@@ -28,6 +29,7 @@ describe("Test Destination Mapping Options Method", () => {
       appId: null,
       appOptions,
     });
+    await utils.cleanUp(connection, tableData.emptyId, false);
   });
 
   describe("Table with Data", () => {

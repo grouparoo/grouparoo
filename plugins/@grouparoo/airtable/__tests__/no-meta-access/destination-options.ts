@@ -2,6 +2,7 @@ import "@grouparoo/spec-helper";
 import { loadAppOptions, updater, loadTableData } from "../utils/nockHelper";
 import { helper } from "@grouparoo/spec-helper";
 import { connect } from "../../src/lib/connect";
+import * as utils from "../utils/shared";
 import { destinationOptions as methodToTest } from "../../src/lib/destination/destinationOptions";
 
 const { newNock } = helper.useNock(__filename, updater);
@@ -26,6 +27,7 @@ describe("Destination Options Tests", () => {
       appId: null,
       appOptions,
     });
+    await utils.cleanUp(connection, tableData.emptyId, false);
   });
 
   describe("Table with Data", () => {

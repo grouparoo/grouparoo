@@ -1,6 +1,7 @@
 import "@grouparoo/spec-helper";
 import { loadAppOptions, updater, loadTableData } from "../utils/nockHelper";
 import { helper } from "@grouparoo/spec-helper";
+import * as utils from "../utils/shared";
 import { connect } from "../../src/lib/connect";
 
 import { exportArrayProperties as methodToTest } from "../../src/lib/destination/exportArrayProperties";
@@ -29,6 +30,7 @@ describe("Export Array Properties Test", () => {
       appId: null,
       appOptions,
     });
+    await utils.cleanUp(connection, tableData.emptyId, false);
   });
 
   describe("Table with Data", () => {

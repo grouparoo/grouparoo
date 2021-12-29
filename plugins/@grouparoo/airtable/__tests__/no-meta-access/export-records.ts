@@ -1,6 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { exportBatch } from "../../src/lib/destination/exportRecords";
 import { loadAppOptions, updater, loadTableData } from "../utils/nockHelper";
+import * as utils from "../utils/shared";
 import { connect } from "../../src/lib/connect";
 import { IClient } from "../../src/lib/client/interfaces/iClient";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
@@ -26,39 +27,11 @@ const id3 = "rec3";
 let record3 = null;
 
 async function getRecordByName(name) {
-  const records = await client.listRecordsByField(tableId, "Name", [name]);
-  if (records.length === 0) {
-    return null;
-  }
-  if (records.length > 1) {
-    throw new Error(`More than one (${records.length}) result: ${name}`);
-  }
-  return records[0];
-}
-async function getRecordById(recId) {
-  try {
-    return await client.getRecordById(tableId, recId);
-  } catch (err) {
-    if (err.message.indexOf("Record not found") >= 0) {
-      return null;
-    }
-    throw err;
-  }
+  return utils.getRecordByName(client, tableId, name);
 }
 
-async function cleanUp(suppressErrors: boolean) {
-  try {
-    const records = await client.listRecords(tableId);
-    const ids = records.map((r) => r.id);
-    if (ids.length === 0) {
-      return;
-    }
-    await client.deleteRecords(tableId, ids);
-  } catch (err) {
-    if (!suppressErrors) {
-      throw err;
-    }
-  }
+async function getRecordById(recId) {
+  return utils.getRecordById(client, tableId, recId);
 }
 
 async function exportRecords(
@@ -77,11 +50,11 @@ async function exportRecords(
 describe("airtable/exportRecords", () => {
   beforeAll(async () => {
     client = await connect({ app: null, appId: null, appOptions });
-    await cleanUp(false);
+    await utils.cleanUp(client, tableId, false);
   });
 
   afterAll(async () => {
-    await cleanUp(true);
+    await utils.cleanUp(client, tableId, true);
   });
 
   test("will not create record if sync mode does not allow it", async () => {
