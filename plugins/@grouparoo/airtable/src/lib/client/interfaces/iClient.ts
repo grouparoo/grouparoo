@@ -25,6 +25,8 @@ export interface IClient {
     foreignKeys: string[]
   ): Promise<Records<FieldSet>>;
 
+  getRecordById(tableId: string, recordId: string): Promise<Record<FieldSet>>;
+
   deleteRecord(tableId: string, recordId: string): Promise<Record<FieldSet>>;
 
   deleteRecords(

@@ -31,7 +31,7 @@ import { CreateRecord } from "../client/models";
 
 /**
  * Batch Size is the size of the batches sent to Airtable
- * 10 is the maximum number of records that can be sent in any
+ * 10 is the maximum number of records that can be sent in any batch
  */
 const BATCH_SIZE = 10;
 
@@ -157,18 +157,48 @@ function buildUpdatePayload(
       `Could not find destination ID in Batch Export with key ${exportedProfile.recordId}`
     );
   }
+
+  const fields = buildPayloadFields(exportedProfile);
   return {
     id: exportedProfile.destinationId,
-    fields: exportedProfile.newRecordProperties,
+    fields,
   };
 }
 
 function buildCreatePayload(
   exportedProfile: BatchExport
 ): CreateRecord<FieldSet> {
+  const fields = buildPayloadFields(exportedProfile);
   return {
-    fields: exportedProfile.newRecordProperties,
+    fields,
   };
+}
+
+function buildPayloadFields(exportedProfile: BatchExport): FieldSet {
+  const { oldRecordProperties, newRecordProperties } = exportedProfile;
+  const deletePropertiesPayload = {};
+  const newPropertyKeys = Object.keys(newRecordProperties);
+  Object.keys(oldRecordProperties)
+    .filter((k) => !newPropertyKeys.includes(k))
+    .forEach((k) => (deletePropertiesPayload[k] = null));
+
+  let payload = Object.assign(newRecordProperties, deletePropertiesPayload);
+  const formattedDataFields = {};
+  for (const key of Object.keys(payload)) {
+    formattedDataFields[key] = formatVar(payload[key]);
+  }
+  return formattedDataFields;
+}
+
+function formatVar(value) {
+  if (value === null || value === undefined) {
+    return null; // empty string clears the value
+  }
+
+  if (value instanceof Date) {
+    return value.toISOString();
+  }
+  return value;
 }
 
 const addToGroups: BatchMethodAddToGroups = async () => {
@@ -185,7 +215,8 @@ const normalizeForeignKeyValue: BatchMethodNormalizeForeignKeyValue = ({
   if (!keyValue) {
     return null;
   }
-  return keyValue.toString().toLowerCase().trim();
+  // Formula search is case senstitive
+  return keyValue.toString().trim();
 };
 
 // mess with the names of groups (tags with no spaces, for example)
@@ -194,6 +225,7 @@ const normalizeGroupName: BatchMethodNormalizeGroupName = ({ groupName }) => {
 };
 interface ExportBatchOptions {
   appOptions: SimpleAppOptions;
+  connection: IClient;
   destinationOptions: SimpleDestinationOptions;
   syncOperations?: DestinationSyncOperations;
   exports: BatchExport[];
@@ -233,6 +265,7 @@ export async function exportBatch(exportBatchOptions: ExportBatchOptions) {
 }
 export const exportRecords: ExportRecordsPluginMethod = async ({
   appOptions,
+  connection,
   destinationOptions,
   syncOperations,
   exports: recordsToExport,
@@ -241,6 +274,7 @@ export const exportRecords: ExportRecordsPluginMethod = async ({
   try {
     return await exportBatch({
       appOptions,
+      connection,
       destinationOptions,
       syncOperations,
       exports: batchExports,

@@ -12,7 +12,6 @@ import {
   Table,
 } from "./models";
 import { IClient } from "./interfaces/iClient";
-import AirtableError from "airtable/lib/airtable_error";
 
 export class Client implements IClient {
   private readonly apiKey: string;
@@ -197,9 +196,13 @@ export class Client implements IClient {
     return this.baseClient(tableId)
       .select({
         filterByFormula: filterString,
-        maxRecords: foreignKeys.length,
+        maxRecords: 100,
       })
       .all();
+  }
+
+  async getRecordById(tableId: string, recordId: string) {
+    return this.baseClient(tableId).find(recordId);
   }
 
   /**

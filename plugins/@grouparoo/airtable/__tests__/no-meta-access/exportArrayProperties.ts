@@ -4,8 +4,6 @@ import { helper } from "@grouparoo/spec-helper";
 import { connect } from "../../src/lib/connect";
 
 import { exportArrayProperties as methodToTest } from "../../src/lib/destination/exportArrayProperties";
-import { isArray } from "util";
-import AirtableError from "airtable/lib/airtable_error";
 
 const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
