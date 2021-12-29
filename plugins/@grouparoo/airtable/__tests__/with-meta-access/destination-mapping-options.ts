@@ -5,9 +5,9 @@ import { helper } from "@grouparoo/spec-helper";
 import { connect } from "../../src/lib/connect";
 import { destinationMappingOptions as methodToTest } from "../../src/lib/destination/destinationMappingOptions";
 
-helper.useNock(__filename, getUpdater("BASIC"));
-const appOptions = loadAppOptions("BASIC");
-const tableData = loadTableData("BASIC");
+helper.useNock(__filename, getUpdater("META"));
+const appOptions = loadAppOptions("META");
+const tableData = loadTableData("META");
 let connection;
 
 async function getMappingOptions(destinationOptions) {
@@ -33,8 +33,8 @@ describe("Test Destination Mapping Options Method", () => {
   });
 
   describe("Table with Data", () => {
-    const { allName: tableName, allPrimaryKey: primaryKey } = tableData;
-    const destinationOptions = { tableId: tableName, primaryKey };
+    const { allId: tableId, allPrimaryKey: primaryKey } = tableData;
+    const destinationOptions = { tableId, primaryKey };
 
     test("get mapping options", async () => {
       const value = await getMappingOptions(destinationOptions);
@@ -48,37 +48,30 @@ describe("Test Destination Mapping Options Method", () => {
       expect(required).toEqual([{ key: "Name", type: "string" }]);
 
       expect(known).toEqual([
-        { type: "number", key: "f_autoNumber", important: true },
         { type: "boolean", key: "f_checkbox", important: true },
-        { type: "number", key: "f_count", important: true },
-        { type: "string", key: "f_createdTime", important: true },
         { type: "number", key: "f_currency", important: true },
         { type: "string", key: "f_date", important: true },
-        { type: "string", key: "f_dateTime", important: true },
-        { type: "number", key: "f_duration", important: true },
-        { type: "string", key: "f_email", important: true },
-        { type: "string", key: "f_formula", important: true },
-        { type: "string", key: "f_lastModifiedTime", important: true },
+        { type: "date", key: "f_dateTime", important: true },
+        { type: "integer", key: "f_duration", important: true },
+        { type: "email", key: "f_email", important: true },
         { type: "string", key: "f_multilineText", important: true },
-        { type: "string", key: "f_multipleLookupValues", important: true },
         { type: "string", key: "f_multipleRecordLinks", important: true },
         { type: "string", key: "f_multipleSelects", important: true },
         { type: "number", key: "f_number", important: true },
         { type: "number", key: "f_percent", important: true },
-        { type: "string", key: "f_phoneNumber", important: true },
+        { type: "phoneNumber", key: "f_phoneNumber", important: true },
         { type: "number", key: "f_rating", important: true },
         { type: "string", key: "f_richText", important: true },
-        { type: "number", key: "f_rollup", important: true },
         { type: "string", key: "f_singleLineText", important: true },
         { type: "string", key: "f_singleSelect", important: true },
-        { type: "string", key: "f_url", important: true },
+        { type: "url", key: "f_url", important: true },
       ]);
     });
   });
 
   describe("Empty Table", () => {
-    const { emptyName: tableName, emptyPrimaryKey: primaryKey } = tableData;
-    const destinationOptions = { tableId: tableName, primaryKey };
+    const { emptyId: tableId, emptyPrimaryKey: primaryKey } = tableData;
+    const destinationOptions = { tableId, primaryKey };
 
     test("get mapping options", async () => {
       const value = await getMappingOptions(destinationOptions);
@@ -86,16 +79,32 @@ describe("Test Destination Mapping Options Method", () => {
       const required = value.properties.required;
       const known = value.properties.known;
 
-      // set whatever you want!
-      expect(optional).toEqual(true);
+      expect(optional).toEqual(false);
 
       expect(required.length).toEqual(1);
       const key = required[0];
       expect(key.type).toEqual("string");
       expect(key.key).toEqual(primaryKey);
 
-      // don't know any other ones!
-      expect(known.length).toEqual(0);
+      expect(known).toEqual([
+        { type: "boolean", key: "f_checkbox", important: true },
+        { type: "number", key: "f_currency", important: true },
+        { type: "string", key: "f_date", important: true },
+        { type: "date", key: "f_dateTime", important: true },
+        { type: "integer", key: "f_duration", important: true },
+        { type: "email", key: "f_email", important: true },
+        { type: "string", key: "f_multilineText", important: true },
+        { type: "string", key: "f_multipleRecordLinks", important: true },
+        { type: "string", key: "f_multipleSelects", important: true },
+        { type: "number", key: "f_number", important: true },
+        { type: "number", key: "f_percent", important: true },
+        { type: "phoneNumber", key: "f_phoneNumber", important: true },
+        { type: "number", key: "f_rating", important: true },
+        { type: "string", key: "f_richText", important: true },
+        { type: "string", key: "f_singleLineText", important: true },
+        { type: "string", key: "f_singleSelect", important: true },
+        { type: "url", key: "f_url", important: true },
+      ]);
     });
   });
 
