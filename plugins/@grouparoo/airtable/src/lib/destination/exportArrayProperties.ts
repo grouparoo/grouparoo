@@ -18,6 +18,7 @@ export const exportArrayProperties: ExportArrayPropertiesMethod<
 export function isArrayType(field: TableField): boolean {
   switch (field.type) {
     case AirtablePropertyTypes.multipleSelects:
+    case AirtablePropertyTypes.multipleRecordLinks:
       return true;
     default:
       return false;

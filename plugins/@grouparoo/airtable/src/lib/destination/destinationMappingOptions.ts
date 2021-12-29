@@ -85,6 +85,7 @@ export function mapTypesFromAirtableToGrouparoo(
 
   switch (airtableType) {
     case AirtablePropertyTypes.autoNumber:
+    case AirtablePropertyTypes.button:
     case AirtablePropertyTypes.count:
     case AirtablePropertyTypes.createdBy:
     case AirtablePropertyTypes.createdTime:
@@ -92,15 +93,14 @@ export function mapTypesFromAirtableToGrouparoo(
     case AirtablePropertyTypes.formula:
     case AirtablePropertyTypes.lastModifiedBy:
     case AirtablePropertyTypes.lastModifiedTime:
-    case AirtablePropertyTypes.rollup:
     case AirtablePropertyTypes.multipleLookupValues:
-      // calculated
+    case AirtablePropertyTypes.rollup:
+      // computed
       return null;
-    case AirtablePropertyTypes.button:
     case AirtablePropertyTypes.multipleAttachments:
     case AirtablePropertyTypes.multipleCollaborators:
-    case AirtablePropertyTypes.multipleRecordLinks:
     case AirtablePropertyTypes.singleCollaborator:
+    case AirtablePropertyTypes.barcode:
       // advanced
       return null;
     case AirtablePropertyTypes.checkbox:
@@ -112,6 +112,9 @@ export function mapTypesFromAirtableToGrouparoo(
     case AirtablePropertyTypes.percent:
     case AirtablePropertyTypes.rating:
       return "number";
+    case AirtablePropertyTypes.duration:
+      // number of seconds
+      return "integer";
     case AirtablePropertyTypes.email:
       return "email";
     case AirtablePropertyTypes.phoneNumber:
@@ -124,14 +127,12 @@ export function mapTypesFromAirtableToGrouparoo(
     case AirtablePropertyTypes.singleLineText:
     case AirtablePropertyTypes.singleSelect:
       return "string";
-    case AirtablePropertyTypes.barcode:
     case AirtablePropertyTypes.date:
-      // can be adapted to string
+      // can be adapted to string: 2021-12-25
       return "string";
-    case AirtablePropertyTypes.duration:
-      // returns a number of seconds?
-      // but maybe it also handles "1:23"
-      return "number";
+    case AirtablePropertyTypes.multipleRecordLinks:
+      // can be adapted to string: recXYZ
+      return "string";
     default:
       // just let it happen and see
       return "string";
