@@ -541,6 +541,7 @@ describe("airtable/exportRecords", () => {
         oldRecordProperties: {},
         newRecordProperties: {
           Name: name3,
+          f_autoNumber: 40,
         },
         toDelete: false,
       },
@@ -548,10 +549,13 @@ describe("airtable/exportRecords", () => {
 
     expect(success).toBe(false);
     expect(errors).not.toBeNull();
-    expect(errors.length).toEqual(1);
-    const error = errors[0];
-    expect(error.recordId).toEqual(id2);
+    expect(errors.length).toEqual(2);
+
+    let error;
+    error = errors.find((e) => e.recordId === id2);
     expect(error.message).toContain("required");
+    error = errors.find((e) => e.recordId === id3);
+    expect(error.message).toContain("field is computed");
 
     let fields;
 
@@ -565,8 +569,69 @@ describe("airtable/exportRecords", () => {
     expect(fields.Name).toEqual(name2);
 
     record3 = await getRecordByName(name3);
+    expect(record3).toBe(null);
+  });
+
+  test("can handle some invalid fields, but not others", async () => {
+    const { success, errors } = await exportRecords([
+      {
+        recordId: id1,
+        oldRecordProperties: {
+          Name: name1,
+        },
+        newRecordProperties: {
+          Name: name1,
+          f_number: 1,
+        },
+        toDelete: false,
+      },
+      {
+        recordId: id2,
+        oldRecordProperties: {
+          Name: name2,
+        },
+        newRecordProperties: {
+          Name: name2,
+          f_number: 2,
+          f_autoNumber: 40,
+        },
+        toDelete: false,
+      },
+      {
+        recordId: id3,
+        oldRecordProperties: {},
+        newRecordProperties: {
+          Name: name3,
+          f_number: 3,
+        },
+        toDelete: false,
+      },
+    ]);
+
+    expect(success).toBe(false);
+    expect(errors).not.toBeNull();
+    expect(errors.length).toEqual(1);
+    const error = errors[0];
+    expect(error.recordId).toEqual(id2);
+    expect(error.message).toContain("field is computed");
+
+    let fields;
+
+    record1 = await getRecordById(record1.id);
+    expect(record1).not.toBe(null);
+    fields = record1.fields;
+    expect(fields.Name).toEqual(name1);
+    expect(fields.f_number).toEqual(1);
+
+    record2 = await getRecordById(record2.id);
+    fields = record2.fields;
+    expect(fields.Name).toEqual(name2);
+    expect(fields.f_number).toEqual(undefined);
+
+    record3 = await getRecordByName(name3);
     expect(record3).not.toBe(null);
     fields = record3.fields;
     expect(fields.Name).toEqual(name3);
+    expect(fields.f_number).toEqual(3);
   });
 });

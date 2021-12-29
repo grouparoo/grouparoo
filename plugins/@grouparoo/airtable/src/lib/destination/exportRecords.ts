@@ -25,8 +25,7 @@ import {
 } from "@grouparoo/app-templates/dist/destination/batch";
 import { IClient } from "../client/interfaces/iClient";
 import { AirtableDestinationOptions } from "./destinationOptions";
-import { FieldSet, RecordData } from "airtable";
-import AirtableError from "airtable/lib/airtable_error";
+import Airtable, { FieldSet, RecordData } from "airtable";
 import { CreateRecord } from "../client/models";
 
 /**
@@ -65,10 +64,47 @@ const deleteByDestinationIds: BatchMethodDeleteByDestinationIds = async (
   const recordIds = users
     .map((value) => value.destinationId)
     .filter((id: string | undefined): id is string => !!id);
+  if (recordIds.length > 0) {
+    try {
+      await client.deleteRecords(tableId, recordIds);
+    } catch (err) {
+      await singleRecords("delete", methodOptions);
+    }
+  }
+};
 
-  await client
-    .deleteRecords(tableId, recordIds)
-    .catch((err) => attachErrorsToErroneousRecords(users, err));
+const singleRecords = async (
+  action: "update" | "create" | "delete",
+  methodOptions: MethodOptions
+) => {
+  const { config, users, client } = methodOptions;
+  const { tableId } = config.destinationOptions as AirtableDestinationOptions;
+  for (const record of users) {
+    try {
+      switch (action) {
+        case "update":
+          await client.updateRecords(tableId.toString(), [
+            buildUpdatePayload(record),
+          ]);
+          break;
+        case "create":
+          const response = await client.createRecords(tableId.toString(), [
+            buildCreatePayload(record),
+          ]);
+          assignKeysFromResponse(response, methodOptions);
+          break;
+        case "delete":
+          if (record.destinationId) {
+            await client.deleteRecords(tableId, [record.destinationId]);
+          }
+        default:
+          throw new Error(`unknown action: ${action}`);
+      }
+    } catch (err) {
+      // attach to this single record
+      record.error = err;
+    }
+  }
 };
 
 const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async (
@@ -83,34 +119,47 @@ const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async (
   if (inputs.length == 0) {
     return;
   }
-  await client.updateRecords(tableId.toString(), inputs);
+  try {
+    await client.updateRecords(tableId.toString(), inputs);
+  } catch (err) {
+    await singleRecords("update", methodOptions);
+  }
 };
+
+function assignKeysFromResponse(
+  response: Airtable.Records<FieldSet>,
+  methodOptions: MethodOptions
+) {
+  const { config, getByForeignKey } = methodOptions;
+  const { primaryKey } =
+    config.destinationOptions as AirtableDestinationOptions;
+
+  for (const result of response) {
+    const key = result.fields[primaryKey];
+    if (!key) {
+      return;
+    }
+    const found = getByForeignKey(key.toString());
+    if (found) {
+      found.destinationId = result.id;
+    }
+  }
+}
 
 // usually this is creating them. ideally upsert. set the destinationId on each when done
 const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSetDestinationIds =
-  async (options: MethodOptions) => {
-    const { client, users, config, getByForeignKey } = options;
-    const { tableId, primaryKey } =
-      config.destinationOptions as AirtableDestinationOptions;
+  async (methodOptions: MethodOptions) => {
+    const { client, users, config } = methodOptions;
+    const { tableId } = config.destinationOptions as AirtableDestinationOptions;
     const inputs = users.map((record) => buildCreatePayload(record));
+
     if (inputs.length > 0) {
-      await client
-        .createRecords(tableId.toString(), inputs)
-        .then((response) => {
-          response.map((record) => {
-            const key = record.fields[primaryKey];
-            if (!key) {
-              return;
-            }
-            const found = getByForeignKey(key.toString());
-            if (found) {
-              found.destinationId = record.id;
-            }
-          });
-        })
-        .catch((reason: AirtableError) => {
-          attachErrorsToErroneousRecords(users, reason);
-        });
+      try {
+        const response = await client.createRecords(tableId.toString(), inputs);
+        assignKeysFromResponse(response, methodOptions);
+      } catch (err) {
+        await singleRecords("create", methodOptions);
+      }
     }
   };
 
@@ -140,15 +189,6 @@ const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = async (
   });
 };
 
-function attachErrorsToErroneousRecords(
-  records: BatchExport[],
-  error: AirtableError
-) {
-  records.map((record) => {
-    record.error = error;
-  });
-}
-
 function buildUpdatePayload(
   exportedProfile: BatchExport
 ): RecordData<Partial<FieldSet>> {
@@ -157,20 +197,17 @@ function buildUpdatePayload(
       `Could not find destination ID in Batch Export with key ${exportedProfile.recordId}`
     );
   }
-
-  const fields = buildPayloadFields(exportedProfile);
   return {
     id: exportedProfile.destinationId,
-    fields,
+    fields: buildPayloadFields(exportedProfile),
   };
 }
 
 function buildCreatePayload(
   exportedProfile: BatchExport
 ): CreateRecord<FieldSet> {
-  const fields = buildPayloadFields(exportedProfile);
   return {
-    fields,
+    fields: buildPayloadFields(exportedProfile),
   };
 }
 
@@ -194,7 +231,6 @@ function formatVar(value) {
   if (value === null || value === undefined) {
     return null; // empty string clears the value
   }
-
   if (value instanceof Date) {
     return value.toISOString();
   }
@@ -215,7 +251,7 @@ const normalizeForeignKeyValue: BatchMethodNormalizeForeignKeyValue = ({
   if (!keyValue) {
     return null;
   }
-  // Formula search is case senstitive
+  // Formula search is case sensitive
   return keyValue.toString().trim();
 };
 
@@ -223,6 +259,7 @@ const normalizeForeignKeyValue: BatchMethodNormalizeForeignKeyValue = ({
 const normalizeGroupName: BatchMethodNormalizeGroupName = ({ groupName }) => {
   return groupName.toString().trim();
 };
+
 interface ExportBatchOptions {
   appOptions: SimpleAppOptions;
   connection: IClient;
