@@ -6,9 +6,9 @@ import { connect } from "../../src/lib/connect";
 
 import { exportArrayProperties as methodToTest } from "../../src/lib/destination/exportArrayProperties";
 
-helper.useNock(__filename, getUpdater("BASIC"));
-const appOptions = loadAppOptions("BASIC");
-const tableData = loadTableData("BASIC");
+helper.useNock(__filename, getUpdater("META"));
+const appOptions = loadAppOptions("META");
+const tableData = loadTableData("META");
 let connection;
 
 async function getArrayProperties(destinationOptions) {
@@ -34,28 +34,24 @@ describe("Export Array Properties Test", () => {
   });
 
   describe("Table with Data", () => {
-    const { allName: tableName, allPrimaryKey: primaryKey } = tableData;
-    const destinationOptions = { tableId: tableName, primaryKey };
+    const { allId: tableId, allPrimaryKey: primaryKey } = tableData;
+    const destinationOptions = { tableId, primaryKey };
 
     test("get mapping options", async () => {
       const props = await getArrayProperties(destinationOptions);
       const sorted = props.sort();
-      expect(sorted).toEqual([
-        "f_multipleLookupValues",
-        "f_multipleRecordLinks",
-        "f_multipleSelects",
-      ]);
+      expect(sorted).toEqual(["f_multipleRecordLinks", "f_multipleSelects"]);
     });
   });
 
   describe("Empty Table", () => {
-    const { emptyName: tableName, emptyPrimaryKey: primaryKey } = tableData;
-    const destinationOptions = { tableId: tableName, primaryKey };
+    const { emptyId: tableId, emptyPrimaryKey: primaryKey } = tableData;
+    const destinationOptions = { tableId, primaryKey };
 
     test("get mapping options", async () => {
       const props = await getArrayProperties(destinationOptions);
       const sorted = props.sort();
-      expect(sorted.length).toEqual(0); // I know nothing!
+      expect(sorted).toEqual(["f_multipleRecordLinks", "f_multipleSelects"]);
     });
   });
 
