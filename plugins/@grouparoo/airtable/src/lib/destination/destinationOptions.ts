@@ -114,7 +114,7 @@ class DestinationOptionsHandler {
         }
       }
     }
-    return [...new Set(names.sort())];
+    return [...new Set(names)].sort((a, b) => a.localeCompare(b));
   }
 }
 

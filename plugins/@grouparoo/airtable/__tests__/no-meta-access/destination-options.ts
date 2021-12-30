@@ -57,7 +57,6 @@ describe("BASIC Destination Options Tests", () => {
       expect(key).toEqual({
         type: "typeahead",
         options: [
-          "Name",
           "f_autoNumber",
           "f_checkbox",
           "f_count",
@@ -82,6 +81,7 @@ describe("BASIC Destination Options Tests", () => {
           "f_singleLineText",
           "f_singleSelect",
           "f_url",
+          "Name",
         ],
       });
     });

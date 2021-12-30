@@ -64,7 +64,6 @@ describe("META Destination Options Tests", () => {
       expect(key).toEqual({
         type: "typeahead",
         options: [
-          "Name",
           "f_checkbox",
           "f_currency",
           "f_date",
@@ -82,6 +81,7 @@ describe("META Destination Options Tests", () => {
           "f_singleLineText",
           "f_singleSelect",
           "f_url",
+          "Name",
         ],
       });
     });
@@ -120,7 +120,6 @@ describe("META Destination Options Tests", () => {
       expect(key).toEqual({
         type: "typeahead",
         options: [
-          "Name",
           "f_checkbox",
           "f_currency",
           "f_date",
@@ -138,6 +137,7 @@ describe("META Destination Options Tests", () => {
           "f_singleLineText",
           "f_singleSelect",
           "f_url",
+          "Name",
         ],
       });
     });
