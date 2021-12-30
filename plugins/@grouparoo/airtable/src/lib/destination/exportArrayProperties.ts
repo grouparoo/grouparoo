@@ -5,13 +5,11 @@ import { AirtablePropertyTypes, TableField } from "../client/models";
 export const exportArrayProperties: ExportArrayPropertiesMethod<
   IClient
 > = async ({ connection, destinationOptions }) => {
-  const tableId = destinationOptions.tableId;
-  if (!tableId) {
+  const tableIdOrName = destinationOptions.table;
+  if (!tableIdOrName) {
     return [];
   }
-  const table = await connection.getTable(
-    destinationOptions.tableId.toString()
-  );
+  const table = await connection.getTable(tableIdOrName.toString());
   return table.fields.filter(isArrayType).map((field) => field.name);
 };
 

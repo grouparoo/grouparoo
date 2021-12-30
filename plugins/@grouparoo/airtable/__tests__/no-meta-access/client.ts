@@ -14,7 +14,7 @@ const airtableOptions = new AirtableAppOptions(appOptions);
 
 const unknownKeys = ["Unknown", "Other"];
 
-describe("Client Functions", () => {
+describe("BASIC Client Functions", () => {
   describe("Metadata Calls", () => {
     test("Successful Health", async () => {
       const client = new Client(airtableOptions);

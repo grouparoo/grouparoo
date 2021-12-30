@@ -15,42 +15,48 @@ export interface IClient {
 
   listTables(): Promise<ApiTable[]>;
 
-  getTable(tableId: string): Promise<Table>;
+  getTable(tableIdOrName: string): Promise<Table>;
 
-  listRecords(tableId: string): Promise<Records<FieldSet>>;
+  listRecords(tableIdOrName: string): Promise<Records<FieldSet>>;
 
   listRecordsByField(
-    tableId: string,
+    tableIdOrName: string,
     primaryKey: string,
     foreignKeys: string[]
   ): Promise<Records<FieldSet>>;
 
-  getRecordById(tableId: string, recordId: string): Promise<Record<FieldSet>>;
+  getRecordById(
+    tableIdOrName: string,
+    recordId: string
+  ): Promise<Record<FieldSet>>;
 
-  deleteRecord(tableId: string, recordId: string): Promise<Record<FieldSet>>;
+  deleteRecord(
+    tableIdOrName: string,
+    recordId: string
+  ): Promise<Record<FieldSet>>;
 
   deleteRecords(
-    tableId: string,
+    tableIdOrName: string,
     recordIds: string[]
   ): Promise<Records<FieldSet>>;
 
   updateRecord(
-    tableId: string,
+    tableIdOrName: string,
     record: RecordData<Partial<FieldSet>>
   ): Promise<Record<FieldSet>>;
 
   updateRecords(
-    tableId: string,
+    tableIdOrName: string,
     record: RecordData<Partial<FieldSet>>[]
   ): Promise<Records<FieldSet>>;
 
   createRecord(
-    tableId: string,
+    tableIdOrName: string,
     record: Partial<FieldSet>
   ): Promise<Record<FieldSet>>;
 
   createRecords(
-    tableId: string,
+    tableIdOrName: string,
     record: CreateRecord<FieldSet>[]
   ): Promise<Records<FieldSet>>;
 }

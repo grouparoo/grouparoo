@@ -9,9 +9,9 @@ import { AirtableDestinationOptions } from "./destinationOptions";
 export const destinationMappingOptions: DestinationMappingOptionsMethod<
   IClient
 > = async ({ connection, destinationOptions }) => {
-  const { tableId, primaryKey } =
+  const { table: tableIdOrName, primaryKey } =
     destinationOptions as AirtableDestinationOptions;
-  const table: Table = await connection.getTable(tableId);
+  const table: Table = await connection.getTable(tableIdOrName);
   const required = getRequiredFields(table, primaryKey);
   const requiredFieldsNames = required.map(
     (requiredField) => requiredField.key

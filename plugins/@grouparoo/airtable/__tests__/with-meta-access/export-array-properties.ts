@@ -35,7 +35,7 @@ describe("META Export Array Properties Test", () => {
 
   describe("Table with Data", () => {
     const { allId: tableId, allPrimaryKey: primaryKey } = tableData;
-    const destinationOptions = { tableId, primaryKey };
+    const destinationOptions = { table: tableId, primaryKey };
 
     test("get mapping options", async () => {
       const props = await getArrayProperties(destinationOptions);
@@ -46,7 +46,7 @@ describe("META Export Array Properties Test", () => {
 
   describe("Empty Table", () => {
     const { emptyId: tableId, emptyPrimaryKey: primaryKey } = tableData;
-    const destinationOptions = { tableId, primaryKey };
+    const destinationOptions = { table: tableId, primaryKey };
 
     test("get mapping options", async () => {
       const props = await getArrayProperties(destinationOptions);
@@ -56,9 +56,9 @@ describe("META Export Array Properties Test", () => {
   });
 
   describe("Invalid", () => {
-    const tableName = "Unknown Table";
+    const tableId = "tblBad";
     const primaryKey = "Name";
-    const destinationOptions = { tableId: tableName, primaryKey };
+    const destinationOptions = { table: tableId, primaryKey };
 
     test("get mapping options", async () => {
       try {

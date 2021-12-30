@@ -21,7 +21,7 @@ export const objectsDestinationConnection: PluginConnection = {
   defaultSyncMode: "sync",
   options: [
     {
-      key: "tableId",
+      key: "table",
       displayName: "Table Name",
       required: true,
       description: "Which object in Airtable represents a Grouparoo record?",

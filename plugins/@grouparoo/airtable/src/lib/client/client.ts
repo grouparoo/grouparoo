@@ -164,12 +164,12 @@ export class Client implements IClient {
   /**
    * Gets a single table from the list tables endpoints
    * @throws  AxiosError - A potential Axios Error explaining why the request failed
-   * @throws AirtableError - Error if there are no tables that match the given tableId
-   * @param tableId - String representing the table ID
+   * @throws AirtableError - Error if there are no tables that match the given tableIdOrName
+   * @param tableIdOrName - String representing the table ID
    * @returns {Promise<Table>} - A Promise of a Airtable Table Object
    */
-  async getTable(tableId: string): Promise<Table> {
-    const table = await this.getTableRaw(tableId);
+  async getTable(tableIdOrName: string): Promise<Table> {
+    const table = await this.getTableRaw(tableIdOrName);
     if (table) {
       // sort the fields
       const fields = (table.fields || []).map((f) => {
@@ -181,42 +181,42 @@ export class Client implements IClient {
     return table;
   }
 
-  private async getTableRaw(tableId: string): Promise<Table> {
+  private async getTableRaw(tableIdOrName: string): Promise<Table> {
     const meta = await this.hasMeta();
     if (meta) {
       const tables = await this.listTables();
       for (const table of tables) {
-        if (table.id === tableId) {
+        if (table.id === tableIdOrName) {
           return Object.assign({}, table, { idOrName: table.id });
         }
       }
       // also support name
       for (const table of tables) {
-        if (table.name === tableId) {
+        if (table.name === tableIdOrName) {
           return Object.assign({}, table, { idOrName: table.id });
         }
       }
     }
-    const records = await this.listRecords(tableId);
-    return makeTableFromRecords(tableId, records);
+    const records = await this.listRecords(tableIdOrName);
+    return makeTableFromRecords(tableIdOrName, records);
   }
 
   /**
    * @throws  AirtableError
-   * @param tableId
+   * @param tableIdOrName
    */
-  async listRecords(tableId: string): Promise<Records<FieldSet>> {
-    return this.baseClient(tableId).select().all();
+  async listRecords(tableIdOrName: string): Promise<Records<FieldSet>> {
+    return this.baseClient(tableIdOrName).select().all();
   }
 
   async listRecordsByField(
-    tableId: string,
+    tableIdOrName: string,
     primaryKey: string,
     foreignKeys: string[]
   ): Promise<Records<FieldSet>> {
     const conditionals = foreignKeys.map((key) => `{${primaryKey}}="${key}"`);
     const filterString = `OR(${conditionals.join(",")})`;
-    return this.baseClient(tableId)
+    return this.baseClient(tableIdOrName)
       .select({
         filterByFormula: filterString,
         maxRecords: 100,
@@ -224,76 +224,79 @@ export class Client implements IClient {
       .all();
   }
 
-  async getRecordById(tableId: string, recordId: string) {
-    return this.baseClient(tableId).find(recordId);
+  async getRecordById(tableIdOrName: string, recordId: string) {
+    return this.baseClient(tableIdOrName).find(recordId);
   }
 
   /**
    * @throws AirtableError - Airtable will throw an error if there is any issue destroying the record
-   * @param tableId - unique identifier of the table
+   * @param tableIdOrName - unique identifier of the table
    * @param recordId - unique record identifier within the table
    * @returns Promise<Record<FieldSet>> - A destroyed record with only its id in the returned field set
    */
   async deleteRecord(
-    tableId: string,
+    tableIdOrName: string,
     recordId: string
   ): Promise<Record<FieldSet>> {
-    return this.baseClient(tableId).destroy(recordId);
+    return this.baseClient(tableIdOrName).destroy(recordId);
   }
   /**
    * @throws AirtableError - Airtable will throw an error if there is any issue destroying the record
-   * @param tableId - unique identifier of the table
+   * @param tableIdOrName - unique identifier of the table
    * @param recordIds - unique record identifiers within the table
    * @returns Promise<Record<FieldSet>> - An array of destroyed records with only their id in the returned field set
    */
   async deleteRecords(
-    tableId: string,
+    tableIdOrName: string,
     recordIds: string[]
   ): Promise<Records<FieldSet>> {
-    return this.baseClient(tableId).destroy(recordIds);
+    return this.baseClient(tableIdOrName).destroy(recordIds);
   }
 
   /**
    * @throws AirtableError - Airtable will throw an error if there is any issue updating the record
-   * @param tableId - unique identifier of the table
+   * @param tableIdOrName - unique identifier of the table
    * @param record - unique record identifier with the partial set of fields to update
    * @returns Promise<Record<FieldSet>> -  record with its updated fields and other unchanged fields
    */
-  async updateRecord(tableId: string, record: RecordData<Partial<any>>) {
-    return this.baseClient(tableId).update(record.id, record.fields);
+  async updateRecord(tableIdOrName: string, record: RecordData<Partial<any>>) {
+    return this.baseClient(tableIdOrName).update(record.id, record.fields);
   }
 
   /**
    * @throws AirtableError - Airtable will throw an error if there is any issue destroying the record
-   * @param tableId - unique identifier of the table
+   * @param tableIdOrName - unique identifier of the table
    * @param records - unique record identifiers with the partial set of fields to update
    */
   async updateRecords(
-    tableId: string,
+    tableIdOrName: string,
     records: RecordData<Partial<FieldSet>>[]
   ): Promise<Records<FieldSet>> {
-    return this.baseClient(tableId).update(records);
+    return this.baseClient(tableIdOrName).update(records);
   }
 
   /**
    * Create a single record given a map of fields
-   * @param tableId - unique identifier of the table
+   * @param tableIdOrName - unique identifier of the table
    * @param record - unique record fields
    */
   async createRecord(
-    tableId: string,
+    tableIdOrName: string,
     record: Partial<FieldSet>
   ): Promise<Record<FieldSet>> {
-    return this.baseClient(tableId).create(record);
+    return this.baseClient(tableIdOrName).create(record);
   }
 
   /**
    * Create Multiple records
-   * @param tableId - unique identifier of the table
+   * @param tableIdOrName - unique identifier of the table
    * @param records - unique record fields with updates to
    */
-  async createRecords(tableId: string, records: CreateRecord<FieldSet>[]) {
-    return this.baseClient(tableId).create(records);
+  async createRecords(
+    tableIdOrName: string,
+    records: CreateRecord<FieldSet>[]
+  ) {
+    return this.baseClient(tableIdOrName).create(records);
   }
 }
 
@@ -337,10 +340,10 @@ function typeFromValue(value) {
 }
 
 function makeTableFromRecords(
-  tableId: string,
+  tableIdOrName: string,
   records: Records<FieldSet>
 ): Table {
-  const table = { idOrName: tableId, fields: [] };
+  const table = { idOrName: tableIdOrName, fields: [] };
   const types = {};
   for (const record of records) {
     for (const column in record.fields) {

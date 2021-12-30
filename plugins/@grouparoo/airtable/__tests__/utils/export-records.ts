@@ -1,18 +1,19 @@
 // should be the same for both
-import { helper } from "@grouparoo/spec-helper";
 import { exportBatch } from "../../src/lib/destination/exportRecords";
-import { loadAppOptions, getUpdater, loadTableData } from "./nockHelper";
 import * as utils from "./shared";
 import { connect } from "../../src/lib/connect";
 import { IClient } from "../../src/lib/client/interfaces/iClient";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
+import { loadAppOptions, loadTableData } from "../utils/nockHelper";
 
 export function testExportRecords(baseType: "BASIC" | "META") {
-  helper.useNock(__filename, getUpdater(baseType));
   const appOptions = loadAppOptions(baseType);
   const tableData = loadTableData(baseType);
   const { emptyId: tableId, emptyName: tableName } = tableData;
-  const destinationOptions = { tableId: tableName, primaryKey: "Name" };
+  const destinationOptions = {
+    table: baseType === "META" ? tableId : tableName,
+    primaryKey: "Name",
+  };
 
   let client: IClient;
 

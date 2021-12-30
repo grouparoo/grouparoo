@@ -34,7 +34,7 @@ describe("BASIC Test Destination Mapping Options Method", () => {
 
   describe("Table with Data", () => {
     const { allName: tableName, allPrimaryKey: primaryKey } = tableData;
-    const destinationOptions = { tableId: tableName, primaryKey };
+    const destinationOptions = { table: tableName, primaryKey };
 
     test("get mapping options", async () => {
       const value = await getMappingOptions(destinationOptions);
@@ -78,7 +78,7 @@ describe("BASIC Test Destination Mapping Options Method", () => {
 
   describe("Empty Table", () => {
     const { emptyName: tableName, emptyPrimaryKey: primaryKey } = tableData;
-    const destinationOptions = { tableId: tableName, primaryKey };
+    const destinationOptions = { table: tableName, primaryKey };
 
     test("get mapping options", async () => {
       const value = await getMappingOptions(destinationOptions);
@@ -102,7 +102,7 @@ describe("BASIC Test Destination Mapping Options Method", () => {
   describe("Invalid", () => {
     const tableName = "Unknown Table";
     const primaryKey = "Name";
-    const destinationOptions = { tableId: tableName, primaryKey };
+    const destinationOptions = { table: tableName, primaryKey };
 
     test("get mapping options", async () => {
       try {

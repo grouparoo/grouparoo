@@ -60,13 +60,14 @@ const deleteByDestinationIds: BatchMethodDeleteByDestinationIds = async (
   methodOptions: MethodOptions
 ) => {
   const { config, users, client } = methodOptions;
-  const { tableId } = config.destinationOptions as AirtableDestinationOptions;
+  const { table: tableIdOrName } =
+    config.destinationOptions as AirtableDestinationOptions;
   const recordIds = users
     .map((value) => value.destinationId)
     .filter((id: string | undefined): id is string => !!id);
   if (recordIds.length > 0) {
     try {
-      await client.deleteRecords(tableId, recordIds);
+      await client.deleteRecords(tableIdOrName, recordIds);
     } catch (err) {
       await singleRecords("delete", methodOptions);
     }
@@ -78,24 +79,26 @@ const singleRecords = async (
   methodOptions: MethodOptions
 ) => {
   const { config, users, client } = methodOptions;
-  const { tableId } = config.destinationOptions as AirtableDestinationOptions;
+  const { table: tableIdOrName } =
+    config.destinationOptions as AirtableDestinationOptions;
   for (const record of users) {
     try {
       switch (action) {
         case "update":
-          await client.updateRecords(tableId.toString(), [
+          await client.updateRecords(tableIdOrName.toString(), [
             buildUpdatePayload(record),
           ]);
           break;
         case "create":
-          const response = await client.createRecords(tableId.toString(), [
-            buildCreatePayload(record),
-          ]);
+          const response = await client.createRecords(
+            tableIdOrName.toString(),
+            [buildCreatePayload(record)]
+          );
           assignKeysFromResponse(response, methodOptions);
           break;
         case "delete":
           if (record.destinationId) {
-            await client.deleteRecords(tableId, [record.destinationId]);
+            await client.deleteRecords(tableIdOrName, [record.destinationId]);
           }
         default:
           throw new Error(`unknown action: ${action}`);
@@ -111,7 +114,8 @@ const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async (
   methodOptions: MethodOptions
 ) => {
   const { config, users, client } = methodOptions;
-  const { tableId } = config.destinationOptions as AirtableDestinationOptions;
+  const { table: tableIdOrName } =
+    config.destinationOptions as AirtableDestinationOptions;
   const inputs = [];
   for (const record of users) {
     inputs.push(buildUpdatePayload(record));
@@ -120,7 +124,7 @@ const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async (
     return;
   }
   try {
-    await client.updateRecords(tableId.toString(), inputs);
+    await client.updateRecords(tableIdOrName.toString(), inputs);
   } catch (err) {
     await singleRecords("update", methodOptions);
   }
@@ -150,12 +154,16 @@ function assignKeysFromResponse(
 const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSetDestinationIds =
   async (methodOptions: MethodOptions) => {
     const { client, users, config } = methodOptions;
-    const { tableId } = config.destinationOptions as AirtableDestinationOptions;
+    const { table: tableIdOrName } =
+      config.destinationOptions as AirtableDestinationOptions;
     const inputs = users.map((record) => buildCreatePayload(record));
 
     if (inputs.length > 0) {
       try {
-        const response = await client.createRecords(tableId.toString(), inputs);
+        const response = await client.createRecords(
+          tableIdOrName.toString(),
+          inputs
+        );
         assignKeysFromResponse(response, methodOptions);
       } catch (err) {
         await singleRecords("create", methodOptions);
@@ -169,10 +177,10 @@ const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = async (
   options: FindAndSetMethodOptions
 ) => {
   const { config, client, getByForeignKey, foreignKeys } = options;
-  const { tableId, primaryKey } =
+  const { table: tableIdOrName, primaryKey } =
     config.destinationOptions as AirtableDestinationOptions;
   const records = await client.listRecordsByField(
-    tableId,
+    tableIdOrName,
     primaryKey,
     foreignKeys
   );

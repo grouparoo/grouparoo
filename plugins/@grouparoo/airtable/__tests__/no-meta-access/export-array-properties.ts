@@ -35,7 +35,7 @@ describe("BASIC Export Array Properties Test", () => {
 
   describe("Table with Data", () => {
     const { allName: tableName, allPrimaryKey: primaryKey } = tableData;
-    const destinationOptions = { tableId: tableName, primaryKey };
+    const destinationOptions = { table: tableName, primaryKey };
 
     test("get mapping options", async () => {
       const props = await getArrayProperties(destinationOptions);
@@ -50,7 +50,7 @@ describe("BASIC Export Array Properties Test", () => {
 
   describe("Empty Table", () => {
     const { emptyName: tableName, emptyPrimaryKey: primaryKey } = tableData;
-    const destinationOptions = { tableId: tableName, primaryKey };
+    const destinationOptions = { table: tableName, primaryKey };
 
     test("get mapping options", async () => {
       const props = await getArrayProperties(destinationOptions);
@@ -62,7 +62,7 @@ describe("BASIC Export Array Properties Test", () => {
   describe("Invalid", () => {
     const tableName = "Unknown Table";
     const primaryKey = "Name";
-    const destinationOptions = { tableId: tableName, primaryKey };
+    const destinationOptions = { table: tableName, primaryKey };
 
     test("get mapping options", async () => {
       try {

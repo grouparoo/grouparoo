@@ -36,9 +36,9 @@ describe("BASIC Destination Options Tests", () => {
     test("New Options", async () => {
       const result = await runDestinationOptions({
         primaryKey: "",
-        tableId: "",
+        table: "",
       });
-      const table = result.tableId;
+      const table = result.table;
       const key = result.primaryKey;
 
       expect(table).toEqual({ type: "text" });
@@ -48,9 +48,9 @@ describe("BASIC Destination Options Tests", () => {
     test("Table Selected", async () => {
       const result = await runDestinationOptions({
         primaryKey: "",
-        tableId: tableName,
+        table: tableName,
       });
-      const table = result.tableId;
+      const table = result.table;
       const key = result.primaryKey;
 
       expect(table).toEqual({ type: "text" });
@@ -93,9 +93,9 @@ describe("BASIC Destination Options Tests", () => {
     test("New Options", async () => {
       const result = await runDestinationOptions({
         primaryKey: "",
-        tableId: "",
+        table: "",
       });
-      const table = result.tableId;
+      const table = result.table;
       const key = result.primaryKey;
 
       expect(table).toEqual({ type: "text" });
@@ -105,9 +105,9 @@ describe("BASIC Destination Options Tests", () => {
     test("Table Selected", async () => {
       const result = await runDestinationOptions({
         primaryKey: "",
-        tableId: tableName,
+        table: tableName,
       });
-      const table = result.tableId;
+      const table = result.table;
       const key = result.primaryKey;
 
       expect(table).toEqual({ type: "text" });

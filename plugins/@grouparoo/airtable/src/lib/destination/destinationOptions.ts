@@ -9,7 +9,7 @@ import { IClient } from "../client/interfaces/iClient";
 import { mapTypesFromAirtableToGrouparoo } from "./destinationMappingOptions";
 
 export interface AirtableDestinationOptions extends SimpleDestinationOptions {
-  tableId: string;
+  table: string;
   primaryKey: string;
 }
 
@@ -48,21 +48,21 @@ class DestinationOptionsHandler {
     this.meta = access;
 
     const out: DestinationOptionsMethodResponse = {};
-    out.tableId = await this.getTableOptions();
+    out.table = await this.getTableOptions();
     out.primaryKey = await this.getKeyOptions();
     return out;
   }
 
   private async getTableOptions(): Promise<OptionGetter> {
-    const tableId = this.options.tableId;
+    const table = this.options.table;
     if (!this.meta) {
       // can't inspect, put in the name!
       return { type: "text" };
     }
     const sortedTables = await this.getTablesAndIds();
     const options = sortedTables.map((value) => value.option);
-    if (!options.includes(tableId)) {
-      this.options.tableId = "";
+    if (!options.includes(table)) {
+      this.options.table = "";
       this.options.primaryKey = "";
     }
     const descriptions = sortedTables.map((value) => value.description);
@@ -70,14 +70,14 @@ class DestinationOptionsHandler {
   }
 
   private async getKeyOptions(): Promise<OptionGetter> {
-    const tableId = this.options.tableId;
+    const table = this.options.table;
     const primaryKey = this.options.primaryKey;
-    if (!tableId) {
+    if (!table) {
       // hasn't set yet
       return { type: "pending", options: [] };
     }
 
-    const options = await this.getTableFields(tableId);
+    const options = await this.getTableFields(table);
     if (options.length === 0) {
       return { type: "text" };
     }
@@ -104,8 +104,8 @@ class DestinationOptionsHandler {
     return sortedTables;
   }
 
-  private async getTableFields(tableId: string): Promise<string[]> {
-    const table = await this.client.getTable(tableId);
+  private async getTableFields(tableIdOrName: string): Promise<string[]> {
+    const table = await this.client.getTable(tableIdOrName);
     const names = [];
     if (table.fields) {
       for (const property of table.fields) {

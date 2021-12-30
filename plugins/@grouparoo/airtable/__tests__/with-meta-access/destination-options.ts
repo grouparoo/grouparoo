@@ -37,9 +37,9 @@ describe("META Destination Options Tests", () => {
     test("New Options", async () => {
       const result = await runDestinationOptions({
         primaryKey: "",
-        tableId: "",
+        table: "",
       });
-      const table = result.tableId;
+      const table = result.table;
       const key = result.primaryKey;
 
       expect(table.type).toEqual("list");
@@ -54,9 +54,9 @@ describe("META Destination Options Tests", () => {
     test("Table Selected", async () => {
       const result = await runDestinationOptions({
         primaryKey: "",
-        tableId,
+        table: tableId,
       });
-      const table = result.tableId;
+      const table = result.table;
       const key = result.primaryKey;
 
       expect(table.type).toEqual("list");
@@ -93,9 +93,9 @@ describe("META Destination Options Tests", () => {
     test("New Options", async () => {
       const result = await runDestinationOptions({
         primaryKey: "",
-        tableId: "",
+        table: "",
       });
-      const table = result.tableId;
+      const table = result.table;
       const key = result.primaryKey;
 
       expect(table.type).toEqual("list");
@@ -110,9 +110,9 @@ describe("META Destination Options Tests", () => {
     test("Table Selected", async () => {
       const result = await runDestinationOptions({
         primaryKey: "",
-        tableId,
+        table: tableId,
       });
-      const table = result.tableId;
+      const table = result.table;
       const key = result.primaryKey;
 
       expect(table.type).toEqual("list");
