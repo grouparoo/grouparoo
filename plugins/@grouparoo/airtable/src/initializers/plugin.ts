@@ -5,6 +5,7 @@ import { appTest } from "../lib/appTest";
 import { connect } from "../lib/connect";
 import { AirtableAppOptionsOptions } from "../lib/appOptions";
 import { destinationConnection } from "../lib/destination/connection";
+import { disconnect } from "../lib/disconnect";
 
 const packageJSON = require("./../../package.json");
 
@@ -26,6 +27,7 @@ export class Plugins extends Initializer {
           methods: {
             test: appTest,
             connect: connect,
+            disconnect: disconnect,
           },
         },
       ],
