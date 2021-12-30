@@ -5,26 +5,27 @@ import { destinationOptions } from "./destinationOptions";
 import { destinationMappingOptions } from "./destinationMappingOptions";
 import { exportArrayProperties } from "./exportArrayProperties";
 
-export const objectsSupportedSyncModes: DestinationSyncMode[] = [
+export const supportedSyncModes: DestinationSyncMode[] = [
   "sync",
   "additive",
   "enrich",
 ];
 
-export const objectsDestinationConnection: PluginConnection = {
+export const destinationConnection: PluginConnection = {
   name: "airtable-export-records",
   displayName: "Airtable Export Records",
   direction: "export",
-  description: "Export Records as Airtable Custom Records.",
+  description: "Export Records as Airtable Records in a Table",
   apps: ["airtable"],
-  syncModes: objectsSupportedSyncModes,
+  syncModes: supportedSyncModes,
   defaultSyncMode: "sync",
   options: [
     {
       key: "table",
       displayName: "Table Name",
       required: true,
-      description: "Which object in Airtable represents a Grouparoo record?",
+      description:
+        "Which Table in Airtable has rows that represent a Grouparoo record?",
     },
     {
       key: "primaryKey",

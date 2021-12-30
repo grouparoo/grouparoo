@@ -4,7 +4,7 @@ import { plugin } from "@grouparoo/core";
 import { appTest } from "../lib/appTest";
 import { connect } from "../lib/connect";
 import { AirtableAppOptionsOptions } from "../lib/appOptions";
-import { objectsDestinationConnection } from "../lib/destination/connection";
+import { destinationConnection } from "../lib/destination/connection";
 import { disconnect } from "../lib/disconnect";
 
 const packageJSON = require("./../../package.json");
@@ -31,7 +31,7 @@ export class Plugins extends Initializer {
           },
         },
       ],
-      connections: [objectsDestinationConnection],
+      connections: [destinationConnection],
     });
   }
 
