@@ -4,9 +4,9 @@ import * as utils from "./shared";
 import { connect } from "../../src/lib/connect";
 import { IClient } from "../../src/lib/client/interfaces/iClient";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
-import { loadAppOptions, loadTableData } from "../utils/nockHelper";
+import { BaseType, loadAppOptions, loadTableData } from "../utils/nockHelper";
 
-export function testExportRecords(baseType: "BASIC" | "META") {
+export function testExportRecords(baseType: BaseType) {
   const appOptions = loadAppOptions(baseType);
   const tableData = loadTableData(baseType);
   const { emptyId: tableId, emptyName: tableName } = tableData;

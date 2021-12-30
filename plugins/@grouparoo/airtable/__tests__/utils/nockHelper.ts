@@ -7,10 +7,12 @@ const dirPath = path.resolve(path.join(__dirname, ".."));
 const nockPath = path.join(dirPath, ".env.example");
 const realPath = path.join(dirPath, ".env");
 
+export type BaseType = "BASIC" | "META";
+
 function readEnv(filePath) {
   return dotenv.parse(fs.readFileSync(filePath));
 }
-export function loadAppOptions(baseType: "BASIC" | "META"): SimpleAppOptions {
+export function loadAppOptions(baseType: BaseType): SimpleAppOptions {
   const newNock: boolean = !!process.env.NOCK;
   let envFile;
   if (newNock) {
@@ -25,7 +27,7 @@ export function loadAppOptions(baseType: "BASIC" | "META"): SimpleAppOptions {
   };
 }
 
-export function loadTableData(baseType: "BASIC" | "META"): {
+export function loadTableData(baseType: BaseType): {
   allId: string;
   allName: string;
   allPrimaryKey: string;
@@ -55,7 +57,7 @@ export function loadTableData(baseType: "BASIC" | "META"): {
   };
 }
 
-export function getUpdater(baseType: "BASIC" | "META") {
+export function getUpdater(baseType: BaseType) {
   return {
     rewrite: function (nockCall) {
       const realEnv = readEnv(realPath);
