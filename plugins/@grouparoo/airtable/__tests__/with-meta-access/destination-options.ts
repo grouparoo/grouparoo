@@ -20,7 +20,7 @@ async function runDestinationOptions(destinationOptions) {
   });
 }
 
-describe("Destination Options Tests", () => {
+describe("META Destination Options Tests", () => {
   beforeAll(async () => {
     connection = await connect({
       app: undefined,

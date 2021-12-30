@@ -22,7 +22,7 @@ async function getMappingOptions(destinationOptions) {
   });
 }
 
-describe("Test Destination Mapping Options Method", () => {
+describe("META Test Destination Mapping Options Method", () => {
   beforeAll(async () => {
     connection = await connect({
       app: undefined,

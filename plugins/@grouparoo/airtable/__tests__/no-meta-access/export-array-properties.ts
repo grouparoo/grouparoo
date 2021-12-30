@@ -23,7 +23,7 @@ async function getArrayProperties(destinationOptions) {
   });
 }
 
-describe("Export Array Properties Test", () => {
+describe("BASIC Export Array Properties Test", () => {
   beforeAll(async () => {
     connection = await connect({
       app: undefined,
