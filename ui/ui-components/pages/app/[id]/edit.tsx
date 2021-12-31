@@ -372,7 +372,8 @@ export default function Page(props) {
                   </Alert>
                 ) : ranTest ? (
                   <Alert variant="warning">
-                    <strong>Test Failed</strong> {testResult.error}
+                    <strong>Test Failed</strong>{" "}
+                    {testResult.error || testResult.message}
                   </Alert>
                 ) : null}
                 {loading ? <Loader /> : null}
