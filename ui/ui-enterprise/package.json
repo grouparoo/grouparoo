@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/ui-enterprise",
   "description": "The Grouparoo Enterprise Web UI",
-  "version": "0.8.0-alpha.1",
+  "version": "0.8.0-alpha.2",
   "license": "UNLICENSED",
   "private": false,
   "publishConfig": {
@@ -37,9 +37,9 @@
     "react-hook-form": "6.15.5"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.8.0-alpha.1",
-    "@grouparoo/spec-helper": "0.8.0-alpha.1",
-    "@grouparoo/ui-components": "0.8.0-alpha.1",
+    "@grouparoo/core": "0.8.0-alpha.2",
+    "@grouparoo/spec-helper": "0.8.0-alpha.2",
+    "@grouparoo/ui-components": "0.8.0-alpha.2",
     "@types/jest": "*",
     "@types/react": "*",
     "@types/react-dom": "*",
