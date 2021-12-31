@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/ui-components",
   "description": "Shared Grouparoo UI Components & Pages",
-  "version": "0.8.0-alpha.1",
+  "version": "0.8.0-alpha.2",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -30,7 +30,7 @@
     "@fortawesome/free-brands-svg-icons": "5.15.4",
     "@fortawesome/free-solid-svg-icons": "5.15.4",
     "@fortawesome/react-fontawesome": "0.1.16",
-    "@grouparoo/core": "0.8.0-alpha.1",
+    "@grouparoo/core": "0.8.0-alpha.2",
     "@testing-library/jest-dom": "5.16.1",
     "@testing-library/react": "12.1.2",
     "@types/jest": "*",
