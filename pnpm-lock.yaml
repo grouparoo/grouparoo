@@ -245,7 +245,7 @@ importers:
       '@types/isomorphic-fetch': 0.0.35
       '@types/jest': '*'
       '@types/node': '*'
-      '@types/pacote': 11.1.1
+      '@types/pacote': 11.1.2
       '@types/pluralize': 0.0.29
       '@types/semver': 7.3.9
       '@types/tar': 6.1.1
@@ -256,7 +256,7 @@ importers:
       cls-hooked: 4.2.2
       colors: 1.4.0
       csv-parse: 4.16.3
-      csv-stringify: 6.0.4
+      csv-stringify: 6.0.5
       dotenv: 10.0.0
       form-data: 4.0.0
       fs-extra: 10.0.0
@@ -304,7 +304,7 @@ importers:
       bcryptjs: 2.4.3
       cls-hooked: 4.2.2
       colors: 1.4.0
-      csv-stringify: 6.0.4
+      csv-stringify: 6.0.5
       dotenv: 10.0.0
       form-data: 4.0.0
       fs-extra: 10.0.0
@@ -340,7 +340,7 @@ importers:
       '@grouparoo/spec-helper': link:../plugins/@grouparoo/spec-helper
       '@types/isomorphic-fetch': 0.0.35
       '@types/jest': 27.0.1
-      '@types/pacote': 11.1.1
+      '@types/pacote': 11.1.2
       '@types/pluralize': 0.0.29
       '@types/semver': 7.3.9
       '@types/tar': 6.1.1
@@ -561,7 +561,7 @@ importers:
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 28.1.1
-      aws-sdk: 2.1044.0
+      aws-sdk: 2.1048.0
       jest: 27.4.5
       prettier: 2.5.1
       ts-jest: 27.1.2
@@ -570,7 +570,7 @@ importers:
       winston: 3.3.3
       winston-cloudwatch: 3.1.1
     dependencies:
-      aws-sdk: 2.1044.0
+      aws-sdk: 2.1048.0
       winston: 3.3.3
       winston-cloudwatch: 3.1.1_winston@3.3.3
     devDependencies:
@@ -696,7 +696,7 @@ importers:
       glob: 7.2.0
       isomorphic-fetch: 3.0.0
       jest: 27.4.5
-      mongodb: 4.2.1
+      mongodb: 4.2.2
       mysql: 2.18.1
       pg: 8.7.1
       prettier: 2.5.1
@@ -712,7 +712,7 @@ importers:
       fs-extra: 10.0.0
       glob: 7.2.0
       isomorphic-fetch: 3.0.0
-      mongodb: 4.2.1
+      mongodb: 4.2.2
       mysql: 2.18.1
       pg: 8.7.1
       prettier: 2.5.1
@@ -1141,14 +1141,14 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      mongodb: 4.2.1
+      mongodb: 4.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2
       typescript: 4.5.4
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      mongodb: 4.2.1
+      mongodb: 4.2.2
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -1539,7 +1539,7 @@ importers:
       '@grouparoo/core': 0.8.0-alpha.2
       '@grouparoo/spec-helper': 0.8.0-alpha.2
       '@sentry/node': 6.16.0
-      '@sentry/tracing': 6.16.0
+      '@sentry/tracing': 6.16.1
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 28.1.1
@@ -1549,7 +1549,7 @@ importers:
       typescript: 4.5.4
     dependencies:
       '@sentry/node': 6.16.0
-      '@sentry/tracing': 6.16.0
+      '@sentry/tracing': 6.16.1
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -1724,7 +1724,7 @@ importers:
       jest-environment-webdriver: grouparoo/jest-webdriver#jest-v27-webdriver
       next: 12.0.7
       prettier: 2.5.1
-      prop-types: 15.7.2
+      prop-types: 15.8.0
       react: 17.0.2
       react-bootstrap: 1.6.4
       react-dom: 17.0.2
@@ -1752,7 +1752,7 @@ importers:
       jest: 27.4.5
       jest-environment-webdriver: github.com/grouparoo/jest-webdriver/3fa07db08cc6901e740d1e927a20db55f9406398_jest@27.4.5
       prettier: 2.5.1
-      prop-types: 15.7.2
+      prop-types: 15.8.0
       ts-jest: 27.1.2_7d0b94f8a3f5aee865ab4c59ede8c0bf
       typescript: 4.5.4
 
@@ -1779,7 +1779,7 @@ importers:
       nprogress: 0.2.0
       pluralize: 8.0.0
       prettier: 2.5.1
-      prop-types: 15.7.2
+      prop-types: 15.8.0
       react: 17.0.2
       react-bootstrap: 1.6.4
       react-bootstrap-typeahead: 5.2.1
@@ -1788,7 +1788,7 @@ importers:
       react-markdown: 7.1.1
       react-moment: 1.1.1
       recharts: 2.1.6
-      sass: 1.44.0
+      sass: 1.45.2
       stacktrace-js: 2.0.2
       swagger-ui-dist: 4.1.2
       ts-jest: 27.1.2
@@ -1815,20 +1815,20 @@ importers:
       jest-mock-axios: 4.5.0
       md5: 2.3.0
       moment: 2.29.1
-      next: 12.0.7_26cee3e4b82436ed28df882481d4fc62
+      next: 12.0.7_e423b6f1d34b5513b88636554f07a035
       nprogress: 0.2.0
       pluralize: 8.0.0
       prettier: 2.5.1
-      prop-types: 15.7.2
+      prop-types: 15.8.0
       react: 17.0.2
       react-bootstrap: 1.6.4_react-dom@17.0.2+react@17.0.2
       react-bootstrap-typeahead: 5.2.1_react-dom@17.0.2+react@17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-hook-form: 6.15.5_react@17.0.2
       react-markdown: 7.1.1_6e44cfea672f844fe365824ce49901bd
-      react-moment: 1.1.1_e2de3c42c851e0688dbd2109b79845c7
-      recharts: 2.1.6_9bdd65c2b60ce8638444b80b396a481b
-      sass: 1.44.0
+      react-moment: 1.1.1_82abb60d13f6d3e7741493e71160685b
+      recharts: 2.1.6_fcd735ed90f9ecea045d06f518d846c2
+      sass: 1.45.2
       stacktrace-js: 2.0.2
       swagger-ui-dist: 4.1.2
       ts-jest: 27.1.2_7d0b94f8a3f5aee865ab4c59ede8c0bf
@@ -1854,7 +1854,7 @@ importers:
       next: 12.0.7
       open: 8.4.0
       prettier: 2.5.1
-      prop-types: 15.7.2
+      prop-types: 15.8.0
       react: 17.0.2
       react-bootstrap: 1.6.4
       react-dom: 17.0.2
@@ -1884,7 +1884,7 @@ importers:
       jest: 27.4.5
       jest-environment-webdriver: github.com/grouparoo/jest-webdriver/3fa07db08cc6901e740d1e927a20db55f9406398_jest@27.4.5
       prettier: 2.5.1
-      prop-types: 15.7.2
+      prop-types: 15.8.0
       ts-jest: 27.1.2_7d0b94f8a3f5aee865ab4c59ede8c0bf
       typescript: 4.5.4
 
@@ -1905,7 +1905,7 @@ importers:
       jest-environment-webdriver: grouparoo/jest-webdriver#jest-v27-webdriver
       next: 12.0.7
       prettier: 2.5.1
-      prop-types: 15.7.2
+      prop-types: 15.8.0
       react: 17.0.2
       react-bootstrap: 1.6.4
       react-dom: 17.0.2
@@ -1933,7 +1933,7 @@ importers:
       jest: 27.4.5
       jest-environment-webdriver: github.com/grouparoo/jest-webdriver/3fa07db08cc6901e740d1e927a20db55f9406398_jest@27.4.5
       prettier: 2.5.1
-      prop-types: 15.7.2
+      prop-types: 15.8.0
       ts-jest: 27.1.2_7d0b94f8a3f5aee865ab4c59ede8c0bf
       typescript: 4.5.4
 
@@ -2448,7 +2448,7 @@ packages:
       react: '>=16.x'
     dependencies:
       '@fortawesome/fontawesome-svg-core': 1.2.36
-      prop-types: 15.7.2
+      prop-types: 15.8.0
       react: 17.0.2
     dev: true
 
@@ -2571,14 +2571,14 @@ packages:
     engines: {node: '>=6.9.0'}
     dev: true
 
-  /@hypnosphi/create-react-context/0.3.1_prop-types@15.7.2+react@17.0.2:
+  /@hypnosphi/create-react-context/0.3.1_prop-types@15.8.0+react@17.0.2:
     resolution: {integrity: sha512-V1klUed202XahrWJLLOT3EXNeCpFHCcJntdFGI15ntCwau+jfT386w7OFTMaCqOgXUH1fa0w/I1oZs+i/Rfr0A==}
     peerDependencies:
       prop-types: ^15.0.0
       react: '>=0.14.0'
     dependencies:
       gud: 1.0.0
-      prop-types: 15.7.2
+      prop-types: 15.8.0
       react: 17.0.2
       warning: 4.0.3
     dev: true
@@ -4003,12 +4003,30 @@ packages:
       tslib: 1.14.1
     dev: false
 
+  /@sentry/hub/6.16.1:
+    resolution: {integrity: sha512-4PGtg6AfpqMkreTpL7ymDeQ/U1uXv03bKUuFdtsSTn/FRf9TLS4JB0KuTZCxfp1IRgAA+iFg6B784dDkT8R9eg==}
+    engines: {node: '>=6'}
+    dependencies:
+      '@sentry/types': 6.16.1
+      '@sentry/utils': 6.16.1
+      tslib: 1.14.1
+    dev: false
+
   /@sentry/minimal/6.16.0:
     resolution: {integrity: sha512-9/h0J9BDDY5W/dKILGEq3ewECspNoxcXuly/WOWQdt2SQpIcoh8l/dF8iTXle+icndin0EiMEyHOzaCPWG24oQ==}
     engines: {node: '>=6'}
     dependencies:
       '@sentry/hub': 6.16.0
       '@sentry/types': 6.16.0
+      tslib: 1.14.1
+    dev: false
+
+  /@sentry/minimal/6.16.1:
+    resolution: {integrity: sha512-dq+mI1EQIvUM+zJtGCVgH3/B3Sbx4hKlGf2Usovm9KoqWYA+QpfVBholYDe/H2RXgO7LFEefDLvOdHDkqeJoyA==}
+    engines: {node: '>=6'}
+    dependencies:
+      '@sentry/hub': 6.16.1
+      '@sentry/types': 6.16.1
       tslib: 1.14.1
     dev: false
 
@@ -4040,8 +4058,24 @@ packages:
       tslib: 1.14.1
     dev: false
 
+  /@sentry/tracing/6.16.1:
+    resolution: {integrity: sha512-MPSbqXX59P+OEeST+U2V/8Hu/8QjpTUxTNeNyTHWIbbchdcMMjDbXTS3etCgajZR6Ro+DHElOz5cdSxH6IBGlA==}
+    engines: {node: '>=6'}
+    dependencies:
+      '@sentry/hub': 6.16.1
+      '@sentry/minimal': 6.16.1
+      '@sentry/types': 6.16.1
+      '@sentry/utils': 6.16.1
+      tslib: 1.14.1
+    dev: false
+
   /@sentry/types/6.16.0:
     resolution: {integrity: sha512-ZgIyLYlQS4SPi+d68XD8n9FzoObrNQLWxBuMYMnG3uJSuFeYAJrVYkDRtW4OW0D3awuajYGiHJZC2O5qTRGflA==}
+    engines: {node: '>=6'}
+    dev: false
+
+  /@sentry/types/6.16.1:
+    resolution: {integrity: sha512-Wh354g30UsJ5kYJbercektGX4ZMc9MHU++1NjeN2bTMnbofEcpUDWIiKeulZEY65IC1iU+1zRQQgtYO+/hgCUQ==}
     engines: {node: '>=6'}
     dev: false
 
@@ -4050,6 +4084,14 @@ packages:
     engines: {node: '>=6'}
     dependencies:
       '@sentry/types': 6.16.0
+      tslib: 1.14.1
+    dev: false
+
+  /@sentry/utils/6.16.1:
+    resolution: {integrity: sha512-7ngq/i4R8JZitJo9Sl8PDnjSbDehOxgr1vsoMmerIsyRZ651C/8B+jVkMhaAPgSdyJ0AlE3O7DKKTP1FXFw9qw==}
+    engines: {node: '>=6'}
+    dependencies:
+      '@sentry/types': 6.16.1
       tslib: 1.14.1
     dev: false
 
@@ -4346,8 +4388,8 @@ packages:
     resolution: {integrity: sha512-1TcL7YDYCtnHmLhTWbum+IIwLlvpaHoEKS2KNIngEwLzwgDeHaebaEHHbQp8IqzNQ9IYiboLKUjAf7MZqG63+w==}
     dev: true
 
-  /@types/pacote/11.1.1:
-    resolution: {integrity: sha512-ycBhPpDuNb5hwvWQJFaLyGspdWXkpqBOcGyWclC+hQfMvZt/13aXIt5vx5b+wx4lJd8n0ROZEPMCt6C9uGP0ag==}
+  /@types/pacote/11.1.2:
+    resolution: {integrity: sha512-uvzS3Xh0W6h6ji3/fg0DJPwr+RJRkpCH8Nu1yXLh3PWRF+6bOAaxXgilPFEENsckBYM6lxOd3US/etdZ2nU9yw==}
     dependencies:
       '@types/node': 16.9.1
       '@types/npm-registry-fetch': 8.0.2
@@ -5034,6 +5076,21 @@ packages:
 
   /aws-sdk/2.1044.0:
     resolution: {integrity: sha512-n55uGUONQGXteGGG1QlZ1rKx447KSuV/x6jUGNf2nOl41qMI8ZgLUhNUt0uOtw3qJrCTanzCyR/JKBq2PMiqEQ==}
+    engines: {node: '>= 10.0.0'}
+    dependencies:
+      buffer: 4.9.2
+      events: 1.1.1
+      ieee754: 1.1.13
+      jmespath: 0.15.0
+      querystring: 0.2.0
+      sax: 1.2.1
+      url: 0.10.3
+      uuid: 3.3.2
+      xml2js: 0.4.19
+    dev: false
+
+  /aws-sdk/2.1048.0:
+    resolution: {integrity: sha512-mVwWo+Udiuc/yEZ/DgJQGqOEtfiQjgUdtshx/t6ISe3+jW3TF9hUACwADwx2Sr/fuJyyJ3QD5JYLt5Cw35wQpA==}
     engines: {node: '>= 10.0.0'}
     dependencies:
       buffer: 4.9.2
@@ -6234,8 +6291,8 @@ packages:
       lodash.get: 4.4.2
     dev: false
 
-  /csv-stringify/6.0.4:
-    resolution: {integrity: sha512-Z3EbRQWwkOV3Qc2fQnJmfjrxRgAwH9AncnNK2jmtTvBvFjj/hESZUGm42YvTh9kMw2OOGPHQn5Yt0EbqoRtUVQ==}
+  /csv-stringify/6.0.5:
+    resolution: {integrity: sha512-7xpV3uweJCFF/Ssn56l3xsR/k2r3UqszwjEhej9qEn2cCPzyK1WyHCgoUVzBA792x8HbwonNX7CU9XM2K5s5yw==}
     dev: false
 
   /csv-write-stream/2.0.0:
@@ -7068,7 +7125,7 @@ packages:
       object.entries: 1.1.4
       object.fromentries: 2.0.4
       object.values: 1.1.4
-      prop-types: 15.7.2
+      prop-types: 15.8.0
       resolve: 2.0.0-next.3
       string.prototype.matchall: 4.0.5
     dev: true
@@ -10788,20 +10845,20 @@ packages:
   /moment/2.29.1:
     resolution: {integrity: sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==}
 
-  /mongodb-connection-string-url/2.2.0:
-    resolution: {integrity: sha512-U0cDxLUrQrl7DZA828CA+o69EuWPWEJTwdMPozyd7cy/dbtncUZczMw7wRHcwMD7oKOn0NM2tF9jdf5FFVW9CA==}
+  /mongodb-connection-string-url/2.4.1:
+    resolution: {integrity: sha512-d5Kd2bVsKcSA7YI/yo57fSTtMwRQdFkvc5IZwod1RRxJtECeWPPSo7zqcUGJELifRA//Igs4spVtYAmvFCatug==}
     dependencies:
       '@types/whatwg-url': 8.2.1
       whatwg-url: 11.0.0
     dev: false
 
-  /mongodb/4.2.1:
-    resolution: {integrity: sha512-nDC+ulM/Ea3Q2VG5eemuGfB7T4ORwrtKegH2XW9OLlUBgQF6OTNrzFCS1Z3SJGVA+T0Sr1xBYV6DMnp0A7us0g==}
+  /mongodb/4.2.2:
+    resolution: {integrity: sha512-zt8rCTnTKyMQppyt63qMnrLM5dbADgUk18ORPF1XbtHLIYCyc9hattaYHi0pqMvNxDpgGgUofSVzS+UQErgTug==}
     engines: {node: '>=12.9.0'}
     dependencies:
       bson: 4.6.0
       denque: 2.0.1
-      mongodb-connection-string-url: 2.2.0
+      mongodb-connection-string-url: 2.4.1
     optionalDependencies:
       saslprep: 1.0.3
     dev: false
@@ -10975,7 +11032,7 @@ packages:
       - supports-color
     dev: false
 
-  /next/12.0.7_26cee3e4b82436ed28df882481d4fc62:
+  /next/12.0.7_e423b6f1d34b5513b88636554f07a035:
     resolution: {integrity: sha512-sKO8GJJYfuk9c+q+zHSNumvff+wP7ufmOlwT6BuzwiYfFJ61VTTkfTcDLSJ+95ErQJiC54uS4Yg5JEE8H6jXRA==}
     engines: {node: '>=12.22.0'}
     hasBin: true
@@ -11034,7 +11091,7 @@ packages:
       react-is: 17.0.2
       react-refresh: 0.8.3
       regenerator-runtime: 0.13.4
-      sass: 1.44.0
+      sass: 1.45.2
       stream-browserify: 3.0.0
       stream-http: 3.1.1
       string_decoder: 1.3.0
@@ -12488,8 +12545,8 @@ packages:
       react-is: 16.13.1
       warning: 4.0.3
 
-  /prop-types/15.7.2:
-    resolution: {integrity: sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==}
+  /prop-types/15.8.0:
+    resolution: {integrity: sha512-fDGekdaHh65eI3lMi5OnErU6a8Ighg2KjcjQxO7m8VHyWjcPyj5kiOgV1LQDOOOgVy3+5FgjXvdSSX7B8/5/4g==}
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
@@ -12746,7 +12803,7 @@ packages:
       fast-deep-equal: 3.1.3
       invariant: 2.2.4
       lodash.debounce: 4.0.8
-      prop-types: 15.7.2
+      prop-types: 15.8.0
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-overlays: 5.1.1_react-dom@17.0.2+react@17.0.2
@@ -12772,7 +12829,7 @@ packages:
       classnames: 2.3.1
       dom-helpers: 5.2.1
       invariant: 2.2.4
-      prop-types: 15.7.2
+      prop-types: 15.8.0
       prop-types-extra: 1.1.1_react@17.0.2
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -12818,7 +12875,7 @@ packages:
       '@types/unist': 2.0.6
       comma-separated-tokens: 2.0.2
       hast-util-whitespace: 2.0.0
-      prop-types: 15.7.2
+      prop-types: 15.8.0
       property-information: 6.0.1
       react: 17.0.2
       react-is: 17.0.2
@@ -12833,7 +12890,7 @@ packages:
       - supports-color
     dev: true
 
-  /react-moment/1.1.1_e2de3c42c851e0688dbd2109b79845c7:
+  /react-moment/1.1.1_82abb60d13f6d3e7741493e71160685b:
     resolution: {integrity: sha512-WjwvxBSnmLMRcU33do0KixDB+9vP3e84eCse+rd+HNklAMNWyRgZTDEQlay/qK6lcXFPRuEIASJTpEt6pyK7Ww==}
     peerDependencies:
       moment: ^2.29.0
@@ -12841,7 +12898,7 @@ packages:
       react: ^16.0 || ^17.0.0
     dependencies:
       moment: 2.29.1
-      prop-types: 15.7.2
+      prop-types: 15.8.0
       react: 17.0.2
     dev: true
 
@@ -12856,7 +12913,7 @@ packages:
       '@restart/hooks': 0.3.27_react@17.0.2
       '@types/warning': 3.0.0
       dom-helpers: 5.2.1
-      prop-types: 15.7.2
+      prop-types: 15.8.0
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       uncontrollable: 7.2.1_react@17.0.2
@@ -12868,10 +12925,10 @@ packages:
       react: 0.14.x || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
       '@babel/runtime': 7.15.4
-      '@hypnosphi/create-react-context': 0.3.1_prop-types@15.7.2+react@17.0.2
+      '@hypnosphi/create-react-context': 0.3.1_prop-types@15.8.0+react@17.0.2
       deep-equal: 1.1.1
       popper.js: 1.16.1
-      prop-types: 15.7.2
+      prop-types: 15.8.0
       react: 17.0.2
       typed-styles: 0.0.7
       warning: 4.0.3
@@ -12895,7 +12952,7 @@ packages:
       resize-observer-polyfill: 1.5.1
     dev: true
 
-  /react-smooth/2.0.0_9bdd65c2b60ce8638444b80b396a481b:
+  /react-smooth/2.0.0_fcd735ed90f9ecea045d06f518d846c2:
     resolution: {integrity: sha512-wK4dBBR6P21otowgMT9toZk+GngMplGS1O5gk+2WSiHEXIrQgDvhR5IIlT74Vtu//qpTcipkgo21dD7a7AUNxw==}
     peerDependencies:
       prop-types: ^15.6.0
@@ -12903,7 +12960,7 @@ packages:
       react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
       fast-equals: 2.0.3
-      prop-types: 15.7.2
+      prop-types: 15.8.0
       raf: 3.4.1
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -12918,7 +12975,7 @@ packages:
     dependencies:
       dom-helpers: 3.4.0
       loose-envify: 1.4.0
-      prop-types: 15.7.2
+      prop-types: 15.8.0
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-lifecycles-compat: 3.0.4
@@ -12933,7 +12990,7 @@ packages:
       '@babel/runtime': 7.15.4
       dom-helpers: 5.2.1
       loose-envify: 1.4.0
-      prop-types: 15.7.2
+      prop-types: 15.8.0
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
 
@@ -13108,7 +13165,7 @@ packages:
       decimal.js-light: 2.5.1
     dev: true
 
-  /recharts/2.1.6_9bdd65c2b60ce8638444b80b396a481b:
+  /recharts/2.1.6_fcd735ed90f9ecea045d06f518d846c2:
     resolution: {integrity: sha512-KnRNnCum1hL27DYhUfcdcKUEQkYnda6G+KDN4n/nCiTKp7UzJSgHfFHQvCkBujPi/U98dGd430DA2/8RJpkPlg==}
     peerDependencies:
       react: ^16.0.0 || ^17.0.0
@@ -13127,7 +13184,7 @@ packages:
       react-dom: 17.0.2_react@17.0.2
       react-is: 16.13.1
       react-resize-detector: 6.7.6_react-dom@17.0.2+react@17.0.2
-      react-smooth: 2.0.0_9bdd65c2b60ce8638444b80b396a481b
+      react-smooth: 2.0.0_fcd735ed90f9ecea045d06f518d846c2
       recharts-scale: 0.4.5
       reduce-css-calc: 2.1.8
     transitivePeerDependencies:
@@ -13536,13 +13593,14 @@ packages:
     dev: false
     optional: true
 
-  /sass/1.44.0:
-    resolution: {integrity: sha512-0hLREbHFXGQqls/K8X+koeP+ogFRPF4ZqetVB19b7Cst9Er8cOR0rc6RU7MaI4W1JmUShd1BPgPoeqmmgMMYFw==}
+  /sass/1.45.2:
+    resolution: {integrity: sha512-cKfs+F9AMPAFlbbTXNsbGvg3y58nV0mXA3E94jqaySKcC8Kq3/8983zVKQ0TLMUrHw7hF9Tnd3Bz9z5Xgtrl9g==}
     engines: {node: '>=8.9.0'}
     hasBin: true
     dependencies:
       chokidar: 3.5.2
       immutable: 4.0.0
+      source-map-js: 1.0.1
     dev: true
 
   /sax/1.2.1:
@@ -14065,6 +14123,11 @@ packages:
       arrify: 2.0.1
       dot-prop: 5.3.0
     dev: false
+
+  /source-map-js/1.0.1:
+    resolution: {integrity: sha512-4+TN2b3tqOCd/kaGRJ/sTYA0tR0mdXx26ipdolxcwtJVqEnqNYvlCAt1q3ypy4QMlYus+Zh34RNtYLoq2oQ4IA==}
+    engines: {node: '>=0.10.0'}
+    dev: true
 
   /source-map-resolve/0.6.0:
     resolution: {integrity: sha512-KXBr9d/fO/bWo97NXsPIAW1bFSBOuCnjbNTBMO7N59hsv5i9yzRDfcYwwt0l04+VqnKC+EwzvJZIP/qkuMgR/w==}
