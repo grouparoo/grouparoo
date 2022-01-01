@@ -41,7 +41,7 @@
     "bcryptjs": "2.4.3",
     "cls-hooked": "4.2.2",
     "colors": "1.4.0",
-    "csv-stringify": "6.0.4",
+    "csv-stringify": "6.0.5",
     "dotenv": "10.0.0",
     "form-data": "4.0.0",
     "fs-extra": "10.0.0",
