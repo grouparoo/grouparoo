@@ -1787,7 +1787,7 @@ importers:
       react-hook-form: 6.15.5
       react-markdown: 7.1.1
       react-moment: 1.1.1
-      recharts: 2.1.6
+      recharts: 2.1.8
       sass: 1.45.2
       stacktrace-js: 2.0.2
       swagger-ui-dist: 4.1.2
@@ -1827,7 +1827,7 @@ importers:
       react-hook-form: 6.15.5_react@17.0.2
       react-markdown: 7.1.1_6e44cfea672f844fe365824ce49901bd
       react-moment: 1.1.1_82abb60d13f6d3e7741493e71160685b
-      recharts: 2.1.6_fcd735ed90f9ecea045d06f518d846c2
+      recharts: 2.1.8_fcd735ed90f9ecea045d06f518d846c2
       sass: 1.45.2
       stacktrace-js: 2.0.2
       swagger-ui-dist: 4.1.2
@@ -13123,8 +13123,9 @@ packages:
       decimal.js-light: 2.5.1
     dev: true
 
-  /recharts/2.1.6_fcd735ed90f9ecea045d06f518d846c2:
-    resolution: {integrity: sha512-KnRNnCum1hL27DYhUfcdcKUEQkYnda6G+KDN4n/nCiTKp7UzJSgHfFHQvCkBujPi/U98dGd430DA2/8RJpkPlg==}
+  /recharts/2.1.8_fcd735ed90f9ecea045d06f518d846c2:
+    resolution: {integrity: sha512-Wi7ufdDGyvy/BPf1za1Ok7VeWB2KtEejaewO9ulmlUhvn5l5RPS4AOkrUfhtMRTTjgJ4K6AbWMDpwtDjczUHJA==}
+    engines: {node: '>=12'}
     peerDependencies:
       react: ^16.0.0 || ^17.0.0
       react-dom: ^16.0.0 || ^17.0.0
