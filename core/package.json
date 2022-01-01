@@ -78,7 +78,7 @@
     "@grouparoo/spec-helper": "0.8.0-alpha.2",
     "@types/isomorphic-fetch": "0.0.35",
     "@types/jest": "*",
-    "@types/pacote": "11.1.1",
+    "@types/pacote": "11.1.2",
     "@types/pluralize": "0.0.29",
     "@types/semver": "7.3.9",
     "@types/tar": "6.1.1",
