@@ -50,7 +50,7 @@
     "jest": "27.4.5",
     "jest-environment-webdriver": "grouparoo/jest-webdriver#jest-v27-webdriver",
     "prettier": "2.5.1",
-    "prop-types": "15.7.2",
+    "prop-types": "15.8.0",
     "ts-jest": "27.1.2",
     "typescript": "4.5.4"
   },
