@@ -11,7 +11,7 @@ export const filterOpsDescriptions = {
   lte: "less than or equal to",
   substring: "contains",
   notSubstring: "does not contain",
-};
+} as const;
 
 export function buildPropertyFilterDictionary(
   options: SourceFilterMethodResponseRow[]

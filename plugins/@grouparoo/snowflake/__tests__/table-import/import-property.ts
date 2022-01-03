@@ -199,7 +199,7 @@ describe("snowflake/table/recordProperty", () => {
           sourceMapping,
           aggregationMethod: "average",
         });
-        expect(value).toEqual([1.625714286]);
+        expect(fixedLengthFloat(value)).toEqual(1.63);
       });
       test("count", async () => {
         const value = await getPropertyValue({
@@ -284,7 +284,6 @@ describe("snowflake/table/recordProperty", () => {
     //   relativeMatchDirection?: string;
     // }
 
-    //TO DO: EXISTS/NOTEXISTS
     describe("exists", () => {
       const op = "exists";
       test("string", async () => {
@@ -831,3 +830,7 @@ describe("snowflake/table/recordProperty", () => {
     });
   });
 });
+
+function fixedLengthFloat(value: any, decimalDigits = 2) {
+  return parseFloat(parseFloat(value.toString()).toFixed(decimalDigits));
+}

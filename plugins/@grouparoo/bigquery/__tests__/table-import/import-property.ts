@@ -189,7 +189,7 @@ describe("bigquery/table/recordProperty", () => {
           sourceMapping,
           aggregationMethod: "average",
         });
-        expect(value).toEqual([1.6257142857142857]);
+        expect(fixedLengthFloat(value)).toEqual(1.63);
       });
       test("count", async () => {
         const value = await getPropertyValue({
@@ -823,3 +823,7 @@ describe("bigquery/table/recordProperty", () => {
     });
   });
 });
+
+function fixedLengthFloat(value: any, decimalDigits = 2) {
+  return parseFloat(parseFloat(value.toString()).toFixed(decimalDigits));
+}

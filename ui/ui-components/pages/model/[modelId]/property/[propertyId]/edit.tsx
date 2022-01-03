@@ -532,7 +532,10 @@ export default function Page(props) {
                       <p>
                         Only include rows that meet the following criteria when
                         populating
-                        <Badge variant="info">{property.key}</Badge>:
+                        <Badge variant="info" className="ml-1">
+                          {property.key}
+                        </Badge>
+                        :
                       </p>
 
                       {localFilters.length > 0 && (

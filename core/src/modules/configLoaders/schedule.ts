@@ -7,10 +7,10 @@ import {
   validateConfigObjectKeys,
   IdsByClass,
 } from "../../classes/codeConfig";
+import { FilterHelper } from "../filterHelper";
 import { Schedule, Source } from "../..";
 import { Op } from "sequelize";
 import { Deprecation } from "../deprecation";
-
 import { ConfigWriter } from "../configWriter";
 
 export async function loadSchedule(
@@ -57,6 +57,17 @@ export async function loadSchedule(
   await schedule.setOptions(options);
 
   if (configObject.filters) {
+    for (const filter of configObject.filters) {
+      if (Object.keys(FilterHelper.deprecatedFilters).includes(filter.op)) {
+        throw new Error(
+          `Property filter \`${
+            filter.op
+          }\` has been deprecated and replaced with \`${
+            FilterHelper.deprecatedFilters[filter.op]
+          }\`. Read more at https://www.grouparoo.com/docs/config/code-config/properties`
+        );
+      }
+    }
     await schedule.setFilters(configObject.filters, externallyValidate);
   }
 

@@ -91,7 +91,9 @@ export const getPropertyValue: GetPropertyValueMethod = async ({
     }
   } catch (error) {
     throw new Error(
-      `Error with BigQuery SQL Statement: Query - \`${options.query}\`, Error - ${error}`
+      `Error with BigQuery SQL Statement: Query - \`${JSON.stringify(
+        options
+      )}\`, Error - ${error}`
     );
   }
 

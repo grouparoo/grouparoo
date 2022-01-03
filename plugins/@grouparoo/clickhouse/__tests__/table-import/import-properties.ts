@@ -361,14 +361,14 @@ describe("clickhouse/table/recordProperties", () => {
           sourceMapping,
           aggregationMethod: AggregationMethod.Exact,
         });
-        expect(values[record.id][properties[0].id]).toEqual([
+        expect(values[record.id][properties[0].id].sort()).toEqual([
+          "Apple",
+          "Apple",
+          "Blueberry",
+          "Blueberry",
+          "Orange",
+          "Orange",
           null,
-          "Apple",
-          "Orange",
-          "Blueberry",
-          "Apple",
-          "Blueberry",
-          "Orange",
         ]);
         expect(values[otherRecord.id][properties[0].id]).toEqual([
           "Pear",

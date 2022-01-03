@@ -51,8 +51,6 @@ export default function Page(props) {
     schedule.recurringFrequency / (60 * 1000)
   );
 
-  console.log(filterOptionDescriptions);
-
   async function edit(event) {
     event.preventDefault();
     setLoading(true);
@@ -491,6 +489,7 @@ export default function Page(props) {
                                           .ops.map((op) => (
                                             <option
                                               key={`op-opt-${localFilter.key}-${op}`}
+                                              value={op}
                                             >
                                               {filterOptionDescriptions[op]}
                                             </option>
