@@ -952,12 +952,6 @@ describe("models/property", () => {
           property.setFilters([{ op: "max it out", match: 1, key: "id" }])
         ).rejects.toThrow('"max it out" cannot be applied to id');
 
-        await expect(
-          property.setFilters([{ op: "greater than", match: 1, key: "id" }])
-        ).rejects.toThrow(
-          "Property filter `greater than` has been deprecated and replaced with `gt`. Read more at https://www.grouparoo.com/docs/config/code-config/properties"
-        );
-
         await property.destroy();
       });
     });
