@@ -15,7 +15,7 @@ docker run -p 6379:6379 --name redis -d redis
 # configure postgres
 sudo apt-get install postgresql-client -y
 docker volume create pg-data
-docker run -p 5432:5432 --name postgres --mount source=pg-data,target=/data/db -e POSTGRES_HOST_AUTH_METHOD=trust -e POSTGRES_USER=codespace -e POSTGRES_PASSWORD="" -e POSTGRES_DB=grouparoo_development -d postgres
+docker run -p 5432:5432 --name postgres -v pg-data:/var/lib/postgresql/data -e POSTGRES_HOST_AUTH_METHOD=trust -e POSTGRES_USER=codespace -e POSTGRES_PASSWORD="" -e POSTGRES_DB=grouparoo_development -d postgres
 
 # configure node
 npm install -g pnpm
