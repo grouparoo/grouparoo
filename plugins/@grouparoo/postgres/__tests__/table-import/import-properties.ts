@@ -549,7 +549,7 @@ describe("postgres/table/recordProperties", () => {
   describe("filters", () => {
     const sourceMapping = { record_id: "userId" };
     const columns = ["amount"];
-    const aggregationMethod = "count"; // select count(*) from purchases where amount IS NOT NULL AND userID = ${}
+    const aggregationMethod = "count";
     beforeAll(() => {
       sourceOptions = { table: purchasesTableName };
     });

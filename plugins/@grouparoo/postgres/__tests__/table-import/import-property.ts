@@ -289,17 +289,6 @@ describe("postgres/table/recordProperty", () => {
     // }
     describe("exists", () => {
       const op = "exists";
-      test("integer", async () => {
-        const value = await getPropertyValue(
-          {
-            column,
-            sourceMapping,
-            aggregationMethod,
-          },
-          [{ op, key: "id" }]
-        );
-        expect(value).toEqual(7);
-      });
       test("string", async () => {
         const value = await getPropertyValue(
           {
