@@ -8,14 +8,14 @@ importers:
       lerna: 4.0.0
       lerna-changelog: 2.2.0
       license-checker: github:grouparoo/license-checker
-      npm-check-updates: 12.0.5
+      npm-check-updates: 12.1.0
       prettier: 2.5.1
     devDependencies:
       glob: 7.2.0
       lerna: 4.0.0
       lerna-changelog: 2.2.0
       license-checker: github.com/grouparoo/license-checker/1054593024d6f7e50ad47feb3b61d52c9506c274
-      npm-check-updates: 12.0.5
+      npm-check-updates: 12.1.0
       prettier: 2.5.1
 
   apps/staging-community:
@@ -214,7 +214,7 @@ importers:
       fs-extra: 10.0.0
       glob: 7.2.0
       isomorphic-fetch: 3.0.0
-      npm-check-updates: 12.0.5
+      npm-check-updates: 12.1.0
       ora: 5.4.1
       prettier: 2.5.1
       semver: 7.3.5
@@ -227,7 +227,7 @@ importers:
       fs-extra: 10.0.0
       glob: 7.2.0
       isomorphic-fetch: 3.0.0
-      npm-check-updates: 12.0.5
+      npm-check-updates: 12.1.0
       ora: 5.4.1
       semver: 7.3.5
     devDependencies:
@@ -8540,7 +8540,7 @@ packages:
       mute-stream: 0.0.8
       run-async: 2.4.1
       rxjs: 6.6.7
-      string-width: 4.2.2
+      string-width: 4.2.3
       strip-ansi: 6.0.1
       through: 2.3.8
     dev: true
@@ -8690,16 +8690,10 @@ packages:
     dependencies:
       ci-info: 2.0.0
 
-  /is-core-module/2.6.0:
-    resolution: {integrity: sha512-wShG8vs60jKfPWpF2KZRaAtvt3a20OAn7+IJ6hLPECpSABLcKtFKTTI4ZtH5QcBruBHlq+WsdHWyz0BCZW7svQ==}
-    dependencies:
-      has: 1.0.3
-
   /is-core-module/2.8.0:
     resolution: {integrity: sha512-vd15qHsaqrRL7dtH6QNuy0ndJmRDrS9HAM1CAiSifNUFv4x1a0CCVsj18hJ1mShxIG6T2i1sO78MkP56r0nYRw==}
     dependencies:
       has: 1.0.3
-    dev: true
 
   /is-date-object/1.0.5:
     resolution: {integrity: sha512-9YQaSxsAiSwcvS33MBk3wTCVnWK+HhF8VZR2jRxehM16QcVOdHqPn4VPHmRK4lSr38n9JriurInLcP90xsYNfQ==}
@@ -11486,7 +11480,7 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       hosted-git-info: 4.0.2
-      is-core-module: 2.6.0
+      is-core-module: 2.8.0
       semver: 7.3.5
       validate-npm-package-license: 3.0.4
     dev: true
@@ -11516,8 +11510,8 @@ packages:
     dependencies:
       npm-normalize-package-bin: 1.0.1
 
-  /npm-check-updates/12.0.5:
-    resolution: {integrity: sha512-ns1liBBogwjmOVZY/PYgeIoarItwdOSBxccJDZKKkxsMkXges/Bp5CAnQIvYwlsz6fByQJFvqXSOqwIUBY6gpQ==}
+  /npm-check-updates/12.1.0:
+    resolution: {integrity: sha512-9GtSetBvcth7MuL+0MpOmWgdfiEgZcWRfnvoYnNZxbZpleHZCT0Z3HnbsL6/EAT2M+ye7FTZ+YjmDmZptt7Rkg==}
     engines: {node: '>=12'}
     hasBin: true
     dependencies:
@@ -13504,7 +13498,7 @@ packages:
   /resolve/1.20.0:
     resolution: {integrity: sha512-wENBPt4ySzg4ybFQW2TT1zMQucPK95HSh/nq2CFTZVOGut2+pQvSsgtda4d26YrYcr067wjbmzOG8byDPBX63A==}
     dependencies:
-      is-core-module: 2.6.0
+      is-core-module: 2.8.0
       path-parse: 1.0.7
 
   /resolve/2.0.0-next.3:
