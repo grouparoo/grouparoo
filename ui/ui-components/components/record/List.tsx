@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
-import { Form, Row, Col, Badge, Button, ButtonGroup } from "react-bootstrap";
+import {
+  Form,
+  Row,
+  Col,
+  Badge,
+  Button,
+  ButtonGroup,
+  InputGroup,
+} from "react-bootstrap";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import type { NextPageContext } from "next";
@@ -141,27 +149,32 @@ export default function RecordsList(props) {
       )}
 
       {groupId ? null : (
-        <Form id="search" onSubmit={load}>
+        <Form id="search" className="mb-2" onSubmit={load}>
           <Row>
-            <Col md={3}>
+            <Col md="5">
               <Form.Group>
                 <Form.Label>Search Property</Form.Label>
-                <Form.Control
-                  name="searchKey"
-                  as="select"
-                  value={searchKey}
-                  disabled={props.searchKey || loading ? true : false}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    setSearchKey(event.target.value);
-                    setSearchValue("");
-                    autocompleteRecordPropertySearch("%", event.target.value);
-                  }}
-                >
-                  <option value="">Show All</option>
-                  {properties.map((rule) => (
-                    <option key={`rule-${rule.key}`}>{rule.key}</option>
-                  ))}
-                </Form.Control>
+                <InputGroup>
+                  <Form.Control
+                    name="searchKey"
+                    as="select"
+                    value={searchKey}
+                    disabled={props.searchKey || loading ? true : false}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      setSearchKey(event.target.value);
+                      setSearchValue("");
+                      autocompleteRecordPropertySearch("%", event.target.value);
+                    }}
+                  >
+                    <option value="">Show All</option>
+                    {properties.map((rule) => (
+                      <option key={`rule-${rule.key}`}>{rule.key}</option>
+                    ))}
+                  </Form.Control>
+                  <LoadingButton size="sm" type="submit" loading={loading}>
+                    Search
+                  </LoadingButton>
+                </InputGroup>
               </Form.Group>
             </Col>
             {searchKey !== "" ? (
@@ -215,12 +228,6 @@ export default function RecordsList(props) {
                 </Row>
               </Col>
             ) : null}
-
-            <Col md={2} style={{ marginTop: 33 }}>
-              <LoadingButton size="sm" type="submit" loading={loading}>
-                Search
-              </LoadingButton>
-            </Col>
           </Row>
         </Form>
       )}
