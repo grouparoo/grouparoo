@@ -214,7 +214,7 @@ describe("modules/codeConfig", () => {
           )
         );
         expect(errors[0]).toMatch(
-          "[ config ] error with Schedule `Users Table Schedule` (users_table_schedule): Property filter `greater than` has been deprecated and replaced with `gt`. Read more at https://www.grouparoo.com/docs/config/code-config/properties"
+          "[ config ] error with Schedule `Users Table Schedule` (users_table_schedule): Schedule filter `greater than` has been deprecated and replaced with `gt`. Read more at https://www.grouparoo.com/docs/config/code-config/schedules"
         );
       });
     });
