@@ -53,15 +53,13 @@ export default function Page(props) {
       <PageHeader
         icon={plugin.icon}
         title={[
-          <span>
+          <span key={plugin.name}>
             Add new <code>{plugin.name}</code> App
           </span>,
         ]}
         badges={[
-          plugin.source ? <Badge variant="primary">Source</Badge> : null,
-          plugin.destination ? (
-            <Badge variant="primary">Destination</Badge>
-          ) : null,
+          plugin.source ? <Badge bg="primary">Source</Badge> : null,
+          plugin.destination ? <Badge bg="primary">Destination</Badge> : null,
         ]}
       />
 

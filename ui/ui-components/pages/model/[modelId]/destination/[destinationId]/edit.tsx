@@ -151,11 +151,12 @@ export default function Page(props) {
         icon={destination.app.icon}
         title={destination.name}
         badges={[
-          <LockedBadge object={destination} />,
-          <StateBadge state={destination.state} />,
+          <LockedBadge object={destination} key={1} />,
+          <StateBadge state={destination.state} key={2} />,
           <ModelBadge
             modelName={destination.modelName}
             modelId={destination.modelId}
+            key={3}
           />,
         ]}
       />
@@ -244,7 +245,7 @@ export default function Page(props) {
                       <Form.Label>
                         {opt.required ? (
                           <>
-                            <Badge variant="info">required</Badge>&nbsp;
+                            <Badge bg="info">required</Badge>&nbsp;
                           </>
                         ) : null}
                         <code>{opt.displayName || opt.key}</code>
@@ -403,7 +404,7 @@ export default function Page(props) {
                       <p>
                         Environment Variable Options for Destinations:{" "}
                         {environmentVariableOptions.sort().map((envOpt) => (
-                          <Badge key={`envOpt-${envOpt}`} variant="info">
+                          <Badge key={`envOpt-${envOpt}`} bg="info">
                             {envOpt}
                           </Badge>
                         ))}

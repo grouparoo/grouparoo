@@ -8,7 +8,7 @@ export default function LockedBadge({
   if (!object.provides?.source) return null;
 
   return (
-    <Badge style={{ marginBottom: 20 }} variant="primary">
+    <Badge style={{ marginBottom: 20 }} bg="primary">
       source
     </Badge>
   );

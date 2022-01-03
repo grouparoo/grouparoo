@@ -12,7 +12,7 @@ function formatUrl(s = "unknown", label: string) {
   const url = s.replace(/\.git$/, "");
 
   return (
-    <a target="_blank" href={url === "unknown" ? "#" : url}>
+    <a target="_blank" href={url === "unknown" ? "#" : url} rel="noreferrer">
       {label}
     </a>
   );
@@ -36,7 +36,7 @@ export default function Page({
 
       <p>
         You can learn more and get help by visiting{" "}
-        <a target="_blank" href="https://www.grouparoo.com">
+        <a target="_blank" href="https://www.grouparoo.com" rel="noreferrer">
           www.grouparoo.com
         </a>
         .
@@ -46,7 +46,7 @@ export default function Page({
       <p>
         <strong>
           Connected to{" "}
-          <Badge variant="info" data-testid="apiVersion">
+          <Badge bg="info" data-testid="apiVersion">
             {client.apiVersion}
           </Badge>{" "}
           of the Grouparoo API.
@@ -90,7 +90,7 @@ export default function Page({
               <td>
                 {plugin.currentVersion}{" "}
                 {!plugin.upToDate ? (
-                  <Badge variant={"warning"}>Out of Date</Badge>
+                  <Badge bg="warning">Out of Date</Badge>
                 ) : null}
               </td>
               <td>{plugin.latestVersion}</td>

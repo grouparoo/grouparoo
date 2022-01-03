@@ -7,39 +7,39 @@ interface Props {
 }
 
 const StateBadge: React.FC<Props> = ({ state, marginBottom, style }) => {
-  let variant: BadgeProps["variant"];
+  let bg: BadgeProps["bg"];
 
   switch (state) {
     case "ready":
-      variant = "success";
+      bg = "success";
       break;
     case "complete":
-      variant = "success";
+      bg = "success";
       break;
     case "deleted":
-      variant = "danger";
+      bg = "danger";
     case "invalid":
-      variant = "danger";
+      bg = "danger";
     case "failed":
-      variant = "danger";
+      bg = "danger";
       break;
     case "draft":
-      variant = "warning";
+      bg = "warning";
       break;
     case "initializing":
-      variant = "warning";
+      bg = "warning";
       break;
     case "pending":
-      variant = "warning";
+      bg = "warning";
       break;
     case "updating":
-      variant = "warning";
+      bg = "warning";
       break;
     case "canceled":
-      variant = "warning";
+      bg = "warning";
       break;
     default:
-      variant = "primary";
+      bg = "primary";
   }
 
   return (
@@ -50,7 +50,7 @@ const StateBadge: React.FC<Props> = ({ state, marginBottom, style }) => {
         marginBottom: marginBottom ?? 20,
         ...style,
       }}
-      variant={variant}
+      bg={bg}
     >
       {state}
     </Badge>

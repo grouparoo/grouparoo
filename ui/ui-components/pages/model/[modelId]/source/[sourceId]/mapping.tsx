@@ -333,7 +333,7 @@ export default function Page(props: Props & NextPageContext) {
                                   {property.isPrimaryKey && (
                                     <>
                                       {" "}
-                                      <Badge variant="info">primary</Badge>
+                                      <Badge bg="info">primary</Badge>
                                     </>
                                   )}
                                 </strong>

@@ -278,11 +278,12 @@ export default function Page(props) {
         icon={destination.app.icon}
         title={destination.name}
         badges={[
-          <LockedBadge object={destination} />,
-          <StateBadge state={destination.state} />,
+          <LockedBadge object={destination} key={1} />,
+          <StateBadge state={destination.state} key={2} />,
           <ModelBadge
             modelName={destination.modelName}
             modelId={destination.modelId}
+            key={3}
           />,
         ]}
       />
@@ -415,7 +416,7 @@ export default function Page(props) {
                                   </td>
                                   <td style={{ textAlign: "center" }}>→</td>
                                   <td>
-                                    <Badge variant="info">{key}</Badge>{" "}
+                                    <Badge bg="info">{key}</Badge>{" "}
                                     <span className="text-muted">({type})</span>
                                   </td>
                                 </tr>
@@ -490,7 +491,7 @@ export default function Page(props) {
                                     <td style={{ textAlign: "center" }}>→</td>
                                     <td>
                                       <Badge
-                                        variant={
+                                        bg={
                                           destination.mapping[key]
                                             ? "info"
                                             : "dark"

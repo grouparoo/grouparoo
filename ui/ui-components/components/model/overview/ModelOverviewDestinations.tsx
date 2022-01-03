@@ -60,6 +60,7 @@ const ModelOverviewDestinations: React.FC<Props> = ({
           href={`/model/${model.id}/destination/new`}
           hideOn={["community"]}
           disabled={disabled}
+          key={model.id}
         >
           Add new Destination
         </LinkButton>,

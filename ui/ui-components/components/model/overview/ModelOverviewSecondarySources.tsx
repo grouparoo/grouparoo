@@ -29,6 +29,7 @@ const ModelOverviewSecondarySources: React.FC<Props> = ({
           href={`/model/${model.id}/source/new`}
           hideOn={["community"]}
           disabled={disabled}
+          key={model.id}
         >
           Add new Source
         </LinkButton>,

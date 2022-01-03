@@ -235,6 +235,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
         href={`/model/${modelId}/record${record ? `/${record.id}/edit` : "s"}`}
         size="sm"
         variant="outline-primary"
+        key={modelId}
       >
         View Record
       </LinkButton>,
@@ -292,6 +293,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
       loading={loading && !recordId}
       size="sm"
       variant="outline-primary"
+      key="randomRecord"
       onClick={() => {
         setRecordId(undefined);
       }}

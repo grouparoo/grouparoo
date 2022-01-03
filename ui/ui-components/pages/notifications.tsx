@@ -78,9 +78,7 @@ export default function Page(props) {
             return (
               <tr key={`notification-${notification.id}`}>
                 <td>
-                  {notification.readAt ? null : (
-                    <Badge variant="warning">new</Badge>
-                  )}
+                  {notification.readAt ? null : <Badge bg="warning">new</Badge>}
                 </td>
                 <td>
                   <Link href={`/notification/${notification.id}/edit`}>

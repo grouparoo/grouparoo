@@ -195,7 +195,7 @@ export default function ExportsList(props) {
                         <a>{_export.destination.name}</a>
                       </EnterpriseLink>
                     ) : (
-                      <Badge variant="secondary">deleted</Badge>
+                      <Badge bg="secondary">deleted</Badge>
                     )}
                     <br />
                     Model:{" "}
@@ -204,19 +204,17 @@ export default function ExportsList(props) {
                     </EnterpriseLink>
                     <br />
                     To Delete?{" "}
-                    <Badge variant={_export.toDelete ? "danger" : "secondary"}>
+                    <Badge bg={_export.toDelete ? "danger" : "secondary"}>
                       {_export.toDelete.toString()}
                     </Badge>
                     <br />
                     Has Changes?{" "}
-                    <Badge
-                      variant={_export.hasChanges ? "success" : "secondary"}
-                    >
+                    <Badge bg={_export.hasChanges ? "success" : "secondary"}>
                       {_export.hasChanges.toString()}
                     </Badge>
                     <br />
                     Forced:{" "}
-                    <Badge variant={_export.force ? "warning" : "secondary"}>
+                    <Badge bg={_export.force ? "warning" : "secondary"}>
                       {_export.force.toString()}
                     </Badge>
                   </td>

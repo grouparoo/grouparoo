@@ -163,26 +163,30 @@ export default function Page(props) {
         title={`${group.name} - Rules`}
         iconType="group"
         badges={[
-          <LockedBadge object={group} />,
-          <StateBadge state={group.state} />,
-          <ModelBadge modelName={group.modelName} modelId={group.modelId} />,
+          <LockedBadge object={group} key={group.id} />,
+          <StateBadge state={group.state} key={group.state} />,
+          <ModelBadge
+            modelName={group.modelName}
+            modelId={group.modelId}
+            key={group.modelId}
+          />,
         ]}
       />
 
       {grouparooUiEdition() !== "config" && (
         <p>
           Total Records in this group: &nbsp;
-          <Badge style={{ fontSize: 16 }} variant="info">
+          <Badge style={{ fontSize: 16 }} bg="info">
             {countPotentialMembers}
           </Badge>
         </p>
       )}
       <p>
         Define the record properties that you want to segment by. Records in
-        this Group will match <Badge variant="success">{group.matchType}</Badge>{" "}
-        of these rules.
+        this Group will match <Badge bg="success">{group.matchType}</Badge> of
+        these rules.
       </p>
-      <Form inline autoComplete="off">
+      <Form autoComplete="off">
         <fieldset disabled={Boolean(group.locked)}>
           <Table bordered size="sm">
             <thead>
@@ -228,7 +232,7 @@ export default function Page(props) {
                   <tr key={`rule-${rule.key}-${idx}`}>
                     <td>
                       <h5>
-                        <Badge variant={rowChanged ? "warning" : "light"}>
+                        <Badge bg={rowChanged ? "warning" : "light"}>
                           {idx}
                         </Badge>
                       </h5>
@@ -453,7 +457,7 @@ export default function Page(props) {
 
                     {grouparooUiEdition() !== "config" && (
                       <td>
-                        <Badge variant="info">{componentCounts[idx]}</Badge>
+                        <Badge bg="info">{componentCounts[idx]}</Badge>
                       </td>
                     )}
 
@@ -475,7 +479,7 @@ export default function Page(props) {
           </Table>
           {localRules.length < group.rules.length || rowChanges ? (
             <p>
-              <Badge variant="warning">Unsaved Rule Changes</Badge>
+              <Badge bg="warning">Unsaved Rule Changes</Badge>
             </p>
           ) : null}
           <Button size="sm" variant="outline-primary" onClick={addRule}>

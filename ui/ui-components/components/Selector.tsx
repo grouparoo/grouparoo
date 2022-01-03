@@ -63,7 +63,7 @@ export default function Selector({
         </div>
         {metaBadge && (
           <div className="text-center mb-2">
-            <Badge pill variant={metaBadge.variant}>
+            <Badge pill bg={metaBadge.variant}>
               {metaBadge.message}
             </Badge>
           </div>
@@ -89,7 +89,7 @@ export default function Selector({
                 style={{ textAlign: "center" }}
               >
                 {message ? (
-                  <Badge pill variant={variant}>
+                  <Badge pill bg={variant}>
                     {message}
                   </Badge>
                 ) : null}

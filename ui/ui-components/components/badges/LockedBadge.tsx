@@ -8,7 +8,7 @@ export default function LockedBadge({
   if (!object.locked || object.locked == "") return null;
 
   return (
-    <Badge style={{ marginBottom: 20 }} variant="light">
+    <Badge style={{ marginBottom: 20 }} bg="light">
       Locked ({object.locked})
     </Badge>
   );

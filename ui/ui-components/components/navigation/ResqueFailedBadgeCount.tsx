@@ -31,7 +31,7 @@ export default function ResqueFailedCountBadge({
 
   return (
     <span style={{ paddingLeft: 5 }}>
-      <Badge pill variant="danger">
+      <Badge pill bg="danger">
         {resqueFailedCount}
       </Badge>
     </span>

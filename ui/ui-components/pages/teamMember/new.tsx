@@ -151,7 +151,11 @@ export default function Page(props) {
           />
         </Form.Group>
         <p>
-          <a href="https://www.grouparoo.com/legal/privacy" target="_blank">
+          <a
+            href="https://www.grouparoo.com/legal/privacy"
+            target="_blank"
+            rel="noreferrer"
+          >
             Privacy Policy
           </a>
         </p>

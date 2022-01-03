@@ -142,7 +142,7 @@ export default function RecordsList(props) {
 
       {groupId ? null : (
         <Form id="search" onSubmit={load}>
-          <Form.Row>
+          <Row>
             <Col md={3}>
               <Form.Group>
                 <Form.Label>Search Property</Form.Label>
@@ -221,7 +221,7 @@ export default function RecordsList(props) {
                 Search
               </LoadingButton>
             </Col>
-          </Form.Row>
+          </Row>
         </Form>
       )}
 
@@ -324,7 +324,7 @@ export default function RecordsList(props) {
                           <a className="text-muted">
                             <strong>{searchKey}</strong>:{" "}
                             {record.properties[searchKey] ? (
-                              <Badge variant="info">
+                              <Badge bg="info">
                                 <ArrayRecordPropertyList
                                   type={record.properties[searchKey].type}
                                   values={record.properties[searchKey].values}

@@ -1,5 +1,5 @@
 import Selector, { BadgeProp } from "./Selector";
-import { CardDeck } from "react-bootstrap";
+import { Col } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { Actions } from "../utils/apiData";
 
@@ -24,7 +24,7 @@ export default function AppSelectorList({
   const router = useRouter();
 
   return (
-    <CardDeck>
+    <Col>
       {items.map((item: SelectablePlugin | SelectableApp, idx: number) => {
         let src: string;
         let title: string;
@@ -117,11 +117,11 @@ export default function AppSelectorList({
           onClick={() => router.push("/app/new")}
         >
           <div className="d-flex flex-column">
-            <p>Don’t see what you’re looking for?</p>
+            <p>Don't see what you're looking for?</p>
             <strong>Connect a new App</strong>
           </div>
         </div>
       ) : null}
-    </CardDeck>
+    </Col>
   );
 }

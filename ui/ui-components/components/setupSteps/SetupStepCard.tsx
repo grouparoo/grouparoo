@@ -45,20 +45,20 @@ export default function SetupStepCard({
             <Row>
               <Col>
                 <strong>
-                  <Accordion.Toggle
+                  <Accordion.Button
                     as={Button}
                     variant="link"
                     eventKey="0"
                     onClick={() => setActiveKey(activeKey ? null : "0")}
                   >
                     {step.position}: {step.title}
-                  </Accordion.Toggle>
+                  </Accordion.Button>
                 </strong>
               </Col>
 
               <Col style={{ textAlign: "right" }}>
                 {step.outcome && step.complete ? (
-                  <Badge variant="primary">{step.outcome}</Badge>
+                  <Badge bg="primary">{step.outcome}</Badge>
                 ) : null}
                 &nbsp;&nbsp;&nbsp;
                 {step.complete ? (

@@ -197,8 +197,12 @@ export default function Page(props) {
         loading={loading}
         email={email}
         badges={[
-          <StateBadge state={record.state} />,
-          <ModelBadge modelName={record.modelName} modelId={record.modelId} />,
+          <StateBadge state={record.state} key={record.state} />,
+          <ModelBadge
+            modelName={record.modelName}
+            modelId={record.modelId}
+            key={record.modelId}
+          />,
           record.invalid === true ? <StateBadge state="invalid" /> : null,
         ]}
       />

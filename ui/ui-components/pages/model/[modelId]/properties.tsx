@@ -150,7 +150,7 @@ export default function Page(props) {
                   {rule.isPrimaryKey && (
                     <>
                       {" "}
-                      <Badge variant="info">primary</Badge>
+                      <Badge bg="info">primary</Badge>
                     </>
                   )}
                 </td>

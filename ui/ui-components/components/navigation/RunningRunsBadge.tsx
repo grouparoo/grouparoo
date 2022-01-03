@@ -22,13 +22,13 @@ export default function RunningRunsBadge({
     return () => {
       statusHandler.unsubscribe("navigation-runs-badge");
     };
-  }, []);
+  }, [statusHandler]);
 
   if (pendingRuns < 1) return null;
 
   return (
     <span style={{ paddingLeft: 5 }}>
-      <Badge pill variant="info">
+      <Badge pill bg="info">
         {pendingRuns}
       </Badge>
     </span>

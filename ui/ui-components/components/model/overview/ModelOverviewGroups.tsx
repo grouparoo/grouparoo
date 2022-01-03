@@ -39,6 +39,7 @@ const ModelOverviewGroups: React.FC<Props> = ({ groups, disabled }) => {
           href={`/model/${model.id}/group/new`}
           hideOn={["community"]}
           disabled={disabled}
+          key={model.id}
         >
           Add new Group
         </LinkButton>,

@@ -174,13 +174,11 @@ export default function Navigation(props) {
             </Link>
             <br />
             {navigationMode.includes("config") ? (
-              <Badge variant="secondary">
-                {truncate(clusterName.value, 30)}
-              </Badge>
+              <Badge bg="secondary">{truncate(clusterName.value, 30)}</Badge>
             ) : (
               <Link href="/settings/core">
                 <a>
-                  <Badge variant="secondary">
+                  <Badge bg="secondary">
                     {clusterName
                       ? truncate(clusterName.value, 30)
                       : "Name not set"}
@@ -263,7 +261,7 @@ export default function Navigation(props) {
                 return (
                   <li style={navLiStyle} key={idx}>
                     <Accordion activeKey={expandPlatformMenu ? "1" : null}>
-                      <Accordion.Toggle
+                      <Accordion.Button
                         as={Button}
                         style={{ padding: 0 }}
                         variant="link"
@@ -305,7 +303,7 @@ export default function Navigation(props) {
                           »
                         </span>
                         <div style={{ padding: 6 }} />
-                      </Accordion.Toggle>
+                      </Accordion.Button>
                       <Accordion.Collapse eventKey="1">
                         <div>
                           {navigation.platformItems.map((nav, platformIdx) => {
@@ -390,7 +388,7 @@ export default function Navigation(props) {
             }}
           >
             <Accordion activeKey={expandAccountMenu ? "1" : null}>
-              <Accordion.Toggle
+              <Accordion.Button
                 eventKey="0"
                 as={Button}
                 variant="link"
@@ -410,7 +408,7 @@ export default function Navigation(props) {
                 >
                   {subMenuGreeting}
                 </span>
-              </Accordion.Toggle>
+              </Accordion.Button>
               <Accordion.Collapse eventKey="1">
                 <div
                   style={{

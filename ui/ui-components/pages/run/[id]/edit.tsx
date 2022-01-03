@@ -62,7 +62,7 @@ export default function Page(props) {
           </p>
           <p>
             State:{" "}
-            <Badge variant={run.state === "complete" ? "success" : "warning"}>
+            <Badge bg={run.state === "complete" ? "success" : "warning"}>
               {run.state} ({run.percentComplete}%)
             </Badge>
             {run.state === "running" ? (

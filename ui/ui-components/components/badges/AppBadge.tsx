@@ -11,7 +11,7 @@ export default function AppBadge({
   marginBottom?: number;
 }) {
   return (
-    <Badge style={{ marginBottom: marginBottom ?? 20 }} variant="secondary">
+    <Badge style={{ marginBottom: marginBottom ?? 20 }} bg="secondary">
       <EnterpriseLink href={`/app/${appId}/edit`}>
         <a style={{ color: "white" }}>{appName}</a>
       </EnterpriseLink>

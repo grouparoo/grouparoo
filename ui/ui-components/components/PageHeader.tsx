@@ -3,7 +3,6 @@ import AppIcon from "./AppIcon";
 import ModelIcon from "./ModelIcon";
 import GroupIcon from "./GroupIcon";
 import RecordImageFromEmail from "./visualizations/RecordImageFromEmail";
-import { Media } from "react-bootstrap";
 import SeparatedItems from "./lib/SeparatedItems";
 
 interface Props {
@@ -68,9 +67,9 @@ const PageHeader: React.FC<Props> = ({
   );
 
   return (
-    <Media className="mb-3">
-      {iconNode}
-      <Media.Body>
+    <div className="d-flex mb-3">
+      <div className="flex-shrink-0">{iconNode}</div>
+      <div className="flex-grow-1 ms-3">
         <div>
           <h1 style={{ display: "inline" }} className="mr-3">
             {titleNode}
@@ -78,8 +77,8 @@ const PageHeader: React.FC<Props> = ({
           <SeparatedItems items={actions} />
         </div>
         <SeparatedItems items={badges} />
-      </Media.Body>
-    </Media>
+      </div>
+    </div>
   );
 };
 

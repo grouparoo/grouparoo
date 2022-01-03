@@ -1,6 +1,6 @@
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Col, Media, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import AppIcon from "../AppIcon";
 import SeparatedItems from "./SeparatedItems";
 
@@ -23,20 +23,22 @@ const SectionContainer: React.FC<SectionContainerProps> = ({
   children,
 }) => {
   return (
-    <Media className={disabled ? "text-muted" : null}>
-      {typeof icon === "string" && iconType === "app" ? (
-        <AppIcon src={icon} size={52.5} className="mr-3" />
-      ) : (
-        icon && (
-          <FontAwesomeIcon
-            icon={icon as IconProp}
-            size="3x"
-            className="mr-3"
-            fixedWidth
-          />
-        )
-      )}
-      <Media.Body>
+    <div className={`d-flex ${disabled ? "text-muted" : null}`}>
+      <div className="flex-shrink-0">
+        {typeof icon === "string" && iconType === "app" ? (
+          <AppIcon src={icon} size={52.5} className="mr-3" />
+        ) : (
+          icon && (
+            <FontAwesomeIcon
+              icon={icon as IconProp}
+              size="3x"
+              className="mr-3"
+              fixedWidth
+            />
+          )
+        )}
+      </div>
+      <div className="flex-grow-1 ms-3">
         <Row>
           <Col md={actions ? 8 : 12}>
             {title && <h6>{title}</h6>}
@@ -49,8 +51,8 @@ const SectionContainer: React.FC<SectionContainerProps> = ({
           )}
         </Row>
         {children}
-      </Media.Body>
-    </Media>
+      </div>
+    </div>
   );
 };
 

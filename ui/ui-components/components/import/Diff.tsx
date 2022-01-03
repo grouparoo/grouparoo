@@ -57,14 +57,14 @@ export function ImportRecordPropertiesDiff({
 
         const badge = hasChanges ? (
           nullOld && !nullNew ? (
-            <Badge variant="success">+</Badge>
+            <Badge bg="success">+</Badge>
           ) : !nullOld && nullNew ? (
-            <Badge variant="danger">-</Badge>
+            <Badge bg="danger">-</Badge>
           ) : (
-            <Badge variant="warning">-/+</Badge>
+            <Badge bg="warning">-/+</Badge>
           )
         ) : (
-          <Badge variant="info">○</Badge>
+          <Badge bg="info">○</Badge>
         );
 
         return (
@@ -116,9 +116,9 @@ export function ImportGroupsDiff({
           return (
             <li key={`${_import.id}-grp-${g}`}>
               {!_import.newGroupIds.includes(g) ? (
-                <Badge variant="danger">-</Badge>
+                <Badge bg="danger">-</Badge>
               ) : (
-                <Badge variant="info">○</Badge>
+                <Badge bg="info">○</Badge>
               )}{" "}
               {groupLink(groups, g)}
             </li>
@@ -128,7 +128,7 @@ export function ImportGroupsDiff({
         {_import.newGroupIds.map((g) =>
           !_import.oldGroupIds.includes(g) ? (
             <li key={`${_import.id}-grp-${g}`}>
-              <Badge variant="success">+</Badge>&nbsp;
+              <Badge bg="success">+</Badge>&nbsp;
               {groupLink(groups, g)}
             </li>
           ) : null

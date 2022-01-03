@@ -42,7 +42,11 @@ export default function Page(props) {
             </p>
             <p>
               Learn more at{" "}
-              <a target="_blank" href="https://www.grouparoo.com">
+              <a
+                target="_blank"
+                href="https://www.grouparoo.com"
+                rel="noreferrer"
+              >
                 www.grouparoo.com
               </a>
             </p>

@@ -109,7 +109,7 @@ export default function Page({
                     {rule.isPrimaryKey && (
                       <>
                         {" "}
-                        <Badge variant="info">primary</Badge>
+                        <Badge bg="info">primary</Badge>
                       </>
                     )}
                   </td>
@@ -146,9 +146,7 @@ export default function Page({
                     <br />
                     <strong>Recurring</strong>:{" "}
                     <Badge
-                      variant={
-                        source.schedule.recurring ? "success" : "secondary"
-                      }
+                      bg={source.schedule.recurring ? "success" : "secondary"}
                     >
                       {source.schedule.recurring.toString()}
                     </Badge>

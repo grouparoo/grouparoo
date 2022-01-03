@@ -302,7 +302,7 @@ export default function Page(props) {
                     <p>
                       {opt.required ? (
                         <>
-                          <Badge variant="info">required</Badge>&nbsp;
+                          <Badge bg="info">required</Badge>&nbsp;
                         </>
                       ) : null}
                       <code>{opt.key}</code>: <small>{opt.description}</small>
@@ -429,9 +429,7 @@ export default function Page(props) {
                             <tr key={`rule-${localFilter.key}-${idx}`}>
                               <td>
                                 <h5>
-                                  <Badge
-                                    variant={rowChanged ? "warning" : "light"}
-                                  >
+                                  <Badge bg={rowChanged ? "warning" : "light"}>
                                     {idx}
                                   </Badge>
                                 </h5>
@@ -557,7 +555,7 @@ export default function Page(props) {
                     {localFilters.length < schedule.filters.length ||
                     rowChanges ? (
                       <p>
-                        <Badge variant="warning">Unsaved Rule Changes</Badge>
+                        <Badge bg="warning">Unsaved Rule Changes</Badge>
                       </p>
                     ) : null}
                     <Button size="sm" variant="info" onClick={addRule}>

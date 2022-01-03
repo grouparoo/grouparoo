@@ -161,7 +161,7 @@ export default function Page(props) {
                 .sort()
                 .map((opt) => (
                   <Form.Group as={Col} key={`opt-${column}-${opt}`}>
-                    <Form.Row>
+                    <Row>
                       <Col md={3}>
                         <code>
                           <Form.Label>{opt}: </Form.Label>
@@ -182,7 +182,7 @@ export default function Page(props) {
                         }}
                       /> */}
                       </Col>
-                    </Form.Row>
+                    </Row>
                   </Form.Group>
                 ))}
             </Fragment>

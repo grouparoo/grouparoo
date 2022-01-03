@@ -226,9 +226,13 @@ export default function Page(props) {
         icon={source.app.icon}
         title={property.key}
         badges={[
-          <LockedBadge object={property} />,
-          <StateBadge state={property.state} />,
-          <ModelBadge modelName={source.modelName} modelId={source.modelId} />,
+          <LockedBadge object={property} key={property.id} />,
+          <StateBadge state={property.state} key={property.state} />,
+          <ModelBadge
+            modelName={source.modelName}
+            modelId={source.modelId}
+            key={source.modelId}
+          />,
         ]}
       />
       <Row>
@@ -314,7 +318,7 @@ export default function Page(props) {
                       <p>
                         {opt.required ? (
                           <>
-                            <Badge variant="info">required</Badge>&nbsp;
+                            <Badge bg="info">required</Badge>&nbsp;
                           </>
                         ) : null}
                         <code>{opt.displayName || opt.key}</code>
@@ -478,11 +482,11 @@ export default function Page(props) {
                           </Form.Text>
                           <p>
                             Record Property Variables:{" "}
-                            <Badge variant="light">{`{{{ now }}}`}</Badge>
+                            <Badge bg="light">{`{{{ now }}}`}</Badge>
                             &nbsp;
-                            <Badge variant="light">{`{{{ createdAt }}}`}</Badge>
+                            <Badge bg="light">{`{{{ createdAt }}}`}</Badge>
                             &nbsp;
-                            <Badge variant="light">{`{{{ updatedAt }}}`}</Badge>
+                            <Badge bg="light">{`{{{ updatedAt }}}`}</Badge>
                             &nbsp;
                             {properties
                               .filter((rule) => rule.isArray === false)
@@ -495,7 +499,7 @@ export default function Page(props) {
                               })
                               .map((ppr) => (
                                 <Fragment key={`var-badge-${ppr.key}`}>
-                                  <Badge variant="light">{`{{{ ${ppr.key} }}}`}</Badge>
+                                  <Badge bg="light">{`{{{ ${ppr.key} }}}`}</Badge>
                                   &nbsp;
                                 </Fragment>
                               ))}
@@ -504,7 +508,7 @@ export default function Page(props) {
                             For dates, you can expand them to the{" "}
                             <code>sql</code>, <code>date</code>,{" "}
                             <code>time</code>, or <code>iso</code> formats, ie:{" "}
-                            <Badge variant="light">{`{{ now.sql }}`}</Badge>
+                            <Badge bg="light">{`{{ now.sql }}`}</Badge>
                           </p>
                         </>
                       ) : null}
@@ -530,7 +534,7 @@ export default function Page(props) {
                       <p>
                         Are there any criteria where you’d want to filter out
                         rows from being included in{" "}
-                        <Badge variant="info">{property.key}</Badge>?
+                        <Badge bg="info">{property.key}</Badge>?
                       </p>
 
                       {localFilters.length > 0 && (
@@ -562,9 +566,7 @@ export default function Page(props) {
                                   <td>
                                     <h5>
                                       <Badge
-                                        variant={
-                                          rowChanged ? "warning" : "light"
-                                        }
+                                        bg={rowChanged ? "warning" : "light"}
                                       >
                                         {idx}
                                       </Badge>
@@ -704,7 +706,7 @@ export default function Page(props) {
                       {localFilters.length < property.filters.length ||
                       rowChanges ? (
                         <p>
-                          <Badge variant="warning">Unsaved Rule Changes</Badge>
+                          <Badge bg="warning">Unsaved Rule Changes</Badge>
                         </p>
                       ) : null}
                       <Button size="sm" variant="info" onClick={addRule}>

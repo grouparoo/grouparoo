@@ -231,7 +231,7 @@ export default function Page(props) {
                       <code>{opt.displayName || opt.key}</code>{" "}
                       {opt.required ? (
                         <>
-                          <Badge variant="info">required</Badge>&nbsp;
+                          <Badge bg="info">required</Badge>&nbsp;
                         </>
                       ) : null}
                     </Form.Label>
@@ -383,7 +383,7 @@ export default function Page(props) {
                     <p>
                       Environment Variable Options for Sources:{" "}
                       {environmentVariableOptions.sort().map((envOpt) => (
-                        <Badge key={`envOpt-${envOpt}`} variant="info">
+                        <Badge key={`envOpt-${envOpt}`} bg="info">
                           {envOpt}
                         </Badge>
                       ))}

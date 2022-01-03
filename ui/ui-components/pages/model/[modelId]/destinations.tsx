@@ -122,7 +122,7 @@ export default function Page(props) {
                   <StateBadge state={destination.state} />
                 </td>
                 <td>
-                  <Badge variant={pendingExports > 0 ? "warning" : "info"}>
+                  <Badge bg={pendingExports > 0 ? "warning" : "info"}>
                     {pendingExports}
                   </Badge>
                 </td>

@@ -85,7 +85,11 @@ export default function LogsList(props) {
 
     if (ownerId) {
       return [
-        <EnterpriseLink href={`/object/${ownerId}`} prefetch={false}>
+        <EnterpriseLink
+          key={ownerId}
+          href={`/object/${ownerId}`}
+          prefetch={false}
+        >
           <a>{`${topic}`}</a>
         </EnterpriseLink>,
       ];

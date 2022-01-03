@@ -11,7 +11,7 @@ export default function ModelBadge({
   marginBottom?: number;
 }) {
   return (
-    <Badge style={{ marginBottom: marginBottom ?? 20 }} variant="primary">
+    <Badge style={{ marginBottom: marginBottom ?? 20 }} bg="primary">
       <EnterpriseLink href={`/model/${modelId}/edit`}>
         <a style={{ color: "white" }}>{modelName}</a>
       </EnterpriseLink>

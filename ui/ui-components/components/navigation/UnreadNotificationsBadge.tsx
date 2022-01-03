@@ -24,14 +24,14 @@ export default function UnreadNotificationCountBadge({
     return () => {
       statusHandler.unsubscribe("unread-notifications-badge");
     };
-  }, []);
+  }, [statusHandler]);
 
   if (navigationMode === "unauthenticated") return null;
   if (unreadCount < 1) return null;
 
   return (
     <span style={{ paddingLeft: 5 }}>
-      <Badge pill variant="warning">
+      <Badge pill bg="warning">
         {unreadCount}
       </Badge>
     </span>

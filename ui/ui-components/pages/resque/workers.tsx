@@ -135,13 +135,13 @@ export default function ResqueWorkersList(props) {
                     <td>{worker.id}</td>
                     <td>
                       <Accordion>
-                        <Accordion.Toggle
+                        <Accordion.Button
                           as={Button}
                           variant="link"
                           eventKey="0"
                         >
                           <small>{worker.queues.length} queues</small>
-                        </Accordion.Toggle>
+                        </Accordion.Button>
                         <Accordion.Collapse eventKey="0">
                           <small>
                             {worker.queues.map((q, idx, arr) => (

@@ -177,7 +177,7 @@ export default function Page(props) {
                           Available environment variables for apps:{" "}
                           {environmentVariableOptions.sort().map((envOpt) => (
                             <Fragment key={`envOpt-${envOpt}`}>
-                              <Badge variant="info">{envOpt}</Badge>{" "}
+                              <Badge bg="info">{envOpt}</Badge>{" "}
                             </Fragment>
                           ))}
                         </p>
@@ -187,6 +187,7 @@ export default function Page(props) {
                           <a
                             target="_blank"
                             href="https://www.grouparoo.com/docs/support/secrets"
+                            rel="noreferrer"
                           >
                             See the docs
                           </a>{" "}
@@ -202,7 +203,7 @@ export default function Page(props) {
                           <Form.Label>
                             {opt.required ? (
                               <>
-                                <Badge variant="info">required</Badge>&nbsp;
+                                <Badge bg="info">required</Badge>&nbsp;
                               </>
                             ) : null}
                             <code>{opt.displayName || opt.key}</code>
