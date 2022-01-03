@@ -156,7 +156,7 @@ export default function SignInForm(props) {
             </Col>
           </Row>
           <Row>
-            <Col className="border-right">
+            <Col className="border-end">
               <Form
                 id="form"
                 onSubmit={handleSubmit((data) => onSubmit(data, "password"))}

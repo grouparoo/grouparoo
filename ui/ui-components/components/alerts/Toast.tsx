@@ -44,7 +44,7 @@ export default function GrouparooToast({
       style={{ width: 300 }}
     >
       <Toast.Header className={`bg-${variant}`}>
-        <strong className="text-white mr-auto">
+        <strong className="text-white me-auto">
           {variant === "success" ? "Success" : "Error"}
         </strong>
       </Toast.Header>

@@ -32,18 +32,18 @@ const PageHeader: React.FC<Props> = ({
             width={100}
             loading={loading}
             email={email}
-            className="mr-3"
+            className="me-3"
           />
         );
 
       case "grouparooModel":
-        return <ModelIcon model={{ icon }} size="3x" className="mr-3" />;
+        return <ModelIcon model={{ icon }} size="3x" className="me-3" />;
 
       case "group":
-        return <GroupIcon size="7x" className="mr-3" />;
+        return <GroupIcon size="7x" className="me-3" />;
 
       default:
-        return <AppIcon src={icon} size={100} className="mr-3" />;
+        return <AppIcon src={icon} size={100} className="me-3" />;
     }
   }, [iconType, icon, loading, email]);
 
@@ -71,7 +71,7 @@ const PageHeader: React.FC<Props> = ({
       <div className="flex-shrink-0">{iconNode}</div>
       <div className="flex-grow-1 ms-3">
         <div>
-          <h1 style={{ display: "inline" }} className="mr-3">
+          <h1 style={{ display: "inline" }} className="me-3">
             {titleNode}
           </h1>
           <SeparatedItems items={actions} />

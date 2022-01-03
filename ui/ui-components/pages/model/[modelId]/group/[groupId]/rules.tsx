@@ -384,7 +384,7 @@ export default function Page(props) {
                         type !== "date" &&
                         ["integer", "float"].includes(type) ? (
                           <div
-                            className="form-inline"
+                            className="row row-cols-lg-auto g-3 align-items-center"
                             style={{ minWidth: 250 }}
                           >
                             <Form.Control
@@ -406,7 +406,7 @@ export default function Page(props) {
                         type !== "date" &&
                         !["integer", "float"].includes(type) ? (
                           <div
-                            className="form-inline"
+                            className="row row-cols-lg-auto g-3 align-items-center"
                             style={{ minWidth: 250 }}
                           >
                             <AsyncTypeahead

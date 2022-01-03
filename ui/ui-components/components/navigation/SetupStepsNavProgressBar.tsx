@@ -85,7 +85,7 @@ export default function SetupStepsNavProgressBar({
     >
       {initialOnBoardingState === false && onBoardingState === true ? (
         <Row>
-          <Col className="d-flex justify-content-end mr-1 text-light">
+          <Col className="d-flex justify-content-end me-1 text-light">
             {" "}
             <Button
               variant="link"

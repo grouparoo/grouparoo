@@ -22,7 +22,7 @@ const ManagedCard: React.FC<Props> = ({
           <h5 className="my-1">{title}</h5>
         </Col>
         {actions && (
-          <Col className="text-right" md="7" lg="6" sm="12">
+          <Col className="text-end" md="7" lg="6" sm="12">
             <SeparatedItems items={actions} />
           </Col>
         )}

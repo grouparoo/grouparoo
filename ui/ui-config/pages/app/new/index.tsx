@@ -189,9 +189,9 @@ export default function Page(props) {
                 animation="border"
                 role="status"
                 size="sm"
-                className="mr-2"
+                className="me-2"
               >
-                <span className="sr-only">Loading...</span>
+                <span className="visually-hidden">Loading...</span>
               </Spinner>
             ) : null}
             <span>{installingMessage}</span>

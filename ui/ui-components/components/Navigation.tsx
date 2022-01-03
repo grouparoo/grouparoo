@@ -365,7 +365,7 @@ export default function Navigation(props) {
             variant="outline-light"
             href="https://www.grouparoo.com/chat"
             target="_blank"
-            className="col-12 mx-auto font-weight-light"
+            className="col-12 mx-auto fw-light"
           >
             <FontAwesomeIcon
               style={iconConstrainedStyle}

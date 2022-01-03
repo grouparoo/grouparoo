@@ -26,13 +26,13 @@ const SectionContainer: React.FC<SectionContainerProps> = ({
     <div className={`d-flex ${disabled ? "text-muted" : null}`}>
       <div className="flex-shrink-0">
         {typeof icon === "string" && iconType === "app" ? (
-          <AppIcon src={icon} size={52.5} className="mr-3" />
+          <AppIcon src={icon} size={52.5} className="me-3" />
         ) : (
           icon && (
             <FontAwesomeIcon
               icon={icon as IconProp}
               size="3x"
-              className="mr-3"
+              className="me-3"
               fixedWidth
             />
           )
@@ -45,7 +45,7 @@ const SectionContainer: React.FC<SectionContainerProps> = ({
             {description && <p>{description}</p>}
           </Col>
           {actions && (
-            <Col className="text-right" md="4">
+            <Col className="text-end" md="4">
               <SeparatedItems items={actions} />
             </Col>
           )}

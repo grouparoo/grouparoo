@@ -89,7 +89,7 @@ const EntityList = function <T extends Models.EntityTypes>({
           </div>
         </Fade>
       </Col>
-      <Col md={3} className="text-right">
+      <Col md={3} className="text-end">
         <Button
           variant="link"
           size="sm"

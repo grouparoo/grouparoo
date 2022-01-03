@@ -257,7 +257,7 @@ export default function Page(props) {
         <hr />
 
         <Form
-          className="col-12 mx-auto mt-4 pl-0"
+          className="col-12 mx-auto mt-4 ps-0"
           id="form"
           onSubmit={edit}
           autoComplete="off"
@@ -319,7 +319,7 @@ export default function Page(props) {
                       variant="success"
                       onClick={test}
                       size="sm"
-                      className="my-2 ml-3"
+                      className="my-2 ms-3"
                       disabled={testLoading}
                       hidden={!editing}
                     >
@@ -332,7 +332,7 @@ export default function Page(props) {
                         variant="primary"
                         type="submit"
                         size="sm"
-                        className="my-2 ml-2"
+                        className="my-2 ms-2"
                         disabled={disabled}
                         hidden={!editing}
                       >
@@ -342,7 +342,7 @@ export default function Page(props) {
                       <Button
                         variant="outline-danger"
                         size="sm"
-                        className="my-2 ml-2"
+                        className="my-2 ms-2"
                         hidden={!editing}
                         onClick={cancelEdit}
                       >
@@ -407,8 +407,8 @@ export default function Page(props) {
             sources={sources}
           />
           <fieldset disabled={Boolean(appRefreshQuery.locked)}>
-            <Row className="ml-2 my-3"></Row>
-            <Row className="ml-2 my-3">
+            <Row className="ms-2 my-3"></Row>
+            <Row className="ms-2 my-3">
               <Button
                 variant="danger"
                 size="sm"
