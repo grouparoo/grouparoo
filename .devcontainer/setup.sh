@@ -3,8 +3,8 @@
 echo "--- CONFIURING CODESPACE ---"
 
 # general setup
-sudo apt-get upddate
 sudo apt-get install htop vim -y
+source $NVM_DIR/nvm.sh
 nvm install v16
 nvm alias default 16
 
