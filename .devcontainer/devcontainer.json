@@ -3,5 +3,8 @@
 {
   "name": "Grouparoo Dev",
   "forwardPorts": [3000, 5432, 6379],
-  "postCreateCommand": "/bin/bash ./.devcontainer/setup.sh"
+  "postCreateCommand": "/bin/bash ./.devcontainer/setup.sh",
+  "containerEnv": {
+    "GROUPAROO_TELEMETRY_ENABLED": "false"
+  }
 }

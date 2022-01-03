@@ -20,5 +20,7 @@ npm install -g pnpm
 pnpm install --unsafe-perm
 
 # setup apps
+touch ~/.zshrc
+echo "alias roo=/workspaces/grouparoo/cli/dist/grouparoo.js" >> ~/.zshrc
 cp apps/staging-enterprise/.env.example apps/staging-enterprise/.env
 cp apps/staging-community/.env.example apps/staging-community/.env
