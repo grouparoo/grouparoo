@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@grouparoo/app-templates": "0.8.0-alpha.2",
-    "@types/sqlite3": "3.1.7",
+    "@types/sqlite3": "3.1.8",
     "sqlite3": "5.0.2"
   },
   "devDependencies": {
