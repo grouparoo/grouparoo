@@ -60,11 +60,12 @@ export async function loadSchedule(
     for (const filter of configObject.filters) {
       if (Object.keys(FilterHelper.deprecatedFilters).includes(filter.op)) {
         throw new Error(
-          `Property filter \`${
+          `Schedule filter \`${
             filter.op
           }\` has been deprecated and replaced with \`${
             FilterHelper.deprecatedFilters[filter.op]
-          }\`. Read more at https://www.grouparoo.com/docs/config/code-config/properties`
+          }\`. `
+          // There is nowhere in the docs to point yet for schedule filters
         );
       }
     }
