@@ -10,6 +10,7 @@ import {
 } from "../../../components/import/Diff";
 import { DurationTime } from "../../../components/DurationTime";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
+import StateBadge from "../../../components/badges/StateBadge";
 
 export default function Page(props) {
   const {
@@ -38,6 +39,8 @@ export default function Page(props) {
         <Card.Body>
           <h2>Details</h2>
           <p>
+            State: <StateBadge state={_import.state} marginBottom={0} />
+            <br />
             Model:{" "}
             <Link href={`/model/${_import.modelId}/edit`}>
               <a>{_import.modelId}</a>

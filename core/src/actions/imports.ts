@@ -15,6 +15,7 @@ export class ImportsList extends AuthenticatedAction {
       recordId: { required: false },
       limit: { required: true, default: 100, formatter: APIData.ensureNumber },
       offset: { required: true, default: 0, formatter: APIData.ensureNumber },
+      state: { required: false },
       order: {
         required: false,
         formatter: APIData.ensureObject,
@@ -27,6 +28,7 @@ export class ImportsList extends AuthenticatedAction {
     const where = {};
     if (params.creatorId) where["creatorId"] = params.creatorId;
     if (params.recordId) where["recordId"] = params.recordId;
+    if (params.state) where["state"] = params.state;
 
     const search = {
       include: [GrouparooRecord],
