@@ -2,6 +2,7 @@ import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/salesforce": { path: path.join(__dirname, "..", "..") },
 });
+import "@grouparoo/spec-helper";
 import { destinationMappingOptions } from "../../src/lib/export-contacts/destinationMappingOptions";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { helper } from "@grouparoo/spec-helper";
@@ -35,8 +36,8 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
     app = await helper.factories.app();
     destination = await Destination.create({
       name: "Salesforce Test Destination",
-      type: "salesforce-export-accounts",
-      syncMode: DestinationSyncModeData.sync.key,
+      type: "salesforce-export-contacts",
+      syncMode: DestinationSyncModeData.enrich.key,
       appId: app.id,
       modelId: model.id,
     });
@@ -51,13 +52,10 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
     const { required, known } = properties;
     const { property, group } = labels;
 
-    expect(required.length).toBe(3);
+    expect(required.length).toBe(2);
     let field;
     field = required.find((f) => f.key === "Email");
     expect(field.type).toBe("email");
-
-    field = required.find((f) => f.key === "LastName");
-    expect(field.type).toBe("string");
 
     field = known.find((f) => f.key === "FirstName");
     expect(field.type).toBe("string");
@@ -85,15 +83,9 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
     const { required, known } = properties;
     const { property } = labels;
 
-    expect(required.length).toBe(4);
+    expect(required.length).toBe(2); // LastName and Account.Name will not be considered here.
     let field;
     field = required.find((f) => f.key === "Custom_External_ID__c");
-    expect(field.type).toBe("string");
-
-    field = required.find((f) => f.key === "LastName");
-    expect(field.type).toBe("string");
-
-    field = required.find((f) => f.key === "Account.Name");
     expect(field.type).toBe("string");
 
     field = required.find((f) => f.key === "Account.AccountNumber");
