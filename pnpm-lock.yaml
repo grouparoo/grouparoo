@@ -561,7 +561,7 @@ importers:
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 28.1.1
-      aws-sdk: 2.1048.0
+      aws-sdk: 2.1049.0
       jest: 27.4.5
       prettier: 2.5.1
       ts-jest: 27.1.2
@@ -570,7 +570,7 @@ importers:
       winston: 3.3.3
       winston-cloudwatch: 3.1.1
     dependencies:
-      aws-sdk: 2.1048.0
+      aws-sdk: 2.1049.0
       winston: 3.3.3
       winston-cloudwatch: 3.1.1_winston@3.3.3
     devDependencies:
@@ -5062,8 +5062,8 @@ packages:
       xml2js: 0.4.19
     dev: false
 
-  /aws-sdk/2.1048.0:
-    resolution: {integrity: sha512-mVwWo+Udiuc/yEZ/DgJQGqOEtfiQjgUdtshx/t6ISe3+jW3TF9hUACwADwx2Sr/fuJyyJ3QD5JYLt5Cw35wQpA==}
+  /aws-sdk/2.1049.0:
+    resolution: {integrity: sha512-+wls9iNlotMeoZepwgR0yPzXsjXzr2ijoi5ERmsPWfMTFMHkm6INndBtSkm6fpu/NZnl+7EaPPES2yhaqnhoJg==}
     engines: {node: '>= 10.0.0'}
     dependencies:
       buffer: 4.9.2
