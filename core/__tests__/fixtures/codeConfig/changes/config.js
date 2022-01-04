@@ -120,7 +120,7 @@ module.exports = async function getConfig() {
       rules: [
         {
           propertyId: "email",
-          operation: { op: "like" },
+          op: "like",
           match: "%@%",
         },
       ],

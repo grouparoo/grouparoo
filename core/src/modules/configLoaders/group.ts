@@ -71,12 +71,15 @@ export async function loadGroup(
         rules[i].key = ruleKey;
 
         // if calculating based on a date, parse to unix timestamp
-        if (calculatesWithDate.includes(rules[i]["operation"]["op"])) {
+        if (calculatesWithDate.includes(rules[i]["op"])) {
           if (ruleType === "date") {
             rules[i]["match"] = Date.parse(rules[i]["match"].toString());
           }
         }
       }
+
+      rules[i]["operation"] = { op: rules[i]["op"] };
+      delete rules[i]["op"];
     }
 
     await group.setRules(group.fromConvenientRules(configObject.rules));

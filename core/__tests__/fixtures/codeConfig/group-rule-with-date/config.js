@@ -50,17 +50,17 @@ module.exports = async function getConfig() {
       rules: [
         {
           propertyId: "last_purchase_date",
-          operation: { op: "lt" },
+          op: "lt",
           match: "2020-03-01", // date only
         },
         {
           propertyId: "last_appointment_date",
-          operation: { op: "gte" },
+          op: "gte",
           match: "2019-10-10T14:48:00.000+09:00", //date with time and timezone
         },
         {
           propertyId: "last_email_date",
-          operation: { op: "relative_gt" },
+          op: "relative_gt",
           relativeMatchNumber: "8", // relative date rule
           relativeMatchUnit: "days",
         },

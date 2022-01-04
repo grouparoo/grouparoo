@@ -6,9 +6,7 @@
   "rules": [
     {
       "propertyId": "ltv",
-      "operation": {
-        "op": "gt"
-      },
+      "op": "gt",
       "match": "100"
     }
   ]

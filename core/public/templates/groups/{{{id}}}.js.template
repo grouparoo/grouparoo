@@ -14,20 +14,20 @@ exports.default = async function buildConfig() {
           // a Property exists on the Record
           {
             propertyId: "email",
-            operation: { op: "exists" },
+            op: "exists" ,
           },
 
           // a numeric Property is greater than a value
           {
             propertyId: "ltv",
-            operation: { op: "gt" },
+            op: "gt",
             match: 100,
           },
 
           // a string Property is contains some value
           {
             propertyId: "email",
-            operation: { op: "like" },
+            op: "like",
             match: "%@%",
           },
         ]

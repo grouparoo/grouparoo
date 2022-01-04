@@ -6,9 +6,7 @@
   "rules": [
     {
       "propertyId": "admin_permission",
-      "operation": {
-        "op": "eq"
-      },
+      "op": "eq",
       "match": "owner"
     }
   ]

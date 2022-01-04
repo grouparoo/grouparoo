@@ -76,7 +76,7 @@ module.exports = async function getConfig() {
       rules: [
         {
           propertyId: "missing_record_property",
-          operation: { op: "exists" },
+          op: "exists",
         },
       ],
     },
