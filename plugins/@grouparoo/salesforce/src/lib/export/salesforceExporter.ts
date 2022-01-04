@@ -25,6 +25,7 @@ import {
 } from "@grouparoo/app-templates/dist/destination/batch";
 import { SalesforceModel } from "./model";
 
+const VALID_ID_LENGTHS = [15, 18];
 const idType = "Id";
 
 // return an object that you can connect with
@@ -43,24 +44,25 @@ const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = async ({
 }) => {
   // search for these using the foreign key
   const { recordObject, recordMatchField, cacheData } = config.data;
-  const idType = "Id";
-
   const foreignKeyType = await getForeignKeyType(
     client,
     cacheData,
     recordObject,
     recordMatchField
   );
-
-  const parsedForeignKeys = parseForeignKeys(foreignKeys, foreignKeyType);
-
-  const query = { [recordMatchField]: parsedForeignKeys };
-  const fields = [idType, recordMatchField];
+  let validForeignKeys = parseForeignKeys(foreignKeys, foreignKeyType);
+  let fields = [idType, recordMatchField];
+  if (idType === recordMatchField) {
+    validForeignKeys = foreignKeys.filter((foreignKey) =>
+      VALID_ID_LENGTHS.includes(foreignKey.length)
+    );
+    fields = [idType];
+  }
+  const query = { [recordMatchField]: validForeignKeys };
   const records = await client
     .sobject(recordObject)
     .find(query, fields)
     .execute();
-
   for (const record of records) {
     const value = record[recordMatchField];
     const id = record[idType];
@@ -165,7 +167,6 @@ async function createAndUpdateReferences(
     recordReferenceObject,
     recordReferenceMatchField,
   } = config.data;
-  const idType = "Id";
 
   if (!recordReferenceField) {
     return;
