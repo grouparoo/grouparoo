@@ -173,6 +173,8 @@ export class Import extends CommonModel<Import> {
     const record = await this.$get("record");
 
     return {
+      state: this.state,
+
       // IDs
       id: this.id,
       creatorType: this.creatorType,
