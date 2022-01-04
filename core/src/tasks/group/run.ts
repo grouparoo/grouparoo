@@ -90,7 +90,7 @@ export class RunGroup extends CLSTask {
     });
 
     const pendingImports = await run.$count("imports", {
-      where: { groupsUpdatedAt: null },
+      where: { state: "pending" },
     });
 
     // we don't want to denote the group as ready until all the imports are imported

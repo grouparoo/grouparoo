@@ -26,8 +26,7 @@ export class GrouparooRecordsEnqueueExports extends CLSTask {
         [Sequelize.fn("DISTINCT", Sequelize.col("recordId")), "recordId"],
       ],
       where: {
-        recordUpdatedAt: { [Op.not]: null },
-        groupsUpdatedAt: { [Op.not]: null },
+        state: "complete",
         exportedAt: null,
       },
       group: ["recordId"],

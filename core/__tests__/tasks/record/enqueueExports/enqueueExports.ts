@@ -34,6 +34,7 @@ describe("tasks/records:enqueueExports", () => {
         record.id
       );
       await _import.update({
+        state: "complete",
         groupsUpdatedAt: new Date(),
         recordUpdatedAt: new Date(),
         exportedAt: null,
@@ -58,6 +59,7 @@ describe("tasks/records:enqueueExports", () => {
         record.id
       );
       await _import.update({
+        state: "complete",
         groupsUpdatedAt: new Date(),
         recordUpdatedAt: new Date(),
         exportedAt: null,
@@ -88,6 +90,7 @@ describe("tasks/records:enqueueExports", () => {
         mario.id
       );
       await marioImport.update({
+        state: "complete",
         groupsUpdatedAt: new Date(),
         recordUpdatedAt: new Date(),
         exportedAt: null,
@@ -118,6 +121,7 @@ describe("tasks/records:enqueueExports", () => {
         toad.id
       );
       await toadImport.update({
+        state: "complete",
         groupsUpdatedAt: new Date(),
         recordUpdatedAt: new Date(),
         exportedAt: null,

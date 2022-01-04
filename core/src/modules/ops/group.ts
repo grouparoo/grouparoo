@@ -20,6 +20,7 @@ export namespace GroupOps {
     const bulkData = [];
     for (const recordId of recordIds) {
       bulkData.push({
+        state: "pending",
         rawData: destinationId ? { _meta: { destinationId } } : {},
         data: destinationId ? { _meta: { destinationId } } : {},
         creatorType,

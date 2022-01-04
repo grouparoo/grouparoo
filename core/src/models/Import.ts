@@ -8,18 +8,19 @@ import {
   AfterCreate,
   Default,
   AfterBulkCreate,
+  BeforeSave,
 } from "sequelize-typescript";
 import { config } from "actionhero";
+import Moment from "moment";
+import { Op } from "sequelize";
 import { CLS } from "../modules/cls";
 import { GrouparooRecord } from "./GrouparooRecord";
 import { Run } from "./Run";
 import { plugin } from "../modules/plugin";
-import Moment from "moment";
-import { Op } from "sequelize";
 import { ImportOps } from "../modules/ops/import";
 import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
-import { GrouparooModel } from "./GrouparooModel";
+import { StateMachine } from "../modules/stateMachine";
 
 export interface ImportData {
   [key: string]: any;
@@ -31,11 +32,26 @@ export interface ImportRecordProperties {
 
 const IMPORT_CREATORS = ["run"] as const;
 
+const STATES = ["associating", "pending", "failed", "complete"] as const;
+
+const STATE_TRANSITIONS = [
+  { from: "associating", to: "failed", checks: [] },
+  { from: "associating", to: "pending", checks: [] },
+  { from: "pending", to: "failed", checks: [] },
+  { from: "pending", to: "complete", checks: [] },
+];
+
 @Table({ tableName: "imports", paranoid: false })
 export class Import extends CommonModel<Import> {
   idPrefix() {
     return "imp";
   }
+
+  @AllowNull(false)
+  @Default("associating")
+  @Column(DataType.ENUM(...STATES))
+  state: typeof STATES[number];
+
   @AllowNull(false)
   @Column(DataType.ENUM(...IMPORT_CREATORS))
   creatorType: typeof IMPORT_CREATORS[number];
@@ -190,6 +206,7 @@ export class Import extends CommonModel<Import> {
   }
 
   async setError(error: Error, step: string) {
+    this.state = "failed";
     this.errorMessage = `Error on step ${step}: ${error.message}`;
     this.errorMetadata = JSON.stringify({
       step,
@@ -210,11 +227,17 @@ export class Import extends CommonModel<Import> {
   }
 
   // --- Class Methods --- //
+  static defaultState: typeof STATES[number] = "associating";
 
   static async findById(id: string) {
     const instance = await this.scope(null).findOne({ where: { id } });
     if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
+  }
+
+  @BeforeSave
+  static async updateState(instance: Import) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @AfterCreate

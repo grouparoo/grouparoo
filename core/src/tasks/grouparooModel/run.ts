@@ -7,7 +7,7 @@ import { CLSTask } from "../../classes/tasks/clsTask";
 import { GroupMember } from "../../models/GroupMember";
 import { GroupOps } from "../../modules/ops/group";
 
-export class RunInternalRun extends CLSTask {
+export class RunModel extends CLSTask {
   constructor() {
     super();
     this.name = "grouparooModel:run";
@@ -59,7 +59,7 @@ export class RunInternalRun extends CLSTask {
     });
 
     const pendingImports = await run.$count("imports", {
-      where: { groupsUpdatedAt: null },
+      where: { state: "pending" },
     });
 
     // we don't want to denote the run as ready until all the imports are imported

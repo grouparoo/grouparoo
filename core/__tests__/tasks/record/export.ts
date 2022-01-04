@@ -332,6 +332,7 @@ describe("tasks/record:export", () => {
         it("applies errors to the imports and export", async () => {
           const run = await helper.factories.run();
           const _import = await Import.create({
+            state: "pending",
             creatorType: "run",
             creatorId: run.id,
             recordId: record.id,
@@ -340,6 +341,10 @@ describe("tasks/record:export", () => {
             data: {},
             oldGroupIds: [],
             newGroupIds: [group.id],
+          });
+
+          await _import.update({
+            state: "complete",
           });
 
           await record.import();

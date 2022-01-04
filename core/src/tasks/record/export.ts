@@ -31,9 +31,8 @@ export class RecordExport extends RetryableTask {
 
     const imports = await Import.findAll({
       where: {
+        state: "complete",
         recordId: record.id,
-        recordUpdatedAt: { [Op.not]: null },
-        groupsUpdatedAt: { [Op.not]: null },
         exportedAt: null,
       },
       order: [["createdAt", "asc"]],

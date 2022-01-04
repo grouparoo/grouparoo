@@ -24,8 +24,7 @@ export namespace ImportOps {
 
     const imports = await Import.findAll({
       where: {
-        recordId: null,
-        errorMessage: null,
+        state: "associating",
         startedAt: {
           [Op.or]: [null, { [Op.lt]: new Date().getTime() - delayMs }],
         },
@@ -90,6 +89,7 @@ export namespace ImportOps {
     const oldRecordProperties = await record.simplifiedProperties();
     const oldGroups = await record.$get("groups");
 
+    _import.state = "pending";
     _import.createdRecord = isNew;
     _import.recordId = record.id;
     _import.recordAssociatedAt = new Date();

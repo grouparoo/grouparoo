@@ -12,6 +12,7 @@ export default async (run?, props: { [key: string]: any } = {}, recordId?) => {
     creatorType: "run",
     creatorId: run.id,
     recordId,
+    state: recordId ? "pending" : "associating",
   }) as Import;
 
   await instance.save();
