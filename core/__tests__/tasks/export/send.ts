@@ -9,6 +9,7 @@ import {
   App,
   plugin,
   GrouparooModel,
+  ErrorWithRecordId,
 } from "../../../src";
 
 describe("tasks/export:send", () => {
@@ -65,7 +66,7 @@ describe("tasks/export:send", () => {
       await api.resque.queue.connection.redis.flushdb();
       await Run.truncate();
 
-      const destinationGroupMemberships = {};
+      const destinationGroupMemberships: Record<string, string> = {};
       destinationGroupMemberships[group.id] = group.name;
       await destination.setDestinationGroupMemberships(
         destinationGroupMemberships
@@ -133,8 +134,8 @@ describe("tasks/export:send", () => {
 
       let exportProfileResponse = {
         success: true,
-        error: undefined,
-        retryDelay: undefined,
+        error: undefined as ErrorWithRecordId,
+        retryDelay: undefined as number,
       };
 
       beforeAll(async () => {
@@ -249,7 +250,7 @@ describe("tasks/export:send", () => {
         // this export will fail
         exportProfileResponse = {
           success: false,
-          error: new Error("oh no!"),
+          error: new Error("oh no!") as ErrorWithRecordId,
           retryDelay: 1000 * 5,
         };
 
@@ -279,7 +280,7 @@ describe("tasks/export:send", () => {
         // this export will fail
         exportProfileResponse = {
           success: false,
-          error: new Error("oh no!"),
+          error: new Error("oh no!") as ErrorWithRecordId,
           retryDelay: undefined,
         };
 

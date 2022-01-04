@@ -1,6 +1,13 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper } from "actionhero";
-import { plugin, App, Property, Source, GrouparooModel } from "../../src";
+import { Connection, specHelper } from "actionhero";
+import {
+  plugin,
+  App,
+  Property,
+  Source,
+  GrouparooModel,
+  PluginOptionType,
+} from "../../src";
 import { SessionCreate } from "../../src/actions/session";
 import {
   PropertiesList,
@@ -51,8 +58,8 @@ describe("actions/properties", () => {
   });
 
   describe("administrator signed in", () => {
-    let connection;
-    let csrfToken;
+    let connection: Connection;
+    let csrfToken: string;
 
     beforeAll(async () => {
       connection = await specHelper.buildConnection();
@@ -370,8 +377,8 @@ describe("actions/properties", () => {
       const _record = await helper.factories.record();
       await _record.addOrUpdateProperties({ userId: [1001] });
 
-      const originalProperties = _record.getProperties();
-      expect(originalProperties["email"]).toBeFalsy();
+      const originalProperties = await _record.getProperties();
+      expect(originalProperties["email"].values).toEqual([null]);
 
       connection.params = {
         csrfToken,
@@ -387,7 +394,7 @@ describe("actions/properties", () => {
       expect(groups).toEqual([]);
       expect(destinations).toEqual([]);
       expect(record.id).toBe(_record.id);
-      expect(record.properties["email"].values).toBeTruthy();
+      expect(record.properties["email"].values[0]).not.toEqual(null);
 
       await _record.destroy();
     });
@@ -493,16 +500,24 @@ describe("actions/properties", () => {
                     key: "column",
                     required: true,
                     description: "set the column",
-                    type: "string",
-                    options: async () => [],
+                    type: "text" as PluginOptionType,
+                    options: async () =>
+                      [] as {
+                        key: string;
+                        description?: string;
+                      }[],
                   });
 
                   response.push({
                     key: "aggregationMethod",
                     required: true,
                     description: "set the aggregationMethod",
-                    type: "string",
-                    options: async () => [],
+                    type: "text" as PluginOptionType,
+                    options: async () =>
+                      [] as {
+                        key: string;
+                        description?: string;
+                      }[],
                   });
 
                   if (propertyOptions?.aggregationMethod === true) {
@@ -510,8 +525,12 @@ describe("actions/properties", () => {
                       key: "sortColumn",
                       required: true,
                       description: "set the sortColumn",
-                      type: "string",
-                      options: async () => [],
+                      type: "text" as PluginOptionType,
+                      options: async () =>
+                        [] as {
+                          key: string;
+                          description?: string;
+                        }[],
                     });
                   }
 

@@ -137,7 +137,7 @@ describe("tasks/sweeper", () => {
 
       await newerExportA.reload();
       await newerExportB.reload();
-      exports = await Export.findAll();
+      const exports = await Export.findAll();
       expect(exports.length).toBe(4);
       expect(exports.map((e) => e.id).sort()).toEqual(
         [newerExportA.id, newerExportB.id, oldExportC.id, oldExportD.id].sort()
