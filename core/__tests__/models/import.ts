@@ -28,16 +28,21 @@ describe("models/import", () => {
       creatorId: "",
     });
     expect(_import.recordId).toBeFalsy();
+    expect(_import.state).toBe("associating");
 
     await _import.associateRecord();
+    expect(_import.state).toBe("pending");
     expect(_import.recordId).toBe(record.id);
   });
 
   test("an error can be set", async () => {
     const _import = await helper.factories.import();
+    expect(_import.state).toBe("associating");
+
     await _import.setError(new Error("oh no"), "associate");
     await _import.reload();
 
+    expect(_import.state).toBe("failed");
     expect(_import.errorMessage).toMatch("oh no");
     expect(_import.errorMetadata).toMatch("oh no");
   });
