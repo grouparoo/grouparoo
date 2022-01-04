@@ -6,10 +6,10 @@ import { test } from "../lib/test";
 import { AppTemplate } from "@grouparoo/app-templates/dist/app";
 import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
 
-import { destinationOptions } from "../lib/export-persons/destinationOptions";
-import { exportArrayProperties } from "../lib/export-persons/exportArrayProperties";
-import { destinationMappingOptions } from "../lib/export-persons/destinationMappingOptions";
-import { exportRecord } from "../lib/export-persons/exportRecord";
+import { destinationOptions } from "../lib/export/destinationOptions";
+import { exportArrayProperties } from "../lib/export/exportArrayProperties";
+import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
+import { exportRecord } from "../lib/export/exportRecord";
 
 const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
 
