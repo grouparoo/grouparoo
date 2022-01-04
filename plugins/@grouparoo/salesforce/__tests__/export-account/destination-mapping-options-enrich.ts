@@ -40,7 +40,7 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
     destination = await Destination.create({
       name: "Salesforce Test Destination",
       type: "salesforce-export-accounts",
-      syncMode: DestinationSyncModeData.sync.key,
+      syncMode: DestinationSyncModeData.enrich.key,
       appId: app.id,
       modelId: model.id,
     });
@@ -55,7 +55,7 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
     const { required, known } = properties;
     const { property } = labels;
 
-    expect(required.length).toBe(2);
+    expect(required.length).toBe(1); // name will not be considered.
     let field;
     field = required.find((f) => f.key === "AccountNumber");
     expect(field.type).toBe("string");

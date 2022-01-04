@@ -2,7 +2,8 @@ import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/salesforce": { path: path.join(__dirname, "..", "..") },
 });
-import { destinationMappingOptions } from "../../src/lib/export-contacts/destinationMappingOptions";
+import "@grouparoo/spec-helper";
+import { destinationMappingOptions } from "../../src/lib/export-objects/destinationMappingOptions";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { helper } from "@grouparoo/spec-helper";
 import { App, Destination, GrouparooModel } from "@grouparoo/core";
@@ -36,28 +37,76 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
     destination = await Destination.create({
       name: "Salesforce Test Destination",
       type: "salesforce-export-accounts",
-      syncMode: DestinationSyncModeData.sync.key,
+      syncMode: DestinationSyncModeData.enrich.key,
       appId: app.id,
       modelId: model.id,
     });
   });
-  test("can load destinationMappingOptions from Contact Id", async () => {
+
+  test("can load destinationMappingOptions from Lead Email", async () => {
     const destinationOptions = {
-      primaryKey: "Email",
-      accountKey: "Name",
+      recordObject: "Lead",
+      recordMatchField: "Email",
+      groupObject: "Campaign",
+      groupNameField: "Name",
+      membershipObject: "CampaignMembership",
+      membershipRecordField: "ContactId",
+      membershipGroupField: "CampaignId",
     };
     const options = await runDestinationMappingOptions({ destinationOptions });
     const { properties, labels } = options;
     const { required, known } = properties;
     const { property, group } = labels;
 
-    expect(required.length).toBe(3);
+    expect(required.length).toBe(1); // Company and LastName will now be considered here.
     let field;
     field = required.find((f) => f.key === "Email");
     expect(field.type).toBe("email");
 
-    field = required.find((f) => f.key === "LastName");
+    field = known.find((f) => f.key === "Id");
+    expect(field).toBeFalsy();
+
+    field = known.find((f) => f.key === "FirstName");
     expect(field.type).toBe("string");
+    expect(field.important).toBe(true);
+
+    field = known.find((f) => f.key === "MobilePhone");
+    expect(field.type).toBe("phoneNumber");
+    expect(field.important).toBe(false);
+
+    field = known.find((f) => f.key === "Title");
+    expect(field.type).toBe("string");
+    expect(field.important).toBe(false);
+
+    expect(property.singular).toBe("Salesforce Lead Field");
+    expect(property.plural).toBe("Salesforce Lead Fields");
+    expect(group.singular).toBe("Salesforce Campaign");
+    expect(group.plural).toBe("Salesforce Campaigns");
+  });
+
+  test("can load destinationMappingOptions from Contact Id", async () => {
+    const destinationOptions = {
+      recordObject: "Contact",
+      recordMatchField: "Id",
+      groupObject: "Topic",
+      groupNameField: "Name",
+      membershipObject: "TopicAssignment",
+      membershipRecordField: "EntityId",
+      membershipGroupField: "TopicId",
+    };
+    const options = await runDestinationMappingOptions({ destinationOptions });
+    const { properties, labels } = options;
+    const { required, known } = properties;
+    const { property, group } = labels;
+
+    expect(required.length).toBe(1); // LastName will now be considered here.
+    let field;
+    field = required.find((f) => f.key === "Id");
+    expect(field.type).toBe("string");
+
+    field = known.find((f) => f.key === "Email");
+    expect(field.type).toBe("email");
+    expect(field.important).toBe(true);
 
     field = known.find((f) => f.key === "FirstName");
     expect(field.type).toBe("string");
@@ -73,27 +122,31 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
 
     expect(property.singular).toBe("Salesforce Contact Field");
     expect(property.plural).toBe("Salesforce Contact Fields");
+    expect(group.singular).toBe("Salesforce Topic");
+    expect(group.plural).toBe("Salesforce Topics");
   });
 
   test("can load destinationMappingOptions from Contact Custom and Reference", async () => {
     const destinationOptions = {
-      primaryKey: "Custom_External_ID__c",
-      accountKey: "AccountNumber",
+      recordObject: "Contact",
+      recordMatchField: "Custom_External_ID__c",
+      groupObject: "Campaign",
+      groupNameField: "Name",
+      membershipObject: "CampaignMembership",
+      membershipRecordField: "ContactId",
+      membershipGroupField: "CampaignId",
+      recordReferenceField: "AccountId",
+      recordReferenceObject: "Account",
+      recordReferenceMatchField: "AccountNumber",
     };
     const options = await runDestinationMappingOptions({ destinationOptions });
     const { properties, labels } = options;
     const { required, known } = properties;
-    const { property } = labels;
+    const { property, group } = labels;
 
-    expect(required.length).toBe(4);
+    expect(required.length).toBe(2); // LastName and Account.Name will now be considered here.
     let field;
     field = required.find((f) => f.key === "Custom_External_ID__c");
-    expect(field.type).toBe("string");
-
-    field = required.find((f) => f.key === "LastName");
-    expect(field.type).toBe("string");
-
-    field = required.find((f) => f.key === "Account.Name");
     expect(field.type).toBe("string");
 
     field = required.find((f) => f.key === "Account.AccountNumber");
@@ -117,5 +170,7 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
 
     expect(property.singular).toBe("Salesforce Contact Field");
     expect(property.plural).toBe("Salesforce Contact Fields");
+    expect(group.singular).toBe("Salesforce Campaign");
+    expect(group.plural).toBe("Salesforce Campaigns");
   });
 });

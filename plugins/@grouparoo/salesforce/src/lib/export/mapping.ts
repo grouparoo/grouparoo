@@ -2,14 +2,17 @@ import {
   DestinationMappingOptionsResponseType,
   SimpleAppOptions,
   DestinationMappingOptionsMethodResponse,
+  Destination,
 } from "@grouparoo/core";
 import { SalesforceModel } from "./model";
-import { connect } from "./../connect";
-import { describeObject } from "./../objects";
+import { connect } from "../connect";
+import { describeObject } from "../objects";
 import { log } from "actionhero";
+import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 
 export interface SalesforceDestinationMappingOptionsMethod {
   (argument: {
+    destination: Destination;
     appOptions: SimpleAppOptions;
     appId: string;
     model: SalesforceModel;
@@ -17,7 +20,7 @@ export interface SalesforceDestinationMappingOptionsMethod {
 }
 
 export const getDestinationMappingOptions: SalesforceDestinationMappingOptionsMethod =
-  async ({ appId, appOptions, model }) => {
+  async ({ appId, appOptions, destination, model }) => {
     const conn = await connect(appOptions);
     const {
       recordObject,
@@ -42,7 +45,8 @@ export const getDestinationMappingOptions: SalesforceDestinationMappingOptionsMe
       ? await describeObject(conn, cacheData, groupObject, true)
       : null;
 
-    const { known, required } = getFields(
+    const { known, required } = await getFields(
+      destination,
       recordInfo,
       recordMatchField,
       referenceInfo,
@@ -153,11 +157,12 @@ export const parseFieldName = function ({ recordReferenceObject, key }): {
   return { reference: null, fieldName: key };
 };
 
-const extractFields = (
+const extractFields = async (
+  destination: Destination,
   info: any,
   match: string,
   prepend: string
-): {
+): Promise<{
   required: Array<{
     key: string;
     type: DestinationMappingOptionsResponseType;
@@ -167,7 +172,7 @@ const extractFields = (
     type: DestinationMappingOptionsResponseType;
     important?: boolean;
   }>;
-} => {
+}> => {
   const required = [];
   let known = [];
   let matchField = null;
@@ -194,7 +199,10 @@ const extractFields = (
 
     if (!field.nillable && !field.defaultedOnCreate) {
       // needs to be set to create
-      required.push({ key, type });
+      const syncMode = await destination.getSyncMode();
+      if (syncMode !== DestinationSyncModeData.enrich.key) {
+        required.push({ key, type });
+      }
     } else {
       const important = isFieldImportant(field);
       known.push({ key, type, important });
@@ -213,13 +221,14 @@ const extractFields = (
   return { required, known };
 };
 
-export const getFields = (
+export const getFields = async (
+  destination: Destination,
   objectInfo: any,
   recordMatchField: string,
   referenceInfo: any,
   recordReferenceMatchField: string,
   recordReferenceObject: string
-): {
+): Promise<{
   required: Array<{
     key: string;
     type: DestinationMappingOptionsResponseType;
@@ -229,14 +238,20 @@ export const getFields = (
     type: DestinationMappingOptionsResponseType;
     important?: boolean;
   }>;
-} => {
-  const objectFields = extractFields(objectInfo, recordMatchField, null);
+}> => {
+  const objectFields = await extractFields(
+    destination,
+    objectInfo,
+    recordMatchField,
+    null
+  );
   let required = objectFields.required;
   let known = objectFields.known;
 
   if (referenceInfo) {
     // add on these (just required)
-    const refFields = extractFields(
+    const refFields = await extractFields(
+      destination,
       referenceInfo,
       recordReferenceMatchField,
       recordReferenceObject
