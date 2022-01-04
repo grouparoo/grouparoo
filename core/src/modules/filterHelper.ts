@@ -110,7 +110,7 @@ export namespace FilterHelper {
   }
 
   /**
-   * Validate filters for a Property
+   * Validate filters for an instance
    *
    */
   export async function validateFilters(
@@ -136,7 +136,7 @@ export namespace FilterHelper {
   }
 
   /**
-   * Get the options for a Property's Filter from its plugin
+   * Get the options for an instance's Filter from its plugin
    */
   export async function pluginFilterOptions(instance: Property | Schedule) {
     const { pluginConnection } = await instance.getPlugin();

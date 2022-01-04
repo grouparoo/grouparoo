@@ -875,7 +875,7 @@ describe("modules/configWriter", () => {
         {
           propertyId: "grouparooId",
           match: "nobody",
-          operation: { op: "eq" },
+          op: "eq",
           relativeMatchDirection: null,
           relativeMatchNumber: null,
           relativeMatchUnit: null,
@@ -899,7 +899,7 @@ describe("modules/configWriter", () => {
           {
             propertyId: property.getConfigId(),
             match: "nobody",
-            operation: { op: "eq" },
+            op: "eq",
             relativeMatchDirection: null,
             relativeMatchNumber: null,
             relativeMatchUnit: null,

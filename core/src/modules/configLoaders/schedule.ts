@@ -65,7 +65,6 @@ export async function loadSchedule(
           }\` has been deprecated and replaced with \`${
             FilterHelper.deprecatedFilters[filter.op]
           }\`. Read more at https://www.grouparoo.com/docs/config/code-config/sources`
-          // There is nowhere in the docs to point yet for schedule filters
         );
       }
     }
