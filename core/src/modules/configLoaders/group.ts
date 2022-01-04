@@ -7,7 +7,7 @@ import {
   validateConfigObjectKeys,
   IdsByClass,
 } from "../../classes/codeConfig";
-import { Group } from "../../models/Group";
+import { Group, GroupRuleWithKey } from "../../models/Group";
 import { TopLevelGroupRules } from "../../modules/topLevelGroupRules";
 import { Property } from "../../models/Property";
 import { ConfigWriter } from "../configWriter";
@@ -49,6 +49,8 @@ export async function loadGroup(
   await group.update({ state: "ready" });
 
   if (configObject.rules) {
+    let groupRulesWithKey: GroupRuleWithKey[] = [];
+
     const rules = [...configObject.rules];
     const calculatesWithDate = ["lte", "gt", "lt", "gte", "eq", "ne"];
 
@@ -78,11 +80,20 @@ export async function loadGroup(
         }
       }
 
-      rules[i]["operation"] = { op: rules[i]["op"] };
-      delete rules[i]["op"];
+      let ruleWithKey: GroupRuleWithKey = {
+        key: rules[i].key,
+        type: rules[i].type,
+        operation: { op: rules[i].op },
+        match: rules[i].match,
+        relativeMatchNumber: rules[i].relativeMatchNumber,
+        relativeMatchDirection: rules[i].relativeMatchDirection,
+        relativeMatchUnit: rules[i].relativeMatchUnit,
+      };
+
+      groupRulesWithKey.push(ruleWithKey);
     }
 
-    await group.setRules(group.fromConvenientRules(configObject.rules));
+    await group.setRules(group.fromConvenientRules(groupRulesWithKey));
   }
 
   if (previousState === "deleted") {
