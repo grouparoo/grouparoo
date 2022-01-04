@@ -14,9 +14,9 @@ import {
 } from "../../../src";
 import { RecordOps } from "../../../src/modules/ops/record";
 
-function simpleRecordValues(complexProfileValues): { [key: string]: any } {
+function simpleRecordValues(complexProfileValues: Record<string, any>) {
   const keys = Object.keys(complexProfileValues);
-  const simpleRecordProperties = {};
+  const simpleRecordProperties: Record<string, any[]> = {};
   keys.forEach((key) => {
     simpleRecordProperties[key] = complexProfileValues[key].values;
   });

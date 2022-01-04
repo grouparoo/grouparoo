@@ -198,7 +198,7 @@ describe("models/destination", () => {
       await destination.setOptions({ table: "table" });
       await destination.setMapping({ "primary-id": "userId" });
       await destination.updateTracking("group", group.id);
-      const destinationGroupMemberships = {};
+      const destinationGroupMemberships: Record<string, string> = {};
       destinationGroupMemberships[group.id] = "remote-tag";
       await destination.setDestinationGroupMemberships(
         destinationGroupMemberships
@@ -854,7 +854,7 @@ describe("models/destination", () => {
           email: "email",
         };
 
-        const destinationGroupMemberships = {};
+        const destinationGroupMemberships: Record<string, string> = {};
 
         const _record = await destination.recordPreview(
           record,
@@ -982,7 +982,7 @@ describe("models/destination", () => {
           email: "email",
         };
 
-        const destinationGroupMemberships = {};
+        const destinationGroupMemberships: Record<string, string> = {};
         destinationGroupMemberships[group.id] = "another-group-tag";
 
         const _record = await destination.recordPreview(

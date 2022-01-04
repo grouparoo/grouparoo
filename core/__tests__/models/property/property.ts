@@ -7,6 +7,7 @@ import {
   Log,
   Option,
   plugin,
+  PluginOptionType,
   Property,
   Run,
   Source,
@@ -650,7 +651,7 @@ describe("models/property", () => {
                   key: "column",
                   required: true,
                   description: "the column to choose",
-                  type: "list",
+                  type: "list" as PluginOptionType,
                   options: async () => {
                     return [
                       {
@@ -666,8 +667,8 @@ describe("models/property", () => {
                     key: "extra",
                     required: true,
                     description: "extra stuff",
-                    type: "string",
-                    options: async () => [],
+                    type: "text" as PluginOptionType,
+                    options: async () => [] as { key: string }[],
                   });
                 }
 

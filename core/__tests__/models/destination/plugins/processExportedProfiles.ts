@@ -5,11 +5,13 @@ import {
   Destination,
   Export,
   ExportProcessor,
+  ExportRecordsPluginMethodResponse,
   GrouparooModel,
   GroupMember,
   Setting,
 } from "../../../../src";
 import { api, specHelper } from "actionhero";
+import { ErrorWithRecordId } from "../../../../dist";
 
 describe("models/destination - with custom processExportedRecords", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -17,14 +19,14 @@ describe("models/destination - with custom processExportedRecords", () => {
   let model: GrouparooModel;
   let app: App;
   let destination: Destination;
-  let exportArgs = {
+  let exportArgs: Record<string, any> = {
     app: null,
     appOptions: null,
     destination: null,
     destinationOptions: null,
     exports: null,
   };
-  let processArgs = {
+  let processArgs: Record<string, any> = {
     app: null,
     appOptions: null,
     destination: null,
@@ -32,21 +34,21 @@ describe("models/destination - with custom processExportedRecords", () => {
     exports: null,
     remoteKey: null,
   };
-  let exportArrayProperties = [];
+  let exportArrayProperties: string[] = [];
   let parallelismResponse = Infinity;
-  let exportProfilesResponse = {
+  let exportProfilesResponse: ExportRecordsPluginMethodResponse = {
     success: true,
     errors: undefined,
     retryDelay: undefined,
     processExports: undefined,
   };
-  let processProfilesResponse = {
+  let processProfilesResponse: ExportRecordsPluginMethodResponse = {
     success: true,
     errors: undefined,
     retryDelay: undefined,
     processExports: undefined,
   };
-  let processExportedProfilesThrow = null;
+  let processExportedProfilesThrow: Error = null;
 
   beforeAll(async () => {
     ({ model } = await helper.factories.properties());
@@ -450,9 +452,9 @@ describe("models/destination - with custom processExportedRecords", () => {
         exportProcessorId: exportProcessor.id,
       });
 
-      const recordError1 = new Error("oh no!");
+      const recordError1 = new Error("oh no!") as ErrorWithRecordId;
       recordError1["recordId"] = record1.id;
-      const recordError2 = new Error("info error!");
+      const recordError2 = new Error("info error!") as ErrorWithRecordId;
       recordError2["recordId"] = record2.id;
       recordError2["errorLevel"] = "info";
 
@@ -521,7 +523,7 @@ describe("models/destination - with custom processExportedRecords", () => {
         exportProcessorId: exportProcessor.id,
       });
 
-      const recordError1 = new Error("oh no!");
+      const recordError1 = new Error("oh no!") as ErrorWithRecordId;
       recordError1["recordId"] = record1.id;
 
       await specHelper.runTask("export:enqueueProcessors", {});
@@ -598,6 +600,7 @@ describe("models/destination - with custom processExportedRecords", () => {
         processExports: {
           recordIds: [record1.id, record2.id], // record3 was successful
           processDelay: 1000,
+          remoteKey: null,
         },
         errors: null,
         retryDelay: null,
@@ -697,6 +700,7 @@ describe("models/destination - with custom processExportedRecords", () => {
         processExports: {
           recordIds: [record.id],
           processDelay: 1000,
+          remoteKey: null,
         },
         errors: null,
         retryDelay: null,

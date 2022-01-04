@@ -130,7 +130,7 @@ describe("models/teamMember", () => {
   });
 
   describe("passwords", () => {
-    let teamMember;
+    let teamMember: TeamMember;
     beforeAll(async () => {
       teamMember = await TeamMember.findOne({
         where: { email: "mario@example.com" },

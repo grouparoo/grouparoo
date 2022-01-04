@@ -965,7 +965,7 @@ describe("modules/configWriter", () => {
       );
       const app: App = await destination.$get("app");
 
-      const destinationGroupMemberships = {};
+      const destinationGroupMemberships: Record<string, string> = {};
       destinationGroupMemberships[group.id] = "My Dest Tag";
       await destination.setDestinationGroupMemberships(
         destinationGroupMemberships

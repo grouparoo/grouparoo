@@ -8,6 +8,8 @@ import {
   DestinationMappingOptionsResponseType,
   GrouparooModel,
   GroupMember,
+  Property,
+  DestinationMappingOptionsResponseProperty,
 } from "../../../../src";
 import { DestinationOps } from "../../../../src/modules/ops/destination";
 import { api } from "actionhero";
@@ -24,7 +26,7 @@ describe("models/destination", () => {
     function testValues(
       input: any,
       output: any,
-      grouparooType: string,
+      grouparooType: Property["type"],
       destinationType: DestinationMappingOptionsResponseType
     ) {
       if (output !== null) {
@@ -65,7 +67,7 @@ describe("models/destination", () => {
           expect(
             DestinationOps.formatOutgoingRecordProperties(
               input,
-              type as string,
+              type as Property["type"],
               "any"
             )
           ).toEqual(input);
@@ -74,7 +76,7 @@ describe("models/destination", () => {
     });
 
     describe("null types", () => {
-      const types: DestinationMappingOptionsResponseType[] = [
+      const types: Property["type"][] = [
         "boolean",
         "integer",
         "float",
@@ -344,6 +346,7 @@ describe("models/destination", () => {
     });
 
     test("missing source types", () => {
+      // @ts-ignore
       testValues("something...", null, "unknown", "string");
     });
 
@@ -356,10 +359,10 @@ describe("models/destination", () => {
   describe("with custom plugin with destinationMappingOptions", () => {
     let app: App;
     let destination: Destination;
-    let known = [];
-    let required = [];
-    let newRecordProperties = {};
-    let oldRecordProperties = {};
+    let known: DestinationMappingOptionsResponseProperty[] = [];
+    let required: DestinationMappingOptionsResponseProperty[] = [];
+    let newRecordProperties: Record<string, any[]> = {};
+    let oldRecordProperties: Record<string, any[]> = {};
 
     beforeAll(async () => {
       plugin.registerPlugin({

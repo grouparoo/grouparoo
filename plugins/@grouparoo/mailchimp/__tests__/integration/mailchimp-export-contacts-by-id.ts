@@ -269,7 +269,7 @@ describe("integration/runs/mailchimp-export-id", () => {
   });
 
   test(`the destination group membership can be set and test group can be tracked`, async () => {
-    const destinationGroupMemberships = {};
+    const destinationGroupMemberships: Record<string, string> = {};
     destinationGroupMemberships[group.id] = group.name;
 
     session.params = {
