@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { api, specHelper } from "actionhero";
+import { api, Connection, specHelper } from "actionhero";
 import { Op } from "sequelize";
 import {
   Destination,
@@ -18,9 +18,9 @@ import {
 } from "../../../src/actions/records";
 import { SessionCreate } from "../../../src/actions/session";
 
-function simpleRecordValues(complexProfileValues): { [key: string]: any } {
+function simpleRecordValues(complexProfileValues: Record<string, any>) {
   const keys = Object.keys(complexProfileValues);
-  const simpleRecordProperties = {};
+  const simpleRecordProperties: Record<string, any[]> = {};
   keys.forEach((key) => {
     simpleRecordProperties[key] = complexProfileValues[key].values;
   });
@@ -52,8 +52,8 @@ describe("actions/records", () => {
   });
 
   describe("writer signed in", () => {
-    let connection;
-    let csrfToken;
+    let connection: Connection;
+    let csrfToken: string;
     let group: Group;
     let destination: Destination;
 
@@ -124,7 +124,7 @@ describe("actions/records", () => {
       expect(groups.length).toBe(1);
       expect(groups[0].id).toEqual(group.id);
 
-      id = record.properties.userId[0];
+      id = record.properties.userId.values[0] as string;
     });
 
     test("an invalid record can be imported, and can also be fixed", async () => {

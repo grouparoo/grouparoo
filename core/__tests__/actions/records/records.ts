@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper } from "actionhero";
+import { Connection, specHelper } from "actionhero";
 import { AsyncReturnType } from "type-fest";
 import {
   GrouparooRecord,
@@ -25,9 +25,9 @@ import {
 import { ConfigWriter } from "../../../src/modules/configWriter";
 import { RecordOps } from "../../../src/modules/ops/record";
 
-function simpleRecordValues(complexProfileValues): { [key: string]: any } {
+function simpleRecordValues(complexProfileValues: Record<string, any>) {
   const keys = Object.keys(complexProfileValues);
-  const simpleRecordProperties = {};
+  const simpleRecordProperties: Record<string, any[]> = {};
   keys.forEach((key) => {
     simpleRecordProperties[key] = complexProfileValues[key].values;
   });
@@ -56,8 +56,8 @@ describe("actions/records", () => {
   });
 
   describe("writer signed in", () => {
-    let connection;
-    let csrfToken;
+    let connection: Connection;
+    let csrfToken: string;
 
     beforeAll(async () => {
       connection = await specHelper.buildConnection();
@@ -786,9 +786,9 @@ describe("actions/records", () => {
   });
 
   describe("reader signed in", () => {
-    let connection;
-    let teamId;
-    let csrfToken;
+    let connection: Connection;
+    let teamId: string;
+    let csrfToken: string;
 
     beforeAll(async () => {
       const record = new GrouparooRecord({ modelId: model.id });

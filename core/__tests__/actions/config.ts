@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper } from "actionhero";
+import { Connection, specHelper } from "actionhero";
 import { ConfigUserCreate } from "../../src/actions/config";
 import os from "os";
 
@@ -9,7 +9,7 @@ const configDir = `${os.tmpdir()}/test/${workerId}/configUser/config`;
 process.env.GROUPAROO_CONFIG_DIR = configDir;
 
 describe("actions/config", () => {
-  let connection;
+  let connection: Connection;
 
   helper.grouparooTestServer({ truncate: true, resetSettings: true });
 

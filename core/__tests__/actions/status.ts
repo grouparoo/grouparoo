@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper } from "actionhero";
+import { Connection, specHelper } from "actionhero";
 import os from "os";
 import fs from "fs";
 import { ConfigUser } from "../../src/modules/configUser";
@@ -83,8 +83,8 @@ describe("actions/status", () => {
   });
 
   describe("signed in", () => {
-    let connection;
-    let csrfToken;
+    let connection: Connection;
+    let csrfToken: string;
 
     beforeAll(async () => {
       await specHelper.runTask("status", {});

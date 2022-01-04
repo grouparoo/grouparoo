@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper } from "actionhero";
+import { specHelper, Connection } from "actionhero";
 import { TeamMember } from "../../src";
 import { SessionCreate } from "../../src/actions/session";
 import { TeamInitialize } from "../../src/actions/teams";
@@ -33,8 +33,8 @@ describe("actions/teamMembers", () => {
   });
 
   describe("administrator signed in", () => {
-    let connection;
-    let csrfToken;
+    let connection: Connection;
+    let csrfToken: string;
 
     beforeAll(async () => {
       connection = await specHelper.buildConnection();

@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper, api, config } from "actionhero";
+import { specHelper, api, config, Connection } from "actionhero";
 import { Team, TeamMember, Permission, ApiKey, OAuthRequest } from "../../src";
 import fetch from "isomorphic-fetch";
 import {
@@ -359,7 +359,7 @@ describe("session", () => {
       describe("session", () => {
         let toad: TeamMember;
         let team: Team;
-        let connection;
+        let connection: Connection;
         let csrfToken: string;
 
         async function signIn() {

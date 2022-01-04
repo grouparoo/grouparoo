@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper } from "actionhero";
+import { Connection, specHelper } from "actionhero";
 import {
   Group,
   GrouparooRecord,
@@ -44,8 +44,8 @@ describe("actions/groups", () => {
   });
 
   describe("writer signed in", () => {
-    let connection;
-    let csrfToken;
+    let connection: Connection;
+    let csrfToken: string;
 
     beforeAll(async () => {
       connection = await specHelper.buildConnection();
@@ -364,9 +364,9 @@ describe("actions/groups", () => {
   });
 
   describe("reader signed in", () => {
-    let connection;
-    let teamId;
-    let csrfToken;
+    let connection: Connection;
+    let teamId: string;
+    let csrfToken: string;
     let group: Group;
 
     beforeAll(async () => {

@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper, api } from "actionhero";
+import { specHelper, api, Connection } from "actionhero";
 import {
   Destination,
   Group,
@@ -50,8 +50,8 @@ describe("actions/destinations", () => {
   });
 
   describe("administrator signed in", () => {
-    let connection;
-    let csrfToken;
+    let connection: Connection;
+    let csrfToken: string;
 
     beforeAll(async () => {
       connection = await specHelper.buildConnection();
@@ -387,7 +387,7 @@ describe("actions/destinations", () => {
       });
 
       test("an administrator can set the destination group memberships", async () => {
-        const destinationGroupMemberships = {};
+        const destinationGroupMemberships: Record<string, string> = {};
         destinationGroupMemberships[group.id] = "remote-group-tag";
 
         connection.params = {
@@ -451,7 +451,7 @@ describe("actions/destinations", () => {
       });
 
       test("an administrator can get a preview of a record to be exported to a destination, updated mapping & destinationGroupMemberships", async () => {
-        const destinationGroupMemberships = {};
+        const destinationGroupMemberships: Record<string, string> = {};
         destinationGroupMemberships[group.id] = "another-group-tag";
 
         connection.params = {

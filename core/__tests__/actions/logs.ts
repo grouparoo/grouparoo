@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper } from "actionhero";
+import { Connection, specHelper } from "actionhero";
 import { SessionCreate } from "../../src/actions/session";
 import { LogsList } from "../../src/actions/logs";
 import { GrouparooRecord } from "../../src/models/GrouparooRecord";
@@ -17,7 +17,7 @@ describe("actions/logs", () => {
   });
 
   describe("reader signed in", () => {
-    let connection;
+    let connection: Connection;
     let csrfToken: string;
 
     beforeAll(async () => {

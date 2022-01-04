@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper, api } from "actionhero";
+import { specHelper, api, Connection } from "actionhero";
 import {
   GrouparooModel,
   PluginConnection,
@@ -34,8 +34,8 @@ describe("actions/records", () => {
   });
 
   describe("writer signed in", () => {
-    let connection;
-    let csrfToken;
+    let connection: Connection;
+    let csrfToken: string;
 
     beforeAll(async () => {
       connection = await specHelper.buildConnection();

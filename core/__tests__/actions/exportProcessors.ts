@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper } from "actionhero";
-import { ExportProcessor } from "../../src";
+import { Connection, specHelper } from "actionhero";
+import { Destination, ExportProcessor } from "../../src";
 import { SessionCreate } from "../../src/actions/session";
 import {
   ExportProcessorsList,
@@ -20,10 +20,10 @@ describe("actions/exports", () => {
   });
 
   describe("reader signed in", () => {
-    let connection;
-    let csrfToken;
-    let destination;
-    let id;
+    let connection: Connection;
+    let csrfToken: string;
+    let destination: Destination;
+    let id: string;
 
     beforeAll(async () => {
       destination = await helper.factories.destination();
