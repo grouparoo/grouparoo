@@ -143,7 +143,7 @@ const FormMappingSelector: React.FC<Props> = ({
           <>
             <FormInputContainer
               controlId="mapping_property"
-              label="Grouparoo Property"
+              label="Mapped to Grouparoo Property"
               required
             >
               <Form.Control

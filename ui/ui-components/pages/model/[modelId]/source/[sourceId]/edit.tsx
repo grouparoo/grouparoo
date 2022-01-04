@@ -521,11 +521,19 @@ const Page: NextPage<Props & InjectedProps> = ({
                 <>
                   <hr />
                   <h3>{isPrimarySource ? "Primary Key Mapping" : "Mapping"}</h3>
-                  <p>
-                    Mapping sets the foreign key between your Source and
-                    Grouparoo Properties. Whenever possible, map through a
-                    unique Property.
-                  </p>
+                  {isPrimarySource ? (
+                    <p>
+                      Select a column that uniquely identifies each record in
+                      this Source. The Property mapped to this column will be
+                      assigned as the Model's Primary Key.
+                    </p>
+                  ) : (
+                    <p>
+                      Select a column that relates each record in this Source
+                      back to the Model's Primary Source. You can map the column
+                      to any Property in another Source in the Model.
+                    </p>
+                  )}
 
                   <FormMappingSelector
                     columnName={mappingColumn}
