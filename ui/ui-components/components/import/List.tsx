@@ -19,8 +19,8 @@ const states = [
   "associating",
   "importing",
   "exporting",
-  "failed",
   "complete",
+  "failed",
 ];
 
 export default function ImportList(props) {
