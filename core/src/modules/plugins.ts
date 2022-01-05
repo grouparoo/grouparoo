@@ -95,7 +95,6 @@ export async function listPlugins(
     })
   );
 
-
   await Promise.all(
     availableGrouparooPlugins.map(async (plugin) => {
       if (!plugins.find((p) => p.name === plugin.packageName)) {

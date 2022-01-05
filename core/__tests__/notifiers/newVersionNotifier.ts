@@ -1,7 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { NewVersionNotifier } from "../../src/notifiers/newVersionNotifier";
 import { Notification } from "../../src";
-import { Plugins } from "../../src/modules/plugins";
+import { PluginWithVersion } from "../../src/modules/plugins";
 
 jest.mock("../../src/modules/plugins", () => ({
   __esModule: true,
@@ -50,7 +50,7 @@ jest.mock("../../src/modules/plugins", () => ({
           description: "foo",
           icon: "foo",
         },
-      ] as Plugins.PluginWithVersion[];
+      ] as PluginWithVersion[];
     },
   },
 }));
