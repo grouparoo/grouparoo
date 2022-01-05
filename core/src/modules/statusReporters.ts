@@ -318,13 +318,12 @@ export namespace StatusReporters {
     }
 
     export async function pendingImports(): Promise<StatusMetric> {
-      // TODO
       return {
         collection: "pending",
         topic: "Import",
         aggregation: "count",
         count: await Import.count({
-          where: { exportedAt: null, errorMessage: null },
+          where: { state: { [Op.notIn]: ["complete", "failed"] } },
         }),
       };
     }
