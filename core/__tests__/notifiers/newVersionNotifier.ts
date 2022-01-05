@@ -1,57 +1,55 @@
 import { helper } from "@grouparoo/spec-helper";
 import { NewVersionNotifier } from "../../src/notifiers/newVersionNotifier";
 import { Notification } from "../../src";
-import { Plugins } from "../../src/modules/plugins";
+import { PluginWithVersion } from "../../src/modules/plugins";
 
 jest.mock("../../src/modules/plugins", () => ({
   __esModule: true,
-  Plugins: {
-    listPlugins: async () => {
-      return [
-        {
-          name: "@grouparoo/core",
-          source: false,
-          destination: false,
-          installed: true,
-          currentVersion: "1.2.3",
-          latestVersion: "99.0.1",
-          upToDate: false,
-          license: undefined,
-          url: "https://www.grouparoo.com",
-          apps: [],
-          description: "foo",
-          icon: "foo",
-        },
-        {
-          name: "@grouparoo/postgres",
-          source: false,
-          destination: false,
-          installed: true,
-          currentVersion: "1.2.3",
-          latestVersion: "99.0.1",
-          upToDate: false,
-          license: undefined,
-          url: "https://www.grouparoo.com",
-          apps: [],
-          description: "foo",
-          icon: "foo",
-        },
-        {
-          name: "@grouparoo/mysql",
-          source: false,
-          destination: false,
-          installed: true,
-          currentVersion: "1.2.3",
-          latestVersion: "99.0.1",
-          upToDate: false,
-          license: undefined,
-          url: "https://www.grouparoo.com",
-          apps: [],
-          description: "foo",
-          icon: "foo",
-        },
-      ] as Plugins.PluginWithVersion[];
-    },
+  listPlugins: async () => {
+    return [
+      {
+        name: "@grouparoo/core",
+        source: false,
+        destination: false,
+        installed: true,
+        currentVersion: "1.2.3",
+        latestVersion: "99.0.1",
+        upToDate: false,
+        license: undefined,
+        url: "https://www.grouparoo.com",
+        apps: [],
+        description: "foo",
+        icon: "foo",
+      },
+      {
+        name: "@grouparoo/postgres",
+        source: false,
+        destination: false,
+        installed: true,
+        currentVersion: "1.2.3",
+        latestVersion: "99.0.1",
+        upToDate: false,
+        license: undefined,
+        url: "https://www.grouparoo.com",
+        apps: [],
+        description: "foo",
+        icon: "foo",
+      },
+      {
+        name: "@grouparoo/mysql",
+        source: false,
+        destination: false,
+        installed: true,
+        currentVersion: "1.2.3",
+        latestVersion: "99.0.1",
+        upToDate: false,
+        license: undefined,
+        url: "https://www.grouparoo.com",
+        apps: [],
+        description: "foo",
+        icon: "foo",
+      },
+    ] as PluginWithVersion[];
   },
 }));
 
