@@ -126,11 +126,12 @@ export default function ImportList(props) {
               <Fragment key={`import-${_import.id}`}>
                 <tr>
                   <td>
-                    State: <StateBadge state={_import.state} marginBottom={0} />
-                    <br /> Id:
+                    Id:
                     <Link href={`/import/${_import.id}/edit`}>
                       <a> {_import.id}</a>
                     </Link>
+                    <br /> State:{" "}
+                    <StateBadge state={_import.state} marginBottom={0} />
                     <br /> Record:{" "}
                     {_import.recordId ? (
                       <Link href={`/object/${_import.recordId}`}>
