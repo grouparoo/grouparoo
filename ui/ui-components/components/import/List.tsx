@@ -214,13 +214,14 @@ export default function ImportList(props) {
 
 ImportList.hydrate = async (ctx) => {
   const { execApi } = UseApi(ctx);
-  const { creatorId, limit, offset, recordId } = ctx.query;
+  const { creatorId, limit, offset, state, recordId } = ctx.query;
 
   const { imports, total } = await execApi("get", `/imports`, {
     limit,
     offset,
     creatorId,
     recordId,
+    state: state === "all" ? undefined : state,
   });
 
   const { groups } = await execApi("get", `/groups`);
