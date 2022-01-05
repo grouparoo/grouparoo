@@ -14,7 +14,11 @@ describe("integration/runs/internalRun", () => {
     test("adding a property with a query creates a run and internalRun task", async () => {
       source = await helper.factories.source();
       await source.setOptions({ table: "test table" });
-      await source.bootstrapUniqueProperty("userId", "integer", "id");
+      await source.bootstrapUniqueProperty({
+        key: "userId",
+        type: "integer",
+        mappedColumn: "id",
+      });
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
 

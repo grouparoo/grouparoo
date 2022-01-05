@@ -677,7 +677,7 @@ describe("models/property", () => {
                 return [
                   {
                     key: "id",
-                    ops: ["greater than", "less than"],
+                    ops: ["gt", "lt"],
                     canHaveRelativeMatch: false,
                   },
                 ];
@@ -810,25 +810,23 @@ describe("models/property", () => {
           sourceId: source.id,
         });
 
-        await property.setFilters([
-          { key: "id", match: "0", op: "greater than" },
-        ]);
+        await property.setFilters([{ key: "id", match: "0", op: "gt" }]);
         const filters = await property.getFilters();
 
         expect(FilterHelper.filtersAreEqual(filters, [])).toBe(false);
         expect(
           FilterHelper.filtersAreEqual(filters, [
-            { key: "id", match: "0", op: "greater than" },
+            { key: "id", match: "0", op: "gt" },
           ])
         ).toBe(true);
         expect(
           FilterHelper.filtersAreEqual(filters, [
-            { key: "id", match: "1", op: "greater than" },
+            { key: "id", match: "1", op: "gt" },
           ])
         ).toBe(false);
         expect(
           FilterHelper.filtersAreEqual(filters, [
-            { key: "id", match: "0", op: "less than" },
+            { key: "id", match: "0", op: "lt" },
           ])
         ).toBe(false);
 
@@ -846,7 +844,7 @@ describe("models/property", () => {
         expect(filterOptions).toEqual([
           {
             key: "id",
-            ops: ["greater than", "less than"],
+            ops: ["gt", "lt"],
             canHaveRelativeMatch: false,
           },
         ]);
@@ -861,12 +859,10 @@ describe("models/property", () => {
           sourceId: source.id,
         });
 
-        await property.setFilters([
-          { op: "greater than", match: 1, key: "id" },
-        ]);
+        await property.setFilters([{ op: "gt", match: 1, key: "id" }]);
 
         expect(property.filters.length).toBe(1);
-        expect(property.filters[0].op).toBe("greater than");
+        expect(property.filters[0].op).toBe("gt");
         expect(property.filters[0].match).toBe("1");
         expect(property.filters[0].key).toBe("id");
 
@@ -880,9 +876,7 @@ describe("models/property", () => {
           sourceId: source.id,
         });
 
-        await property.setFilters([
-          { op: "greater than", match: 999, key: "id" },
-        ]);
+        await property.setFilters([{ op: "gt", match: 999, key: "id" }]);
 
         property.filters = [
           Filter.build({
@@ -890,7 +884,7 @@ describe("models/property", () => {
             position: 1,
             key: "foo",
             match: "-1",
-            op: "less than",
+            op: "lt",
           }),
         ];
 
@@ -898,7 +892,7 @@ describe("models/property", () => {
         expect(filters.length).toBe(1);
         expect(filters[0].key).toEqual("foo");
         expect(filters[0].match).toEqual("-1");
-        expect(filters[0].op).toEqual("less than");
+        expect(filters[0].op).toEqual("lt");
 
         await property.destroy();
       });
@@ -911,14 +905,14 @@ describe("models/property", () => {
         });
 
         await property.setFilters([
-          { op: "greater than", match: 1, key: "id" },
-          { op: "less than", match: 99, key: "id" },
+          { op: "gt", match: 1, key: "id" },
+          { op: "lt", match: 99, key: "id" },
         ]);
 
         const filters = await property.getFilters();
         expect(filters).toEqual([
           {
-            op: "greater than",
+            op: "gt",
             match: "1",
             key: "id",
             relativeMatchDirection: null,
@@ -926,7 +920,7 @@ describe("models/property", () => {
             relativeMatchUnit: null,
           },
           {
-            op: "less than",
+            op: "lt",
             match: "99",
             key: "id",
             relativeMatchDirection: null,
@@ -951,9 +945,7 @@ describe("models/property", () => {
         });
 
         await expect(
-          property.setFilters([
-            { op: "greater than", match: 1, key: "other-key" },
-          ])
+          property.setFilters([{ op: "gt", match: 1, key: "other-key" }])
         ).rejects.toThrow("other-key is not filterable");
 
         await expect(

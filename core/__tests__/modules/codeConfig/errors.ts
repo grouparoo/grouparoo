@@ -175,6 +175,50 @@ describe("modules/codeConfig", () => {
       });
     });
 
+    describe("property filter", () => {
+      beforeAll(async () => {
+        api.codeConfig.allowLockedModelChanges = true;
+      });
+
+      test("deprecated property filter ops throw error", async () => {
+        const { errors } = await loadConfigDirectory(
+          path.join(
+            __dirname,
+            "..",
+            "..",
+            "fixtures",
+            "codeConfig",
+            "error-property-filter"
+          )
+        );
+        expect(errors[0]).toMatch(
+          "[ config ] error with Property `email` (email): Property filter `greater than` has been deprecated and replaced with `gt`. Read more at https://www.grouparoo.com/docs/config/code-config/properties"
+        );
+      });
+    });
+
+    describe("schedule filter", () => {
+      beforeAll(async () => {
+        api.codeConfig.allowLockedModelChanges = true;
+      });
+
+      test("deprecated schedule filter ops throw error", async () => {
+        const { errors } = await loadConfigDirectory(
+          path.join(
+            __dirname,
+            "..",
+            "..",
+            "fixtures",
+            "codeConfig",
+            "error-schedule-filter"
+          )
+        );
+        expect(errors[0]).toMatch(
+          "[ config ] error with Schedule `Users Table Schedule` (users_table_schedule): Schedule filter `greater than` has been deprecated and replaced with `gt`. Read more at https://www.grouparoo.com/docs/config/code-config/sources"
+        );
+      });
+    });
+
     describe("group", () => {
       beforeAll(async () => {
         api.codeConfig.allowLockedModelChanges = true;

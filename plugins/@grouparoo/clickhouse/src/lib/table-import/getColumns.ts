@@ -16,6 +16,7 @@ const getTypeInfo = (dataType: string): TypeInfo => {
   let type: ColumnType = null;
   let compare = false;
   let contains = false;
+  let nullable = dataType.toLowerCase().includes("nullable");
 
   // https://content.clickhouse.com/docs/en/sql-reference/data-types/
   switch (cleanupDataType(dataType).toUpperCase()) {
@@ -115,6 +116,11 @@ const getTypeInfo = (dataType: string): TypeInfo => {
   if (contains) {
     ops.push(FilterOperation.Contain);
     ops.push(FilterOperation.NotContain);
+  }
+
+  if (nullable) {
+    ops.push(FilterOperation.Exists);
+    ops.push(FilterOperation.NotExists);
   }
 
   return { type, filterOperations: ops };

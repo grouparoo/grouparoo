@@ -111,14 +111,23 @@ async function createTables() {
   }
 }
 
-async function fillTable(tableName, fileName) {
+async function fillTable(tableName: string, fileName: string) {
   const filePath = path.resolve(path.join(__dirname, "..", "data", fileName));
   const rows = parse(fs.readFileSync(filePath), { columns: true });
   for (const i in rows) {
     const row = rows[i];
+    const values: string[] = Object.values(row);
+    const cleanedValues = values.reduce((prev, curr, idx) => {
+      return (
+        prev +
+        (curr.length === 0 ? "null" : `'${curr}'`) +
+        (idx === values.length - 1 ? "" : ", ")
+      );
+    }, "");
+
     const q = `INSERT INTO ${tableName} (${Object.keys(row).join(
       ", "
-    )}) VALUES ('${Object.values(row).join("', '")}')`;
+    )}) VALUES (${cleanedValues})`;
     await client.query(q);
   }
 }

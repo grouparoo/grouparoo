@@ -378,7 +378,7 @@ export namespace helper {
               return [
                 {
                   key: "id",
-                  ops: ["greater than", "less than"],
+                  ops: ["gt", "lt"],
                   canHaveRelativeMatch: false,
                 },
               ];

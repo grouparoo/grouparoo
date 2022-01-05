@@ -130,6 +130,8 @@ export default class ClickHouse extends Connection {
           nextColumnType = nextColumnType.replace("PRIMARY KEY", "");
         }
 
+        columnType = `NULLABLE(${columnType})`;
+
         return nextColumnType.trim();
       })
       .join(", ")})

@@ -194,8 +194,8 @@ describe("snowflake/table/records", () => {
     let highWaterMark = {};
     let sourceOffset = 0;
     let scheduleFilters = [
-      { key: "ID", op: "greater than", match: 4 },
-      { key: "ID", op: "less than", match: 7 },
+      { key: "ID", op: "gt", match: 4 },
+      { key: "ID", op: "lt", match: 7 },
     ];
     const { imports, importsCount } = await runIt({
       limit,

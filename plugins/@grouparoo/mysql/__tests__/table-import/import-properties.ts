@@ -331,7 +331,7 @@ describe("mysql/table/recordProperties", () => {
           sourceMapping,
           aggregationMethod: AggregationMethod.MostRecentValue,
         });
-        expect(values[record.id][properties[0].id][0]).toEqual("Orange");
+        expect(values[record.id][properties[0].id][0]).toEqual(null);
         expect(values[otherRecord.id][properties[0].id][0]).toEqual("Apple");
         expect(values[fourthRecord.id][properties[0].id][0]).toEqual(
           "Watermelon"
@@ -367,6 +367,7 @@ describe("mysql/table/recordProperties", () => {
           "Apple",
           "Blueberry",
           "Orange",
+          null,
         ]);
         expect(values[otherRecord.id][properties[0].id]).toEqual([
           "Pear",
@@ -396,7 +397,7 @@ describe("mysql/table/recordProperties", () => {
         });
         expect(
           fixedLengthFloat(values[record.id][properties[0].id][0])
-        ).toEqual(1.73);
+        ).toEqual(1.63);
         expect(
           fixedLengthFloat(values[otherRecord.id][properties[0].id][0])
         ).toEqual(1.88);
@@ -408,7 +409,7 @@ describe("mysql/table/recordProperties", () => {
           sourceMapping,
           aggregationMethod: "count",
         });
-        expect(values[record.id][properties[0].id]).toEqual([6]);
+        expect(values[record.id][properties[0].id]).toEqual([7]);
         expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
@@ -420,7 +421,7 @@ describe("mysql/table/recordProperties", () => {
         });
         expect(
           fixedLengthFloat(values[record.id][properties[0].id][0])
-        ).toEqual(10.38);
+        ).toEqual(11.38);
         expect(
           fixedLengthFloat(values[otherRecord.id][properties[0].id][0])
         ).toEqual(9.38);
@@ -434,7 +435,7 @@ describe("mysql/table/recordProperties", () => {
           sourceMapping,
           aggregationMethod: "min",
         });
-        expect(values[record.id][properties[0].id]).toEqual([1.42]);
+        expect(values[record.id][properties[0].id]).toEqual([1]);
         expect(values[otherRecord.id][properties[0].id]).toEqual([0.78]);
         expect(values[thirdRecord.id]).toBeUndefined();
       });
@@ -457,7 +458,7 @@ describe("mysql/table/recordProperties", () => {
             sourceMapping,
             aggregationMethod: "count",
           });
-          expect(values[record.id][properties[0].id]).toEqual([6]);
+          expect(values[record.id][properties[0].id]).toEqual([7]);
           expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
           expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
         });
@@ -502,8 +503,42 @@ describe("mysql/table/recordProperties", () => {
     //   relativeMatchUnit?: string;
     //   relativeMatchDirection?: string;
     // }
+
+    describe("exists", () => {
+      const op = "exists";
+      test("string", async () => {
+        const [values, properties] = await getPropertyValues(
+          {
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase" }]
+        );
+        expect(values[record.id][properties[0].id]).toEqual([6]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
+      });
+    });
+
+    describe("does not exist", () => {
+      test("string", async () => {
+        const op = "notExists";
+        const [values, properties] = await getPropertyValues(
+          {
+            columns,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase" }]
+        );
+        expect(values[record.id][properties[0].id]).toEqual([1]);
+        expect(values[otherRecord.id][properties[0].id]).toEqual([0]);
+        expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
+      });
+    });
     describe("equals", () => {
-      const op = "equals";
+      const op = "eq";
       test("integer", async () => {
         const [values, properties] = await getPropertyValues(
           {
@@ -585,7 +620,7 @@ describe("mysql/table/recordProperties", () => {
     });
 
     describe("does not equal", () => {
-      const op = "does not equal";
+      const op = "ne";
       test("integer", async () => {
         const [values, properties] = await getPropertyValues(
           {
@@ -595,7 +630,7 @@ describe("mysql/table/recordProperties", () => {
           },
           [{ op, key: "id", match: "15" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([5]);
+        expect(values[record.id][properties[0].id]).toEqual([6]);
         expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
@@ -634,7 +669,7 @@ describe("mysql/table/recordProperties", () => {
           },
           [{ op, key: "date", match: "2020-02-15" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([5]);
+        expect(values[record.id][properties[0].id]).toEqual([6]);
         expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
@@ -647,7 +682,7 @@ describe("mysql/table/recordProperties", () => {
           },
           [{ op, key: "stamp", match: "2020-02-15 12:13:14" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([5]);
+        expect(values[record.id][properties[0].id]).toEqual([6]);
         expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
@@ -660,14 +695,14 @@ describe("mysql/table/recordProperties", () => {
           },
           [{ op, key: "amount", match: "1.54" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([4]);
+        expect(values[record.id][properties[0].id]).toEqual([5]);
         expect(values[otherRecord.id][properties[0].id]).toEqual([4]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
     });
 
     describe("contains", () => {
-      const op = "contains";
+      const op = "substring";
       test("integer", async () => {
         const [values, properties] = await getPropertyValues(
           {
@@ -749,7 +784,7 @@ describe("mysql/table/recordProperties", () => {
     });
 
     describe("does not contain", () => {
-      const op = "does not contain";
+      const op = "notSubstring";
       test("integer", async () => {
         const [values, properties] = await getPropertyValues(
           {
@@ -759,7 +794,7 @@ describe("mysql/table/recordProperties", () => {
           },
           [{ op, key: "id", match: "15" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([5]);
+        expect(values[record.id][properties[0].id]).toEqual([6]);
         expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
@@ -798,7 +833,7 @@ describe("mysql/table/recordProperties", () => {
           },
           [{ op, key: "date", match: "2020-02-15" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([5]);
+        expect(values[record.id][properties[0].id]).toEqual([6]);
         expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
@@ -811,7 +846,7 @@ describe("mysql/table/recordProperties", () => {
           },
           [{ op, key: "stamp", match: "2020-02-15 12:13:14" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([5]);
+        expect(values[record.id][properties[0].id]).toEqual([6]);
         expect(values[otherRecord.id][properties[0].id]).toEqual([5]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
@@ -824,14 +859,14 @@ describe("mysql/table/recordProperties", () => {
           },
           [{ op, key: "amount", match: "1.54" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([4]);
+        expect(values[record.id][properties[0].id]).toEqual([5]);
         expect(values[otherRecord.id][properties[0].id]).toEqual([4]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
     });
 
     describe("equals", () => {
-      const op = "equals";
+      const op = "eq";
       test("integer", async () => {
         const [values, properties] = await getPropertyValues(
           {
@@ -913,7 +948,7 @@ describe("mysql/table/recordProperties", () => {
     });
 
     describe("greater than", () => {
-      const op = "greater than";
+      const op = "gt";
       test("integer", async () => {
         const [values, properties] = await getPropertyValues(
           {
@@ -923,7 +958,7 @@ describe("mysql/table/recordProperties", () => {
           },
           [{ op, key: "id", match: "15" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([2]);
+        expect(values[record.id][properties[0].id]).toEqual([3]);
         expect(values[otherRecord.id][properties[0].id]).toEqual([2]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
@@ -960,7 +995,7 @@ describe("mysql/table/recordProperties", () => {
           },
           [{ op, key: "date", match: "2020-02-15" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([2]);
+        expect(values[record.id][properties[0].id]).toEqual([3]);
         expect(values[otherRecord.id][properties[0].id]).toEqual([2]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
@@ -973,7 +1008,7 @@ describe("mysql/table/recordProperties", () => {
           },
           [{ op, key: "stamp", match: "2020-02-15 12:13:14" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([2]);
+        expect(values[record.id][properties[0].id]).toEqual([3]);
         expect(values[otherRecord.id][properties[0].id]).toEqual([2]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });
@@ -993,7 +1028,7 @@ describe("mysql/table/recordProperties", () => {
     });
 
     describe("less than", () => {
-      const op = "less than";
+      const op = "lt";
       test("integer", async () => {
         const [values, properties] = await getPropertyValues(
           {
@@ -1066,7 +1101,7 @@ describe("mysql/table/recordProperties", () => {
           },
           [{ op, key: "amount", match: "1.54" }]
         );
-        expect(values[record.id][properties[0].id]).toEqual([2]);
+        expect(values[record.id][properties[0].id]).toEqual([3]);
         expect(values[otherRecord.id][properties[0].id]).toEqual([2]);
         expect(values[thirdRecord.id][properties[0].id]).toEqual([0]);
       });

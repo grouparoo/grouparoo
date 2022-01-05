@@ -99,14 +99,14 @@ export async function loadSource(
       const property = bootstrappedPropertyConfig;
       if (!property || !property.options) throw error;
       const mappedColumn = Object.values(property.options)[0];
-      bootstrappedProperty = await source.bootstrapUniqueProperty(
-        property.key || property["name"],
-        property.type as typeof PropertyTypes[number],
+      bootstrappedProperty = await source.bootstrapUniqueProperty({
+        key: property.key || property["name"],
+        type: property.type as typeof PropertyTypes[number],
         mappedColumn,
-        property.id,
-        validate,
-        extractNonNullParts(property, "options")
-      );
+        id: property.id,
+        local: validate,
+        propertyOptions: extractNonNullParts(property, "options"),
+      });
       await setMapping();
     } else {
       throw error;

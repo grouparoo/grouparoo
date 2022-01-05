@@ -1,11 +1,11 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Form, Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { ErrorHandler } from "../../../../../utils/errorHandler";
 import { UseApi } from "../../../../../hooks/useApi";
 import AppSelectorList from "../../../../../components/AppSelectorList";
-import { Actions } from "../../../../../utils/apiData";
+import { Actions, Models } from "../../../../../utils/apiData";
 import LinkButton from "../../../../../components/LinkButton";
 
 export default function Page(props) {
@@ -13,39 +13,72 @@ export default function Page(props) {
     errorHandler,
     connectionApps,
     model,
+    isCreatingPrimarySource,
+    isPrimarySourceNotReady,
   }: {
     errorHandler: ErrorHandler;
     connectionApps: Actions.SourceConnectionApps["connectionApps"];
     model: Actions.ModelView["model"];
+    primarySource: Models.SourceType;
+    isCreatingPrimarySource: boolean;
+    isPrimarySourceNotReady: boolean;
   } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [app, setApp] = useState({ id: null });
 
-  const apps = [];
-  connectionApps.forEach((connectionApp) => {
-    if (!apps.map((a) => a.id).includes(connectionApp.app.id)) {
-      apps.push(connectionApp.app);
+  const [apps, disabledAppIds] = useMemo(() => {
+    const appIds: string[] = [];
+    const apps = connectionApps.reduce((acc, connectionApp) => {
+      if (!appIds.includes(connectionApp.app.id)) {
+        acc.push(connectionApp.app);
+        appIds.push(connectionApp.app.id);
+      }
+      return acc;
+    }, []);
+
+    const disabledAppIds = apps
+      .filter((app) => {
+        return (
+          connectionApps.filter(
+            (c) =>
+              c.app.id === app.id &&
+              (!isCreatingPrimarySource ||
+                c.connection.methods.includes("uniquePropertyBootstrapOptions"))
+          ).length === 0
+        );
+      })
+      .map((app) => app.id);
+
+    return [apps, disabledAppIds];
+  }, [connectionApps, isCreatingPrimarySource]);
+
+  useEffect(() => {
+    if (isPrimarySourceNotReady) {
+      router.push(`/model/${model.id}/sources`);
     }
-  });
+  }, [isPrimarySourceNotReady, model]);
 
   async function updateApp(
-    connectionApp: Actions.SourceConnectionApps["connectionApps"][number]["app"]
+    app: Actions.SourceConnectionApps["connectionApps"][number]["app"]
   ) {
-    setApp({ id: connectionApp.id });
+    setApp({ id: app.id });
     const matchingApps = connectionApps.filter(
-      (a) => a.app.id === connectionApp.id
+      (c) =>
+        c.app.id === app.id &&
+        (!isCreatingPrimarySource ||
+          c.connection.methods.includes("uniquePropertyBootstrapOptions"))
     );
 
     if (matchingApps.length > 1) {
-      router.push(`/model/${model.id}/source/new/${connectionApp.id}`);
+      router.push(`/model/${model.id}/source/new/${app.id}`);
     } else {
       if (loading) return;
 
       setLoading(true);
       const response: Actions.SourceCreate = await execApi("post", `/source`, {
-        appId: connectionApp.id,
+        appId: app.id,
         modelId: model.id,
         type: matchingApps[0].connection.name,
       });
@@ -57,6 +90,12 @@ export default function Page(props) {
         setLoading(false);
       }
     }
+  }
+
+  if (isPrimarySourceNotReady) {
+    // The effect hook above will redirect to the sources page
+    // Cannot create a new source until the primary source is ready
+    return null;
   }
 
   if (apps.length === 0) {
@@ -80,7 +119,16 @@ export default function Page(props) {
         <title>Grouparoo: New Source</title>
       </Head>
 
-      <h1>Choose App for new Source</h1>
+      <h1>
+        Choose App for new {isCreatingPrimarySource ? "Primary " : ""}Source
+      </h1>
+
+      {isCreatingPrimarySource && (
+        <p>
+          Some apps may be disabled because not all apps are compatible for
+          creating a <strong>Primary</strong> Source.
+        </p>
+      )}
 
       <Form id="form">
         <AppSelectorList
@@ -88,6 +136,7 @@ export default function Page(props) {
           selectedItem={app}
           items={apps}
           displayAddAppButton={true}
+          disabledAppIds={disabledAppIds}
         />
       </Form>
     </>
@@ -97,7 +146,27 @@ export default function Page(props) {
 Page.getInitialProps = async (ctx) => {
   const { execApi } = UseApi(ctx);
   const { modelId } = ctx.query;
-  const { connectionApps } = await execApi("get", `/sources/connectionApps`);
-  const { model } = await execApi("get", `/model/${modelId}`);
-  return { connectionApps, model };
+  const { sources, total: totalSources } = await execApi<Actions.SourcesList>(
+    "get",
+    "/sources",
+    { modelId, limit: 1 }
+  );
+  const isCreatingPrimarySource = totalSources === 0;
+  const isPrimarySourceNotReady =
+    totalSources === 1 && sources[0].state !== "ready";
+  const { connectionApps } = await execApi<Actions.SourceConnectionApps>(
+    "get",
+    `/sources/connectionApps`
+  );
+  const { model } = await execApi<Actions.ModelView>(
+    "get",
+    `/model/${modelId}`
+  );
+
+  return {
+    connectionApps,
+    model,
+    isCreatingPrimarySource,
+    isPrimarySourceNotReady,
+  };
 };

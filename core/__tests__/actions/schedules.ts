@@ -203,7 +203,7 @@ describe("actions/schedules", () => {
         expect(options).toEqual([
           {
             key: "id",
-            ops: ["greater than", "less than"],
+            ops: ["gt", "lt"],
             canHaveRelativeMatch: false,
           },
         ]);
@@ -213,7 +213,7 @@ describe("actions/schedules", () => {
         connection.params = {
           csrfToken,
           id,
-          filters: [{ key: "id", op: "greater than", match: 6 }],
+          filters: [{ key: "id", op: "gt", match: 6 }],
         };
         const { error, schedule } = await specHelper.runAction<ScheduleEdit>(
           "schedule:edit",
@@ -225,7 +225,7 @@ describe("actions/schedules", () => {
           {
             key: "id",
             match: "6",
-            op: "greater than",
+            op: "gt",
             relativeMatchDirection: null,
             relativeMatchNumber: null,
             relativeMatchUnit: null,

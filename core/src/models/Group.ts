@@ -20,7 +20,10 @@ import {
   Scopes,
   Table,
 } from "sequelize-typescript";
-import { GroupConfigurationObject } from "../classes/codeConfig";
+import {
+  GroupConfigurationObject,
+  GroupRuleConfigurationObject,
+} from "../classes/codeConfig";
 import { LoggedModel } from "../classes/loggedModel";
 import { APIData } from "../modules/apiData";
 import { ConfigWriter } from "../modules/configWriter";
@@ -644,7 +647,7 @@ export class Group extends LoggedModel<Group> {
 
     if (!name || !modelId) return;
 
-    const rules: Array<GroupRuleWithKey & { propertyId: string }> = [];
+    const rules: Array<GroupRuleConfigurationObject> = [];
 
     const groupRules = await this.getRules();
     const convenientRules = this.toConvenientRules(groupRules);
@@ -657,7 +660,7 @@ export class Group extends LoggedModel<Group> {
       );
       rules.push({
         propertyId: rule.topLevel ? rule.key : property.getConfigId(),
-        operation: { op: rule.operation.op },
+        op: rule.operation.op,
         match: rule.match,
         relativeMatchNumber: rule.relativeMatchNumber,
         relativeMatchUnit: rule.relativeMatchUnit,

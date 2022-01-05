@@ -475,7 +475,11 @@ describe("models/source", () => {
       const source = await helper.factories.source(app, {
         modelId: model.id,
       });
-      await source.bootstrapUniqueProperty("myUserId", "integer", "id");
+      await source.bootstrapUniqueProperty({
+        key: "myUserId",
+        type: "integer",
+        mappedColumn: "id",
+      });
       await source.setOptions({ table: "some table" });
       await source.setMapping({ id: "myUserId" });
       await source.update({ state: "ready" });
@@ -492,7 +496,11 @@ describe("models/source", () => {
       const source = await helper.factories.source(app, {
         modelId: model.id,
       });
-      await source.bootstrapUniqueProperty("myUserId", "integer", "id");
+      await source.bootstrapUniqueProperty({
+        key: "myUserId",
+        type: "integer",
+        mappedColumn: "id",
+      });
       await source.setOptions({ table: "some table" });
       await source.setMapping({ id: "myUserId" });
       await source.update({ state: "ready" });
@@ -508,7 +516,11 @@ describe("models/source", () => {
       const sourceWithPK = await helper.factories.source(app, {
         modelId: model.id,
       });
-      await sourceWithPK.bootstrapUniqueProperty("myUserId", "integer", "id");
+      await sourceWithPK.bootstrapUniqueProperty({
+        key: "myUserId",
+        type: "integer",
+        mappedColumn: "id",
+      });
       await sourceWithPK.setOptions({ table: "some table" });
       await sourceWithPK.setMapping({ id: "myUserId" });
       await sourceWithPK.update({ state: "ready" });
@@ -722,7 +734,11 @@ describe("models/source", () => {
     });
 
     test("isPrimaryKey will not be updated for source across model when updating mapping in other source", async () => {
-      await source.bootstrapUniqueProperty("myEmail", "email", "my_email");
+      await source.bootstrapUniqueProperty({
+        key: "myEmail",
+        type: "email",
+        mappedColumn: "my_email",
+      });
       await source.setMapping({ email: "userId" });
 
       const mapping = await source.getMapping();
@@ -832,13 +848,64 @@ describe("models/source", () => {
     });
 
     test("bootstrapUniqueProperty will create a new unique property", async () => {
-      const property = await source.bootstrapUniqueProperty(
-        "uniqueId",
-        "integer",
-        "id"
-      );
+      const property = await source.bootstrapUniqueProperty({
+        key: "uniqueId",
+        type: "integer",
+        mappedColumn: "id",
+      });
 
       expect(property.key).toBe("uniqueId");
+      expect(property.type).toBe("integer");
+      expect(property.isArray).toBe(false);
+      expect(property.state).toBe("ready");
+      expect(property.unique).toBe(true);
+
+      await property.destroy();
+    });
+
+    test("bootstrapUniqueProperty without key and type will create a new unique property with generated key and guessed type", async () => {
+      const mappedColumn = "email";
+      const property = await source.bootstrapUniqueProperty({
+        mappedColumn,
+        sourceOptions: await source.getOptions(),
+      });
+
+      expect(property.key).toBe(`${model.name.toLowerCase()}_${mappedColumn}`);
+      expect(property.type).toBe("email");
+      expect(property.isArray).toBe(false);
+      expect(property.state).toBe("ready");
+      expect(property.unique).toBe(true);
+
+      await property.destroy();
+    });
+
+    test("bootstrapUniqueProperty without with conflicting generated key will resolve with indexed key", async () => {
+      const mappedColumn = "id";
+      const key = `${model.name.toLowerCase()}_${mappedColumn}`;
+      let i: number;
+
+      for (i = 0; i < 10; i++) {
+        const propKey = `${key}${i ? "_" + i : ""}`;
+        await Property.create(
+          {
+            sourceId: source.id,
+            id: `some-id-${i}`,
+            key: propKey,
+            type: "string",
+            unique: false,
+            isArray: false,
+            state: "ready",
+          },
+          { hooks: false }
+        );
+      }
+
+      const property = await source.bootstrapUniqueProperty({
+        mappedColumn,
+        sourceOptions: await source.getOptions(),
+      });
+
+      expect(property.key).toBe(`${key}_${i}`);
       expect(property.type).toBe("integer");
       expect(property.isArray).toBe(false);
       expect(property.state).toBe("ready");
@@ -856,14 +923,12 @@ describe("models/source", () => {
     });
 
     test("provided property options will override defaults from uniquePropertyBootstrapOptions", async () => {
-      const property = await source.bootstrapUniqueProperty(
-        "uniqueId",
-        "integer",
-        "id",
-        undefined,
-        false,
-        { column: "my_column" }
-      );
+      const property = await source.bootstrapUniqueProperty({
+        key: "uniqueId",
+        type: "integer",
+        mappedColumn: "id",
+        propertyOptions: { column: "my_column" },
+      });
 
       const options = await property.getOptions();
       expect(options).toEqual({ column: "my_column" });
@@ -888,11 +953,11 @@ describe("models/source", () => {
       await blockingProperty.update({ state: "ready" }, { hooks: false }); // normally you can't get into this situation
 
       await expect(
-        source.bootstrapUniqueProperty(
-          "blockingProperty",
-          "integer",
-          "blocking_property"
-        )
+        source.bootstrapUniqueProperty({
+          key: "blockingProperty",
+          type: "integer",
+          mappedColumn: "blocking_property",
+        })
       ).rejects.toThrow(/already in use/);
 
       await blockingProperty.destroy();

@@ -53,14 +53,16 @@ describe("sqlite/table/sourceFilters", () => {
 
     // SQLite can do the comparisons Grouparoo uses on any column.
     const allOps = [
-      "equals",
-      "does not equal",
-      "greater than",
-      "greater than or equal to",
-      "less than",
-      "less than or equal to",
-      "contains",
-      "does not contain",
+      "exists",
+      "notExists",
+      "eq",
+      "ne",
+      "gt",
+      "gte",
+      "lt",
+      "lte",
+      "substring",
+      "notSubstring",
       "in",
     ];
 

@@ -6,9 +6,7 @@
   "rules": [
     {
       "propertyId": "admin_email",
-      "operation": {
-        "op": "exists"
-      }
+      "op": "exists"
     }
   ]
 }

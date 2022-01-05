@@ -6,9 +6,7 @@
   "rules": [
     {
       "propertyId": "language",
-      "operation": {
-        "op": "eq"
-      },
+      "op": "eq",
       "match": "Spanish"
     }
   ]

@@ -1,7 +1,6 @@
 import { SimpleAppOptions } from "@grouparoo/core";
 import path from "path";
 import fs from "fs";
-import { CastingFunction } from "csv-parse";
 import parse from "csv-parse/lib/sync";
 
 import { connect } from "../../src/lib/connect";
@@ -120,29 +119,39 @@ async function createTables() {
   }
 }
 
-const castCSVValue: CastingFunction = (value) =>
-  value === "true"
-    ? 1
-    : value === "false"
-    ? 0
-    : !isNaN(Number(value))
-    ? Number(value)
-    : value;
+function cleanValues(values: string[]) {
+  return values.reduce((prev: string, curr: string, idx: number) => {
+    return (
+      prev +
+      (curr.length === 0
+        ? "null"
+        : curr === "true"
+        ? 1
+        : curr === "false"
+        ? 0
+        : !isNaN(Number(curr))
+        ? Number(curr)
+        : `'${curr}'`) +
+      (idx === values.length - 1 ? "" : ", ")
+    );
+  }, "");
+}
 
 async function fillTable(tableName: string, fileName: string) {
   const filePath = path.resolve(path.join(__dirname, "..", "data", fileName));
   const rows = parse(fs.readFileSync(filePath), {
     columns: true,
     trim: true,
-    cast: castCSVValue,
   });
+
   for (const i in rows) {
     const row = rows[i];
+
     const columns = Object.keys(row).join(", ");
-    const values = Object.values(row)
-      .map((value) => (typeof value === "string" ? `'${value}'` : value))
-      .join(", ");
-    const q = `INSERT INTO ${tableName} (${columns}) VALUES (${values})`;
+
+    const q = `INSERT INTO ${tableName} (${columns}) VALUES (${cleanValues(
+      Object.values(row)
+    )})`;
 
     await client.asyncQuery(q);
   }

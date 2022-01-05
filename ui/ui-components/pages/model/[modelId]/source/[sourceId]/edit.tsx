@@ -1,8 +1,10 @@
+import { GetServerSideProps, NextPage, NextPageContext } from "next";
 import Head from "next/head";
-import { useState, useEffect } from "react";
-import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
-import { Typeahead } from "react-bootstrap-typeahead";
 import { useRouter } from "next/router";
+import { useState, useEffect, useMemo } from "react";
+import { Row, Col, Form, Badge, Alert, Card } from "react-bootstrap";
+import { Typeahead } from "react-bootstrap-typeahead";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { UseApi } from "../../../../../hooks/useApi";
 import SourceTabs from "../../../../../components/tabs/Source";
 import PageHeader from "../../../../../components/PageHeader";
@@ -16,32 +18,89 @@ import { ErrorHandler } from "../../../../../utils/errorHandler";
 import { SuccessHandler } from "../../../../../utils/successHandler";
 import { SourceHandler } from "../../../../../utils/sourceHandler";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
-import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
+import FormMappingSelector from "../../../../../components/source/FormMappingSelector";
+import { createSchedule } from "../../../../../components/schedule/Add";
+import ManagedCard from "../../../../../components/lib/ManagedCard";
 
-export default function Page(props) {
-  const {
-    errorHandler,
-    successHandler,
-    sourceHandler,
-    environmentVariableOptions,
-  }: {
-    errorHandler: ErrorHandler;
-    successHandler: SuccessHandler;
-    sourceHandler: SourceHandler;
-    environmentVariableOptions: Actions.AppOptions["environmentVariableOptions"];
-  } = props;
+interface FormData {
+  mapping?: {
+    sourceColumn: string;
+    propertyKey: string;
+  };
+  source: Pick<Models.SourceType, "name" | "options">;
+}
+
+interface Props {
+  environmentVariableOptions: Actions.AppOptions["environmentVariableOptions"];
+  properties: Models.PropertyType[];
+  propertyExamples: Record<string, string[]>;
+  scheduleCount: number;
+  source: Models.SourceType;
+  totalSources: number;
+}
+
+interface InjectedProps extends NextPageContext {
+  errorHandler: ErrorHandler;
+  successHandler: SuccessHandler;
+  sourceHandler: SourceHandler;
+}
+
+const Page: NextPage<Props & InjectedProps> = ({
+  environmentVariableOptions,
+  errorHandler,
+  successHandler,
+  sourceHandler,
+  scheduleCount,
+  totalSources,
+  ...props
+}) => {
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
+  const { handleSubmit, register } = useForm();
   const [preview, setPreview] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingOptions, setLoadingOptions] = useState(false);
   const [previewLoading, setPreviewLoading] = useState(false);
+  const [properties, setProperties] = useState<Models.PropertyType[]>(
+    props.properties
+  );
+  const [propertyExamples, setPropertyExamples] = useState<
+    Record<string, string[]>
+  >(props.propertyExamples);
   const [source, setSource] = useState<Models.SourceType>(props.source);
   const [connectionOptions, setConnectionOptions] = useState<
     Actions.sourceConnectionOptions["options"]
   >({});
   const { sourceId } = router.query;
+  const mappingColumn = useMemo(
+    () => Object.keys(props.source.mapping)[0] as string,
+    [source]
+  );
+  const mappingPropertyKey = useMemo(
+    () => Object.values(props.source.mapping)[0] as string,
+    [source]
+  );
+  const isPrimarySource = useMemo(
+    () =>
+      (totalSources === 1 && source.state !== "ready") ||
+      properties.filter(
+        ({ isPrimaryKey, sourceId }) => isPrimaryKey && sourceId === source.id
+      ).length > 0,
+    [properties, source]
+  );
+
+  const sourceBadges = useMemo(() => {
+    const badges = [
+      <LockedBadge object={source} />,
+      <StateBadge state={source.state} />,
+      <ModelBadge modelName={source.modelName} modelId={source.modelId} />,
+    ];
+    if (isPrimarySource) {
+      badges.unshift(<Badge variant="info">primary source</Badge>);
+    }
+    return badges;
+  }, [source, isPrimarySource]);
 
   useEffect(() => {
     loadPreview(source.previewAvailable);
@@ -72,27 +131,89 @@ export default function Page(props) {
     }
   }
 
-  const onSubmit = async (event) => {
+  const onSubmit: SubmitHandler<FormData> = async (data, event) => {
     event.preventDefault();
     setLoading(true);
-    const state = source.connection.skipSourceMapping
-      ? "ready"
-      : source.previewAvailable
-      ? undefined
-      : "ready";
 
-    const response: Actions.SourceEdit = await execApi(
+    const isBootstrappingUniqueProperty = !data.mapping?.propertyKey;
+    let bootstrapSuccess = false;
+    let mapping: Record<string, string>;
+
+    // Unique Property is being created and need to bootstrap?
+    if (isBootstrappingUniqueProperty) {
+      const bootstrapResponse: Actions.SourceBootstrapUniqueProperty =
+        await execApi("post", `/source/${source.id}/bootstrapUniqueProperty`, {
+          mappedColumn: data.mapping.sourceColumn,
+          sourceOptions: source.options,
+        });
+
+      if (bootstrapResponse?.property) {
+        bootstrapSuccess = true;
+        mapping = {
+          [data.mapping.sourceColumn]: bootstrapResponse.property.key,
+        };
+        const prrResponse = await execApi<Actions.PropertiesList>(
+          "get",
+          `/properties`,
+          {
+            includeExamples: true,
+            unique: true,
+            state: "ready",
+            modelId: source.modelId,
+          }
+        );
+
+        if (prrResponse?.properties) {
+          setProperties(prrResponse.properties);
+          setPropertyExamples(prrResponse.examples);
+        }
+      } else if (!Object.keys(bootstrapResponse).length) {
+        errorHandler.set({
+          message: "Unable to map to property.",
+        });
+        setLoading(false);
+        return;
+      }
+    }
+
+    if (!mapping) {
+      mapping = data.mapping?.propertyKey
+        ? {
+            [data.mapping.sourceColumn]: data.mapping.propertyKey,
+          }
+        : source.mapping;
+    }
+
+    const state =
+      source.connection.skipSourceMapping ||
+      data.mapping?.propertyKey ||
+      bootstrapSuccess
+        ? "ready"
+        : source.previewAvailable
+        ? undefined
+        : "ready";
+
+    const response = await execApi<Actions.SourceEdit>(
       "put",
       `/source/${sourceId}`,
-      Object.assign({}, source, { state })
+      { ...source, state, mapping }
     );
+
     if (response?.source) {
       setSource(response.source);
       sourceHandler.set(response.source);
-      if (response.source.state !== "ready") {
+
+      // this source can have a schedule, and we have no schedules yet
+      if (scheduleCount === 0 && response.source.scheduleAvailable) {
+        await createSchedule({
+          router,
+          execApi,
+          source: response.source,
+          setLoading: () => {},
+        });
         router.push(
-          `/model/[modelId]/source/[sourceId]/mapping`,
-          `/model/${response.source.modelId}/source/${sourceId}/mapping`
+          "/model/[modelId]/source/[sourceId]/schedule",
+          `/model/${response.source.modelId}/source/${sourceId}/schedule`
         );
       } else if (
         response.source.state === "ready" &&
@@ -103,12 +224,11 @@ export default function Page(props) {
           `/model/${response.source.modelId}/source/${sourceId}/overview`
         );
       } else {
-        setLoading(false);
         successHandler.set({ message: "Source updated" });
       }
-    } else {
-      setLoading(false);
     }
+
+    setLoading(false);
   };
 
   async function loadOptions() {
@@ -179,16 +299,12 @@ export default function Page(props) {
       <PageHeader
         icon={source.app.icon}
         title={source.name}
-        badges={[
-          <LockedBadge object={source} />,
-          <StateBadge state={source.state} />,
-          <ModelBadge modelName={source.modelName} modelId={source.modelId} />,
-        ]}
+        badges={sourceBadges}
       />
 
       <Row>
-        <Col>
-          <Form id="form" onSubmit={onSubmit} autoComplete="off">
+        <Col className="mb-4">
+          <Form id="form" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
             <fieldset disabled={Boolean(source.locked)}>
               <Form.Group controlId="name">
                 <Form.Label>Name</Form.Label>
@@ -199,6 +315,8 @@ export default function Page(props) {
                   placeholder="Source Name"
                   defaultValue={source.name}
                   onChange={(e) => update(e)}
+                  name="source.name"
+                  ref={register}
                 />
                 <Form.Control.Feedback type="invalid">
                   Name is required
@@ -283,6 +401,8 @@ export default function Page(props) {
                                   ? [source.options[opt.key]]
                                   : undefined
                               }
+                              name={`source.options.${opt.key}`}
+                              ref={register}
                             />
                             <Form.Text className="text-muted">
                               {opt.description}
@@ -305,6 +425,8 @@ export default function Page(props) {
                                   e.target.value
                                 )
                               }
+                              name={`source.options.${opt.key}`}
+                              ref={register}
                             >
                               <option value={""} disabled>
                                 Select an option
@@ -363,6 +485,8 @@ export default function Page(props) {
                                   e.target.value
                                 )
                               }
+                              name={`source.options.${opt.key}`}
+                              ref={register}
                             />
                             <Form.Text className="text-muted">
                               {opt.description}
@@ -393,15 +517,61 @@ export default function Page(props) {
                 </Row>
               ) : null}
 
+              {source.previewAvailable && (
+                <>
+                  <hr />
+                  <h3>{isPrimarySource ? "Primary Key Mapping" : "Mapping"}</h3>
+                  {isPrimarySource ? (
+                    <p>
+                      Select a column that uniquely identifies each record in
+                      this Source. The Property mapped to this column will be
+                      assigned as the Model's Primary Key.
+                    </p>
+                  ) : (
+                    <p>
+                      Select a column that relates each record in this Source
+                      back to the Model's Primary Source. You can map the column
+                      to any Property in another Source in the Model.
+                    </p>
+                  )}
+
+                  <FormMappingSelector
+                    columnName={mappingColumn}
+                    propertyKey={mappingPropertyKey}
+                    preview={preview}
+                    properties={properties}
+                    propertyExamples={propertyExamples}
+                    register={register}
+                    source={source}
+                  />
+                </>
+              )}
+
               <hr />
 
-              <h3>Example Data</h3>
-
-              {previewColumns.length === 0 && !loading ? (
-                <p>No preview</p>
-              ) : null}
+              <LoadingButton variant="primary" type="submit" loading={loading}>
+                Update
+              </LoadingButton>
+              <br />
+              <br />
+              <LoadingButton
+                loading={loading}
+                variant="danger"
+                size="sm"
+                onClick={() => {
+                  handleDelete();
+                }}
+              >
+                Delete
+              </LoadingButton>
+            </fieldset>
+          </Form>
+        </Col>
+        <Col xl="7">
+          <ManagedCard title="Example Data">
+            <Card.Body>
+              {previewColumns.length === 0 && !loading ? <>No preview</> : null}
               {previewColumns.length === 0 && loading ? <Loader /> : null}
-
               <div style={{ overflow: "auto" }}>
                 <LoadingTable loading={previewLoading} size="sm">
                   <thead>
@@ -428,44 +598,55 @@ export default function Page(props) {
                   </tbody>
                 </LoadingTable>
               </div>
-
-              <br />
-
-              <LoadingButton variant="primary" type="submit" loading={loading}>
-                Update
-              </LoadingButton>
-              <br />
-              <br />
-              <LoadingButton
-                loading={loading}
-                variant="danger"
-                size="sm"
-                onClick={() => {
-                  handleDelete();
-                }}
-              >
-                Delete
-              </LoadingButton>
-            </fieldset>
-          </Form>
+            </Card.Body>
+          </ManagedCard>
         </Col>
       </Row>
     </>
   );
-}
+};
 
-Page.getInitialProps = async (ctx: NextPageContext) => {
+export default Page;
+
+export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   const { sourceId, modelId } = ctx.query;
   const { execApi } = UseApi(ctx);
   const { source } = await execApi("get", `/source/${sourceId}`);
   ensureMatchingModel("Source", source.modelId, modelId.toString());
+
+  const { total: totalSources } = await execApi("get", `/sources`, {
+    modelId,
+    limit: 1,
+  });
+
   const { environmentVariableOptions } = await execApi(
     "get",
     `/sources/connectionApps`
   );
 
+  const { properties, examples: propertyExamples } =
+    await execApi<Actions.PropertiesList>("get", `/properties`, {
+      includeExamples: true,
+      state: "ready",
+      modelId: source?.modelId,
+    });
+
+  const { total: scheduleCount } = await execApi<Actions.SchedulesList>(
+    "get",
+    `/schedules`,
+    {
+      modelId: source?.modelId,
+    }
+  );
+
   return {
-    source,
-    environmentVariableOptions,
+    props: {
+      environmentVariableOptions,
+      properties,
+      propertyExamples,
+      source,
+      scheduleCount,
+      totalSources,
+    },
   };
 };

@@ -6,9 +6,7 @@
   "rules": [
     {
       "propertyId": "account_value",
-      "operation": {
-        "op": "gt"
-      },
+      "op": "gt",
       "match": "800"
     }
   ]

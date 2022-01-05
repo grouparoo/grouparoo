@@ -76,7 +76,7 @@ describe("snowflake/integration/log-checking", () => {
       .map((param) => param.split("="))
       .forEach(([k, v]) => (queryParams[k] = v));
     expect(queryParams).toEqual({
-      databaseName: "SAMPLE_SOURCES",
+      databaseName: "SAMPLE_SOURCES_001",
       requestId: expect.any(String),
       schemaName: "PUBLIC",
       warehouse: "COMPUTE_WH",

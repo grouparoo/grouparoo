@@ -199,8 +199,8 @@ describe("mongo/table/records", () => {
     let highWaterMark = {};
     let sourceOffset = 0;
     let scheduleFilters = [
-      { key: "id", op: "greater than", match: 4 },
-      { key: "id", op: "less than", match: 7 },
+      { key: "id", op: "gt", match: 4 },
+      { key: "id", op: "lt", match: 7 },
     ];
     const { imports, importsCount } = await runIt({
       limit,

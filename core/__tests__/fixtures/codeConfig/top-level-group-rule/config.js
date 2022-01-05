@@ -15,7 +15,7 @@ module.exports = async function getConfig() {
       rules: [
         {
           propertyId: "grouparooId",
-          operation: { op: "exists" },
+          op: "exists",
         },
       ],
     },
@@ -28,7 +28,7 @@ module.exports = async function getConfig() {
       rules: [
         {
           propertyId: "grouparooCreatedAt",
-          operation: { op: "relative_gt" },
+          op: "relative_gt",
           relativeMatchNumber: "8",
           relativeMatchUnit: "days",
         },
