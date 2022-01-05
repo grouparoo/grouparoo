@@ -42,6 +42,7 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
       modelId: model.id,
     });
   });
+
   test("can load destinationMappingOptions from Contact Id", async () => {
     const destinationOptions = {
       primaryKey: "Email",
@@ -56,6 +57,9 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
     let field;
     field = required.find((f) => f.key === "Email");
     expect(field.type).toBe("email");
+
+    field = known.find((f) => f.key === "LastName");
+    expect(field.type).toBe("string");
 
     field = known.find((f) => f.key === "FirstName");
     expect(field.type).toBe("string");
@@ -98,6 +102,9 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
     field = known.find((f) => f.key === "FirstName");
     expect(field.type).toBe("string");
     expect(field.important).toBe(true);
+
+    field = known.find((f) => f.key === "LastName");
+    expect(field.type).toBe("string");
 
     field = known.find((f) => f.key === "MobilePhone");
     expect(field.type).toBe("phoneNumber");

@@ -63,10 +63,17 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
     field = required.find((f) => f.key === "Email");
     expect(field.type).toBe("email");
 
+    field = known.find((f) => f.key === "Company");
+    expect(field.type).toBe("string");
+
     field = known.find((f) => f.key === "Id");
     expect(field).toBeFalsy();
 
     field = known.find((f) => f.key === "FirstName");
+    expect(field.type).toBe("string");
+    expect(field.important).toBe(true);
+
+    field = known.find((f) => f.key === "LastName");
     expect(field.type).toBe("string");
     expect(field.important).toBe(true);
 
@@ -109,6 +116,10 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
     expect(field.important).toBe(true);
 
     field = known.find((f) => f.key === "FirstName");
+    expect(field.type).toBe("string");
+    expect(field.important).toBe(true);
+
+    field = known.find((f) => f.key === "LastName");
     expect(field.type).toBe("string");
     expect(field.important).toBe(true);
 
@@ -157,6 +168,10 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
     expect(field.important).toBe(true);
 
     field = known.find((f) => f.key === "FirstName");
+    expect(field.type).toBe("string");
+    expect(field.important).toBe(true);
+
+    field = known.find((f) => f.key === "LastName");
     expect(field.type).toBe("string");
     expect(field.important).toBe(true);
 

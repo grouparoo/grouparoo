@@ -200,7 +200,10 @@ const extractFields = async (
     if (!field.nillable && !field.defaultedOnCreate) {
       // needs to be set to create
       const syncMode = await destination.getSyncMode();
-      if (syncMode !== DestinationSyncModeData.enrich.key) {
+      if (syncMode === DestinationSyncModeData.enrich.key) {
+        const important = isFieldImportant(field);
+        known.push({ key, type, important });
+      } else {
         required.push({ key, type });
       }
     } else {
@@ -212,7 +215,6 @@ const extractFields = async (
   if (!matchField) {
     throw new Error("matchField not found");
   }
-
   required.unshift(matchField);
 
   known = known.sort((a, b) => {
