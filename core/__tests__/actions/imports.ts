@@ -106,7 +106,8 @@ describe("actions/imports", () => {
 
       expect(error).toBeFalsy();
       expect(imports.length).toBe(1);
-      expect(imports[0].id).toBeTruthy();
+      expect(imports[0].id).toBe(toadImport.id);
+      expect(imports[0].state).toBe("importing");
       expect(imports[0].data.email).toBe("toad@mushroom-kingdom.gov");
     });
   });
