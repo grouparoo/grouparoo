@@ -13,6 +13,7 @@ export default function Selector({
   iconClassName = "",
   subheading = "",
   description = "",
+  disabled = false,
   badges = [],
   metaBadge,
   className = "",
@@ -25,10 +26,12 @@ export default function Selector({
   iconClassName?: string;
   subheading?: string;
   description?: string;
+  disabled?: boolean;
   badges: BadgeProp[];
   metaBadge?: BadgeProp;
   onClick?: any;
 }) {
+  const clickProp = disabled ? undefined : { onClick };
   return (
     <div
       style={{
@@ -41,10 +44,11 @@ export default function Selector({
         paddingBottom: 20,
         paddingRight: 10,
         paddingLeft: 10,
-        cursor: "pointer",
+        opacity: disabled ? 0.4 : undefined,
+        cursor: disabled ? undefined : "pointer",
       }}
-      className={className}
-      onClick={onClick}
+      className={`${className}${disabled ? " text-muted" : ""}`}
+      {...clickProp}
     >
       <div className="d-flex flex-column">
         <div

@@ -35,7 +35,11 @@ describe("models/property", () => {
     beforeAll(async () => {
       usersTableSource = await helper.factories.source();
       await usersTableSource.setOptions({ table: "users" });
-      await usersTableSource.bootstrapUniqueProperty("userId", "integer", "id");
+      await usersTableSource.bootstrapUniqueProperty({
+        key: "userId",
+        type: "integer",
+        mappedColumn: "id",
+      });
       await usersTableSource.setMapping({ id: "userId" });
       await usersTableSource.update({ state: "ready" });
 

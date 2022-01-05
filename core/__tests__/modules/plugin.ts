@@ -287,11 +287,11 @@ describe("modules/plugin", () => {
           modelId: otherModel.id,
         });
         await otherSource.setOptions({ table: "foo" });
-        const otherProperty = await otherSource.bootstrapUniqueProperty(
-          "otherUserId",
-          "integer",
-          "otherId"
-        );
+        const otherProperty = await otherSource.bootstrapUniqueProperty({
+          key: "otherUserId",
+          type: "integer",
+          mappedColumn: "otherId",
+        });
         await otherSource.setMapping({ otherUserId: "otherUserId" });
         await otherSource.update({ state: "ready" });
 

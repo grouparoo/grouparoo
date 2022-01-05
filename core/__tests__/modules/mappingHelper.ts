@@ -19,7 +19,11 @@ describe("module/MappingHelper", () => {
     app = await helper.factories.app();
     source = await helper.factories.source(app);
     await source.setOptions({ table: "test-table" });
-    await source.bootstrapUniqueProperty(propertyKey, "integer", remoteKey);
+    await source.bootstrapUniqueProperty({
+      key: propertyKey,
+      type: "integer",
+      mappedColumn: remoteKey,
+    });
     await source.setMapping({ [remoteKey]: propertyKey });
     await source.update({ state: "ready" });
     property = await Property.findOne();

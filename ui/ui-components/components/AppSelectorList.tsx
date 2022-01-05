@@ -15,11 +15,13 @@ export default function AppSelectorList({
   items,
   selectedItem,
   displayAddAppButton = false,
+  disabledAppIds = [],
 }: {
   onClick: Function;
   items: SelectablePlugin[] | SelectableApp[];
   selectedItem: any;
   displayAddAppButton?: boolean;
+  disabledAppIds?: string[];
 }) {
   const router = useRouter();
 
@@ -33,15 +35,15 @@ export default function AppSelectorList({
         let className: string;
         let metaBadge: BadgeProp;
         let badges: BadgeProp[] = [];
+        let selected: boolean;
+        let disabled: boolean;
 
         if (isSelectableApp(item)) {
+          disabled = disabledAppIds.includes(item.id);
           // these items are apps
           src = item.icon;
           title = item.name.replace("@grouparoo/", "");
-          className =
-            item.name === selectedItem.type
-              ? "selector-list-selected"
-              : "selector-list";
+          selected = item.name === selectedItem.type;
 
           if (item.provides.source) {
             badges.push({ message: "source", variant: "primary" });
@@ -79,11 +81,10 @@ export default function AppSelectorList({
             metaBadge = { message: "installed", variant: "warning" };
           }
 
-          className =
-            item.name === selectedItem.name
-              ? "selector-list-selected"
-              : "selector-list";
+          selected = item.name === selectedItem.name;
         }
+
+        className = selected ? "selector-list-selected" : "selector-list";
 
         return (
           <Selector
@@ -93,6 +94,7 @@ export default function AppSelectorList({
             description={description}
             size={120}
             className={className}
+            disabled={disabled}
             iconClassName="card-img"
             badges={badges}
             metaBadge={metaBadge}

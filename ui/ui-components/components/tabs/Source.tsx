@@ -5,10 +5,6 @@ import { grouparooUiEdition } from "../../utils/uiEdition";
 export default function SourceTabs({ source }: { source: Models.SourceType }) {
   const tabs = ["overview", "edit"];
 
-  if (source.previewAvailable) {
-    tabs.push("mapping");
-  }
-
   if (source.schedule) {
     tabs.push("schedule");
     if (grouparooUiEdition() === "enterprise") tabs.push("runs");
