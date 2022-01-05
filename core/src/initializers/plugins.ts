@@ -97,8 +97,8 @@ export class Plugins extends Initializer {
   async stop() {
     await CLS.wrap(async () => {
       for (const id in api.plugins.persistentConnections) {
-        const app = await App.findById(id);
-        await app.disconnect();
+        const app = await App.findById(id).catch(() => null);
+        await app?.disconnect();
       }
       await utils.sleep(100);
     });
