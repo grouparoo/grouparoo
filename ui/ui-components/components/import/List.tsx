@@ -160,13 +160,13 @@ export default function ImportList(props) {
                     {_import.recordAssociatedAt
                       ? formatTimestamp(_import.recordAssociatedAt)
                       : "pending"}
-                    <br /> Record Updated:{" "}
-                    {_import.recordUpdatedAt
-                      ? formatTimestamp(_import.recordUpdatedAt)
+                    <br /> Imported:{" "}
+                    {_import.importedAt
+                      ? formatTimestamp(_import.importedAt)
                       : "pending"}
-                    <br /> Groups Updated:{" "}
-                    {_import.groupsUpdatedAt
-                      ? formatTimestamp(_import.groupsUpdatedAt)
+                    <br /> Exported:{" "}
+                    {_import.exportedAt
+                      ? formatTimestamp(_import.exportedAt)
                       : "pending"}
                   </td>
                   <td>

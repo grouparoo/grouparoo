@@ -338,8 +338,6 @@ describe("tasks/record:export", () => {
             creatorType: "run",
             creatorId: run.id,
             recordId: record.id,
-            recordUpdatedAt: new Date(),
-            groupsUpdatedAt: new Date(),
             data: {},
             oldGroupIds: [],
             newGroupIds: [group.id],
@@ -347,6 +345,7 @@ describe("tasks/record:export", () => {
 
           await _import.update({
             state: "exporting",
+            importedAt: new Date(),
           });
 
           await record.import();

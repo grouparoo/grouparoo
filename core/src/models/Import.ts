@@ -155,10 +155,7 @@ export class Import extends CommonModel<Import> {
   recordAssociatedAt: Date;
 
   @Column
-  recordUpdatedAt: Date;
-
-  @Column
-  groupsUpdatedAt: Date;
+  importedAt: Date;
 
   @Column
   exportedAt: Date;
@@ -199,8 +196,7 @@ export class Import extends CommonModel<Import> {
       createdAt: APIData.formatDate(this.createdAt),
       startedAt: APIData.formatDate(this.startedAt),
       recordAssociatedAt: APIData.formatDate(this.recordAssociatedAt),
-      recordUpdatedAt: APIData.formatDate(this.recordUpdatedAt),
-      groupsUpdatedAt: APIData.formatDate(this.groupsUpdatedAt),
+      importedAt: APIData.formatDate(this.importedAt),
       exportedAt: APIData.formatDate(this.exportedAt),
 
       // data before and after

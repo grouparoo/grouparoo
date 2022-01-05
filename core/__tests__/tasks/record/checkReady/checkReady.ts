@@ -168,7 +168,7 @@ describe("tasks/record:checkReady", () => {
       expect(_importA.newRecordProperties.firstName).toEqual(["Super"]);
       expect(_importA.newRecordProperties.lastName).toEqual(["Mario"]);
       expect(_importA.newGroupIds).toEqual([group.id]);
-      expect(_importA.groupsUpdatedAt).toBeTruthy();
+      expect(_importA.importedAt).toBeTruthy();
       expect(_importA.exportedAt).toBeNull();
       expect(_importA.state).toBe("exporting");
 
@@ -176,7 +176,7 @@ describe("tasks/record:checkReady", () => {
       expect(_importB.newRecordProperties.firstName).toEqual(["Super"]);
       expect(_importB.newRecordProperties.lastName).toEqual(["Mario"]);
       expect(_importB.newGroupIds).toEqual([group.id]);
-      expect(_importB.groupsUpdatedAt).toBeTruthy();
+      expect(_importB.importedAt).toBeTruthy();
       expect(_importB.exportedAt).toBeNull();
       expect(_importB.state).toBe("exporting");
 
@@ -208,8 +208,7 @@ describe("tasks/record:checkReady", () => {
       expect(record.state).toBe("ready");
 
       await _importA.reload();
-      expect(_importA.groupsUpdatedAt).toBeTruthy();
-      expect(_importA.recordUpdatedAt).toBeTruthy();
+      expect(_importA.importedAt).toBeTruthy();
       expect(_importA.exportedAt).toBeTruthy();
       expect(_importA.state).toBe("complete");
 

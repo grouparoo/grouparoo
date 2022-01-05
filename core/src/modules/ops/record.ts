@@ -1111,7 +1111,7 @@ export namespace RecordOps {
       },
       include: [
         { model: RecordProperty, required: true },
-        { model: Import, required: false, where: { recordUpdatedAt: null } },
+        { model: Import, required: false, where: { state: "importing" } },
       ],
     });
     if (!records.length) {
@@ -1135,9 +1135,8 @@ export namespace RecordOps {
           {
             state: toExport ? "exporting" : "complete",
             newRecordProperties: newRecordProperties,
-            recordUpdatedAt: now,
             newGroupIds: newGroupIds,
-            groupsUpdatedAt: now,
+            importedAt: now,
             exportedAt: toExport ? undefined : now, // we want to indicate that the import's lifecycle is complete
           },
           {
