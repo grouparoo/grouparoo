@@ -2,7 +2,7 @@
 
 A [Grouparoo](https://www.grouparoo.com) plugin for sending application logs to AWS Cloudwatch
 
-Learn more about Grouparoo Plugins at [www.grouparoo.com/docs/plugins](https://www.grouparoo.com/docs/plugins).
+Learn more about Grouparoo Plugins at [www.grouparoo.com/docs/plugins](https://www.grouparoo.com/docs/integrations).
 
 ## Installation
 
