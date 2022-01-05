@@ -112,6 +112,7 @@ jobs:
             - plugins/@grouparoo/snowflake/node_modules
             - plugins/@grouparoo/spec-helper/node_modules
             - plugins/@grouparoo/sqlite/node_modules
+            - plugins/@grouparoo/vero/node_modules
             - plugins/@grouparoo/zendesk/node_modules
       - save_cache:
           <<: *dist-1-cache
@@ -164,6 +165,7 @@ jobs:
             - plugins/@grouparoo/snowflake/dist
             - plugins/@grouparoo/spec-helper/dist
             - plugins/@grouparoo/sqlite/dist
+            - plugins/@grouparoo/vero/dist
             - plugins/@grouparoo/zendesk/dist
       - save_cache:
           <<: *core-cache
@@ -3431,6 +3433,61 @@ jobs:
       - run:
           name: test
           command: cd plugins/@grouparoo/sqlite && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-vero:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: circleci/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/vero && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-zendesk:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
@@ -3841,6 +3898,11 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
+      - test-plugin-vero:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
       - test-plugin-zendesk:
           filters:
             <<: *ignored-branches
@@ -3915,5 +3977,6 @@ workflows:
             - test-plugin-snowflake
             - test-plugin-spec-helper
             - test-plugin-sqlite
+            - test-plugin-vero
             - test-plugin-zendesk
             - test-cli
