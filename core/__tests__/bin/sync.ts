@@ -7,8 +7,8 @@ describe("bin/sync", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
 
-  let messages = [];
-  let spies = [];
+  let messages: string[] = [];
+  const spies: any[] = [];
   let record: GrouparooRecord;
 
   beforeAll(async () => {
@@ -32,7 +32,8 @@ describe("bin/sync", () => {
         purchaseAmounts: [100, 200],
       };
 
-      return data[property.key];
+      type dataType = keyof typeof data;
+      return data[property.key as dataType];
     };
   });
 
@@ -105,7 +106,7 @@ describe("bin/sync", () => {
       process.env.GROUPAROO_LOG_LEVEL = "alert"; // disable other log messages
 
       await instance.run({
-        params: { recordProperty: "mario@example.com", json: true },
+        params: { recordProperty: "mario@example.com", json: "true" },
       });
       const output = messages.join("");
 

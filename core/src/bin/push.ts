@@ -52,7 +52,7 @@ export class Push extends CLI {
     GrouparooCLI.setNextDevelopmentMode();
   }
 
-  async run({ params }: { params: ParamsFrom<Push> }) {
+  async run({ params }: { params: Partial<ParamsFrom<Push>> }) {
     GrouparooCLI.logCLI(this.name);
     await CloudCLI.push(params);
     return true;

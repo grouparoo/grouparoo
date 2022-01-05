@@ -36,12 +36,14 @@ export class SyncCLI extends CLI {
   async run({
     params,
   }: {
-    params: ParamsFrom<SyncCLI> & {
-      export?: boolean;
-      recordProperty?: string;
-      json?: string;
-      _arguments: string[];
-    };
+    params: Partial<
+      ParamsFrom<SyncCLI> & {
+        export?: boolean;
+        recordProperty?: string;
+        json?: string;
+        _arguments: string[];
+      }
+    >;
   }) {
     const [recordProperty] = params._arguments || [];
     if (recordProperty) params.recordProperty = recordProperty;

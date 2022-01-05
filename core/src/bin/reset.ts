@@ -25,7 +25,9 @@ export class ResetCLI extends CLI {
   async run({
     params,
   }: {
-    params: ParamsFrom<ResetCLI> & { mode?: string; _arguments: string[] };
+    params: Partial<
+      ParamsFrom<ResetCLI> & { mode?: string; _arguments: string[] }
+    >;
   }) {
     const [mode] = params._arguments || [];
     if (mode) params.mode = mode;

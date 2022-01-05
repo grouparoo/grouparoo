@@ -44,10 +44,14 @@ export namespace CloudCLI {
     token?: string;
     message?: string;
     externalUrl?: string;
-    projectId: string;
-    archivePath: string;
-    apply: boolean | string;
+    projectId?: string;
+    archivePath?: string;
+    apply?: boolean | string;
   }) {
+    if (!params.projectId) throw new Error(`projectId required`);
+    if (!params.archivePath) throw new Error(`archivePath required`);
+    if (params.apply === undefined) throw new Error(`apply required`);
+
     const projectPath = getParentPath();
     const tarballPath = path.isAbsolute(params.archivePath)
       ? params.archivePath
@@ -113,9 +117,12 @@ export namespace CloudCLI {
     token?: string;
     message?: string;
     externalUrl?: string;
-    projectId: string;
-    apply: boolean | string;
+    projectId?: string;
+    apply?: boolean | string;
   }) {
+    if (!params.projectId) throw new Error(`archivePath required`);
+    if (params.apply === undefined) throw new Error(`apply required`);
+
     const tempPath = await mkdtemp(path.join(os.tmpdir(), "grouparoo-cli-"));
     const archivePath = path.join(tempPath, "grouparoo.tar.gz");
 

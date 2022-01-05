@@ -48,10 +48,12 @@ export class RunCLI extends CLI {
   async run({
     params,
   }: {
-    params: ParamsFrom<RunCLI> & {
-      export?: string;
-      resetHighWatermarks?: string;
-    };
+    params: Partial<
+      ParamsFrom<RunCLI> & {
+        export?: string;
+        resetHighWatermarks?: string;
+      }
+    >;
   }) {
     GrouparooCLI.logCLI(this.name, false);
     this.checkWorkers();
@@ -66,7 +68,7 @@ export class RunCLI extends CLI {
     const { main } = await import("../grouparoo");
     await main();
 
-    await this.runTasks(params);
+    await this.runTasks();
 
     return false;
   }
@@ -79,7 +81,7 @@ export class RunCLI extends CLI {
     }
   }
 
-  async runTasks(params: ParamsFrom<RunCLI>) {
+  async runTasks() {
     const tasks = {
       "appRefreshQueries:check": {},
       "schedules:enqueueRuns": {

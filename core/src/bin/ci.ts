@@ -39,9 +39,11 @@ export class CI extends CLI {
     GrouparooCLI.setNextDevelopmentMode();
   }
 
-  async run({ params }: { params: ParamsFrom<CI> }) {
+  async run({ params }: { params: Partial<ParamsFrom<CI>> }) {
     GrouparooCLI.logCLI(this.name);
     await CloudCLI.packAndPush({ ...params, apply: false });
     return true;
   }
 }
+
+type test = ParamsFrom<CI>;

@@ -113,12 +113,14 @@ Learn more about the options for a specific template:
   async run({
     params,
   }: {
-    params: ParamsFrom<Generate> & {
-      template: string;
-      id: string;
-      path?: string;
-      _arguments: string[];
-    };
+    params: Partial<
+      ParamsFrom<Generate> & {
+        template: string;
+        id: string;
+        path?: string;
+        _arguments: string[];
+      }
+    >;
   }) {
     Deprecation.warnReplaced("CLI", "grouparoo generate", "UI config");
 
@@ -145,9 +147,11 @@ Learn more about the options for a specific template:
   }
 
   async describe(
-    params: ParamsFrom<Generate> & {
-      template: string;
-    }
+    params: Partial<
+      ParamsFrom<Generate> & {
+        template: string;
+      }
+    >
   ) {
     if (!params.template) {
       return GrouparooCLI.logger.fatal(`no template provided`);
@@ -158,10 +162,12 @@ Learn more about the options for a specific template:
   }
 
   async generate(
-    params: ParamsFrom<Generate> & {
-      template: string;
-      id: string;
-    }
+    params: Partial<
+      ParamsFrom<Generate> & {
+        template: string;
+        id: string;
+      }
+    >
   ) {
     const learnMoreText =
       "Learn more with `grouparoo generate --help`, `grouparoo generate --list`, and `grouparoo generate [template] --describe`";
@@ -212,9 +218,11 @@ Learn more about the options for a specific template:
   }
 
   async list(
-    params: ParamsFrom<Generate> & {
-      template: string;
-    }
+    params: Partial<
+      ParamsFrom<Generate> & {
+        template: string;
+      }
+    >
   ) {
     GrouparooCLI.logger.log(
       `Available Templates:${

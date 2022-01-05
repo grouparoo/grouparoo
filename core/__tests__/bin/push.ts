@@ -7,8 +7,8 @@ describe("bin/push", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   let archivePath = path.join(__dirname, "../../package.json");
-  let messages = [];
-  let spies = [];
+  let messages: string[] = [];
+  const spies: any[] = [];
 
   beforeEach(async () => {
     messages = [];
@@ -34,7 +34,7 @@ describe("bin/push", () => {
       params: {
         archivePath,
         projectId: "my-project",
-        apply: false,
+        apply: "false",
       },
     });
 
@@ -67,7 +67,7 @@ describe("bin/push", () => {
           archivePath,
           projectId: "my-project",
           token: "some-token",
-          apply: toApply,
+          apply: String(toApply),
         },
       });
       expect(toStop).toBe(true);
@@ -144,7 +144,7 @@ describe("bin/push", () => {
         archivePath,
         projectId: "my-project",
         token: "some-token",
-        apply: true,
+        apply: "true",
       },
     });
     expect(toStop).toBe(true);
@@ -171,7 +171,7 @@ describe("bin/push", () => {
         archivePath,
         projectId: "my-project",
         token: "some-token",
-        apply: false,
+        apply: "false",
       },
     });
     expect(toStop).toBe(true);
@@ -231,7 +231,7 @@ describe("bin/push", () => {
         archivePath,
         projectId: "my-project",
         token: "some-token",
-        apply: false,
+        apply: "false",
       },
     });
     expect(toStop).toBe(true);
@@ -258,7 +258,7 @@ describe("bin/push", () => {
         archivePath,
         projectId: "my-project",
         token: "some-token",
-        apply: false,
+        apply: "false",
       },
     });
     expect(toStop).toBe(true);
@@ -293,7 +293,7 @@ describe("bin/push", () => {
         archivePath,
         projectId: "my-project",
         token: "some-token",
-        apply: false,
+        apply: "false",
       },
     });
     expect(toStop).toBe(true);

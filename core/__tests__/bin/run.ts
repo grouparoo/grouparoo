@@ -4,8 +4,8 @@ import { RunCLI } from "../../src/bin/run";
 describe("bin/run", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
-  let messages = [];
-  let spies = [];
+  let messages: string[] = [];
+  const spies: any[] = [];
 
   beforeEach(async () => {
     messages = [];

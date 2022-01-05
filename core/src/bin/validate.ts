@@ -32,7 +32,7 @@ export class Validate extends CLI {
     GrouparooCLI.setNextDevelopmentMode();
   };
 
-  async run({ params }: { params: ParamsFrom<Validate> }) {
+  async run({ params }: { params: Partial<ParamsFrom<Validate>> }) {
     GrouparooCLI.logCLI(this.name);
 
     await SettingOps.prepare();
@@ -60,7 +60,7 @@ export class Validate extends CLI {
       )}...`
     );
 
-    const canExternallyValidate = params.local.toString() !== "true";
+    const canExternallyValidate = params?.local?.toString() !== "true";
     const locallyValidateIds =
       Array.isArray(params.local) && (new Set(params.local) as Set<string>);
 

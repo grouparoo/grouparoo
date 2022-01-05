@@ -34,7 +34,7 @@ export class Apply extends CLI {
     GrouparooCLI.setNextDevelopmentMode();
   };
 
-  async run({ params }: { params: ParamsFrom<Apply> }) {
+  async run({ params }: { params: Partial<ParamsFrom<Apply>> }) {
     GrouparooCLI.logCLI(this.name);
 
     const configDir = await getConfigDir(true);
@@ -60,7 +60,7 @@ export class Apply extends CLI {
         );
 
         // start the config apply process
-        const canExternallyValidate = params.local.toString() !== "true";
+        const canExternallyValidate = params?.local?.toString() !== "true";
         const locallyValidateIds =
           Array.isArray(params.local) && (new Set(params.local) as Set<string>);
 
