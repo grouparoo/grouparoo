@@ -2,7 +2,7 @@
 
 A [Grouparoo](https://www.grouparoo.com) plugin for testing exports by logging them. `@grouparoo/logger` is a Destination plugin that writes the Records it receives to a file of your choosing (ie: `records.log` in JSON format ) and/or `stdout`.
 
-Learn more about Grouparoo Plugins at [www.grouparoo.com/docs/plugins](https://www.grouparoo.com/docs/integrations).
+Learn more about Grouparoo Plugins at [www.grouparoo.com/docs/integrations](https://www.grouparoo.com/docs/integrations).
 
 ## Installation
 

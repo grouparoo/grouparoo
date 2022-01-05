@@ -2,7 +2,7 @@
 
 A [Grouparoo](https://www.grouparoo.com) plugin for connecting to [Postgres](https://www.postgresql.org/).
 
-Learn more about Grouparoo Plugins at [www.grouparoo.com/docs/plugins](https://www.grouparoo.com/docs/integrations).
+Learn more about Grouparoo Plugins at [www.grouparoo.com/docs/integrations](https://www.grouparoo.com/docs/integrations).
 
 ## Installation
 
