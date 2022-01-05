@@ -8,4 +8,4 @@ Visit www.grouparoo.com to learn more about obtaining this software.
 
 ## Installation
 
-In your Grouparoo project, run `grouparoo install @grouparoo/ui-enterprise` with the proper [NPM permissions](https://www.grouparoo.com/docs/plugins#obtaining-paid-plugins).
+In your Grouparoo project, run `grouparoo install @grouparoo/ui-enterprise` with the proper [NPM permissions](https://www.grouparoo.com/docs/integrations#obtaining-paid-plugins).
