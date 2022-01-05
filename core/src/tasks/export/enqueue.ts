@@ -35,6 +35,7 @@ export class EnqueueExports extends RetryableTask {
           limit,
           delayMs
         );
+
       totalEnqueued += enqueuedExportsCount;
       if (enqueuedExportsCount > 0) {
         log(

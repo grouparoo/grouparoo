@@ -24,12 +24,13 @@ export class ExportSend extends CLSTask {
       include: [Option, Mapping],
     });
     if (!destination) return;
+    console.log("SEND EXPORT TASK RUN", params, destination.name);
     const _export = await Export.findOne({
       where: { id: exportId },
     });
     if (!_export) return;
     if (_export.state !== "pending") return;
-
+    console.log("call sendexport");
     await destination.sendExport(_export);
   }
 }
