@@ -35,7 +35,7 @@
     "@grouparoo/core": "0.8.0-alpha.3",
     "@grouparoo/spec-helper": "0.8.0-alpha.3",
     "@types/jest": "*",
-    "@types/node": "*",
+    "@types/node": "16.*.*",
     "actionhero": "28.1.1",
     "axios": "0.24.0",
     "dotenv": "10.0.0",
