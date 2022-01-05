@@ -120,6 +120,7 @@ export namespace ConfigWriter {
     }
 
     for (let [type, instances] of Object.entries(queries)) {
+      if (!instances) continue;
       for (let instance of instances) {
         const object = await instance.getConfigObject();
         // Don't process arrays that have objects missing id values.

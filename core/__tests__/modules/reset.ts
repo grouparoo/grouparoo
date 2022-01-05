@@ -18,7 +18,7 @@ describe("modules/reset", () => {
     api.resque.queue.connection.redis.set("resque:stat:test", 100);
 
     // from https://github.com/actionhero/node-resque/blob/master/__tests__/core/queue.ts
-    const errorPayload = function (id) {
+    const errorPayload = function (id: string | number) {
       return JSON.stringify({
         worker: "busted-worker-" + id,
         queue: "busted-queue",
@@ -68,7 +68,7 @@ describe("modules/reset", () => {
   }
 
   describe("reset:cluster", () => {
-    let counts;
+    let counts: { [model: string]: number };
 
     beforeAll(async () => {
       await TeamMember.truncate();

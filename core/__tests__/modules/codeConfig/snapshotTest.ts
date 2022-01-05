@@ -36,7 +36,8 @@ describe("modules/codeConfig", () => {
           purchaseAmounts: [100, 200],
         };
 
-        return data[property.key];
+        type dataType = keyof typeof data;
+        return data[property.key as dataType];
       };
     });
 

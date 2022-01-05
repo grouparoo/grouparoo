@@ -13,8 +13,7 @@ describe("apiDAta", () => {
     });
 
     test("it works for nulls", () => {
-      const time = null;
-      expect(APIData.formatDate(time)).toEqual(null);
+      expect(APIData.formatDate(null)).toEqual(null);
     });
   });
 

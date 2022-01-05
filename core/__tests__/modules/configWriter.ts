@@ -1050,7 +1050,7 @@ describe("modules/configWriter", () => {
 
     test("record without a primary key property value will not be persisted", async () => {
       const record: GrouparooRecord = await helper.factories.record();
-      const properties = { [bootstrapPropertyId]: [null] };
+      const properties = { [bootstrapPropertyId]: [null as string] };
       await record.addOrUpdateProperties(properties);
       const config = await record.getConfigObject();
       expect(config).toBeUndefined();

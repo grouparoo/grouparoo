@@ -247,7 +247,6 @@ describe("integration/happyPath", () => {
         ltv: [100.12],
         userId: [null],
       });
-      recordId = record.id;
     });
 
     test("a group can be created", async () => {
