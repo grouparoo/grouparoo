@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@types/fs-extra": "*",
-    "@types/node": "*",
+    "@types/node": "16.*.*",
     "@types/validator": "*",
     "actionhero": "28.1.1",
     "ah-sequelize-plugin": "3.2.0",
