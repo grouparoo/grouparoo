@@ -98,7 +98,7 @@ describe("actions/imports", () => {
     });
 
     test("imports can be filtered by state", async () => {
-      connection.params = { csrfToken, state: "pending" };
+      connection.params = { csrfToken, state: "importing" };
       const { error, imports } = await specHelper.runAction<ImportsList>(
         "imports:list",
         connection

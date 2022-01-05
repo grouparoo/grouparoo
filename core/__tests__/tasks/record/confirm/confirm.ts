@@ -311,6 +311,7 @@ describe("tasks/records:confirm", () => {
     await _import.update({
       recordId: "someId",
       recordAssociatedAt: new Date(),
+      state: "importing",
     });
 
     // try to confirm again

@@ -36,7 +36,7 @@ describe("tasks/import:associateRecords", () => {
     const _import = await helper.factories.import();
     await api.resque.queue.connection.redis.flushdb();
     await _import.update({
-      state: "pending",
+      state: "importing",
       recordId: "abc",
       recordAssociatedAt: new Date(),
     });

@@ -332,7 +332,7 @@ describe("tasks/record:export", () => {
         it("applies errors to the imports and export", async () => {
           const run = await helper.factories.run();
           const _import = await Import.create({
-            state: "pending",
+            state: "importing",
             creatorType: "run",
             creatorId: run.id,
             recordId: record.id,
@@ -344,7 +344,7 @@ describe("tasks/record:export", () => {
           });
 
           await _import.update({
-            state: "complete",
+            state: "exporting",
           });
 
           await record.import();
@@ -360,6 +360,7 @@ describe("tasks/record:export", () => {
           expect(counter).toBe(1);
 
           await _import.reload();
+          expect(_import.state).toBe("failed");
           expect(_import.errorMessage).toMatch(/oh no/);
           const errorMetadata = JSON.parse(_import.errorMetadata);
           expect(errorMetadata.message).toMatch(/oh no/);

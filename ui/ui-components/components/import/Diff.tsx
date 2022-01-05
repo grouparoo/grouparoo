@@ -11,7 +11,9 @@ export function ImportRecordPropertiesDiff({
 }: {
   _import: Models.ImportType;
 }) {
-  if (_import.state !== "complete") {
+  const imported = _import.recordUpdatedAt && _import.groupsUpdatedAt;
+
+  if (!imported) {
     return (
       <>
         <ul>
@@ -93,7 +95,9 @@ export function ImportGroupsDiff({
   _import: Models.ImportType;
   groups: Models.GroupType[];
 }) {
-  if (_import.state !== "complete") {
+  const imported = _import.recordUpdatedAt && _import.groupsUpdatedAt;
+
+  if (!imported) {
     return (
       <>
         <ul>

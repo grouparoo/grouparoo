@@ -1133,7 +1133,7 @@ export namespace RecordOps {
 
         await Import.update(
           {
-            state: "complete",
+            state: toExport ? "exporting" : "complete",
             newRecordProperties: newRecordProperties,
             recordUpdatedAt: now,
             newGroupIds: newGroupIds,

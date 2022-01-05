@@ -59,7 +59,7 @@ export class RunModel extends CLSTask {
     });
 
     const pendingImports = await run.$count("imports", {
-      where: { state: "pending" },
+      where: { state: "importing" },
     });
 
     // we don't want to denote the run as ready until all the imports are imported

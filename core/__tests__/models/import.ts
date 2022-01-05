@@ -31,7 +31,7 @@ describe("models/import", () => {
     expect(_import.state).toBe("associating");
 
     await _import.associateRecord();
-    expect(_import.state).toBe("pending");
+    expect(_import.state).toBe("importing");
     expect(_import.recordId).toBe(record.id);
   });
 

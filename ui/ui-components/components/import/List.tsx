@@ -14,7 +14,14 @@ import { ImportRecordPropertiesDiff, ImportGroupsDiff } from "./Diff";
 import StateBadge from "../badges/StateBadge";
 import { capitalize } from "../../utils/languageHelper";
 
-const states = ["all", "pending", "failed", "complete"];
+const states = [
+  "all",
+  "associating",
+  "importing",
+  "exporting",
+  "failed",
+  "complete",
+];
 
 export default function ImportList(props) {
   const {
@@ -92,6 +99,9 @@ export default function ImportList(props) {
           </ButtonGroup>
         </Col>
       </Row>
+
+      <hr />
+      <br />
 
       <Pagination
         total={total}

@@ -32,13 +32,22 @@ export interface ImportRecordProperties {
 
 const IMPORT_CREATORS = ["run"] as const;
 
-const STATES = ["associating", "pending", "failed", "complete"] as const;
+const STATES = [
+  "associating",
+  "importing",
+  "exporting",
+  "failed",
+  "complete",
+] as const;
 
 const STATE_TRANSITIONS = [
   { from: "associating", to: "failed", checks: [] },
-  { from: "associating", to: "pending", checks: [] },
-  { from: "pending", to: "failed", checks: [] },
-  { from: "pending", to: "complete", checks: [] },
+  { from: "associating", to: "importing", checks: [] },
+  { from: "importing", to: "failed", checks: [] },
+  { from: "importing", to: "complete", checks: [] },
+  { from: "importing", to: "exporting", checks: [] },
+  { from: "exporting", to: "failed", checks: [] },
+  { from: "exporting", to: "complete", checks: [] },
 ];
 
 @Table({ tableName: "imports", paranoid: false })

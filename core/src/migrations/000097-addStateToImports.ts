@@ -15,11 +15,15 @@ export default {
     );
 
     await queryInterface.sequelize.query(
-      `UPDATE "imports" SET "state"='pending' WHERE "recordAssociatedAt" IS NOT NULL AND "groupsUpdatedAt" IS NULL`
+      `UPDATE "imports" SET "state"='importing' WHERE "recordAssociatedAt" IS NOT NULL AND "groupsUpdatedAt" IS NULL`
     );
 
     await queryInterface.sequelize.query(
-      `UPDATE "imports" SET "state"='complete' WHERE "recordAssociatedAt" IS NOT NULL AND "groupsUpdatedAt" IS NOT NULL`
+      `UPDATE "imports" SET "state"='exporting' WHERE "recordAssociatedAt" IS NOT NULL AND "groupsUpdatedAt" IS NOT NULL AND "exportedAt" IS NULL`
+    );
+
+    await queryInterface.sequelize.query(
+      `UPDATE "imports" SET "state"='complete' WHERE "recordAssociatedAt" IS NOT NULL AND "groupsUpdatedAt" IS NOT NULL AND "exportedAt" IS NOT NULL`
     );
 
     await queryInterface.sequelize.query(

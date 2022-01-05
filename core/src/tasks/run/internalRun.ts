@@ -75,7 +75,7 @@ export class RunInternalRun extends CLSTask {
         const oldGroupIds = record.groupMembers.map((gm) => gm.groupId);
 
         bulkImports.push({
-          state: "pending",
+          state: "importing",
           recordId: record.id,
           recordAssociatedAt: now,
           oldRecordProperties,
