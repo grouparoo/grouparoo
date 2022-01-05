@@ -22,6 +22,7 @@ import {
   BatchMethodRemoveFromGroups,
   BatchMethodUpdateByDestinationIds,
   exportRecordsInBatch,
+  GetForeignKeyMapMethod,
 } from "@grouparoo/app-templates/dist/destination/batch";
 import { SalesforceModel } from "./model";
 
@@ -53,9 +54,7 @@ const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = async ({
   let validForeignKeys = parseForeignKeys(foreignKeys, foreignKeyType);
   let fields = [idType, recordMatchField];
   if (idType === recordMatchField) {
-    validForeignKeys = foreignKeys.filter((foreignKey) =>
-      VALID_ID_LENGTHS.includes(foreignKey.length)
-    );
+    validForeignKeys = getValidSalesforceIds(foreignKeys, getByForeignKey);
     fields = [idType];
   }
   const query = { [recordMatchField]: validForeignKeys };
@@ -77,6 +76,24 @@ const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = async ({
   }
 };
 
+function getValidSalesforceIds(
+  foreignKeys: string[],
+  getByForeignKey: GetForeignKeyMapMethod
+) {
+  const passed = [];
+  for (const foreignKey of foreignKeys) {
+    if (VALID_ID_LENGTHS.includes(foreignKey.length)) {
+      passed.push(foreignKey);
+    } else {
+      const found = getByForeignKey(foreignKey);
+      if (found) {
+        found.error = new Error(`Invalid Salesforce id length ${foreignKey}.`);
+      }
+    }
+  }
+  return passed;
+}
+
 // delete the given destinationIds
 const deleteByDestinationIds: BatchMethodDeleteByDestinationIds = async ({
   client,
@@ -88,6 +105,7 @@ const deleteByDestinationIds: BatchMethodDeleteByDestinationIds = async ({
   const results = await client.sobject(recordObject).del(payload);
   processResults(results, users, ResultType.USER);
 };
+
 interface ReferenceObject {
   properties: {
     [key: string]: any;
@@ -96,6 +114,7 @@ interface ReferenceObject {
   row: any;
   user: BatchExport;
 }
+
 interface ReferenceMap {
   [refKey: string]: ReferenceObject[];
 }
@@ -395,14 +414,17 @@ function formatAndDefaultValue(value, field) {
   value = truncateIfString(value, field);
   return value;
 }
+
 enum ResultType {
   USER = "USER",
   ADDGROUP = "ADDGROUP",
   REMOVEGROUP = "REMOVEGROUP",
   LIST = "LIST",
 }
+
 const OK_PROCESS_ERROR = new Error("this is fine");
 const CONVERTED_LEAD_ERROR = new Error("converted lead");
+
 function processResult(result, identifier, type: ResultType) {
   let id = (result.id || "").toString();
   let errors = result.errors || [];
@@ -637,6 +659,7 @@ async function getListId(
   );
   return listId;
 }
+
 async function findObjectIdByField({
   client,
   objectName,
@@ -651,6 +674,7 @@ async function findObjectIdByField({
   }
   return results[0][idType];
 }
+
 async function createList(
   client,
   listName: string,
@@ -694,6 +718,7 @@ function truncateIfString(value: any, field): any {
   }
   return value;
 }
+
 function normalizeValue({ keyValue, field }) {
   if (!keyValue) {
     return null;
@@ -707,6 +732,7 @@ export interface SalesforceData extends SalesforceModel {
   referenceFields: any;
   cacheData: SalesforceCacheData;
 }
+
 export interface ExportSalesforceMethod {
   (argument: {
     appId: string;
@@ -721,6 +747,7 @@ export interface ExportSalesforceMethod {
     errors?: ErrorWithRecordId[];
   }>;
 }
+
 export const exportSalesforceBatch: ExportSalesforceMethod = async ({
   appId,
   appOptions,
