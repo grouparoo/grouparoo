@@ -44,6 +44,7 @@ describe("tasks/import:associateRecord", () => {
         email: "toad@example.com",
         firstName: "Toad",
       });
+      expect(_import.state).toBe("associating");
       expect(_import.recordId).toBeFalsy();
       expect(_import.recordAssociatedAt).toBeFalsy();
 
@@ -59,6 +60,7 @@ describe("tasks/import:associateRecord", () => {
       expect(record).toBeTruthy();
       expect(_import.recordId).toBe(record.id);
       expect(_import.recordAssociatedAt).toBeTruthy();
+      expect(_import.state).toBe("importing");
 
       expect(_import.oldRecordProperties).toEqual({
         email: ["toad@example.com"],
@@ -96,6 +98,7 @@ describe("tasks/import:associateRecord", () => {
       await specHelper.runTask("import:associateRecord", found[0].args[0]);
 
       await _import.reload();
+      expect(_import.state).toBe("associating");
       expect(_import.errorMessage).toBeFalsy();
       found = await specHelper.findEnqueuedTasks("import:associateRecord");
       expect(found.length).toEqual(2);
@@ -105,6 +108,7 @@ describe("tasks/import:associateRecord", () => {
       await specHelper.runTask("import:associateRecord", found[1].args[0]);
 
       await _import.reload();
+      expect(_import.state).toBe("associating");
       expect(_import.errorMessage).toBeFalsy();
       found = await specHelper.findEnqueuedTasks("import:associateRecord");
       expect(found.length).toEqual(3);
@@ -114,6 +118,7 @@ describe("tasks/import:associateRecord", () => {
       await specHelper.runTask("import:associateRecord", found[2].args[0]);
 
       await _import.reload();
+      expect(_import.state).toBe("failed");
       expect(_import.errorMessage).toMatch(
         /there are no unique record properties provided in {"thing":"stuff"}/
       );
@@ -148,6 +153,7 @@ describe("tasks/import:associateRecord", () => {
         lastName: "Jr",
         someNonexistentProp: "Hi there",
       });
+      expect(_import.state).toBe("associating");
       expect(_import.recordId).toBeFalsy();
       expect(_import.recordAssociatedAt).toBeFalsy();
 
@@ -161,6 +167,7 @@ describe("tasks/import:associateRecord", () => {
       await _import.reload();
       const record = await GrouparooRecord.findOne();
       expect(record).toBeTruthy();
+      expect(_import.state).toBe("importing");
       expect(_import.recordId).toBe(record.id);
       expect(_import.recordAssociatedAt).toBeTruthy();
 
@@ -191,6 +198,7 @@ describe("tasks/import:associateRecord", () => {
       });
 
       await _import.reload();
+      expect(_import.state).toBe("failed");
       expect(_import.errorMessage).toMatch(
         /could not create a new record because no record property/
       );

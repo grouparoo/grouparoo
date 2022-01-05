@@ -234,6 +234,8 @@ describe("tasks/record:export", () => {
 
         await importA.reload();
         await importB.reload();
+        expect(importA.state).toBe("complete");
+        expect(importB.state).toBe("complete");
         expect(importA.exportedAt).toBeTruthy();
         expect(importB.exportedAt).toBeTruthy();
       });
