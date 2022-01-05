@@ -6,9 +6,7 @@
   "rules": [
     {
       "propertyId": "account_name",
-      "operation": {
-        "op": "exists"
-      }
+      "op": "exists"
     }
   ]
 }

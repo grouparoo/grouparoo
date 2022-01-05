@@ -205,7 +205,7 @@ describe("mysql/table/recordProperty", () => {
           sourceMapping,
           aggregationMethod: "average",
         });
-        expect(value).toEqual(1.73);
+        expect(value).toEqual(1.625714);
       });
       test("count", async () => {
         const value = await getPropertyValue({
@@ -213,7 +213,7 @@ describe("mysql/table/recordProperty", () => {
           sourceMapping,
           aggregationMethod: "count",
         });
-        expect(value).toEqual(6);
+        expect(value).toEqual(7);
       });
       test("sum", async () => {
         const value = await getPropertyValue({
@@ -221,7 +221,7 @@ describe("mysql/table/recordProperty", () => {
           sourceMapping,
           aggregationMethod: "sum",
         });
-        expect(value).toEqual(10.38);
+        expect(value).toEqual(11.38);
       });
       test("min", async () => {
         const value = await getPropertyValue({
@@ -229,7 +229,7 @@ describe("mysql/table/recordProperty", () => {
           sourceMapping,
           aggregationMethod: "min",
         });
-        expect(value).toEqual(1.42);
+        expect(value).toEqual(1);
       });
       test("max", async () => {
         const value = await getPropertyValue({
@@ -248,7 +248,7 @@ describe("mysql/table/recordProperty", () => {
             sourceMapping,
             aggregationMethod: "count",
           });
-          expect(value).toEqual(6);
+          expect(value).toEqual(7);
         });
         test("min", async () => {
           const value = await getPropertyValue({
@@ -285,8 +285,39 @@ describe("mysql/table/recordProperty", () => {
     //   relativeMatchUnit?: string;
     //   relativeMatchDirection?: string;
     // }
+
+    describe.only("exists", () => {
+      const op = "exists";
+
+      test("string", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase" }]
+        );
+        expect(value).toEqual(6);
+      });
+    });
+    describe("does not exist", () => {
+      const op = "notExists";
+
+      test("string", async () => {
+        const value = await getPropertyValue(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase" }]
+        );
+        expect(value).toEqual(1);
+      });
+    });
     describe("equals", () => {
-      const op = "equals";
+      const op = "eq";
       test("integer", async () => {
         const value = await getPropertyValue(
           {
@@ -356,7 +387,7 @@ describe("mysql/table/recordProperty", () => {
     });
 
     describe("does not equal", () => {
-      const op = "does not equal";
+      const op = "ne";
       test("integer", async () => {
         const value = await getPropertyValue(
           {
@@ -366,7 +397,7 @@ describe("mysql/table/recordProperty", () => {
           },
           [{ op, key: "id", match: "15" }]
         );
-        expect(value).toEqual(5);
+        expect(value).toEqual(6);
       });
       test("string", async () => {
         const value = await getPropertyValue(
@@ -399,7 +430,7 @@ describe("mysql/table/recordProperty", () => {
           },
           [{ op, key: "date", match: "2020-02-15" }]
         );
-        expect(value).toEqual(5);
+        expect(value).toEqual(6);
       });
       test("timestamp", async () => {
         const value = await getPropertyValue(
@@ -410,7 +441,7 @@ describe("mysql/table/recordProperty", () => {
           },
           [{ op, key: "stamp", match: "2020-02-15 12:13:14" }]
         );
-        expect(value).toEqual(5);
+        expect(value).toEqual(6);
       });
       test("float", async () => {
         const value = await getPropertyValue(
@@ -421,12 +452,12 @@ describe("mysql/table/recordProperty", () => {
           },
           [{ op, key: "amount", match: "1.54" }]
         );
-        expect(value).toEqual(4);
+        expect(value).toEqual(5);
       });
     });
 
     describe("contains", () => {
-      const op = "contains";
+      const op = "substring";
       test("integer", async () => {
         const value = await getPropertyValue(
           {
@@ -496,7 +527,7 @@ describe("mysql/table/recordProperty", () => {
     });
 
     describe("does not contain", () => {
-      const op = "does not contain";
+      const op = "notSubstring";
       test("integer", async () => {
         const value = await getPropertyValue(
           {
@@ -506,7 +537,7 @@ describe("mysql/table/recordProperty", () => {
           },
           [{ op, key: "id", match: "15" }]
         );
-        expect(value).toEqual(5);
+        expect(value).toEqual(6);
       });
       test("string", async () => {
         const value = await getPropertyValue(
@@ -539,7 +570,7 @@ describe("mysql/table/recordProperty", () => {
           },
           [{ op, key: "date", match: "2020-02-15" }]
         );
-        expect(value).toEqual(5);
+        expect(value).toEqual(6);
       });
       test("timestamp", async () => {
         const value = await getPropertyValue(
@@ -550,7 +581,7 @@ describe("mysql/table/recordProperty", () => {
           },
           [{ op, key: "stamp", match: "2020-02-15 12:13:14" }]
         );
-        expect(value).toEqual(5);
+        expect(value).toEqual(6);
       });
       test("float", async () => {
         const value = await getPropertyValue(
@@ -561,12 +592,12 @@ describe("mysql/table/recordProperty", () => {
           },
           [{ op, key: "amount", match: "1.54" }]
         );
-        expect(value).toEqual(4);
+        expect(value).toEqual(5);
       });
     });
 
     describe("equals", () => {
-      const op = "equals";
+      const op = "eq";
       test("integer", async () => {
         const value = await getPropertyValue(
           {
@@ -636,7 +667,7 @@ describe("mysql/table/recordProperty", () => {
     });
 
     describe("greater than", () => {
-      const op = "greater than";
+      const op = "gt";
       test("integer", async () => {
         const value = await getPropertyValue(
           {
@@ -646,7 +677,7 @@ describe("mysql/table/recordProperty", () => {
           },
           [{ op, key: "id", match: "15" }]
         );
-        expect(value).toEqual(2);
+        expect(value).toEqual(3);
       });
       test("string", async () => {
         const value = await getPropertyValue(
@@ -679,7 +710,7 @@ describe("mysql/table/recordProperty", () => {
           },
           [{ op, key: "date", match: "2020-02-15" }]
         );
-        expect(value).toEqual(2);
+        expect(value).toEqual(3);
       });
       test("timestamp", async () => {
         const value = await getPropertyValue(
@@ -690,7 +721,7 @@ describe("mysql/table/recordProperty", () => {
           },
           [{ op, key: "stamp", match: "2020-02-15 12:13:14" }]
         );
-        expect(value).toEqual(2);
+        expect(value).toEqual(3);
       });
       test("float", async () => {
         const value = await getPropertyValue(
@@ -706,7 +737,7 @@ describe("mysql/table/recordProperty", () => {
     });
 
     describe("less than", () => {
-      const op = "less than";
+      const op = "lt";
       test("integer", async () => {
         const value = await getPropertyValue(
           {
@@ -771,7 +802,7 @@ describe("mysql/table/recordProperty", () => {
           },
           [{ op, key: "amount", match: "1.54" }]
         );
-        expect(value).toEqual(2);
+        expect(value).toEqual(3);
       });
     });
   });

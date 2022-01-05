@@ -496,9 +496,7 @@ describe("models/schedule", () => {
         expect((await schedule.$get("runs")).length).toBe(1);
         expect(run.highWaterMark).toEqual({ updated_at: 12345 });
 
-        await schedule.setFilters([
-          { key: "id", match: "0", op: "greater than" },
-        ]);
+        await schedule.setFilters([{ key: "id", match: "0", op: "gt" }]);
 
         await run.reload();
         expect(run.highWaterMark).toEqual({}); // the getter formats to an empty array
@@ -710,7 +708,7 @@ describe("models/schedule", () => {
                 return [
                   {
                     key: "id",
-                    ops: ["greater than", "less than"],
+                    ops: ["gt", "lt"],
                     canHaveRelativeMatch: false,
                   },
                 ];
@@ -835,25 +833,23 @@ describe("models/schedule", () => {
           sourceId: source.id,
         });
 
-        await schedule.setFilters([
-          { key: "id", match: "0", op: "greater than" },
-        ]);
+        await schedule.setFilters([{ key: "id", match: "0", op: "gt" }]);
         const filters = await schedule.getFilters();
 
         expect(FilterHelper.filtersAreEqual(filters, [])).toBe(false);
         expect(
           FilterHelper.filtersAreEqual(filters, [
-            { key: "id", match: "0", op: "greater than" },
+            { key: "id", match: "0", op: "gt" },
           ])
         ).toBe(true);
         expect(
           FilterHelper.filtersAreEqual(filters, [
-            { key: "id", match: "1", op: "greater than" },
+            { key: "id", match: "1", op: "gt" },
           ])
         ).toBe(false);
         expect(
           FilterHelper.filtersAreEqual(filters, [
-            { key: "id", match: "0", op: "less than" },
+            { key: "id", match: "0", op: "lt" },
           ])
         ).toBe(false);
 
@@ -871,7 +867,7 @@ describe("models/schedule", () => {
         expect(filterOptions).toEqual([
           {
             key: "id",
-            ops: ["greater than", "less than"],
+            ops: ["gt", "lt"],
             canHaveRelativeMatch: false,
           },
         ]);
@@ -886,12 +882,10 @@ describe("models/schedule", () => {
           sourceId: source.id,
         });
 
-        await schedule.setFilters([
-          { op: "greater than", match: 1, key: "id" },
-        ]);
+        await schedule.setFilters([{ op: "gt", match: 1, key: "id" }]);
 
         expect(schedule.filters.length).toBe(1);
-        expect(schedule.filters[0].op).toBe("greater than");
+        expect(schedule.filters[0].op).toBe("gt");
         expect(schedule.filters[0].match).toBe("1");
         expect(schedule.filters[0].key).toBe("id");
 
@@ -905,9 +899,7 @@ describe("models/schedule", () => {
           sourceId: source.id,
         });
 
-        await schedule.setFilters([
-          { op: "greater than", match: 999, key: "id" },
-        ]);
+        await schedule.setFilters([{ op: "gt", match: 999, key: "id" }]);
 
         schedule.filters = [
           Filter.build({
@@ -936,14 +928,14 @@ describe("models/schedule", () => {
         });
 
         await schedule.setFilters([
-          { op: "greater than", match: 1, key: "id" },
-          { op: "less than", match: 99, key: "id" },
+          { op: "gt", match: 1, key: "id" },
+          { op: "lt", match: 99, key: "id" },
         ]);
 
         const filters = await schedule.getFilters();
         expect(filters).toEqual([
           {
-            op: "greater than",
+            op: "gt",
             match: "1",
             key: "id",
             relativeMatchDirection: null,
@@ -951,7 +943,7 @@ describe("models/schedule", () => {
             relativeMatchUnit: null,
           },
           {
-            op: "less than",
+            op: "lt",
             match: "99",
             key: "id",
             relativeMatchDirection: null,
@@ -976,9 +968,7 @@ describe("models/schedule", () => {
         });
 
         await expect(
-          schedule.setFilters([
-            { op: "greater than", match: 1, key: "other-key" },
-          ])
+          schedule.setFilters([{ op: "gt", match: 1, key: "other-key" }])
         ).rejects.toThrow("other-key is not filterable");
 
         await expect(

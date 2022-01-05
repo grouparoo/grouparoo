@@ -16,6 +16,21 @@ export namespace FilterHelper {
     relativeMatchDirection?: string;
   }
 
+  export const deprecatedFilters = {
+    equals: "eq",
+    "does not equal": "ne",
+    "greater than": "gt",
+    "greater than or equal to": "gte",
+    "less than": "lt",
+    "less than or equal to": "lte",
+    contains: "substring",
+    "does not contain": "notSubstring",
+  };
+
+  /**
+   * Get the existing filters for an instance
+   *
+   */
   export async function getFilters(instance: Property | Schedule) {
     const filtersWithCol: FiltersWithKey[] = [];
     const filters = instance.filters
@@ -42,6 +57,10 @@ export namespace FilterHelper {
     return filtersWithCol;
   }
 
+  /**
+   * Set the filters for an instance
+   *
+   */
   export async function setFilters(
     instance: Property | Schedule,
     filters: FiltersWithKey[],
@@ -90,6 +109,10 @@ export namespace FilterHelper {
     }
   }
 
+  /**
+   * Validate filters for an instance
+   *
+   */
   export async function validateFilters(
     instance: Property | Schedule,
     filters: FiltersWithKey[]
@@ -105,6 +128,7 @@ export namespace FilterHelper {
       if (!relevantOption) {
         throw new Error(`${filter.key} is not filterable`);
       }
+
       if (!relevantOption.ops.includes(filter.op)) {
         throw new Error(`"${filter.op}" cannot be applied to ${filter.key}`);
       }
@@ -112,7 +136,7 @@ export namespace FilterHelper {
   }
 
   /**
-   * Get the options for a Property's Filter from its plugin
+   * Get the options for an instance's Filter from its plugin
    */
   export async function pluginFilterOptions(instance: Property | Schedule) {
     const { pluginConnection } = await instance.getPlugin();

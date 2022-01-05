@@ -8,6 +8,7 @@ import {
   IdsByClass,
 } from "../../classes/codeConfig";
 import { Property, Source } from "../..";
+import { FilterHelper } from "../filterHelper";
 import { Op } from "sequelize";
 import { Deprecation } from "../deprecation";
 
@@ -58,6 +59,18 @@ export async function loadProperty(
   });
 
   if (configObject.filters) {
+    for (const filter of configObject.filters) {
+      if (Object.keys(FilterHelper.deprecatedFilters).includes(filter.op)) {
+        throw new Error(
+          `Property filter \`${
+            filter.op
+          }\` has been deprecated and replaced with \`${
+            FilterHelper.deprecatedFilters[filter.op]
+          }\`. Read more at https://www.grouparoo.com/docs/config/code-config/properties`
+        );
+      }
+    }
+
     await property.setFilters(configObject.filters, externallyValidate);
   }
 

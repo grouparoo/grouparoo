@@ -56,67 +56,32 @@ describe("mongo/table/sourceFilters", () => {
 
     expect(columns[0]).toMatchObject({
       key: "_id",
-      ops: ["equals", "does not equal", "contains", "does not contain"],
+      ops: ["eq", "ne", "substring", "notSubstring"],
     });
 
     expect(columns[1]).toMatchObject({
       key: "amount",
-      ops: [
-        "equals",
-        "does not equal",
-        "greater than",
-        "greater than or equal to",
-        "less than",
-        "less than or equal to",
-      ],
+      ops: ["eq", "ne", "gt", "gte", "lt", "lte"],
     });
     expect(columns[2]).toMatchObject({
       key: "date",
-      ops: [
-        "equals",
-        "does not equal",
-        "greater than",
-        "greater than or equal to",
-        "less than",
-        "less than or equal to",
-      ],
+      ops: ["eq", "ne", "gt", "gte", "lt", "lte"],
     });
     expect(columns[3]).toMatchObject({
       key: "id",
-      ops: [
-        "equals",
-        "does not equal",
-        "greater than",
-        "greater than or equal to",
-        "less than",
-        "less than or equal to",
-      ],
+      ops: ["eq", "ne", "gt", "gte", "lt", "lte"],
     });
     expect(columns[5]).toMatchObject({
       key: "record_id",
-      ops: [
-        "equals",
-        "does not equal",
-        "greater than",
-        "greater than or equal to",
-        "less than",
-        "less than or equal to",
-      ],
+      ops: ["eq", "ne", "gt", "gte", "lt", "lte"],
     });
     expect(columns[4]).toMatchObject({
       key: "purchase",
-      ops: ["equals", "does not equal", "contains", "does not contain"],
+      ops: ["eq", "ne", "substring", "notSubstring"],
     });
     expect(columns[6]).toMatchObject({
       key: "stamp",
-      ops: [
-        "equals",
-        "does not equal",
-        "greater than",
-        "greater than or equal to",
-        "less than",
-        "less than or equal to",
-      ],
+      ops: ["eq", "ne", "gt", "gte", "lt", "lte"],
     });
   });
 });

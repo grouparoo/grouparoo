@@ -161,7 +161,7 @@ describe("actions/properties", () => {
       expect(options).toEqual([
         {
           key: "id",
-          ops: ["greater than", "less than"],
+          ops: ["gt", "lt"],
           canHaveRelativeMatch: false,
         },
       ]);
@@ -171,7 +171,7 @@ describe("actions/properties", () => {
       connection.params = {
         csrfToken,
         id,
-        filters: [{ key: "id", op: "greater than", match: 6 }],
+        filters: [{ key: "id", op: "gt", match: 6 }],
       };
       const { error, property } = await specHelper.runAction<PropertyEdit>(
         "property:edit",
@@ -183,7 +183,7 @@ describe("actions/properties", () => {
         {
           key: "id",
           match: "6",
-          op: "greater than",
+          op: "gt",
           relativeMatchDirection: null,
           relativeMatchNumber: null,
           relativeMatchUnit: null,

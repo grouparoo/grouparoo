@@ -9,6 +9,13 @@ module.exports = async function getConfig() {
     },
 
     {
+      id: "mod_profiles",
+      class: "Model",
+      name: "Profiles",
+      type: "profile",
+    },
+
+    {
       id: "data_warehouse", // id -> `data_warehouse`
       name: "Data Warehouse",
       class: "App",
@@ -16,13 +23,6 @@ module.exports = async function getConfig() {
       options: {
         fileId: "test-file-path.db",
       },
-    },
-
-    {
-      id: "mod_profiles",
-      class: "Model",
-      name: "Profiles",
-      type: "profile",
     },
 
     {
@@ -61,24 +61,11 @@ module.exports = async function getConfig() {
       type: "email",
       unique: true,
       isArray: false,
-      sourceId: "users_table", // sourceId -> `users_table`
+      sourceId: "users_table",
       options: {
         column: "email",
       },
-      filters: [],
-    },
-
-    {
-      id: "broken_group", // id -> `marketing_team`
-      name: "People with Email Addresses",
-      class: "Group",
-      modelId: "mod_profiles",
-      rules: [
-        {
-          propertyId: "missing_record_property",
-          op: "exists",
-        },
-      ],
+      filters: [{ key: "userId", op: "greater than", match: 5 }],
     },
   ];
 };

@@ -692,7 +692,7 @@ describe("modules/configWriter", () => {
 
     test("schedules can provide their config objects", async () => {
       const schedule: Schedule = await helper.factories.schedule(source);
-      const filterObj = { key: "id", match: "0", op: "greater than" };
+      const filterObj = { key: "id", match: "0", op: "gt" };
       await schedule.setFilters([filterObj]);
       const config = await schedule.getConfigObject();
 
@@ -811,7 +811,7 @@ describe("modules/configWriter", () => {
     });
 
     test("properties can provide their config objects", async () => {
-      const filterObj = { key: "id", match: "0", op: "greater than" };
+      const filterObj = { key: "id", match: "0", op: "gt" };
       await property.setFilters([filterObj]);
 
       const config = await property.getConfigObject();
@@ -875,7 +875,7 @@ describe("modules/configWriter", () => {
         {
           propertyId: "grouparooId",
           match: "nobody",
-          operation: { op: "eq" },
+          op: "eq",
           relativeMatchDirection: null,
           relativeMatchNumber: null,
           relativeMatchUnit: null,
@@ -899,7 +899,7 @@ describe("modules/configWriter", () => {
           {
             propertyId: property.getConfigId(),
             match: "nobody",
-            operation: { op: "eq" },
+            op: "eq",
             relativeMatchDirection: null,
             relativeMatchNumber: null,
             relativeMatchUnit: null,

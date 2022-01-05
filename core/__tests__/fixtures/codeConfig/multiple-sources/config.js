@@ -148,7 +148,7 @@ module.exports = async function getConfig() {
         aggregationMethod: "count",
         sortColumn: null,
       },
-      filters: [{ key: "state", op: "equals", match: "successful" }],
+      filters: [{ key: "state", op: "eq", match: "successful" }],
     },
 
     {
@@ -159,11 +159,11 @@ module.exports = async function getConfig() {
       rules: [
         {
           propertyId: "user_id",
-          operation: { op: "exists" },
+          op: "exists",
         },
         {
           propertyId: "email",
-          operation: { op: "like" },
+          op: "like",
           match: "%@%",
         },
       ],

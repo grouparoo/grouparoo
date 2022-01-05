@@ -1,9 +1,13 @@
 import { ActionheroLogLevel, log } from "actionhero";
 import {
+  GroupRuleOpType,
+  RelativeMatchUnitType,
+  RelativeMatchDirectionType,
+} from "../modules/ruleOpsDictionary";
+import {
   DestinationCollection,
   DestinationSyncMode,
 } from "../models/Destination";
-import { GroupRuleWithKey } from "../models/Group";
 import { PropertyFiltersWithKey } from "../models/Property";
 import { MustacheUtils } from "../modules/mustacheUtils";
 import { TopLevelGroupRules } from "../modules/topLevelGroupRules";
@@ -61,10 +65,21 @@ export interface DestinationConfigurationObject extends ConfigurationObject {
   destinationGroupMemberships?: { [key: string]: string };
 }
 
+export interface GroupRuleConfigurationObject {
+  key?: string;
+  propertyId?: string;
+  type?: string;
+  op: GroupRuleOpType;
+  match?: string | number | boolean;
+  relativeMatchNumber?: number;
+  relativeMatchUnit?: RelativeMatchUnitType;
+  relativeMatchDirection?: RelativeMatchDirectionType;
+}
+
 export interface GroupConfigurationObject extends ConfigurationObject {
   name: string;
   modelId: string;
-  rules?: GroupRuleWithKey[];
+  rules?: GroupRuleConfigurationObject[];
 }
 
 export interface RecordConfigurationObject extends ConfigurationObject {
