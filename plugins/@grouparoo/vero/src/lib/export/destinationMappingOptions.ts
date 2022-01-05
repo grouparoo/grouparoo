@@ -1,30 +1,49 @@
-import { DestinationMappingOptionsMethod } from "@grouparoo/core";
+import {
+  DestinationMappingOptionsMethod,
+  DestinationMappingOptionsResponseType,
+} from "@grouparoo/core";
+
+interface KnownVeroField {
+  key: string;
+  type: DestinationMappingOptionsResponseType;
+  required?: boolean;
+}
+
+export const getKnownFields = (): KnownVeroField[] => {
+  return [
+    {
+      key: "id",
+      type: "string",
+      required: true,
+    },
+    {
+      key: "email",
+      type: "email",
+    },
+  ];
+};
 
 export const destinationMappingOptions: DestinationMappingOptionsMethod =
-  async () => ({
-    labels: {
-      property: {
-        singular: "Vero Field",
-        plural: "Vero Fields",
-      },
-      group: {
-        singular: "Vero Filter",
-        plural: "Vero Filters",
-      },
-    },
-    properties: {
-      known: [
-        {
-          key: "email",
-          type: "email",
+  async () => {
+    const allKnown = getKnownFields();
+    const required = allKnown.filter((field) => field.required);
+    const knownNotRequired = allKnown.filter((field) => !field.required);
+
+    return {
+      labels: {
+        property: {
+          singular: "Vero Field",
+          plural: "Vero Fields",
         },
-      ],
-      required: [
-        {
-          key: "id",
-          type: "string",
+        group: {
+          singular: "Vero Filter",
+          plural: "Vero Filters",
         },
-      ],
-      allowOptionalFromProperties: true,
-    },
-  });
+      },
+      properties: {
+        known: knownNotRequired,
+        required,
+        allowOptionalFromProperties: true,
+      },
+    };
+  };

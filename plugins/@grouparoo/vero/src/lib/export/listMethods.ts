@@ -10,6 +10,10 @@ export async function handleGroupChanges(
     (groupName) => !newGroups.includes(groupName)
   );
 
+  if (newGroups.length === 0 && groupsToRemove.length === 0) {
+    return;
+  }
+
   await client.updateUserTags(
     newRecordProperties["id"],
     newGroups.map((groupName) => `In Group: ${groupName}`),

@@ -2,6 +2,7 @@ import { Errors, ExportRecordPluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
 import { VeroClient } from "../client";
 import { handleGroupChanges } from "./listMethods";
+import { getKnownFields } from "./destinationMappingOptions";
 
 export const exportRecord = async (args) => {
   try {
@@ -80,6 +81,9 @@ export async function makePayload(
 ) {
   const payload: any = {};
 
+  const knownFields = getKnownFields();
+  const knownFieldsKeys = knownFields.map((field) => field.key);
+
   // set record properties, including old ones
   const allFields = new Set([
     ...Object.keys(newRecordProperties),
@@ -88,7 +92,12 @@ export async function makePayload(
 
   for (const fieldName of allFields) {
     const value = newRecordProperties[fieldName];
-    payload[fieldName] = formatVar(value);
+    if (knownFieldsKeys.includes(fieldName)) {
+      payload[fieldName] = formatVar(value);
+    } else {
+      payload.data ??= {};
+      payload.data[fieldName] = formatVar(value);
+    }
   }
 
   return payload;
