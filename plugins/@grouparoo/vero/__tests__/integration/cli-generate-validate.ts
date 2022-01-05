@@ -2,6 +2,6 @@ import { join } from "path";
 import { CLISpecHelper } from "@grouparoo/spec-helper";
 
 CLISpecHelper.validateGenerators(
-  "@grouparoo/pipedrive",
+  "@grouparoo/vero",
   join(__dirname, "..", "..")
 );
