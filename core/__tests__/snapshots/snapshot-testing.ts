@@ -36,8 +36,9 @@ describe("test grouparoo records", () => {
           purchases: ["hat", "mushroom"],
           purchaseAmounts: [100, 200],
         };
+        type dataType = keyof typeof data;
 
-        return data[property.key];
+        return data[property.key as dataType];
       };
     });
 
