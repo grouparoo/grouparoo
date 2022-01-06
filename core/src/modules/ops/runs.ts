@@ -75,8 +75,7 @@ export namespace RunOps {
       nextBoundary: number;
       steps: {
         associate: number;
-        recordsUpdated: number;
-        groupsUpdated: number;
+        imported: number;
         exported: number;
       };
     }[] = [];
