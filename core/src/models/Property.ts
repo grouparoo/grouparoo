@@ -379,7 +379,6 @@ export class Property extends LoggedModel<Property> {
         { state: "pending" },
         { where: { modelId: modelId } }
       );
-
     }
   }
 
