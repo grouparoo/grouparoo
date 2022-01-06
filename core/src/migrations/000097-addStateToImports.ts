@@ -19,23 +19,23 @@ export default {
     });
 
     await queryInterface.sequelize.query(
-      `UPDATE "imports" SET "state"='associating' WHERE "recordAssociatedAt" IS NULL`
+      `UPDATE "imports" SET "state"='failed' WHERE "errorMessage" IS NOT NULL AND "state" IS NULL`
     );
 
     await queryInterface.sequelize.query(
-      `UPDATE "imports" SET "state"='importing' WHERE "recordAssociatedAt" IS NOT NULL AND "importedAt" IS NULL`
+      `UPDATE "imports" SET "state"='associating' WHERE "recordAssociatedAt" IS NULL AND "state" IS NULL`
     );
 
     await queryInterface.sequelize.query(
-      `UPDATE "imports" SET "state"='exporting' WHERE "recordAssociatedAt" IS NOT NULL AND "importedAt" IS NOT NULL AND "exportedAt" IS NULL`
+      `UPDATE "imports" SET "state"='importing' WHERE "recordAssociatedAt" IS NOT NULL AND "importedAt" IS NULL AND "state" IS NULL`
     );
 
     await queryInterface.sequelize.query(
-      `UPDATE "imports" SET "state"='complete' WHERE "recordAssociatedAt" IS NOT NULL AND "importedAt" IS NOT NULL AND "exportedAt" IS NOT NULL`
+      `UPDATE "imports" SET "state"='exporting' WHERE "recordAssociatedAt" IS NOT NULL AND "importedAt" IS NOT NULL AND "exportedAt" IS NULL AND "state" IS NULL`
     );
 
     await queryInterface.sequelize.query(
-      `UPDATE "imports" SET "state"='failed' WHERE "errorMessage" IS NOT NULL`
+      `UPDATE "imports" SET "state"='complete' WHERE "recordAssociatedAt" IS NOT NULL AND "importedAt" IS NOT NULL AND "exportedAt" IS NOT NULL AND "state" IS NULL`
     );
 
     await queryInterface.changeColumn("imports", "state", {
