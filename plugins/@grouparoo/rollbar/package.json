@@ -31,23 +31,22 @@
     "rollbar": "2.24.0"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.8.0-alpha.3",
-    "@grouparoo/spec-helper": "0.8.0-alpha.3",
+    "@grouparoo/core": "0.8.0-alpha.4",
+    "@grouparoo/spec-helper": "0.8.0-alpha.4",
     "@types/jest": "*",
-    "@types/node": "*",
-    "actionhero": "27.0.3",
-    "jest": "27.0.6",
-    "prettier": "2.3.2",
-    "ts-jest": "27.0.5",
-    "typescript": "4.3.5"
+    "@types/node": "16.*.*",
+    "actionhero": "28.1.2",
+    "jest": "27.4.5",
+    "prettier": "2.5.1",
+    "ts-jest": "27.1.2",
+    "typescript": "4.5.4"
   },
   "grouparoo": {
     "env": {
       "api": [
         "ROLLBAR_ACCESS_TOKEN"
       ]
-    },
-    "serverInjection": []
+    }
   },
   "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"
 }
