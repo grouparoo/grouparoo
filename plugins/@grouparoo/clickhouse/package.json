@@ -38,7 +38,7 @@
     "@grouparoo/spec-helper": "0.8.0-alpha.4",
     "@types/jest": "*",
     "@types/node": "16.*.*",
-    "actionhero": "28.1.1",
+    "actionhero": "28.1.2",
     "csv-parse": "4.16.3",
     "jest": "27.4.5",
     "prettier": "2.5.1",

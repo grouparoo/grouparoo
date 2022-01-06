@@ -31,7 +31,7 @@
   "dependencies": {
     "@grouparoo/app-templates": "0.8.0-alpha.4",
     "@grouparoo/core": "0.8.0-alpha.4",
-    "actionhero": "28.1.1",
+    "actionhero": "28.1.2",
     "airtable": "0.11.1",
     "axios": "0.24.0"
   },
@@ -40,7 +40,7 @@
     "@grouparoo/spec-helper": "0.8.0-alpha.4",
     "@types/jest": "*",
     "@types/node": "16.*.*",
-    "actionhero": "28.1.1",
+    "actionhero": "28.1.2",
     "dotenv": "10.0.0",
     "fs-extra": "10.0.0",
     "jest": "27.4.5",
