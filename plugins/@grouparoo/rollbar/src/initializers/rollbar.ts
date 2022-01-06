@@ -1,5 +1,6 @@
-import { Initializer, api, env, ExceptionReporter } from "actionhero";
 import Rollbar from "rollbar";
+import { Initializer, api, env, ExceptionReporter } from "actionhero";
+import { plugin } from "@grouparoo/core";
 
 const packageJSON = require("./../../package.json");
 
@@ -21,7 +22,7 @@ export class RollbarInitializer extends Initializer {
       accessToken: process.env.ROLLBAR_ACCESS_TOKEN,
       environment: env,
       captureUncaught: true,
-      captureUnhandledRejections: true
+      captureUnhandledRejections: true,
     });
 
     const rollbarExceptionReporter: ExceptionReporter = (error: Error) => {
@@ -29,10 +30,5 @@ export class RollbarInitializer extends Initializer {
     };
 
     api.exceptionHandlers.reporters.push(rollbarExceptionReporter);
-  }
-
-  async stop() {
-    try {
-    } catch (e) {}
   }
 }
