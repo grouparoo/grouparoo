@@ -6,13 +6,14 @@ import { loadAppOptions, updater } from "../utils/nockHelper";
 import { VeroClient } from "../../src/lib/client";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 import { exportRecord } from "../../src/lib/export/exportRecord";
+import * as readline from "readline";
 
 let client: VeroClient;
 
-let profileId = "user-101";
-let profileId2 = "user-102";
-let profileId3 = "user-103";
-let profileId4 = "user-104";
+let profileId = "user101";
+let profileId2 = "user102";
+let profileId3 = "user103";
+let profileId4 = "user104";
 let nonexistentprofileId = "user-not-found";
 
 const groupOne = "TEST High Value";
@@ -67,6 +68,24 @@ async function runExport({
   });
 }
 
+const manualCheck = async (...instructions: string[]) => {
+  if (process.env.CI) {
+    return;
+  }
+
+  console.info(instructions.join("\n"));
+
+  const reader = readline.createInterface(process.stdin, process.stdout);
+
+  return new Promise<void>((resolve) => {
+    reader.question("Press [ENTER] to continue.", () => {
+      reader.close();
+      console.info("Wait for the next check, or the tests to be done.");
+      resolve();
+    });
+  });
+};
+
 describe("vero/exportRecord", () => {
   beforeAll(async () => {
     client = await connect(appOptions);
@@ -89,6 +108,12 @@ describe("vero/exportRecord", () => {
     });
 
     expect(result.success).toBeTruthy();
+
+    await manualCheck(
+      "Go to https://app.getvero.com/customers?search=user",
+      "You should be able to see a user with ID: `user101`",
+      "Note: it could take several seconds to be able to see the updates."
+    );
   });
 
   test("can not create a Profile without an id", async () => {
@@ -165,6 +190,15 @@ describe("vero/exportRecord", () => {
     });
 
     expect(result.success).toBeTruthy();
+
+    await manualCheck(
+      "Go to https://app.getvero.com/customers?search=user",
+      "You should be able to see a user with ID: `user101`",
+      "Click on that user, you should find these properties on the user's page",
+      "  - first_name: John",
+      "  - last_name:  Deo",
+      "Note: it could take several seconds to be able to see the updates."
+    );
   });
 
   test("can change Profile fields and add new ones", async () => {
@@ -186,6 +220,16 @@ describe("vero/exportRecord", () => {
     });
 
     expect(result.success).toBeTruthy();
+
+    await manualCheck(
+      "Go to https://app.getvero.com/customers?search=user",
+      "You should be able to see a user with ID: `user101`",
+      "Click on that user, you should find these properties on the user's page",
+      "  - first_name: Johnny",
+      "  - last_name:  Deo",
+      "  - phone:      9876543210",
+      "Note: it could take several seconds to be able to see the updates."
+    );
   });
 
   test("can clear Profile fields", async () => {
@@ -207,6 +251,13 @@ describe("vero/exportRecord", () => {
     });
 
     expect(result.success).toBeTruthy();
+
+    await manualCheck(
+      "Go to https://app.getvero.com/customers?search=user",
+      "You should be able to see a user with ID: `user101`",
+      "Click on that user, you should find that property `phone` is not exists",
+      "Note: it could take several seconds to be able to see the updates."
+    );
   });
 
   test("can add Profile to groups", async () => {
@@ -227,6 +278,15 @@ describe("vero/exportRecord", () => {
     });
 
     expect(result.success).toBeTruthy();
+
+    await manualCheck(
+      "Go to https://app.getvero.com/customers?search=user",
+      "You should be able to see a user with ID: `user101`",
+      "Click on that user, you should find these tags",
+      "  - TEST High Value",
+      "  - TEST Spanish Speaking",
+      "Note: it could take several seconds to be able to see the updates."
+    );
   });
 
   test("can remove group membership", async () => {
@@ -247,6 +307,14 @@ describe("vero/exportRecord", () => {
     });
 
     expect(result.success).toBeTruthy();
+
+    await manualCheck(
+      "Go to https://app.getvero.com/customers?search=user",
+      "You should be able to see a user with ID: `user101`",
+      "Click on that user, you should find only this tag",
+      "  - TEST High Value",
+      "Note: it could take several seconds to be able to see the updates."
+    );
   });
 
   test("can change id", async () => {
@@ -267,6 +335,17 @@ describe("vero/exportRecord", () => {
     });
 
     expect(result.success).toBeTruthy();
+
+    await manualCheck(
+      "Go to https://app.getvero.com/customers?search=user",
+      "You should be able to see a user with ID: `user102`",
+      "You should NOT be able to see a user with ID: `user101`",
+      "Click on user102, and check this properties and tags",
+      "  - first_name: Johnny",
+      "  - last_name:  Deo",
+      "  - TAG:        TEST High Value",
+      "Note: it could take several seconds to be able to see the updates."
+    );
   });
 
   test("can remove profile from group without creating it", async () => {
@@ -287,6 +366,13 @@ describe("vero/exportRecord", () => {
     });
 
     expect(result.success).toBeTruthy();
+
+    await manualCheck(
+      "Go to https://app.getvero.com/customers?search=user",
+      "You should be able to see a user with ID: `user102`",
+      "Click on user102, and check that the user has only one tag `TEST High Value`",
+      "Note: it could take several seconds to be able to see the updates."
+    );
   });
 
   test("can add a Profile passing a nonexistent id on the oldRecordProperties", async () => {
@@ -299,6 +385,13 @@ describe("vero/exportRecord", () => {
     });
 
     expect(result.success).toBeTruthy();
+
+    await manualCheck(
+      "Go to https://app.getvero.com/customers?search=user",
+      "You should be able to see a user with ID: `user103`",
+      "You should not be able to see a user with ID: `user-not-found`",
+      "Note: it could take several seconds to be able to see the updates."
+    );
   });
 
   test("can update the correct Profile on id change if both ids exist", async () => {
@@ -315,6 +408,16 @@ describe("vero/exportRecord", () => {
     });
 
     expect(result.success).toBeTruthy();
+
+    await manualCheck(
+      "Go to https://app.getvero.com/customers?search=user",
+      "You should be able to see a user with ID: `user102`",
+      "You should NOT be able to see a user with ID: `user103`",
+      "On user 102, you should be able to see these properties",
+      "  - first_name: Bobby",
+      "  - last_name:  Jones",
+      "Note: it could take several seconds to be able to see the updates."
+    );
   });
 
   test("cannot delete a Profile if sync mode does not allow it", async () => {
@@ -360,6 +463,12 @@ describe("vero/exportRecord", () => {
     });
 
     expect(result.success).toBeTruthy();
+
+    await manualCheck(
+      "Go to https://app.getvero.com/customers?search=user",
+      "You should NOT be able to see a user with ID: `user102`",
+      "Note: it could take several seconds to be able to see the updates."
+    );
   });
 
   test("can delete a Profile when syncing for the first time", async () => {
@@ -372,6 +481,12 @@ describe("vero/exportRecord", () => {
     });
 
     expect(result.success).toBeTruthy();
+
+    await manualCheck(
+      "Go to https://app.getvero.com/customers?search=user",
+      "You should NOT be able to see a user with ID: `user103`",
+      "Note: it could take several seconds to be able to see the updates."
+    );
   });
 
   test("can add a Profile with a new group at the same time", async () => {
@@ -384,53 +499,58 @@ describe("vero/exportRecord", () => {
     });
 
     expect(result.success).toBeTruthy();
+
+    await manualCheck(
+      "Go to https://app.getvero.com/customers?search=user",
+      "You should be able to see a user with ID: `user104`",
+      "Click on user104, and check this properties and tags",
+      "  - first_name: Jill",
+      "  - TAG:        TEST Recently Added",
+      "Note: it could take several seconds to be able to see the updates."
+    );
   });
 
-  // TODO: re-think about this
-  // test("can delete the correct Profile on id change if both ids exist", async () => {
-  //   // create someone
-  //   const result = await runExport({
-  //     oldRecordProperties: {},
-  //     newRecordProperties: {
-  //       id: profileId,
-  //       first_name: "John",
-  //       last_name: "Doe",
-  //     },
-  //     oldGroups: [],
-  //     newGroups: [],
-  //     toDelete: false,
-  //   });
-  //
-  //   // delete them
-  //   const result = await runExport({
-  //     oldRecordProperties: {
-  //       first_name: "Mike",
-  //       last_name: "Doe",
-  //       id: profileId4,
-  //     },
-  //     newRecordProperties: {
-  //       first_name: "Mike",
-  //       last_name: "Doe",
-  //       id: profileId,
-  //     },
-  //     oldGroups: [],
-  //     newGroups: [],
-  //     toDelete: true,
-  //   });
-  // });
+  test("can delete the correct Profile on id change if both ids exist", async () => {
+    // create someone
+    let result = await runExport({
+      oldRecordProperties: {},
+      newRecordProperties: {
+        id: profileId,
+        first_name: "John",
+        last_name: "Doe",
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+    });
 
-  // TODO: re-think about this
-  // test("can delete a Profile when changing id at the same time", async () => {
-  //   const result = await runExport({
-  //     oldRecordProperties: { id: profileId4, first_name: "Jill" },
-  //     newRecordProperties: { id: nonexistentprofileId, first_name: "Jill" },
-  //     oldGroups: [],
-  //     newGroups: [],
-  //     toDelete: true,
-  //   });
-  //
-  //   expect(result.success).toBeTruthy();
-  // });
+    expect(result.success).toBeTruthy();
+
+    // delete them
+    result = await runExport({
+      oldRecordProperties: {
+        first_name: "Mike",
+        last_name: "Doe",
+        id: profileId4,
+      },
+      newRecordProperties: {
+        first_name: "Mike",
+        last_name: "Doe",
+        id: profileId,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: true,
+    });
+
+    expect(result.success).toBeTruthy();
+
+    await manualCheck(
+      "Go to https://app.getvero.com/customers?search=user",
+      "You should NOT be able to see a user with ID: `user104`",
+      "Note: it could take several seconds to be able to see the updates."
+    );
+  });
 
   test("can delete a nonexistent Profile", async () => {
     const result = await runExport({
@@ -442,5 +562,11 @@ describe("vero/exportRecord", () => {
     });
 
     expect(result.success).toBeTruthy();
+
+    await manualCheck(
+      "Go to https://app.getvero.com/customers?search=user",
+      "You should NOT be able to see a user with ID: `user-not-found`",
+      "Note: it could take several seconds to be able to see the updates."
+    );
   });
 });
