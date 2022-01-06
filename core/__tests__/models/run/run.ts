@@ -539,8 +539,7 @@ describe("models/run", () => {
         creatorType: "run",
         creatorId: run.id,
         recordAssociatedAt: new Date(),
-        recordUpdatedAt: new Date(),
-        groupsUpdatedAt: new Date(),
+        importedAt: new Date(),
         exportedAt: new Date(),
         createdRecord: true,
       });
@@ -552,8 +551,7 @@ describe("models/run", () => {
         creatorType: "run",
         creatorId: run.id,
         recordAssociatedAt: new Date(),
-        recordUpdatedAt: new Date(),
-        groupsUpdatedAt: new Date(),
+        importedAt: new Date(),
         exportedAt: new Date(),
       });
 
@@ -564,8 +562,7 @@ describe("models/run", () => {
         creatorType: "run",
         creatorId: run.id,
         recordAssociatedAt: new Date(),
-        recordUpdatedAt: new Date(),
-        groupsUpdatedAt: new Date(),
+        importedAt: new Date(),
         exportedAt: new Date(),
       });
 
@@ -585,22 +582,18 @@ describe("models/run", () => {
       const quantizedTimeline = await run.quantizedTimeline();
       expect(quantizedTimeline.length).toBe(25 + 4);
       let associateTotal = 0;
-      let updateTotal = 0;
-      let groupsTotal = 0;
+      let importTotal = 0;
       quantizedTimeline.map((q) => {
         expect(q.steps.associate).toBeLessThanOrEqual(1);
-        expect(q.steps.recordsUpdated).toBeLessThanOrEqual(1);
-        expect(q.steps.groupsUpdated).toBeLessThanOrEqual(1);
+        expect(q.steps.imported).toBeLessThanOrEqual(1);
         expect(q.steps.exported).toBeLessThanOrEqual(1);
 
         associateTotal += q.steps.associate;
-        updateTotal += q.steps.recordsUpdated;
-        groupsTotal += q.steps.groupsUpdated;
+        importTotal += q.steps.imported;
       });
 
       expect(associateTotal).toBe(3);
-      expect(updateTotal).toBe(3);
-      expect(groupsTotal).toBe(3);
+      expect(importTotal).toBe(3);
     });
   });
 

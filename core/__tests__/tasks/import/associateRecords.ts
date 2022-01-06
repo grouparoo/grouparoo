@@ -35,7 +35,11 @@ describe("tasks/import:associateRecords", () => {
   test("it will not include imports that have already been associated to a record", async () => {
     const _import = await helper.factories.import();
     await api.resque.queue.connection.redis.flushdb();
-    await _import.update({ recordId: "abc", recordAssociatedAt: new Date() });
+    await _import.update({
+      state: "importing",
+      recordId: "abc",
+      recordAssociatedAt: new Date(),
+    });
 
     await specHelper.runTask("import:associateRecords", {});
 
@@ -109,7 +113,7 @@ describe("tasks/import:associateRecords", () => {
     const _import = await helper.factories.import();
     await api.resque.queue.connection.redis.flushdb();
 
-    await _import.update({ errorMessage: "I broke" });
+    await _import.update({ state: "failed", errorMessage: "I broke" });
 
     await specHelper.runTask("import:associateRecords", {});
 

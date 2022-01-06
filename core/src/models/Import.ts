@@ -8,18 +8,19 @@ import {
   AfterCreate,
   Default,
   AfterBulkCreate,
+  BeforeSave,
 } from "sequelize-typescript";
 import { config } from "actionhero";
+import Moment from "moment";
+import { Op } from "sequelize";
 import { CLS } from "../modules/cls";
 import { GrouparooRecord } from "./GrouparooRecord";
 import { Run } from "./Run";
 import { plugin } from "../modules/plugin";
-import Moment from "moment";
-import { Op } from "sequelize";
 import { ImportOps } from "../modules/ops/import";
 import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
-import { GrouparooModel } from "./GrouparooModel";
+import { StateMachine } from "../modules/stateMachine";
 
 export interface ImportData {
   [key: string]: any;
@@ -31,11 +32,35 @@ export interface ImportRecordProperties {
 
 const IMPORT_CREATORS = ["run"] as const;
 
+const STATES = [
+  "associating",
+  "importing",
+  "exporting",
+  "failed",
+  "complete",
+] as const;
+
+const STATE_TRANSITIONS = [
+  { from: "associating", to: "failed", checks: [] },
+  { from: "associating", to: "importing", checks: [] },
+  { from: "importing", to: "failed", checks: [] },
+  { from: "importing", to: "complete", checks: [] },
+  { from: "importing", to: "exporting", checks: [] },
+  { from: "exporting", to: "failed", checks: [] },
+  { from: "exporting", to: "complete", checks: [] },
+];
+
 @Table({ tableName: "imports", paranoid: false })
 export class Import extends CommonModel<Import> {
   idPrefix() {
     return "imp";
   }
+
+  @AllowNull(false)
+  @Default("associating")
+  @Column(DataType.ENUM(...STATES))
+  state: typeof STATES[number];
+
   @AllowNull(false)
   @Column(DataType.ENUM(...IMPORT_CREATORS))
   creatorType: typeof IMPORT_CREATORS[number];
@@ -130,10 +155,7 @@ export class Import extends CommonModel<Import> {
   recordAssociatedAt: Date;
 
   @Column
-  recordUpdatedAt: Date;
-
-  @Column
-  groupsUpdatedAt: Date;
+  importedAt: Date;
 
   @Column
   exportedAt: Date;
@@ -157,6 +179,8 @@ export class Import extends CommonModel<Import> {
     const record = await this.$get("record");
 
     return {
+      state: this.state,
+
       // IDs
       id: this.id,
       creatorType: this.creatorType,
@@ -172,8 +196,7 @@ export class Import extends CommonModel<Import> {
       createdAt: APIData.formatDate(this.createdAt),
       startedAt: APIData.formatDate(this.startedAt),
       recordAssociatedAt: APIData.formatDate(this.recordAssociatedAt),
-      recordUpdatedAt: APIData.formatDate(this.recordUpdatedAt),
-      groupsUpdatedAt: APIData.formatDate(this.groupsUpdatedAt),
+      importedAt: APIData.formatDate(this.importedAt),
       exportedAt: APIData.formatDate(this.exportedAt),
 
       // data before and after
@@ -190,6 +213,7 @@ export class Import extends CommonModel<Import> {
   }
 
   async setError(error: Error, step: string) {
+    this.state = "failed";
     this.errorMessage = `Error on step ${step}: ${error.message}`;
     this.errorMetadata = JSON.stringify({
       step,
@@ -210,11 +234,17 @@ export class Import extends CommonModel<Import> {
   }
 
   // --- Class Methods --- //
+  static defaultState: typeof STATES[number] = "associating";
 
   static async findById(id: string) {
     const instance = await this.scope(null).findOne({ where: { id } });
     if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
+  }
+
+  @BeforeSave
+  static async updateState(instance: Import) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @AfterCreate

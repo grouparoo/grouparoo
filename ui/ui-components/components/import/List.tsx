@@ -6,11 +6,24 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Pagination from "../Pagination";
 import LoadingTable from "../LoadingTable";
-import { Alert } from "react-bootstrap";
+import { Alert, Button, ButtonGroup, Col, Row } from "react-bootstrap";
 import { Models, Actions } from "../../utils/apiData";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { ImportRecordPropertiesDiff, ImportGroupsDiff } from "./Diff";
+import StateBadge from "../badges/StateBadge";
+import { capitalize } from "../../utils/languageHelper";
+
+const states = [
+  "all",
+  "associating",
+  "importing",
+  "exporting",
+  "complete",
+  "failed",
+] as const;
+
+type ImportStateOption = typeof states[number];
 
 export default function ImportList(props) {
   const {
@@ -26,6 +39,9 @@ export default function ImportList(props) {
   // pagination
   const limit = 100;
   const { offset, setOffset } = useOffset();
+  const [state, setState] = useState<ImportStateOption>(
+    (router.query.state?.toString() as ImportStateOption) || "all"
+  );
 
   let recordId = router.query.recordId;
   let creatorId: string;
@@ -35,10 +51,10 @@ export default function ImportList(props) {
 
   useSecondaryEffect(() => {
     load();
-  }, [offset, limit]);
+  }, [offset, limit, state]);
 
   async function load() {
-    updateURLParams(router, { offset });
+    updateURLParams(router, { offset, state });
     setLoading(true);
 
     const response: Actions.ImportsList = await execApi("get", `/imports`, {
@@ -46,6 +62,7 @@ export default function ImportList(props) {
       offset,
       creatorId,
       recordId,
+      state: state === "all" ? undefined : state,
     });
     setLoading(false);
     if (response?.imports) {
@@ -58,10 +75,37 @@ export default function ImportList(props) {
     <>
       {props.header ? props.header : <h1>Imports</h1>}
 
-      <p>
-        {total} imports {creatorId ? `for ${creatorId}` : null}{" "}
-        {recordId ? `for record ${recordId}` : null}
-      </p>
+      <Row>
+        <Col md={3}>
+          <strong>
+            {total} imports with these filters{" "}
+            {creatorId ? `for ${creatorId}` : null}{" "}
+            {recordId ? `for record ${recordId}` : null}
+          </strong>
+        </Col>
+        <Col>
+          State:{" "}
+          <ButtonGroup>
+            {states.map((_state) => {
+              return (
+                <Fragment key={`import-state-button-${_state}`}>
+                  <Button
+                    size="sm"
+                    disabled={loading}
+                    variant={state === _state ? "secondary" : "info"}
+                    onClick={() => setState(_state)}
+                  >
+                    {capitalize(_state)}
+                  </Button>
+                </Fragment>
+              );
+            })}
+          </ButtonGroup>
+        </Col>
+      </Row>
+
+      <hr />
+      <br />
 
       <Pagination
         total={total}
@@ -86,10 +130,12 @@ export default function ImportList(props) {
               <Fragment key={`import-${_import.id}`}>
                 <tr>
                   <td>
-                    id:
+                    Id:
                     <Link href={`/import/${_import.id}/edit`}>
                       <a> {_import.id}</a>
                     </Link>
+                    <br /> State:{" "}
+                    <StateBadge state={_import.state} marginBottom={0} />
                     <br /> Record:{" "}
                     {_import.recordId ? (
                       <Link href={`/object/${_import.recordId}`}>
@@ -119,13 +165,13 @@ export default function ImportList(props) {
                     {_import.recordAssociatedAt
                       ? formatTimestamp(_import.recordAssociatedAt)
                       : "pending"}
-                    <br /> Record Updated:{" "}
-                    {_import.recordUpdatedAt
-                      ? formatTimestamp(_import.recordUpdatedAt)
+                    <br /> Imported:{" "}
+                    {_import.importedAt
+                      ? formatTimestamp(_import.importedAt)
                       : "pending"}
-                    <br /> Groups Updated:{" "}
-                    {_import.groupsUpdatedAt
-                      ? formatTimestamp(_import.groupsUpdatedAt)
+                    <br /> Exported:{" "}
+                    {_import.exportedAt
+                      ? formatTimestamp(_import.exportedAt)
                       : "pending"}
                   </td>
                   <td>
@@ -173,13 +219,14 @@ export default function ImportList(props) {
 
 ImportList.hydrate = async (ctx) => {
   const { execApi } = UseApi(ctx);
-  const { creatorId, limit, offset, recordId } = ctx.query;
+  const { creatorId, limit, offset, state, recordId } = ctx.query;
 
   const { imports, total } = await execApi("get", `/imports`, {
     limit,
     offset,
     creatorId,
     recordId,
+    state: state === "all" ? undefined : state,
   });
 
   const { groups } = await execApi("get", `/groups`);

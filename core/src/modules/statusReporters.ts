@@ -323,7 +323,7 @@ export namespace StatusReporters {
         topic: "Import",
         aggregation: "count",
         count: await Import.count({
-          where: { exportedAt: null, errorMessage: null },
+          where: { state: { [Op.notIn]: ["complete", "failed"] } },
         }),
       };
     }
