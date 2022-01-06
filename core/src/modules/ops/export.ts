@@ -120,7 +120,6 @@ export namespace ExportOps {
           },
           `exports:${app.type}`
         );
-        console.log("enqueue sendBatch");
       } else {
         // the plugin has a per-record exportRecord method
         for (const _export of _exports) {
@@ -133,7 +132,6 @@ export namespace ExportOps {
             `exports:${app.type}`
           );
         }
-        console.log("enqueue send");
       }
     }
 
