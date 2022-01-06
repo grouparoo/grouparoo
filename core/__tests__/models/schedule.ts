@@ -972,6 +972,7 @@ describe("models/schedule", () => {
         ).rejects.toThrow("other-key is not filterable");
 
         await expect(
+          //@ts-ignore
           schedule.setFilters([{ op: "max it out", match: 1, key: "id" }])
         ).rejects.toThrow('"max it out" cannot be applied to id');
 

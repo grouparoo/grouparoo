@@ -814,7 +814,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
 
       exportProfilesThrow = new Error("oh no!");
 
-      let thrownError: ErrorWithRecordId;
+      let thrownError: ErrorWithRecordId & { errors: ErrorWithRecordId[] };
       try {
         await destination.exportRecord(record, true);
       } catch (error) {
@@ -824,7 +824,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       exportProfilesThrow = null;
 
       expect(thrownError.message).toEqual("oh no!");
-      expect(thrownError["errors"]).toBeUndefined();
+      expect(thrownError.errors).toBeUndefined();
 
       await run.stop();
       await Export.truncate();
@@ -850,7 +850,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
         retryDelay: undefined,
       };
 
-      let combinedError: Error;
+      let combinedError: ErrorWithRecordId;
       try {
         await destination.exportRecord(record, true);
       } catch (error) {
@@ -861,7 +861,9 @@ describe("models/destination - with custom exportRecords plugin", () => {
         /error exporting 1 records to destination test plugin destination/
       );
       expect(combinedError.message).toMatch(/oh no!/);
-      expect(combinedError["errors"].map((e) => e.message)).toEqual(["oh no!"]);
+      expect(
+        combinedError["errors"].map((e: ErrorWithRecordId) => e.message)
+      ).toEqual(["oh no!"]);
 
       await run.stop();
       await Export.truncate();

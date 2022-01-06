@@ -86,10 +86,17 @@ export class App extends LoggedModel<App> {
 
   async appOptions() {
     const { pluginApp } = await this.getPlugin();
+    const staticAppOptions = pluginApp.options;
     const appOptions =
       typeof pluginApp.methods.appOptions === "function"
         ? await pluginApp.methods.appOptions()
         : {};
+
+    for (const staticOption of staticAppOptions) {
+      if (staticOption.type && !appOptions[staticOption.key]) {
+        appOptions[staticOption.key] = { type: staticOption.type };
+      }
+    }
 
     return appOptions;
   }
