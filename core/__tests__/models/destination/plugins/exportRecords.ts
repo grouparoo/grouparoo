@@ -850,7 +850,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
         retryDelay: undefined,
       };
 
-      let combinedError: ErrorWithRecordId;
+      let combinedError: ErrorWithRecordId & { errors: ErrorWithRecordId[] };
       try {
         await destination.exportRecord(record, true);
       } catch (error) {
