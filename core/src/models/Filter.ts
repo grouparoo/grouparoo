@@ -9,6 +9,7 @@ import { Property } from "./Property";
 import { Schedule } from "./Schedule";
 import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
+import { FilterOpsDescriptions } from "../modules/filterOpsDictionary";
 
 @Table({ tableName: "filters", paranoid: false })
 export class Filter extends CommonModel<Filter> {
@@ -38,8 +39,8 @@ export class Filter extends CommonModel<Filter> {
   match: string;
 
   @AllowNull(false)
-  @Column
-  op: string;
+  @Column("string")
+  op: keyof typeof FilterOpsDescriptions;
 
   @Column
   relativeMatchNumber: number;

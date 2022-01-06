@@ -5,11 +5,12 @@ import { Source } from "../models/Source";
 import { Mapping } from "../models/Mapping";
 import { Option } from "../models/Option";
 import { modelName } from "./modelName";
+import { FilterOpsDescriptions } from "./filterOpsDictionary";
 
 export namespace FilterHelper {
   export interface FiltersWithKey {
     key: string;
-    op: string;
+    op: keyof typeof FilterOpsDescriptions;
     match?: string | number | boolean;
     relativeMatchNumber?: number;
     relativeMatchUnit?: string;

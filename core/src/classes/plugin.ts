@@ -22,6 +22,7 @@ import {
   ScheduleFiltersWithKey,
 } from "../models/Schedule";
 import { ConfigTemplate } from "./configTemplate";
+import { FilterOpsDescriptions } from "../modules/filterOpsDictionary";
 
 /**
  * The plugin class
@@ -460,7 +461,7 @@ export interface SourceFilterMethod<AppConnection = any> {
 
 export interface SourceFilterMethodResponseRow {
   key: string;
-  ops: Array<string>;
+  ops: Array<keyof typeof FilterOpsDescriptions>;
   canHaveRelativeMatch: boolean;
 }
 

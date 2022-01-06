@@ -12,6 +12,7 @@ import { PropertyFiltersWithKey } from "../models/Property";
 import { MustacheUtils } from "../modules/mustacheUtils";
 import { TopLevelGroupRules } from "../modules/topLevelGroupRules";
 import { Graph, topologicalSort } from "../modules/topologicalSort";
+import { GroupRuleWithKey } from "../models/Group";
 
 export interface IdsByClass {
   model?: string[];
@@ -68,7 +69,7 @@ export interface DestinationConfigurationObject extends ConfigurationObject {
 export interface GroupRuleConfigurationObject {
   key?: string;
   propertyId?: string;
-  type?: string;
+  type?: GroupRuleWithKey["type"];
   op: GroupRuleOpType;
   match?: string | number | boolean;
   relativeMatchNumber?: number;

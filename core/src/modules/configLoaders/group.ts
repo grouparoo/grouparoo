@@ -54,44 +54,40 @@ export async function loadGroup(
     const rules = [...configObject.rules];
     const calculatesWithDate = ["lte", "gt", "lt", "gte", "eq", "ne"];
 
-    for (const i in rules) {
-      //@ts-ignore
-      if (rules[i]["propertyId"]) {
+    for (const rule of rules) {
+      if (rule["propertyId"]) {
         let ruleKey: string, ruleType: string;
         const topLevelProperty = TopLevelGroupRules.find(
-          //@ts-ignore
-          (r) => r.key === rules[i]["propertyId"]
+          (r) => r.key === rule["propertyId"]
         );
         if (topLevelProperty) {
           ruleKey = topLevelProperty.key;
           ruleType = topLevelProperty.type;
         } else {
-          //@ts-ignore
-          const property = await Property.findById(rules[i]["propertyId"]);
+          const property = await Property.findById(rule["propertyId"]);
           ruleKey = property.key;
           ruleType = property.type;
         }
 
-        //@ts-ignore
-        delete rules[i]["propertyId"];
-        rules[i].key = ruleKey;
+        delete rule["propertyId"];
+        rule.key = ruleKey;
 
         // if calculating based on a date, parse to unix timestamp
-        if (calculatesWithDate.includes(rules[i]["op"])) {
+        if (calculatesWithDate.includes(rule["op"])) {
           if (ruleType === "date") {
-            rules[i]["match"] = Date.parse(rules[i]["match"].toString());
+            rule["match"] = Date.parse(rule["match"].toString());
           }
         }
       }
 
       let ruleWithKey: GroupRuleWithKey = {
-        key: rules[i].key,
-        type: rules[i].type,
-        operation: { op: rules[i].op },
-        match: rules[i].match,
-        relativeMatchNumber: rules[i].relativeMatchNumber,
-        relativeMatchDirection: rules[i].relativeMatchDirection,
-        relativeMatchUnit: rules[i].relativeMatchUnit,
+        key: rule.key,
+        type: rule.type,
+        operation: { op: rule.op },
+        match: rule.match,
+        relativeMatchNumber: rule.relativeMatchNumber,
+        relativeMatchDirection: rule.relativeMatchDirection,
+        relativeMatchUnit: rule.relativeMatchUnit,
       };
 
       groupRulesWithKey.push(ruleWithKey);

@@ -1,19 +1,19 @@
 import Sequelize from "sequelize";
-import { filterOpsDescriptions } from "../modules/filterOpsDictionary";
+import { FilterOpsDescriptions } from "../modules/filterOpsDictionary";
 
 export default {
   up: async (queryInterface: Sequelize.QueryInterface) => {
-    for (const op in filterOpsDescriptions) {
+    for (const [op, description] of Object.entries(FilterOpsDescriptions)) {
       await queryInterface.sequelize.query(
-        `UPDATE "filters" SET "op"='${op}' WHERE "op"='${filterOpsDescriptions[op]}'`
+        `UPDATE "filters" SET "op"='${op}' WHERE "op"='${description}'`
       );
     }
   },
 
   down: async (queryInterface: Sequelize.QueryInterface) => {
-    for (const op in filterOpsDescriptions) {
+    for (const [op, description] of Object.entries(FilterOpsDescriptions)) {
       await queryInterface.sequelize.query(
-        `UPDATE "filters" SET "op"='${filterOpsDescriptions[op]}' WHERE "op"='${op}'`
+        `UPDATE "filters" SET "op"='${description}' WHERE "op"='${op}'`
       );
     }
   },

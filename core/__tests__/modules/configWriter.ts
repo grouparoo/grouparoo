@@ -701,6 +701,7 @@ describe("modules/configWriter", () => {
     test("schedules can provide their config objects", async () => {
       const schedule: Schedule = await helper.factories.schedule(source);
       const filterObj = { key: "id", match: "0", op: "gt" };
+      // @ts-ignore
       await schedule.setFilters([filterObj]);
       const config = await schedule.getConfigObject();
 
@@ -824,6 +825,7 @@ describe("modules/configWriter", () => {
 
     test("properties can provide their config objects", async () => {
       const filterObj = { key: "id", match: "0", op: "gt" };
+      // @ts-ignore
       await property.setFilters([filterObj]);
 
       const config = await property.getConfigObject();
