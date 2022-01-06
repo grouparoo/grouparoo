@@ -293,6 +293,8 @@ export namespace helper {
             appQuery: async () => {
               return [new Date().getTime()];
             },
+            connect: async () => true,
+            disconnect: async () => true,
           },
         },
       ],

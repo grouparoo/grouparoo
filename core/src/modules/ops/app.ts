@@ -25,7 +25,7 @@ export namespace AppOps {
         if (forceReconnect) {
           await disconnect(app, true);
         } else {
-          return;
+          return connection;
         }
       }
 
