@@ -41,10 +41,6 @@ const handlePersonChanges: ExportRecordPluginMethod = async ({
   const newID = newRecordProperties["id"];
   const oldID = oldRecordProperties["id"];
 
-  if (oldID && oldID !== newID) {
-    await client.changeUserId(oldID, newID);
-  }
-
   if (toDelete) {
     if (!syncOperations.delete) {
       throw new Errors.InfoError(
@@ -59,6 +55,10 @@ const handlePersonChanges: ExportRecordPluginMethod = async ({
     throw new Errors.InfoError(
       "Destination sync mode does not create new records and update existing records."
     );
+  }
+
+  if (oldID && oldID !== newID) {
+    await client.changeUserId(oldID, newID);
   }
 
   const payload = await makePayload(
