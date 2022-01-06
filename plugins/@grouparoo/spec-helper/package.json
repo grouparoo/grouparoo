@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/spec-helper",
   "description": "Shared Utilities for testing Grouparoo and Grouparoo Plugins",
-  "version": "0.8.0-alpha.3",
+  "version": "0.8.0-alpha.4",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -38,10 +38,10 @@
     "uuid": "8.3.2"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.8.0-alpha.3",
+    "@grouparoo/core": "0.8.0-alpha.4",
     "@types/faker": "*",
     "@types/jest": "*",
-    "@types/node": "*",
+    "@types/node": "16.*.*",
     "actionhero": "28.1.1",
     "jest": "27.4.5",
     "ts-jest": "27.1.2",

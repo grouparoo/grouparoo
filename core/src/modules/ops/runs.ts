@@ -80,7 +80,7 @@ export namespace RunOps {
 
     const lastImportedImport = await Import.findOne({
       where: { creatorId: run.id },
-      order: [["recordUpdatedAt", "desc"]],
+      order: [["importedAt", "desc"]],
       limit: 1,
     });
 
@@ -111,17 +111,9 @@ export namespace RunOps {
               },
             },
           }),
-          recordsUpdated: await run.$count("imports", {
+          imported: await run.$count("imports", {
             where: {
-              recordUpdatedAt: {
-                [Op.gte]: lastBoundary,
-                [Op.lt]: nextBoundary,
-              },
-            },
-          }),
-          groupsUpdated: await run.$count("imports", {
-            where: {
-              groupsUpdatedAt: {
+              importedAt: {
                 [Op.gte]: lastBoundary,
                 [Op.lt]: nextBoundary,
               },
@@ -163,7 +155,7 @@ export namespace RunOps {
       where: { creatorId: run.id, createdRecord: true },
     });
     const recordsImported = await Import.count({
-      where: { creatorId: run.id, recordUpdatedAt: { [Op.ne]: null } },
+      where: { creatorId: run.id, importedAt: { [Op.ne]: null } },
       distinct: true,
       col: "recordId",
     });

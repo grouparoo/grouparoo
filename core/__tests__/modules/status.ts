@@ -519,8 +519,7 @@ describe("modules/status", () => {
           const now = new Date();
           await _import.update({
             recordAssociatedAt: now,
-            recordUpdatedAt: now,
-            groupsUpdatedAt: now,
+            importedAt: now,
           });
 
           await source.update({ state: sourceState });

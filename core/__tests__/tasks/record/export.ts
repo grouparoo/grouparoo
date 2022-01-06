@@ -234,6 +234,8 @@ describe("tasks/record:export", () => {
 
         await importA.reload();
         await importB.reload();
+        expect(importA.state).toBe("complete");
+        expect(importB.state).toBe("complete");
         expect(importA.exportedAt).toBeTruthy();
         expect(importB.exportedAt).toBeTruthy();
       });
@@ -332,14 +334,18 @@ describe("tasks/record:export", () => {
         it("applies errors to the imports and export", async () => {
           const run = await helper.factories.run();
           const _import = await Import.create({
+            state: "importing",
             creatorType: "run",
             creatorId: run.id,
             recordId: record.id,
-            recordUpdatedAt: new Date(),
-            groupsUpdatedAt: new Date(),
             data: {},
             oldGroupIds: [],
             newGroupIds: [group.id],
+          });
+
+          await _import.update({
+            state: "exporting",
+            importedAt: new Date(),
           });
 
           await record.import();
@@ -355,6 +361,7 @@ describe("tasks/record:export", () => {
           expect(counter).toBe(1);
 
           await _import.reload();
+          expect(_import.state).toBe("failed");
           expect(_import.errorMessage).toMatch(/oh no/);
           const errorMetadata = JSON.parse(_import.errorMetadata);
           expect(errorMetadata.message).toMatch(/oh no/);

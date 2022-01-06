@@ -2,7 +2,7 @@
 
 A [Grouparoo](https://www.grouparoo.com) plugin for connecting to [One Signal](https://onesignal.com/).
 
-Learn more about Grouparoo Plugins at [www.grouparoo.com/docs/plugins](https://www.grouparoo.com/docs/plugins).
+Learn more about Grouparoo Plugins at [www.grouparoo.com/docs/integrations](https://www.grouparoo.com/docs/integrations).
 
 ## Installation
 

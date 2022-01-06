@@ -109,7 +109,7 @@ export function getCoreRootPath() {
   return fs.realpathSync(path.join(__dirname, "..", ".."));
 }
 
-type PluginManifest = {
+export type PluginManifest = {
   parent: {
     path?: string;
     grouparoo: GrouparooPackageJson["grouparoo"];
