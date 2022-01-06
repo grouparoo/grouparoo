@@ -43,7 +43,7 @@ export class GrouparooRecordsConfirm extends CLSTask {
       if (!latestRun) continue;
 
       const pendingImports = await latestRun.$count("imports", {
-        where: { recordAssociatedAt: null },
+        where: { state: "associating" },
       });
 
       if (pendingImports !== 0) continue;

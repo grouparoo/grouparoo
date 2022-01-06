@@ -3,6 +3,7 @@ import { Run } from "../models/Run";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { ConfigWriter } from "../modules/configWriter";
 import { FilterHelper } from "../modules/filterHelper";
+import { buildPropertyFilterDictionary } from "../modules/filterOpsDictionary";
 import { APIData } from "../modules/apiData";
 import { Op, WhereAttributeHash } from "sequelize";
 import { Source } from "../models/Source";
@@ -260,7 +261,11 @@ export class ScheduleFilterOptions extends AuthenticatedAction {
 
   async runWithinTransaction({ params }) {
     const schedule = await Schedule.findById(params.id);
-    return { options: await FilterHelper.pluginFilterOptions(schedule) };
+    const options = await FilterHelper.pluginFilterOptions(schedule);
+    return {
+      options: options,
+      optionDescriptions: await buildPropertyFilterDictionary(options),
+    };
   }
 }
 

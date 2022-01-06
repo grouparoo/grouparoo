@@ -172,7 +172,11 @@ describe("tasks/destroy", () => {
               modelId: model2.id,
             });
             await source2.setOptions({ table: "test table" });
-            await source2.bootstrapUniqueProperty("adminId", "integer", "id");
+            await source2.bootstrapUniqueProperty({
+              key: "adminId",
+              type: "integer",
+              mappedColumn: "id",
+            });
             await source2.setMapping({ id: "adminId" });
             await source2.update({ state: "ready" });
           });
@@ -217,11 +221,11 @@ describe("tasks/destroy", () => {
 
           describe("delete user_id property", () => {
             afterAll(async () => {
-              userIdProperty = await source.bootstrapUniqueProperty(
-                "userId",
-                "integer",
-                "id"
-              );
+              userIdProperty = await source.bootstrapUniqueProperty({
+                key: "userId",
+                type: "integer",
+                mappedColumn: "id",
+              });
               await userIdProperty.update({ isPrimaryKey: true });
             });
 

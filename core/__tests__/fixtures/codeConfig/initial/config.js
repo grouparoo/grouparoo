@@ -122,11 +122,11 @@ module.exports = async function getConfig() {
       rules: [
         {
           propertyId: "user_id",
-          operation: { op: "exists" },
+          op: "exists",
         },
         {
           propertyId: "email",
-          operation: { op: "like" },
+          op: "like",
           match: "%@%",
         },
       ],
@@ -140,7 +140,7 @@ module.exports = async function getConfig() {
       rules: [
         {
           propertyId: "user_id",
-          operation: { op: "gt" },
+          op: "gt",
           match: 100,
         },
       ],

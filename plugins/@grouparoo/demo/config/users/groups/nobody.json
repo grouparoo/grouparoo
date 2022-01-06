@@ -6,9 +6,7 @@
   "rules": [
     {
       "propertyId": "user_id",
-      "operation": {
-        "op": "lt"
-      },
+      "op": "lt",
       "match": "0"
     }
   ]

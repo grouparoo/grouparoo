@@ -1,25 +1,51 @@
+import path from "path";
+process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
+  "@grouparoo/salesforce": { path: path.join(__dirname, "..", "..") },
+});
 import "@grouparoo/spec-helper";
 import { destinationMappingOptions } from "../../src/lib/export-account/destinationMappingOptions";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { helper } from "@grouparoo/spec-helper";
+import {
+  Destination,
+  DestinationSyncModeData,
+} from "@grouparoo/core/dist/models/Destination";
+import { App, GrouparooModel } from "@grouparoo/core";
 
 const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
-const appId = "app_c1bb07d8-0c4f-49b5-ad42-545f2e8662e7";
+
+let app: App;
+let destination: Destination;
+let model: GrouparooModel;
 
 async function runDestinationMappingOptions({ destinationOptions }) {
   return destinationMappingOptions({
-    appId,
+    appId: app.id,
     appOptions,
     destinationOptions,
+    destination,
     app: null,
     connection: null,
-    destination: null,
     destinationId: null,
   });
 }
 
 describe("salesforce/sales-cloud/destinationMappingOptions", () => {
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+
+  beforeAll(async () => {
+    ({ model } = await helper.factories.properties());
+    app = await helper.factories.app();
+    destination = await Destination.create({
+      name: "Salesforce Test Destination",
+      type: "salesforce-export-accounts",
+      syncMode: DestinationSyncModeData.sync.key,
+      appId: app.id,
+      modelId: model.id,
+    });
+  });
+
   test("can load destinationMappingOptions from Account Id", async () => {
     const destinationOptions = {
       primaryKey: "AccountNumber",

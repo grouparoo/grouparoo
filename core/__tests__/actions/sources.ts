@@ -112,7 +112,7 @@ describe("actions/sources", () => {
       propertyId = property.id;
     });
 
-    test("an administrator can list the connection + app pairs available for a new connection", async () => {
+    test("an administrator can list the connection methods and app pairs available for a new connection", async () => {
       connection.params = {
         csrfToken,
         id,
@@ -125,6 +125,17 @@ describe("actions/sources", () => {
       expect(error).toBeUndefined();
       expect(connectionApps[0].app.id).toBe(app.id);
       expect(connectionApps[0].connection.apps).toEqual(["test-plugin-app"]);
+      expect(connectionApps[0].connection.methods).toEqual([
+        "sourceOptions",
+        "sourcePreview",
+        "propertyOptions",
+        "scheduleOptions",
+        "uniquePropertyBootstrapOptions",
+        "sourceFilters",
+        "records",
+        "recordProperty",
+        "recordProperties",
+      ]);
     });
 
     describe("options from environment variables", () => {

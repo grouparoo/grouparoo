@@ -124,7 +124,11 @@ describe("tasks/source:destroy", () => {
 
     test("will not destroy until primary key is not in use elsewhere", async () => {
       const source: Source = await createSource();
-      await source.bootstrapUniqueProperty("myUserId", "integer", "id");
+      await source.bootstrapUniqueProperty({
+        key: "myUserId",
+        type: "integer",
+        mappedColumn: "id",
+      });
       await source.setOptions({ table: "some table" });
       await source.setMapping({ id: "myUserId" });
 
@@ -156,11 +160,11 @@ describe("tasks/source:destroy", () => {
 
     test("will destroy its primary key property if not used elsewhere", async () => {
       const source: Source = await createSource();
-      const myUserIdProp = await source.bootstrapUniqueProperty(
-        "myUserId",
-        "string",
-        "id"
-      );
+      const myUserIdProp = await source.bootstrapUniqueProperty({
+        key: "myUserId",
+        type: "string",
+        mappedColumn: "id",
+      });
       await source.setOptions({ table: "some table" });
       await source.setMapping({ id: "myUserId" });
       await source.update({ state: "ready" });

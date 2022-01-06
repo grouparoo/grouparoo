@@ -1,7 +1,6 @@
 import { Op } from "sequelize";
 import {
   AfterDestroy,
-  AfterSave,
   AllowNull,
   BeforeCreate,
   BeforeDestroy,
@@ -44,6 +43,16 @@ import {
 import { Run } from "./Run";
 import { GrouparooModel } from "./GrouparooModel";
 import { ModelGuard } from "../modules/modelGuard";
+
+export interface BootstrapUniquePropertyParams {
+  mappedColumn: string;
+  key?: string;
+  type?: typeof PropertyTypes[number];
+  id?: string;
+  local?: boolean;
+  propertyOptions?: Record<string, any>;
+  sourceOptions?: Record<string, any>;
+}
 
 export interface SimpleSourceOptions extends OptionHelper.SimpleOptions {}
 export interface SourceMapping extends MappingHelper.Mappings {}
@@ -306,23 +315,8 @@ export class Source extends LoggedModel<Source> {
     return SourceOps._import(this, record);
   }
 
-  async bootstrapUniqueProperty(
-    key: string,
-    type: typeof PropertyTypes[number],
-    mappedColumn: string,
-    id?: string,
-    local = false,
-    options?: { [key: string]: any }
-  ) {
-    return SourceOps.bootstrapUniqueProperty(
-      this,
-      key,
-      type,
-      mappedColumn,
-      id,
-      local,
-      options
-    );
+  async bootstrapUniqueProperty(params: BootstrapUniquePropertyParams) {
+    return SourceOps.bootstrapUniqueProperty(this, params);
   }
 
   getConfigId() {

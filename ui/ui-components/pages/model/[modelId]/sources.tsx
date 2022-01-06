@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useMemo } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import type { NextPageContext } from "next";
@@ -45,9 +45,19 @@ export default function Page(props) {
   const limit = 100;
   const { offset, setOffset } = useOffset();
 
+  const hasSchedules = useMemo(
+    () =>
+      sources.reduce((acc, source) => {
+        return acc || !!source.schedule;
+      }, false),
+    [sources]
+  );
+
   useSecondaryEffect(() => {
     load();
   }, [offset, limit, modelId]);
+
+  const canCreateNewSource = !total || sources[0].state === "ready";
 
   async function load() {
     updateURLParams(router, { offset });
@@ -184,24 +194,35 @@ export default function Page(props) {
         onPress={setOffset}
       />
       <br />
-      <LinkButton
-        variant="primary"
-        href={`/model/${router.query.modelId}/source/new`}
-        hideOn={["community"]}
-      >
-        Add new Source
-      </LinkButton>
-      &nbsp;
-      <RunAllSchedulesButton
-        modelId={modelId}
-        execApi={execApi}
-        disabled={loading}
-        onStart={() => setLoading(true)}
-        onComplete={() => {
-          setLoading(false);
-          load();
-        }}
-      />
+      {canCreateNewSource && (
+        <>
+          <LinkButton
+            variant="primary"
+            href={`/model/${router.query.modelId}/source/new`}
+            hideOn={["community"]}
+          >
+            Add new Source
+          </LinkButton>{" "}
+        </>
+      )}
+      {hasSchedules && (
+        <RunAllSchedulesButton
+          modelId={modelId}
+          execApi={execApi}
+          disabled={loading}
+          onStart={() => setLoading(true)}
+          onComplete={() => {
+            setLoading(false);
+            load();
+          }}
+        />
+      )}
+      {!canCreateNewSource && (
+        <p>
+          Cannot create new Sources for this Model until the first Source is
+          <StateBadge state="ready" marginBottom={0} />.
+        </p>
+      )}
     </>
   );
 }

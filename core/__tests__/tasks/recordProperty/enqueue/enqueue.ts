@@ -65,11 +65,11 @@ describe("tasks/recordProperties:enqueue", () => {
 
       it("will not crash when there is a property without a ready source", async () => {
         const source = await helper.factories.source();
-        const property = await source.bootstrapUniqueProperty(
-          "userId",
-          "integer",
-          "user-id"
-        );
+        const property = await source.bootstrapUniqueProperty({
+          key: "userId",
+          type: "integer",
+          mappedColumn: "user-id",
+        });
         expect(source.state).toBe("draft");
         expect(property.state).toBe("ready");
         await specHelper.runTask("recordProperties:enqueue", {}); // does not throw

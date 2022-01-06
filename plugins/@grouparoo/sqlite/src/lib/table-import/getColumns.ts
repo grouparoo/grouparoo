@@ -6,6 +6,8 @@ import {
 } from "@grouparoo/app-templates/dist/source/table";
 
 const filterOperations = [
+  FilterOperation.Exists,
+  FilterOperation.NotExists,
   FilterOperation.Equal,
   FilterOperation.NotEqual,
   FilterOperation.GreaterThan,

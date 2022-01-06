@@ -10,6 +10,7 @@ import {
 } from "../../../components/import/Diff";
 import { DurationTime } from "../../../components/DurationTime";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
+import StateBadge from "../../../components/badges/StateBadge";
 
 export default function Page(props) {
   const {
@@ -38,6 +39,8 @@ export default function Page(props) {
         <Card.Body>
           <h2>Details</h2>
           <p>
+            State: <StateBadge state={_import.state} marginBottom={0} />
+            <br />
             Model:{" "}
             <Link href={`/model/${_import.modelId}/edit`}>
               <a>{_import.modelId}</a>
@@ -116,7 +119,7 @@ export default function Page(props) {
             <strong>
               <DurationTime
                 start={_import.createdAt}
-                end={_import.groupsUpdatedAt}
+                end={_import.exportedAt}
               />
             </strong>
           </p>
@@ -154,32 +157,32 @@ export default function Page(props) {
                 </td>
               </tr>
               <tr>
-                <td>Record Updated</td>
+                <td>Imported</td>
                 <td>
-                  {_import.recordUpdatedAt
-                    ? formatTimestamp(_import.recordUpdatedAt)
+                  {_import.importedAt
+                    ? formatTimestamp(_import.importedAt)
                     : "pending"}
                 </td>
                 <td>
                   ⇣
                   <DurationTime
                     start={_import.recordAssociatedAt}
-                    end={_import.recordUpdatedAt}
+                    end={_import.importedAt}
                   />
                 </td>
               </tr>
               <tr>
-                <td>Groups Updated</td>
+                <td>Exports Created</td>
                 <td>
-                  {_import.groupsUpdatedAt
-                    ? formatTimestamp(_import.groupsUpdatedAt)
+                  {_import.exportedAt
+                    ? formatTimestamp(_import.exportedAt)
                     : "pending"}
                 </td>
                 <td>
                   ⇣
                   <DurationTime
-                    start={_import.recordUpdatedAt}
-                    end={_import.groupsUpdatedAt}
+                    start={_import.importedAt}
+                    end={_import.exportedAt}
                   />
                 </td>
               </tr>

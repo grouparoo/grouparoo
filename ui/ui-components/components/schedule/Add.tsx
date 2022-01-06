@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import LoadingButton from "../LoadingButton";
 import { Actions, Models } from "../../utils/apiData";
 import { ErrorHandler } from "../../utils/errorHandler";
+import StateBadge from "../badges/StateBadge";
 
 export default function AddScheduleForm(props) {
   const {
@@ -20,9 +21,10 @@ export default function AddScheduleForm(props) {
 
   if (source.state === "draft") {
     return (
-      <p>
-        <small>Source is not ready, cannot add Schedule</small>
-      </p>
+      <span>
+        Cannot add Schedule until Source is
+        <StateBadge state="ready" marginBottom={0} />
+      </span>
     );
   }
 

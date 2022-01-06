@@ -87,9 +87,7 @@ describe("models/property", () => {
       test("calling setFilter signals RPC", async () => {
         await makeProperty();
         CachedProperties.expires = new Date().getTime();
-        await property.setFilters([
-          { op: "greater than", match: 1, key: "id" },
-        ]);
+        await property.setFilters([{ op: "gt", match: 1, key: "id" }]);
         await helper.sleep(10);
         expect(CachedProperties.expires).toBe(0);
       });

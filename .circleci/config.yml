@@ -57,6 +57,7 @@ jobs:
             - core/node_modules
             - node_modules
             - tools/merger/node_modules
+            - tools/screenshots/node_modules
             - ui/ui-community/node_modules
             - ui/ui-components/node_modules
             - ui/ui-config/node_modules
@@ -64,6 +65,7 @@ jobs:
       - save_cache:
           <<: *plugin-1-cache
           paths:
+            - plugins/@grouparoo/airtable/node_modules
             - plugins/@grouparoo/app-templates/node_modules
             - plugins/@grouparoo/bigquery/node_modules
             - plugins/@grouparoo/braze/node_modules
@@ -116,6 +118,7 @@ jobs:
           <<: *dist-1-cache
           paths:
             - cli/dist
+            - plugins/@grouparoo/airtable/dist
             - plugins/@grouparoo/app-templates/dist
             - plugins/@grouparoo/bigquery/dist
             - plugins/@grouparoo/braze/dist
@@ -719,6 +722,61 @@ jobs:
       - run:
           name: test
           command: cd core && ./node_modules/.bin/jest __tests__/notifiers --ci --maxWorkers 2
+  test-core-ops:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: circleci/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd core && ./node_modules/.bin/jest __tests__/ops --ci --maxWorkers 2
   test-core-snapshots:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
@@ -1314,6 +1372,61 @@ jobs:
             PORT: 3000
             WEB_SERVER: "true"
             WORKERS: 1
+  test-plugin-airtable:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: circleci/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/airtable && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-app-templates:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
@@ -3595,6 +3708,11 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
+      - test-core-ops:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
       - test-core-snapshots:
           filters:
             <<: *ignored-branches
@@ -3646,6 +3764,11 @@ workflows:
           requires:
             - build
       - test-staging-enterprise:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-airtable:
           filters:
             <<: *ignored-branches
           requires:
@@ -3865,6 +3988,7 @@ workflows:
             - test-core-models
             - test-core-modules
             - test-core-notifiers
+            - test-core-ops
             - test-core-snapshots
             - test-core-tasks
             - test-core-local-models
@@ -3876,6 +4000,7 @@ workflows:
             - test-ui-config
             - test-staging-community
             - test-staging-enterprise
+            - test-plugin-airtable
             - test-plugin-app-templates
             - test-plugin-bigquery
             - test-plugin-braze

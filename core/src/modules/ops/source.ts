@@ -3,6 +3,7 @@ import {
   Source,
   SimpleSourceOptions,
   SourceMapping,
+  BootstrapUniquePropertyParams,
 } from "../../models/Source";
 import { RecordProperty } from "../../models/RecordProperty";
 import {
@@ -12,6 +13,7 @@ import {
 } from "../../models/Property";
 import { GrouparooRecord } from "../../models/GrouparooRecord";
 import { App } from "../../models/App";
+import { GrouparooModel } from "../../models/GrouparooModel";
 import { Option } from "../../models/Option";
 import { OptionHelper } from "../optionHelper";
 import { MappingHelper } from "../mappingHelper";
@@ -24,6 +26,7 @@ import {
   RecordPropertiesPluginMethodResponse,
   RecordPropertyPluginMethodResponse,
 } from "../../classes/plugin";
+import { TableSpeculation } from "../tableSpeculation";
 
 export namespace SourceOps {
   /**
@@ -511,76 +514,119 @@ export namespace SourceOps {
    */
   export async function bootstrapUniqueProperty(
     source: Source,
-    key: string,
-    type: string,
-    mappedColumn: string,
-    id?: string,
-    local = false,
-    propertyOptions?: { [key: string]: any }
+    params: BootstrapUniquePropertyParams
   ) {
-    const property = Property.build({
-      id: id ?? ConfigWriter.generateId(key),
-      key,
-      type,
-      state: "ready",
-      unique: true,
-      sourceId: source.id,
-      isArray: false,
-    });
+    const {
+      mappedColumn,
+      id,
+      local = false,
+      propertyOptions,
+      sourceOptions,
+    } = params;
 
-    try {
-      // manually run the hooks we want
-      Property.generateId(property);
-      await Property.ensureUniqueKey(property);
-      await Property.ensureNonArrayAndUnique(property);
+    let { key, type } = params;
 
-      // danger zone!
-      await LoggedModel.logCreate(property);
-      // @ts-ignore
-      await property.save({ hooks: false });
+    const model =
+      !key || !type ? await GrouparooModel.findById(source.modelId) : undefined;
 
-      // build the default options
-      const { pluginConnection } = await source.getPlugin();
-      if (!local) {
-        let ruleOptions: SimplePropertyOptions = {};
+    let didGenerateKey = false;
+    const generateKey = (index?: number) =>
+      `${ConfigWriter.generateId(model.name)}_${ConfigWriter.generateId(
+        mappedColumn
+      )}${!index ? "" : "_" + index}`;
 
-        if (
-          typeof pluginConnection.methods.uniquePropertyBootstrapOptions ===
-          "function"
-        ) {
-          const app = await source.$get("app", { include: [Option] });
-          const connection = await app.getConnection();
-          const appOptions = await app.getOptions(true);
-          const options = await source.getOptions(true);
-          const defaultOptions =
-            await pluginConnection.methods.uniquePropertyBootstrapOptions({
-              app,
-              appId: app.id,
-              connection,
-              appOptions,
-              source,
-              sourceId: source.id,
-              sourceOptions: options,
-              mappedColumn,
-            });
-
-          ruleOptions = defaultOptions;
-        }
-
-        if (propertyOptions) {
-          Object.assign(ruleOptions, propertyOptions);
-        }
-
-        await property.setOptions(ruleOptions, false);
-      }
-
-      return property;
-    } catch (error) {
-      if (property) {
-        await property.destroy();
-        throw error;
-      }
+    if (!key) {
+      key = generateKey();
+      didGenerateKey = true;
     }
+
+    if (!type) {
+      const preview = await source.sourcePreview(sourceOptions);
+      const samples = preview.map((row) => row[mappedColumn]);
+      type = TableSpeculation.columnType(mappedColumn, samples);
+    }
+
+    let retry: boolean;
+    let keyCount = 0;
+
+    do {
+      retry = false;
+
+      const property = Property.build({
+        id: id ?? ConfigWriter.generateId(key),
+        key,
+        type,
+        state: "ready",
+        unique: true,
+        sourceId: source.id,
+        isArray: false,
+      });
+
+      try {
+        // manually run the hooks we want
+        Property.generateId(property);
+        await Property.ensureUniqueKey(property);
+        await Property.ensureNonArrayAndUnique(property);
+
+        // danger zone!
+        await LoggedModel.logCreate(property);
+        await property.save({ hooks: false });
+
+        // build the default options
+        const { pluginConnection } = await source.getPlugin();
+        if (!local) {
+          let ruleOptions: SimplePropertyOptions = {};
+
+          if (
+            typeof pluginConnection.methods.uniquePropertyBootstrapOptions ===
+            "function"
+          ) {
+            const app = await source.$get("app", { include: [Option] });
+            const connection = await app.getConnection();
+            const appOptions = await app.getOptions(true);
+            const options = await source.getOptions(true);
+            const defaultOptions =
+              await pluginConnection.methods.uniquePropertyBootstrapOptions({
+                app,
+                appId: app.id,
+                connection,
+                appOptions,
+                source,
+                sourceId: source.id,
+                sourceOptions: options,
+                mappedColumn,
+              });
+
+            ruleOptions = defaultOptions;
+          }
+
+          if (propertyOptions) {
+            Object.assign(ruleOptions, propertyOptions);
+          }
+
+          await property.setOptions(ruleOptions, false);
+        }
+
+        return property;
+      } catch (error) {
+        if (property) {
+          await property.destroy();
+          if (
+            didGenerateKey &&
+            keyCount <= 10 &&
+            error?.message?.match(/key ".+" is already in use/)
+          ) {
+            keyCount++;
+            key = generateKey(keyCount);
+            retry = true;
+          } else {
+            throw error;
+          }
+        } else {
+          throw error;
+        }
+      }
+    } while (retry);
   }
 
   export async function pendingImportsBySource() {

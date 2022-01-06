@@ -4,6 +4,7 @@ import LoadingButton from "../LoadingButton";
 import { useRouter } from "next/router";
 import { Actions, Models } from "../../utils/apiData";
 import { ErrorHandler } from "../../utils/errorHandler";
+import StateBadge from "../badges/StateBadge";
 
 export default function PropertyAddButton(props) {
   const {
@@ -41,9 +42,10 @@ export default function PropertyAddButton(props) {
 
   if (source.state === "draft") {
     return (
-      <p>
-        <small>Source is not ready, cannot add Properties</small>
-      </p>
+      <span>
+        Cannot add Properties until Source is
+        <StateBadge state="ready" marginBottom={0} />
+      </span>
     );
   }
 

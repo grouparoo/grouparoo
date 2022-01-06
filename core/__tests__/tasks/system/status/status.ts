@@ -74,7 +74,7 @@ describe("tasks/status", () => {
       );
       await record.update({ state: "ready" });
       const _import = await helper.factories.import(null, null, record.id);
-      await _import.update({ exportedAt: new Date() });
+      await _import.update({ state: "complete" });
 
       await Status.setAll();
 
@@ -94,6 +94,7 @@ describe("tasks/status", () => {
       await record.update({ state: "ready" });
       const _import = await helper.factories.import(null, null, record.id);
       await _import.update({
+        state: "failed",
         exportedAt: null,
         errorMessage: "oh no!",
         errorMetadata: "errored",

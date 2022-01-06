@@ -50,62 +50,27 @@ describe("snowflake/table/sourceFilters", () => {
 
     expect(columns[0]).toMatchObject({
       key: "AMOUNT",
-      ops: [
-        "equals",
-        "does not equal",
-        "greater than",
-        "greater than or equal to",
-        "less than",
-        "less than or equal to",
-      ],
+      ops: ["eq", "ne", "exists", "notExists", "gt", "gte", "lt", "lte"],
     });
     expect(columns[1]).toMatchObject({
       key: "DATE",
-      ops: [
-        "equals",
-        "does not equal",
-        "greater than",
-        "greater than or equal to",
-        "less than",
-        "less than or equal to",
-      ],
+      ops: ["eq", "ne", "exists", "notExists", "gt", "gte", "lt", "lte"],
     });
     expect(columns[2]).toMatchObject({
       key: "ID",
-      ops: [
-        "equals",
-        "does not equal",
-        "greater than",
-        "greater than or equal to",
-        "less than",
-        "less than or equal to",
-      ],
+      ops: ["eq", "ne", "exists", "notExists", "gt", "gte", "lt", "lte"],
     });
     expect(columns[3]).toMatchObject({
       key: "PROFILE_ID",
-      ops: [
-        "equals",
-        "does not equal",
-        "greater than",
-        "greater than or equal to",
-        "less than",
-        "less than or equal to",
-      ],
+      ops: ["eq", "ne", "exists", "notExists", "gt", "gte", "lt", "lte"],
     });
     expect(columns[4]).toMatchObject({
       key: "PURCHASE",
-      ops: ["equals", "does not equal", "contains", "does not contain"],
+      ops: ["eq", "ne", "exists", "notExists", "substring", "notSubstring"],
     });
     expect(columns[5]).toMatchObject({
       key: "STAMP",
-      ops: [
-        "equals",
-        "does not equal",
-        "greater than",
-        "greater than or equal to",
-        "less than",
-        "less than or equal to",
-      ],
+      ops: ["eq", "ne", "exists", "notExists", "gt", "gte", "lt", "lte"],
     });
   });
 });

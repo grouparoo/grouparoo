@@ -32,6 +32,7 @@ export default function Page(props) {
     propertiesHandler,
     types,
     filterOptions,
+    filterOptionDescriptions,
     properties,
     hydrationError,
   }: {
@@ -40,7 +41,8 @@ export default function Page(props) {
     sources: Models.SourceType[];
     propertiesHandler: PropertiesHandler;
     types: Actions.PropertiesOptions["types"];
-    filterOptions: Actions.ScheduleFilterOptions["options"];
+    filterOptions: Actions.PropertyFilterOptions["options"];
+    filterOptionDescriptions: Actions.PropertyFilterOptions["optionDescriptions"];
     properties: Models.PropertyType[];
     hydrationError: Error;
   } = props;
@@ -195,11 +197,12 @@ export default function Page(props) {
 
     _localFilters.push({
       key: filterOptions[0].key,
-      op: filterOptions[0].ops[0],
+      op: "exists",
       match: "",
     });
 
     setLocalFilters(_localFilters);
+    console.log(_localFilters);
   }
 
   function deleteRule(idx: number) {
@@ -213,7 +216,6 @@ export default function Page(props) {
   }
 
   let rowChanges = false;
-
   return (
     <>
       <Head>
@@ -528,9 +530,12 @@ export default function Page(props) {
                       <hr />
                       <strong>Filters</strong>
                       <p>
-                        Are there any criteria where you’d want to filter out
-                        rows from being included in{" "}
-                        <Badge variant="info">{property.key}</Badge>?
+                        Only include rows that meet the following criteria when
+                        populating
+                        <Badge variant="info" className="ml-1">
+                          {property.key}
+                        </Badge>
+                        :
                       </p>
 
                       {localFilters.length > 0 && (
@@ -540,7 +545,6 @@ export default function Page(props) {
                               <th />
                               <th>Key</th>
                               <th>Operation</th>
-                              <th>Value</th>
                               <th />
                             </tr>
                           </thead>
@@ -570,6 +574,7 @@ export default function Page(props) {
                                       </Badge>
                                     </h5>
                                   </td>
+                                  {/* key */}
                                   <td>
                                     <Form.Group
                                       controlId={`${localFilter.key}-key-${idx}`}
@@ -597,7 +602,7 @@ export default function Page(props) {
                                       </Form.Control>
                                     </Form.Group>
                                   </td>
-
+                                  {/* op */}
                                   <td>
                                     <Form.Group
                                       controlId={`${localFilter.key}-op-${idx}`}
@@ -626,61 +631,72 @@ export default function Page(props) {
                                               .ops.map((op) => (
                                                 <option
                                                   key={`op-opt-${localFilter.key}-${op}`}
+                                                  value={op}
                                                 >
-                                                  {op}
+                                                  {filterOptionDescriptions[op]}
                                                 </option>
                                               ))
                                           : null}
                                       </Form.Control>
                                     </Form.Group>
-                                  </td>
-
-                                  <td>
-                                    {localFilter.key === "occurredAt" ? (
-                                      <DatePicker
-                                        selected={
-                                          localFilter.match &&
-                                          localFilter.match !== "null"
-                                            ? new Date(
-                                                parseInt(
-                                                  localFilter.match.toString()
+                                    {/* match */}
+                                    {!localFilter.op
+                                      .toLowerCase()
+                                      .includes("exist") &&
+                                      (localFilter.key === "occurredAt" ? (
+                                        <DatePicker
+                                          selected={
+                                            localFilter.match &&
+                                            localFilter.match !== "null"
+                                              ? new Date(
+                                                  parseInt(
+                                                    localFilter.match.toString()
+                                                  )
                                                 )
-                                              )
-                                            : new Date()
-                                        }
-                                        onChange={(d: Date) => {
-                                          const _localFilter = [
-                                            ...localFilters,
-                                          ];
-                                          localFilter.match = d
-                                            .getTime()
-                                            .toString();
-                                          _localFilter[idx] = localFilter;
-                                          setLocalFilters(_localFilter);
-                                        }}
-                                      />
-                                    ) : (
-                                      <Form.Group
-                                        controlId={`${localFilter.key}-match-${idx}`}
-                                      >
-                                        <Form.Control
-                                          required
-                                          type="text"
-                                          disabled={loading}
-                                          value={localFilter.match.toString()}
-                                          onChange={(e: any) => {
+                                              : new Date()
+                                          }
+                                          onChange={(d: Date) => {
                                             const _localFilter = [
                                               ...localFilters,
                                             ];
-                                            localFilter.match = e.target.value;
+                                            localFilter.match = d
+                                              .getTime()
+                                              .toString();
                                             _localFilter[idx] = localFilter;
                                             setLocalFilters(_localFilter);
                                           }}
                                         />
-                                      </Form.Group>
-                                    )}
+                                      ) : (
+                                        <Form.Group
+                                          controlId={`${localFilter.key}-match-${idx}`}
+                                        >
+                                          <Form.Control
+                                            required
+                                            type="text"
+                                            disabled={
+                                              loading ||
+                                              localFilter.op.includes("exist")
+                                            }
+                                            value={
+                                              localFilter.match
+                                                ? localFilter.match.toString()
+                                                : ""
+                                            }
+                                            onChange={(e: any) => {
+                                              const _localFilter = [
+                                                ...localFilters,
+                                              ];
+                                              localFilter.match =
+                                                e.target.value;
+                                              _localFilter[idx] = localFilter;
+                                              setLocalFilters(_localFilter);
+                                            }}
+                                          />
+                                        </Form.Group>
+                                      ))}{" "}
                                   </td>
 
+                                  {/* delete */}
                                   <td>
                                     <Button
                                       variant="danger"
@@ -766,6 +782,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   let pluginOptions = [];
   let filterOptions = {};
   let hydrationError: Error;
+  let filterOptionDescriptions = {};
 
   try {
     const getResponse = await execApi("get", `/property/${propertyId}`);
@@ -793,6 +810,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
       `/property/${propertyId}/filterOptions`
     );
     filterOptions = filterResponse.options;
+    filterOptionDescriptions = filterResponse.optionDescriptions;
   } catch (error) {
     hydrationError = error.toString();
   }
@@ -804,6 +822,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     pluginOptions,
     types,
     filterOptions,
+    filterOptionDescriptions,
     hydrationError,
   };
 };

@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "grouparoo",
   "description": "The Grouparoo CLI and Project Generator",
-  "version": "0.8.0-alpha.0",
+  "version": "0.8.0-alpha.4",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -36,13 +36,13 @@
     "fs-extra": "10.0.0",
     "glob": "7.2.0",
     "isomorphic-fetch": "3.0.0",
-    "npm-check-updates": "12.0.3",
+    "npm-check-updates": "12.1.0",
     "ora": "5.4.1",
     "semver": "7.3.5"
   },
   "devDependencies": {
     "@types/fs-extra": "*",
-    "@types/node": "*",
+    "@types/node": "16.*.*",
     "prettier": "2.5.1",
     "ts-node": "10.4.0",
     "type-fest": "2.8.0",

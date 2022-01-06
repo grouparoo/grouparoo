@@ -20,8 +20,8 @@ describe("tasks/records:enqueueExports", () => {
         mario.id
       );
       await marioImport.update({
-        groupsUpdatedAt: new Date(),
-        recordUpdatedAt: new Date(),
+        state: "exporting",
+        importedAt: new Date(),
         exportedAt: null,
       });
 
@@ -34,8 +34,8 @@ describe("tasks/records:enqueueExports", () => {
         luigi.id
       );
       await luigiImport.update({
-        groupsUpdatedAt: new Date(),
-        recordUpdatedAt: new Date(),
+        state: "exporting",
+        importedAt: new Date(),
         exportedAt: null,
       });
 

@@ -1,6 +1,6 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { OptionallyAuthenticatedAction } from "../classes/actions/optionallyAuthenticatedAction";
-import { Plugins } from "../modules/plugins";
+import { listPlugins, install, uninstall } from "../modules/plugins";
 import { api } from "actionhero";
 import path from "path";
 import fs from "fs";
@@ -42,7 +42,7 @@ export class PluginsList extends OptionallyAuthenticatedAction {
     };
   }) {
     return {
-      plugins: await Plugins.listPlugins(
+      plugins: await listPlugins(
         params.includeInstalled,
         params.includeAvailable,
         params.includeVersions
@@ -73,7 +73,7 @@ export class PluginInstall extends AuthenticatedAction {
   }: {
     params: { plugin: string; restart: boolean };
   }): Promise<{ success: boolean; checkIn?: number }> {
-    const response = await Plugins.install(params.plugin);
+    const response = await install(params.plugin);
 
     if (!response.success) return { success: false };
     // Return if did not ask to restart
@@ -106,7 +106,7 @@ export class PluginUninstall extends AuthenticatedAction {
   }: {
     params: { plugin: string; restart: boolean };
   }) {
-    const response = await Plugins.uninstall(params.plugin);
+    const response = await uninstall(params.plugin);
 
     if (!response.success) return { success: false };
     // Return if did not ask to restart

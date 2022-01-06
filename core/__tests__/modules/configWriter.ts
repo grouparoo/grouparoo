@@ -168,7 +168,11 @@ describe("modules/configWriter", () => {
         modelId: model.id,
       });
       await source.setOptions({ table: "test-table-04" });
-      await source.bootstrapUniqueProperty("userId_04", "integer", "id");
+      await source.bootstrapUniqueProperty({
+        key: "userId_04",
+        type: "integer",
+        mappedColumn: "id",
+      });
       await source.setMapping({ id: "userId_04" });
       await source.update({ state: "ready" });
       const property: Property = await Property.findOne();
@@ -406,7 +410,11 @@ describe("modules/configWriter", () => {
       const app: App = await helper.factories.app();
       const source: Source = await helper.factories.source(app);
       await source.setOptions({ table: "test-table-03" });
-      await source.bootstrapUniqueProperty("userId_03", "integer", "id");
+      await source.bootstrapUniqueProperty({
+        key: "userId_03",
+        type: "integer",
+        mappedColumn: "id",
+      });
       await source.setMapping({ id: "userId_03" });
       await source.update({ state: "ready" });
       const property: Property = await Property.findOne();
@@ -471,12 +479,12 @@ describe("modules/configWriter", () => {
       });
       source = await helper.factories.source();
       await source.setOptions(sourceOptions);
-      await source.bootstrapUniqueProperty(
-        bootstrapPropertyKey,
-        "integer",
-        bootstrapPropertyCol,
-        bootstrapPropertyId
-      );
+      await source.bootstrapUniqueProperty({
+        key: bootstrapPropertyKey,
+        type: "integer",
+        mappedColumn: bootstrapPropertyCol,
+        id: bootstrapPropertyId,
+      });
       await source.setMapping({ [bootstrapPropertyCol]: bootstrapPropertyKey });
       await source.update({ state: "ready" });
 
@@ -692,7 +700,7 @@ describe("modules/configWriter", () => {
 
     test("schedules can provide their config objects", async () => {
       const schedule: Schedule = await helper.factories.schedule(source);
-      const filterObj = { key: "id", match: "0", op: "greater than" };
+      const filterObj = { key: "id", match: "0", op: "gt" };
       await schedule.setFilters([filterObj]);
       const config = await schedule.getConfigObject();
 
@@ -740,7 +748,11 @@ describe("modules/configWriter", () => {
       const app = await helper.factories.app();
       const source = await helper.factories.source(app, { modelId: model.id });
       await source.setOptions({ table: "test-table-05" });
-      await source.bootstrapUniqueProperty("uId05", "integer", "id");
+      await source.bootstrapUniqueProperty({
+        key: "uId05",
+        type: "integer",
+        mappedColumn: "id",
+      });
       await source.setMapping({ id: "uId05" });
       await source.update({ state: "ready" });
       property = await helper.factories.property(
@@ -811,7 +823,7 @@ describe("modules/configWriter", () => {
     });
 
     test("properties can provide their config objects", async () => {
-      const filterObj = { key: "id", match: "0", op: "greater than" };
+      const filterObj = { key: "id", match: "0", op: "gt" };
       await property.setFilters([filterObj]);
 
       const config = await property.getConfigObject();
@@ -875,7 +887,7 @@ describe("modules/configWriter", () => {
         {
           propertyId: "grouparooId",
           match: "nobody",
-          operation: { op: "eq" },
+          op: "eq",
           relativeMatchDirection: null,
           relativeMatchNumber: null,
           relativeMatchUnit: null,
@@ -899,7 +911,7 @@ describe("modules/configWriter", () => {
           {
             propertyId: property.getConfigId(),
             match: "nobody",
-            operation: { op: "eq" },
+            op: "eq",
             relativeMatchDirection: null,
             relativeMatchNumber: null,
             relativeMatchUnit: null,

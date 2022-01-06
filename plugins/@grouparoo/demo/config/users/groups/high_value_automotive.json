@@ -6,24 +6,18 @@
   "rules": [
     {
       "propertyId": "ltv",
-      "operation": {
-        "op": "gt"
-      },
+      "op": "gt",
       "match": "100"
     },
     {
       "propertyId": "last_purchase_date",
-      "operation": {
-        "op": "relative_gt"
-      },
+      "op": "relative_gt",
       "relativeMatchNumber": 60,
       "relativeMatchUnit": "days"
     },
     {
       "propertyId": "last_purchase_category",
-      "operation": {
-        "op": "eq"
-      },
+      "op": "eq",
       "match": "Automotive"
     }
   ]

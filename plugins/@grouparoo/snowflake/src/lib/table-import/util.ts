@@ -14,6 +14,14 @@ export function makeWhereClause(
   let match = values || value;
 
   switch (filterOperation) {
+    case FilterOperation.NotExists:
+      op = "IS NULL";
+      match = null;
+      break;
+    case FilterOperation.Exists:
+      op = "IS NOT NULL";
+      match = null;
+      break;
     case FilterOperation.Equal:
       op = "=";
       break;
@@ -49,12 +57,15 @@ export function makeWhereClause(
 
   const replacementString = Array.isArray(match)
     ? `(${match.map((_, idx) => `:${params.length + idx + 1}`).join(", ")})`
-    : `:${params.length + 1}`;
+    : match !== null
+    ? `:${params.length + 1}`
+    : "";
 
-  Array.isArray(match)
-    ? match.forEach((m) => params.push(m))
-    : params.push(match);
-
+  if (match) {
+    Array.isArray(match)
+      ? match.forEach((m) => params.push(m))
+      : params.push(match);
+  }
   return ` "${columnName}" ${op} ${replacementString}`; // "profile_id" = :3 or "profile_id" = (:3, :4, :5)
 }
 

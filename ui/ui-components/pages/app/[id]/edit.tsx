@@ -160,185 +160,192 @@ export default function Page(props) {
                   <option>{app.type}</option>
                 </Form.Control>
               </Form.Group>
-
-              {pluginOptions.length > 0 ? (
-                <>
-                  <div className="mb-3">
-                    <hr />
-                    <p className="mb-3">
-                      <strong>
-                        Options for a <code>{app.pluginApp.displayName}</code>{" "}
-                        app
-                      </strong>
-                    </p>
-
-                    {environmentVariableOptions.length > 0 && (
-                      <p className="mb-0">
-                        Available environment variables for apps:{" "}
-                        {environmentVariableOptions.sort().map((envOpt) => (
-                          <Fragment key={`envOpt-${envOpt}`}>
-                            <Badge variant="info">{envOpt}</Badge>{" "}
-                          </Fragment>
-                        ))}
+              <div data-screenshotid="appOptions">
+                {pluginOptions.length > 0 ? (
+                  <>
+                    <div className="mb-3">
+                      <hr />
+                      <p className="mb-3">
+                        <strong>
+                          Options for a <code>{app.pluginApp.displayName}</code>{" "}
+                          app
+                        </strong>
                       </p>
-                    )}
-                    {grouparooUiEdition() === "config" && (
-                      <p className="mb-0">
-                        <a
-                          target="_blank"
-                          href="https://www.grouparoo.com/docs/support/secrets"
-                        >
-                          See the docs
-                        </a>{" "}
-                        for more information on using environment variables for
-                        secret option values.
-                      </p>
-                    )}
-                  </div>
 
-                  {pluginOptions.map((opt) => {
-                    return (
-                      <Form.Group key={`opt-${opt.key}`} controlId={opt.key}>
-                        <Form.Label>
-                          {opt.required ? (
-                            <>
-                              <Badge variant="info">required</Badge>&nbsp;
-                            </>
-                          ) : null}
-                          <code>{opt.displayName || opt.key}</code>
-                        </Form.Label>
-                        {(() => {
-                          if (options[opt.key]?.type === "typeahead") {
-                            return (
+                      {environmentVariableOptions.length > 0 && (
+                        <p className="mb-0">
+                          Available environment variables for apps:{" "}
+                          {environmentVariableOptions.sort().map((envOpt) => (
+                            <Fragment key={`envOpt-${envOpt}`}>
+                              <Badge variant="info">{envOpt}</Badge>{" "}
+                            </Fragment>
+                          ))}
+                        </p>
+                      )}
+                      {grouparooUiEdition() === "config" && (
+                        <p className="mb-0">
+                          <a
+                            target="_blank"
+                            href="https://www.grouparoo.com/docs/support/secrets"
+                          >
+                            See the docs
+                          </a>{" "}
+                          for more information on using environment variables
+                          for secret option values.
+                        </p>
+                      )}
+                    </div>
+
+                    {pluginOptions.map((opt) => {
+                      return (
+                        <Form.Group key={`opt-${opt.key}`} controlId={opt.key}>
+                          <Form.Label>
+                            {opt.required ? (
                               <>
-                                <Typeahead
-                                  id="typeahead"
-                                  labelKey="key"
-                                  disabled={loading}
-                                  onChange={(selected) => {
-                                    updateOption(opt.key, selected[0]?.key);
-                                  }}
-                                  options={options[opt.key]?.options.map(
-                                    (k, idx) => {
-                                      return {
-                                        key: k,
-                                        descriptions:
-                                          options[k]?.descriptions[idx],
-                                      };
+                                <Badge variant="info">required</Badge>&nbsp;
+                              </>
+                            ) : null}
+                            <code>{opt.displayName || opt.key}</code>
+                          </Form.Label>
+                          {(() => {
+                            if (options[opt.key]?.type === "typeahead") {
+                              return (
+                                <>
+                                  <Typeahead
+                                    id="typeahead"
+                                    labelKey="key"
+                                    disabled={loading}
+                                    onChange={(selected) => {
+                                      updateOption(opt.key, selected[0]?.key);
+                                    }}
+                                    options={options[opt.key]?.options.map(
+                                      (k, idx) => {
+                                        return {
+                                          key: k,
+                                          descriptions:
+                                            options[k]?.descriptions[idx],
+                                        };
+                                      }
+                                    )}
+                                    placeholder={
+                                      opt.placeholder || `Select ${opt.key}`
                                     }
-                                  )}
-                                  placeholder={
-                                    opt.placeholder || `Select ${opt.key}`
-                                  }
-                                  renderMenuItemChildren={(opt, props, idx) => {
-                                    return [
-                                      <span key={`opt-${idx}-key`}>
-                                        {opt.key}
-                                        <br />
-                                      </span>,
-                                      <small
-                                        key={`opt-${idx}-descriptions`}
-                                        className="text-small"
-                                      >
-                                        <em>
-                                          Descriptions:{" "}
-                                          {opt.descriptions
-                                            ? opt.descriptions.join(", ")
-                                            : "None"}
-                                        </em>
-                                      </small>,
-                                    ];
-                                  }}
-                                  defaultSelected={
-                                    app.options[opt.key]
-                                      ? [app.options[opt.key]]
-                                      : undefined
-                                  }
-                                />
-                                <Form.Text className="text-muted">
-                                  {opt.description}
-                                </Form.Text>
-                              </>
-                            );
-                          } else if (options[opt.key]?.type === "list") {
-                            return (
-                              <>
-                                <Form.Control
-                                  as="select"
-                                  required={opt.required}
-                                  defaultValue={
-                                    app.options[opt.key]?.toString() || ""
-                                  }
-                                  disabled={loading}
-                                  onChange={(e) => {
-                                    updateOption(e.target.id, e.target.value);
-                                  }}
-                                >
-                                  <option value={""} disabled>
-                                    Select an option
-                                  </option>
-                                  {options[opt.key].options.map((o, idx) => (
-                                    <option
-                                      key={`opt~${opt.key}-${o}`}
-                                      value={o}
-                                    >
-                                      {o}{" "}
-                                      {options[opt.key]?.descriptions &&
-                                      options[opt.key]?.descriptions[idx]
-                                        ? ` | ${
-                                            options[opt.key]?.descriptions[idx]
-                                          }`
-                                        : null}
+                                    renderMenuItemChildren={(
+                                      opt,
+                                      props,
+                                      idx
+                                    ) => {
+                                      return [
+                                        <span key={`opt-${idx}-key`}>
+                                          {opt.key}
+                                          <br />
+                                        </span>,
+                                        <small
+                                          key={`opt-${idx}-descriptions`}
+                                          className="text-small"
+                                        >
+                                          <em>
+                                            Descriptions:{" "}
+                                            {opt.descriptions
+                                              ? opt.descriptions.join(", ")
+                                              : "None"}
+                                          </em>
+                                        </small>,
+                                      ];
+                                    }}
+                                    defaultSelected={
+                                      app.options[opt.key]
+                                        ? [app.options[opt.key]]
+                                        : undefined
+                                    }
+                                  />
+                                  <Form.Text className="text-muted">
+                                    {opt.description}
+                                  </Form.Text>
+                                </>
+                              );
+                            } else if (options[opt.key]?.type === "list") {
+                              return (
+                                <>
+                                  <Form.Control
+                                    as="select"
+                                    required={opt.required}
+                                    defaultValue={
+                                      app.options[opt.key]?.toString() || ""
+                                    }
+                                    disabled={loading}
+                                    onChange={(e) => {
+                                      updateOption(e.target.id, e.target.value);
+                                    }}
+                                  >
+                                    <option value={""} disabled>
+                                      Select an option
                                     </option>
-                                  ))}
-                                </Form.Control>
-                                <Form.Text className="text-muted">
-                                  {opt.description}
-                                </Form.Text>
-                              </>
-                            );
-                          } else if (options[opt.key]?.type === "pending") {
-                            return (
-                              <>
-                                <Form.Control
-                                  size="sm"
-                                  disabled
-                                  type="text"
-                                  value="pending another selection"
-                                ></Form.Control>
-                              </>
-                            );
-                          } else {
-                            return (
-                              <>
-                                <Form.Control
-                                  required={opt.required}
-                                  type={
-                                    options[opt.key]?.type === "password"
-                                      ? "password"
-                                      : "text" // textarea not supported here
-                                  }
-                                  disabled={loading}
-                                  defaultValue={app.options[
-                                    opt.key
-                                  ]?.toString()}
-                                  placeholder={opt.placeholder}
-                                  onChange={(e) => {
-                                    updateOption(e.target.id, e.target.value);
-                                  }}
-                                />
-                                <Form.Text className="text-muted">
-                                  {opt.description}
-                                </Form.Text>
-                              </>
-                            );
-                          }
-                        })()}
-                      </Form.Group>
-                    );
-                  })}
-                </>
-              ) : null}
+                                    {options[opt.key].options.map((o, idx) => (
+                                      <option
+                                        key={`opt~${opt.key}-${o}`}
+                                        value={o}
+                                      >
+                                        {o}{" "}
+                                        {options[opt.key]?.descriptions &&
+                                        options[opt.key]?.descriptions[idx]
+                                          ? ` | ${
+                                              options[opt.key]?.descriptions[
+                                                idx
+                                              ]
+                                            }`
+                                          : null}
+                                      </option>
+                                    ))}
+                                  </Form.Control>
+                                  <Form.Text className="text-muted">
+                                    {opt.description}
+                                  </Form.Text>
+                                </>
+                              );
+                            } else if (options[opt.key]?.type === "pending") {
+                              return (
+                                <>
+                                  <Form.Control
+                                    size="sm"
+                                    disabled
+                                    type="text"
+                                    value="pending another selection"
+                                  ></Form.Control>
+                                </>
+                              );
+                            } else {
+                              return (
+                                <>
+                                  <Form.Control
+                                    required={opt.required}
+                                    type={
+                                      options[opt.key]?.type === "password"
+                                        ? "password"
+                                        : "text" // textarea not supported here
+                                    }
+                                    disabled={loading}
+                                    defaultValue={app.options[
+                                      opt.key
+                                    ]?.toString()}
+                                    placeholder={opt.placeholder}
+                                    onChange={(e) => {
+                                      updateOption(e.target.id, e.target.value);
+                                    }}
+                                  />
+                                  <Form.Text className="text-muted">
+                                    {opt.description}
+                                  </Form.Text>
+                                </>
+                              );
+                            }
+                          })()}
+                        </Form.Group>
+                      );
+                    })}
+                  </>
+                ) : null}
+              </div>
             </fieldset>
 
             <Row>
@@ -365,7 +372,8 @@ export default function Page(props) {
                   </Alert>
                 ) : ranTest ? (
                   <Alert variant="warning">
-                    <strong>Test Failed</strong> {testResult.error}
+                    <strong>Test Failed</strong>{" "}
+                    {testResult.error || testResult.message}
                   </Alert>
                 ) : null}
                 {loading ? <Loader /> : null}

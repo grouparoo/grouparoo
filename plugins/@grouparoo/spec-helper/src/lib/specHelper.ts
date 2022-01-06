@@ -293,6 +293,8 @@ export namespace helper {
             appQuery: async () => {
               return [new Date().getTime()];
             },
+            connect: async () => true,
+            disconnect: async () => true,
           },
         },
       ],
@@ -378,7 +380,7 @@ export namespace helper {
               return [
                 {
                   key: "id",
-                  ops: ["greater than", "less than"],
+                  ops: ["gt", "lt"],
                   canHaveRelativeMatch: false,
                 },
               ];
