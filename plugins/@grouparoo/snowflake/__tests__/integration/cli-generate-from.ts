@@ -14,7 +14,7 @@ const { newNock } = helper.useNock(__filename, updater);
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 const usersTableName = "PROFILES";
 
-import { Generate } from "@grouparoo/core/src/bin/generate";
+import { Generate } from "@grouparoo/core/dist/bin/generate";
 
 process.env.GROUPAROO_CONFIG_DIR = `${os.tmpdir()}/test/${
   process.env.JEST_WORKER_ID
@@ -51,7 +51,7 @@ describe("snowflake cli tests", () => {
 
   test("the snowflake commands appear in the generate list", async () => {
     const command = new Generate();
-    await command.run({ params: { list: true } });
+    await command.run({ params: { list: "true" } });
 
     const output = messages.join(" ");
     expect(output).toContain(`Available Templates:`);

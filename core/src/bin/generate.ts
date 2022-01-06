@@ -118,6 +118,7 @@ Learn more about the options for a specific template:
         template: string;
         id: string;
         path?: string;
+        highWaterMark?: string;
         _arguments: string[];
       }
     >;

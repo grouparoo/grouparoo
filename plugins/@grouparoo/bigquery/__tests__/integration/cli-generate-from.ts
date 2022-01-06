@@ -15,8 +15,8 @@ const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 const usersTableName = "records";
 
 import { api } from "actionhero";
-import { Generate } from "@grouparoo/core/src/bin/generate";
-import { Apply } from "@grouparoo/core/src/bin/apply";
+import { Generate } from "@grouparoo/core/dist/bin/generate";
+import { Apply } from "@grouparoo/core/dist/bin/apply";
 
 process.env.GROUPAROO_CONFIG_DIR = `${os.tmpdir()}/test/${
   process.env.JEST_WORKER_ID
@@ -53,7 +53,7 @@ describe("bigquery cli tests", () => {
 
   test("the bigquery commands appear in the generate list", async () => {
     const command = new Generate();
-    await command.run({ params: { list: true } });
+    await command.run({ params: { list: "true" } });
 
     const output = messages.join(" ");
     expect(output).toContain(`Available Templates:`);
@@ -157,7 +157,7 @@ describe("bigquery cli tests", () => {
         with: "*",
         mapping: "id=user_id",
         highWaterMark: "stamp",
-        overwrite: true,
+        overwrite: "true",
       },
     });
 
