@@ -197,7 +197,7 @@ export default function Page(props) {
 
     _localFilters.push({
       key: filterOptions[0].key,
-      op: "exists",
+      op: filterOptions[0].ops[0],
       match: "",
     });
 
