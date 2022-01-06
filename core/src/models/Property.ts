@@ -361,6 +361,28 @@ export class Property extends LoggedModel<Property> {
     );
   }
 
+  @AfterSave
+  static async ensureRecordsMarkedPendingOnTypeChange(instance: Property) {
+    // Check to see if type changed
+    if (instance.changed("type")) {
+      //mark all relevant recordproperties as "pending"
+      await RecordProperty.update(
+        { state: "pending" },
+        { where: { propertyId: instance.id } }
+      );
+
+      const modelId = await (
+        await Source.findOne({ where: { id: instance.sourceId } })
+      ).modelId;
+
+      await GrouparooRecord.update(
+        { state: "pending" },
+        { where: { modelId: modelId } }
+      );
+
+    }
+  }
+
   // --- Class Methods --- //
 
   static async findById(id: string) {
