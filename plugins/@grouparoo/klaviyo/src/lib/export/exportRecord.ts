@@ -101,7 +101,7 @@ export const exportRecord = async (args) => {
 };
 
 export async function makePayload(oldRecordProperties, newRecordProperties) {
-  const payload = {};
+  const payload: any = {};
 
   // set record properties, including old ones
   const newFields = Object.keys(newRecordProperties);
@@ -113,9 +113,14 @@ export async function makePayload(oldRecordProperties, newRecordProperties) {
   for (const fieldName of allFields) {
     const value = newRecordProperties[fieldName];
     const klaviyoKey = fieldKeys[fieldName];
+    const key = klaviyoKey ? klaviyoKey : fieldName;
 
-    payload[klaviyoKey ? klaviyoKey : fieldName] =
-      formatVar(value) ?? "[deleted]";
+    if (value === undefined) {
+      payload.$unset ??= [];
+      payload.$unset.push(key);
+    } else {
+      payload[key] = formatVar(value);
+    }
   }
 
   return payload;
