@@ -21,7 +21,9 @@ const states = [
   "exporting",
   "complete",
   "failed",
-];
+] as const;
+
+type ImportStateOption = typeof states[number];
 
 export default function ImportList(props) {
   const {
@@ -37,7 +39,9 @@ export default function ImportList(props) {
   // pagination
   const limit = 100;
   const { offset, setOffset } = useOffset();
-  const [state, setState] = useState(router.query.state?.toString() || "all");
+  const [state, setState] = useState<ImportStateOption>(
+    (router.query.state?.toString() as ImportStateOption) || "all"
+  );
 
   let recordId = router.query.recordId;
   let creatorId: string;
