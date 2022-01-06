@@ -1,0 +1,53 @@
+{
+  "author": "Grouparoo Inc <hello@grouparoo.com>",
+  "name": "@grouparoo/rollbar",
+  "description": "Performance and error tracking with Rollbar",
+  "version": "0.8.0-alpha.3",
+  "license": "MPL-2.0",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=12.0.0 <17.0.0"
+  },
+  "homepage": "https://www.grouparoo.com",
+  "bugs": {
+    "url": "https://github.com/grouparoo/grouparoo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/grouparoo/grouparoo.git",
+    "directory": "plugins/@grouparoo/rollbar"
+  },
+  "scripts": {
+    "prepare": "rm -rf dist && tsc --declaration",
+    "test": "echo 'TODO'",
+    "pretest": "npm run lint && npm run prepare",
+    "lint": "prettier --check src ",
+    "watch": "tsc --watch"
+  },
+  "dependencies": {
+    "rollbar": "2.24.0"
+  },
+  "devDependencies": {
+    "@grouparoo/core": "0.8.0-alpha.3",
+    "@grouparoo/spec-helper": "0.8.0-alpha.3",
+    "@types/jest": "*",
+    "@types/node": "*",
+    "actionhero": "27.0.3",
+    "jest": "27.0.6",
+    "prettier": "2.3.2",
+    "ts-jest": "27.0.5",
+    "typescript": "4.3.5"
+  },
+  "grouparoo": {
+    "env": {
+      "api": [
+        "ROLLBAR_ACCESS_TOKEN"
+      ]
+    },
+    "serverInjection": []
+  },
+  "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"
+}
