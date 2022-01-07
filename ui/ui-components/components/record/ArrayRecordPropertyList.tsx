@@ -11,7 +11,7 @@ export default function ArrayRecordPropertyList({
   invalidReason,
 }: {
   type: string;
-  values: Array<string | number | boolean | Date>;
+  values: (string | number | boolean | Date)[];
   invalidValue: string;
   invalidReason: string;
 }) {

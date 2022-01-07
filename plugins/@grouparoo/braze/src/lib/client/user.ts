@@ -20,7 +20,7 @@ export default class User {
     return filtered.length > 0 ? filtered[0] : null;
   }
 
-  async get(externalIds: Array<string>) {
+  async get(externalIds: string[]) {
     const response = await this.client._request({
       data: JSON.stringify({ external_ids: externalIds }),
       method: "POST",
@@ -30,7 +30,7 @@ export default class User {
     return users;
   }
 
-  updateOrCreate(payload: Array<any>) {
+  updateOrCreate(payload: any[]) {
     return this.client._request({
       data: JSON.stringify({ attributes: payload }),
       method: "POST",
@@ -39,7 +39,7 @@ export default class User {
     });
   }
 
-  delete(externalIds: Array<string>) {
+  delete(externalIds: string[]) {
     return this.client._request({
       data: JSON.stringify({ external_ids: externalIds }),
       method: "POST",

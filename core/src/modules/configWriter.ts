@@ -98,7 +98,7 @@ export namespace ConfigWriter {
   }
 
   export async function getConfigObjects(): Promise<WritableConfigObject[]> {
-    let objects: Array<{ filePath: string; object: any }> = [];
+    let objects: { filePath: string; object: any }[] = [];
 
     const queryParams = { where: { locked: null as string } };
     const queries: {

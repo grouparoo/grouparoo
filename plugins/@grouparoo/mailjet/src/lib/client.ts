@@ -34,7 +34,7 @@ class MailjetClient {
     return null;
   }
 
-  async getLists(): Promise<Array<any>> {
+  async getLists(): Promise<any[]> {
     const request = await this.client
       .get("contactslist", { version: "v3" })
       .request();

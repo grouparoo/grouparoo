@@ -57,10 +57,10 @@ const mapTypesFromIntercomToGrouparoo = (key, intercomType) => {
 
 const getRequiredFields = (
   destinationOptions: SimpleDestinationOptions
-): Array<{
+): {
   key: string;
   type: DestinationMappingOptionsResponseType;
-}> => {
+}[] => {
   const { creationMode } = destinationOptions;
   const required = [];
   required.push({ key: "email", type: "email" });
@@ -87,11 +87,11 @@ const getKnownAttributes = async (
   cacheData: IntercomCacheData,
   update: boolean = false
 ): Promise<
-  Array<{
+  {
     key: string;
     type: DestinationMappingOptionsResponseType;
     important?: boolean;
-  }>
+  }[]
 > => {
   const { appId, appOptions } = cacheData;
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
@@ -108,11 +108,11 @@ const getKnownAttributes = async (
 export const fetchKnownAttributes = async (
   client: any
 ): Promise<
-  Array<{
+  {
     key: string;
     type: DestinationMappingOptionsResponseType;
     important?: boolean;
-  }>
+  }[]
 > => {
   const importantKeys = ["name"];
   const requiredKeys = ["email", "external_id"];

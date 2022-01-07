@@ -82,7 +82,7 @@ export class App extends LoggedModel<App> {
   __options: Option[]; // the underscores are needed as "options" is an internal method on sequelize instances
 
   @HasMany(() => Source)
-  sources: Array<Source>;
+  sources: Source[];
 
   async appOptions() {
     const { pluginApp } = await this.getPlugin();

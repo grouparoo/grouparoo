@@ -48,17 +48,17 @@ const mapTypesFromZendeskToGrouparoo = (zendeskType) => {
   return grouparooType;
 };
 
-export const getRequiredFields = (): Array<{
+export const getRequiredFields = (): {
   key: string;
   type: DestinationMappingOptionsResponseType;
-}> => {
+}[] => {
   return [{ key: "external_id", type: "string" }];
 };
-export const getBuiltInFields = (): Array<{
+export const getBuiltInFields = (): {
   key: string;
   type: DestinationMappingOptionsResponseType;
   important?: boolean;
-}> => {
+}[] => {
   return [
     { key: "name", type: "string", important: true },
     { key: "email", type: "email", important: true },
@@ -78,11 +78,11 @@ export const getBuiltInFields = (): Array<{
 export const getUserFields = async (
   client: any
 ): Promise<
-  Array<{
+  {
     key: string;
     type: DestinationMappingOptionsResponseType;
     important?: boolean;
-  }>
+  }[]
 > => {
   const list = await client.userfields.list();
   const out = [];

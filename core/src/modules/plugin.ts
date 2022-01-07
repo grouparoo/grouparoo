@@ -200,7 +200,7 @@ export namespace plugin {
   /**
    * Like plugin.createImport, but for many imports at once!
    * * mapping: an object whose keys are remote columns and whose values are the property keys, ie: {remoteColumnId: 'userId'}
-   * rows: Array<{email: 'abc@company.com', vip: true}>
+   * rows: {email: 'abc@company.com', vip: true}[]
    */
   export async function createImports(
     mapping: { [remoteKey: string]: string },
@@ -304,7 +304,7 @@ export namespace plugin {
    * Takes a record and returns data with the values from the properties and current time.
    */
   export async function getRecordData(record: GrouparooRecord) {
-    // TODO: we could do these types better to be string | number | etc | Array<string | etc>
+    // TODO: we could do these types better to be string | number | etc | string[] | etc>
     const dates = {
       now: expandDates(new Date()),
       createdAt: expandDates(record.createdAt),

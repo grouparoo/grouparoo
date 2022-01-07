@@ -69,10 +69,10 @@ export class SourceConnectionApps extends AuthenticatedAction {
     const apps = await App.findAll();
     const existingAppTypes = apps.map((a) => a.type);
 
-    const connectionApps: Array<{
+    const connectionApps: {
       app: AsyncReturnType<App["apiData"]>;
       connection: PluginConnectionApiData;
-    }> = [];
+    }[] = [];
 
     let importConnections: PluginConnection[] = [];
     api.plugins.plugins.forEach((plugin: GrouparooPlugin) => {

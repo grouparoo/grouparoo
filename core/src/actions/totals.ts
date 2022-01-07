@@ -74,7 +74,7 @@ export class TotalsAction extends AuthenticatedAction {
         : (Sequelize.literal(
             `strftime('%Y %m %d', \`createdAt\`)`
           ) as unknown as string);
-    const rolling: Array<{ date: string; count: number }> = (
+    const rolling: { date: string; count: number }[] = (
       await model.count({
         where: { createdAt: { [Op.gte]: new Date(dates[0]) } },
         group: [groupStatement],

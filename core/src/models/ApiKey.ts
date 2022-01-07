@@ -90,7 +90,7 @@ export class ApiKey extends LoggedModel<ApiKey> {
   }
 
   async setPermissions(
-    userPermissions: Array<{ topic: string; read: boolean; write: boolean }>
+    userPermissions: { topic: string; read: boolean; write: boolean }[]
   ) {
     const permissions = await this.$get("permissions");
     for (const userPermission of userPermissions) {

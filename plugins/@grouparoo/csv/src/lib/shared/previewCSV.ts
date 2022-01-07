@@ -3,7 +3,7 @@ import csvParser from "csv-parser";
 import { SourcePreviewMethodResponseRow } from "@grouparoo/core";
 
 export async function previewCSV(localPath: string) {
-  const response: Array<SourcePreviewMethodResponseRow> = [];
+  const response: SourcePreviewMethodResponseRow[] = [];
   const stream = fs.createReadStream(localPath);
   const parser = stream.pipe(csvParser());
 

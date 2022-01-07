@@ -79,7 +79,7 @@ export class PropertiesList extends AuthenticatedAction {
       params.modelId ? p.source?.modelId === params.modelId : true
     );
 
-    const responseProperties: Array<AsyncReturnType<Property["apiData"]>> = [];
+    const responseProperties: AsyncReturnType<Property["apiData"]>[] = [];
     const responseExamples: { [id: string]: string[] } = {};
 
     for (const property of properties) {
@@ -338,7 +338,7 @@ export class PropertyRecordPreview extends AuthenticatedAction {
 
     const apiData = await record.apiData();
 
-    let newPropertyValues: Array<string | number | boolean | Date> = [];
+    let newPropertyValues: (string | number | boolean | Date)[] = [];
     let errorMessage: string;
     try {
       newPropertyValues =

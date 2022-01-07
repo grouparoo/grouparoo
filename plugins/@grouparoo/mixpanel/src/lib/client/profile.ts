@@ -1,7 +1,7 @@
 import Mixpanel from "./mixpanel";
 
 export interface MixpanelDataResponse {
-  results?: Array<any>;
+  results?: any[];
 }
 
 export default class Profile {

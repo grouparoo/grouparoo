@@ -88,7 +88,7 @@ export interface GetPropertyValuesMethod<Connection = any> {
     matchConditions: MatchCondition[];
     aggregationMethod: AggregationMethod;
     isArray: boolean;
-    primaryKeys: Array<number | string>;
+    primaryKeys: (number | string)[];
   }): Promise<{ [primaryKey: string]: { [column: string]: DataResponse[] } }>;
 }
 export interface SourceOptionsExtra {

@@ -37,7 +37,7 @@ export interface ApiKeyConfigurationObject extends ConfigurationObject {
   name: string;
   type?: string;
   apiKey?: string;
-  permissions?: Array<{ topic: string; read: boolean; write: boolean }>;
+  permissions?: { topic: string; read: boolean; write: boolean }[];
   options?: { permissionAllRead: boolean; permissionAllWrite: boolean };
 }
 
@@ -85,7 +85,7 @@ export interface GroupConfigurationObject extends ConfigurationObject {
 
 export interface RecordConfigurationObject extends ConfigurationObject {
   modelId: string;
-  properties?: { [key: string]: Array<string | boolean | number | Date> };
+  properties?: { [key: string]: (string | boolean | number | Date)[] };
 }
 
 export interface PropertyConfigurationObject extends ConfigurationObject {
@@ -126,7 +126,7 @@ export interface SourceConfigurationObject extends ConfigurationObject {
 
 export interface TeamConfigurationObject extends ConfigurationObject {
   name: string;
-  permissions?: Array<{ topic: string; read: boolean; write: boolean }>;
+  permissions?: { topic: string; read: boolean; write: boolean }[];
   options?: { permissionAllRead: boolean; permissionAllWrite: boolean };
 }
 
@@ -380,7 +380,7 @@ export async function getDirectParentId(configObject: ConfigurationObject) {
 
 export async function getParentIds(
   configObject: AnyConfigurationObject,
-  otherConfigObjects: Array<AnyConfigurationObject> = []
+  otherConfigObjects: AnyConfigurationObject[] = []
 ) {
   const keys = Object.keys(configObject);
   // IDs here are prepended with the class of the object to allow for ID duplication between classes, but not of the same type

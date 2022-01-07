@@ -28,7 +28,7 @@ export class SQLite extends Database {
     });
   }
 
-  async asyncQuery(query: string): Promise<Array<any>> {
+  async asyncQuery(query: string): Promise<any[]> {
     log(`[ sqlite ] ${query}`, "debug");
     return new Promise((resolve, reject) => {
       this.connection.all(query, (err: Error, res: any[]) => {

@@ -21,7 +21,7 @@ export async function getMergeVars(
   const {
     merge_fields,
   }: {
-    merge_fields: Array<MailchimpMergeField>;
+    merge_fields: MailchimpMergeField[];
   } = await client.get(`/lists/${listId}/merge-fields`);
 
   const out: GrouparooMergeVar[] = [];

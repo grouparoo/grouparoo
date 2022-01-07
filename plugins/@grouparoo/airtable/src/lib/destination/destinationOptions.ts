@@ -89,7 +89,7 @@ class DestinationOptionsHandler {
   }
 
   private async getTablesAndIds(): Promise<
-    Array<{ option: string; description: string }>
+    { option: string; description: string }[]
   > {
     const tables = await this.client.listTables();
     const mapped = new Map(tables.map((table) => [table.id, table]));

@@ -189,7 +189,7 @@ export const exportRecords: ExportRecordsPluginMethod = async ({
   });
 };
 
-function getUsersPayload(users: Array<BatchExport>) {
+function getUsersPayload(users: BatchExport[]) {
   const payload = [];
   for (const user of users) {
     const { oldRecordProperties, newRecordProperties } = user;

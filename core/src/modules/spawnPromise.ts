@@ -4,7 +4,7 @@ import os from "os";
 
 export async function spawnPromise(
   command: string,
-  args: Array<string> = [],
+  args: string[] = [],
   cwd: string = process.cwd(),
   extraEnv = {}
 ) {

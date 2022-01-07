@@ -41,7 +41,7 @@ const properties = [
   "grouparoo_custom_number",
 ];
 
-async function deleteUsers(emails: Array<string>, suppressErrors) {
+async function deleteUsers(emails: string[], suppressErrors) {
   const { schemaId } = destinationOptions;
   const records = await getRecordsByForeignKeys(emails);
   try {
@@ -99,7 +99,7 @@ async function cleanUp(suppressErrors: boolean) {
 }
 
 function getRecord(
-  records: Array<any>,
+  records: any[],
   foreignKey: string,
   foreignKeyValue: string
 ) {

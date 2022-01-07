@@ -185,7 +185,7 @@ function filterUser(users: IntercomContact[], key: string, value) {
 function getUniqueValues(
   newRecordProperties,
   oldRecordProperties
-): Array<{ field: string; operator: string; value: string }> {
+): { field: string; operator: string; value: string }[] {
   const newId = cleanExternalId(newRecordProperties.external_id);
   let oldId = cleanExternalId(oldRecordProperties.external_id);
   const newEmail = cleanEmail(newRecordProperties.email);
@@ -199,7 +199,7 @@ function getUniqueValues(
   }
 
   // should be in order of importance (favors external id if there)
-  const value: Array<{ field: string; operator: string; value: string }> = [];
+  const value: { field: string; operator: string; value: string }[] = [];
   if (newId) {
     value.push({
       field: "external_id",

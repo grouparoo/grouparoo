@@ -55,10 +55,10 @@ const mapTypesToGrouparoo = (
   return null;
 };
 
-export const getRequiredFields = (): Array<{
+export const getRequiredFields = (): {
   key: string;
   type: DestinationMappingOptionsResponseType;
-}> => {
+}[] => {
   return [{ key: "emailAddress", type: "email" }];
 };
 
@@ -69,12 +69,12 @@ const isImportant = (key): Boolean => {
 export const getContactFields = async (
   client: any
 ): Promise<
-  Array<{
+  {
     key: string;
     type: DestinationMappingOptionsResponseType;
     statement: string;
     important?: boolean;
-  }>
+  }[]
 > => {
   const out = await getAllContactFields(client);
   return out.filter((field, index, arr) => {
@@ -85,12 +85,12 @@ export const getContactFields = async (
 export const getAllContactFields = async (
   client: any
 ): Promise<
-  Array<{
+  {
     key: string;
     type: DestinationMappingOptionsResponseType;
     statement: string;
     important?: boolean;
-  }>
+  }[]
 > => {
   const fields = await client.contacts.fields.getAll();
   const out = [];

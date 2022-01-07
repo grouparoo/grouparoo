@@ -97,9 +97,9 @@ export class StatusTask extends CLSTask {
   logSamples(samples: Status.StatusGetResponse) {
     if (env === "test") return;
 
-    const totalItems: Array<Record<string, number[]>> = [];
-    const pendingItems: Array<Record<string, number[]>> = [];
-    const pendingRuns: Array<Record<string, string[]>> = [];
+    const totalItems: Record<string, number[]>[] = [];
+    const pendingItems: Record<string, number[]>[] = [];
+    const pendingRuns: Record<string, string[]>[] = [];
     const pendingDeletions = [];
 
     const pendingCollection = samples["Run"]

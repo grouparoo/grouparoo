@@ -94,7 +94,7 @@ export default class SQLite extends Connection {
     const variables = keys.map((key, index) => "?");
     const insertQuery = `INSERT INTO ${sqlTable} (${columnNames}) VALUES (${variables})`;
 
-    const values: Array<any> = keys.map((key) => row[key]);
+    const values: any[] = keys.map((key) => row[key]);
     await this.query(2, insertQuery, values);
   }
 
@@ -135,7 +135,7 @@ class Client extends Database {
     });
   }
 
-  async asyncQueryParams(query: string, params: any): Promise<Array<any>> {
+  async asyncQueryParams(query: string, params: any): Promise<any[]> {
     return new Promise((resolve, reject) => {
       this.connection.all(query, params, (err: Error, res: any[]) => {
         if (err) {
@@ -146,7 +146,7 @@ class Client extends Database {
     });
   }
 
-  async asyncQuery(query: string): Promise<Array<any>> {
+  async asyncQuery(query: string): Promise<any[]> {
     return new Promise((resolve, reject) => {
       this.connection.all(query, (err: Error, res: any[]) => {
         if (err) {

@@ -60,13 +60,13 @@ export class Swagger extends Action {
           summary: string;
           consumes: string[];
           produces: string[];
-          parameters: Array<{
+          parameters: {
             in: string;
             name: string;
             type: string;
             required: boolean;
             default: string | number | boolean;
-          }>;
+          }[];
           responses: typeof responses;
           security: Record<string, any>;
         };

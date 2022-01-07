@@ -55,7 +55,7 @@ describe("create and delete", () => {
 
 export async function spawnPromise(
   command: string,
-  args: Array<string> | string = [],
+  args: string[] | string = [],
   cwd: string = dir
 ): Promise<{ exitCode: number; stderr: string; stdout: string }> {
   return new Promise((resolve, reject) => {

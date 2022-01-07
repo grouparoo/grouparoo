@@ -69,10 +69,10 @@ export class DestinationConnectionApps extends AuthenticatedAction {
   permission: ActionPermission = { topic: "destination", mode: "read" };
 
   async runWithinTransaction() {
-    const connectionApps: Array<{
+    const connectionApps: {
       app: AsyncReturnType<App["apiData"]>;
       connection: PluginConnection;
-    }> = [];
+    }[] = [];
 
     const apps = await App.findAll();
     const existingAppTypes = apps.map((a) => a.type);

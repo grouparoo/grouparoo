@@ -28,7 +28,7 @@ let user3 = null;
 const list1 = "(test) High Value";
 const list2 = "(test) Churned";
 
-async function deleteUsers(emails: Array<string>, suppressErrors) {
+async function deleteUsers(emails: string[], suppressErrors) {
   try {
     await client.users.delete(emails);
   } catch (err) {
@@ -38,7 +38,7 @@ async function deleteUsers(emails: Array<string>, suppressErrors) {
   }
 }
 
-function getRecord(records: Array<any>, externalId: string) {
+function getRecord(records: any[], externalId: string) {
   const filtered = records.filter(
     (record) => record["external_id"] === externalId
   );

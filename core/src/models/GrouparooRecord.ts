@@ -115,7 +115,7 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
   async simplifiedProperties() {
     const properties = await this.getProperties();
     const simpleProperties: {
-      [key: string]: Array<string | boolean | number | Date>;
+      [key: string]: (string | boolean | number | Date)[];
     } = {};
 
     for (const k in properties) simpleProperties[k] = properties[k].values;
@@ -124,7 +124,7 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
 
   async addOrUpdateProperties(
     properties: {
-      [key: string]: Array<string | number | boolean | Date>;
+      [key: string]: (string | number | boolean | Date)[];
     },
     toLock = true,
     ignoreMissingProperties = false
@@ -141,7 +141,7 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
     return RecordOps.removeProperty(this, key);
   }
 
-  async removeProperties(properties: Array<string>) {
+  async removeProperties(properties: string[]) {
     return RecordOps.removeProperties(this, properties);
   }
 
@@ -273,7 +273,7 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
 
   static async findOrCreateByUniqueRecordProperties(
     hash: {
-      [key: string]: Array<string | number | boolean | Date>;
+      [key: string]: (string | number | boolean | Date)[];
     },
     source?: boolean | Source
   ) {

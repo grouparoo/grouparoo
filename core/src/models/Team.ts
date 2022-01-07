@@ -80,7 +80,7 @@ export class Team extends LoggedModel<Team> {
   }
 
   async setPermissions(
-    userPermissions: Array<{ topic: string; read: boolean; write: boolean }>
+    userPermissions: { topic: string; read: boolean; write: boolean }[]
   ) {
     const permissions = await this.$get("permissions");
     for (const userPermission of userPermissions) {
@@ -135,10 +135,10 @@ export class Team extends LoggedModel<Team> {
 
   @AfterSave
   static async buildPermissions(instance: Team) {
-    const permissionsWithStatus: Array<{
+    const permissionsWithStatus: {
       isNew: boolean;
       permission: Permission;
-    }> = [];
+    }[] = [];
 
     for (const i in PermissionTopics) {
       const topic = PermissionTopics[i];

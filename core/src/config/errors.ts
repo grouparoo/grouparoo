@@ -38,7 +38,7 @@ export const DEFAULT = {
       // When a params for an action is invalid
       invalidParams: (
         data: ActionProcessor<any>,
-        validationErrors: Array<string | Error>
+        validationErrors: (string | Error)[]
       ) => {
         if (validationErrors.length >= 0) return validationErrors[0];
         return "validation error";

@@ -5,7 +5,7 @@ export namespace StateMachine {
   export interface StateTransition {
     from: string;
     to: string;
-    checks: Array<(instance: any) => Promise<any>>;
+    checks: ((instance: any) => Promise<any>)[];
   }
 
   export async function transition(
@@ -14,7 +14,7 @@ export namespace StateMachine {
       _previousDataValues?: { state?: string };
       constructor?: { defaultState?: string };
     },
-    transitions: Array<StateTransition>
+    transitions: StateTransition[]
   ) {
     const klass = modelName(instance);
     const newState: string = instance["state"];
@@ -42,7 +42,7 @@ export namespace StateMachine {
   function findTransition(
     from: string,
     to: string,
-    transitions: Array<StateTransition>
+    transitions: StateTransition[]
   ) {
     return transitions.find((t) => t.from === from && t.to === to);
   }

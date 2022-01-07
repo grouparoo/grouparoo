@@ -130,7 +130,7 @@ export default class MySQL extends Connection {
     const variables = keys.map((key, index) => "?");
     const insertQuery = `INSERT INTO ${sqlTable} (${columnNames}) VALUES (${variables})`;
 
-    const values: Array<any> = keys.map((key) => row[key]);
+    const values: any[] = keys.map((key) => row[key]);
     await this.query(2, insertQuery, values);
   }
 

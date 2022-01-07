@@ -666,7 +666,7 @@ export class Group extends LoggedModel<Group> {
 
     if (!name || !modelId) return;
 
-    const rules: Array<GroupRuleConfigurationObject> = [];
+    const rules: GroupRuleConfigurationObject[] = [];
 
     const groupRules = await this.getRules();
     const convenientRules = this.toConvenientRules(groupRules);

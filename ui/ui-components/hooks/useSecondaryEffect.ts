@@ -1,9 +1,6 @@
 import { useEffect, useRef } from "react";
 
-export const useSecondaryEffect = (
-  method: Function,
-  changeArgs: Array<any>
-) => {
+export const useSecondaryEffect = (method: Function, changeArgs: any[]) => {
   const didMount = useRef(false);
 
   useEffect(() => {

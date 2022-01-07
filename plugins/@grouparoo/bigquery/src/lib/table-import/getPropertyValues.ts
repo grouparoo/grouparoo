@@ -63,7 +63,7 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
       throw new Error(`${aggregationMethod} is not a known aggregation method`);
   }
 
-  const params: Array<any> = [];
+  const params: any[] = [];
   const types = [];
   let ranked = false;
   let query = `SELECT \`${tablePrimaryKeyCol}\` as __pk`;
@@ -131,7 +131,7 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   const options = { query, params, types };
 
   try {
-    const [rows]: [Array<{ [column: string]: DataResponse }>] =
+    const [rows]: [{ [column: string]: DataResponse }[]] =
       await connection.query(options);
 
     for (const row of rows) {

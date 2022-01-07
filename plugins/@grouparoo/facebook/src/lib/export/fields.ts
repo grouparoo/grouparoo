@@ -79,15 +79,15 @@ const FIELDS = {
 export const getMappingFields = (
   model: FacebookModel
 ): {
-  required: Array<{
+  required: {
     key: string;
     type: DestinationMappingOptionsResponseType;
-  }>;
-  known: Array<{
+  }[];
+  known: {
     key: string;
     type: DestinationMappingOptionsResponseType;
     important?: boolean;
-  }>;
+  }[];
 } => {
   const { primaryKey, audienceType } = model;
   const required = [];

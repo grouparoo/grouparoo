@@ -96,17 +96,17 @@ export namespace ScheduleOps {
     });
     const { pluginConnection } = await source.getPlugin();
 
-    const response: Array<{
+    const response: {
       key: string;
       description: string;
       required: boolean;
       type: string;
-      options: Array<{
+      options: {
         key: string;
         description?: string;
-        examples?: Array<any>;
-      }>;
-    }> = [];
+        examples?: any[];
+      }[];
+    }[] = [];
 
     if (!pluginConnection) {
       throw new Error(`cannot find a pluginConnection for type ${source.type}`);

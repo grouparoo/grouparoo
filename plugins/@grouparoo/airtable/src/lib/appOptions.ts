@@ -16,7 +16,7 @@ export class AirtableAppOptions implements SimpleAppOptions {
   [key: string]: string | number | boolean;
 }
 
-export const AirtableAppOptionsOptions: Array<AppOptionsOption> = [
+export const AirtableAppOptionsOptions: AppOptionsOption[] = [
   {
     key: "apiKey",
     type: "password",

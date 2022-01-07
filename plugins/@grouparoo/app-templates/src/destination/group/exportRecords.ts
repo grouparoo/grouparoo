@@ -240,10 +240,10 @@ async function batchGroups(
   let currentCount = 0;
   let hasData = false;
 
-  const batches: Array<{
+  const batches: {
     groupMap: GroupNameListMap;
     foreignKeyMap: ForeignKeyMap;
-  }> = [];
+  }[] = [];
 
   for (const name in groupMap) {
     if (config.groupMode === GroupSizeMode.WithinGroup) {

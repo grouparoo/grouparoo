@@ -70,15 +70,15 @@ const isFieldImportant = function (field: any): Boolean {
 export const getFields = async (
   client: any
 ): Promise<{
-  required: Array<{
+  required: {
     key: string;
     type: DestinationMappingOptionsResponseType;
-  }>;
-  known: Array<{
+  }[];
+  known: {
     key: string;
     type: DestinationMappingOptionsResponseType;
     important?: boolean;
-  }>;
+  }[];
 }> => {
   const required = [];
   let known = [];

@@ -32,10 +32,10 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod =
     };
   };
 
-export const getRequiredFields = (): Array<{
+export const getRequiredFields = (): {
   key: string;
   type: DestinationMappingOptionsResponseType;
-}> => {
+}[] => {
   return [{ key: "email", type: "email" }];
 };
 
@@ -66,11 +66,11 @@ const mapTypesFromIterableToGrouparoo = (fieldKey, iterableType) => {
 export const getUserFields = async (
   client: any
 ): Promise<
-  Array<{
+  {
     key: string;
     type: DestinationMappingOptionsResponseType;
     important?: boolean;
-  }>
+  }[]
 > => {
   const fields = await client.users.getFields();
   const out = [];

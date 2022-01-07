@@ -54,19 +54,19 @@ export namespace PropertyOps {
       throw new Error(`cannot find propertyOptions for type ${source.type}`);
     }
 
-    const response: Array<{
+    const response: {
       key: string;
       displayName?: string;
       description: string;
       required: boolean;
       type: PluginOptionType;
-      options: Array<{
+      options: {
         key: string;
         description?: string;
         default?: boolean;
-        examples?: Array<any>;
-      }>;
-    }> = [];
+        examples?: any[];
+      }[];
+    }[] = [];
     const app = await source.$get("app", { include: [Option], scope: null });
     const appOptions = await app.getOptions(true);
     const connection = await app.getConnection();

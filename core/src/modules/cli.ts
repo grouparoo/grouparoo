@@ -9,7 +9,7 @@ export namespace GrouparooCLI {
     [key: string]: number[] | string[];
   }
 
-  export type LogStatusArray = Array<{ header: string; status: LogStatus }>;
+  export type LogStatusArray = { header: string; status: LogStatus }[];
 
   /** Settings and Boot Options */
 

@@ -19,9 +19,7 @@ learn more about winston v3 loggers @
  - https://github.com/winstonjs/winston/blob/master/docs/transports.md
 */
 
-type ActionheroConfigLoggerBuilderArray = Array<
-  (config: any) => winston.Logger
->;
+type ActionheroConfigLoggerBuilderArray = ((config: any) => winston.Logger)[];
 
 export const DEFAULT = {
   [namespace]: (config: ActionheroConfigInterface) => {

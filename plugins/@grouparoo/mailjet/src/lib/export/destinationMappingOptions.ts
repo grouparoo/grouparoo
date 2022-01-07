@@ -51,10 +51,10 @@ const mapTypesFromMailjetToGrouparoo = (fieldKey, mailjetType) => {
   return null;
 };
 
-export const getRequiredFields = (): Array<{
+export const getRequiredFields = (): {
   key: string;
   type: DestinationMappingOptionsResponseType;
-}> => {
+}[] => {
   return [{ key: "Email", type: "email" }];
 };
 
@@ -65,11 +65,11 @@ const isImportant = (key): Boolean => {
 export const getUserFields = async (
   client: MailjetClient
 ): Promise<
-  Array<{
+  {
     key: string;
     type: DestinationMappingOptionsResponseType;
     important?: boolean;
-  }>
+  }[]
 > => {
   const fields = await client.getAllContactsProperties();
   const out = [];

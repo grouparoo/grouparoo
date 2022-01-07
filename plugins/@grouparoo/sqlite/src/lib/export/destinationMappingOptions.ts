@@ -8,11 +8,11 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod =
     const query = `SELECT name from pragma_table_info("${destinationOptions.table}")`;
     const rows = await connection.asyncQuery(query);
 
-    const columns: Array<{
+    const columns: {
       key: string;
       type: DestinationMappingOptionsResponseType;
       important: boolean;
-    }> = [];
+    }[] = [];
     for (const i in rows) {
       if (rows[i].name !== destinationOptions.primaryKey) {
         columns.push({ key: rows[i].name, type: "any", important: true });

@@ -49,7 +49,7 @@ export namespace MustacheUtils {
     const keys = getMustacheVariables(string);
     const properties: Record<string, any>[] =
       await api.sequelize.models.Property.findAll();
-    const searchItems: Array<{ id: string; key: string }> = [].concat(
+    const searchItems: { id: string; key: string }[] = [].concat(
       properties.map((p) => {
         return { id: p["id"], key: p["key"] };
       }),

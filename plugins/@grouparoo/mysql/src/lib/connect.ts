@@ -46,7 +46,7 @@ export const connect: ConnectPluginAppMethod<MySQLConnection> = async ({
         const q = connection.query(
           query,
           replacementValues,
-          (error: Error, rows: Array<QueryResultObject>) => {
+          (error: Error, rows: QueryResultObject[]) => {
             connection.release();
 
             if (error) {

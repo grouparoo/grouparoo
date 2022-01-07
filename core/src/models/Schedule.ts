@@ -56,11 +56,11 @@ export interface PluginConnectionScheduleOption {
     sourceMapping: SimpleSourceOptions;
     properties: Property[];
   }) => Promise<
-    Array<{
+    {
       key: string;
       description?: string;
-      examples?: Array<any>;
-    }>
+      examples?: any[];
+    }[]
   >;
 }
 
