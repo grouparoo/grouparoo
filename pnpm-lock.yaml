@@ -10,6 +10,7 @@ importers:
       license-checker: github:grouparoo/license-checker
       npm-check-updates: 12.1.0
       prettier: 2.5.1
+      syncpack: 6.2.0
     devDependencies:
       glob: 7.2.0
       lerna: 4.0.0
@@ -17,6 +18,7 @@ importers:
       license-checker: github.com/grouparoo/license-checker/1054593024d6f7e50ad47feb3b61d52c9506c274
       npm-check-updates: 12.1.0
       prettier: 2.5.1
+      syncpack: 6.2.0
 
   apps/staging-community:
     specifiers:
@@ -7332,6 +7334,10 @@ packages:
       homedir-polyfill: 1.0.3
     dev: false
 
+  /expect-more/1.2.0:
+    resolution: {integrity: sha512-AVnjc5oh2jgiJjOrjbiKxbwLlNA/zsl2044Nbd09H4+2KwThtSLYKhdOusLYOrcToFAa2uBOWR1ExCN4kOWgbQ==}
+    dev: true
+
   /expect/27.4.2:
     resolution: {integrity: sha512-BjAXIDC6ZOW+WBFNg96J22D27Nq5ohn+oGcuP2rtOtcjuxNoV9McpQ60PcQWhdFOSBIQdR72e+4HdnbZTFSTyg==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
@@ -7682,6 +7688,10 @@ packages:
   /fp-and-or/0.1.3:
     resolution: {integrity: sha512-wJaE62fLaB3jCYvY2ZHjZvmKK2iiLiiehX38rz5QZxtdN8fVPJDeZUiVvJrHStdTc+23LHlyZuSEKgFc0pxi2g==}
     engines: {node: '>=10'}
+
+  /fp-ts/2.11.5:
+    resolution: {integrity: sha512-OqlwJq1BdpB83BZXTqI+dNcA6uYk6qk4u9Cgnt64Y+XS7dwdbp/mobx8S2KXf2AXH+scNmA/UVK3SEFHR3vHZA==}
+    dev: true
 
   /fs-extra/10.0.0:
     resolution: {integrity: sha512-C5owb14u9eJwizKGdchcDUQeFtlSHHthBk8pbX9Vc1PFZrLombudjDnNns88aYslCyF6IY5SUw3Roz6xShcEIQ==}
@@ -13175,6 +13185,14 @@ packages:
       type-fest: 0.6.0
     dev: true
 
+  /read-yaml-file/2.1.0:
+    resolution: {integrity: sha512-UkRNRIwnhG+y7hpqnycCL/xbTk7+ia9VuVTC0S+zVbwd65DI9eUpRMfsWIGrCWxTU/mi+JW8cHQCrv+zfCbEPQ==}
+    engines: {node: '>=10.13'}
+    dependencies:
+      js-yaml: 4.1.0
+      strip-bom: 4.0.0
+    dev: true
+
   /read/1.0.7:
     resolution: {integrity: sha1-s9oZvQUkMal2cdRKQmNK33ELQMQ=}
     engines: {node: '>=0.8'}
@@ -14748,6 +14766,23 @@ packages:
 
   /synchronous-promise/2.0.15:
     resolution: {integrity: sha512-k8uzYIkIVwmT+TcglpdN50pS2y1BDcUnBPK9iJeGu0Pl1lOI8pD6wtzgw91Pjpe+RxtTncw32tLxs/R0yNL2Mg==}
+    dev: true
+
+  /syncpack/6.2.0:
+    resolution: {integrity: sha512-lvEAhA+oS67Bqj1/zzEpyNE4kLhL9sO7InP8GY6qXAbn6v+z4ZwZPx5NysrASeagNr5dcHjGUTtk/wnfWYvwEw==}
+    engines: {node: '>=10'}
+    hasBin: true
+    dependencies:
+      chalk: 4.1.2
+      commander: 8.3.0
+      cosmiconfig: 7.0.1
+      expect-more: 1.2.0
+      fp-ts: 2.11.5
+      fs-extra: 10.0.0
+      glob: 7.2.0
+      minimatch: 3.0.4
+      read-yaml-file: 2.1.0
+      semver: 7.3.5
     dev: true
 
   /tar/2.2.2:
