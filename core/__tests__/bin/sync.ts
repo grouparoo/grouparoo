@@ -32,8 +32,7 @@ describe("bin/sync", () => {
         purchaseAmounts: [100, 200],
       };
 
-      type dataType = keyof typeof data;
-      return data[property.key as dataType];
+      return data[property.key as keyof typeof data];
     };
   });
 
