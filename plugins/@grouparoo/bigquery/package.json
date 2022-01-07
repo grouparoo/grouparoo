@@ -28,7 +28,7 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@google-cloud/bigquery": "5.8.0",
+    "@google-cloud/bigquery": "5.9.3",
     "@grouparoo/app-templates": "0.8.0-alpha.5"
   },
   "devDependencies": {
