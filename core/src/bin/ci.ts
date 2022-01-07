@@ -45,5 +45,3 @@ export class CI extends CLI {
     return true;
   }
 }
-
-type test = ParamsFrom<CI>;

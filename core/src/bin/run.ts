@@ -92,7 +92,6 @@ export class RunCLI extends CLI {
       "group:updateCalculatedGroups": {},
     };
 
-    // for (const name in tasks) {
     for (const [name, args] of Object.entries(tasks)) {
       const task: Task = api.tasks.tasks[name];
       await task.run(args, {} as Worker);

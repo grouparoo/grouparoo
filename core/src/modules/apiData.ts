@@ -52,7 +52,7 @@ export namespace APIData {
   }
 
   export function ensureString<T extends string>(param: unknown) {
-    return param.toString() as T;
+    return String(param) as T;
   }
 
   export function ensureBoolean(param: boolean | string | number) {
