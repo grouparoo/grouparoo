@@ -13,7 +13,7 @@ describe("bin/config-validate", () => {
   }, helper.setupTime);
 
   let messages: string[] = [];
-  const spies: any[] = [];
+  const spies: jest.SpyInstance[] = [];
 
   beforeEach(() => {
     messages = [];

@@ -44,7 +44,7 @@ describe("bin/config-apply", () => {
   });
 
   let messages: string[] = [];
-  const spies: any[] = [];
+  const spies: jest.SpyInstance[] = [];
 
   beforeAll(() => {
     api.codeConfig.allowLockedModelChanges = true;

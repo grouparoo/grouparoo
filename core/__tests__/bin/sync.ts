@@ -8,7 +8,7 @@ describe("bin/sync", () => {
   beforeAll(async () => await helper.factories.properties());
 
   let messages: string[] = [];
-  const spies: any[] = [];
+  const spies: jest.SpyInstance[] = [];
   let record: GrouparooRecord;
 
   beforeAll(async () => {

@@ -5,7 +5,7 @@ describe("bin/run", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   let messages: string[] = [];
-  const spies: any[] = [];
+  const spies: jest.SpyInstance[] = [];
 
   beforeEach(async () => {
     messages = [];

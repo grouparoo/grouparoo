@@ -6,7 +6,7 @@ import { CI } from "../../src/bin/ci";
 describe("bin/ci", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   let messages: string[] = [];
-  const spies: any[] = [];
+  const spies: jest.SpyInstance[] = [];
 
   let prevCfgDir: string;
   beforeAll(() => {

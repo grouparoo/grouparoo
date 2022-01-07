@@ -11,7 +11,7 @@ describe("bin/pack", () => {
 
   let tempDir: string;
   let messages: string[] = [];
-  const spies: any[] = [];
+  const spies: jest.SpyInstance[] = [];
 
   beforeEach(async () => {
     tempDir = await mkdtemp(path.join(os.tmpdir(), "grouparoo-pack-test-"));

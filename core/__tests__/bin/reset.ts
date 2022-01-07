@@ -21,7 +21,7 @@ describe("bin/reset", () => {
   beforeAll(async () => await helper.factories.properties());
 
   let messages: string[] = [];
-  const spies: any[] = [];
+  const spies: jest.SpyInstance[] = [];
 
   beforeEach(() => {
     messages = [];

@@ -574,7 +574,7 @@ describe("models/export", () => {
     });
 
     let logMsgs: string[] = [];
-    let spies: any[] = [];
+    const spies: jest.SpyInstance[] = [];
     beforeEach(async () => {
       logMsgs = [];
       spies.push(

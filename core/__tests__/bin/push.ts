@@ -8,7 +8,7 @@ describe("bin/push", () => {
 
   let archivePath = path.join(__dirname, "../../package.json");
   let messages: string[] = [];
-  const spies: any[] = [];
+  const spies: jest.SpyInstance[] = [];
 
   beforeEach(async () => {
     messages = [];
