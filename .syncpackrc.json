@@ -1,0 +1,19 @@
+{
+  "dev": true,
+  "filter": ".",
+  "indent": "  ",
+  "overrides": true,
+  "peer": false,
+  "prod": true,
+  "resolutions": false,
+  "semverGroups": [],
+  "semverRange": "",
+  "source": [
+    "package.json",
+    "core/package.json",
+    "cli/package.json",
+    "apps/*/package.json",
+    "plugins/*/*/package.json",
+    "ui/*/package.json"
+  ]
+}

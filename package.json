@@ -18,12 +18,14 @@
     "lerna-changelog": "2.2.0",
     "license-checker": "github:grouparoo/license-checker",
     "npm-check-updates": "12.1.0",
-    "prettier": "2.5.1"
+    "prettier": "2.5.1",
+    "syncpack": "6.2.0"
   },
   "scripts": {
     "preinstall": "./bin/preinstall",
     "license-checker": "./tools/license-checker/check",
     "spell-checker": "./tools/spell-checker/check",
+    "version-checker": "./tools/version-checker/check",
     "lint": "pnpm run --stream -r lint --workspace-concurrency=2 --filter !'@grouparoo/grouparoo'",
     "test": "pnpm run test --stream --workspace-concurrency=1 --filter !'@grouparoo/grouparoo'",
     "nuke": "rm -rf pnpm-lock.yaml && rm -rf node_modules && rm -rf core/node_modules rm -rf ui/*/node_modules && rm -rf cli/node_modules && rm -rf plugins/*/*/node_modules && rm -rf apps/*/node_modules && rm -rf core/dist && rm -rf cli/dist && rm -rf plugins/*/*/dist && rm -rf ui/*/.next",
