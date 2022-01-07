@@ -10,7 +10,7 @@ import PageTransition from "../components/PageTransition";
 import StatusSubscription from "../components/StatusSubscription";
 import "../components/Icons";
 
-import { GrouparooNextPageProps, GrouparooWebAppProps } from "../types/app";
+import { GrouparooPageProps, GrouparooWebAppProps } from "../types/app";
 
 import { Actions } from "../utils/apiData";
 import * as eventHandlers from "../utils/eventHandlers";
@@ -20,7 +20,7 @@ export default function GrouparooWebApp(
 ) {
   const { Component, pageProps, err, hydrationError } = props;
 
-  const combinedProps: GrouparooNextPageProps<any> = {
+  const combinedProps: GrouparooPageProps<any> = {
     ...pageProps,
     ...eventHandlers,
     navigation: props.navigation,

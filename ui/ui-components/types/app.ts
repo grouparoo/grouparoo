@@ -1,4 +1,8 @@
-import { NextPage } from "next";
+import {
+  GetServerSideProps,
+  InferGetServerSidePropsType,
+  NextPage,
+} from "next";
 import { Actions } from "../utils/apiData";
 import * as eventHandlers from "../utils/eventHandlers";
 
@@ -11,11 +15,11 @@ export interface GrouparooWebAppProps {
   navigationModel: Actions.NavigationList["navigationModel"];
 }
 
-export type GrouparooNextPageProps<P = {}> = P &
+export type GrouparooPageProps<P = {}> = P &
   GrouparooWebAppProps &
   typeof eventHandlers;
 
-export type GrouparooNextPage<P = {}, IP = P> = NextPage<
-  GrouparooNextPageProps<P>,
-  IP
->;
+export type GrouparooPage<GetServerSidePropsFn extends GetServerSideProps> =
+  NextPage<
+    GrouparooPageProps<InferGetServerSidePropsType<GetServerSidePropsFn>>
+  >;

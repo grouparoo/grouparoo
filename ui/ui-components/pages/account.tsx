@@ -1,3 +1,4 @@
+import { GetServerSidePropsContext } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import { UseApi } from "../hooks/useApi";
@@ -5,13 +6,15 @@ import { Form, Row, Col } from "react-bootstrap";
 import RecordImageFromEmail from "../components/visualizations/RecordImageFromEmail";
 import LoadingButton from "../components/LoadingButton";
 import { Models, Actions } from "../utils/apiData";
-import { GrouparooNextPage } from "../types/app";
+import { GrouparooPage } from "../types/app";
 
-interface Props {
-  teamMember: Models.TeamMemberType;
-}
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const { execApi } = UseApi(ctx);
+  const { teamMember } = await execApi<Actions.AccountView>("get", `/account`);
+  return { props: { teamMember } };
+};
 
-const Page: GrouparooNextPage<Props> = ({
+const Page: GrouparooPage<typeof getServerSideProps> = ({
   errorHandler,
   successHandler,
   sessionHandler,
@@ -118,12 +121,6 @@ const Page: GrouparooNextPage<Props> = ({
       </Row>
     </>
   );
-};
-
-Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
-  const { teamMember }: Actions.AccountView = await execApi("get", `/account`);
-  return { teamMember };
 };
 
 export default Page;

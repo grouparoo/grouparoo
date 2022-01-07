@@ -1,9 +1,10 @@
+import { GetServerSidePropsContext } from "next";
+import Head from "next/head";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { UseApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
-import Head from "next/head";
-import { useRouter } from "next/router";
 import Pagination from "../components/Pagination";
 import LoadingTable from "../components/LoadingTable";
 import ModelIcon from "../components/ModelIcon";
@@ -12,14 +13,23 @@ import { formatTimestamp } from "../utils/formatTimestamp";
 import GrouparooLink from "../components/GrouparooLink";
 import StateBadge from "../components/badges/StateBadge";
 import LinkButton from "../components/LinkButton";
-import { GrouparooNextPage } from "../types/app";
+import { GrouparooPage } from "../types/app";
 
-interface Props {
-  models: Models.GrouparooModelType[];
-  total: number;
-}
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const { execApi } = UseApi(ctx);
+  const { limit, offset } = ctx.query;
+  const { models, total } = await execApi<Actions.ModelsList>(
+    "get",
+    `/models`,
+    { limit, offset }
+  );
+  return { props: { models, total } };
+};
 
-const Page: GrouparooNextPage<Props> = ({ errorHandler, ...props }) => {
+const Page: GrouparooPage<typeof getServerSideProps> = ({
+  errorHandler,
+  ...props
+}) => {
   const router = useRouter();
   const { execApi } = UseApi(undefined, errorHandler);
   const [models, setModels] = useState<Models.GrouparooModelType[]>(
@@ -117,17 +127,6 @@ const Page: GrouparooNextPage<Props> = ({ errorHandler, ...props }) => {
       </LinkButton>
     </>
   );
-};
-
-Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
-  const { limit, offset } = ctx.query;
-  const { models, total } = await execApi<Actions.ModelsList>(
-    "get",
-    `/models`,
-    { limit, offset }
-  );
-  return { models, total };
 };
 
 export default Page;

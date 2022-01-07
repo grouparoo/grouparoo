@@ -3,6 +3,7 @@ import { UseApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import { useCallback } from "react";
+import { GetServerSidePropsContext } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Link from "../components/GrouparooLink";
@@ -16,14 +17,19 @@ import LinkButton from "../components/LinkButton";
 import LoadingButton from "../components/LoadingButton";
 import { grouparooUiEdition } from "../utils/uiEdition";
 import { formatName } from "../utils/formatName";
-import { GrouparooNextPage } from "../types/app";
+import { GrouparooPage } from "../types/app";
 
-interface Props {
-  apps: Models.AppType[];
-  total: number;
-}
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const { execApi } = UseApi(ctx);
+  const { limit, offset } = ctx.query;
+  const { apps, total } = await execApi<Actions.AppsList>("get", `/apps`, {
+    limit,
+    offset,
+  });
+  return { props: { apps, total } };
+};
 
-const Page: GrouparooNextPage<Props> = ({
+const Page: GrouparooPage<typeof getServerSideProps> = ({
   errorHandler,
   successHandler,
   ...props
@@ -193,16 +199,6 @@ const Page: GrouparooNextPage<Props> = ({
       </LinkButton>
     </>
   );
-};
-
-Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
-  const { limit, offset } = ctx.query;
-  const { apps, total } = await execApi<Actions.AppsList>("get", `/apps`, {
-    limit,
-    offset,
-  });
-  return { apps, total };
 };
 
 export default Page;
