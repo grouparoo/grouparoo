@@ -461,7 +461,7 @@ export interface SourceFilterMethod<AppConnection = any> {
 
 export interface SourceFilterMethodResponseRow {
   key: string;
-  ops: Array<keyof typeof FilterOpsDescriptions>;
+  ops: (keyof typeof FilterOpsDescriptions)[];
   canHaveRelativeMatch: boolean;
 }
 
