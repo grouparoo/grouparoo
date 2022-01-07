@@ -81,7 +81,7 @@ export default function Page(props) {
                   <ModelIcon model={model} />
                 </td>
                 <td>
-                  <GrouparooLink href={`/model/${model.id}/edit`}>
+                  <GrouparooLink href={`/model/${model.id}/overview`}>
                     <a>
                       <strong>{model.name}</strong>
                     </a>
