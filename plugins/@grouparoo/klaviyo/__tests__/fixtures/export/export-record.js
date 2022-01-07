@@ -7,18 +7,20 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     200,
     [
       { list_id: "SP8ZLd", list_name: "Group2" },
+      { list_id: "SfTsRH", list_name: "All Accounts" },
       { list_id: "TYtwpp", list_name: "Newsletter" },
       { list_id: "UHQTNd", list_name: "Group1" },
       { list_id: "V9Smhf", list_name: "Preview List" },
       { list_id: "Vy3dbD", list_name: "Group3" },
+      { list_id: "WwJwH6", list_name: "High Value Accounts" },
     ],
     [
       "Date",
-      "Tue, 21 Dec 2021 14:56:36 GMT",
+      "Fri, 07 Jan 2022 16:52:41 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "221",
+      "324",
       "Connection",
       "close",
       "Allow",
@@ -30,46 +32,16 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "Set-Cookie",
-      "__cf_bm=zdc4nMvjQs3STEYQvby6IeLWEPjbm4Z0d7g3R4FMq40-1640098596-0-ATZPE4KYI3xHuOQUI+WfkWZ+9NWqHRRySDsPEbm4S+mTDQ9GRhUxgPDe5uS5JX9MzfEwv5fq/k3BB/eiRzPZxPQ=; path=/; expires=Tue, 21-Dec-21 15:26:36 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "__cf_bm=gh_Ri.bCTRDsDswdm0nMng62Nq1.66JiY_0mmP0q6nM-1641574361-0-AdMWJIupIgyq8K9Jjayr5mDCJ/yzfD66WnIJG9AE8AHJF/vEYjyOC1/+SOhQ0ZMte9Ntf7egOUQ13Ea/VxwmFac=; path=/; expires=Fri, 07-Jan-22 17:22:41 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
       "Server",
       "cloudflare",
       "CF-RAY",
-      "6c11f5411a127345-MRS",
+      "6c9eb2af1ae32746-FOR",
     ]
   );
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
   .post("/api/v2/data-privacy/deletion-request", {
     email: "grouparoo@demo.com",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(202, { results: "Submitted new deletion task for customer." }, [
-    "Date",
-    "Tue, 21 Dec 2021 14:56:37 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "43",
-    "Connection",
-    "close",
-    "Allow",
-    "POST, OPTIONS",
-    "Vary",
-    "Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=p.65WZj8YTuQw3YOTCdSuguTmJb0S_p62eM3IkbMwhQ-1640098597-0-AUWBYtFcAqGmGB8zrvSIVN45mbNXYfP1AuEGxz+YAr9CPHUs++mJcmosl1C9c+7YKdVtGpGiquv2ouq737EvN0s=; path=/; expires=Tue, 21-Dec-21 15:26:37 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f5465c1f0e26-MXP",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .post("/api/v2/data-privacy/deletion-request", {
-    email: "othergrouparoo@demo.com",
     api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
   })
   .once()
@@ -81,7 +53,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Tue, 21 Dec 2021 14:56:37 GMT",
+      "Fri, 07 Jan 2022 16:52:42 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -97,11 +69,48 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "Set-Cookie",
-      "__cf_bm=387l7SUFy0nPC8bIuT6DZyviTMWFvxrAGjpxsPs0E.A-1640098597-0-ARD2TgLJ+RLvY0s6cjiM+7cn6/Q60WIDh++M2W/d9kb0efWMwBKX1JhRpR1n5s8z/742IW4rvO7n0fIHSGEvCpY=; path=/; expires=Tue, 21-Dec-21 15:26:37 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "__cf_bm=4zoTKC3jNuzMQSt14wESDFuugGt9V5bR7ZlrB_0z89c-1641574362-0-AS0U1kOX+gmwS1WdulejO9wJ73PRexDuNbvwuR3NaNyW3B7xgdSUZh7BxJKXPJfmI6SzBdgQPTwknc5vVT4SHZI=; path=/; expires=Fri, 07-Jan-22 17:22:42 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
       "Server",
       "cloudflare",
       "CF-RAY",
-      "6c11f5490b8241f0-MRS",
+      "6c9eb2b26f702745-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .post("/api/v2/data-privacy/deletion-request", {
+    email: "othergrouparoo@demo.com",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(
+    404,
+    {
+      detail:
+        "No Customer corresponding to the provided profile identifier found. It could be the case that the Customer has already been deleted.",
+    },
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:52:43 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "145",
+      "Connection",
+      "close",
+      "Allow",
+      "POST, OPTIONS",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=qXpn3gKNhSGWvFWZhR2Uvw.CeZOYv53oyIZ51F34GM0-1641574363-0-AaUAhDNb2PIxlEPBOGlAb0gNboqM4GELVvx/OCyv+R2YG+rje30S6y/an3hTKjL247KmZtF5L0spjFkyays4tGc=; path=/; expires=Fri, 07-Jan-22 17:22:43 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb2b64ffa273d-FOR",
     ]
   );
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
@@ -118,7 +127,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Tue, 21 Dec 2021 14:56:37 GMT",
+      "Fri, 07 Jan 2022 16:52:43 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -134,11 +143,11 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "Set-Cookie",
-      "__cf_bm=QxKs3_ab0BYz3oGyx9bqpbK1OrYlnEF6AJP1Ns11tmc-1640098597-0-AbCQhk2UlCWAHPzo5EsSzPb0Ge+GmOUcKXQE6Z7/+eko6oWSNW5HToPRaY74WljpfeyvS0S48JUTp2u1Qk2l3Bs=; path=/; expires=Tue, 21-Dec-21 15:26:37 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "__cf_bm=ZZTnDyroNaExEyzvVpi_nDGfhGGsifnt.AuEJx4lr8I-1641574363-0-Add2rxx4kunDVMZLO12xA2Yo1h84+vWjStVM54jq6q7XLGPrFvIoMijuqEJh/AjmEO2I/6gv6x3tBny+AgVV0Z8=; path=/; expires=Fri, 07-Jan-22 17:22:43 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
       "Server",
       "cloudflare",
       "CF-RAY",
-      "6c11f54bdc0f733f-MRS",
+      "6c9eb2b9ccb2275b-FOR",
     ]
   );
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
@@ -155,7 +164,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Tue, 21 Dec 2021 14:56:38 GMT",
+      "Fri, 07 Jan 2022 16:52:43 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -171,11 +180,11 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "Set-Cookie",
-      "__cf_bm=LkClmaAMTW03cUAmyiaKJg2AHTQCvDF1k4y3RbN.p74-1640098598-0-AWb2wuOnWcm2w79LTcqBUr5mbYgOq7Yh/zYDk6rILlOxKEs7TtYpl0zQpjL3/IivWq/1aCpkPvC1UL0HSJVY5Qg=; path=/; expires=Tue, 21-Dec-21 15:26:38 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "__cf_bm=IDlXSXZCclA06Bfud7Z9DBHjH96cUoiSybWSLZrxij4-1641574363-0-AQ7JI6GQCzBus6MTO2q/I9617T7N1fNnFKWMOM12+gM+rfWrOgL5IYPSy2d0LmZacOPkMXbAMMPjla9HJ9/HYH8=; path=/; expires=Fri, 07-Jan-22 17:22:43 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
       "Server",
       "cloudflare",
       "CF-RAY",
-      "6c11f54e5e993fea-CDG",
+      "6c9eb2bb1920e08e-FOR",
     ]
   );
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
@@ -192,7 +201,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Tue, 21 Dec 2021 14:56:38 GMT",
+      "Fri, 07 Jan 2022 16:52:43 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -208,11 +217,11 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "Set-Cookie",
-      "__cf_bm=573Nv.1_eQDm8uPc1o4F.Uj7l20YG5oTxcI._x1NSe4-1640098598-0-AZ6X9RQz0PjVJcOsUHeIoHXnwkOFphY2+WGyC1HBnIYJ8Sg96/eQBmuDYG2bbiqPCVopn2MVqVh+/+S9dxMxHXQ=; path=/; expires=Tue, 21-Dec-21 15:26:38 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "__cf_bm=gRsM1G7U9r3gCOVzgGvnpTc3hP6QNV_aiCE1JASew0Y-1641574363-0-Aa5uGRfTf/9FH0hm5PA0gRrYud2Y+utdT+q4oCMY9ZH6xB7OPSNf1e74ehBqZbzqdtE9nXs67S+vRrCcn2cTPc8=; path=/; expires=Fri, 07-Jan-22 17:22:43 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
       "Server",
       "cloudflare",
       "CF-RAY",
-      "6c11f550b83ed785-MRS",
+      "6c9eb2bc8890e084-FOR",
     ]
   );
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
@@ -223,7 +232,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
   .once()
   .reply(404, { detail: "There is no profile matching the given parameters" }, [
     "Date",
-    "Tue, 21 Dec 2021 14:56:39 GMT",
+    "Fri, 07 Jan 2022 16:52:44 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -239,11 +248,11 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "Set-Cookie",
-    "__cf_bm=OLgeBG8KQFoGlvG2bhb8WDlk4RGQ26Okr6WhQCaYiSg-1640098599-0-AXoy5tAfW7xwZ3jWwJ0fNxNd4G1bgTZyzhAZz7RQPSRaqr18oRGPQrX2SFinpC3Qha6hVzeOCIdJ/WLswlvOREI=; path=/; expires=Tue, 21-Dec-21 15:26:39 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "__cf_bm=sDukVZLGwa30pJPThcEvFSiMdNmKc98phlogij3B_5M-1641574364-0-AWIoLsto9vzpDSmnmkX97dyH+J//WK6aYSyCZoaermruiNz8O0c667etLaPSD3EbSIV/FeX9nhaLhCd4nAfE+yA=; path=/; expires=Fri, 07-Jan-22 17:22:44 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
     "Server",
     "cloudflare",
     "CF-RAY",
-    "6c11f553cb677336-MRS",
+    "6c9eb2be2f3f2746-FOR",
   ]);
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
   .post(
@@ -253,7 +262,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
   .once()
   .reply(200, 1, [
     "Date",
-    "Tue, 21 Dec 2021 14:56:39 GMT",
+    "Fri, 07 Jan 2022 16:52:44 GMT",
     "Content-Type",
     "text/html; charset=utf-8",
     "Content-Length",
@@ -279,11 +288,11 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "Set-Cookie",
-    "__cf_bm=2YnzVG1yX8tjoQMNS2_S4EeusxCwtPobXXDYsFrTtFo-1640098599-0-AarP5ABJXFlW5sD6RShCxcpylITM88m2mvL5zMNSwoOYsPDNuV9fcGihwMpcaKSc6d46jyVmmkccZi8j5ih68Hc=; path=/; expires=Tue, 21-Dec-21 15:26:39 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "__cf_bm=GeNVp5CrdwyVonNSo60Xd6XDOkhRVYT3WXE9K8b35ww-1641574364-0-AdKmZQ1Tc0QVsXzwCSrjOXeXcGCGsYHnFe3mZiS5Beo0VXdzQHwdU0r6bo/MaasFYJp+mkrf/44fPXnlUaXSB+Q=; path=/; expires=Fri, 07-Jan-22 17:22:44 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
     "Server",
     "cloudflare",
     "CF-RAY",
-    "6c11f555ebb973bf-MRS",
+    "6c9eb2c158e2274f-FOR",
   ]);
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
   .get("/api/v2/people/search", {
@@ -291,9 +300,9 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
   })
   .once()
-  .reply(200, { id: "01FQEQX4GBZAK4MZP6SKB0D941" }, [
+  .reply(200, { id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q" }, [
     "Date",
-    "Tue, 21 Dec 2021 14:56:49 GMT",
+    "Fri, 07 Jan 2022 16:52:55 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -309,21 +318,21 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "Set-Cookie",
-    "__cf_bm=8aGtpacQyuZq6WfQB0BDJLa.7JHgu4DbCXCX9NnYRGA-1640098609-0-ATaECqOUf3FyRQ5/n236D6ECzxcR3F0yk3VDCqisjYcSUv5w6MvY1jSxqcr5BPfsK7b36R4O8IUW5dAPDUK0MnI=; path=/; expires=Tue, 21-Dec-21 15:26:49 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "__cf_bm=.uqErZ_YKbK_CHrxNfqEH4BD.XJqpru3wzpodV_9rOY-1641574375-0-Aenk3uFmnUm6yMuXtFk7JsMHARPaY+WQgkVbcO6ZSBVb73KHTEsxotSba+z58nN/v8dSIL6W4K4rAaOtGFyCK5s=; path=/; expires=Fri, 07-Jan-22 17:22:55 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
     "Server",
     "cloudflare",
     "CF-RAY",
-    "6c11f59748a95fb9-MRS",
+    "6c9eb302df5e273d-FOR",
   ]);
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v1/person/01FQEQX4GBZAK4MZP6SKB0D941")
+  .get("/api/v1/person/01FRTQ9XJE4WFWEG52Q5J8RY9Q")
   .query({ api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
   .once()
   .reply(
     200,
     {
       object: "person",
-      id: "01FQEQX4GBZAK4MZP6SKB0D941",
+      id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q",
       $address1: "",
       $address2: "",
       $city: "",
@@ -332,23 +341,23 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       $longitude: "",
       $region: "",
       $zip: "",
-      $email: "grouparoo@demo.com",
-      $last_name: "Doe",
-      $phone_number: "",
-      $first_name: "John",
       $title: "",
       $organization: "",
+      $last_name: "Doe",
+      $email: "grouparoo@demo.com",
+      $first_name: "John",
+      $phone_number: "",
       $timezone: "",
       $id: "",
       email: "grouparoo@demo.com",
       first_name: "John",
       last_name: "Doe",
-      created: "2021-12-21 14:56:39",
-      updated: "2021-12-21 14:56:39",
+      created: "2022-01-07 16:52:45",
+      updated: "2022-01-07 16:52:45",
     },
     [
       "Date",
-      "Tue, 21 Dec 2021 14:56:50 GMT",
+      "Fri, 07 Jan 2022 16:52:55 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -356,7 +365,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "Allow",
-      "PUT, OPTIONS, GET",
+      "GET, OPTIONS, PUT",
       "Vary",
       "Cookie",
       "CF-Cache-Status",
@@ -364,11 +373,11 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "Set-Cookie",
-      "__cf_bm=U9owu_66O8at.t0Kfao.gHiKba_n1bss4J3GKgghloY-1640098610-0-AfZTJ90/XysoNc3zrmXVPwcg8zO7lblHGKhyPpt2lcUL7tScaQxUHFDLFPthvixKwM/DLy4X9YGl9y4LJaRCORw=; path=/; expires=Tue, 21-Dec-21 15:26:50 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "__cf_bm=fl2Mszsz46INqMrbPn3XV3ODfOXabQZwhn0ryDBbzAk-1641574375-0-AVTJafidtn/VKhypD4rpqHn7gIOCBxeT3jWucU2KD3SfyIPubV4neE07X9NI71Rav/6emimXMFQw1i/91TbThig=; path=/; expires=Fri, 07-Jan-22 17:22:55 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
       "Server",
       "cloudflare",
       "CF-RAY",
-      "6c11f599bc46ee75-CDG",
+      "6c9eb3062c05cf96-FOR",
     ]
   );
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
@@ -379,7 +388,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
   .once()
   .reply(404, { detail: "There is no profile matching the given parameters" }, [
     "Date",
-    "Tue, 21 Dec 2021 14:56:51 GMT",
+    "Fri, 07 Jan 2022 16:52:56 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -395,11 +404,11 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "Set-Cookie",
-    "__cf_bm=zhGJHckoHGfTyn49J6fAcuyOizu1Gqz61GNswG8Utf4-1640098611-0-ASCx1iyQIuV4M3yJAu4nxRE5Fi5aVIBESXURj3RQCuoyK2doJS0UFcW9zfZhyT3HhInmlOK4BoIwQF7sbEheMzI=; path=/; expires=Tue, 21-Dec-21 15:26:51 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "__cf_bm=mN4.X9M6vtivpDsZeJET09IzoA_8F94C8A5lcoK2x00-1641574376-0-AfiyzLyUGBEmn3eyKbQ5QdUgedvPmwrEFjBWPIMJDHTDzwYq/G0tmvvSrfmf5/93Q2MYdioKJZmCLlqgALbol5k=; path=/; expires=Fri, 07-Jan-22 17:22:56 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
     "Server",
     "cloudflare",
     "CF-RAY",
-    "6c11f59c6ed35386-PMO",
+    "6c9eb3097b0e2749-FOR",
   ]);
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
   .get("/api/v2/people/search", {
@@ -407,9 +416,9 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
   })
   .once()
-  .reply(200, { id: "01FQEQX4GBZAK4MZP6SKB0D941" }, [
+  .reply(200, { id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q" }, [
     "Date",
-    "Tue, 21 Dec 2021 14:56:51 GMT",
+    "Fri, 07 Jan 2022 16:52:56 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -425,14 +434,14 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "Set-Cookie",
-    "__cf_bm=rJpZTZ9KtX4mpSEXIiC92e5UA0uzJLrFoD4Rt8uw7UU-1640098611-0-ATPgJCrb45uAw6md72hlGBsk0V4hvBJRYRm6H5pV9ERgRc/vcYHBSallq0n11ElMNdnWHHkOqloH32mJWd4hp7Q=; path=/; expires=Tue, 21-Dec-21 15:26:51 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "__cf_bm=Hp31jX_4PLOVPZ9Iml9XbTzVYUs2bbRVXvrHifqxin4-1641574376-0-AXbu+urjjhA35TdFsVzJjUJGRZTNpYgbLdxRClNyQ66mNkWbm9EZ8FFZlqzGoeFXXdnHzi7m6C2JTfxa3xEo+7I=; path=/; expires=Fri, 07-Jan-22 17:22:56 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
     "Server",
     "cloudflare",
     "CF-RAY",
-    "6c11f5a14e387379-MRS",
+    "6c9eb30aff592746-FOR",
   ]);
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .put("/api/v1/person/01FQEQX4GBZAK4MZP6SKB0D941")
+  .put("/api/v1/person/01FRTQ9XJE4WFWEG52Q5J8RY9Q")
   .query({
     "%24first_name": "John",
     "%24last_name": "Doe",
@@ -446,7 +455,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     200,
     {
       object: "person",
-      id: "01FQEQX4GBZAK4MZP6SKB0D941",
+      id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q",
       $address1: "",
       $address2: "",
       $city: "",
@@ -455,12 +464,12 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       $longitude: "",
       $region: "",
       $zip: "",
-      $last_name: "Doe",
       $first_name: "John",
       $email: "grouparoo@demo.com",
-      $phone_number: "",
+      $last_name: "Doe",
       $title: "",
       $organization: "",
+      $phone_number: "",
       $timezone: "",
       $id: "",
       phone: "1234567890",
@@ -468,12 +477,12 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       email: "grouparoo@demo.com",
       first_name: "John",
       last_name: "Doe",
-      created: "2021-12-21 14:56:39",
-      updated: "2021-12-21 14:56:51",
+      created: "2022-01-07 16:52:45",
+      updated: "2022-01-07 16:52:56",
     },
     [
       "Date",
-      "Tue, 21 Dec 2021 14:56:51 GMT",
+      "Fri, 07 Jan 2022 16:52:56 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -481,7 +490,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "Allow",
-      "OPTIONS, GET, PUT",
+      "PUT, GET, OPTIONS",
       "Vary",
       "Cookie",
       "CF-Cache-Status",
@@ -489,22 +498,22 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "Set-Cookie",
-      "__cf_bm=leXo2I8vCsxt8ie3uR_zdDm109FuJ2x_MPQFetR69rI-1640098611-0-ARbuJHlIjn6hv7pcUozAm7IAlAN6e/226ih11X5+XB7ntx4/UJUQ8KTskqGEy3Ya6GMWlDp0+W1ZzKZgTYTHVbM=; path=/; expires=Tue, 21-Dec-21 15:26:51 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "__cf_bm=z7pEkeZMwYjW4FqTxrA7EMAjg75jn0iTnpKJywAWNFc-1641574376-0-ASdF2FEOuvQt6CofBWQ+VvaYqgj0uj9vLo6l4uPpWZuEA+a6swHxBI/HHcepF8ZOnLbi+55Sfnu24FJJcmM5VLY=; path=/; expires=Fri, 07-Jan-22 17:22:56 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
       "Server",
       "cloudflare",
       "CF-RAY",
-      "6c11f5a389b31006-MRS",
+      "6c9eb30c5a96e08e-FOR",
     ]
   );
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v1/person/01FQEQX4GBZAK4MZP6SKB0D941")
+  .get("/api/v1/person/01FRTQ9XJE4WFWEG52Q5J8RY9Q")
   .query({ api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
   .once()
   .reply(
     200,
     {
       object: "person",
-      id: "01FQEQX4GBZAK4MZP6SKB0D941",
+      id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q",
       $address1: "",
       $address2: "",
       $city: "",
@@ -513,12 +522,12 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       $longitude: "",
       $region: "",
       $zip: "",
-      $last_name: "Doe",
-      $email: "grouparoo@demo.com",
-      $phone_number: "",
-      $organization: "",
       $first_name: "John",
       $title: "",
+      $phone_number: "",
+      $email: "grouparoo@demo.com",
+      $last_name: "Doe",
+      $organization: "",
       $timezone: "",
       $id: "",
       phone: "1234567890",
@@ -526,12 +535,12 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       email: "grouparoo@demo.com",
       first_name: "John",
       last_name: "Doe",
-      created: "2021-12-21 14:56:39",
-      updated: "2021-12-21 14:56:52",
+      created: "2022-01-07 16:52:45",
+      updated: "2022-01-07 16:52:57",
     },
     [
       "Date",
-      "Tue, 21 Dec 2021 14:56:52 GMT",
+      "Fri, 07 Jan 2022 16:52:57 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -539,7 +548,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "Allow",
-      "GET, PUT, OPTIONS",
+      "PUT, GET, OPTIONS",
       "Vary",
       "Cookie",
       "CF-Cache-Status",
@@ -547,11 +556,11 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "Set-Cookie",
-      "__cf_bm=cwIxuBoJVU5TdXvTaHDqY83_HwqJ.z46OByInooLcSc-1640098612-0-AWyVwFb5X7ZmHLqTBXOJwBbYLs1UCWXb2qmqqX/jcTUvRhzZ+kMn0FJ+Ni8NsAzfpCEGIuHbOVLOAwHQnpxIQ5w=; path=/; expires=Tue, 21-Dec-21 15:26:52 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "__cf_bm=DmlQCn5_BOc1YQFYMJ3vpz4qvMtcgre85WA3.xxvmXs-1641574377-0-AeG4ui/XfFO+nmbMWGfJ9IG4LTOSutDxAJL/wmrFeVZkAJLOHMWaWeBc/Z+woDE3ZpylDKCo8FdvU1hoY3zKdGw=; path=/; expires=Fri, 07-Jan-22 17:22:57 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
       "Server",
       "cloudflare",
       "CF-RAY",
-      "6c11f5a6196441aa-MRS",
+      "6c9eb31129f1e084-FOR",
     ]
   );
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
@@ -560,9 +569,9 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
   })
   .once()
-  .reply(200, { id: "01FQEQX4GBZAK4MZP6SKB0D941" }, [
+  .reply(200, { id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q" }, [
     "Date",
-    "Tue, 21 Dec 2021 14:56:52 GMT",
+    "Fri, 07 Jan 2022 16:52:57 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -578,21 +587,21 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "Set-Cookie",
-    "__cf_bm=8Jti0EVQ24sm33o9gm_4K0FuB27Oe2_ksMW.8pMAlTo-1640098612-0-AWEsJcZt5Ra9nFbmv+Mpalh+1Y89YWbRgLr5UwH/89NrQ9polZtlmldH7gcT5IVXhf2//dmqMoJhcuM3caToEbc=; path=/; expires=Tue, 21-Dec-21 15:26:52 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "__cf_bm=_I74VQBEimMna6LBMskNCxX9InKv7T2wGesFFU3T6U8-1641574377-0-AWFDyMBIRRsYI8LZVLN5OY8mkbhRaC738m1FWmIuuY2X55hOzhvMajcbOsWcBf/ZV2JVGVo6Rj66y4KVrv1KEHg=; path=/; expires=Fri, 07-Jan-22 17:22:57 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
     "Server",
     "cloudflare",
     "CF-RAY",
-    "6c11f5a8bf357344-MRS",
+    "6c9eb31269a8273d-FOR",
   ]);
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v1/person/01FQEQX4GBZAK4MZP6SKB0D941")
+  .get("/api/v1/person/01FRTQ9XJE4WFWEG52Q5J8RY9Q")
   .query({ api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
   .once()
   .reply(
     200,
     {
       object: "person",
-      id: "01FQEQX4GBZAK4MZP6SKB0D941",
+      id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q",
       $address1: "",
       $address2: "",
       $city: "",
@@ -601,12 +610,12 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       $longitude: "",
       $region: "",
       $zip: "",
-      $phone_number: "",
       $last_name: "Doe",
-      $organization: "",
-      $first_name: "John",
       $email: "grouparoo@demo.com",
+      $phone_number: "",
       $title: "",
+      $first_name: "John",
+      $organization: "",
       $timezone: "",
       $id: "",
       phone: "1234567890",
@@ -614,12 +623,12 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       email: "grouparoo@demo.com",
       first_name: "John",
       last_name: "Doe",
-      created: "2021-12-21 14:56:39",
-      updated: "2021-12-21 14:56:52",
+      created: "2022-01-07 16:52:45",
+      updated: "2022-01-07 16:52:57",
     },
     [
       "Date",
-      "Tue, 21 Dec 2021 14:56:53 GMT",
+      "Fri, 07 Jan 2022 16:52:57 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -627,7 +636,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "Allow",
-      "OPTIONS, GET, PUT",
+      "GET, OPTIONS, PUT",
       "Vary",
       "Cookie",
       "CF-Cache-Status",
@@ -635,11 +644,11 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "Set-Cookie",
-      "__cf_bm=8LlResGWj1eG3J.roZQBfj.3p8yOfUyGag1XzXdzL6M-1640098613-0-Ae7iq1tjlE9+DmLnKFeCkCoyAs3VhGXWOOtkC67upkeAb6BfUE9AFDx/ywTZKdwQkITlukRgtdz/KQSTEJ+3c08=; path=/; expires=Tue, 21-Dec-21 15:26:53 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "__cf_bm=GbLgQILAF3KvjcUTKGebRPcHE0470RhJkIuhMbB_Twc-1641574377-0-AU6dH99arNdXLwgdrGTQj/mg1UxiItoNwUrlk8Qy6o7lJMiwthUUtRg2vCFkU6y7HVy2hw3YcNEAJYJfXFAlIRE=; path=/; expires=Fri, 07-Jan-22 17:22:57 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
       "Server",
       "cloudflare",
       "CF-RAY",
-      "6c11f5ab1a9cb7bd-CDG",
+      "6c9eb313bf4bcf8e-FOR",
     ]
   );
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
@@ -648,9 +657,9 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
   })
   .once()
-  .reply(200, { id: "01FQEQX4GBZAK4MZP6SKB0D941" }, [
+  .reply(200, { id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q" }, [
     "Date",
-    "Tue, 21 Dec 2021 14:56:53 GMT",
+    "Fri, 07 Jan 2022 16:52:58 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -666,14 +675,14 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "Set-Cookie",
-    "__cf_bm=6hclN9rn2w6gxzIFahHdohuQgqIdHENOsgDFWavsiyw-1640098613-0-ASbeDWNI3+bwa5LfDS+C1XGApIRwXtBlHM7VJv+o+ts1akX0UdL4v41jC7aOMOalNquNTwqiepWTaVC+LUbL050=; path=/; expires=Tue, 21-Dec-21 15:26:53 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "__cf_bm=fI2wDazKRf6FSB0lHMI2VQS5.2DNeyUvI2xxEJaruNw-1641574378-0-AajApWTBFhiGT9OiwAJMAz4989l3YVjl9ORHM78Zt2iGU4mYpJCy9Cb5TmQUN1VH4gPh8sO7kOdJ+cQTXtLGZqc=; path=/; expires=Fri, 07-Jan-22 17:22:58 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
     "Server",
     "cloudflare",
     "CF-RAY",
-    "6c11f5ad9d1f7393-MRS",
+    "6c9eb3183f80e07c-FOR",
   ]);
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .put("/api/v1/person/01FQEQX4GBZAK4MZP6SKB0D941")
+  .put("/api/v1/person/01FRTQ9XJE4WFWEG52Q5J8RY9Q")
   .query({
     "%24first_name": "Johnny",
     "%24last_name": "Doe",
@@ -695,7 +704,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     200,
     {
       object: "person",
-      id: "01FQEQX4GBZAK4MZP6SKB0D941",
+      id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q",
       $address1: "",
       $address2: "",
       $city: "",
@@ -704,77 +713,11 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       $longitude: "",
       $region: "",
       $zip: "",
-      $email: "grouparoo@demo.com",
-      $organization: "",
       $phone_number: "",
-      $title: "",
-      $last_name: "Doe",
-      $first_name: "Johnny",
-      $timezone: "",
-      $id: "",
-      phone: "9876543210",
-      text_field: "Some other text",
-      large_text_field: "Lots of text",
-      autocomplete_field: "Text that autocompletes",
-      phone_field: "1234567890",
-      numerical_field: "10.32",
-      monetary_field: "1025.21",
-      date_field: "2020-08-30T05:49:48.000Z",
-      date_range_field: "2020-08-30T05:49:48.000Z",
-      address_field: "Cupertino, California, United States",
-      email: "grouparoo@demo.com",
-      first_name: "Johnny",
-      last_name: "Doe",
-      created: "2021-12-21 14:56:39",
-      updated: "2021-12-21 14:56:53",
-    },
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:56:53 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "860",
-      "Connection",
-      "close",
-      "Allow",
-      "OPTIONS, GET, PUT",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=ztk3LaUCs5fypf_bTzBdBtEiezfGIi_HyCPoxUJ1FeY-1640098613-0-AWoX4mKQsbgeZFdchh4zQ3b3NKMgXHPEe4UqsXyekUj3EiSydoi3S227P4x96gETYLsY0ecjXEEtLPRw83Y47PA=; path=/; expires=Tue, 21-Dec-21 15:26:53 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f5afaaa8e928-MRS",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v1/person/01FQEQX4GBZAK4MZP6SKB0D941")
-  .query({ api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
-  .once()
-  .reply(
-    200,
-    {
-      object: "person",
-      id: "01FQEQX4GBZAK4MZP6SKB0D941",
-      $address1: "",
-      $address2: "",
-      $city: "",
-      $country: "",
-      $latitude: "",
-      $longitude: "",
-      $region: "",
-      $zip: "",
       $email: "grouparoo@demo.com",
       $title: "",
-      $organization: "",
-      $phone_number: "",
       $first_name: "Johnny",
+      $organization: "",
       $last_name: "Doe",
       $timezone: "",
       $id: "",
@@ -791,12 +734,12 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       email: "grouparoo@demo.com",
       first_name: "Johnny",
       last_name: "Doe",
-      created: "2021-12-21 14:56:39",
-      updated: "2021-12-21 14:56:54",
+      created: "2022-01-07 16:52:45",
+      updated: "2022-01-07 16:52:59",
     },
     [
       "Date",
-      "Tue, 21 Dec 2021 14:56:54 GMT",
+      "Fri, 07 Jan 2022 16:52:59 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -804,7 +747,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "Allow",
-      "GET, OPTIONS, PUT",
+      "GET, PUT, OPTIONS",
       "Vary",
       "Cookie",
       "CF-Cache-Status",
@@ -812,67 +755,22 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "Set-Cookie",
-      "__cf_bm=B16DtoYhGObC7k_q5rT6VMlUBY2Ytc.s7NLGEVC2FbQ-1640098614-0-AdQfc/98P2Py3qiQyr/DtCOeqi8z3Zn616FxSD9tpI4Mea2S28Hu2Pc9gywBeNfig8pXzxqUF3CNiq6GbDh2XgE=; path=/; expires=Tue, 21-Dec-21 15:26:54 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "__cf_bm=0ooIfQ692ToW1KqcFjYzOerGYVgU9UBPyGWRiuUF2iE-1641574379-0-Afw+taBzcLQInj5ZCOXxW4zOqfyNRBXixBsFzhBfuoc7gOzyJ4yPvfGOu3XHto6jtoqn/FuZA56QYuY6naJ2BTw=; path=/; expires=Fri, 07-Jan-22 17:22:59 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
       "Server",
       "cloudflare",
       "CF-RAY",
-      "6c11f5b2fbdbd795-MRS",
+      "6c9eb31bfbe8275d-FOR",
     ]
   );
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/people/search", {
-    email: "grouparoo@demo.com",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(200, { id: "01FQEQX4GBZAK4MZP6SKB0D941" }, [
-    "Date",
-    "Tue, 21 Dec 2021 14:56:54 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "35",
-    "Connection",
-    "close",
-    "Allow",
-    "GET, HEAD, OPTIONS",
-    "Vary",
-    "Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=iJkJ5ADwdFtn.hYutaZrZ_Zidq1ZAhr21FZv.UuTTJU-1640098614-0-AUcqlLreMbiW1utRMCG+8TOfLkjysrbdMi3yROzlPH378/9EcouovYyPfK6Ncc632PnwaqAgnD+GeePIrCeT3f8=; path=/; expires=Tue, 21-Dec-21 15:26:54 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f5b58b035fcb-MRS",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .put("/api/v1/person/01FQEQX4GBZAK4MZP6SKB0D941")
-  .query({
-    "%24email": "grouparoo%40demo.com",
-    "%24first_name": "Johnny",
-    "%24last_name": "Doe",
-    phone: "%5Bdeleted%5D",
-    text_field: "%5Bdeleted%5D",
-    large_text_field: "%5Bdeleted%5D",
-    autocomplete_field: "%5Bdeleted%5D",
-    phone_field: "%5Bdeleted%5D",
-    numerical_field: "%5Bdeleted%5D",
-    monetary_field: "%5Bdeleted%5D",
-    date_field: "%5Bdeleted%5D",
-    date_range_field: "%5Bdeleted%5D",
-    address_field: "%5Bdeleted%5D",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
+  .get("/api/v1/person/01FRTQ9XJE4WFWEG52Q5J8RY9Q")
+  .query({ api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
   .once()
   .reply(
     200,
     {
       object: "person",
-      id: "01FQEQX4GBZAK4MZP6SKB0D941",
+      id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q",
       $address1: "",
       $address2: "",
       $city: "",
@@ -882,36 +780,36 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       $region: "",
       $zip: "",
       $organization: "",
+      $phone_number: "",
       $last_name: "Doe",
-      $first_name: "Johnny",
       $email: "grouparoo@demo.com",
       $title: "",
-      $phone_number: "",
+      $first_name: "Johnny",
       $timezone: "",
       $id: "",
-      phone: "[deleted]",
-      text_field: "[deleted]",
-      large_text_field: "[deleted]",
-      autocomplete_field: "[deleted]",
-      phone_field: "[deleted]",
-      numerical_field: "[deleted]",
-      monetary_field: "[deleted]",
-      date_field: "[deleted]",
-      date_range_field: "[deleted]",
-      address_field: "[deleted]",
+      phone: "9876543210",
+      text_field: "Some other text",
+      large_text_field: "Lots of text",
+      autocomplete_field: "Text that autocompletes",
+      phone_field: "1234567890",
+      numerical_field: "10.32",
+      monetary_field: "1025.21",
+      date_field: "2020-08-30T05:49:48.000Z",
+      date_range_field: "2020-08-30T05:49:48.000Z",
+      address_field: "Cupertino, California, United States",
       email: "grouparoo@demo.com",
       first_name: "Johnny",
       last_name: "Doe",
-      created: "2021-12-21 14:56:39",
-      updated: "2021-12-21 14:56:55",
+      created: "2022-01-07 16:52:45",
+      updated: "2022-01-07 16:52:59",
     },
     [
       "Date",
-      "Tue, 21 Dec 2021 14:56:55 GMT",
+      "Fri, 07 Jan 2022 16:52:59 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "784",
+      "860",
       "Connection",
       "close",
       "Allow",
@@ -923,77 +821,11 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "Set-Cookie",
-      "__cf_bm=fwZcFPu5izQb8a5RL5hxuRhOgosTy_UKMi2CsZ_JIS8-1640098615-0-AbgmWcHFAzTOreI+fGrv+DHJD9jGQAt/+su5LSY89groueWJloYO7Ci3Zh5GNtYcKFguPSy4qsIu00gBu6MZec0=; path=/; expires=Tue, 21-Dec-21 15:26:55 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "__cf_bm=Yklpi74mfGKbZ8FxMMzjogNJ9ufNpUPP00SBXuT9VSs-1641574379-0-AZzKiINbcyrrDf7/XncICzPe+eh96rx9H6FY+P1NdqERKws/ERUvoRExlL2mlyiIePYThMJrvIlHSh6B0ow2rHs=; path=/; expires=Fri, 07-Jan-22 17:22:59 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
       "Server",
       "cloudflare",
       "CF-RAY",
-      "6c11f5b7d87ad771-MRS",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v1/person/01FQEQX4GBZAK4MZP6SKB0D941")
-  .query({ api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
-  .once()
-  .reply(
-    200,
-    {
-      object: "person",
-      id: "01FQEQX4GBZAK4MZP6SKB0D941",
-      $address1: "",
-      $address2: "",
-      $city: "",
-      $country: "",
-      $latitude: "",
-      $longitude: "",
-      $region: "",
-      $zip: "",
-      $title: "",
-      $first_name: "Johnny",
-      $last_name: "Doe",
-      $email: "grouparoo@demo.com",
-      $organization: "",
-      $phone_number: "",
-      $timezone: "",
-      $id: "",
-      phone: "[deleted]",
-      text_field: "[deleted]",
-      large_text_field: "[deleted]",
-      autocomplete_field: "[deleted]",
-      phone_field: "[deleted]",
-      numerical_field: "[deleted]",
-      monetary_field: "[deleted]",
-      date_field: "[deleted]",
-      date_range_field: "[deleted]",
-      address_field: "[deleted]",
-      email: "grouparoo@demo.com",
-      first_name: "Johnny",
-      last_name: "Doe",
-      created: "2021-12-21 14:56:39",
-      updated: "2021-12-21 14:56:55",
-    },
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:56:55 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "784",
-      "Connection",
-      "close",
-      "Allow",
-      "GET, OPTIONS, PUT",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=N0so6wGjLazosAD83LUXqx7Lv1iVrIRiDS3KBzL0uR4-1640098615-0-AUkQA5c5KecxYs80YBI8yxDGod61uhg4ZqnMO//ajod5JuFKmHyvYMs2hET8ayafV4hWFRTOEcUpDvGiSI0La3E=; path=/; expires=Tue, 21-Dec-21 15:26:55 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f5ba9a757375-MRS",
+      "6c9eb3200f1e2749-FOR",
     ]
   );
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
@@ -1002,9 +834,9 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
   })
   .once()
-  .reply(200, { id: "01FQEQX4GBZAK4MZP6SKB0D941" }, [
+  .reply(200, { id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q" }, [
     "Date",
-    "Tue, 21 Dec 2021 14:56:56 GMT",
+    "Fri, 07 Jan 2022 16:52:59 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -1020,18 +852,30 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "Set-Cookie",
-    "__cf_bm=xqJrGYndShZkLpSfhqxLP3A_f2NQKuJXOQiNbs87H5w-1640098616-0-AYJKeyLiVBBexzxLpjEWe6JDPApQAss1sigXSowXIdY5ou4AoW0xxbwEhQ7YtIhhA0w0zOdfYW6IIx7EZdyb5q4=; path=/; expires=Tue, 21-Dec-21 15:26:56 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "__cf_bm=Wbe..uuWN6aDZVachhNEfl2L4LsAz_3qTbxHpHVV8M0-1641574379-0-AQDBOzLwz0K23K3JUjR2XE12UYRXIQb9cYSmXFaXZmZoBdxcSYmqKgDOOFVV9inM0VDvZZLO4HPHDIpP4VpIKvw=; path=/; expires=Fri, 07-Jan-22 17:22:59 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
     "Server",
     "cloudflare",
     "CF-RAY",
-    "6c11f5bd6facedb7-CDG",
+    "6c9eb32149d62749-FOR",
   ]);
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .put("/api/v1/person/01FQEQX4GBZAK4MZP6SKB0D941")
+  .put("/api/v1/person/01FRTQ9XJE4WFWEG52Q5J8RY9Q")
   .query({
     "%24email": "grouparoo%40demo.com",
     "%24first_name": "Johnny",
     "%24last_name": "Doe",
+    "%24unset": [
+      "phone",
+      "text_field",
+      "large_text_field",
+      "autocomplete_field",
+      "phone_field",
+      "numerical_field",
+      "monetary_field",
+      "date_field",
+      "date_range_field",
+      "address_field",
+    ],
     api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
   })
   .once()
@@ -1039,7 +883,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     200,
     {
       object: "person",
-      id: "01FQEQX4GBZAK4MZP6SKB0D941",
+      id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q",
       $address1: "",
       $address2: "",
       $city: "",
@@ -1049,36 +893,26 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       $region: "",
       $zip: "",
       $email: "grouparoo@demo.com",
-      $phone_number: "",
       $first_name: "Johnny",
-      $last_name: "Doe",
       $title: "",
+      $phone_number: "",
       $organization: "",
+      $last_name: "Doe",
       $timezone: "",
       $id: "",
-      phone: "[deleted]",
-      text_field: "[deleted]",
-      large_text_field: "[deleted]",
-      autocomplete_field: "[deleted]",
-      phone_field: "[deleted]",
-      numerical_field: "[deleted]",
-      monetary_field: "[deleted]",
-      date_field: "[deleted]",
-      date_range_field: "[deleted]",
-      address_field: "[deleted]",
       email: "grouparoo@demo.com",
       first_name: "Johnny",
       last_name: "Doe",
-      created: "2021-12-21 14:56:39",
-      updated: "2021-12-21 14:56:55",
+      created: "2022-01-07 16:52:45",
+      updated: "2022-01-07 16:53:00",
     },
     [
       "Date",
-      "Tue, 21 Dec 2021 14:56:56 GMT",
+      "Fri, 07 Jan 2022 16:53:00 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "784",
+      "486",
       "Connection",
       "close",
       "Allow",
@@ -1090,458 +924,22 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "Set-Cookie",
-      "__cf_bm=UytutFL2Usiv_3CaUx.M4PffBJm5u69wtrFU3KKVSaI-1640098616-0-AVVUVr4fEQJ/XIwUdhCpAUukT6or9fS+r6A0aSHhkQDe4xiw7E9Xsp1wY//7gwobEMBkO0MaR/jq5y6JTYC+fy8=; path=/; expires=Tue, 21-Dec-21 15:26:56 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "__cf_bm=xcw4OyjqsNviIWlqRqMQce54czIkQxqM95mBLCo3qV0-1641574380-0-AUNooQffIaPu1adHxefdo9sORfx7bj4MMK78O1UR12TteKBwdoWuL+tnAUJj3gW4RHIPJT/mdYF6rznpNZA4KwY=; path=/; expires=Fri, 07-Jan-22 17:23:00 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
       "Server",
       "cloudflare",
       "CF-RAY",
-      "6c11f5bfb9de737d-MRS",
+      "6c9eb3228d0c274f-FOR",
     ]
   );
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
-  .once()
-  .reply(
-    200,
-    [
-      { list_id: "SP8ZLd", list_name: "Group2" },
-      { list_id: "TYtwpp", list_name: "Newsletter" },
-      { list_id: "UHQTNd", list_name: "Group1" },
-      { list_id: "V9Smhf", list_name: "Preview List" },
-      { list_id: "Vy3dbD", list_name: "Group3" },
-    ],
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:56:57 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "221",
-      "Connection",
-      "close",
-      "Allow",
-      "GET, POST, HEAD, OPTIONS",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=nVofw3nCNF6EnmaJEI3dCFwLG.yqglJEMQnZOVNgCEE-1640098617-0-ARcjn8hdBiYUAqk8Nxh6BO/p2bBFhmBW88CWkOb/068p+DXjEj9g7Vfh0h1EJvvZxlr9b7i1TFaInWE6TihUNq0=; path=/; expires=Tue, 21-Dec-21 15:26:57 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f5c258ee0f7a-MXP",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
-  .once()
-  .reply(
-    200,
-    [
-      { list_id: "SP8ZLd", list_name: "Group2" },
-      { list_id: "TYtwpp", list_name: "Newsletter" },
-      { list_id: "UHQTNd", list_name: "Group1" },
-      { list_id: "V9Smhf", list_name: "Preview List" },
-      { list_id: "Vy3dbD", list_name: "Group3" },
-    ],
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:56:57 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "221",
-      "Connection",
-      "close",
-      "Allow",
-      "GET, POST, HEAD, OPTIONS",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=Rgkoi1s9tfGcagl.g9f41aYhh.VCKpETIb9m08DrO6o-1640098617-0-AX907ZiF+romYjIlyoHXYgSSC+OrWr03PMIMTOCduQ+HpaGNqXPkUmHI3a5w/+zi7MiUbh0GZ0YgOBQbxgbner8=; path=/; expires=Tue, 21-Dec-21 15:26:57 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f5c6c92673b3-MRS",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .post("/api/v2/lists", {
-    list_name: "TEST High Value",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(200, { list_id: "W9Gvpd" }, [
-    "Date",
-    "Tue, 21 Dec 2021 14:56:58 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "20",
-    "Connection",
-    "close",
-    "Allow",
-    "GET, POST, HEAD, OPTIONS",
-    "Vary",
-    "Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=wQshfbCyIsc5hVdeYQv5a9okRIvVCJSpkIrgLQnNKJ4-1640098618-0-AcLcOjr1DEE4i1YShNpSrllq4JT2QyYbJVvR4NDdR21NAdg04j0At9ce1MMAymvJAZLKbTe2ECPRRGYUyKHLqwI=; path=/; expires=Tue, 21-Dec-21 15:26:58 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f5c998cbe930-MRS",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .post("/api/v2/list/W9Gvpd/members", {
-    profiles: [{ email: "grouparoo@demo.com" }],
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(
-    200,
-    [{ id: "01FQEQX4GBZAK4MZP6SKB0D941", email: "grouparoo@demo.com" }],
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:56:58 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "66",
-      "Connection",
-      "close",
-      "Allow",
-      "GET, POST, DELETE, HEAD, OPTIONS",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=mS0W5mGDVr7EqCPY4SiW3DKHBS_8hzcYqRUHBtLVDDM-1640098618-0-ARtAf2hINA1h03KEJ0gyIFDM3LDpFS3r3/UBtmeXgb3dNVD4hBlPuDQJzUXIklPRJOqbaiQRIChoaRJQgAPzffI=; path=/; expires=Tue, 21-Dec-21 15:26:58 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f5cbe81341f0-MRS",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
-  .once()
-  .reply(
-    200,
-    [
-      { list_id: "SP8ZLd", list_name: "Group2" },
-      { list_id: "TYtwpp", list_name: "Newsletter" },
-      { list_id: "UHQTNd", list_name: "Group1" },
-      { list_id: "V9Smhf", list_name: "Preview List" },
-      { list_id: "Vy3dbD", list_name: "Group3" },
-      { list_id: "W9Gvpd", list_name: "TEST High Value" },
-    ],
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:56:58 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "272",
-      "Connection",
-      "close",
-      "Allow",
-      "GET, POST, HEAD, OPTIONS",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=jkPi4wwt.jJNm2OgMh40RileCfijgZxVNa1L3awHcXw-1640098618-0-AUNL9CLH6Ahv8qwzll9fVBvH8C5lQ7/71Y7aoIgV5iqRZ8ykOwJ5s7oUyVliBWiz8VDclQ8CWu+50ni4oDc5szc=; path=/; expires=Tue, 21-Dec-21 15:26:58 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f5cfbbad756e-LHR",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
-  .once()
-  .reply(
-    200,
-    [
-      { list_id: "SP8ZLd", list_name: "Group2" },
-      { list_id: "TYtwpp", list_name: "Newsletter" },
-      { list_id: "UHQTNd", list_name: "Group1" },
-      { list_id: "V9Smhf", list_name: "Preview List" },
-      { list_id: "Vy3dbD", list_name: "Group3" },
-      { list_id: "W9Gvpd", list_name: "TEST High Value" },
-    ],
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:56:59 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "272",
-      "Connection",
-      "close",
-      "Allow",
-      "GET, POST, HEAD, OPTIONS",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=6kWrm_EplxxlvGYzI8bEEG0SjJLPgT_sfgvztTgogI4-1640098619-0-AZWOsrbxD82DsouDE+r005gNSsUGKwF6SKiPD+8mRIy3nwRjVElLLOiCcOAzmgsUAlIDSwU0UBXAASSfOvP/PvA=; path=/; expires=Tue, 21-Dec-21 15:26:59 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f5d1eced7339-MRS",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .post("/api/v2/lists", {
-    list_name: "TEST Spanish Speaking",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(200, { list_id: "T7ewDu" }, [
-    "Date",
-    "Tue, 21 Dec 2021 14:57:00 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "20",
-    "Connection",
-    "close",
-    "Allow",
-    "GET, POST, HEAD, OPTIONS",
-    "Vary",
-    "Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=YTdcAS5U94KMqEkDUMmfowBiCVaKBde1r9wgZvrJNco-1640098620-0-AU8hisPJO87f4A+Dwq7V2Xgk43z4IaNDSu/tIOODoONx6LPSvpoYiAKgOAr21Cu4//rIzCqhcHncUk8eMsR8wo4=; path=/; expires=Tue, 21-Dec-21 15:27:00 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f5d5fdff0f4e-MXP",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .post("/api/v2/list/T7ewDu/members", {
-    profiles: [{ email: "grouparoo@demo.com" }],
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(
-    200,
-    [{ id: "01FQEQX4GBZAK4MZP6SKB0D941", email: "grouparoo@demo.com" }],
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:57:00 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "66",
-      "Connection",
-      "close",
-      "Allow",
-      "GET, POST, DELETE, HEAD, OPTIONS",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=vSIy4KrPWSC0WUDPmLWSX4na6u9GmhcX6hrl1.EeQEA-1640098620-0-AapfbcnfOdSyxSCJotFUYZwemhSBk0CDUmm16dugM50UjbMOLOoDeRBS3RBViMzpDznE+Ps4Kl5bWGFbd1R0axc=; path=/; expires=Tue, 21-Dec-21 15:27:00 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f5d8eb61a8d9-CDG",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
-  .once()
-  .reply(
-    200,
-    [
-      { list_id: "SP8ZLd", list_name: "Group2" },
-      { list_id: "T7ewDu", list_name: "TEST Spanish Speaking" },
-      { list_id: "TYtwpp", list_name: "Newsletter" },
-      { list_id: "UHQTNd", list_name: "Group1" },
-      { list_id: "V9Smhf", list_name: "Preview List" },
-      { list_id: "Vy3dbD", list_name: "Group3" },
-      { list_id: "W9Gvpd", list_name: "TEST High Value" },
-    ],
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:57:01 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "329",
-      "Connection",
-      "close",
-      "Allow",
-      "GET, POST, HEAD, OPTIONS",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=A0vq4tLflOMRpf2rlp0e.Xd.CzzxXcNFRBm3HYDX_vU-1640098621-0-AT7W6Zg+KDOLFLajPx7Kgk/83MJbgfPX0OOeWkYj8fpBehjBs4fkpssMIJDfnTTpdPYyShTnVsT4IrDh4s5bbS0=; path=/; expires=Tue, 21-Dec-21 15:27:01 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f5dc7abe73c7-MRS",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/list/W9Gvpd/members", {
-    emails: ["grouparoo@demo.com"],
-    phone_numbers: [],
-    push_tokens: [],
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(
-    200,
-    [
-      {
-        id: "01FQEQX4GBZAK4MZP6SKB0D941",
-        created: "2021-12-21T14:56:58Z",
-        email: "grouparoo@demo.com",
-      },
-    ],
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:57:01 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "99",
-      "Connection",
-      "close",
-      "Allow",
-      "GET, POST, DELETE, HEAD, OPTIONS",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=Jbf09g2MDPCLOhmTFHSFxnACR4GXhLeiwGEyot.eGjk-1640098621-0-Adq3utSFRNmjDJhUwyIg4lonHIMoblhGd3hf0rFpfsroUdaGG2JMW8kLFjeVpXpWq2y38nEh0DHFHCNFUpOpU7E=; path=/; expires=Tue, 21-Dec-21 15:27:01 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f5de9ea041b8-MRS",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/list/T7ewDu/members", {
-    emails: ["grouparoo@demo.com"],
-    phone_numbers: [],
-    push_tokens: [],
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(
-    200,
-    [
-      {
-        id: "01FQEQX4GBZAK4MZP6SKB0D941",
-        created: "2021-12-21T14:57:00Z",
-        email: "grouparoo@demo.com",
-      },
-    ],
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:57:01 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "99",
-      "Connection",
-      "close",
-      "Allow",
-      "GET, POST, DELETE, HEAD, OPTIONS",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=yiZQwRfsHpS5T_ALD.75QEHVkhfeb9sk_SezU6nDqDg-1640098621-0-AVfwxV4OEPfoip6BHetCHfNeJyj0K9TGbndvTUluMkr9v5tOGVXWKPo0CuL0EAUr8qa43pP9K8lIaMMg5nYtDuE=; path=/; expires=Tue, 21-Dec-21 15:27:01 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f5e1085d7359-MRS",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/people/search", {
-    email: "grouparoo@demo.com",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(200, { id: "01FQEQX4GBZAK4MZP6SKB0D941" }, [
-    "Date",
-    "Tue, 21 Dec 2021 14:57:02 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "35",
-    "Connection",
-    "close",
-    "Allow",
-    "GET, HEAD, OPTIONS",
-    "Vary",
-    "Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=R_kcPWMlODzqBu9WXsbJTToQpll7E1ZyYvtW_lj_C50-1640098622-0-AZPQVQh3Ihsx3g++0XQ71PoHC1f8c17TD6IX9ygkUP4D1cXDMo+DBILQ0RmChX4Am4Caht8DhRXgQL96DkbNTyY=; path=/; expires=Tue, 21-Dec-21 15:27:02 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f5e538db0f6a-MXP",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .put("/api/v1/person/01FQEQX4GBZAK4MZP6SKB0D941")
-  .query({
-    "%24email": "grouparoo%40demo.com",
-    "%24first_name": "Johnny",
-    "%24last_name": "Doe",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
+  .get("/api/v1/person/01FRTQ9XJE4WFWEG52Q5J8RY9Q")
+  .query({ api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
   .once()
   .reply(
     200,
     {
       object: "person",
-      id: "01FQEQX4GBZAK4MZP6SKB0D941",
+      id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q",
       $address1: "",
       $address2: "",
       $city: "",
@@ -1550,1726 +948,23 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       $longitude: "",
       $region: "",
       $zip: "",
-      $title: "",
-      $phone_number: "",
       $first_name: "Johnny",
       $organization: "",
-      $last_name: "Doe",
+      $phone_number: "",
       $email: "grouparoo@demo.com",
+      $title: "",
+      $last_name: "Doe",
       $timezone: "",
       $id: "",
-      phone: "[deleted]",
-      text_field: "[deleted]",
-      large_text_field: "[deleted]",
-      autocomplete_field: "[deleted]",
-      phone_field: "[deleted]",
-      numerical_field: "[deleted]",
-      monetary_field: "[deleted]",
-      date_field: "[deleted]",
-      date_range_field: "[deleted]",
-      address_field: "[deleted]",
       email: "grouparoo@demo.com",
       first_name: "Johnny",
       last_name: "Doe",
-      created: "2021-12-21 14:56:39",
-      updated: "2021-12-21 14:56:55",
+      created: "2022-01-07 16:52:45",
+      updated: "2022-01-07 16:53:00",
     },
     [
       "Date",
-      "Tue, 21 Dec 2021 14:57:03 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "784",
-      "Connection",
-      "close",
-      "Allow",
-      "PUT, GET, OPTIONS",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=LMM2VtX713OZoO3ZgqVyOi.L3ofCbFlzA2qVC8ko0CU-1640098623-0-AU4dCF8O3FotW8scfdZY+fiC6gjGPzk0S/njbAZaWtEsSPLZcPPvl8ksGhdpf6OcxHTIdVJa7TJ3ArnKMJM2f40=; path=/; expires=Tue, 21-Dec-21 15:27:03 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f5e99ecb5fd1-MRS",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
-  .once()
-  .reply(
-    200,
-    [
-      { list_id: "SP8ZLd", list_name: "Group2" },
-      { list_id: "T7ewDu", list_name: "TEST Spanish Speaking" },
-      { list_id: "TYtwpp", list_name: "Newsletter" },
-      { list_id: "UHQTNd", list_name: "Group1" },
-      { list_id: "V9Smhf", list_name: "Preview List" },
-      { list_id: "Vy3dbD", list_name: "Group3" },
-      { list_id: "W9Gvpd", list_name: "TEST High Value" },
-    ],
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:57:03 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "329",
-      "Connection",
-      "close",
-      "Allow",
-      "GET, POST, HEAD, OPTIONS",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=LaWcvf85C2mZFuJCLK8DjC7rMxWJZcGmiLzVjqMmz7Y-1640098623-0-AavIanwR+QAzmG3rbBcv8GlqhP55agRmKK0DnG/Pch53rOEs8ax1pY5UY+aHRJm+GmzAAyr4sCXU2nayLUehyeA=; path=/; expires=Tue, 21-Dec-21 15:27:03 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f5ebea875fa1-MRS",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .delete("/api/v2/list/T7ewDu/members", {
-    emails: ["grouparoo@demo.com"],
-    phone_numbers: [],
-    push_tokens: [],
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(200, "", [
-    "Date",
-    "Tue, 21 Dec 2021 14:57:04 GMT",
-    "Content-Length",
-    "0",
-    "Connection",
-    "close",
-    "Allow",
-    "GET, POST, DELETE, HEAD, OPTIONS",
-    "Vary",
-    "Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=fIG7nV5jc_kO3kNiTZsRIMBiC3x.g3lTOEcbMhtYQUE-1640098624-0-ARP88GhqaR79hm8tk3lA4NX1sWV11Bh8NzbNArejNfPLo3uQFvpOtejUw0TzpHzUxAb6Ljq/3DPMWM/632jPnK0=; path=/; expires=Tue, 21-Dec-21 15:27:04 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f5eebf83407d-LHR",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
-  .once()
-  .reply(
-    200,
-    [
-      { list_id: "SP8ZLd", list_name: "Group2" },
-      { list_id: "T7ewDu", list_name: "TEST Spanish Speaking" },
-      { list_id: "TYtwpp", list_name: "Newsletter" },
-      { list_id: "UHQTNd", list_name: "Group1" },
-      { list_id: "V9Smhf", list_name: "Preview List" },
-      { list_id: "Vy3dbD", list_name: "Group3" },
-      { list_id: "W9Gvpd", list_name: "TEST High Value" },
-    ],
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:57:04 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "329",
-      "Connection",
-      "close",
-      "Allow",
-      "GET, POST, HEAD, OPTIONS",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=VVl6GJMgobJ7GYABn0SuTHQjnoMATh_MAz3XljqH1XI-1640098624-0-AYproa8MBAus96Rv/GrQaMNLdlicWwnuNsKwX5g/t5JudPW78+XOkcz7/gvA1Rx0sR78GJIkkBKXmdeCuNrDksk=; path=/; expires=Tue, 21-Dec-21 15:27:04 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f5f1b8880e2a-MXP",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/list/W9Gvpd/members", {
-    emails: ["grouparoo@demo.com"],
-    phone_numbers: [],
-    push_tokens: [],
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(
-    200,
-    [
-      {
-        id: "01FQEQX4GBZAK4MZP6SKB0D941",
-        created: "2021-12-21T14:56:58Z",
-        email: "grouparoo@demo.com",
-      },
-    ],
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:57:04 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "99",
-      "Connection",
-      "close",
-      "Allow",
-      "GET, POST, DELETE, HEAD, OPTIONS",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=W6AICr6qiTaye6DP9TThfzXcBLfDoqgdHLpKsmceY6c-1640098624-0-AY2E0U1ozb36+YPyeOg6m0TGf4Ju3jo0R2dLxvmgvKz9waytwBmymHTa2dFLnUqs6ca9ykQZeaKb/2GfCtBIP5M=; path=/; expires=Tue, 21-Dec-21 15:27:04 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f5f4fa4ccda7-CDG",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/list/T7ewDu/members", {
-    emails: ["grouparoo@demo.com"],
-    phone_numbers: [],
-    push_tokens: [],
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(
-    200,
-    [],
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:57:05 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "2",
-      "Connection",
-      "close",
-      "Allow",
-      "GET, POST, DELETE, HEAD, OPTIONS",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=Mct64J5deZNQdnKvdgSBKUxkdxg0Sr7xXotRvvcS_1Q-1640098625-0-AR2mFmhOwmH6cLcO+mQ+amqCUv7IJ5GcXoc7qOpimv1a0by7AOS5MgVrtdOBu71bIxL+1gWXBn8VQY0AmVJ/TVM=; path=/; expires=Tue, 21-Dec-21 15:27:05 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f5f78d550fd6-MRS",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/people/search", {
-    email: "othergrouparoo@demo.com",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(404, { detail: "There is no profile matching the given parameters" }, [
-    "Date",
-    "Tue, 21 Dec 2021 14:57:05 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "62",
-    "Connection",
-    "close",
-    "Allow",
-    "GET, HEAD, OPTIONS",
-    "Vary",
-    "Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=H3IaSalR5_5HHZoPdM59n8T0ByLH7FTSzdTKiYawq.8-1640098625-0-AVz8+QvsNbOgzN65zuiNoyrFPwjrOyLnCCV/r0O+DRp6zfKMbNNN+z1fdmFYORB34Dn2zazTEE09DbxTNgsRA+U=; path=/; expires=Tue, 21-Dec-21 15:27:05 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f5fa9b0c41b8-MRS",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/people/search", {
-    email: "grouparoo@demo.com",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(200, { id: "01FQEQX4GBZAK4MZP6SKB0D941" }, [
-    "Date",
-    "Tue, 21 Dec 2021 14:57:06 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "35",
-    "Connection",
-    "close",
-    "Allow",
-    "GET, HEAD, OPTIONS",
-    "Vary",
-    "Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=Q7hQjJjCXBcteuUefouivh7qP2zq1gEnf.HaZPCAEDQ-1640098626-0-AbmZJ/BTnJG4+DAeGHfirXpdHiLZ7ppO2gB1040jFJsBGO6J0MYyypPo/QxB1pp7dqn4pjlqC5OccOmPORlxj8E=; path=/; expires=Tue, 21-Dec-21 15:27:06 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f5fd08e973a7-MRS",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .put("/api/v1/person/01FQEQX4GBZAK4MZP6SKB0D941")
-  .query({
-    "%24email": "othergrouparoo%40demo.com",
-    "%24first_name": "Johnny",
-    "%24last_name": "Doe",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(
-    200,
-    {
-      object: "person",
-      id: "01FQEQX4GBZAK4MZP6SKB0D941",
-      $address1: "",
-      $address2: "",
-      $city: "",
-      $country: "",
-      $latitude: "",
-      $longitude: "",
-      $region: "",
-      $zip: "",
-      $first_name: "Johnny",
-      $organization: "",
-      $title: "",
-      $phone_number: "",
-      $email: "othergrouparoo@demo.com",
-      $last_name: "Doe",
-      $timezone: "",
-      $id: "",
-      phone: "[deleted]",
-      text_field: "[deleted]",
-      large_text_field: "[deleted]",
-      autocomplete_field: "[deleted]",
-      phone_field: "[deleted]",
-      numerical_field: "[deleted]",
-      monetary_field: "[deleted]",
-      date_field: "[deleted]",
-      date_range_field: "[deleted]",
-      address_field: "[deleted]",
-      email: "othergrouparoo@demo.com",
-      first_name: "Johnny",
-      last_name: "Doe",
-      created: "2021-12-21 14:56:39",
-      updated: "2021-12-21 14:57:06",
-    },
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:57:06 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "794",
-      "Connection",
-      "close",
-      "Allow",
-      "OPTIONS, GET, PUT",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=zp5Zi8f0U6rxbNH3i4Fqbm_hLTwu6vstJ44TnTMggbM-1640098626-0-AUNbkgOdZDfUgLF6YOQlijYmJji9/xLgJCHd1Q9i48t2SmCilZEdAku1EbcGLd9iaEEBhsovHr/2em/CpXVKWbc=; path=/; expires=Tue, 21-Dec-21 15:27:06 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f5ffed18eda3-CDG",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v1/person/01FQEQX4GBZAK4MZP6SKB0D941")
-  .query({ api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
-  .once()
-  .reply(
-    200,
-    {
-      object: "person",
-      id: "01FQEQX4GBZAK4MZP6SKB0D941",
-      $address1: "",
-      $address2: "",
-      $city: "",
-      $country: "",
-      $latitude: "",
-      $longitude: "",
-      $region: "",
-      $zip: "",
-      $phone_number: "",
-      $title: "",
-      $organization: "",
-      $last_name: "Doe",
-      $email: "othergrouparoo@demo.com",
-      $first_name: "Johnny",
-      $timezone: "",
-      $id: "",
-      phone: "[deleted]",
-      text_field: "[deleted]",
-      large_text_field: "[deleted]",
-      autocomplete_field: "[deleted]",
-      phone_field: "[deleted]",
-      numerical_field: "[deleted]",
-      monetary_field: "[deleted]",
-      date_field: "[deleted]",
-      date_range_field: "[deleted]",
-      address_field: "[deleted]",
-      email: "othergrouparoo@demo.com",
-      first_name: "Johnny",
-      last_name: "Doe",
-      created: "2021-12-21 14:56:39",
-      updated: "2021-12-21 14:57:07",
-    },
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:57:17 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "794",
-      "Connection",
-      "close",
-      "Allow",
-      "OPTIONS, PUT, GET",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=E_y06VZH_7B6Wcd9BboPyxti1r97Q5K5dZ7YPfC9Bk4-1640098637-0-AXeop7HpBPt8GmfnUkWO7H8Buv9snpIfJtDxoxTK8RYinfsr+s89N+9NNAVZN11VevB3oKDAZ1oZtNLzf5VMxMo=; path=/; expires=Tue, 21-Dec-21 15:27:17 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f6418f0ef93b-MXP",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/people/search", {
-    email: "othergrouparoo@demo.com",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(200, { id: "01FQEQX4GBZAK4MZP6SKB0D941" }, [
-    "Date",
-    "Tue, 21 Dec 2021 14:57:17 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "35",
-    "Connection",
-    "close",
-    "Allow",
-    "GET, HEAD, OPTIONS",
-    "Vary",
-    "Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=gtL_iyTkYuvqb..BB7O0rMt4LlgZpMb75K6McocsoPU-1640098637-0-AUZv8Y4KiD0kIcHfmO6bIrCZHwdmNGKa7y1VTS3eIS0s8JCL1mCxbOdhiyjeHuQb0wxvzYT3gSBtIAzVYKwH9sg=; path=/; expires=Tue, 21-Dec-21 15:27:17 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f643fce573c7-MRS",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .put("/api/v1/person/01FQEQX4GBZAK4MZP6SKB0D941")
-  .query({
-    "%24email": "othergrouparoo%40demo.com",
-    "%24first_name": "Johnny",
-    "%24last_name": "Doe",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(
-    200,
-    {
-      object: "person",
-      id: "01FQEQX4GBZAK4MZP6SKB0D941",
-      $address1: "",
-      $address2: "",
-      $city: "",
-      $country: "",
-      $latitude: "",
-      $longitude: "",
-      $region: "",
-      $zip: "",
-      $organization: "",
-      $last_name: "Doe",
-      $phone_number: "",
-      $email: "othergrouparoo@demo.com",
-      $first_name: "Johnny",
-      $title: "",
-      $timezone: "",
-      $id: "",
-      phone: "[deleted]",
-      text_field: "[deleted]",
-      large_text_field: "[deleted]",
-      autocomplete_field: "[deleted]",
-      phone_field: "[deleted]",
-      numerical_field: "[deleted]",
-      monetary_field: "[deleted]",
-      date_field: "[deleted]",
-      date_range_field: "[deleted]",
-      address_field: "[deleted]",
-      email: "othergrouparoo@demo.com",
-      first_name: "Johnny",
-      last_name: "Doe",
-      created: "2021-12-21 14:56:39",
-      updated: "2021-12-21 14:57:07",
-    },
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:57:18 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "794",
-      "Connection",
-      "close",
-      "Allow",
-      "OPTIONS, GET, PUT",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=kBaOzK8xOijI1K2U6N5WjOtFl8Ch_XT2VVr3wfbgDhs-1640098638-0-AScI0jqAw2K8KgZGAFM9MYK6JVoD0zTMNMs2QGqCVzs6lOJM3iK6N6vNtEzq4+j6fCL0p2FJXuqiSwanQT8Hdgw=; path=/; expires=Tue, 21-Dec-21 15:27:18 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f6467d9573af-MRS",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
-  .once()
-  .reply(
-    200,
-    [
-      { list_id: "SP8ZLd", list_name: "Group2" },
-      { list_id: "T7ewDu", list_name: "TEST Spanish Speaking" },
-      { list_id: "TYtwpp", list_name: "Newsletter" },
-      { list_id: "UHQTNd", list_name: "Group1" },
-      { list_id: "V9Smhf", list_name: "Preview List" },
-      { list_id: "Vy3dbD", list_name: "Group3" },
-      { list_id: "W9Gvpd", list_name: "TEST High Value" },
-    ],
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:57:18 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "329",
-      "Connection",
-      "close",
-      "Allow",
-      "GET, POST, HEAD, OPTIONS",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=CFF.OSZw53lMC7PRKrkNuK5Z2UoircM1_1lunM6OU3M-1640098638-0-ARb4s5IdsjYJ9ktI/IUnrof3LyeyLyv0tM9JomC4De4cSzDBUKlhXP9KJTUNS6+LFfo+leKqxUBwrQwX7Hk/aKw=; path=/; expires=Tue, 21-Dec-21 15:27:18 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f648ed3841eb-MRS",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
-  .once()
-  .reply(
-    200,
-    [
-      { list_id: "SP8ZLd", list_name: "Group2" },
-      { list_id: "T7ewDu", list_name: "TEST Spanish Speaking" },
-      { list_id: "TYtwpp", list_name: "Newsletter" },
-      { list_id: "UHQTNd", list_name: "Group1" },
-      { list_id: "V9Smhf", list_name: "Preview List" },
-      { list_id: "Vy3dbD", list_name: "Group3" },
-      { list_id: "W9Gvpd", list_name: "TEST High Value" },
-    ],
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:57:18 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "329",
-      "Connection",
-      "close",
-      "Allow",
-      "GET, POST, HEAD, OPTIONS",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=GW0mPTV8Z4372VT7bi.eOE28aAp.VqVHr.ITrYx3ueA-1640098638-0-AQxSrYj4fkdUmV/NwjV+msEPR3t+00FFMm6e6XUZZUx2CI1ONpVR/t4FSTRtTwR6H/QXu8QTuxjD9HuLpIjau1U=; path=/; expires=Tue, 21-Dec-21 15:27:18 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f64b2aed3b5b-CDG",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
-  .once()
-  .reply(
-    200,
-    [
-      { list_id: "SP8ZLd", list_name: "Group2" },
-      { list_id: "T7ewDu", list_name: "TEST Spanish Speaking" },
-      { list_id: "TYtwpp", list_name: "Newsletter" },
-      { list_id: "UHQTNd", list_name: "Group1" },
-      { list_id: "V9Smhf", list_name: "Preview List" },
-      { list_id: "Vy3dbD", list_name: "Group3" },
-      { list_id: "W9Gvpd", list_name: "TEST High Value" },
-    ],
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:57:29 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "329",
-      "Connection",
-      "close",
-      "Allow",
-      "GET, POST, HEAD, OPTIONS",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=NqxmNsuD370PKHGVQytTkG0B_RjLwN68Hjv.A8hU2Bw-1640098649-0-AU9GX8sbx/QohCOgGB7CAWqwh3wXQqiI9hWjrN8TNFgS9xVBX+tV4RTxhyvUkReoLXpwBM9ty8ZtrCPf3MyXPwM=; path=/; expires=Tue, 21-Dec-21 15:27:29 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f68c48297371-MRS",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/people/search", {
-    email: "notgrouparoo@demo.com",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(404, { detail: "There is no profile matching the given parameters" }, [
-    "Date",
-    "Tue, 21 Dec 2021 14:57:29 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "62",
-    "Connection",
-    "close",
-    "Allow",
-    "GET, HEAD, OPTIONS",
-    "Vary",
-    "Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=02ChzdkyWMYy7mElo4p3lfpOuI_cWcKeCPB5N9NU46U-1640098649-0-AdDhfqFcraIOrozdz54dYNPfWSZC9NP2cNZwy4Twdi0VEJ2B/8Mac4mXGp1h6nsgj6eBf8TUOS3KgxAUORq4180=; path=/; expires=Tue, 21-Dec-21 15:27:29 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f68eed7f7344-MRS",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/people/search", {
-    email: "fakegrouparoo@demo.com",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(404, { detail: "There is no profile matching the given parameters" }, [
-    "Date",
-    "Tue, 21 Dec 2021 14:57:30 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "62",
-    "Connection",
-    "close",
-    "Allow",
-    "GET, HEAD, OPTIONS",
-    "Vary",
-    "Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=W54zIGOBVWkuMkh7QpuBZNg44QVInT5vgcn83SEQ_bs-1640098650-0-AWlru/HiSJ8GkPeLKkPqJzj/zBLnCC79KvTb03CYFcucVXudmX2RPF5W2+ShjO86ISryh2diaYdrso1ot3pjIRg=; path=/; expires=Tue, 21-Dec-21 15:27:30 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f691ecc70f7a-MXP",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .post(
-    "/api/identify",
-    "data=%7B%22properties%22%3A%7B%22%24email%22%3A%22notgrouparoo%40demo.com%22%2C%22%24first_name%22%3A%22Bobby%22%2C%22email%22%3A%22notgrouparoo%40demo.com%22%7D%2C%22token%22%3A%22jVDsoD%22%7D"
-  )
-  .once()
-  .reply(200, 1, [
-    "Date",
-    "Tue, 21 Dec 2021 14:57:30 GMT",
-    "Content-Type",
-    "text/html; charset=utf-8",
-    "Content-Length",
-    "1",
-    "Connection",
-    "close",
-    "Access-Control-Allow-Credentials",
-    "true",
-    "Access-Control-Allow-Headers",
-    "",
-    "Access-Control-Allow-Methods",
-    "POST, GET, OPTIONS",
-    "Access-Control-Allow-Origin",
-    "http://www.klaviyo.com",
-    "Access-Control-Max-Age",
-    "86400",
-    "Allow",
-    "GET, POST, HEAD, OPTIONS",
-    "Vary",
-    "Accept, Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=RQoiJgHT8LTGrY.rBgggQEBAWnC1kXmVnXYcbEzDOAI-1640098650-0-ARnpy+b0bsAS44Ay6lA/rbvwcb9JGaHNTT05yqr9+syrkTPsKfCLgDKJUBLe7lVoeAhjAUXXOZXaMSu72A2fpTI=; path=/; expires=Tue, 21-Dec-21 15:27:30 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f6976c18e920-MRS",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/people/search", {
-    email: "notgrouparoo@demo.com",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(200, { id: "01FQEQYPREVDMZF6AXN6MWST8F" }, [
-    "Date",
-    "Tue, 21 Dec 2021 14:57:41 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "35",
-    "Connection",
-    "close",
-    "Allow",
-    "GET, HEAD, OPTIONS",
-    "Vary",
-    "Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=qySUosgmNoQ_hMd.1WrC2csflsLI6.Y.CN3JhDCbCNE-1640098661-0-AfH4o9UDd6QEOk0n0yKlW8Jxw7gEyl92QRlrm1HwS2wE+9w8UFv1JIVLvEpMzsh1n5obUZMOIcwDpchjLOE/X00=; path=/; expires=Tue, 21-Dec-21 15:27:41 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f6d85c5e736d-MRS",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v1/person/01FQEQYPREVDMZF6AXN6MWST8F")
-  .query({ api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
-  .once()
-  .reply(
-    200,
-    {
-      object: "person",
-      id: "01FQEQYPREVDMZF6AXN6MWST8F",
-      $address1: "",
-      $address2: "",
-      $city: "",
-      $country: "",
-      $latitude: "",
-      $longitude: "",
-      $region: "",
-      $zip: "",
-      $organization: "",
-      $last_name: "",
-      $email: "notgrouparoo@demo.com",
-      $first_name: "Bobby",
-      $phone_number: "",
-      $title: "",
-      $timezone: "",
-      $id: "",
-      email: "notgrouparoo@demo.com",
-      first_name: "Bobby",
-      last_name: "",
-      created: "2021-12-21 14:57:31",
-      updated: "2021-12-21 14:57:31",
-    },
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:57:41 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "484",
-      "Connection",
-      "close",
-      "Allow",
-      "PUT, GET, OPTIONS",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=oC7t6IHDJ1MiDcxNPm2tJE4TnNI4Lek4R3xS7rt8Dog-1640098661-0-ATwKGSEGrw/M8+YB8fVmNRrogDHQKXqhtYQZarnF1yZBTEd4JHobYvhH72trLvGonWrkT9KBPKdH9a77fe8eWbo=; path=/; expires=Tue, 21-Dec-21 15:27:41 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f6db2d1b73c3-MRS",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/people/search", {
-    email: "othergrouparoo@demo.com",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(200, { id: "01FQEQX4GBZAK4MZP6SKB0D941" }, [
-    "Date",
-    "Tue, 21 Dec 2021 14:57:42 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "35",
-    "Connection",
-    "close",
-    "Allow",
-    "GET, HEAD, OPTIONS",
-    "Vary",
-    "Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=PykdJr6Q5Q1BWw3I7fwOqCEjyXJFirKjAvXoZBdH8hk-1640098662-0-AXFhhwp9aBRciE6vB9+anNA/i1LBC13df4LeG+QgHbqDo79PfTBzjbUQibRyykPuUxIt2B+AVh6WUIZ1Ih+sbYA=; path=/; expires=Tue, 21-Dec-21 15:27:42 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f6dded5a5fcb-MRS",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/people/search", {
-    email: "notgrouparoo@demo.com",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(200, { id: "01FQEQYPREVDMZF6AXN6MWST8F" }, [
-    "Date",
-    "Tue, 21 Dec 2021 14:57:42 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "35",
-    "Connection",
-    "close",
-    "Allow",
-    "GET, HEAD, OPTIONS",
-    "Vary",
-    "Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=_BCNahEnc38fSEVZrGNnPQNfQiG2S1it7Gpmz7LZcRk-1640098662-0-AaUshPzEFN+wuWy7ttBHD0AwKru8OvsP5X8QV16kXniBze5H/dr6Kv3h+hmRREqjYM2aBeNAJcVSJZKyQZnEau8=; path=/; expires=Tue, 21-Dec-21 15:27:42 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f6e06b18738b-MRS",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .put("/api/v1/person/01FQEQX4GBZAK4MZP6SKB0D941")
-  .query({
-    "%24email": "othergrouparoo%40demo.com",
-    "%24first_name": "Bobby",
-    "%24last_name": "Jones",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(
-    200,
-    {
-      object: "person",
-      id: "01FQEQX4GBZAK4MZP6SKB0D941",
-      $address1: "",
-      $address2: "",
-      $city: "",
-      $country: "",
-      $latitude: "",
-      $longitude: "",
-      $region: "",
-      $zip: "",
-      $first_name: "Bobby",
-      $title: "",
-      $phone_number: "",
-      $last_name: "Jones",
-      $organization: "",
-      $email: "othergrouparoo@demo.com",
-      $timezone: "",
-      $id: "",
-      phone: "[deleted]",
-      text_field: "[deleted]",
-      large_text_field: "[deleted]",
-      autocomplete_field: "[deleted]",
-      phone_field: "[deleted]",
-      numerical_field: "[deleted]",
-      monetary_field: "[deleted]",
-      date_field: "[deleted]",
-      date_range_field: "[deleted]",
-      address_field: "[deleted]",
-      email: "othergrouparoo@demo.com",
-      first_name: "Bobby",
-      last_name: "Jones",
-      created: "2021-12-21 14:56:39",
-      updated: "2021-12-21 14:57:42",
-    },
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:57:43 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "796",
-      "Connection",
-      "close",
-      "Allow",
-      "GET, PUT, OPTIONS",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=khlJofVOL62R4X49iInM.gX9BUIM10B3uvSuerjKjwM-1640098663-0-AW2Ge+EMkUS3wvqsTVIW4pQbLfdWLDnJ1RyA7/CpIY5gJCVy8ST8yPMxxcJ1jyf2cQO2MLNhLBA9CKouuEYwKbo=; path=/; expires=Tue, 21-Dec-21 15:27:43 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f6e2b8dc41c5-MRS",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v1/person/01FQEQYPREVDMZF6AXN6MWST8F")
-  .query({ api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
-  .once()
-  .reply(
-    200,
-    {
-      object: "person",
-      id: "01FQEQYPREVDMZF6AXN6MWST8F",
-      $address1: "",
-      $address2: "",
-      $city: "",
-      $country: "",
-      $latitude: "",
-      $longitude: "",
-      $region: "",
-      $zip: "",
-      $title: "",
-      $phone_number: "",
-      $first_name: "Bobby",
-      $organization: "",
-      $last_name: "",
-      $email: "notgrouparoo@demo.com",
-      $timezone: "",
-      $id: "",
-      email: "notgrouparoo@demo.com",
-      first_name: "Bobby",
-      last_name: "",
-      created: "2021-12-21 14:57:31",
-      updated: "2021-12-21 14:57:31",
-    },
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:57:53 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "484",
-      "Connection",
-      "close",
-      "Allow",
-      "PUT, GET, OPTIONS",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=0d3nAzxxzTL.TrCDNlE_U0aQZ7eo2RpujcrAcOcJUdA-1640098673-0-ATfc0c9JTPb7GGxULoPHyeUx1kSltzpVfaMR3ktTxYTGK6fFNBZTAJPVRmlAPnfe+JJco8KVEsKQ+XXG4dA5B6M=; path=/; expires=Tue, 21-Dec-21 15:27:53 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f723fb615fad-MRS",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v1/person/01FQEQX4GBZAK4MZP6SKB0D941")
-  .query({ api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
-  .once()
-  .reply(
-    200,
-    {
-      object: "person",
-      id: "01FQEQX4GBZAK4MZP6SKB0D941",
-      $address1: "",
-      $address2: "",
-      $city: "",
-      $country: "",
-      $latitude: "",
-      $longitude: "",
-      $region: "",
-      $zip: "",
-      $email: "othergrouparoo@demo.com",
-      $last_name: "Jones",
-      $first_name: "Bobby",
-      $title: "",
-      $phone_number: "",
-      $organization: "",
-      $timezone: "",
-      $id: "",
-      phone: "[deleted]",
-      text_field: "[deleted]",
-      large_text_field: "[deleted]",
-      autocomplete_field: "[deleted]",
-      phone_field: "[deleted]",
-      numerical_field: "[deleted]",
-      monetary_field: "[deleted]",
-      date_field: "[deleted]",
-      date_range_field: "[deleted]",
-      address_field: "[deleted]",
-      email: "othergrouparoo@demo.com",
-      first_name: "Bobby",
-      last_name: "Jones",
-      created: "2021-12-21 14:56:39",
-      updated: "2021-12-21 14:57:43",
-    },
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:57:53 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "796",
-      "Connection",
-      "close",
-      "Allow",
-      "GET, PUT, OPTIONS",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=_J7tbmlR7gsygE1Hspd0NlcoeGeFQfBYQ4J1hg4jSOU-1640098673-0-AVpM5lRPMBFM7qCIuRZ0+sya5THyNl1TCoYxyB/YDs4w2mgpNMXSQD+sMgR7DCjp2iWGQVZ7a4oVcD+zFJjKuY8=; path=/; expires=Tue, 21-Dec-21 15:27:53 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f7270ad00e16-MXP",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/people/search", {
-    email: "othergrouparoo@demo.com",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(200, { id: "01FQEQX4GBZAK4MZP6SKB0D941" }, [
-    "Date",
-    "Tue, 21 Dec 2021 14:57:54 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "35",
-    "Connection",
-    "close",
-    "Allow",
-    "GET, HEAD, OPTIONS",
-    "Vary",
-    "Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=4FwKGpSVW_IBqBqf0HkWrEqpXZc8Kr87BybY20Ksoco-1640098674-0-ASNOzfOc29he0bntuWirhQW6wPsj5DqENksTKYNEV/jyBtey26GR5Bebzmiarq3GIHFLASkoTc9kaATgRx+2AbQ=; path=/; expires=Tue, 21-Dec-21 15:27:54 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f7299c700ff6-MRS",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
-  .once()
-  .reply(
-    200,
-    [
-      { list_id: "SP8ZLd", list_name: "Group2" },
-      { list_id: "T7ewDu", list_name: "TEST Spanish Speaking" },
-      { list_id: "TYtwpp", list_name: "Newsletter" },
-      { list_id: "UHQTNd", list_name: "Group1" },
-      { list_id: "V9Smhf", list_name: "Preview List" },
-      { list_id: "Vy3dbD", list_name: "Group3" },
-      { list_id: "W9Gvpd", list_name: "TEST High Value" },
-    ],
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:57:55 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "329",
-      "Connection",
-      "close",
-      "Allow",
-      "GET, POST, HEAD, OPTIONS",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=uvai8UzzMQ6BXDmFpcgubwMRAqfgK6pL7Ieb7WGw7Qc-1640098675-0-AQBLwym6dXZp09KIMv2k8cbRlOKRJwlWff82XipTu5LeSitcQwlVQ8FJ/asEaqjTgIxvJg8hxsELfeUrtq3f19o=; path=/; expires=Tue, 21-Dec-21 15:27:55 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f72c4b090e16-MXP",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v1/person/01FQEQX4GBZAK4MZP6SKB0D941")
-  .query({ api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
-  .once()
-  .reply(
-    200,
-    {
-      object: "person",
-      id: "01FQEQX4GBZAK4MZP6SKB0D941",
-      $address1: "",
-      $address2: "",
-      $city: "",
-      $country: "",
-      $latitude: "",
-      $longitude: "",
-      $region: "",
-      $zip: "",
-      $title: "",
-      $last_name: "Jones",
-      $email: "othergrouparoo@demo.com",
-      $first_name: "Bobby",
-      $phone_number: "",
-      $organization: "",
-      $timezone: "",
-      $id: "",
-      phone: "[deleted]",
-      text_field: "[deleted]",
-      large_text_field: "[deleted]",
-      autocomplete_field: "[deleted]",
-      phone_field: "[deleted]",
-      numerical_field: "[deleted]",
-      monetary_field: "[deleted]",
-      date_field: "[deleted]",
-      date_range_field: "[deleted]",
-      address_field: "[deleted]",
-      email: "othergrouparoo@demo.com",
-      first_name: "Bobby",
-      last_name: "Jones",
-      created: "2021-12-21 14:56:39",
-      updated: "2021-12-21 14:57:43",
-    },
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:57:55 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "796",
-      "Connection",
-      "close",
-      "Allow",
-      "GET, OPTIONS, PUT",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=m2uODhS4zT7Kx1AH.9whQebYxBUUYP0CLq32mjwOSU0-1640098675-0-ARD3i5MgLi1PBXlbxC1txmmqFqXCuGLqy/fQDIb2hl0S6yrHJEkGil/BI/W0AKSJGHimtLFXmBVHwg0k2VzQx64=; path=/; expires=Tue, 21-Dec-21 15:27:55 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f7313d8ae907-MXP",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/people/search", {
-    email: "othergrouparoo@demo.com",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(200, { id: "01FQEQX4GBZAK4MZP6SKB0D941" }, [
-    "Date",
-    "Tue, 21 Dec 2021 14:57:56 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "35",
-    "Connection",
-    "close",
-    "Allow",
-    "GET, HEAD, OPTIONS",
-    "Vary",
-    "Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=SwdcvSozZRllCi0vGJlQcj0T3kAWC_DRzySbKyug_EY-1640098676-0-AWwstGjDk3JPSUhGMKv95dTLx/6PBLjbWSTDaCCtJPZZ9duT5mh5kOQUHBqfUtyRo140LDk7hda5IrTAOGHmdAU=; path=/; expires=Tue, 21-Dec-21 15:27:56 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f7343e377365-MRS",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .post("/api/v2/data-privacy/deletion-request", {
-    person_id: "01FQEQX4GBZAK4MZP6SKB0D941",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(202, { results: "Submitted new deletion task for customer." }, [
-    "Date",
-    "Tue, 21 Dec 2021 14:57:56 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "43",
-    "Connection",
-    "close",
-    "Allow",
-    "POST, OPTIONS",
-    "Vary",
-    "Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=OuaWwckA20AdGMC1DzX32LxPWRZQ1G9OvfZLgAEGJn4-1640098676-0-AQHaS/tzKhUrvpoii7pdhCbp3Xo/1dapBA2WGjfgAm944hKN8Ywb3+8YH3ZQjYIwNXP8auRWw0R0N54w+n+S0jw=; path=/; expires=Tue, 21-Dec-21 15:27:56 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f736c9c7103f-MRS",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v1/person/01FQEQX4GBZAK4MZP6SKB0D941")
-  .query({ api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
-  .once()
-  .reply(
-    404,
-    { status: 404, message: "The requested resource does not exist." },
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:57:56 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "68",
-      "Connection",
-      "close",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=sca8HUo6t1zemLPd42Vvt0_zDe9i8xxfX06MtqmPOoU-1640098676-0-ATIcqkeqTrl+2B50C9jOOEVzfLn9NRjZU71iNkQ0kSa0GQ34GK4mGiF9yJIYu08b0/CMWnTJUbrw1AOSGV8UZVc=; path=/; expires=Tue, 21-Dec-21 15:27:56 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f739bcde5385-PMO",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/people/search", {
-    email: "notgrouparoo@demo.com",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(200, { id: "01FQEQYPREVDMZF6AXN6MWST8F" }, [
-    "Date",
-    "Tue, 21 Dec 2021 14:57:57 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "35",
-    "Connection",
-    "close",
-    "Allow",
-    "GET, HEAD, OPTIONS",
-    "Vary",
-    "Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=N88sjVAcvrgqsC7bV2SGGyxcRQnUDb7MP8Y_gDn5qMI-1640098677-0-AXHJ2MvQxMJk84F4T125HkasLkOvywvvs2OBT6os3AqRD9FqxWxzo+IZfhQFPoEKZTPvHvZ5nSyw2IRInOlwBCI=; path=/; expires=Tue, 21-Dec-21 15:27:57 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f73d2c1c738f-MRS",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .post("/api/v2/data-privacy/deletion-request", {
-    person_id: "01FQEQYPREVDMZF6AXN6MWST8F",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(202, { results: "Submitted new deletion task for customer." }, [
-    "Date",
-    "Tue, 21 Dec 2021 14:57:57 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "43",
-    "Connection",
-    "close",
-    "Allow",
-    "POST, OPTIONS",
-    "Vary",
-    "Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=9lr.ZA7TWqZmlxTcx45QrF3wZWKG5MQF3z3hZ3C3GE8-1640098677-0-AWn5hb6P14N6Yxg1YhF0lYWzqXRApFWEx2K4bgT+or6Si99fLdJihsITGyzeE+tiCc3kX2K5fCWbmxZ/iRpG5eI=; path=/; expires=Tue, 21-Dec-21 15:27:57 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f73fbc7c7348-MRS",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v1/person/01FQEQYPREVDMZF6AXN6MWST8F")
-  .query({ api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
-  .once()
-  .reply(
-    404,
-    { status: 404, message: "The requested resource does not exist." },
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:57:58 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "68",
-      "Connection",
-      "close",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=O0cwHFTSLeryOgHI6vkWcdO3.fio0d9HZdSyrH_cqL8-1640098678-0-AYDPWJE6riG92XRduttjFEI9/8x7aG6dBPHNiPA5SOulOATIi1QpyK4l5yAqZv0iJiCVxKV6Yde7ZuMyob3/RME=; path=/; expires=Tue, 21-Dec-21 15:27:58 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f742792d739b-MRS",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/people/search", {
-    email: "maybegrouparoo@demo.com",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(404, { detail: "There is no profile matching the given parameters" }, [
-    "Date",
-    "Tue, 21 Dec 2021 14:57:58 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "62",
-    "Connection",
-    "close",
-    "Allow",
-    "GET, HEAD, OPTIONS",
-    "Vary",
-    "Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=KyXQEU8ogyJzr4zymVc6sbjR4iaQC6zB8BYjOz1iER4-1640098678-0-AbkvomR1twFUd3AIHf36C7kxZkl/HgYNXvtwcoNPzsjh4KnW2k/AUIDfDZ/X/c/OLPS8cXfs3Jb/ayB3y878lVI=; path=/; expires=Tue, 21-Dec-21 15:27:58 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f74499a75fc5-MRS",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .post(
-    "/api/identify",
-    "data=%7B%22properties%22%3A%7B%22%24email%22%3A%22maybegrouparoo%40demo.com%22%2C%22%24first_name%22%3A%22Jill%22%2C%22email%22%3A%22maybegrouparoo%40demo.com%22%7D%2C%22token%22%3A%22jVDsoD%22%7D"
-  )
-  .once()
-  .reply(200, 1, [
-    "Date",
-    "Tue, 21 Dec 2021 14:57:59 GMT",
-    "Content-Type",
-    "text/html; charset=utf-8",
-    "Content-Length",
-    "1",
-    "Connection",
-    "close",
-    "Access-Control-Allow-Credentials",
-    "true",
-    "Access-Control-Allow-Headers",
-    "",
-    "Access-Control-Allow-Methods",
-    "POST, GET, OPTIONS",
-    "Access-Control-Allow-Origin",
-    "http://www.klaviyo.com",
-    "Access-Control-Max-Age",
-    "86400",
-    "Allow",
-    "GET, POST, HEAD, OPTIONS",
-    "Vary",
-    "Accept, Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=UzvUANIBuKYTgbHX3JcChhiqBcT3wD5Fo94hgnRChIU-1640098679-0-AZxYyb+/oQOzYdxvbvwkJhiPmFiypgIU58r2McjcvjNxyjWlxfjhynsii5YEM5cB76Yjh+1SKg8KhW4TCftVf4o=; path=/; expires=Tue, 21-Dec-21 15:27:59 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f7479e5f4007-CDG",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
-  .once()
-  .reply(
-    200,
-    [
-      { list_id: "SP8ZLd", list_name: "Group2" },
-      { list_id: "T7ewDu", list_name: "TEST Spanish Speaking" },
-      { list_id: "TYtwpp", list_name: "Newsletter" },
-      { list_id: "UHQTNd", list_name: "Group1" },
-      { list_id: "V9Smhf", list_name: "Preview List" },
-      { list_id: "Vy3dbD", list_name: "Group3" },
-      { list_id: "W9Gvpd", list_name: "TEST High Value" },
-    ],
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:57:59 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "329",
-      "Connection",
-      "close",
-      "Allow",
-      "GET, POST, HEAD, OPTIONS",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=dPkYv_yRzopW_8C5fyxotB9Yv7_JYTKs0vicEKqr3YI-1640098679-0-AZoldjbln16J8Q0429igBTcVJDURWvvQd70z03D/AlYTpE95q6PD1XVR26B6taKvKv9J5Gs//YpmVf1QqZUHKsg=; path=/; expires=Tue, 21-Dec-21 15:27:59 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f74a88db71da-LHR",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
-  .once()
-  .reply(
-    200,
-    [
-      { list_id: "SP8ZLd", list_name: "Group2" },
-      { list_id: "T7ewDu", list_name: "TEST Spanish Speaking" },
-      { list_id: "TYtwpp", list_name: "Newsletter" },
-      { list_id: "UHQTNd", list_name: "Group1" },
-      { list_id: "V9Smhf", list_name: "Preview List" },
-      { list_id: "Vy3dbD", list_name: "Group3" },
-      { list_id: "W9Gvpd", list_name: "TEST High Value" },
-    ],
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:58:00 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "329",
-      "Connection",
-      "close",
-      "Allow",
-      "GET, POST, HEAD, OPTIONS",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=r7eGfFLBK.s_oBo.wY76RagrHhpEYVQqhPtlXhie_vs-1640098680-0-AeXjMmqNt9knUQrfZ5UviIbFkQZAl9ExLnpqHN7b+xB5x1+xDT2jqROOEFYOO6UvAr5+uw6ZEVlkrYddnl/fQYM=; path=/; expires=Tue, 21-Dec-21 15:28:00 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f74d388a1012-MRS",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .post("/api/v2/lists", {
-    list_name: "TEST Recently Added",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(200, { list_id: "TGPP9W" }, [
-    "Date",
-    "Tue, 21 Dec 2021 14:58:01 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "20",
-    "Connection",
-    "close",
-    "Allow",
-    "GET, POST, HEAD, OPTIONS",
-    "Vary",
-    "Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=BXxb6Xsqg9gzoET_F4IFdfAuBbx.kUo6_O2l0zv60lo-1640098681-0-AQQgiefKKriz3dorPtuf5BAORIqXY23pcQoGAOadgn5yXnaZQzcs1JLNqmA4e3JDqhmvFSGczGZv9CpkS1biBcU=; path=/; expires=Tue, 21-Dec-21 15:28:01 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f7521dbe0fea-MRS",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .post("/api/v2/list/TGPP9W/members", {
-    profiles: [{ email: "maybegrouparoo@demo.com" }],
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(
-    200,
-    [{ id: "01FQEQZJ9PRSQTTBDSWAPDZM7K", email: "maybegrouparoo@demo.com" }],
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:58:02 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "71",
-      "Connection",
-      "close",
-      "Allow",
-      "GET, POST, DELETE, HEAD, OPTIONS",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=xYvue8L6lAfOAgFKXUSJE_sTHaS3acVhg2Ojj_tpEY8-1640098682-0-AaJcw+FGwUxJ8wwKS3My5frZkzLLamgYXafafHBXbztLI4g0kn3nT4tVeHeF7nuVtsKJAc7g2yQy1b3yaUCsr3Q=; path=/; expires=Tue, 21-Dec-21 15:28:02 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f7571d600f5e-MXP",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
-  .once()
-  .reply(
-    200,
-    [
-      { list_id: "SP8ZLd", list_name: "Group2" },
-      { list_id: "T7ewDu", list_name: "TEST Spanish Speaking" },
-      { list_id: "TGPP9W", list_name: "TEST Recently Added" },
-      { list_id: "TYtwpp", list_name: "Newsletter" },
-      { list_id: "UHQTNd", list_name: "Group1" },
-      { list_id: "V9Smhf", list_name: "Preview List" },
-      { list_id: "Vy3dbD", list_name: "Group3" },
-      { list_id: "W9Gvpd", list_name: "TEST High Value" },
-    ],
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:58:12 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "384",
-      "Connection",
-      "close",
-      "Allow",
-      "GET, POST, HEAD, OPTIONS",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=W2hh0RfbOhGzMVJqOfPseXFSXIhR70pd1oIaTZYMFEE-1640098692-0-ASv5b1BVKfzI34Xvbxs2k/qyELQXsH4OZcVI19MO4fNGBWTH3DWuwcjOtftVJZ2Em3Z5k8F8CggPbI7vOT7+/8E=; path=/; expires=Tue, 21-Dec-21 15:28:12 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f79aaffe7348-MRS",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/people/search", {
-    email: "maybegrouparoo@demo.com",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(200, { id: "01FQEQZJ9PRSQTTBDSWAPDZM7K" }, [
-    "Date",
-    "Tue, 21 Dec 2021 14:58:12 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "35",
-    "Connection",
-    "close",
-    "Allow",
-    "GET, HEAD, OPTIONS",
-    "Vary",
-    "Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=s_bg5w_Bsaup.MPK6ZDeOVuSgccd0M.IS_K_iUjpeLg-1640098692-0-AcM8RPDAVNq/iZbg8jIDcu2D8QKlXg3SBNm4Q7wJ8lez3EwwgNqp9P7117lnnB1wpgUc0o/aKV8iPBnYUdlqEs8=; path=/; expires=Tue, 21-Dec-21 15:28:12 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f79dbda17509-LHR",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v1/person/01FQEQZJ9PRSQTTBDSWAPDZM7K")
-  .query({ api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
-  .once()
-  .reply(
-    200,
-    {
-      object: "person",
-      id: "01FQEQZJ9PRSQTTBDSWAPDZM7K",
-      $address1: "",
-      $address2: "",
-      $city: "",
-      $country: "",
-      $latitude: "",
-      $longitude: "",
-      $region: "",
-      $zip: "",
-      $organization: "",
-      $email: "maybegrouparoo@demo.com",
-      $last_name: "",
-      $first_name: "Jill",
-      $phone_number: "",
-      $title: "",
-      $timezone: "",
-      $id: "",
-      email: "maybegrouparoo@demo.com",
-      first_name: "Jill",
-      last_name: "",
-      created: "2021-12-21 14:57:59",
-      updated: "2021-12-21 14:57:59",
-    },
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:58:13 GMT",
+      "Fri, 07 Jan 2022 16:53:01 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -3285,11 +980,11 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "Set-Cookie",
-      "__cf_bm=8RQ3dwk4xeDv6GaJHg9uCn4vj3qJlO_3MsNmPpeQgpw-1640098693-0-AbGa4q6WF7aUmNKvFHeInaOaj78xM4P/XJuIkz4w84rGIdO8A7IUt0TkXeva/NfLVKGk1Ns4imjQpOXVUxtHMac=; path=/; expires=Tue, 21-Dec-21 15:28:13 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "__cf_bm=vS_DxryoFOhxm1hs9xzMZ4YzKQYucnbhCphdTOj.Jzs-1641574381-0-ARfUQQ4tgE7p7MRfM1knqF46XfyqspHaGLyshCCzSkcQqk/cmlhiVGx6XyBbvfOOn0W9CPrxWLCeUkpoMOz8bug=; path=/; expires=Fri, 07-Jan-22 17:23:01 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
       "Server",
       "cloudflare",
       "CF-RAY",
-      "6c11f7a0bf700f72-MXP",
+      "6c9eb32608ef275b-FOR",
     ]
   );
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
@@ -3298,9 +993,792 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
   })
   .once()
+  .reply(200, { id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q" }, [
+    "Date",
+    "Fri, 07 Jan 2022 16:53:01 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "35",
+    "Connection",
+    "close",
+    "Allow",
+    "GET, HEAD, OPTIONS",
+    "Vary",
+    "Cookie",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Set-Cookie",
+    "__cf_bm=fw0kDMKt0nbM17rEnrJmucpwmMT3GdMp2hzmLUYMRbo-1641574381-0-AegIcJi5CI+s4GJTRNuoDSzLqfEIPqpQjd05IzNAREf+sfhXMN4nDjTwkEQzVCZhS4nbUFVQB967Qwfvo5f9X8c=; path=/; expires=Fri, 07-Jan-22 17:23:01 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "6c9eb329bc41274f-FOR",
+  ]);
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .put("/api/v1/person/01FRTQ9XJE4WFWEG52Q5J8RY9Q")
+  .query({
+    "%24email": "grouparoo%40demo.com",
+    "%24first_name": "Johnny",
+    "%24last_name": "Doe",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      object: "person",
+      id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q",
+      $address1: "",
+      $address2: "",
+      $city: "",
+      $country: "",
+      $latitude: "",
+      $longitude: "",
+      $region: "",
+      $zip: "",
+      $first_name: "Johnny",
+      $last_name: "Doe",
+      $organization: "",
+      $email: "grouparoo@demo.com",
+      $phone_number: "",
+      $title: "",
+      $timezone: "",
+      $id: "",
+      email: "grouparoo@demo.com",
+      first_name: "Johnny",
+      last_name: "Doe",
+      created: "2022-01-07 16:52:45",
+      updated: "2022-01-07 16:53:00",
+    },
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:53:01 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "486",
+      "Connection",
+      "close",
+      "Allow",
+      "GET, OPTIONS, PUT",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=aUCkokt6kv3o5z71KejsRGGU4Bu4utHIYIzmUS4SgdU-1641574381-0-AVe0KCcAIEpNCBIv6Q4ECmXhlFRObOZuFDYVY+Vrr2LlkSfq1h/hAz/fggCRz5OgTv6DV9qtFGNUlQcZIOu6Sps=; path=/; expires=Fri, 07-Jan-22 17:23:01 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb32cd9132743-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
+  .once()
+  .reply(
+    200,
+    [
+      { list_id: "SP8ZLd", list_name: "Group2" },
+      { list_id: "SfTsRH", list_name: "All Accounts" },
+      { list_id: "TYtwpp", list_name: "Newsletter" },
+      { list_id: "UHQTNd", list_name: "Group1" },
+      { list_id: "V9Smhf", list_name: "Preview List" },
+      { list_id: "Vy3dbD", list_name: "Group3" },
+      { list_id: "WwJwH6", list_name: "High Value Accounts" },
+    ],
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:53:02 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "324",
+      "Connection",
+      "close",
+      "Allow",
+      "GET, POST, HEAD, OPTIONS",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=Ad2i02JpyRLZRkGwfSARhf0IW5n.JmYK5OLYoC5x20Y-1641574382-0-AdCsxKDt+7utzSHhOdFxMfO/JgsGTWxLDjXa9dAFVOj6GiseWC8PTrmywJ0vr+5kus86Kb/EM+SNWd+g14m2Qko=; path=/; expires=Fri, 07-Jan-22 17:23:02 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb32ecd10e08e-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
+  .once()
+  .reply(
+    200,
+    [
+      { list_id: "SP8ZLd", list_name: "Group2" },
+      { list_id: "SfTsRH", list_name: "All Accounts" },
+      { list_id: "TYtwpp", list_name: "Newsletter" },
+      { list_id: "UHQTNd", list_name: "Group1" },
+      { list_id: "V9Smhf", list_name: "Preview List" },
+      { list_id: "Vy3dbD", list_name: "Group3" },
+      { list_id: "WwJwH6", list_name: "High Value Accounts" },
+    ],
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:53:02 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "324",
+      "Connection",
+      "close",
+      "Allow",
+      "GET, POST, HEAD, OPTIONS",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=3vt5JuIjb.hnLhl_PsQWnD2qnn_WATweXEAOlw0uA28-1641574382-0-AcrxDiAusD+rnFSuxMIW7KKzGtO7PSaF5W8nimYIw94KDwrUdW7f2lqxzDtQgrjqwkexQZpWDJQgRpdgfWJdnQ8=; path=/; expires=Fri, 07-Jan-22 17:23:02 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb331dddf275d-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .post("/api/v2/lists", {
+    list_name: "TEST High Value",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(200, { list_id: "XqeC36" }, [
+    "Date",
+    "Fri, 07 Jan 2022 16:53:03 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "20",
+    "Connection",
+    "close",
+    "Allow",
+    "GET, POST, HEAD, OPTIONS",
+    "Vary",
+    "Cookie",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Set-Cookie",
+    "__cf_bm=DYA2hH5GmOH0OXgLGMX36Q.hlIvKFP38QYrWAcah2F0-1641574383-0-AdcASnL622Kt0cu53884A6DPGvLAPPXcYtOkBHGXEOiKaPeMLX1EvlT4CUPxx5NRRtSKFam/GWzk7vDGx2bVUaA=; path=/; expires=Fri, 07-Jan-22 17:23:03 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "6c9eb3350c6c2743-FOR",
+  ]);
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .post("/api/v2/list/XqeC36/members", {
+    profiles: [{ email: "grouparoo@demo.com" }],
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(
+    200,
+    [{ id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q", email: "grouparoo@demo.com" }],
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:53:03 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "66",
+      "Connection",
+      "close",
+      "Allow",
+      "GET, POST, DELETE, HEAD, OPTIONS",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=kzTkxOUkAXST1Oq0Kp6xQzvPovijqDZrQ49Pex5MEYI-1641574383-0-AeHjokZWSKM9osOjMt3yMK2t4MPTT9NUPBQvu50Gc0Ox5+iUbVfGGanjqZP1Ufj3QVQPrPK0aB1rBr7x52+qXvA=; path=/; expires=Fri, 07-Jan-22 17:23:03 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb3368fba2743-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
+  .once()
+  .reply(
+    200,
+    [
+      { list_id: "SP8ZLd", list_name: "Group2" },
+      { list_id: "SfTsRH", list_name: "All Accounts" },
+      { list_id: "TYtwpp", list_name: "Newsletter" },
+      { list_id: "UHQTNd", list_name: "Group1" },
+      { list_id: "V9Smhf", list_name: "Preview List" },
+      { list_id: "Vy3dbD", list_name: "Group3" },
+      { list_id: "WwJwH6", list_name: "High Value Accounts" },
+      { list_id: "XqeC36", list_name: "TEST High Value" },
+    ],
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:53:04 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "375",
+      "Connection",
+      "close",
+      "Allow",
+      "GET, POST, HEAD, OPTIONS",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=mqQcLf1Ts1ZFgcZLN0ZbmiOA6lDVEnrn6QPOQBcpvKg-1641574384-0-ARZL34TIEUcnI0BFUx6GtHql3KNEGD73xvIo5SuDWt3jRG/6mUfDokS++V0Nvhwry8JfNaFdsElbisqPnmAnk4E=; path=/; expires=Fri, 07-Jan-22 17:23:04 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb33a2ec4cf9e-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
+  .once()
+  .reply(
+    200,
+    [
+      { list_id: "SP8ZLd", list_name: "Group2" },
+      { list_id: "SfTsRH", list_name: "All Accounts" },
+      { list_id: "TYtwpp", list_name: "Newsletter" },
+      { list_id: "UHQTNd", list_name: "Group1" },
+      { list_id: "V9Smhf", list_name: "Preview List" },
+      { list_id: "Vy3dbD", list_name: "Group3" },
+      { list_id: "WwJwH6", list_name: "High Value Accounts" },
+      { list_id: "XqeC36", list_name: "TEST High Value" },
+    ],
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:53:04 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "375",
+      "Connection",
+      "close",
+      "Allow",
+      "GET, POST, HEAD, OPTIONS",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=gwmgVYadfqcvrUO1hNLpUTD2DhDdiXB5mHVBfufeng0-1641574384-0-Ae6sqOSCSvLWJBHc7HJxzBKxrXdYpGuxCMgiz0jO+cNJco05slHBx+6/V5UKFGWaa8tA6a5hF6PFNppACY61z4k=; path=/; expires=Fri, 07-Jan-22 17:23:04 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb33d8edacf8e-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .post("/api/v2/lists", {
+    list_name: "TEST Spanish Speaking",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(200, { list_id: "UmLDhm" }, [
+    "Date",
+    "Fri, 07 Jan 2022 16:53:04 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "20",
+    "Connection",
+    "close",
+    "Allow",
+    "GET, POST, HEAD, OPTIONS",
+    "Vary",
+    "Cookie",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Set-Cookie",
+    "__cf_bm=PtBIQNYIYGi8zUhKf78qrWJRGxR75f5C7Y0EAhGdKQM-1641574384-0-ARczkPiZ/vf70amVPrEYs+fDmz8q1Jp3h2LtFHO+LEiap9cp6XSwVqreFpSdmkE1Dk7mCLY7U6LA0bf83ePaH+0=; path=/; expires=Fri, 07-Jan-22 17:23:04 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "6c9eb33ecd7e2749-FOR",
+  ]);
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .post("/api/v2/list/UmLDhm/members", {
+    profiles: [{ email: "grouparoo@demo.com" }],
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(
+    200,
+    [{ id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q", email: "grouparoo@demo.com" }],
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:53:05 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "66",
+      "Connection",
+      "close",
+      "Allow",
+      "GET, POST, DELETE, HEAD, OPTIONS",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=0CUJ7h8lUu2_9NZJ5XHm7.Iy1GKdm1WVk.92uFpeAcE-1641574385-0-AXU86lSdvacfFm5RiA/qLCe7SdjsCQ07mUSnNHH00K/BbGE3pU8IdZFguFzPmKLe93EWMGNur6PW7eCtTutpK+o=; path=/; expires=Fri, 07-Jan-22 17:23:05 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb3422ee8cf9a-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
+  .once()
+  .reply(
+    200,
+    [
+      { list_id: "SP8ZLd", list_name: "Group2" },
+      { list_id: "SfTsRH", list_name: "All Accounts" },
+      { list_id: "TYtwpp", list_name: "Newsletter" },
+      { list_id: "UHQTNd", list_name: "Group1" },
+      { list_id: "UmLDhm", list_name: "TEST Spanish Speaking" },
+      { list_id: "V9Smhf", list_name: "Preview List" },
+      { list_id: "Vy3dbD", list_name: "Group3" },
+      { list_id: "WwJwH6", list_name: "High Value Accounts" },
+      { list_id: "XqeC36", list_name: "TEST High Value" },
+    ],
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:53:05 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "432",
+      "Connection",
+      "close",
+      "Allow",
+      "GET, POST, HEAD, OPTIONS",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=qFxdOTLuKtaS37UR5pxT2hW.qMaEvMxk0HD2piDM8Dc-1641574385-0-AcGbnVzaIYyPn9TfRmHJmKd+Hpx2KvwwVwrUhlPXt/+r58z1KrspjU5EjtUI6ij42V61ciPuX9phdM42FQBR8kI=; path=/; expires=Fri, 07-Jan-22 17:23:05 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb3462b852746-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/list/XqeC36/members", {
+    emails: ["grouparoo@demo.com"],
+    phone_numbers: [],
+    push_tokens: [],
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(
+    200,
+    [
+      {
+        id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q",
+        created: "2022-01-07T16:53:04Z",
+        email: "grouparoo@demo.com",
+      },
+    ],
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:53:06 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "99",
+      "Connection",
+      "close",
+      "Allow",
+      "GET, POST, DELETE, HEAD, OPTIONS",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=3wPakNKwACDysXK0txdFaDj7aq7QiDfjfDiXF97T7II-1641574386-0-AcsBVrAsPZq5i+Ay60Dmt1xctJhrnM2PFMf5vyFxg9uudXtJWIShZLnOfD3lRC4403U6AsZna2Gyo0SLW3qSD/0=; path=/; expires=Fri, 07-Jan-22 17:23:06 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb3476dc3cf8a-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/list/UmLDhm/members", {
+    emails: ["grouparoo@demo.com"],
+    phone_numbers: [],
+    push_tokens: [],
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(
+    200,
+    [
+      {
+        id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q",
+        created: "2022-01-07T16:53:05Z",
+        email: "grouparoo@demo.com",
+      },
+    ],
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:53:06 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "99",
+      "Connection",
+      "close",
+      "Allow",
+      "GET, POST, DELETE, HEAD, OPTIONS",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=n2sQYHkVltuyAnYHvExLoXdpf.q6QaJhDg_reVBdF7A-1641574386-0-AZ6K9yES5mBZmOVD3MxlKvu0F1UQorTn/POo2Zk4gzxuTjXymWrHl1L0i50xnRr/GPcvcfi8O/a2a6Vs6+xUK5c=; path=/; expires=Fri, 07-Jan-22 17:23:06 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb348fba82743-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/people/search", {
+    email: "grouparoo@demo.com",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(200, { id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q" }, [
+    "Date",
+    "Fri, 07 Jan 2022 16:53:07 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "35",
+    "Connection",
+    "close",
+    "Allow",
+    "GET, HEAD, OPTIONS",
+    "Vary",
+    "Cookie",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Set-Cookie",
+    "__cf_bm=1BoWlVoZfFxSgwJFK5dtFBh7qJSXg6zwKxaTE6gQdb0-1641574387-0-AU2/iFuUoLRPv65/SBxpNj004Qp8CEZoH8hEsoFpzX+RrZEOtuvStHnDDoLfiIlH2COiV5HPj4UFnEJnSJO/LCc=; path=/; expires=Fri, 07-Jan-22 17:23:07 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "6c9eb34c9aa7cf9a-FOR",
+  ]);
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .put("/api/v1/person/01FRTQ9XJE4WFWEG52Q5J8RY9Q")
+  .query({
+    "%24email": "grouparoo%40demo.com",
+    "%24first_name": "Johnny",
+    "%24last_name": "Doe",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      object: "person",
+      id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q",
+      $address1: "",
+      $address2: "",
+      $city: "",
+      $country: "",
+      $latitude: "",
+      $longitude: "",
+      $region: "",
+      $zip: "",
+      $first_name: "Johnny",
+      $last_name: "Doe",
+      $organization: "",
+      $email: "grouparoo@demo.com",
+      $phone_number: "",
+      $title: "",
+      $timezone: "",
+      $id: "",
+      email: "grouparoo@demo.com",
+      first_name: "Johnny",
+      last_name: "Doe",
+      created: "2022-01-07 16:52:45",
+      updated: "2022-01-07 16:53:00",
+    },
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:53:07 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "486",
+      "Connection",
+      "close",
+      "Allow",
+      "GET, OPTIONS, PUT",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=zLEYdkm1gmdSjYd8.AVw92FXdT1CMFSsWekTZzmySg4-1641574387-0-AW0uQQUclxiMBp9+e0Dme8NuBDd/PPCEOcdhBWWAYOCkdxypedc7IiuhSmzRdXghY8+qpLxru/uInY0QpntFZVs=; path=/; expires=Fri, 07-Jan-22 17:23:07 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb34faf242745-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
+  .once()
+  .reply(
+    200,
+    [
+      { list_id: "SP8ZLd", list_name: "Group2" },
+      { list_id: "SfTsRH", list_name: "All Accounts" },
+      { list_id: "TYtwpp", list_name: "Newsletter" },
+      { list_id: "UHQTNd", list_name: "Group1" },
+      { list_id: "UmLDhm", list_name: "TEST Spanish Speaking" },
+      { list_id: "V9Smhf", list_name: "Preview List" },
+      { list_id: "Vy3dbD", list_name: "Group3" },
+      { list_id: "WwJwH6", list_name: "High Value Accounts" },
+      { list_id: "XqeC36", list_name: "TEST High Value" },
+    ],
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:53:08 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "432",
+      "Connection",
+      "close",
+      "Allow",
+      "GET, POST, HEAD, OPTIONS",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=H4py4h5y.e_ZVF2lW7siscYDObq0wGJV19UMTBELN6I-1641574388-0-AYTEt3ypp7knwFCqvUpezVNncpi1cS36mMv2A2a8Od2HSZbkPg5jCSVFIrIQ1lyL9UEQKW9nLnj+ZILxW5+C9PA=; path=/; expires=Fri, 07-Jan-22 17:23:08 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb352dc28cf9e-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .delete("/api/v2/list/UmLDhm/members", {
+    emails: ["grouparoo@demo.com"],
+    phone_numbers: [],
+    push_tokens: [],
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(200, "", [
+    "Date",
+    "Fri, 07 Jan 2022 16:53:08 GMT",
+    "Content-Length",
+    "0",
+    "Connection",
+    "close",
+    "Allow",
+    "GET, POST, DELETE, HEAD, OPTIONS",
+    "Vary",
+    "Cookie",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Set-Cookie",
+    "__cf_bm=4xB_29cs4En8g1mT_WtBhrmkbogL4RSZc_RJftn_81E-1641574388-0-AaXAFunTHzovBEc0/pXv3f37lmxk+w+WmBSStB21LsWoE+H17ZaOAYQcAUL4TtsWeCpafKXerVmYFx4rFOzwtcA=; path=/; expires=Fri, 07-Jan-22 17:23:08 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "6c9eb355e95fcf9e-FOR",
+  ]);
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
+  .once()
+  .reply(
+    200,
+    [
+      { list_id: "SP8ZLd", list_name: "Group2" },
+      { list_id: "SfTsRH", list_name: "All Accounts" },
+      { list_id: "TYtwpp", list_name: "Newsletter" },
+      { list_id: "UHQTNd", list_name: "Group1" },
+      { list_id: "UmLDhm", list_name: "TEST Spanish Speaking" },
+      { list_id: "V9Smhf", list_name: "Preview List" },
+      { list_id: "Vy3dbD", list_name: "Group3" },
+      { list_id: "WwJwH6", list_name: "High Value Accounts" },
+      { list_id: "XqeC36", list_name: "TEST High Value" },
+    ],
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:53:08 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "432",
+      "Connection",
+      "close",
+      "Allow",
+      "GET, POST, HEAD, OPTIONS",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=mW734SNL9gtFOs63cFQEb7i24c7fcNBhax4nPVwhLvU-1641574388-0-AfBeaPxJRSYpkdvlp2VGcyBeaedCYXH9JNOsYNfRLWqUEYe/qYF0hNydpBeJDwIV3TEefLWREXSspYudDcB70Zw=; path=/; expires=Fri, 07-Jan-22 17:23:08 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb3595d182745-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/list/XqeC36/members", {
+    emails: ["grouparoo@demo.com"],
+    phone_numbers: [],
+    push_tokens: [],
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(
+    200,
+    [
+      {
+        id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q",
+        created: "2022-01-07T16:53:04Z",
+        email: "grouparoo@demo.com",
+      },
+    ],
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:53:09 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "99",
+      "Connection",
+      "close",
+      "Allow",
+      "GET, POST, DELETE, HEAD, OPTIONS",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=f8q9I4T1dAz_161529uC3xEhcAeLJouMG6GaJ2ZEYrU-1641574389-0-AWVjIgNR4fZ962jmWFGSUiTPO5LqpoM9GY6bn87ldeau0dvqjlVy62SfTHbV27ASz36S+T7ktWiGIpRe/UPX8cw=; path=/; expires=Fri, 07-Jan-22 17:23:09 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb35ac8722745-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/list/UmLDhm/members", {
+    emails: ["grouparoo@demo.com"],
+    phone_numbers: [],
+    push_tokens: [],
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(
+    200,
+    [],
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:53:09 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "2",
+      "Connection",
+      "close",
+      "Allow",
+      "GET, POST, DELETE, HEAD, OPTIONS",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=UQpnsYPAbAFosqO68tCQ0uDMPvgQ9tgHMIxvognsuJE-1641574389-0-AS/qynAkKLz8+TuEQ/agm92VMMGhMVv9x9pqT1C18m80BQUsinb6B67Xipl8IMYDngHdObB2wEsDjTl8PRjKj8c=; path=/; expires=Fri, 07-Jan-22 17:23:09 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb35e2bdd2755-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/people/search", {
+    email: "othergrouparoo@demo.com",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
   .reply(404, { detail: "There is no profile matching the given parameters" }, [
     "Date",
-    "Tue, 21 Dec 2021 14:58:13 GMT",
+    "Fri, 07 Jan 2022 16:53:09 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -3316,21 +1794,442 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "Set-Cookie",
-    "__cf_bm=AuLu5VjcorPjKR0YIky1A0Ot7O1.p81tOmFjv1vZK7A-1640098693-0-AR+LoT8L3UHdNf0raGNl7u575hH8UcosPss4a7JvOhIe0lxayCkrgoxI1AgdmP935uoXIYYPxeaj77RcMDGn1rE=; path=/; expires=Tue, 21-Dec-21 15:28:13 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "__cf_bm=tqSu0D52uCRefFG.qxEPlT.4ZWaU6XDYny0ziKB46EQ-1641574389-0-ARGNYtGQAI2qyMORwcFLurfMKrLcDALa3rlSFPixBhzb+X07bNI+SpW+ul0Sw3CXPCUh5BboGjbI6lc1om1QkfM=; path=/; expires=Fri, 07-Jan-22 17:23:09 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
     "Server",
     "cloudflare",
     "CF-RAY",
-    "6c11f7a40f6a0672-LHR",
+    "6c9eb35f9a292737-FOR",
+  ]);
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/people/search", {
+    email: "grouparoo@demo.com",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(200, { id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q" }, [
+    "Date",
+    "Fri, 07 Jan 2022 16:53:10 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "35",
+    "Connection",
+    "close",
+    "Allow",
+    "GET, HEAD, OPTIONS",
+    "Vary",
+    "Cookie",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Set-Cookie",
+    "__cf_bm=kj_YPsRWAJ1wF3F.HqSuzHP92XC_ysUHnaox_aJlFqQ-1641574390-0-AZWvGS9xkurtBerjWkDKuotTR/q5LXtWlpcKhDxxhRmlJgT4Fwl3n4Y1cs5LeXQZNSEly9MWdRnRxr22n8Iit5o=; path=/; expires=Fri, 07-Jan-22 17:23:10 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "6c9eb360ef66274f-FOR",
+  ]);
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .put("/api/v1/person/01FRTQ9XJE4WFWEG52Q5J8RY9Q")
+  .query({
+    "%24email": "othergrouparoo%40demo.com",
+    "%24first_name": "Johnny",
+    "%24last_name": "Doe",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      object: "person",
+      id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q",
+      $address1: "",
+      $address2: "",
+      $city: "",
+      $country: "",
+      $latitude: "",
+      $longitude: "",
+      $region: "",
+      $zip: "",
+      $phone_number: "",
+      $last_name: "Doe",
+      $email: "othergrouparoo@demo.com",
+      $first_name: "Johnny",
+      $organization: "",
+      $title: "",
+      $timezone: "",
+      $id: "",
+      email: "othergrouparoo@demo.com",
+      first_name: "Johnny",
+      last_name: "Doe",
+      created: "2022-01-07 16:52:45",
+      updated: "2022-01-07 16:53:10",
+    },
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:53:10 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "496",
+      "Connection",
+      "close",
+      "Allow",
+      "GET, OPTIONS, PUT",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=hEiFbNNIJD4aVctd0VpqmApii632OwkfHL2ulx6Ytu8-1641574390-0-AViCVBTEl+L0Nl8NBps7NKXjNqX3h+DU6PBx8ycgt6ROMvfI2YI8BuMjPBYSVYLl9ujeTDpgYqzbHJbx11fPGBs=; path=/; expires=Fri, 07-Jan-22 17:23:10 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb36459a02755-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v1/person/01FRTQ9XJE4WFWEG52Q5J8RY9Q")
+  .query({ api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
+  .once()
+  .reply(
+    200,
+    {
+      object: "person",
+      id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q",
+      $address1: "",
+      $address2: "",
+      $city: "",
+      $country: "",
+      $latitude: "",
+      $longitude: "",
+      $region: "",
+      $zip: "",
+      $title: "",
+      $organization: "",
+      $last_name: "Doe",
+      $phone_number: "",
+      $first_name: "Johnny",
+      $email: "othergrouparoo@demo.com",
+      $timezone: "",
+      $id: "",
+      email: "othergrouparoo@demo.com",
+      first_name: "Johnny",
+      last_name: "Doe",
+      created: "2022-01-07 16:52:45",
+      updated: "2022-01-07 16:53:11",
+    },
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:53:21 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "496",
+      "Connection",
+      "close",
+      "Allow",
+      "PUT, OPTIONS, GET",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=GMFVzBcGxINw.lxHhKJ0mA8hEcRRWR5N6VcS_jUmk04-1641574401-0-AQTQZMQjXgfZ3oOTgYDMx2eppzzHS94ND4pWluXG4UEU28lghVfGYeO153gtfdGnC/lPPDtwz2yrEvCgOTgsFAg=; path=/; expires=Fri, 07-Jan-22 17:23:21 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb3a698bf273d-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/people/search", {
+    email: "othergrouparoo@demo.com",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(200, { id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q" }, [
+    "Date",
+    "Fri, 07 Jan 2022 16:53:21 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "35",
+    "Connection",
+    "close",
+    "Allow",
+    "GET, HEAD, OPTIONS",
+    "Vary",
+    "Cookie",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Set-Cookie",
+    "__cf_bm=1YqJVyQeZXqHUjeoMkUS31H1ZPfmSI6.8ARyUoElRDU-1641574401-0-AT/+4h5zmy27Ed2/oWyh+P4cM+Ik8bDKavs3Y7aEJYoQRemNy7tIKxxoSdPmj8E/Lzquft/wm0peYOdyXfddhwM=; path=/; expires=Fri, 07-Jan-22 17:23:21 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "6c9eb3a9b9182755-FOR",
+  ]);
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .put("/api/v1/person/01FRTQ9XJE4WFWEG52Q5J8RY9Q")
+  .query({
+    "%24email": "othergrouparoo%40demo.com",
+    "%24first_name": "Johnny",
+    "%24last_name": "Doe",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      object: "person",
+      id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q",
+      $address1: "",
+      $address2: "",
+      $city: "",
+      $country: "",
+      $latitude: "",
+      $longitude: "",
+      $region: "",
+      $zip: "",
+      $organization: "",
+      $first_name: "Johnny",
+      $title: "",
+      $email: "othergrouparoo@demo.com",
+      $phone_number: "",
+      $last_name: "Doe",
+      $timezone: "",
+      $id: "",
+      email: "othergrouparoo@demo.com",
+      first_name: "Johnny",
+      last_name: "Doe",
+      created: "2022-01-07 16:52:45",
+      updated: "2022-01-07 16:53:11",
+    },
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:53:22 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "496",
+      "Connection",
+      "close",
+      "Allow",
+      "PUT, GET, OPTIONS",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=YO.tIi2gVtNox8PHWh79tvV1WdTozZHFAAD9xGpt25g-1641574402-0-AbhlWc6ENFCSm+X9JvSLBVAbqV/36wlh7z5kZdyXfTJwie6KnnDcSmXtEMwo25t5uMouI/3YJDsUgSVQYSPkaV4=; path=/; expires=Fri, 07-Jan-22 17:23:22 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb3accbe5cf96-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
+  .once()
+  .reply(
+    200,
+    [
+      { list_id: "SP8ZLd", list_name: "Group2" },
+      { list_id: "SfTsRH", list_name: "All Accounts" },
+      { list_id: "TYtwpp", list_name: "Newsletter" },
+      { list_id: "UHQTNd", list_name: "Group1" },
+      { list_id: "UmLDhm", list_name: "TEST Spanish Speaking" },
+      { list_id: "V9Smhf", list_name: "Preview List" },
+      { list_id: "Vy3dbD", list_name: "Group3" },
+      { list_id: "WwJwH6", list_name: "High Value Accounts" },
+      { list_id: "XqeC36", list_name: "TEST High Value" },
+    ],
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:53:22 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "432",
+      "Connection",
+      "close",
+      "Allow",
+      "GET, POST, HEAD, OPTIONS",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=wqoljm.GKhwASMYwsM_13bALQU9Y7Jg6_blEln64x8o-1641574402-0-ARoi7SdfT/YFr+guAHiukMRVC5/SoOhkN7rFoC2N5D+xTfxq9eUduYughCvY1HcbUPTRz/SGaq8vvO9EUOk/dAs=; path=/; expires=Fri, 07-Jan-22 17:23:22 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb3ae58c0274f-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
+  .once()
+  .reply(
+    200,
+    [
+      { list_id: "SP8ZLd", list_name: "Group2" },
+      { list_id: "SfTsRH", list_name: "All Accounts" },
+      { list_id: "TYtwpp", list_name: "Newsletter" },
+      { list_id: "UHQTNd", list_name: "Group1" },
+      { list_id: "UmLDhm", list_name: "TEST Spanish Speaking" },
+      { list_id: "V9Smhf", list_name: "Preview List" },
+      { list_id: "Vy3dbD", list_name: "Group3" },
+      { list_id: "WwJwH6", list_name: "High Value Accounts" },
+      { list_id: "XqeC36", list_name: "TEST High Value" },
+    ],
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:53:22 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "432",
+      "Connection",
+      "close",
+      "Allow",
+      "GET, POST, HEAD, OPTIONS",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=j.PmplG8RS2EE7shmx0ns4vmbDBm3RNVhGkIpPERLi8-1641574402-0-AejHrE238fzezQif2w+J7NWal+2RIb6WXJGDWv0A29oT1erN3XG6PISIz5hmmhlYSG9McyXjalby912Ce83zsXc=; path=/; expires=Fri, 07-Jan-22 17:23:22 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb3b17911cf9a-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
+  .once()
+  .reply(
+    200,
+    [
+      { list_id: "SP8ZLd", list_name: "Group2" },
+      { list_id: "SfTsRH", list_name: "All Accounts" },
+      { list_id: "TYtwpp", list_name: "Newsletter" },
+      { list_id: "UHQTNd", list_name: "Group1" },
+      { list_id: "UmLDhm", list_name: "TEST Spanish Speaking" },
+      { list_id: "V9Smhf", list_name: "Preview List" },
+      { list_id: "Vy3dbD", list_name: "Group3" },
+      { list_id: "WwJwH6", list_name: "High Value Accounts" },
+      { list_id: "XqeC36", list_name: "TEST High Value" },
+    ],
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:53:33 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "432",
+      "Connection",
+      "close",
+      "Allow",
+      "GET, POST, HEAD, OPTIONS",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=IdvNZGRAn8lY66WkINXsw83bfGB.ZC1HUr_psA2EYbI-1641574413-0-AZuk8Reurf7K2SOLNiVYe+2LtrWvCpzntRexebcQHk2paPmrMrTruUJXgqrjQIiDIMrMAAGh6YndMcI2J+duN4c=; path=/; expires=Fri, 07-Jan-22 17:23:33 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb3f16e88cf96-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/people/search", {
+    email: "notgrouparoo@demo.com",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(404, { detail: "There is no profile matching the given parameters" }, [
+    "Date",
+    "Fri, 07 Jan 2022 16:53:33 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "62",
+    "Connection",
+    "close",
+    "Allow",
+    "GET, HEAD, OPTIONS",
+    "Vary",
+    "Cookie",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Set-Cookie",
+    "__cf_bm=hwRJGm3SMQhc6yJliM0_9vknmWpXyRQPQFoIi5eyfN0-1641574413-0-Ae8Ll8aNBSOuBeZqg5fG/PN457iG5AXmFQE1PvB4bVKiZzxZEyBq9JOWDRHO+u97l868Pw86vZkj3fzynPuDkts=; path=/; expires=Fri, 07-Jan-22 17:23:33 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "6c9eb3f2bbbce074-FOR",
+  ]);
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/people/search", {
+    email: "fakegrouparoo@demo.com",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(404, { detail: "There is no profile matching the given parameters" }, [
+    "Date",
+    "Fri, 07 Jan 2022 16:53:34 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "62",
+    "Connection",
+    "close",
+    "Allow",
+    "GET, HEAD, OPTIONS",
+    "Vary",
+    "Cookie",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Set-Cookie",
+    "__cf_bm=ciMV6tBJjlpiBxN4xruczGfvj8h2C9yh_JvKhpM.4yE-1641574414-0-Ad+MNApIvxD8iSbtVTuYUML93TLj/MU6QQ9aMRUpcn929K/wSui7CwC6rJCAadgnxEmho9aF1pTH6Jp3yDUiGls=; path=/; expires=Fri, 07-Jan-22 17:23:34 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "6c9eb3f5ed6e2746-FOR",
   ]);
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
   .post(
     "/api/identify",
-    "data=%7B%22properties%22%3A%7B%22%24first_name%22%3A%22John%22%2C%22%24last_name%22%3A%22Doe%22%2C%22%24email%22%3A%22grouparoo%40demo.com%22%2C%22email%22%3A%22grouparoo%40demo.com%22%7D%2C%22token%22%3A%22jVDsoD%22%7D"
+    "data=%7B%22properties%22%3A%7B%22%24email%22%3A%22notgrouparoo%40demo.com%22%2C%22%24first_name%22%3A%22Bobby%22%2C%22email%22%3A%22notgrouparoo%40demo.com%22%7D%2C%22token%22%3A%22jVDsoD%22%7D"
   )
   .once()
   .reply(200, 1, [
     "Date",
-    "Tue, 21 Dec 2021 14:58:14 GMT",
+    "Fri, 07 Jan 2022 16:53:34 GMT",
     "Content-Type",
     "text/html; charset=utf-8",
     "Content-Length",
@@ -3356,21 +2255,21 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "Set-Cookie",
-    "__cf_bm=Q.DdOodL2F.3rnqE.yhdfgKxEwUv_a75W4diKcGjCc8-1640098694-0-Ac/Cb2KRX4BaGhBYPG5aTWWavRtqNo1uA06AtGAY8w9Vi0e88rhgczZ10Wr23R0jnCKx2FMhT2AVlJLIY0GXVho=; path=/; expires=Tue, 21-Dec-21 15:28:14 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "__cf_bm=uCAMFjEdj_0H2lBIJx4vmvOCBYniiYnviMNvkrmuwt4-1641574414-0-AXvrcf80JmIydPmTjppqk/8owtGB01E5nL1KghSf8RN6YcJ1/lAX6M/oSs2yxzg6DAnfG2injQIqiB/ed6mcnjk=; path=/; expires=Fri, 07-Jan-22 17:23:34 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
     "Server",
     "cloudflare",
     "CF-RAY",
-    "6c11f7a6abf77714-LHR",
+    "6c9eb3f9ae5dcf96-FOR",
   ]);
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
   .get("/api/v2/people/search", {
-    email: "grouparoo@demo.com",
+    email: "notgrouparoo@demo.com",
     api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
   })
   .once()
-  .reply(200, { id: "01FQER0142RF3CJC9P54JX678A" }, [
+  .reply(200, { id: "01FRTQBEC2P7H7VAD8QB7WH31Q" }, [
     "Date",
-    "Tue, 21 Dec 2021 14:58:24 GMT",
+    "Fri, 07 Jan 2022 16:53:45 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -3386,141 +2285,21 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "Set-Cookie",
-    "__cf_bm=XF.DgDPti7Af.HmOj5VCShN.kjT5fIRfLUkqSYSzvHc-1640098704-0-AcQsRt9HMhF7I7pGfgIYV/85QV10RRs/2fezp65F2iRiJKc+SMKc9cZimtX+QgXg7xxeIH1GYjfywfZEA4CmW6o=; path=/; expires=Tue, 21-Dec-21 15:28:24 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "__cf_bm=zXdpX6aUAht8anrI_thygG3B0QsuZyHuwwdQ8HeJAwM-1641574425-0-Ae51sc4q1m5rwrI86X1G0DFpVIQ1JLw04aEWipucGvIR8Ql6lg/PuRXMZpCMTHBK7ARNx+uhqTZfx7FwzHGfbuU=; path=/; expires=Fri, 07-Jan-22 17:23:45 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
     "Server",
     "cloudflare",
     "CF-RAY",
-    "6c11f7e83bab0f56-MXP",
+    "6c9eb43b19942749-FOR",
   ]);
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/people/search", {
-    email: "grouparoo@demo.com",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(200, { id: "01FQER0142RF3CJC9P54JX678A" }, [
-    "Date",
-    "Tue, 21 Dec 2021 14:58:25 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "35",
-    "Connection",
-    "close",
-    "Allow",
-    "GET, HEAD, OPTIONS",
-    "Vary",
-    "Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=v.0bM8sEilY8BBQD727TFlGHnF4wSDGZhY_9ajkYITo-1640098705-0-AcwLaqXW84I8i3gNMLn5y33HKZZI9tw/d7CIzbtIx+2PSffCiiiwqCKFXl0yNzckJeZ9pjJ3mS0k4q0k2NVAv8s=; path=/; expires=Tue, 21-Dec-21 15:28:25 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f7eb38f0100a-MRS",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/people/search", {
-    email: "maybegrouparoo@demo.com",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(200, { id: "01FQEQZJ9PRSQTTBDSWAPDZM7K" }, [
-    "Date",
-    "Tue, 21 Dec 2021 14:58:25 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "35",
-    "Connection",
-    "close",
-    "Allow",
-    "GET, HEAD, OPTIONS",
-    "Vary",
-    "Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=8CU5izRExuoEbXnLGx0s0MLSqZ8QKnn8ApKOpU.GbGs-1640098705-0-AXre3Ljz9G0crfnKFJ0SukfQyuGY/jfdWdyVPbTcn3grjEn5g/fvVtV85JAwyzTlfOEdOyKyHz876VO+4gUPEmY=; path=/; expires=Tue, 21-Dec-21 15:28:25 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f7edba3f100e-MRS",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .post("/api/v2/data-privacy/deletion-request", {
-    person_id: "01FQER0142RF3CJC9P54JX678A",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(202, { results: "Submitted new deletion task for customer." }, [
-    "Date",
-    "Tue, 21 Dec 2021 14:58:26 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "43",
-    "Connection",
-    "close",
-    "Allow",
-    "POST, OPTIONS",
-    "Vary",
-    "Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=9GKvEZzDUh7LOf4O6GYt6xTZUxYX2OJ4ihc5QWRkDAM-1640098706-0-AZEpsutlLXwraInGEkA4VY0udN87l28dC54frezIkfCahuVaD/DGukRM5xlEnMSwibJCT2YiNfvT2qwrkHSr1NM=; path=/; expires=Tue, 21-Dec-21 15:28:26 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f7f0ad98f93b-MXP",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v1/person/01FQER0142RF3CJC9P54JX678A")
-  .query({ api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
-  .once()
-  .reply(
-    404,
-    { status: 404, message: "The requested resource does not exist." },
-    [
-      "Date",
-      "Tue, 21 Dec 2021 14:58:26 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "68",
-      "Connection",
-      "close",
-      "Vary",
-      "Cookie",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "Set-Cookie",
-      "__cf_bm=gAGwtbbV0oL_kKHYuNS_8BWHiWANO.QS3aax6fa1mdE-1640098706-0-AcVSYYz3Sm/PEqpid4PqPdzDnuRaUt6AqPeXggtvFTNd0xYix6ZV1XiOfjupkmGsEXWdVjGy5yhiNY6MWvK1cuY=; path=/; expires=Tue, 21-Dec-21 15:28:26 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-      "Server",
-      "cloudflare",
-      "CF-RAY",
-      "6c11f7f38a1573b7-MRS",
-    ]
-  );
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v1/person/01FQEQZJ9PRSQTTBDSWAPDZM7K")
+  .get("/api/v1/person/01FRTQBEC2P7H7VAD8QB7WH31Q")
   .query({ api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
   .once()
   .reply(
     200,
     {
       object: "person",
-      id: "01FQEQZJ9PRSQTTBDSWAPDZM7K",
+      id: "01FRTQBEC2P7H7VAD8QB7WH31Q",
       $address1: "",
       $address2: "",
       $city: "",
@@ -3529,27 +2308,260 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       $longitude: "",
       $region: "",
       $zip: "",
-      $first_name: "Jill",
       $title: "",
-      $phone_number: "",
-      $last_name: "",
       $organization: "",
-      $email: "maybegrouparoo@demo.com",
+      $last_name: "",
+      $phone_number: "",
+      $first_name: "Bobby",
+      $email: "notgrouparoo@demo.com",
       $timezone: "",
       $id: "",
-      email: "maybegrouparoo@demo.com",
-      first_name: "Jill",
+      email: "notgrouparoo@demo.com",
+      first_name: "Bobby",
       last_name: "",
-      created: "2021-12-21 14:57:59",
-      updated: "2021-12-21 14:57:59",
+      created: "2022-01-07 16:53:35",
+      updated: "2022-01-07 16:53:35",
     },
     [
       "Date",
-      "Tue, 21 Dec 2021 14:58:27 GMT",
+      "Fri, 07 Jan 2022 16:53:45 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "486",
+      "484",
+      "Connection",
+      "close",
+      "Allow",
+      "PUT, OPTIONS, GET",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=fY94IKO6VGKb8K_NTrzBZDMLE6WSSBlMSuQx03asRuo-1641574425-0-AbNhGjEkMRdnmd0akm4kqVvMkT78plZDSsHt32ZxtDmvzzgkPWiA4TccRHvdsd7hmScW9liDyuMpxIb1V1FCmn4=; path=/; expires=Fri, 07-Jan-22 17:23:45 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb43cec26cf8a-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/people/search", {
+    email: "othergrouparoo@demo.com",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(200, { id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q" }, [
+    "Date",
+    "Fri, 07 Jan 2022 16:53:46 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "35",
+    "Connection",
+    "close",
+    "Allow",
+    "GET, HEAD, OPTIONS",
+    "Vary",
+    "Cookie",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Set-Cookie",
+    "__cf_bm=gUrxjnEp4kJ_LHwWq7N3D1x_xIX6kVPtC8JN7i1gihM-1641574426-0-AdOHFlzZ/ioaYmZCtp1/c+MUUztTnBbUTynyuIwt2vcZJC8stIdwqIJW2AVsrJX6R7F9a2mLff9SRFNLJVXDAt0=; path=/; expires=Fri, 07-Jan-22 17:23:46 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "6c9eb4400a7b275b-FOR",
+  ]);
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/people/search", {
+    email: "notgrouparoo@demo.com",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(200, { id: "01FRTQBEC2P7H7VAD8QB7WH31Q" }, [
+    "Date",
+    "Fri, 07 Jan 2022 16:53:46 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "35",
+    "Connection",
+    "close",
+    "Allow",
+    "GET, HEAD, OPTIONS",
+    "Vary",
+    "Cookie",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Set-Cookie",
+    "__cf_bm=q7_CaXdgGbsLs55GWPRXh1WQXeT7Atp6JBmwLZu_Jy4-1641574426-0-AbYZss7AxQ5l5yL7cY6obQs0Nv8c4m1UaZ/MzMKi63SjDTk9Z0UjFl+WzILhBXZJTzOuhEz7RZ4Cxn7exDd0PBA=; path=/; expires=Fri, 07-Jan-22 17:23:46 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "6c9eb4433e48cf9a-FOR",
+  ]);
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .put("/api/v1/person/01FRTQ9XJE4WFWEG52Q5J8RY9Q")
+  .query({
+    "%24email": "othergrouparoo%40demo.com",
+    "%24first_name": "Bobby",
+    "%24last_name": "Jones",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      object: "person",
+      id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q",
+      $address1: "",
+      $address2: "",
+      $city: "",
+      $country: "",
+      $latitude: "",
+      $longitude: "",
+      $region: "",
+      $zip: "",
+      $email: "othergrouparoo@demo.com",
+      $organization: "",
+      $phone_number: "",
+      $last_name: "Jones",
+      $title: "",
+      $first_name: "Bobby",
+      $timezone: "",
+      $id: "",
+      email: "othergrouparoo@demo.com",
+      first_name: "Bobby",
+      last_name: "Jones",
+      created: "2022-01-07 16:52:45",
+      updated: "2022-01-07 16:53:46",
+    },
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:53:46 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "498",
+      "Connection",
+      "close",
+      "Allow",
+      "PUT, OPTIONS, GET",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=lCNhe2jttUaNLlCa5zoyDFwkrPZgJ5r8J4YvHGuPXU4-1641574426-0-AW2RuzckkUdl1ijNs9NLKgkFuUiuC2mDU9s+D70jcw7SZ5BUvID3f2ei0Vzp4sym+qCPP001YiCIq1c8uvN36Jk=; path=/; expires=Fri, 07-Jan-22 17:23:46 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb444a8362749-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v1/person/01FRTQBEC2P7H7VAD8QB7WH31Q")
+  .query({ api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
+  .once()
+  .reply(
+    200,
+    {
+      object: "person",
+      id: "01FRTQBEC2P7H7VAD8QB7WH31Q",
+      $address1: "",
+      $address2: "",
+      $city: "",
+      $country: "",
+      $latitude: "",
+      $longitude: "",
+      $region: "",
+      $zip: "",
+      $phone_number: "",
+      $last_name: "",
+      $email: "notgrouparoo@demo.com",
+      $first_name: "Bobby",
+      $organization: "",
+      $title: "",
+      $timezone: "",
+      $id: "",
+      email: "notgrouparoo@demo.com",
+      first_name: "Bobby",
+      last_name: "",
+      created: "2022-01-07 16:53:35",
+      updated: "2022-01-07 16:53:35",
+    },
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:53:57 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "484",
+      "Connection",
+      "close",
+      "Allow",
+      "GET, OPTIONS, PUT",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=gTKXOjXqy1oKqJflZWsR_fHsdIQVYclpfgE4uSm99g0-1641574437-0-AehkI/QdfGCo2pWQ3TO6Y4qjxHy0OoUrdFoidkjo/OUveYifROGSFt8kaPGIgaLxhk6U4Mg+ei5Xwy/0gsWkdWc=; path=/; expires=Fri, 07-Jan-22 17:23:57 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb484d84e275b-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v1/person/01FRTQ9XJE4WFWEG52Q5J8RY9Q")
+  .query({ api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
+  .once()
+  .reply(
+    200,
+    {
+      object: "person",
+      id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q",
+      $address1: "",
+      $address2: "",
+      $city: "",
+      $country: "",
+      $latitude: "",
+      $longitude: "",
+      $region: "",
+      $zip: "",
+      $email: "othergrouparoo@demo.com",
+      $first_name: "Bobby",
+      $title: "",
+      $phone_number: "",
+      $organization: "",
+      $last_name: "Jones",
+      $timezone: "",
+      $id: "",
+      email: "othergrouparoo@demo.com",
+      first_name: "Bobby",
+      last_name: "Jones",
+      created: "2022-01-07 16:52:45",
+      updated: "2022-01-07 16:53:46",
+    },
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:53:57 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "498",
       "Connection",
       "close",
       "Allow",
@@ -3561,52 +2573,22 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "Set-Cookie",
-      "__cf_bm=iWce5wcmd92V13bW.5beXrS1H8H93gDIhxRxlgy1leM-1640098707-0-ASbDtL+aqT+TLHlbZex/hG1nod7lLfrHMji4eDUFmZUayITxRoZ6h3SSib4k/IDafMwne+mnTkCQ6lqbr2t5uvo=; path=/; expires=Tue, 21-Dec-21 15:28:27 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "__cf_bm=cKqA2SbPSpfpJ5UY5M.nGIPOZrXVdzKnkBkP3drqe28-1641574437-0-Ad1DdkPbO5UB19igR/De7eQl9gUm9pQigP0+4Azst/T/j73KnStBLk61wwCy5PH+M2Tp/nzqK0zjKelDbqf5IYc=; path=/; expires=Fri, 07-Jan-22 17:23:57 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
       "Server",
       "cloudflare",
       "CF-RAY",
-      "6c11f7f6986840e1-CDG",
+      "6c9eb48819d7273d-FOR",
     ]
   );
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
   .get("/api/v2/people/search", {
-    email: "fakegrouparoo@demo.com",
+    email: "othergrouparoo@demo.com",
     api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
   })
   .once()
-  .reply(404, { detail: "There is no profile matching the given parameters" }, [
+  .reply(200, { id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q" }, [
     "Date",
-    "Tue, 21 Dec 2021 14:58:27 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "62",
-    "Connection",
-    "close",
-    "Allow",
-    "GET, HEAD, OPTIONS",
-    "Vary",
-    "Cookie",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "Set-Cookie",
-    "__cf_bm=yDmvs.phTwldsjtt2oCJ124tcVrKp7h2Pz63rWpRrL4-1640098707-0-AYvBVNleYGxYxzpg9TH6g5UV4nHcnE9og2tAYaTi7bFvEwoWkde7mH81SDkDXsnKJ7kVC0tuP9ID8yKBMQQOggo=; path=/; expires=Tue, 21-Dec-21 15:28:27 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
-    "Server",
-    "cloudflare",
-    "CF-RAY",
-    "6c11f7f9795b32bd-CDG",
-  ]);
-nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v2/people/search", {
-    email: "maybegrouparoo@demo.com",
-    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
-  })
-  .once()
-  .reply(200, { id: "01FQEQZJ9PRSQTTBDSWAPDZM7K" }, [
-    "Date",
-    "Tue, 21 Dec 2021 14:58:27 GMT",
+    "Fri, 07 Jan 2022 16:53:57 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -3622,21 +2604,148 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "Set-Cookie",
-    "__cf_bm=f1st1k60kiWfTGmQZLk5LuE5EQinXHxIgw.FVNCl6cg-1640098707-0-AStoz437htUr8v0hXP3izRiZnD2F6P3dhOar/0YsF3RrbmLbuilBWYTNANQ0+BenubE+swkSo9zJumB6v8CnIOg=; path=/; expires=Tue, 21-Dec-21 15:28:27 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "__cf_bm=0aGpdgmWMP.JXzbbsFA7xjAKUSJUV9JUoFoX9D2EUrA-1641574437-0-ARcgWkjzTR0PhbLavk4tgGErXL/uxRu0vahJfRuAWeM7RoN6zYUyAggPOdsy0zUFr8+awhBqLOde/K110WtYjys=; path=/; expires=Fri, 07-Jan-22 17:23:57 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
     "Server",
     "cloudflare",
     "CF-RAY",
-    "6c11f7fbff217338-MRS",
+    "6c9eb48b2cd2cf9e-FOR",
+  ]);
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
+  .once()
+  .reply(
+    200,
+    [
+      { list_id: "SP8ZLd", list_name: "Group2" },
+      { list_id: "SfTsRH", list_name: "All Accounts" },
+      { list_id: "TYtwpp", list_name: "Newsletter" },
+      { list_id: "UHQTNd", list_name: "Group1" },
+      { list_id: "UmLDhm", list_name: "TEST Spanish Speaking" },
+      { list_id: "V9Smhf", list_name: "Preview List" },
+      { list_id: "Vy3dbD", list_name: "Group3" },
+      { list_id: "WwJwH6", list_name: "High Value Accounts" },
+      { list_id: "XqeC36", list_name: "TEST High Value" },
+    ],
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:53:58 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "432",
+      "Connection",
+      "close",
+      "Allow",
+      "GET, POST, HEAD, OPTIONS",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=ro.7K2jCKvxvugmjQKj_L6odr7EFYKIapi_SvyNi4ag-1641574438-0-ARb3tH6RuING1OpsBvHyoubB5Rqn3iCwb4Wrd/TnsRi8Wim3qhKxPdBvAYTwoZFTXNgbiJVFeRyCjqV66MpiGcA=; path=/; expires=Fri, 07-Jan-22 17:23:58 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb48cbc522755-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v1/person/01FRTQ9XJE4WFWEG52Q5J8RY9Q")
+  .query({ api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
+  .once()
+  .reply(
+    200,
+    {
+      object: "person",
+      id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q",
+      $address1: "",
+      $address2: "",
+      $city: "",
+      $country: "",
+      $latitude: "",
+      $longitude: "",
+      $region: "",
+      $zip: "",
+      $email: "othergrouparoo@demo.com",
+      $first_name: "Bobby",
+      $title: "",
+      $organization: "",
+      $phone_number: "",
+      $last_name: "Jones",
+      $timezone: "",
+      $id: "",
+      email: "othergrouparoo@demo.com",
+      first_name: "Bobby",
+      last_name: "Jones",
+      created: "2022-01-07 16:52:45",
+      updated: "2022-01-07 16:53:46",
+    },
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:53:58 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "498",
+      "Connection",
+      "close",
+      "Allow",
+      "OPTIONS, PUT, GET",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=3xcpInrhrg57rGtvoNQdTOKOFzhain5NvpQ1UJaUkSw-1641574438-0-AZdrt6NJhQmxOQJXdqAr4EYFgQ4OgwoBzv45T6q1SY7K42jVavXTNsVq9kuY/qCT/RRBMRE5ZtffIWNSJxloZV8=; path=/; expires=Fri, 07-Jan-22 17:23:58 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb48fca72cf96-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/people/search", {
+    email: "othergrouparoo@demo.com",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(200, { id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q" }, [
+    "Date",
+    "Fri, 07 Jan 2022 16:53:59 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "35",
+    "Connection",
+    "close",
+    "Allow",
+    "GET, HEAD, OPTIONS",
+    "Vary",
+    "Cookie",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Set-Cookie",
+    "__cf_bm=qXkkyd6JE_Pae2sFSQtyD5Xy_f3GZEPV2ePzCoDv5KQ-1641574439-0-ASxHZiLGp7mKdMY1poruDGXSsyltDFuprRpRodnkPaEIZp1W0coFN3Uajz6cZt2/MlTCDFfl9ryuDYa4yo09N9c=; path=/; expires=Fri, 07-Jan-22 17:23:59 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "6c9eb4912c2f2749-FOR",
   ]);
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
   .post("/api/v2/data-privacy/deletion-request", {
-    person_id: "01FQEQZJ9PRSQTTBDSWAPDZM7K",
+    person_id: "01FRTQ9XJE4WFWEG52Q5J8RY9Q",
     api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
   })
   .once()
   .reply(202, { results: "Submitted new deletion task for customer." }, [
     "Date",
-    "Tue, 21 Dec 2021 14:58:28 GMT",
+    "Fri, 07 Jan 2022 16:53:59 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -3652,14 +2761,14 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "Set-Cookie",
-    "__cf_bm=4kJfrHO6GCl8VDuPWoLsGw51SQ5sH74YYdmLc8CRuls-1640098708-0-ASD+EYwfMuQl79f876qIe7VpOgJkdPEdVSKNrdcMIFfGKbrhDGJxPhKz6bxXPSTCgPbDGu/Bls8jmTZAUaQzi4U=; path=/; expires=Tue, 21-Dec-21 15:28:28 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "__cf_bm=yUvkKmNhAwML8cu5fwwY8c0d3hpZIEUXxSpIPfVCRU8-1641574439-0-AUBUwBjPRaoh5UIn1AlvOonFWDUOksue5BKpudfY6EPsR4hdidLbgGhYs6aFDKnqo6GsXGP1ZGQsGc3AcrED4As=; path=/; expires=Fri, 07-Jan-22 17:23:59 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
     "Server",
     "cloudflare",
     "CF-RAY",
-    "6c11f7fe4c235fb9-MRS",
+    "6c9eb4949bfbcf9a-FOR",
   ]);
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .get("/api/v1/person/01FQEQZJ9PRSQTTBDSWAPDZM7K")
+  .get("/api/v1/person/01FRTQ9XJE4WFWEG52Q5J8RY9Q")
   .query({ api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
   .once()
   .reply(
@@ -3667,7 +2776,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     { status: 404, message: "The requested resource does not exist." },
     [
       "Date",
-      "Tue, 21 Dec 2021 14:58:28 GMT",
+      "Fri, 07 Jan 2022 16:54:00 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -3681,11 +2790,721 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "Set-Cookie",
-      "__cf_bm=5V7fACsvaK8axrjhuIROUXZMiknQA2.qZN3UWebrHzQ-1640098708-0-AVPjYK02M1UgPy4HawCoUf590IBAzV27csSThnAoC9yb4TUwJspGF3GhCJeA6KOIdraKQYc/a+33L6/bFARRJ9o=; path=/; expires=Tue, 21-Dec-21 15:28:28 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "__cf_bm=XyH857wppZpjYFq69JGq2quWuI4NZIDiiXvVfainTIw-1641574440-0-AVVjMVQmNB7nyhipGeHnQKCaDE8mTeaJQL6PHcCeSHK3dmTHZ/Zdeg9+2a9aGFd0AW6C7WCORmf09sw9o1XHWwM=; path=/; expires=Fri, 07-Jan-22 17:24:00 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
       "Server",
       "cloudflare",
       "CF-RAY",
-      "6c11f800a85b738f-MRS",
+      "6c9eb4985921275d-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/people/search", {
+    email: "notgrouparoo@demo.com",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(200, { id: "01FRTQBEC2P7H7VAD8QB7WH31Q" }, [
+    "Date",
+    "Fri, 07 Jan 2022 16:54:00 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "35",
+    "Connection",
+    "close",
+    "Allow",
+    "GET, HEAD, OPTIONS",
+    "Vary",
+    "Cookie",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Set-Cookie",
+    "__cf_bm=pGmSAiA5rQ87XtthdOjIwUAgxA7Jij6Afi2QK3y2O8M-1641574440-0-Ad8WJvSSdoP6Y8d6nlJSmkG++/FxVcdbcPwDFNMsL3mBbSS439anaK43Bj2eYWiRs746CTVxNCwVk+CGNb7gnco=; path=/; expires=Fri, 07-Jan-22 17:24:00 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "6c9eb49b5c43e092-FOR",
+  ]);
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .post("/api/v2/data-privacy/deletion-request", {
+    person_id: "01FRTQBEC2P7H7VAD8QB7WH31Q",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(202, { results: "Submitted new deletion task for customer." }, [
+    "Date",
+    "Fri, 07 Jan 2022 16:54:00 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "43",
+    "Connection",
+    "close",
+    "Allow",
+    "POST, OPTIONS",
+    "Vary",
+    "Cookie",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Set-Cookie",
+    "__cf_bm=XkPXZYx_srOw.g1cPEPYSa2DO1QkHzEDsiej1Mp1QCw-1641574440-0-AY4lFTqOYLXkS1hb3l83offBQ/QzhbFRBPGS7Mn+FRFogZQLZwLSpFcDuWNwcI53tZTPzRbbEu1yn6NEEbVMESE=; path=/; expires=Fri, 07-Jan-22 17:24:00 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "6c9eb49cfbc0275d-FOR",
+  ]);
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v1/person/01FRTQBEC2P7H7VAD8QB7WH31Q")
+  .query({ api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
+  .once()
+  .reply(
+    404,
+    { status: 404, message: "The requested resource does not exist." },
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:54:01 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "68",
+      "Connection",
+      "close",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=Wb73a9tE8zWRfboXzLM4H0cu3Kn7RVrZMMGt1pTE4qE-1641574441-0-AcP3jKZ+QrIyu3cTBJLajIuR0O3QvX7n5DcXbPVu+W1cKLbhoybwoQEvlSYpq7IRdK3h4Zbofj2uWZzK7Dq2Css=; path=/; expires=Fri, 07-Jan-22 17:24:01 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb4a04b382745-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/people/search", {
+    email: "maybegrouparoo@demo.com",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(404, { detail: "There is no profile matching the given parameters" }, [
+    "Date",
+    "Fri, 07 Jan 2022 16:54:01 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "62",
+    "Connection",
+    "close",
+    "Allow",
+    "GET, HEAD, OPTIONS",
+    "Vary",
+    "Cookie",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Set-Cookie",
+    "__cf_bm=ACgFdHTyTNJ3_HIa9u2mGQrq1KW5Ajcp9ERp6Z3Pf3w-1641574441-0-AZ5pPvZ6gYn+X+Zz8T070OERQuN7s4fhPxacz/slVmqKSWYzGqOcvhf3uAJpi80qfjpSsdUnk1yanvv5dAlogKY=; path=/; expires=Fri, 07-Jan-22 17:24:01 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "6c9eb4a36b4be084-FOR",
+  ]);
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .post(
+    "/api/identify",
+    "data=%7B%22properties%22%3A%7B%22%24email%22%3A%22maybegrouparoo%40demo.com%22%2C%22%24first_name%22%3A%22Jill%22%2C%22email%22%3A%22maybegrouparoo%40demo.com%22%7D%2C%22token%22%3A%22jVDsoD%22%7D"
+  )
+  .once()
+  .reply(200, 1, [
+    "Date",
+    "Fri, 07 Jan 2022 16:54:01 GMT",
+    "Content-Type",
+    "text/html; charset=utf-8",
+    "Content-Length",
+    "1",
+    "Connection",
+    "close",
+    "Access-Control-Allow-Credentials",
+    "true",
+    "Access-Control-Allow-Headers",
+    "",
+    "Access-Control-Allow-Methods",
+    "POST, GET, OPTIONS",
+    "Access-Control-Allow-Origin",
+    "http://www.klaviyo.com",
+    "Access-Control-Max-Age",
+    "86400",
+    "Allow",
+    "GET, POST, HEAD, OPTIONS",
+    "Vary",
+    "Accept, Cookie",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Set-Cookie",
+    "__cf_bm=N_3Zfb6Bwdy6x8MTtruLWdmmEUonUimxHr6B4bTI8JA-1641574441-0-ARyWoSfqhfL3gTowuIQkxgltsgEArJiKTRlpNNqv2h8e1K0VNXr6PTfghUI1Yy2GWu/CclJCYS7sHFudeVDWfvA=; path=/; expires=Fri, 07-Jan-22 17:24:01 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "6c9eb4a4cf662743-FOR",
+  ]);
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
+  .once()
+  .reply(
+    200,
+    [
+      { list_id: "SP8ZLd", list_name: "Group2" },
+      { list_id: "SfTsRH", list_name: "All Accounts" },
+      { list_id: "TYtwpp", list_name: "Newsletter" },
+      { list_id: "UHQTNd", list_name: "Group1" },
+      { list_id: "UmLDhm", list_name: "TEST Spanish Speaking" },
+      { list_id: "V9Smhf", list_name: "Preview List" },
+      { list_id: "Vy3dbD", list_name: "Group3" },
+      { list_id: "WwJwH6", list_name: "High Value Accounts" },
+      { list_id: "XqeC36", list_name: "TEST High Value" },
+    ],
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:54:02 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "432",
+      "Connection",
+      "close",
+      "Allow",
+      "GET, POST, HEAD, OPTIONS",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=R7MCXgSsURB8rHZzk9__.DtDwWOq19cEb2YB55yn6Xk-1641574442-0-AdLU0ZjT9dg0tD12Y+nKkBad/PvTfk3Z4OOWCYGCGM/6cZmxM/d9wL+umnRkseDP4X8fSdhzGciXHTNjR4qEjgY=; path=/; expires=Fri, 07-Jan-22 17:24:02 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb4a64882e08e-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
+  .once()
+  .reply(
+    200,
+    [
+      { list_id: "SP8ZLd", list_name: "Group2" },
+      { list_id: "SfTsRH", list_name: "All Accounts" },
+      { list_id: "TYtwpp", list_name: "Newsletter" },
+      { list_id: "UHQTNd", list_name: "Group1" },
+      { list_id: "UmLDhm", list_name: "TEST Spanish Speaking" },
+      { list_id: "V9Smhf", list_name: "Preview List" },
+      { list_id: "Vy3dbD", list_name: "Group3" },
+      { list_id: "WwJwH6", list_name: "High Value Accounts" },
+      { list_id: "XqeC36", list_name: "TEST High Value" },
+    ],
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:54:02 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "432",
+      "Connection",
+      "close",
+      "Allow",
+      "GET, POST, HEAD, OPTIONS",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=WW3exEE8_PZSnU2eikVBH0d91gxUiykET8rjIgINArI-1641574442-0-AcH0Ppauen9awumiJ3i/pwjxczHe6sa8QlBXf2t+UEBgfdAVGoKoenlBBORrYd4U7pn2uuIsF5CaI5RnXMonFt8=; path=/; expires=Fri, 07-Jan-22 17:24:02 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb4a79dc1e074-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .post("/api/v2/lists", {
+    list_name: "TEST Recently Added",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(200, { list_id: "Tu3jyK" }, [
+    "Date",
+    "Fri, 07 Jan 2022 16:54:03 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "20",
+    "Connection",
+    "close",
+    "Allow",
+    "GET, POST, HEAD, OPTIONS",
+    "Vary",
+    "Cookie",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Set-Cookie",
+    "__cf_bm=7kIb.7kfspIQNsccUgad0XV6GyKTQSzkFtZfEX5htss-1641574443-0-AYhdhWiV/N4ABcV57NMErqPz8CMMRXA3/F0OK6JlBJ9cs6mGOFZsCzQvsAT3my0IIgko/xMv3IIbcKv9PD4evXI=; path=/; expires=Fri, 07-Jan-22 17:24:03 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "6c9eb4ac2e2ecf8a-FOR",
+  ]);
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .post("/api/v2/list/Tu3jyK/members", {
+    profiles: [{ email: "maybegrouparoo@demo.com" }],
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(
+    200,
+    [{ id: "01FRTQC8TYHY5G3X0BA59NXTZZ", email: "maybegrouparoo@demo.com" }],
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:54:03 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "71",
+      "Connection",
+      "close",
+      "Allow",
+      "GET, POST, DELETE, HEAD, OPTIONS",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=NCA8arAPpNP3m1PhwnVg_mQ6ypo.ra4uFz0YxCB77zo-1641574443-0-AY89oMBNQD1qCfcCg5RC0gO8B8WljB5MGe+cEObuzUe0CporJfMJyTz9/09q7BEfZ4NFBMpZW8pnekaj4EHx5cU=; path=/; expires=Fri, 07-Jan-22 17:24:03 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb4adcc092743-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/lists", { api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
+  .once()
+  .reply(
+    200,
+    [
+      { list_id: "SP8ZLd", list_name: "Group2" },
+      { list_id: "SfTsRH", list_name: "All Accounts" },
+      { list_id: "TYtwpp", list_name: "Newsletter" },
+      { list_id: "Tu3jyK", list_name: "TEST Recently Added" },
+      { list_id: "UHQTNd", list_name: "Group1" },
+      { list_id: "UmLDhm", list_name: "TEST Spanish Speaking" },
+      { list_id: "V9Smhf", list_name: "Preview List" },
+      { list_id: "Vy3dbD", list_name: "Group3" },
+      { list_id: "WwJwH6", list_name: "High Value Accounts" },
+      { list_id: "XqeC36", list_name: "TEST High Value" },
+    ],
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:54:13 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "487",
+      "Connection",
+      "close",
+      "Allow",
+      "GET, POST, HEAD, OPTIONS",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=8m1tudRHszBuTa0bI0jiXbplU9SA7_snFX6DAowgQjQ-1641574453-0-AVO2n3iAWTZEA5YtuR/ZyKRzofd4zJxFlF/I/X0KnzOZHnG2QBoJZLXX69aZI5SAw5aJronIEmR4gxoalY7yt3Q=; path=/; expires=Fri, 07-Jan-22 17:24:13 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb4ef2dca273d-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/people/search", {
+    email: "maybegrouparoo@demo.com",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(200, { id: "01FRTQC8TYHY5G3X0BA59NXTZZ" }, [
+    "Date",
+    "Fri, 07 Jan 2022 16:54:14 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "35",
+    "Connection",
+    "close",
+    "Allow",
+    "GET, HEAD, OPTIONS",
+    "Vary",
+    "Cookie",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Set-Cookie",
+    "__cf_bm=qh20S7JrelGcPOzoOShkHl9VNM70kJnfqkOKyad7idQ-1641574454-0-AeG7OSiT6UIexyTh95+cD93pYNyRU752iipOW4JxDiJvPWQD900j+6R5LHtc5TumYHMefADGxYhk9uUqvmSN7Ck=; path=/; expires=Fri, 07-Jan-22 17:24:14 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "6c9eb4f0ab87274f-FOR",
+  ]);
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v1/person/01FRTQC8TYHY5G3X0BA59NXTZZ")
+  .query({ api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
+  .once()
+  .reply(
+    200,
+    {
+      object: "person",
+      id: "01FRTQC8TYHY5G3X0BA59NXTZZ",
+      $address1: "",
+      $address2: "",
+      $city: "",
+      $country: "",
+      $latitude: "",
+      $longitude: "",
+      $region: "",
+      $zip: "",
+      $organization: "",
+      $email: "maybegrouparoo@demo.com",
+      $title: "",
+      $phone_number: "",
+      $last_name: "",
+      $first_name: "Jill",
+      $timezone: "",
+      $id: "",
+      email: "maybegrouparoo@demo.com",
+      first_name: "Jill",
+      last_name: "",
+      created: "2022-01-07 16:54:02",
+      updated: "2022-01-07 16:54:02",
+    },
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:54:14 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "486",
+      "Connection",
+      "close",
+      "Allow",
+      "PUT, OPTIONS, GET",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=80Plz3wbI3c8A.rhPNcY_7RRdfzLyy9PjNEY3ZYs0aA-1641574454-0-AVfTlxkxnl7ZUL9TTxhX9i96w0zzivg10FQYc+3G7IdfQqfOiNJ50RoXZPId9etc9RxkmVeV8UOvJEpVFHq+9p4=; path=/; expires=Fri, 07-Jan-22 17:24:14 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb4f3cdddcf9a-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/people/search", {
+    email: "grouparoo@demo.com",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(404, { detail: "There is no profile matching the given parameters" }, [
+    "Date",
+    "Fri, 07 Jan 2022 16:54:15 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "62",
+    "Connection",
+    "close",
+    "Allow",
+    "GET, HEAD, OPTIONS",
+    "Vary",
+    "Cookie",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Set-Cookie",
+    "__cf_bm=bKCmMyRxykpPgJmNzT5u951TVfdIE_KTdTO3KU6Gzrc-1641574455-0-AemcG6KxUjJvoulVBnj4FiuK5BZwyIAa2gW2RvrPlkds9JMbptrAFtneYtTb+sxtxGv3wU1DLbbp/fc5GZSFj0Y=; path=/; expires=Fri, 07-Jan-22 17:24:15 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "6c9eb4f6ef34cf8e-FOR",
+  ]);
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .post(
+    "/api/identify",
+    "data=%7B%22properties%22%3A%7B%22%24first_name%22%3A%22John%22%2C%22%24last_name%22%3A%22Doe%22%2C%22%24email%22%3A%22grouparoo%40demo.com%22%2C%22email%22%3A%22grouparoo%40demo.com%22%7D%2C%22token%22%3A%22jVDsoD%22%7D"
+  )
+  .once()
+  .reply(200, 1, [
+    "Date",
+    "Fri, 07 Jan 2022 16:54:15 GMT",
+    "Content-Type",
+    "text/html; charset=utf-8",
+    "Content-Length",
+    "1",
+    "Connection",
+    "close",
+    "Access-Control-Allow-Credentials",
+    "true",
+    "Access-Control-Allow-Headers",
+    "",
+    "Access-Control-Allow-Methods",
+    "POST, GET, OPTIONS",
+    "Access-Control-Allow-Origin",
+    "http://www.klaviyo.com",
+    "Access-Control-Max-Age",
+    "86400",
+    "Allow",
+    "GET, POST, HEAD, OPTIONS",
+    "Vary",
+    "Accept, Cookie",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Set-Cookie",
+    "__cf_bm=DOmJIGMhEBVOa47Gba66asZq64Zqu7tStzjojrjTM5A-1641574455-0-ATz4F2Nw/cjErAX3wTZ03JFDsN8MU+9x+k2tYtfyCGjo0WMmMHWbkZCt4OrHiFbUcjEl8jjMXpk8tb1xmy8m90A=; path=/; expires=Fri, 07-Jan-22 17:24:15 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "6c9eb4f8ac3ae07c-FOR",
+  ]);
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/people/search", {
+    email: "grouparoo@demo.com",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(200, { id: "01FRTQCNYPFXTD0RKEMX5WZRDX" }, [
+    "Date",
+    "Fri, 07 Jan 2022 16:54:25 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "35",
+    "Connection",
+    "close",
+    "Allow",
+    "GET, HEAD, OPTIONS",
+    "Vary",
+    "Cookie",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Set-Cookie",
+    "__cf_bm=4Z4OJCvfIkC3b79smcJdlVIjRw7v_EriZlP5x7yop7E-1641574465-0-AebtGTkAcbC1xQ4121rz/L3yVmJGRh/f9ZJh0Urc3MXfEU8PnoWwFxP+01+PBT7aj+rHwo8u6+kXOE1wVbcg9G0=; path=/; expires=Fri, 07-Jan-22 17:24:25 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "6c9eb5387b5bcf96-FOR",
+  ]);
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/people/search", {
+    email: "grouparoo@demo.com",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(200, { id: "01FRTQCNYPFXTD0RKEMX5WZRDX" }, [
+    "Date",
+    "Fri, 07 Jan 2022 16:54:26 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "35",
+    "Connection",
+    "close",
+    "Allow",
+    "GET, HEAD, OPTIONS",
+    "Vary",
+    "Cookie",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Set-Cookie",
+    "__cf_bm=tlSFSUuXBL04xoMeRajceqLaKj3VXrQl4Yb9Ps9U3HM-1641574466-0-AWYoFoJkgU87LmcgCddBOB51u+t2o3fix8ZKqFbxqIqBiuRKKXbqFiULw1RihVsmiiTlnMKtGNafiJZvk5DEVSY=; path=/; expires=Fri, 07-Jan-22 17:24:26 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "6c9eb53bbfd2cf9e-FOR",
+  ]);
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/people/search", {
+    email: "maybegrouparoo@demo.com",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(200, { id: "01FRTQC8TYHY5G3X0BA59NXTZZ" }, [
+    "Date",
+    "Fri, 07 Jan 2022 16:54:26 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "35",
+    "Connection",
+    "close",
+    "Allow",
+    "GET, HEAD, OPTIONS",
+    "Vary",
+    "Cookie",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Set-Cookie",
+    "__cf_bm=aVWqQ8icIO_iUw_zSH.N46iVsih1Fk0Fx.KoYlluDJs-1641574466-0-AeKi3e9qE2DskRrBuabU+AAjOnq/dOz0KI3TCokMR78bE7szWMDENAQfL80e//ayYW5rW1WyIHdVt5MOWhhQd5w=; path=/; expires=Fri, 07-Jan-22 17:24:26 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "6c9eb53ece6fe084-FOR",
+  ]);
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .post("/api/v2/data-privacy/deletion-request", {
+    person_id: "01FRTQCNYPFXTD0RKEMX5WZRDX",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(202, { results: "Submitted new deletion task for customer." }, [
+    "Date",
+    "Fri, 07 Jan 2022 16:54:26 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "43",
+    "Connection",
+    "close",
+    "Allow",
+    "POST, OPTIONS",
+    "Vary",
+    "Cookie",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Set-Cookie",
+    "__cf_bm=JmGpZkpJmNruN4qusVhIuVfainMIato.wi5q87wLJ5M-1641574466-0-AWjkjk+LXGzDKMRXvTXY3qCYQuTF8DLtied/zpoLqUza2TxwsA7B1ff4EQzhuqrqd6niy6SCITE3mA6sK75rFBI=; path=/; expires=Fri, 07-Jan-22 17:24:26 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "6c9eb5401ec22746-FOR",
+  ]);
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v1/person/01FRTQCNYPFXTD0RKEMX5WZRDX")
+  .query({ api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
+  .once()
+  .reply(
+    404,
+    { status: 404, message: "The requested resource does not exist." },
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:54:27 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "68",
+      "Connection",
+      "close",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=VvLjHiPcCLvdfV_xjo_U8.01D2SERMSQ3GPRL9EpyyE-1641574467-0-AbJFRbxqGCDhUvsNPmgQq6Oy/YUuDrsaArwyagdH2e1M6jWeZNxG5UYE788R2UjeVkQO8N4gHAubU2tEAvW3Omo=; path=/; expires=Fri, 07-Jan-22 17:24:27 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb5423c162745-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v1/person/01FRTQC8TYHY5G3X0BA59NXTZZ")
+  .query({ api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
+  .once()
+  .reply(
+    200,
+    {
+      object: "person",
+      id: "01FRTQC8TYHY5G3X0BA59NXTZZ",
+      $address1: "",
+      $address2: "",
+      $city: "",
+      $country: "",
+      $latitude: "",
+      $longitude: "",
+      $region: "",
+      $zip: "",
+      $title: "",
+      $phone_number: "",
+      $organization: "",
+      $first_name: "Jill",
+      $email: "maybegrouparoo@demo.com",
+      $last_name: "",
+      $timezone: "",
+      $id: "",
+      email: "maybegrouparoo@demo.com",
+      first_name: "Jill",
+      last_name: "",
+      created: "2022-01-07 16:54:02",
+      updated: "2022-01-07 16:54:02",
+    },
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:54:27 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "486",
+      "Connection",
+      "close",
+      "Allow",
+      "OPTIONS, GET, PUT",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=RLknzjsJ6GVKWkYuH6MtxywkrTuCL4alE09EScHu6hw-1641574467-0-AcSLCib08nablVXBw3IevOkICDDXzjj7GogWZc7KKcLSr4ckRpt4sCXh6Ms4JQxnMgiUKBuClCiekqk1tSkNDIE=; path=/; expires=Fri, 07-Jan-22 17:24:27 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb5437be0275b-FOR",
     ]
   );
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
@@ -3696,7 +3515,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
   .once()
   .reply(404, { detail: "There is no profile matching the given parameters" }, [
     "Date",
-    "Tue, 21 Dec 2021 14:58:29 GMT",
+    "Fri, 07 Jan 2022 16:54:27 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -3712,11 +3531,131 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "Set-Cookie",
-    "__cf_bm=6UqgCfvuMqXGyYbyhnGW0KlguZbDiWdgtMJGsGcwlQM-1640098709-0-AboDG6rDkTzFlsSCTYzRts003oKw/AZaLtiTsB7Jvlr+XeWTGOvhB8472pu71Lb2OK6fHCT50bi14zqj9kU0Lxs=; path=/; expires=Tue, 21-Dec-21 15:28:29 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "__cf_bm=nnV4HJI4bsmljhPdfO858anr9PGxybVnkuUa1RufgLU-1641574467-0-ARVZZbJ+zviGY27pNz0F9Gs76a5IYk9ZOT3r7PETlL+VR7xojQ/iQYKSA2yYvWl7pK9bn2kLq/b4J09DMfJJHv8=; path=/; expires=Fri, 07-Jan-22 17:24:27 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
     "Server",
     "cloudflare",
     "CF-RAY",
-    "6c11f8037b4b41d7-MRS",
+    "6c9eb544ccf3273d-FOR",
+  ]);
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/people/search", {
+    email: "maybegrouparoo@demo.com",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(200, { id: "01FRTQC8TYHY5G3X0BA59NXTZZ" }, [
+    "Date",
+    "Fri, 07 Jan 2022 16:54:28 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "35",
+    "Connection",
+    "close",
+    "Allow",
+    "GET, HEAD, OPTIONS",
+    "Vary",
+    "Cookie",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Set-Cookie",
+    "__cf_bm=oawo2JWEoCEVtU6hULFyR9xXdcFhB0CxhEViW6_RDmE-1641574468-0-Ae/uyF5PiV+f1oIp/1Z30/NPa79CG+aTFDXLo58VDuHS4veqoBbJzyOylFzs0Kke9yhzr7qhtiZkwNd44zCRXYg=; path=/; expires=Fri, 07-Jan-22 17:24:28 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "6c9eb547d8922746-FOR",
+  ]);
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .post("/api/v2/data-privacy/deletion-request", {
+    person_id: "01FRTQC8TYHY5G3X0BA59NXTZZ",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(202, { results: "Submitted new deletion task for customer." }, [
+    "Date",
+    "Fri, 07 Jan 2022 16:54:28 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "43",
+    "Connection",
+    "close",
+    "Allow",
+    "POST, OPTIONS",
+    "Vary",
+    "Cookie",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Set-Cookie",
+    "__cf_bm=umu7eYjOL15mgzgcskGRjwreUdkETLh71HcI33lB5MI-1641574468-0-AQVupqDEL96qRhFgj9WHTryZmsu7GeMq+GB671hyNvXtDv39dKogMZ/VT15prkWzHkjWmz2OVNl7ToPoB0pt2tA=; path=/; expires=Fri, 07-Jan-22 17:24:28 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "6c9eb54aed4acf8e-FOR",
+  ]);
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v1/person/01FRTQC8TYHY5G3X0BA59NXTZZ")
+  .query({ api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca" })
+  .once()
+  .reply(
+    404,
+    { status: 404, message: "The requested resource does not exist." },
+    [
+      "Date",
+      "Fri, 07 Jan 2022 16:54:29 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "68",
+      "Connection",
+      "close",
+      "Vary",
+      "Cookie",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "Set-Cookie",
+      "__cf_bm=2yVgPV24ddVu8Yd996zEqxAZXibVP4XHjAyR4GAUH0E-1641574469-0-ATpN1X0ckYma4qzHURdZ81x/EhpkFcbB80JZkP4yfDmsilTAn0OVOWSyemhTd1MjE5CJYab4MTerVRrdMm8NTg0=; path=/; expires=Fri, 07-Jan-22 17:24:29 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "6c9eb54cbf872737-FOR",
+    ]
+  );
+nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
+  .get("/api/v2/people/search", {
+    email: "fakegrouparoo@demo.com",
+    api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
+  })
+  .once()
+  .reply(404, { detail: "There is no profile matching the given parameters" }, [
+    "Date",
+    "Fri, 07 Jan 2022 16:54:29 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "62",
+    "Connection",
+    "close",
+    "Allow",
+    "GET, HEAD, OPTIONS",
+    "Vary",
+    "Cookie",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "Set-Cookie",
+    "__cf_bm=m_TA1nFkEcF0WWhh_J0bDmuEh4cJqK8zVtjLxybncgc-1641574469-0-ARCWWZJ1QwuCe9Sm9z5/LtoDRbJ+AM7TK7GpJjC1fvesUhSyNWLe/ZbAaRGFqXdptsou+7MfFE3dtinoy48BtfY=; path=/; expires=Fri, 07-Jan-22 17:24:29 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "Server",
+    "cloudflare",
+    "CF-RAY",
+    "6c9eb54fced3e092-FOR",
   ]);
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
   .get("/api/v2/people/search", {
@@ -3726,7 +3665,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
   .once()
   .reply(404, { detail: "There is no profile matching the given parameters" }, [
     "Date",
-    "Tue, 21 Dec 2021 14:58:39 GMT",
+    "Fri, 07 Jan 2022 16:54:40 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -3742,11 +3681,11 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "Set-Cookie",
-    "__cf_bm=FDDjjWpzSH1b5Qiodxs9M1eWu.DpjOSY3J2U0zj9Ejs-1640098719-0-AYKYFIQMWlJ0btNrszYn+tWCw6Ole8lrrcxV3F17CHMs1EDhebXo0nLvpxLcoz4ZRHh6iC0SYxILKl9czLHeMUA=; path=/; expires=Tue, 21-Dec-21 15:28:39 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "__cf_bm=xXEmT53ClayyXiMTxLmUF8ammitxx6YlmKhdSh9kdn4-1641574480-0-AQa+ahXf8y3UfDtSWB48CeI6CtpiCqxxARqlVB3oNwkvv8VQ5bZeQislMHIUDPbSyWcZQv/yMOLPXJJLwYHrjnQ=; path=/; expires=Fri, 07-Jan-22 17:24:40 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
     "Server",
     "cloudflare",
     "CF-RAY",
-    "6c11f8449ea673d3-MRS",
+    "6c9eb5920affcf9e-FOR",
   ]);
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
   .post("/api/v2/data-privacy/deletion-request", {
@@ -3762,7 +3701,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Tue, 21 Dec 2021 14:58:40 GMT",
+      "Fri, 07 Jan 2022 16:54:40 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -3778,11 +3717,11 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "Set-Cookie",
-      "__cf_bm=OL_TRkZTL0DYmw09kI6zFqED7SsAYL9ox0m.fqmcnJU-1640098720-0-AXnN9s1R8PgRnwiOE95SlFwz9bACaeekcLA+fJuV+tI9bxrnaDk7LRcCEtnzX2n5e+srmwR4Pv3Zex94xNLXQko=; path=/; expires=Tue, 21-Dec-21 15:28:40 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "__cf_bm=ph6Lg2D3BzdPWUQdITu5ugf.SR5UcGDekmxmId3GDN4-1641574480-0-AWivRTx3DKPk8DZlDcYUYZDFnUDxAhahGUdKF843caUFnWmOBEhOk7+AyNcqByaTrMjvAXLZgLBEAUs26oHXQjs=; path=/; expires=Fri, 07-Jan-22 17:24:40 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
       "Server",
       "cloudflare",
       "CF-RAY",
-      "6c11f847a95dedf3-CDG",
+      "6c9eb5952db9273d-FOR",
     ]
   );
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
@@ -3799,7 +3738,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Tue, 21 Dec 2021 14:58:41 GMT",
+      "Fri, 07 Jan 2022 16:54:40 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -3815,11 +3754,11 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "Set-Cookie",
-      "__cf_bm=8.UlQSJov3ZgSK5cMCQnlg46JLyT89592l4GMhJrSwQ-1640098721-0-ARnWdx2huXbv9xTR/CWuhU57yoooxTg3sEFzInRG4674kwY9OlY5EAdLiE3HNlfIxkb6oh2R9Kik6BoybvZSfAg=; path=/; expires=Tue, 21-Dec-21 15:28:41 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "__cf_bm=yI_zVGsnepp7R4Xl1lRwRen00ay6q7FCE_4mh4CFLaE-1641574480-0-ATm8sQ1IYwr7FClRnvPjJN2qolPiM4B2gDL+oG49qDbth+vz0GIXJhvIv/pS5MG4APqVJG6dmXodaOcurWo2RiI=; path=/; expires=Fri, 07-Jan-22 17:24:40 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
       "Server",
       "cloudflare",
       "CF-RAY",
-      "6c11f84c4a5d5380-PMO",
+      "6c9eb5968b29e074-FOR",
     ]
   );
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
@@ -3836,7 +3775,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Tue, 21 Dec 2021 14:58:41 GMT",
+      "Fri, 07 Jan 2022 16:54:41 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -3852,11 +3791,11 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "Set-Cookie",
-      "__cf_bm=.oSjs19Qx_HQ2NkMUWnCP9AiykupOktA2TjYzyiZKQs-1640098721-0-Afvjevmb6+I/EVMBVKT7wrBcVsMWvPFtFZ5Z2tnzcNSYAC2ABcAOxEuO7Ri+7i1fckB73tszaFPNXHY4sgFtXTU=; path=/; expires=Tue, 21-Dec-21 15:28:41 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "__cf_bm=Y084htQIcipgU5.8_4FkPLA19LPJCZOofplxDsJd.BM-1641574481-0-AXHqRFfX9CwSuowvv2W/SQT4Y9tA/RpI/Tf8ZjeaTLbTQOzxjbJT4uqtbs70fMCHyBFvZ+qWacxPUf+UkUSYTSg=; path=/; expires=Fri, 07-Jan-22 17:24:41 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
       "Server",
       "cloudflare",
       "CF-RAY",
-      "6c11f8519916739f-MRS",
+      "6c9eb599d9f7e074-FOR",
     ]
   );
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
@@ -3873,7 +3812,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Tue, 21 Dec 2021 14:58:42 GMT",
+      "Fri, 07 Jan 2022 16:54:41 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -3889,11 +3828,11 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "Set-Cookie",
-      "__cf_bm=z.nXhHue6fcYwB_squ7PMctHqlfnKqCUVyxYWH0xsyU-1640098722-0-AVcoC6LP6lyXeJsFRlLCIYjqsACTSA6uIhZfhp5NnvGFOqUmU00OH6DjyWVyqIxhPusQTJS85x7ZIioswrSTckQ=; path=/; expires=Tue, 21-Dec-21 15:28:42 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "__cf_bm=pW6IyCY7Jt9NbAR8OVDdbAYbxYFGIVxROsbA4zVWkCo-1641574481-0-AR+bTKgCOGE7sQY6AY7aQ1Ax1td34fjyy1QK1r7yE4RRED3VASaj8FUUrwburooKXkjbyZVv8agfDFGFhIVJJ/Y=; path=/; expires=Fri, 07-Jan-22 17:24:41 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
       "Server",
       "cloudflare",
       "CF-RAY",
-      "6c11f8543e93102b-MRS",
+      "6c9eb59b5e30e08e-FOR",
     ]
   );
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
@@ -3910,7 +3849,7 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Tue, 21 Dec 2021 14:58:42 GMT",
+      "Fri, 07 Jan 2022 16:54:41 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -3926,21 +3865,21 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "Set-Cookie",
-      "__cf_bm=E1.DICqLchcnaItxnsIGowFirS6V9v32lmX3HwIzOyc-1640098722-0-AStRaCaRpiwpcV31Lvkdxe6vWWBdQVeHd/x5xp4ZxfhdhhJUZmJrHtVBpkdhbZS/aObWOxTkMesgxTxQOvMhfAY=; path=/; expires=Tue, 21-Dec-21 15:28:42 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+      "__cf_bm=Q8yGxXi2eJzq_zT5XOu16c.K.7Dz2fDxQk0XOMuZ_4Y-1641574481-0-AaNNojcVXShOjpQkvqV2+6IAckIYmm9VwqiM1jXR5YsykPhyz+8h4BZ/CVked9osdehQRQvEfEgRIi3Z/Vjfqwo=; path=/; expires=Fri, 07-Jan-22 17:24:41 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
       "Server",
       "cloudflare",
       "CF-RAY",
-      "6c11f856af6b0ffe-MRS",
+      "6c9eb59d0d602749-FOR",
     ]
   );
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .delete("/api/v2/list/W9Gvpd", {
+  .delete("/api/v2/list/XqeC36", {
     api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
   })
   .once()
   .reply(200, "", [
     "Date",
-    "Tue, 21 Dec 2021 14:58:42 GMT",
+    "Fri, 07 Jan 2022 16:54:41 GMT",
     "Content-Length",
     "0",
     "Connection",
@@ -3954,20 +3893,20 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "Set-Cookie",
-    "__cf_bm=YcxIN2iImQMXoTAcMzUQ.RpfugM_DHqqpbyx.cHsqzM-1640098722-0-AeeXB0ltwPzSRZR6pIwYpWoiiVw84dAvWZgDipdxDrWLrvmED5nTmv5TGf7BOIFOKlBZF6wEodIgxJ3xFTWzpAk=; path=/; expires=Tue, 21-Dec-21 15:28:42 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "__cf_bm=VPpuHm8rtjoVGLyyeLd8j5xoZnrJAeHTdIUYKdR1v50-1641574481-0-AVdwywGjyGeHC5ebqWygijA2gvhZ6EnaFBdzrcrbp6CdwLKcaASaiCrTJ0f2FAuVgKBfLhNtuGE1NBLyYrlVNJI=; path=/; expires=Fri, 07-Jan-22 17:24:41 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
     "Server",
     "cloudflare",
     "CF-RAY",
-    "6c11f8593f6041fd-MRS",
+    "6c9eb59e8cd4275d-FOR",
   ]);
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .delete("/api/v2/list/T7ewDu", {
+  .delete("/api/v2/list/UmLDhm", {
     api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
   })
   .once()
   .reply(200, "", [
     "Date",
-    "Tue, 21 Dec 2021 14:58:43 GMT",
+    "Fri, 07 Jan 2022 16:54:42 GMT",
     "Content-Length",
     "0",
     "Connection",
@@ -3981,20 +3920,20 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "Set-Cookie",
-    "__cf_bm=PwaIsrpv9qEXPO.VVswMeyYBkTfeutQmMcuyRFmJYqE-1640098723-0-AT7kaYrWaYz+p1aDMWIBBC/0YI2X8RVphp0YNpcDaXlEMc2aejQx7b5nn5Sve8ktmM8tFrs1pLOd+zbOVVuJd18=; path=/; expires=Tue, 21-Dec-21 15:28:43 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "__cf_bm=VOqQsdFZTS8GgXdx5WVq1HRUbzDtm5l2JBhxdBCmcMc-1641574482-0-AXbYtDa8vBf39mJUJWJDvsEDQr2Hb95MPEbzpUgTUHgqgLh+2sNEmpjyxVufebcDaF3kPQqW75QPgyq5H2/jbjY=; path=/; expires=Fri, 07-Jan-22 17:24:42 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
     "Server",
     "cloudflare",
     "CF-RAY",
-    "6c11f85c8dbf0ffe-MRS",
+    "6c9eb5a08f9d2743-FOR",
   ]);
 nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
-  .delete("/api/v2/list/TGPP9W", {
+  .delete("/api/v2/list/Tu3jyK", {
     api_key: "pk_5985ce570a2ec70e217ab56cb9083b7bca",
   })
   .once()
   .reply(200, "", [
     "Date",
-    "Tue, 21 Dec 2021 14:58:44 GMT",
+    "Fri, 07 Jan 2022 16:54:42 GMT",
     "Content-Length",
     "0",
     "Connection",
@@ -4008,9 +3947,9 @@ nock("https://a.klaviyo.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "Set-Cookie",
-    "__cf_bm=3qC6U2FdjjkcPFab1cDBjyv..A9tV_rkNOeqtnRYOwQ-1640098724-0-Ae82BeA4H+iGiznX3596hXpQ/2NaKo4NhcOnuBpCJCCTf6dYV8xKyT0wf1/n4T3GOnteErQo5MfIAihJqEpooVg=; path=/; expires=Tue, 21-Dec-21 15:28:44 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
+    "__cf_bm=V86.fsxLx2y4ghZepi9d5lheJFXLoxG7MqMpKheLHYk-1641574482-0-AfY9RzHllECvVUT89pgiDNr24ba4Nr7QWgRe5soYOqn6fbks9qbSUtBzGLyuTebVLhekYVFTvfephrfJrTFKchE=; path=/; expires=Fri, 07-Jan-22 17:24:42 GMT; domain=.klaviyo.com; HttpOnly; Secure; SameSite=None",
     "Server",
     "cloudflare",
     "CF-RAY",
-    "6c11f86028a08861-LHR",
+    "6c9eb5a43ffe2743-FOR",
   ]);
