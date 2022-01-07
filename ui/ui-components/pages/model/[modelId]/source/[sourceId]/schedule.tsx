@@ -393,24 +393,21 @@ export default function Page(props) {
                     <hr />
                     <strong>Filters</strong>
                     <p>
-                      Are there any criteria where you’d want to filter out rows
-                      from being included in this Schedule?
+                      Only include rows that meet the following criteria when
+                      checking this Schedule:
                     </p>
 
                     <Table bordered size="sm">
                       <thead>
                         <tr>
-                          <td />
-                          <td>
+                          <th />
+                          <th>
                             <strong>Key</strong>
-                          </td>
-                          <td>
+                          </th>
+                          <th>
                             <strong>Operation</strong>
-                          </td>
-                          <td>
-                            <strong>Value</strong>
-                          </td>
-                          <td>&nbsp;</td>
+                          </th>
+                          <th />
                         </tr>
                       </thead>
 
@@ -438,6 +435,7 @@ export default function Page(props) {
                                   </Badge>
                                 </h5>
                               </td>
+                              {/* key */}
                               <td>
                                 <Form.Group
                                   controlId={`${localFilter.key}-key-${idx}`}
@@ -463,7 +461,7 @@ export default function Page(props) {
                                   </Form.Control>
                                 </Form.Group>
                               </td>
-
+                              {/* op */}
                               <td>
                                 <Form.Group
                                   controlId={`${localFilter.key}-op-${idx}`}
@@ -497,50 +495,53 @@ export default function Page(props) {
                                       : null}
                                   </Form.Control>
                                 </Form.Group>
-                              </td>
 
-                              <td>
-                                {localFilter.key === "occurredAt" ? (
-                                  <DatePicker
-                                    selected={
-                                      localFilter.match &&
-                                      localFilter.match !== "null"
-                                        ? new Date(
-                                            parseInt(
-                                              localFilter.match.toString()
+                                {!localFilter.op
+                                  .toLowerCase()
+                                  .includes("exist") &&
+                                  (localFilter.key === "occurredAt" ? (
+                                    <DatePicker
+                                      selected={
+                                        localFilter.match &&
+                                        localFilter.match !== "null"
+                                          ? new Date(
+                                              parseInt(
+                                                localFilter.match.toString()
+                                              )
                                             )
-                                          )
-                                        : new Date()
-                                    }
-                                    onChange={(d: Date) => {
-                                      const _localFilter = [...localFilters];
-                                      localFilter.match = d
-                                        .getTime()
-                                        .toString();
-                                      _localFilter[idx] = localFilter;
-                                      setLocalFilters(_localFilter);
-                                    }}
-                                  />
-                                ) : (
-                                  <Form.Group
-                                    controlId={`${localFilter.key}-match-${idx}`}
-                                  >
-                                    <Form.Control
-                                      required
-                                      type="text"
-                                      disabled={loading}
-                                      value={localFilter.match.toString()}
-                                      onChange={(e: any) => {
+                                          : new Date()
+                                      }
+                                      onChange={(d: Date) => {
                                         const _localFilter = [...localFilters];
-                                        localFilter.match = e.target.value;
+                                        localFilter.match = d
+                                          .getTime()
+                                          .toString();
                                         _localFilter[idx] = localFilter;
                                         setLocalFilters(_localFilter);
                                       }}
                                     />
-                                  </Form.Group>
-                                )}
+                                  ) : (
+                                    <Form.Group
+                                      controlId={`${localFilter.key}-match-${idx}`}
+                                    >
+                                      <Form.Control
+                                        required
+                                        type="text"
+                                        disabled={loading}
+                                        value={localFilter.match.toString()}
+                                        onChange={(e: any) => {
+                                          const _localFilter = [
+                                            ...localFilters,
+                                          ];
+                                          localFilter.match = e.target.value;
+                                          _localFilter[idx] = localFilter;
+                                          setLocalFilters(_localFilter);
+                                        }}
+                                      />
+                                    </Form.Group>
+                                  ))}
                               </td>
-
+                              {/* delete */}
                               <td>
                                 <Button
                                   variant="danger"

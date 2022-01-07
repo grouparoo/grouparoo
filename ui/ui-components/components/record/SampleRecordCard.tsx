@@ -46,17 +46,24 @@ export interface SampleRecordCardProps {
 const isConfigUI = grouparooUiEdition() === "config";
 
 const getCachedSampleRecordId = (modelId: string): string => {
-  return globalThis.localStorage?.getItem(`sampleRecord:${modelId}`);
+  return globalThis.localStorage?.getItem(
+    `sampleRecord:${grouparooUiEdition()}:${modelId}`
+  );
 };
 
 const setCachedSampleRecordId = (modelId: string, recordId: string): void => {
   if (recordId) {
-    globalThis.localStorage?.setItem(`sampleRecord:${modelId}`, recordId);
+    globalThis.localStorage?.setItem(
+      `sampleRecord:${grouparooUiEdition()}:${modelId}`,
+      recordId
+    );
   }
 };
 
 const clearCachedSampleRecordId = (modelId: string): void => {
-  globalThis.localStorage?.removeItem(`sampleRecord:${modelId}`);
+  globalThis.localStorage?.removeItem(
+    `sampleRecord:${grouparooUiEdition()}:${modelId}`
+  );
 };
 
 const SampleRecordCard: React.FC<SampleRecordCardProps> = ({

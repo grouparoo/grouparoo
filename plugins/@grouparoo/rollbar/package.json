@@ -1,7 +1,7 @@
 {
   "author": "Grouparoo Inc <hello@grouparoo.com>",
-  "name": "@grouparoo/sendgrid",
-  "description": "The Grouparoo Sendgrid Plugin",
+  "name": "@grouparoo/rollbar",
+  "description": "Performance and error tracking with Rollbar",
   "version": "0.8.0-alpha.5",
   "license": "MPL-2.0",
   "private": false,
@@ -18,18 +18,17 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/grouparoo/grouparoo.git",
-    "directory": "plugins/@grouparoo/sendgrid"
+    "directory": "plugins/@grouparoo/rollbar"
   },
   "scripts": {
     "prepare": "rm -rf dist && tsc --declaration",
-    "test": "jest",
+    "test": "echo 'TODO'",
     "pretest": "npm run lint && npm run prepare",
-    "lint": "prettier --check src",
+    "lint": "prettier --check src ",
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@grouparoo/app-templates": "0.8.0-alpha.5",
-    "@sendgrid/client": "7.6.0"
+    "rollbar": "2.24.0"
   },
   "devDependencies": {
     "@grouparoo/core": "0.8.0-alpha.5",
@@ -37,14 +36,17 @@
     "@types/jest": "*",
     "@types/node": "16.*.*",
     "actionhero": "28.1.2",
-    "dotenv": "10.0.0",
-    "fs-extra": "10.0.0",
     "jest": "27.4.5",
-    "nock": "13.2.1",
     "prettier": "2.5.1",
-    "sequelize": "6.11.0",
     "ts-jest": "27.1.2",
     "typescript": "4.5.4"
   },
-  "gitHead": "fde75653f20bf5c26b7457ea37682d9ca55f0786"
+  "grouparoo": {
+    "env": {
+      "api": [
+        "ROLLBAR_ACCESS_TOKEN"
+      ]
+    }
+  },
+  "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"
 }
