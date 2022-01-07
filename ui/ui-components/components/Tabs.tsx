@@ -54,24 +54,29 @@ export default function GrouparooTabs({
         <Breadcrumb.Item>{capitalize(verb)}</Breadcrumb.Item>
       </Breadcrumb>
 
-      <Tabs
-        variant="tabs"
-        id="page-tabs"
-        activeKey={verb}
-        onSelect={(k) => {
-          if (k !== verb) {
-            router.push(
-              `${pathnameScope}/${topic}/${pathnameId}/${k}`,
-              `${scope}/${topic}/${id}/${k}`
-            );
-          }
-        }}
-      >
-        {tabs.map((tab) => (
-          <Tab key={`_tab-${tab}`} eventKey={tab} title={capitalize(tab)}></Tab>
-        ))}
-      </Tabs>
-
+      {tabs.includes(verb) && (
+        <Tabs
+          variant="tabs"
+          id="page-tabs"
+          activeKey={verb}
+          onSelect={(k) => {
+            if (k !== verb) {
+              router.push(
+                `${pathnameScope}/${topic}/${pathnameId}/${k}`,
+                `${scope}/${topic}/${id}/${k}`
+              );
+            }
+          }}
+        >
+          {tabs.map((tab) => (
+            <Tab
+              key={`_tab-${tab}`}
+              eventKey={tab}
+              title={capitalize(tab)}
+            ></Tab>
+          ))}
+        </Tabs>
+      )}
       <br />
     </>
   );
