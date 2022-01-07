@@ -250,6 +250,93 @@ describe("salesforce/sales-cloud/export-records/enrich", () => {
     expect(referenced.sort()).toEqual([userId1].sort());
   });
 
+  test("can edit user variables mapping by the Id", async () => {
+    userId1 = await findId(email1);
+    expect(userId1).toBeTruthy();
+
+    const { success, errors } = await exportBatch({
+      appId,
+      appOptions,
+      destinationOptions: {
+        recordObject: "Contact",
+        recordMatchField: "Id",
+      },
+      syncOperations,
+      exports: [
+        {
+          recordId: id1,
+          oldRecordProperties: {
+            Email: email1,
+            Id: userId1,
+            FirstName: "John",
+            LastName: "Jones",
+          },
+          newRecordProperties: {
+            Email: email1,
+            Id: userId1,
+            FirstName: "Dave",
+            LastName: "Jones",
+          },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          record: null,
+        },
+      ],
+    });
+
+    expect(errors).toBeNull();
+    expect(success).toBe(true);
+
+    const user = await getUser(userId1);
+    expect(user.Email).toBe(email1);
+    expect(user.FirstName).toBe("Dave");
+    expect(user.LastName).toBe("Jones");
+  });
+
+  test("try to edit user variables mapping by the Id with and invalid Id", async () => {
+    userId1 = await findId(email1);
+    expect(userId1).toBeTruthy();
+
+    const { success, errors } = await exportBatch({
+      appId,
+      appOptions,
+      destinationOptions: {
+        recordObject: "Contact",
+        recordMatchField: "Id",
+      },
+      syncOperations,
+      exports: [
+        {
+          recordId: id1,
+          oldRecordProperties: {
+            Email: email1,
+            Id: "123",
+            FirstName: "John",
+            LastName: "Jones",
+          },
+          newRecordProperties: {
+            Email: email1,
+            Id: "123",
+            FirstName: "Dave",
+            LastName: "Jones",
+          },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          record: null,
+        },
+      ],
+    });
+
+    expect(errors).not.toBeNull();
+    expect(success).toBe(false);
+    expect(errors.length).toEqual(1);
+    const error = errors[0];
+    expect(error.recordId).toEqual(id1);
+    expect(error.message).toContain("Invalid Salesforce id length");
+  });
+
   test("can clear user variables", async () => {
     const { success, errors } = await exportBatch({
       appId,
@@ -261,7 +348,7 @@ describe("salesforce/sales-cloud/export-records/enrich", () => {
           recordId: id1,
           oldRecordProperties: {
             Email: email1,
-            FirstName: "John",
+            FirstName: "Dave",
             LastName: "Jones",
             "Account.Name": account2,
           },
