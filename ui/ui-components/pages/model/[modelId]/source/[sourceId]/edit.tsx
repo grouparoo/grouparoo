@@ -220,10 +220,6 @@ const Page: NextPage<Props & InjectedProps> = ({
           source: response.source,
           setLoading: () => {},
         });
-        router.push(
-          "/model/[modelId]/source/[sourceId]/schedule",
-          `/model/${response.source.modelId}/source/${sourceId}/schedule`
-        );
       } else if (
         response.source.state === "ready" &&
         source.state === "draft"
@@ -236,7 +232,6 @@ const Page: NextPage<Props & InjectedProps> = ({
         successHandler.set({ message: "Source updated" });
       }
     }
-
     setLoading(false);
   };
 
@@ -526,34 +521,40 @@ const Page: NextPage<Props & InjectedProps> = ({
                 </Row>
               ) : null}
 
-              {source.previewAvailable && (
-                <>
-                  <hr />
-                  <h3>{isPrimarySource ? "Primary Key Mapping" : "Mapping"}</h3>
-                  {isPrimarySource ? (
-                    <p>
-                      Select a column that uniquely identifies each record in
-                      this Source. The Property mapped to this column will be
-                      assigned as the Model's Primary Key.
-                    </p>
-                  ) : (
-                    <p>
-                      Select a column that relates each record in this Source
-                      back to the Model's Primary Source. You can map the column
-                      to any Property in another Source in the Model.
-                    </p>
-                  )}
+              {loading ? (
+                <Loader />
+              ) : (
+                source.previewAvailable && (
+                  <>
+                    <hr />
+                    <h3>
+                      {isPrimarySource ? "Primary Key Mapping" : "Mapping"}
+                    </h3>
+                    {isPrimarySource ? (
+                      <p>
+                        Select a column that uniquely identifies each record in
+                        this Source. The Property mapped to this column will be
+                        assigned as the Model's Primary Key.
+                      </p>
+                    ) : (
+                      <p>
+                        Select a column that relates each record in this Source
+                        back to the Model's Primary Source. You can map the
+                        column to any Property in another Source in the Model.
+                      </p>
+                    )}
 
-                  <FormMappingSelector
-                    columnName={mappingColumn}
-                    propertyKey={mappingPropertyKey}
-                    preview={preview}
-                    properties={properties}
-                    propertyExamples={propertyExamples}
-                    register={register}
-                    source={source}
-                  />
-                </>
+                    <FormMappingSelector
+                      columnName={mappingColumn}
+                      propertyKey={mappingPropertyKey}
+                      preview={preview}
+                      properties={properties}
+                      propertyExamples={propertyExamples}
+                      register={register}
+                      source={source}
+                    />
+                  </>
+                )
               )}
 
               <hr />
