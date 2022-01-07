@@ -55,10 +55,10 @@ export class Plugins extends Initializer {
       ],
       connections: [
         {
-          name: "vero-export-persons",
-          displayName: "Vero Export Persons",
+          name: "vero-export-customers",
+          displayName: "Vero Export Customer",
           direction: "export",
-          description: "Export records to Vero as Person contacts",
+          description: "Export records to Vero as Customer contacts",
           apps: ["vero"],
           syncModes,
           defaultSyncMode,

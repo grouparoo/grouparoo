@@ -6,7 +6,7 @@ import { getKnownFields } from "./destinationMappingOptions";
 
 export const exportRecord = async (args) => {
   try {
-    return await handlePersonChanges(args);
+    return await handleCustomerChanges(args);
   } catch (error) {
     // look for the rate limit exceeded status code.
     if (error?.response?.status === 429) {
@@ -17,7 +17,7 @@ export const exportRecord = async (args) => {
   }
 };
 
-const handlePersonChanges: ExportRecordPluginMethod = async ({
+const handleCustomerChanges: ExportRecordPluginMethod = async ({
   appOptions,
   syncOperations,
   export: {
