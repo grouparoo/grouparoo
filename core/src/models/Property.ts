@@ -364,7 +364,7 @@ export class Property extends LoggedModel<Property> {
   @AfterSave
   static async ensureRecordsMarkedPendingOnTypeChange(instance: Property) {
     // Check to see if type changed
-    if (instance.changed("type")) {
+    if (instance.changed("type") && instance.previous("type") != undefined) {
       //mark all relevant recordproperties as "pending"
       await RecordProperty.update(
         { state: "pending" },
