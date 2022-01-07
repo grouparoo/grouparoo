@@ -37,14 +37,14 @@
     "@grouparoo/spec-helper": "0.8.0-alpha.5",
     "@types/jest": "*",
     "@types/node": "16.*.*",
-    "actionhero": "28.0.3",
+    "actionhero": "28.1.2",
     "dotenv": "10.0.0",
     "fs-extra": "10.0.0",
-    "jest": "27.4.3",
+    "jest": "27.4.5",
     "nock": "13.2.1",
-    "prettier": "2.5.0",
+    "prettier": "2.5.1",
     "sequelize": "6.11.0",
-    "ts-jest": "27.1.1",
+    "ts-jest": "27.1.2",
     "typescript": "4.5.4"
   },
   "gitHead": "fde75653f20bf5c26b7457ea37682d9ca55f0786"
