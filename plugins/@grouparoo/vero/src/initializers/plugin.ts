@@ -58,7 +58,7 @@ export class Plugins extends Initializer {
           name: "vero-export-customers",
           displayName: "Vero Export Customer",
           direction: "export",
-          description: "Export records to Vero as Customer contacts",
+          description: "Export records to Vero as Customers",
           apps: ["vero"],
           syncModes,
           defaultSyncMode,
