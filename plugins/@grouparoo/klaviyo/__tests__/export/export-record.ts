@@ -287,15 +287,15 @@ describe("klaviyo/exportRecord", () => {
     expect(data.email).toBe(email1);
 
     // cleared
-    expect(data.phone).toBe("[deleted]");
-    expect(data.text_field).toBe("[deleted]");
-    expect(data.large_text_field).toBe("[deleted]");
-    expect(data.autocomplete_field).toBe("[deleted]");
-    expect(data.phone_field).toBe("[deleted]");
-    expect(data.numerical_field).toBe("[deleted]");
-    expect(data.monetary_field).toBe("[deleted]");
-    expect(data.date_field).toBe("[deleted]");
-    expect(data.date_range_field).toBe("[deleted]");
+    expect(data.phone).toBeUndefined();
+    expect(data.text_field).toBeUndefined();
+    expect(data.large_text_field).toBeUndefined();
+    expect(data.autocomplete_field).toBeUndefined();
+    expect(data.phone_field).toBeUndefined();
+    expect(data.numerical_field).toBeUndefined();
+    expect(data.monetary_field).toBeUndefined();
+    expect(data.date_field).toBeUndefined();
+    expect(data.date_range_field).toBeUndefined();
   });
 
   test("can add Profile to groups", async () => {
