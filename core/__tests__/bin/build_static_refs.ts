@@ -15,9 +15,8 @@ describe("bin/build_static_refs", () => {
   test("generates CLI data", async () => {
     expect(fs.existsSync(cliFilePath)).toBe(false);
     cp.execSync(`node ${scriptPath}`);
-    const json = JSON.parse(fs.readFileSync(cliFilePath).toString());
-
-    const initCommand: CLI = json.find((c: CLI) => c.name === "init <path>");
+    const json: CLI[] = JSON.parse(fs.readFileSync(cliFilePath).toString());
+    const initCommand = json.find((c) => c.name === "init <path>");
     expect(initCommand.name).toBe("init <path>");
     expect(initCommand.inputs.force).toBeTruthy();
   });

@@ -101,7 +101,16 @@ export namespace ConfigWriter {
     let objects: Array<{ filePath: string; object: any }> = [];
 
     const queryParams = { where: { locked: null as string } };
-    let queries = {
+    const queries: {
+      models?: GrouparooModel[];
+      apps?: App[];
+      sources?: Source[];
+      properties?: Property[];
+      groups?: Group[];
+      destinations?: Destination[];
+      records?: GrouparooRecord[];
+      settings?: Setting[];
+    } = {
       models: await GrouparooModel.findAll(queryParams),
       apps: await App.findAll(queryParams),
       sources: await Source.findAll(queryParams),
@@ -109,7 +118,6 @@ export namespace ConfigWriter {
       groups: await Group.findAll(queryParams),
       destinations: await Destination.findAll(queryParams),
       records: await GrouparooRecord.findAll({ include: [GrouparooModel] }),
-      settings: undefined as Setting[],
     };
 
     const clusterNameSetting: Setting = await Setting.findOne({

@@ -243,7 +243,7 @@ export class Export extends CommonModel<Export> {
     const destination =
       this.destination ?? (await this.$get("destination", { scope: null }));
 
-    const record: GrouparooRecord = this.record || (await this.$get("record"));
+    const record: GrouparooRecord = this.record ?? (await this.$get("record"));
 
     return {
       id: this.id,

@@ -57,7 +57,8 @@ export namespace MustacheUtils {
         .filter((c) => c.class.toLowerCase() === "property")
         .map((c) => {
           //@ts-ignore
-          return { id: c.id, key: c["key"] || c["name"] };
+          const key: string = c["key"] || c["name"];
+          return { id: c.id, key };
         })
     );
 

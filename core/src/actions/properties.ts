@@ -1,5 +1,5 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
-import { Op, Order, Includeable, WhereAttributeHash } from "sequelize";
+import { Op, Includeable, WhereAttributeHash } from "sequelize";
 import { GrouparooRecord } from "../models/GrouparooRecord";
 import { Property } from "../models/Property";
 import { RecordProperty } from "../models/RecordProperty";

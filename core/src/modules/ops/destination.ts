@@ -1060,7 +1060,7 @@ export namespace DestinationOps {
     const conversionBatch = destinationTypeConversions[grouparooType];
     const converter: (p: unknown) => DestinationMappingOptionsResponseType =
       //@ts-ignore
-      conversionBatch ? conversionBatch[destinationType] : null;
+      conversionBatch?.[destinationType] ?? null;
 
     if (converter) {
       return converter(value);

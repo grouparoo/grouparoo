@@ -126,7 +126,7 @@ export const objectCacheInvalidate: ObjectCacheInvalidateMethod = async ({
   const objectKey = makeObjectKey({ objectId });
   const prefix = `${cache.redisPrefix}${objectKey}`;
   const keys = await client.keys(prefix + "*");
-  const jobs: Promise<any>[] = [];
+  const jobs: Promise<number>[] = [];
   keys.forEach((key: string) => {
     jobs.push(client.del(key));
   });

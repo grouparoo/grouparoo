@@ -50,9 +50,8 @@ const jsMap = {
   url: "text",
 } as const;
 
-export function propertyJSToSQLType(jsType: keyof typeof jsMap) {
-  return jsMap[jsType];
-}
+export const propertyJSToSQLType = (jsType: keyof typeof jsMap) =>
+  jsMap[jsType];
 
 export const PropertyTypes = [
   "boolean",

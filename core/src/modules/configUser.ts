@@ -24,9 +24,12 @@ export namespace ConfigUser {
     fs.writeFileSync(localFilePath, JSON.stringify(fileContent, null, 2));
   }
 
-  async function subscribe(email: string, subscribed: boolean = true) {
+  async function subscribe(
+    email: string,
+    subscribed: boolean = true
+  ): Promise<void> {
     if (!subscribed) return null;
-    return GrouparooSubscription({ email, subscribed });
+    await GrouparooSubscription({ email, subscribed });
   }
 
   async function storeCompanyName(company: string) {

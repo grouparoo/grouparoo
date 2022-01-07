@@ -51,11 +51,11 @@ describe("tasks/recordProperty:importRecordProperties", () => {
             ltv: 100.0,
             lastLoginAt: new Date(),
           };
-          type dataType = keyof typeof data;
 
           response[record.id] = {};
           for (const property of properties) {
-            response[record.id][property.id] = data[property.key as dataType];
+            response[record.id][property.id] =
+              data[property.key as keyof typeof data];
           }
         }
 
@@ -261,11 +261,11 @@ describe("tasks/recordProperty:importRecordProperties", () => {
           for (const i in records) {
             const record = records[i];
             const data = { email: `not-an-email` };
-            type dataType = keyof typeof data;
 
             response[record.id] = {};
             for (const property of properties) {
-              response[record.id][property.id] = data[property.key as dataType];
+              response[record.id][property.id] =
+                data[property.key as keyof typeof data];
             }
           }
 
