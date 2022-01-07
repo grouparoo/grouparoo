@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/ui-enterprise",
   "description": "The Grouparoo Enterprise Web UI",
-  "version": "0.8.0-alpha.4",
+  "version": "0.8.0-alpha.5",
   "license": "UNLICENSED",
   "private": false,
   "publishConfig": {
@@ -37,13 +37,13 @@
     "react-hook-form": "6.15.5"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.8.0-alpha.4",
-    "@grouparoo/spec-helper": "0.8.0-alpha.4",
-    "@grouparoo/ui-components": "0.8.0-alpha.4",
+    "@grouparoo/core": "0.8.0-alpha.5",
+    "@grouparoo/spec-helper": "0.8.0-alpha.5",
+    "@grouparoo/ui-components": "0.8.0-alpha.5",
     "@types/jest": "*",
     "@types/react": "*",
     "@types/react-dom": "*",
-    "actionhero": "28.1.1",
+    "actionhero": "28.1.2",
     "enzyme": "3.11.0",
     "eslint": "8.6.0",
     "eslint-config-next": "12.0.7",

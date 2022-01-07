@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/snowflake",
   "description": "The Grouparoo Snowflake Plugin",
-  "version": "0.8.0-alpha.4",
+  "version": "0.8.0-alpha.5",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -28,16 +28,16 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@grouparoo/app-templates": "0.8.0-alpha.4",
+    "@grouparoo/app-templates": "0.8.0-alpha.5",
     "snowflake-promise": "4.5.0",
     "snowflake-sdk": "1.6.6"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.8.0-alpha.4",
-    "@grouparoo/spec-helper": "0.8.0-alpha.4",
+    "@grouparoo/core": "0.8.0-alpha.5",
+    "@grouparoo/spec-helper": "0.8.0-alpha.5",
     "@types/jest": "*",
     "@types/node": "16.*.*",
-    "actionhero": "28.1.1",
+    "actionhero": "28.1.2",
     "dotenv": "10.0.0",
     "fs-extra": "10.0.0",
     "jest": "27.4.5",
