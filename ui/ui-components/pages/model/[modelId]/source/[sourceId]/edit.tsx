@@ -226,6 +226,7 @@ const Page: NextPage<Props & InjectedProps> = ({
           router,
           execApi,
           source: response.source,
+          recurring: true,
           setLoading: () => {},
         });
         router.push(

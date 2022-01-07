@@ -40,10 +40,16 @@ export default function AddScheduleForm(props) {
   );
 }
 
-export async function createSchedule({ execApi, router, source, setLoading }) {
+export async function createSchedule({
+  execApi,
+  router,
+  source,
+  setLoading,
+  recurring = false,
+}) {
   const data = {
     sourceId: source.id,
-    recurring: false,
+    recurring,
   };
 
   setLoading(true);
