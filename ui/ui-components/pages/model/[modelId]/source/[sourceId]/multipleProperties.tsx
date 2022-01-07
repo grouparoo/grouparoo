@@ -20,6 +20,7 @@ import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 
 export default function Page(props) {
   const {
+    model,
     errorHandler,
     successHandler,
     source,
@@ -28,6 +29,7 @@ export default function Page(props) {
     types,
     defaultPropertyOptions,
   }: {
+    model: Models.GrouparooModelType;
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
     source: Models.SourceType;
@@ -36,6 +38,7 @@ export default function Page(props) {
     types: Actions.PropertiesOptions["types"];
     defaultPropertyOptions: Actions.SourceDefaultPropertyOptions["defaultPropertyOptions"];
   } = props;
+
   const { execApi } = UseApi(props, errorHandler);
   const [properties, setProperties] = useState<Models.PropertyType[]>(
     props.properties
@@ -270,7 +273,7 @@ export default function Page(props) {
           <title>Grouparoo: {source.name}</title>
         </Head>
 
-        <SourceTabs source={source} />
+        <SourceTabs source={source} model={model} />
 
         <PageHeader
           icon={source.app.icon}
@@ -300,7 +303,7 @@ export default function Page(props) {
         <title>Grouparoo: {source.name}</title>
       </Head>
 
-      <SourceTabs source={source} />
+      <SourceTabs source={source} model={model} />
 
       <PageHeader
         icon={source.app.icon}
@@ -362,20 +365,38 @@ export default function Page(props) {
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { sourceId, modelId } = ctx.query;
   const { execApi } = UseApi(ctx);
-  const { source } = await execApi("get", `/source/${sourceId}`);
+
+  const { source } = await execApi<Actions.SourceView>(
+    "get",
+    `/source/${sourceId}`
+  );
   ensureMatchingModel("Source", source.modelId, modelId.toString());
-  const { preview, columnSpeculation } = await execApi(
+
+  const { model } = await execApi<Actions.ModelView>(
+    "get",
+    `/model/${modelId}`
+  );
+  const { preview, columnSpeculation } = await execApi<Actions.SourcePreview>(
     "get",
     `/source/${sourceId}/preview`
   );
-  const { defaultPropertyOptions } = await execApi(
+  const { defaultPropertyOptions } =
+    await execApi<Actions.SourceDefaultPropertyOptions>(
+      "get",
+      `/source/${sourceId}/defaultPropertyOptions`
+    );
+  const { properties } = await execApi<Actions.PropertiesList>(
     "get",
-    `/source/${sourceId}/defaultPropertyOptions`
+    `/properties`,
+    { modelId }
   );
-  const { properties } = await execApi("get", `/properties`, { modelId });
-  const { types } = await execApi("get", `/propertyOptions`);
+  const { types } = await execApi<Actions.PropertiesOptions>(
+    "get",
+    `/propertyOptions`
+  );
 
   return {
+    model,
     source,
     properties,
     columnSpeculation,

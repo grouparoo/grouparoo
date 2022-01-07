@@ -7,9 +7,10 @@ import LockedBadge from "@grouparoo/ui-components/components/badges/LockedBadge"
 import StateBadge from "@grouparoo/ui-components/components/badges/StateBadge";
 import ModelBadge from "@grouparoo/ui-components/components/badges/ModelBadge";
 import { NextPageContext } from "next";
+import { Actions } from "@grouparoo/ui-components/utils/apiData";
 
 export default function Page(props) {
-  const { group } = props;
+  const { group, model } = props;
 
   return (
     <>
@@ -17,7 +18,7 @@ export default function Page(props) {
         <title>Grouparoo: {group.name}</title>
       </Head>
 
-      <GroupTabs group={group} />
+      <GroupTabs group={group} model={model} />
 
       <RunsList
         header={
@@ -42,9 +43,13 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { groupId } = ctx.query;
+  const { groupId, modelId } = ctx.query;
   const { execApi } = UseApi(ctx);
   const { group } = await execApi("get", `/group/${groupId}`);
+  const { model } = await execApi<Actions.ModelView>(
+    "get",
+    `/model/${modelId}`
+  );
   const runsListInitialProps = await RunsList.hydrate(ctx, { topic: "group" });
-  return { group, ...runsListInitialProps };
+  return { group, model, ...runsListInitialProps };
 };

@@ -15,10 +15,12 @@ import ModelBadge from "../../../../../components/badges/ModelBadge";
 
 export default function Page(props) {
   const {
+    model,
     errorHandler,
     successHandler,
     group,
   }: {
+    model: Models.GrouparooModelType;
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
     group: Models.GroupType;
@@ -45,7 +47,7 @@ export default function Page(props) {
         <title>Grouparoo: {group.name}</title>
       </Head>
 
-      <GroupTabs group={group} />
+      <GroupTabs group={group} model={model} />
 
       <RecordsList
         {...props}
@@ -84,10 +86,14 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { groupId } = ctx.query;
+  const { groupId, modelId } = ctx.query;
   const { execApi } = UseApi(ctx);
   const { group } = await execApi("get", `/group/${groupId}`);
+  const { model } = await execApi<Actions.ModelView>(
+    "get",
+    `/model/${modelId}`
+  );
   const recordListInitialProps = await RecordsList.hydrate(ctx);
 
-  return { group, ...recordListInitialProps };
+  return { group, model, ...recordListInitialProps };
 };

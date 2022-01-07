@@ -6,15 +6,17 @@ import PageHeader from "@grouparoo/ui-components/components/PageHeader";
 import StateBadge from "@grouparoo/ui-components/components/badges/StateBadge";
 import LockedBadge from "@grouparoo/ui-components/components/badges/LockedBadge";
 import PropertyTabs from "@grouparoo/ui-components/components/tabs/Property";
-import { Models } from "@grouparoo/ui-components/utils/apiData";
+import { Actions, Models } from "@grouparoo/ui-components/utils/apiData";
 import ModelBadge from "@grouparoo/ui-components/components/badges/ModelBadge";
 import { NextPageContext } from "next";
 
 export default function Page({
+  model,
   property,
   groups,
   source,
 }: {
+  model: Models.GrouparooModelType;
   property: Models.PropertyType;
   groups: Models.GroupType[];
   source: Models.SourceType;
@@ -25,7 +27,7 @@ export default function Page({
         <title>Grouparoo: {property.key}</title>
       </Head>
 
-      <PropertyTabs property={property} source={source} />
+      <PropertyTabs property={property} source={source} model={model} />
 
       <PageHeader
         icon={source.app.icon}
@@ -84,11 +86,15 @@ export default function Page({
 }
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { propertyId } = ctx.query;
+  const { propertyId, modelId } = ctx.query;
   const { execApi } = UseApi(ctx);
+  const { model } = await execApi<Actions.ModelView>(
+    "get",
+    `/model/${modelId}`
+  );
   const { property } = await execApi("get", `/property/${propertyId}`);
   const { source } = await execApi("get", `/source/${property.sourceId}`);
   const { groups } = await execApi("get", `/property/${propertyId}/groups`);
 
-  return { property, source, groups };
+  return { model, property, source, groups };
 };

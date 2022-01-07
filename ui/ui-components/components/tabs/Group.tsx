@@ -2,7 +2,13 @@ import Tabs from "../Tabs";
 import { Models } from "../../utils/apiData";
 import { grouparooUiEdition } from "../../utils/uiEdition";
 
-export default function GroupTabs({ group }: { group: Models.GroupType }) {
+export default function GroupTabs({
+  group,
+  model,
+}: {
+  group: Models.GroupType;
+  model: Models.GrouparooModelType;
+}) {
   let tabs = [];
   let defaultTab = "rules";
 
@@ -19,5 +25,12 @@ export default function GroupTabs({ group }: { group: Models.GroupType }) {
       break;
   }
 
-  return <Tabs name={group.name} tabs={tabs} defaultTab={defaultTab} />;
+  return (
+    <Tabs
+      name={group.name}
+      tabs={tabs}
+      defaultTab={defaultTab}
+      scopeName={model.name}
+    />
+  );
 }

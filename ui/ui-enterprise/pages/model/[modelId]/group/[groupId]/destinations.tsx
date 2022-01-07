@@ -18,9 +18,11 @@ import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
+    model,
     errorHandler,
     group,
   }: {
+    model: Models.GrouparooModelType;
     errorHandler: ErrorHandler;
     group: Models.GroupType;
   } = props;
@@ -62,7 +64,7 @@ export default function Page(props) {
         <title>Grouparoo: {group.name}</title>
       </Head>
 
-      <GroupTabs group={group} />
+      <GroupTabs group={group} model={model} />
 
       <PageHeader
         title={`${group.name} - Destinations`}
@@ -123,9 +125,13 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { groupId, limit, offset } = ctx.query;
+  const { groupId, limit, offset, modelId } = ctx.query;
   const { execApi } = UseApi(ctx);
   const { group } = await execApi("get", `/group/${groupId}`);
+  const { model } = await execApi<Actions.ModelView>(
+    "get",
+    `/model/${modelId}`
+  );
   const { destinations, total } = await execApi(
     "get",
     `/group/${group.id}/destinations`,
@@ -134,5 +140,5 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
       offset,
     }
   );
-  return { group, destinations, total };
+  return { model, group, destinations, total };
 };

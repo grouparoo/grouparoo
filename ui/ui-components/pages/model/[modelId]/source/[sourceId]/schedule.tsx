@@ -27,6 +27,7 @@ export default function Page(props) {
     errorHandler,
     successHandler,
     source,
+    model,
     run,
     pluginOptions,
     filterOptions,
@@ -37,6 +38,7 @@ export default function Page(props) {
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
     source: Models.SourceType;
+    model: Models.GrouparooModelType;
     run: Models.RunType;
     pluginOptions: Actions.ScheduleView["pluginOptions"];
     filterOptions: Actions.ScheduleFilterOptions["options"];
@@ -149,12 +151,13 @@ export default function Page(props) {
   }
 
   let rowChanges = false;
+
   return (
     <>
       <Head>
         <title>Grouparoo: {source.name}</title>
       </Head>
-      <SourceTabs source={source} />
+      <SourceTabs source={source} model={model} />
       <PageHeader
         icon={source.app.icon}
         title={`${source.name} - Schedule`}
@@ -620,6 +623,12 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   let filterOptions = {};
   let filterOptionDescriptions = {};
   ensureMatchingModel("Source", source.modelId, modelId.toString());
+
+  const { model } = await execApi<Actions.ModelView>(
+    "get",
+    `/model/${modelId}`
+  );
+
   const { schedule, pluginOptions } = await execApi(
     "get",
     `/schedule/${source.schedule.id}`
@@ -649,6 +658,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
 
   return {
     source,
+    model,
     schedule,
     pluginOptions,
     filterOptions,

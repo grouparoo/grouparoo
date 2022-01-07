@@ -3,9 +3,11 @@ import { Models } from "../../utils/apiData";
 import { grouparooUiEdition } from "../../utils/uiEdition";
 
 export default function PropertyTabs({
+  model,
   property,
   source,
 }: {
+  model: Models.GrouparooModelType;
   property: Models.PropertyType;
   source: Models.SourceType;
 }) {
@@ -17,7 +19,12 @@ export default function PropertyTabs({
 
   return (
     <>
-      <Tabs name={property.key} draftType={source.name} tabs={tabs} />
+      <Tabs
+        name={property.key}
+        draftType={source.name}
+        tabs={tabs}
+        scopeName={model.name}
+      />
     </>
   );
 }

@@ -33,6 +33,7 @@ interface FormData {
 }
 
 interface Props {
+  model: Models.GrouparooModelType;
   environmentVariableOptions: Actions.AppOptions["environmentVariableOptions"];
   properties: Models.PropertyType[];
   propertyExamples: Record<string, string[]>;
@@ -48,6 +49,7 @@ interface InjectedProps extends NextPageContext {
 }
 
 const Page: NextPage<Props & InjectedProps> = ({
+  model,
   environmentVariableOptions,
   errorHandler,
   successHandler,
@@ -312,7 +314,7 @@ const Page: NextPage<Props & InjectedProps> = ({
         <title>Grouparoo: {source.name}</title>
       </Head>
 
-      <SourceTabs source={source} />
+      <SourceTabs source={source} model={model} />
 
       <PageHeader
         icon={source.app.icon}
@@ -632,6 +634,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   const { source } = await execApi("get", `/source/${sourceId}`);
   ensureMatchingModel("Source", source.modelId, modelId.toString());
 
+  const { model } = await execApi<Actions.ModelView>(
+    "get",
+    `/model/${modelId}`
+  );
+
   const { total: totalSources } = await execApi("get", `/sources`, {
     modelId,
     limit: 1,
@@ -660,6 +667,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   return {
     props: {
       environmentVariableOptions,
+      model,
       properties,
       propertyExamples,
       source,

@@ -8,9 +8,10 @@ import LockedBadge from "../../../../../components/badges/LockedBadge";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { NextPageContext } from "next";
+import { Actions } from "../../../../../utils/apiData";
 
 export default function Page(props) {
-  const { destination } = props;
+  const { destination, model } = props;
 
   return (
     <>
@@ -18,7 +19,7 @@ export default function Page(props) {
         <title>Grouparoo: {destination.name}</title>
       </Head>
 
-      <DestinationTabs destination={destination} />
+      <DestinationTabs destination={destination} model={model} />
 
       <ExportsList
         header={
@@ -46,6 +47,12 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   const { destinationId, modelId } = ctx.query;
   const { destination } = await execApi("get", `/destination/${destinationId}`);
   ensureMatchingModel("Destination", destination.modelId, modelId.toString());
+
+  const { model } = await execApi<Actions.ModelView>(
+    "get",
+    `/model/${modelId}`
+  );
   const exportListInitialProps = await ExportsList.hydrate(ctx);
-  return { destination, ...exportListInitialProps };
+
+  return { destination, model, ...exportListInitialProps };
 };

@@ -5,15 +5,17 @@ import RecordsList from "@grouparoo/ui-components/components/record/List";
 import PageHeader from "@grouparoo/ui-components/components/PageHeader";
 import StateBadge from "@grouparoo/ui-components/components/badges/StateBadge";
 import LockedBadge from "@grouparoo/ui-components/components/badges/LockedBadge";
-import { Models } from "@grouparoo/ui-components/utils/apiData";
+import { Actions, Models } from "@grouparoo/ui-components/utils/apiData";
 import ModelBadge from "@grouparoo/ui-components/components/badges/ModelBadge";
 import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
+    model,
     property,
     source,
   }: {
+    model: Models.GrouparooModelType;
     property: Models.PropertyType;
     source: Models.SourceType;
   } = props;
@@ -24,7 +26,7 @@ export default function Page(props) {
         <title>Grouparoo: {property.key} Records</title>
       </Head>
 
-      <PropertyTabs property={property} source={source} />
+      <PropertyTabs property={property} source={source} model={model} />
 
       <RecordsList
         {...props}
@@ -51,15 +53,19 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { propertyId } = ctx.query;
+  const { propertyId, modelId } = ctx.query;
   const { execApi } = UseApi(ctx);
   const { property } = await execApi("get", `/property/${propertyId}`);
   const { source } = await execApi("get", `/source/${property.sourceId}`);
+  const { model } = await execApi<Actions.ModelView>(
+    "get",
+    `/model/${modelId}`
+  );
   const recordListInitialProps = await RecordsList.hydrate(
     ctx,
     property.key,
     "%"
   );
 
-  return { property, source, ...recordListInitialProps };
+  return { model, property, source, ...recordListInitialProps };
 };

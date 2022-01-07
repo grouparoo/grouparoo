@@ -4,17 +4,23 @@ import { useRouter } from "next/router";
 import { plural } from "pluralize";
 import { capitalize } from "../utils/languageHelper";
 
-export default function GrouparooTabs({
-  name,
-  draftType,
-  tabs,
-  defaultTab,
-}: {
+interface Props {
   name: string;
   draftType?: string;
   tabs: string[];
   defaultTab?: string;
-}) {
+  scopeName?: string;
+  hideScope?: boolean;
+}
+
+const GrouparooTabs: React.FC<Props> = ({
+  name,
+  draftType,
+  tabs,
+  defaultTab,
+  scopeName,
+  hideScope = false,
+}) => {
   const router = useRouter();
   if (!router.pathname) return null;
 
@@ -30,16 +36,32 @@ export default function GrouparooTabs({
     .join("/");
   const pathnameId = pathnameParts[pathnameParts.length - 2];
 
+  let scopeId: string;
+  let scopeTopic: string;
+
+  if (parts.length - 4 > 0) {
+    scopeId = parts[parts.length - 4];
+    scopeTopic = parts[parts.length - 5];
+  }
+
   if (!defaultTab) defaultTab = tabs[0];
 
   return (
     <>
       <Breadcrumb>
-        <li className="breadcrumb-item">
-          <Link href={`${scope}/${plural(topic)}`}>
-            <a>{capitalize(plural(topic))}</a>
-          </Link>
-        </li>
+        {!hideScope && (
+          <li className="breadcrumb-item">
+            {scopeTopic ? (
+              <Link href={`/${scopeTopic}/${scopeId}/overview`}>
+                <a>{scopeName || scopeId}</a>
+              </Link>
+            ) : (
+              <Link href={`${scope}/${plural(topic)}`}>
+                <a>{capitalize(plural(topic))}</a>
+              </Link>
+            )}
+          </li>
+        )}
         <li className="breadcrumb-item">
           <Link href={`${scope}/${topic}/${id}/${defaultTab}`}>
             <a>
@@ -80,4 +102,6 @@ export default function GrouparooTabs({
       <br />
     </>
   );
-}
+};
+
+export default GrouparooTabs;
