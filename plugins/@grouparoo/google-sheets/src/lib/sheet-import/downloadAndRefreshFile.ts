@@ -7,6 +7,7 @@ import Spreadsheet from "./Spreadsheet";
 import csvWriter from "csv-write-stream";
 
 const CSV_CACHE_MILLISECONDS = 1000 * 60;
+const GOOGLE_SHEETS_ROWS_LIMIT = 600;
 
 export async function downloadAndRefreshFile(
   sourceId: string,
@@ -43,16 +44,14 @@ export async function downloadAndRefreshFile(
       headers: await sheet.getHeaders(),
     });
     writer.pipe(fs.createWriteStream(localPathAux));
-    const limit = 900;
     let offset = 0;
-    let rows = await sheet.read({ limit, offset });
-
+    let rows = await sheet.read({ GOOGLE_SHEETS_ROWS_LIMIT, offset });
     while (rows.length > 0) {
       for (const row of rows) {
         writer.write(row);
       }
-      offset += limit;
-      rows = await sheet.read({ limit, offset });
+      offset += GOOGLE_SHEETS_ROWS_LIMIT;
+      rows = await sheet.read({ GOOGLE_SHEETS_ROWS_LIMIT, offset });
     }
     writer.end();
     fs.copySync(localPathAux, localPath, {
