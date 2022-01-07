@@ -7,6 +7,7 @@ interface KnownVeroField {
   key: string;
   type: DestinationMappingOptionsResponseType;
   required?: boolean;
+  important?: boolean;
 }
 
 export const getKnownFields = (): KnownVeroField[] => {
@@ -19,6 +20,7 @@ export const getKnownFields = (): KnownVeroField[] => {
     {
       key: "email",
       type: "email",
+      important: true,
     },
   ];
 };
