@@ -36,7 +36,7 @@
     "axios": "0.24.0"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.8.0-alpha.2",
+    "@grouparoo/core": "0.8.0-alpha.5",
     "@grouparoo/spec-helper": "0.8.0-alpha.5",
     "@types/jest": "*",
     "@types/node": "16.*.*",

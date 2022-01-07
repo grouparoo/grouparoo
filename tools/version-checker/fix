@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -e
+# set -x
+
+cd "$(dirname "$0")"
+cd ../..
+
+echo "Fixing package versions..."
+echo ""
+
+./node_modules/.bin/syncpack fix-mismatches
+pnpm install
+
+echo ""
+echo "---"
+echo "All versions now match!"
+exit 0

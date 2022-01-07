@@ -26,6 +26,7 @@
     "license-checker": "./tools/license-checker/check",
     "spell-checker": "./tools/spell-checker/check",
     "version-checker": "./tools/version-checker/check",
+    "version-fixer": "./tools/version-checker/fix",
     "lint": "pnpm run --stream -r lint --workspace-concurrency=2 --filter !'@grouparoo/grouparoo'",
     "test": "pnpm run test --stream --workspace-concurrency=1 --filter !'@grouparoo/grouparoo'",
     "nuke": "rm -rf pnpm-lock.yaml && rm -rf node_modules && rm -rf core/node_modules rm -rf ui/*/node_modules && rm -rf cli/node_modules && rm -rf plugins/*/*/node_modules && rm -rf apps/*/node_modules && rm -rf core/dist && rm -rf cli/dist && rm -rf plugins/*/*/dist && rm -rf ui/*/.next",
