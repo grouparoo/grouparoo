@@ -130,6 +130,9 @@ function formatVar(value) {
   if (value === undefined) {
     return null;
   }
+  if (typeof value === "string" && value.trim() === "") {
+    return null;
+  }
   if (value instanceof Date) {
     return value.toISOString();
   }
