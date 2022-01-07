@@ -9,7 +9,7 @@ describe("bin/status", () => {
   });
 
   let messages: string[] = [];
-  let spy: any;
+  let spy: jest.SpyInstance;
 
   beforeEach(() => {
     messages = [];
