@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/logger",
   "description": "@grouparoo/logger is a Destination plugin that writes the Records it receives to a file of your choosing (ie: records.log in JSON format ) and/or stdout",
-  "version": "0.8.0-alpha.4",
+  "version": "0.8.0-alpha.5",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -28,11 +28,11 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@grouparoo/app-templates": "0.8.0-alpha.4"
+    "@grouparoo/app-templates": "0.8.0-alpha.5"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.8.0-alpha.4",
-    "@grouparoo/spec-helper": "0.8.0-alpha.4",
+    "@grouparoo/core": "0.8.0-alpha.5",
+    "@grouparoo/spec-helper": "0.8.0-alpha.5",
     "@types/jest": "*",
     "@types/node": "16.*.*",
     "actionhero": "28.1.2",

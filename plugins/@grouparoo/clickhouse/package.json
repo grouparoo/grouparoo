@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/clickhouse",
   "description": "The Grouparoo ClickHouse plugin",
-  "version": "0.8.0-alpha.4",
+  "version": "0.8.0-alpha.5",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -28,14 +28,14 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@grouparoo/app-templates": "0.8.0-alpha.4",
-    "@grouparoo/mysql": "0.8.0-alpha.4",
+    "@grouparoo/app-templates": "0.8.0-alpha.5",
+    "@grouparoo/mysql": "0.8.0-alpha.5",
     "clickhouse": "2.4.2",
     "mysql": "2.18.1"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.8.0-alpha.4",
-    "@grouparoo/spec-helper": "0.8.0-alpha.4",
+    "@grouparoo/core": "0.8.0-alpha.5",
+    "@grouparoo/spec-helper": "0.8.0-alpha.5",
     "@types/jest": "*",
     "@types/node": "16.*.*",
     "actionhero": "28.1.2",
