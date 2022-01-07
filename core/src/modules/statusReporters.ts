@@ -584,7 +584,7 @@ export namespace FinalSummaryReporters {
 
   export namespace GrouparooRecords {
     export interface RecordData {
-      name: string;
+      name?: string;
       recordsUpdated: number;
       recordsCreated: number;
       allRecords: number;
@@ -599,11 +599,9 @@ export namespace FinalSummaryReporters {
       const recordsCreated = await GrouparooRecord.count({
         where: { createdAt: { [Op.gte]: lastRunStart } },
       });
-      const name: string = null;
       const allRecords = await GrouparooRecord.count();
 
       const recordData = {
-        name,
         recordsUpdated,
         recordsCreated,
         allRecords,

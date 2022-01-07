@@ -17,6 +17,7 @@ import { GrouparooRecord } from "./GrouparooRecord";
 import { Log } from "./Log";
 import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
+import { uniqueArrayValues } from "../modules/arrayUtils";
 
 @Table({ tableName: "groupMembers", paranoid: false })
 export class GroupMember extends CommonModel<GroupMember> {
@@ -193,8 +194,4 @@ export class GroupMember extends CommonModel<GroupMember> {
 
     await GroupMember.destroy(q);
   }
-}
-
-function uniqueArrayValues(value: any, index: number, self: any[]) {
-  return self.indexOf(value) === index;
 }

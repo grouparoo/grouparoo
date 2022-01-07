@@ -13,6 +13,8 @@ import { MustacheUtils } from "../modules/mustacheUtils";
 import { TopLevelGroupRules } from "../modules/topLevelGroupRules";
 import { Graph, topologicalSort } from "../modules/topologicalSort";
 import { GroupRuleWithKey } from "../models/Group";
+import { LoggedModel } from "./loggedModel";
+import { uniqueArrayValues } from "../modules/arrayUtils";
 
 export interface IdsByClass {
   model?: string[];
@@ -214,7 +216,11 @@ export function validateConfigObjectKeys(
  * Log a Sequelize Model
  */
 export function logModel(
-  instance: any,
+  instance: LoggedModel<unknown> & {
+    key?: string;
+    email?: string;
+    name?: string;
+  },
   mode: "created" | "updated" | "deleted" | "validated",
   name?: string
 ) {
@@ -529,10 +535,6 @@ export function sortConfigObjectsWithIds(
   });
 
   return sortedConfigObjectsWithIds.filter(uniqueArrayValues);
-}
-
-function uniqueArrayValues(value: any, index: number, self: any[]) {
-  return self.indexOf(value) === index;
 }
 
 export function cleanClass(configObject: ConfigurationObject) {
