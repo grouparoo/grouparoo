@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState, useEffect } from "react";
+import { useMemo } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { navIconStyle, navLiStyle, iconConstrainedStyle } from "../Navigation";
@@ -9,12 +9,10 @@ export default function HighlightingNavLink({
   text,
   icon,
   mainPathSectionIdx,
-  idx,
+  small,
 }) {
   const router = useRouter();
-  const [active, setActive] = useState(false);
-
-  useEffect(() => {
+  const active = useMemo(() => {
     const pathParts = router?.asPath.split("/");
     const hrefParts = href.split("/");
     const mainPathSection = (pathParts[mainPathSectionIdx] || "").split("?")[0];
@@ -23,25 +21,20 @@ export default function HighlightingNavLink({
       mainPathSection === mainHrefSection ||
       `${mainPathSection}s` === mainHrefSection;
 
-    // special case: models in sidebar
-    if (active && mainHrefSection === "models" && pathParts.length > 3) {
-      active = false;
-    }
-
-    setActive(active);
-  }, [globalThis?.location?.href]);
+    return active;
+  }, [globalThis?.location?.href, router, href]);
 
   return (
-    <li style={navLiStyle} key={idx}>
+    <li style={navLiStyle}>
       <Link href={href}>
         <a role="tab" aria-selected={active} style={navIconStyle}>
-          {icon ? (
+          {icon && (
             <FontAwesomeIcon
               style={iconConstrainedStyle}
               icon={icon}
               size="xs"
             />
-          ) : null}{" "}
+          )}{" "}
         </a>
       </Link>{" "}
       <Link href={href}>
@@ -51,10 +44,14 @@ export default function HighlightingNavLink({
           style={{
             fontSize: 18,
             paddingLeft: 0,
+            marginLeft: small ? 0 : 4,
             color: "white",
           }}
         >
-          <span style={{ fontWeight: active ? "bold" : undefined }}>
+          <span
+            style={{ fontWeight: active ? "bold" : undefined }}
+            className={small ? "small" : undefined}
+          >
             {text}
           </span>
         </a>

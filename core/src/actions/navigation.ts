@@ -13,11 +13,12 @@ type NavigationMode =
   | "config:unauthenticated";
 
 type NavigationItem = {
-  type: "link" | "divider" | "subNavMenu" | "modelMenu";
+  type: "link" | "divider" | "subNavMenu";
   title?: string;
   icon?: string;
   href?: string;
   mainPathSectionIdx?: number;
+  small?: boolean;
 };
 
 export class NavigationList extends OptionallyAuthenticatedAction {
@@ -55,7 +56,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
       navigationMode === "config:authenticated";
 
     const models = await GrouparooModel.findAll({
-      order: [["createdAt", "asc"]],
+      order: [["name", "asc"]],
     });
     const currentModel = models.find((m) => m.id === params.modelId);
     const currentModelId = currentModel
@@ -72,7 +73,11 @@ export class NavigationList extends OptionallyAuthenticatedAction {
 
     switch (navigationMode) {
       case "authenticated":
-        navResponse = await this.authenticatedNav(teamMember, currentModelId);
+        navResponse = await this.authenticatedNav(
+          teamMember,
+          models,
+          currentModelId
+        );
         break;
       case "unauthenticated":
         navResponse = await this.unauthenticatedNav(teamMember);
@@ -111,7 +116,11 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     };
   }
 
-  async authenticatedNav(teamMember: TeamMember, modelId?: string) {
+  async authenticatedNav(
+    teamMember: TeamMember,
+    models: GrouparooModel[],
+    modelId?: string
+  ) {
     const systemPermissionsCount = await teamMember.team.$count("permissions", {
       where: {
         read: true,
@@ -131,53 +140,42 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     const showSystemLinks = systemPermissionsCount > 0;
 
     const navigationItems: NavigationItem[] = [
-      { type: "modelMenu" },
       {
         type: "link",
         title: "Dashboard",
         href: "/dashboard",
         icon: "home",
       },
+      { type: "link", title: "Apps", href: "/apps", icon: "th-large" },
     ];
 
-    if (modelId) {
-      navigationItems.push(
-        {
+    const hasModels = !!models.length;
+
+    if (hasModels) {
+      navigationItems.push({ type: "divider" });
+
+      models.forEach((model) => {
+        navigationItems.push({
           type: "link",
-          title: "Records",
-          href: `/model/${modelId}/records`,
-          mainPathSectionIdx: 3,
-          icon: "list",
-        },
-        {
-          type: "link",
-          title: "Properties",
-          href: `/model/${modelId}/properties`,
-          mainPathSectionIdx: 3,
-          icon: "address-card",
-        },
-        {
-          type: "link",
-          title: "Groups",
-          href: `/model/${modelId}/groups`,
-          mainPathSectionIdx: 3,
-          icon: "users",
-        },
-        {
-          type: "link",
-          title: "Sources",
-          href: `/model/${modelId}/sources`,
-          mainPathSectionIdx: 3,
-          icon: "file-import",
-        },
-        {
-          type: "link",
-          title: "Destinations",
-          href: `/model/${modelId}/destinations`,
-          mainPathSectionIdx: 3,
-          icon: "file-export",
-        }
-      );
+          title: model.name,
+          icon: model.getIcon(),
+          href: `/model/${model.id}/overview`,
+          mainPathSectionIdx: 2,
+        });
+      });
+    }
+
+    navigationItems.push({
+      type: "link",
+      title: "New Model",
+      icon: "plus",
+      href: `/model/new`,
+      mainPathSectionIdx: 2,
+      small: hasModels,
+    });
+
+    if (hasModels) {
+      navigationItems.push({ type: "divider" });
     }
 
     navigationItems.push({
@@ -187,12 +185,21 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     });
 
     const platformItems: NavigationItem[] = [
-      { type: "link", title: "Apps", href: "/apps" },
       { type: "link", title: "Imports", href: "/imports" },
       { type: "link", title: "Exports", href: "/exports" },
       { type: "link", title: "Runs", href: "/runs" },
       { type: "link", title: "Export Processors", href: "/exportProcessors" },
     ];
+
+    if (modelId) {
+      platformItems.unshift({
+        type: "link",
+        title: "Records",
+        href: `/model/${modelId}/records`,
+        mainPathSectionIdx: 3,
+        icon: "list",
+      });
+    }
 
     if (showSystemLinks) {
       platformItems.push({
@@ -205,12 +212,6 @@ export class NavigationList extends OptionallyAuthenticatedAction {
         type: "link",
         title: "Logs",
         href: "/logs/list",
-      });
-
-      platformItems.push({
-        type: "link",
-        title: "Models",
-        href: "/models",
       });
 
       platformItems.push({
@@ -296,7 +297,6 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     modelId?: string
   ) {
     const navigationItems: NavigationItem[] = [
-      { type: "modelMenu" },
       {
         type: "link",
         title: "Apps",

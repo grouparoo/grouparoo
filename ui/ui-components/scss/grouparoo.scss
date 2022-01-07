@@ -43,6 +43,10 @@ hr {
   border: 1px solid $grouparoo-light-blue;
 }
 
+hr.dark {
+  border-color: $grouparoo-solid;
+}
+
 // -- Navigation --
 
 .slide-in {
