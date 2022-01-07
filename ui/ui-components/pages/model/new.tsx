@@ -44,7 +44,7 @@ export default function Page(props) {
         <title>Grouparoo: New Model</title>
       </Head>
 
-      <h1>Add Model</h1>
+      <h1>New Model</h1>
 
       <Form id="form" onSubmit={handleSubmit(onSubmit)}>
         <Form.Group>
