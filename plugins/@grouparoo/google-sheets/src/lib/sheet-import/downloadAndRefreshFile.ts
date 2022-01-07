@@ -45,13 +45,13 @@ export async function downloadAndRefreshFile(
     });
     writer.pipe(fs.createWriteStream(localPathAux));
     let offset = 0;
-    let rows = await sheet.read({ GOOGLE_SHEETS_ROWS_LIMIT, offset });
+    let rows = await sheet.read({ limit: GOOGLE_SHEETS_ROWS_LIMIT, offset });
     while (rows.length > 0) {
       for (const row of rows) {
         writer.write(row);
       }
       offset += GOOGLE_SHEETS_ROWS_LIMIT;
-      rows = await sheet.read({ GOOGLE_SHEETS_ROWS_LIMIT, offset });
+      rows = await sheet.read({ limit: GOOGLE_SHEETS_ROWS_LIMIT, offset });
     }
     writer.end();
     fs.copySync(localPathAux, localPath, {
