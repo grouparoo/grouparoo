@@ -31,6 +31,8 @@ export default function Page(props) {
     pluginOptions,
     filterOptions,
     filterOptionDescriptions,
+    totalProperties,
+    totalSources,
   }: {
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
@@ -39,6 +41,8 @@ export default function Page(props) {
     pluginOptions: Actions.ScheduleView["pluginOptions"];
     filterOptions: Actions.ScheduleFilterOptions["options"];
     filterOptionDescriptions: Actions.ScheduleFilterOptions["optionDescriptions"];
+    totalProperties: number;
+    totalSources: number;
   } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
@@ -78,6 +82,13 @@ export default function Page(props) {
       } else {
         setLoading(false);
         successHandler.set({ message: "Schedule Updated" });
+      }
+
+      if (totalSources === 1 && totalProperties === 1) {
+        router.push(
+          "/model/[modelId]/source/[sourceId]/multipleProperties",
+          `/model/${source.modelId}/source/${source.id}/multipleProperties`
+        );
       }
     } else {
       setLoading(false);
@@ -625,6 +636,17 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     limit: 1,
   });
 
+  const { total: totalSources } = await execApi<Actions.SourcesList>(
+    "get",
+    "/sources",
+    { modelId, limit: 1 }
+  );
+  const { total: totalProperties } = await execApi<Actions.PropertiesList>(
+    "get",
+    `/properties`,
+    { sourceId, modelId, limit: 1 }
+  );
+
   return {
     source,
     schedule,
@@ -632,5 +654,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     filterOptions,
     filterOptionDescriptions,
     run: runs ? runs[0] : null,
+    totalSources,
+    totalProperties,
   };
 };
