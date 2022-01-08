@@ -19,11 +19,11 @@ export interface IClient {
 
   listRecords(tableIdOrName: string): Promise<Records<FieldSet>>;
 
-  listRecordsByField(
+  getRecordByKey(
     tableIdOrName: string,
     primaryKey: string,
-    foreignKeys: string[]
-  ): Promise<Records<FieldSet>>;
+    foreignKey: string
+  ): Promise<Record<FieldSet>>;
 
   getRecordById(
     tableIdOrName: string,

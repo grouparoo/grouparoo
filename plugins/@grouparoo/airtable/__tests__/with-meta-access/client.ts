@@ -12,8 +12,6 @@ const airtableOptions = new AirtableAppOptions(appOptions);
 
 // uses the defualt data from the tables (see .env.example)
 
-const unknownKeys = ["Unknown", "Other"];
-
 describe("META Client Functions", () => {
   describe("Metadata Calls", () => {
     test("Successful Health", async () => {
@@ -120,13 +118,18 @@ describe("META Client Functions", () => {
       expect(records.length).toBeGreaterThan(0);
     });
 
-    test("Successful List Records by ID", async () => {
-      const records = await client.listRecordsByField(
+    test("Successful Find Record by key", async () => {
+      const record = await client.getRecordByKey(
         tableId,
         primaryKey,
-        knownKeys.concat(unknownKeys)
+        knownKeys[1]
       );
-      expect(records.length).toEqual(knownKeys.length);
+      expect(record.fields[primaryKey]).toEqual(knownKeys[1]);
+    });
+
+    test("Not Find Record by key", async () => {
+      const record = await client.getRecordByKey(tableId, primaryKey, "junkId");
+      expect(record).toBeNull();
     });
   });
 
@@ -191,18 +194,9 @@ describe("META Client Functions", () => {
       ]);
     });
 
-    test("Successful List Records", async () => {
-      const records = await client.listRecords(tableId);
-      expect(records.length).toBe(0);
-    });
-
-    test("Successful List Records by ID", async () => {
-      const records = await client.listRecordsByField(
-        tableId,
-        primaryKey,
-        knownKeys.concat(unknownKeys)
-      );
-      expect(records.length).toEqual(0);
+    test("Not Find Record by key", async () => {
+      const record = await client.getRecordByKey(tableId, primaryKey, "junkId");
+      expect(record).toBeNull();
     });
   });
 });
