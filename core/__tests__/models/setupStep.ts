@@ -3,8 +3,6 @@ import { SetupStep, plugin } from "../../src";
 import { getSetupStepDescriptions } from "../../src/modules/ops/setupSteps";
 
 describe("models/setupStep", () => {
-  process.env.GROUPAROO_RUN_MODE = "cli:start";
-
   helper.grouparooTestServer({
     truncate: true,
     enableTestPlugin: true,

@@ -119,7 +119,9 @@ export const getSetupStepDescriptions = (modelId?: string) => {
   ];
 
   return allSetupStepDescriptions
-    .filter((ssd) => ssd.runModes.includes(process.env.GROUPAROO_RUN_MODE))
+    .filter((ssd) =>
+      ssd.runModes.includes(process.env.GROUPAROO_RUN_MODE ?? "cli:start")
+    )
     .map((ssd, idx) => {
       return { ...ssd, position: idx + 1 };
     });

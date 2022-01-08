@@ -12,7 +12,6 @@ import {
 } from "../../src";
 
 describe("modules/reset", () => {
-  process.env.GROUPAROO_RUN_MODE = "cli:start";
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   async function populateResque() {

@@ -5,7 +5,6 @@ import { SessionCreate } from "../../src/actions/session";
 import { SetupStepEdit, SetupStepsList } from "../../src/actions/setupSteps";
 
 describe("actions/setupSteps", () => {
-  process.env.GROUPAROO_RUN_MODE = "cli:start";
   helper.grouparooTestServer({ truncate: true, resetSettings: true });
 
   beforeAll(async () => {
