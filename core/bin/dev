@@ -12,7 +12,7 @@ else
 fi
 
 export NEXT_DEVELOPMENT_MODE=true
-export GROUPAROO_RUN_MODE="${GROUPAROO_RUN_MODE:='cli:start'}"
+export GROUPAROO_RUN_MODE="${GROUPAROO_RUN_MODE:=cli:start}"
 
 # in develeopment mode, often there is an orphan next.js/webpack process hanging around if the process crashes.
 GROUPAROO_PIDS=`ps | grep src/grouparoo | grep -v grep | awk '{print $1}'`

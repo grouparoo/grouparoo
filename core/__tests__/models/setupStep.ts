@@ -1,16 +1,18 @@
 import { helper } from "@grouparoo/spec-helper";
 import { SetupStep, plugin } from "../../src";
-import { SetupStepOps } from "../../src/modules/ops/setupSteps";
+import { getSetupStepDescriptions } from "../../src/modules/ops/setupSteps";
 
 describe("models/setupStep", () => {
+  process.env.GROUPAROO_RUN_MODE = "cli:start";
+
   helper.grouparooTestServer({
     truncate: true,
     enableTestPlugin: true,
     resetSettings: true,
   });
 
-  afterEach(async () => {
-    process.env.GROUPAROO_RUN_MODE = undefined;
+  beforeEach(async () => {
+    process.env.GROUPAROO_RUN_MODE = "cli:start";
   });
 
   test("setupSteps will be created when the server boots", async () => {
@@ -18,7 +20,7 @@ describe("models/setupStep", () => {
       order: [["position", "asc"]],
     });
 
-    expect(setupSteps.length).toBe(8);
+    expect(setupSteps.length).toBe(5);
     expect(setupSteps[0].position).toBe(1);
     expect(setupSteps[0].key).toBe("name_your_grouparoo_instance");
   });
@@ -26,30 +28,29 @@ describe("models/setupStep", () => {
   test("setupSteps can return the related title and description", async () => {
     const setupStep = await SetupStep.findOne({ where: { position: 1 } });
     expect(setupStep.getTitle()).toEqual(
-      SetupStepOps.setupStepDescriptions().filter(
-        (ssd) => ssd.position === 1
-      )[0].title
+      getSetupStepDescriptions().filter((ssd) => ssd.position === 1)[0].title
     );
     expect(setupStep.getDescription()).toEqual(
-      SetupStepOps.setupStepDescriptions().filter(
-        (ssd) => ssd.position === 1
-      )[0].description
+      getSetupStepDescriptions().filter((ssd) => ssd.position === 1)[0]
+        .description
     );
   });
 
   test("setupSteps ops returns standard versions when not in config mode", async () => {
-    const setupSteps = SetupStepOps.setupStepDescriptions();
+    const setupSteps = getSetupStepDescriptions();
     expect(setupSteps[0].key).toEqual("name_your_grouparoo_instance");
-    expect(setupSteps[6].key).toEqual("create_a_group");
-    expect(setupSteps[7].key).toEqual("create_a_destination");
+    expect(setupSteps[1].key).toEqual("add_a_model");
+    expect(setupSteps[2].key).toEqual("add_an_app");
+    expect(setupSteps[3].key).toEqual("configure_a_model");
   });
 
   test("setupSteps ops returns config versions when in config mode", async () => {
     process.env.GROUPAROO_RUN_MODE = "cli:config";
-    const setupSteps = SetupStepOps.setupStepDescriptions();
+    const setupSteps = getSetupStepDescriptions();
     expect(setupSteps[0].key).toEqual("install_grouparoo");
-    expect(setupSteps[6].key).toEqual("create_a_sample_record");
-    expect(setupSteps[7].key).toEqual("create_a_group");
+    expect(setupSteps[1].key).toEqual("add_a_model");
+    expect(setupSteps[2].key).toEqual("add_an_app");
+    expect(setupSteps[3].key).toEqual("configure_a_model");
   });
 
   test("setup steps have unique keys", async () => {
@@ -65,12 +66,12 @@ describe("models/setupStep", () => {
     const teamStep = await SetupStep.findOne({
       where: { key: "name_your_grouparoo_instance" },
     });
-    const groupStep = await SetupStep.findOne({
-      where: { key: "create_a_group" },
+    const destinationStep = await SetupStep.findOne({
+      where: { key: "create_a_destination" },
     });
 
     expect(await teamStep.performCheck()).toBe(true);
-    expect(await groupStep.performCheck()).toBe(false);
+    expect(await destinationStep.performCheck()).toBe(false);
   });
 
   test("complete checks will remain complete and not check again", async () => {
@@ -88,12 +89,14 @@ describe("models/setupStep", () => {
     const nameStep = await SetupStep.findOne({
       where: { key: "name_your_grouparoo_instance" },
     });
-    const groupStep = await SetupStep.findOne({
-      where: { key: "create_a_group" },
+    const destinationStep = await SetupStep.findOne({
+      where: { key: "create_a_destination" },
     });
 
     expect(await nameStep.getOutcome()).toBe(null);
-    expect(await groupStep.getOutcome()).toBe("0 Group Memberships created");
+    expect(await destinationStep.getOutcome()).toBe(
+      "0 Records exported to a Destination"
+    );
   });
 
   test("setupSteps can getCta", async () => {
@@ -105,10 +108,13 @@ describe("models/setupStep", () => {
   });
 
   test("setupSteps can check if they are disabled", async () => {
-    const step = await SetupStep.findOne({
-      where: { key: "create_a_group" },
+    const nameStep = await SetupStep.findOne({
+      where: { key: "name_your_grouparoo_instance" },
     });
-    const disabled = await step.getDisabled();
-    expect(disabled).toBe(true);
+    const destinationStep = await SetupStep.findOne({
+      where: { key: "create_a_destination" },
+    });
+    expect(await nameStep.getDisabled()).toBe(false);
+    expect(await destinationStep.getDisabled()).toBe(true);
   });
 });
