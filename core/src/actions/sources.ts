@@ -1,7 +1,8 @@
-import { api, ParamsFrom } from "actionhero";
+import { api, ParamsFrom, log } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { App } from "../models/App";
 import { Source } from "../models/Source";
+import { GrouparooRecord } from "../models/GrouparooRecord";
 import {
   GrouparooPlugin,
   PluginConnection,
@@ -184,6 +185,39 @@ export class SourceEdit extends AuthenticatedAction {
     if (params.mapping) await source.setMapping(params.mapping);
 
     await source.update(params);
+
+    // create sample records automatically when in config mode
+    if (
+      process.env.GROUPAROO_RUN_MODE === "cli:config" &&
+      source.state === "ready" &&
+      (await source.previewAvailable())
+    ) {
+      if ((await Source.count()) === 1) {
+        let successfulRecords = 0;
+        let attempt = 0;
+        const mapping = await source.getMapping();
+        const mappingKey = Object.keys(mapping)[0];
+        const mappingValue = Object.values(mapping)[0];
+        const preview = await source.sourcePreview();
+
+        while (successfulRecords < 3 && attempt < preview.length) {
+          const value = preview[attempt][mappingKey];
+          if (value) {
+            const record = new GrouparooRecord({ modelId: source.modelId });
+            await record.save();
+            try {
+              await record.addOrUpdateProperties({ [mappingValue]: value });
+              successfulRecords++;
+            } catch (error) {
+              log(error, "error");
+              await record.destroy();
+            }
+          }
+
+          attempt++;
+        }
+      }
+    }
 
     await ConfigWriter.run();
 
