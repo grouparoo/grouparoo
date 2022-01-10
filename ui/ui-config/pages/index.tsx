@@ -46,14 +46,12 @@ export default function Page(props) {
           limit: 1,
           order: [["name", "asc"]],
         });
-        setCTA(
-          model
-            ? {
-                message: "Configure Records",
-                link: `/model/${model?.id}/records`,
-              }
-            : undefined
-        );
+        if (model) {
+          router.replace(`/model/${model.id}/overview`);
+          return;
+        }
+
+        setCTA(undefined);
       }
       setShouldRender(true);
     }

@@ -43,7 +43,7 @@ export default function SignInPage(props) {
             limit: 1,
             order: [["name", "asc"]],
           });
-          router.push(model ? `/model/${model.id}/records` : "/");
+          router.push(model ? `/model/${model.id}/overview` : "/");
         } else {
           router.push("/setup");
         }

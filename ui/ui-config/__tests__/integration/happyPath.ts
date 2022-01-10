@@ -114,8 +114,8 @@ describe("integration", () => {
     helper.mediumTime
   );
 
-  test("if all the setup steps are complete, visiting / goes to records", async () => {
-    await helper.factories.model({ name: "User", type: "profile" });
+  test("if all the setup steps are complete, visiting / redirects to model", async () => {
+    await helper.factories.model({ name: "User", id: "user", type: "profile" });
 
     const setupSteps = await SetupStep.findAll();
     for (const step of setupSteps) {
@@ -123,14 +123,11 @@ describe("integration", () => {
     }
 
     await browser.get(`${url}/`);
-    await browser.wait(until.elementLocated(by.className("btn-primary")));
-    const button = browser.findElement(by.className("btn-primary"));
-    await button.click();
 
     await helper.sleep(1000);
 
     const currentUrl = await browser.getCurrentUrl();
-    expect(currentUrl).toMatch(/\/records/);
+    expect(currentUrl).toMatch(/\/model\/user\/overview/);
     await browser.get(currentUrl);
   });
 });
