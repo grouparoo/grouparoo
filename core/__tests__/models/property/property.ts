@@ -8,6 +8,7 @@ import {
   Option,
   plugin,
   Property,
+  RecordProperty,
   Run,
   Source,
 } from "../../../src";
@@ -512,6 +513,41 @@ describe("models/property", () => {
 
     await property.destroy();
     await source.destroy();
+  });
+
+  describe("changing property type", () => {
+    let emailProperty: Property;
+
+    beforeAll(async () => {
+      emailProperty = await Property.findOne({ where: { id: "email" } });
+    });
+
+    afterAll(async () => {
+      await emailProperty.update({ type: "email" });
+    });
+
+    test("updating a property's type will put associated records and recordprops into `pending` state", async () => {
+      const record = await helper.factories.record();
+
+      await RecordProperty.update(
+        { state: "ready" },
+        { where: { recordId: record.id } }
+      );
+      await record.update({ state: "ready" });
+      const recordProperty = await RecordProperty.findOne({
+        where: { propertyId: "email", recordId: record.id },
+      });
+
+      expect(recordProperty.state).toBe("ready");
+      expect(record.state).toBe("ready");
+
+      await emailProperty.update({ type: "string" });
+
+      await record.reload();
+      await recordProperty.reload();
+      expect(recordProperty.state).toBe("pending");
+      expect(record.state).toBe("pending");
+    });
   });
 
   test("a property cannot be deleted if a group is using it", async () => {
