@@ -73,7 +73,7 @@ export class Plugins extends Initializer {
           options: [
             {
               key: "accessToken",
-              type: "password",
+              type: "oauth-token",
               displayName: "OAuth Access Token",
               required: true,
               description: "Mailchimp OAuth access token.",

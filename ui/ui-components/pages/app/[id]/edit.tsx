@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState, Fragment } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
@@ -38,6 +38,7 @@ export default function Page(props) {
   const { execApi } = UseApi(props, errorHandler);
   const [app, setApp] = useState<Models.AppType>(props.app);
   const [loading, setLoading] = useState(false);
+  const [loadingOAuth, setLoadingOAuth] = useState(false);
   const [testLoading, setTestLoading] = useState(false);
   const [testResult, setTestResult] = useState<{
     success: boolean;
@@ -45,7 +46,11 @@ export default function Page(props) {
     message: string;
   }>({ success: null, error: null, message: null });
   const [ranTest, setRanTest] = useState(false);
-  const { id } = router.query;
+  const { id, requestId } = router.query;
+
+  useEffect(() => {
+    loadOAuthRequest();
+  }, []);
 
   async function edit(event) {
     event.preventDefault();
@@ -111,6 +116,45 @@ export default function Page(props) {
     _app.options[optKey] = optValue;
     setApp(_app);
   };
+
+  const startOauthLogin = async (optionKey: string) => {
+    console.log(optionKey);
+
+    const provider = app.pluginName.replace("@grouparoo/", "");
+
+    setLoadingOAuth(true);
+    const response: Actions.OAuthClientStart = await execApi(
+      "post",
+      `/oauth/${provider}/client/start`,
+      { type: "app", appId: id, appOption: optionKey }
+    );
+    if (response.location) {
+      window.location.assign(response.location);
+    } else {
+      setLoadingOAuth(false);
+    }
+  };
+
+  const loadOAuthRequest = async () => {
+    if (requestId) {
+      const response: Actions.OAuthClientView = await execApi(
+        "get",
+        `/oauth/client/request/${requestId}/view`
+      );
+
+      if (response.oAuthRequest) {
+        console.log("REQ", response.oAuthRequest);
+        if (response.oAuthRequest.identities.length === 0) {
+          console.log("no identities");
+        } else if (response.oAuthRequest.identities.length === 1) {
+          console.log("got an identity");
+        } else {
+          console.log("got multiple identites");
+        }
+      }
+    }
+  };
+
   return (
     <>
       <Head>
@@ -312,6 +356,34 @@ export default function Page(props) {
                                     type="text"
                                     value="pending another selection"
                                   ></Form.Control>
+                                </>
+                              );
+                            } else if (
+                              options[opt.key]?.type === "oauth-token"
+                            ) {
+                              return (
+                                <>
+                                  <br />
+                                  <LoadingButton
+                                    size="sm"
+                                    disabled={loadingOAuth}
+                                    loading={loadingOAuth}
+                                    variant="outline-primary"
+                                    onClick={() => startOauthLogin(opt.key)}
+                                  >
+                                    Sign in with OAuth
+                                  </LoadingButton>
+
+                                  <Form.Control
+                                    className="mt-2"
+                                    required={opt.required}
+                                    type="password"
+                                    value={app.options[opt.key]?.toString()}
+                                    placeholder={opt.placeholder}
+                                  />
+                                  <Form.Text className="text-muted">
+                                    {opt.description}
+                                  </Form.Text>
                                 </>
                               );
                             } else {

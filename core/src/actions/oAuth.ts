@@ -36,6 +36,8 @@ export class OAuthClientStart extends CLSAction {
     id: { required: false },
     provider: { required: true },
     type: { required: true },
+    appId: { required: false },
+    appOption: { required: false },
   };
 
   async runWithinTransaction({
@@ -47,6 +49,8 @@ export class OAuthClientStart extends CLSAction {
       id: params.id,
       type: params.type,
       provider: params.provider,
+      appId: params.appId,
+      appOption: params.appOption,
     });
 
     const callbackUrl = `${process.env.WEB_URL}/oauth/callback`;

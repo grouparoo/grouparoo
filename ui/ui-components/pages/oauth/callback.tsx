@@ -25,7 +25,7 @@ export default function OauthCallbackPage(props) {
         router.replace(`/session/sign-in?requestId=${requestId}`);
       } else {
         router.replace(
-          `/object/${response.oAuthRequest.appId}?requestId=${requestId}&appOption=${response.oAuthRequest.appOption}`
+          `/app/${response.oAuthRequest.appId}/edit?requestId=${requestId}&appOption=${response.oAuthRequest.appOption}`
         );
       }
     }
