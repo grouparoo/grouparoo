@@ -4742,6 +4742,34 @@ packages:
     hasBin: true
     dev: true
 
+  /actionhero/28.1.2:
+    resolution: {integrity: sha512-lWWGo5Rlmh+E0Xrxr+XGcAoELYM/fXzlj2LKXNeanBeqa8DRir9tx+xuM9meS6gso968tuTpX+FVM6KW6yUtFw==}
+    engines: {node: '>=12.0.0'}
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      '@types/ioredis': 4.28.1
+      browser_fingerprint: 2.0.3
+      commander: 8.3.0
+      dot-prop: 6.0.1
+      etag: 1.8.1
+      formidable: 2.0.1
+      glob: 7.2.0
+      ioredis: 4.28.2
+      mime: 3.0.0
+      node-resque: 9.1.3
+      primus: 8.0.5
+      qs: 6.10.1
+      uuid: 8.3.2
+      winston: 3.3.3
+      ws: 8.4.0
+      yargs: 17.3.0
+    transitivePeerDependencies:
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+    dev: true
+
   /actionhero/28.1.3:
     resolution: {integrity: sha512-qZFq5l84GX4MNeRdFlOzdTeK1lzqqSnyKTqEJx2VEMDAn1CGPCpX5YWVwrWDMh5qvMX62sFs6C8sUGEhrVkI4g==}
     engines: {node: '>=12.0.0'}
@@ -5227,7 +5255,7 @@ packages:
   /axios/0.24.0:
     resolution: {integrity: sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==}
     dependencies:
-      follow-redirects: 1.14.4
+      follow-redirects: 1.14.4_debug@4.3.2
     transitivePeerDependencies:
       - debug
 
@@ -7676,6 +7704,7 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+    dev: false
 
   /follow-redirects/1.14.4_debug@3.2.7:
     resolution: {integrity: sha512-zwGkiSXC1MUJG/qmeIFH2HBJx9u0V46QGUe3YR1fXG8bXQxq7fLj0RjLZQ5nubr9qNJUZrH+xUcwXEoXNpfS+g==}
@@ -7699,7 +7728,6 @@ packages:
         optional: true
     dependencies:
       debug: 4.3.2
-    dev: false
 
   /follow-redirects/1.5.10:
     resolution: {integrity: sha512-0V5l4Cizzvqt5D44aTXbFZz+FtyXV1vrDN6qrelxtfYQKW0KO0W2T/hkE8xvGa/540LkZlkaUjO4ailYTFtHVQ==}
@@ -15160,7 +15188,7 @@ packages:
       '@types/jest': 27.0.1
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
-      jest: 27.4.5
+      jest: 27.4.5_ts-node@10.4.0
       jest-util: 27.4.2
       json5: 2.2.0
       lodash.memoize: 4.1.2
