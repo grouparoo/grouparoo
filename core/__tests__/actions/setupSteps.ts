@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { plugin, SetupStep } from "../../src";
+import { plugin, SetupStep, GrouparooModel } from "../../src";
 import { SessionCreate } from "../../src/actions/session";
 import { SetupStepEdit, SetupStepsList } from "../../src/actions/setupSteps";
 
@@ -37,6 +37,10 @@ describe("actions/setupSteps", () => {
         { complete: false },
         { where: { complete: true } }
       );
+    });
+
+    beforeEach(async () => {
+      await GrouparooModel.truncate();
     });
 
     test("a reader can list setupSteps", async () => {
@@ -116,6 +120,30 @@ describe("actions/setupSteps", () => {
         (s) => s.key === `create_a_destination`
       );
       expect(destinationStep.disabled).toEqual(true);
+    });
+
+    test("configure your model setupStep href changes based on modelId", async () => {
+      connection.params = { csrfToken, modelId: null };
+      const { setupSteps: setupStepsNoModelId } =
+        await specHelper.runAction<SetupStepsList>(
+          "setupSteps:list",
+          connection
+        );
+      let modelStep = setupStepsNoModelId.find(
+        (s) => s.key === `configure_a_model`
+      );
+      expect(modelStep.href).toEqual(`/models`);
+
+      connection.params = { csrfToken, modelId: "mod_abc123" };
+      const { setupSteps: setupStepsWithModelId } =
+        await specHelper.runAction<SetupStepsList>(
+          "setupSteps:list",
+          connection
+        );
+      modelStep = setupStepsWithModelId.find(
+        (s) => s.key === `create_a_destination`
+      );
+      expect(modelStep.href).toEqual(`/model/mod_abc123/overview`);
     });
 
     test("destination setupSteps href changes based on modelId", async () => {
