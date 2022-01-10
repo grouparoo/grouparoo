@@ -53,7 +53,7 @@ class SendgridClient {
     return body.result;
   }
 
-  async addOrUpdateUser(userData: any, listIds: Array<string>) {
+  async addOrUpdateUser(userData: any, listIds: string[]) {
     const data = {
       contacts: [userData],
       list_ids: listIds,
@@ -81,7 +81,7 @@ class SendgridClient {
     return body.result.length === 0 ? null : body.result[0];
   }
 
-  async deleteUsers(usersIds: Array<string>) {
+  async deleteUsers(usersIds: string[]) {
     const data = {
       ids: usersIds.join(","),
     };

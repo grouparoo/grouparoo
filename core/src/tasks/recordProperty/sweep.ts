@@ -5,15 +5,11 @@ import { RecordProperty } from "../../models/RecordProperty";
 import { Property } from "../../models/Property";
 
 export class RecordPropertySweep extends CLSTask {
-  constructor() {
-    super();
-    this.name = "recordProperties:sweep";
-    this.description =
-      "Double check that all record properties are removed that don't belong to a record or property";
-    this.frequency = 1000 * 60 * 60;
-    this.queue = "recordProperties";
-    this.inputs = {};
-  }
+  name = "recordProperties:sweep";
+  description =
+    "Double check that all record properties are removed that don't belong to a record or property";
+  frequency = 1000 * 60 * 60;
+  queue = "recordProperties";
 
   async runWithinTransaction() {
     let count = 0;

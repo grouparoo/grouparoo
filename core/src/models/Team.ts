@@ -80,7 +80,7 @@ export class Team extends LoggedModel<Team> {
   }
 
   async setPermissions(
-    userPermissions: Array<{ topic: string; read: boolean; write: boolean }>
+    userPermissions: { topic: string; read: boolean; write: boolean }[]
   ) {
     const permissions = await this.$get("permissions");
     for (const userPermission of userPermissions) {
@@ -129,16 +129,16 @@ export class Team extends LoggedModel<Team> {
   }
 
   @BeforeSave
-  static async noUpdateIfLocked(instance) {
+  static async noUpdateIfLocked(instance: Team) {
     await LockableHelper.beforeSave(instance);
   }
 
   @AfterSave
   static async buildPermissions(instance: Team) {
-    const permissionsWithStatus: Array<{
+    const permissionsWithStatus: {
       isNew: boolean;
       permission: Permission;
-    }> = [];
+    }[] = [];
 
     for (const i in PermissionTopics) {
       const topic = PermissionTopics[i];
@@ -181,7 +181,7 @@ export class Team extends LoggedModel<Team> {
   }
 
   @BeforeDestroy
-  static async noDestroyIfLocked(instance) {
+  static async noDestroyIfLocked(instance: Team) {
     await LockableHelper.beforeDestroy(instance);
   }
 

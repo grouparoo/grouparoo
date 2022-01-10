@@ -90,7 +90,7 @@ export class ApiKey extends LoggedModel<ApiKey> {
   }
 
   async setPermissions(
-    userPermissions: Array<{ topic: string; read: boolean; write: boolean }>
+    userPermissions: { topic: string; read: boolean; write: boolean }[]
   ) {
     const permissions = await this.$get("permissions");
     for (const userPermission of userPermissions) {
@@ -126,7 +126,7 @@ export class ApiKey extends LoggedModel<ApiKey> {
   }
 
   @BeforeSave
-  static async noUpdateIfLocked(instance) {
+  static async noUpdateIfLocked(instance: ApiKey) {
     await LockableHelper.beforeSave(instance);
   }
 
@@ -163,7 +163,7 @@ export class ApiKey extends LoggedModel<ApiKey> {
   }
 
   @BeforeDestroy
-  static async noDestroyIfLocked(instance) {
+  static async noDestroyIfLocked(instance: ApiKey) {
     await LockableHelper.beforeDestroy(instance);
   }
 

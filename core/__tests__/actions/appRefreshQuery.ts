@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper, api } from "actionhero";
+import { specHelper, api, Connection } from "actionhero";
 import { SessionCreate } from "../../src/actions/session";
 import {
   AppRefreshQueryCreate,
@@ -45,8 +45,8 @@ describe("actions/appRefreshQuery", () => {
   });
 
   describe("administrator signed in", () => {
-    let connection;
-    let csrfToken;
+    let connection: Connection;
+    let csrfToken: string;
 
     beforeAll(async () => {
       //sign in

@@ -20,8 +20,8 @@ describe("bin/reset", () => {
 
   beforeAll(async () => await helper.factories.properties());
 
-  let messages = [];
-  let spies = [];
+  let messages: string[] = [];
+  const spies: jest.SpyInstance[] = [];
 
   beforeEach(() => {
     messages = [];
@@ -52,7 +52,7 @@ describe("bin/reset", () => {
 
   test("requires valid mode argument", async () => {
     const command = new ResetCLI();
-    await command.run({ params: { confirm: true, mode: "foo" } });
+    await command.run({ params: { confirm: "true", mode: "foo" } });
     const output = messages.join(" ");
 
     expect(output).toContain("mode not found");
@@ -61,7 +61,7 @@ describe("bin/reset", () => {
 
   test("requires mode argument", async () => {
     const command = new ResetCLI();
-    await command.run({ params: { confirm: true } });
+    await command.run({ params: { confirm: "true" } });
     const output = messages.join(" ");
 
     expect(output).toContain("mode not found");
@@ -74,7 +74,7 @@ describe("bin/reset", () => {
     expect(responseA.value).toEqual({ k: "v" });
 
     const command = new ResetCLI();
-    await command.run({ params: { confirm: true, mode: "cache" } });
+    await command.run({ params: { confirm: "true", mode: "cache" } });
     const output = messages.join(" ");
 
     expect(output).toContain("Success!");
@@ -87,7 +87,7 @@ describe("bin/reset", () => {
     await helper.factories.export();
 
     const command = new ResetCLI();
-    await command.run({ params: { confirm: true, mode: "data" } });
+    await command.run({ params: { confirm: "true", mode: "data" } });
     const output = messages.join(" ");
 
     expect(output).toContain("Success!");
@@ -107,7 +107,7 @@ describe("bin/reset", () => {
     await helper.factories.team();
 
     const command = new ResetCLI();
-    await command.run({ params: { confirm: true, mode: "cluster" } });
+    await command.run({ params: { confirm: "true", mode: "cluster" } });
     const output = messages.join(" ");
 
     expect(output).toContain("Success!");

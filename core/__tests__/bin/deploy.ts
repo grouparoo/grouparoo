@@ -5,8 +5,8 @@ import { Deploy } from "../../src/bin/deploy";
 
 describe("bin/deploy", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
-  let messages = [];
-  let spies = [];
+  let messages: string[] = [];
+  const spies: jest.SpyInstance[] = [];
 
   let prevCfgDir: string;
   beforeAll(() => {

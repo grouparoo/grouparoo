@@ -3,28 +3,27 @@ import { OptionallyAuthenticatedAction } from "../classes/actions/optionallyAuth
 import { plugin } from "../modules/plugin";
 import { Setting } from "../models/Setting";
 import { APIData } from "../modules/apiData";
+import { ActionPermission } from "../models/Permission";
+import { ParamsFrom } from "actionhero";
 
 export class SettingsList extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "settings:list";
-    this.description = "list all the settings";
-    this.outputExample = {};
-    this.permission = { topic: "system", mode: "read" };
-    this.inputs = {
-      order: {
-        required: false,
-        formatter: APIData.ensureObject,
-        default: [
-          ["pluginName", "desc"],
-          ["title", "desc"],
-          ["key", "desc"],
-        ],
-      },
-    };
-  }
+  name = "settings:list";
+  description = "list all the settings";
+  outputExample = {};
+  permission: ActionPermission = { topic: "system", mode: "read" };
+  inputs = {
+    order: {
+      required: false,
+      formatter: APIData.ensureArray,
+      default: [
+        ["pluginName", "desc"],
+        ["title", "desc"],
+        ["key", "desc"],
+      ],
+    },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<SettingsList> }) {
     const setting = await Setting.findAll({ order: params.order });
     return {
       settings: await Promise.all(setting.map((s) => s.apiData())),
@@ -34,13 +33,10 @@ export class SettingsList extends AuthenticatedAction {
 
 // only this setting can be shown without being authenticated
 export class SettingCoreClusterName extends OptionallyAuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "setting:view:core:cluster-name";
-    this.description = "get the value for the cluster name setting";
-    this.outputExample = {};
-    this.permission = { topic: "system", mode: "read" };
-  }
+  name = "setting:view:core:cluster-name";
+  description = "get the value for the cluster name setting";
+  outputExample = {};
+  permission: ActionPermission = { topic: "system", mode: "read" };
 
   async runWithinTransaction() {
     const clusterNameSetting = await Setting.findOne({
@@ -52,19 +48,16 @@ export class SettingCoreClusterName extends OptionallyAuthenticatedAction {
 }
 
 export class SettingEdit extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "setting:edit";
-    this.description = "edit a setting";
-    this.outputExample = {};
-    this.permission = { topic: "system", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-      value: { required: true },
-    };
-  }
+  name = "setting:edit";
+  description = "edit a setting";
+  outputExample = {};
+  permission: ActionPermission = { topic: "system", mode: "write" };
+  inputs = {
+    id: { required: true },
+    value: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<SettingEdit> }) {
     let setting = await Setting.findById(params.id);
     setting = await plugin.updateSetting(
       setting.pluginName,

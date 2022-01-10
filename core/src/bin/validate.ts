@@ -1,5 +1,5 @@
 import { GrouparooCLI } from "../modules/cli";
-import { CLI, api } from "actionhero";
+import { CLI, api, ParamsFrom } from "actionhero";
 import { AnyConfigurationObject } from "../classes/codeConfig";
 import {
   loadConfigObjects,
@@ -10,20 +10,20 @@ import pluralize from "pluralize";
 import { SettingOps } from "../modules/ops/setting";
 
 export class Validate extends CLI {
+  name = "validate";
+  description = "Validate your code config";
+  inputs = {
+    local: {
+      description:
+        "Disable external validation. You can optionally pass object IDs to only disable external validation for those specific config objects and their dependents.",
+      letter: "l",
+      variadic: true,
+      placeholder: "object ids",
+    },
+  };
+
   constructor() {
     super();
-    this.name = "validate";
-    this.description = "Validate your code config";
-    this.inputs = {
-      local: {
-        description:
-          "Disable external validation. You can optionally pass object IDs to only disable external validation for those specific config objects and their dependents.",
-        letter: "l",
-        variadic: true,
-        placeholder: "object ids",
-      },
-    };
-
     GrouparooCLI.timestampOption(this);
   }
 
@@ -32,7 +32,7 @@ export class Validate extends CLI {
     GrouparooCLI.setNextDevelopmentMode();
   };
 
-  async run({ params }) {
+  async run({ params }: { params: Partial<ParamsFrom<Validate>> }) {
     GrouparooCLI.logCLI(this.name);
 
     await SettingOps.prepare();
@@ -60,7 +60,7 @@ export class Validate extends CLI {
       )}...`
     );
 
-    const canExternallyValidate = params.local !== true;
+    const canExternallyValidate = params?.local?.toString() !== "true";
     const locallyValidateIds =
       Array.isArray(params.local) && (new Set(params.local) as Set<string>);
 

@@ -53,7 +53,7 @@ let CONFIG_FILE_CACHE: CachedConfigFile[] = [];
 export namespace ConfigWriter {
   // ---------------------------------------- | Helpers
 
-  export function generateId(name, separator: string = "_"): string {
+  export function generateId(name: string, separator: string = "_"): string {
     if (!name || name.length === 0) return;
     const id = name
       .toLowerCase()
@@ -98,10 +98,19 @@ export namespace ConfigWriter {
   }
 
   export async function getConfigObjects(): Promise<WritableConfigObject[]> {
-    let objects: Array<{ filePath: string; object: any }> = [];
+    let objects: { filePath: string; object: any }[] = [];
 
-    const queryParams = { where: { locked: null } };
-    let queries = {
+    const queryParams = { where: { locked: null as string } };
+    const queries: {
+      models?: GrouparooModel[];
+      apps?: App[];
+      sources?: Source[];
+      properties?: Property[];
+      groups?: Group[];
+      destinations?: Destination[];
+      records?: GrouparooRecord[];
+      settings?: Setting[];
+    } = {
       models: await GrouparooModel.findAll(queryParams),
       apps: await App.findAll(queryParams),
       sources: await Source.findAll(queryParams),
@@ -119,6 +128,7 @@ export namespace ConfigWriter {
     }
 
     for (let [type, instances] of Object.entries(queries)) {
+      if (!instances) continue;
       for (let instance of instances) {
         const object = await instance.getConfigObject();
         // Don't process arrays that have objects missing id values.
@@ -178,7 +188,8 @@ export namespace ConfigWriter {
   }
 
   function isLockable(object: AnyConfigurationObject) {
-    const isMatch = (o) => o.id === object.id && o.class === object.class;
+    const isMatch = (o: AnyConfigurationObject) =>
+      o.id === object.id && o.class === object.class;
     const cachedFileObj: CachedConfigFile = CONFIG_FILE_CACHE.find(
       (cache) => cache.objects.filter(isMatch).length > 0
     );
@@ -189,7 +200,9 @@ export namespace ConfigWriter {
     return fileIsLockable(cachedFileObj.absFilePath);
   }
 
-  export async function cacheConfigFile(cacheObj: CachedConfigFile) {
+  export async function cacheConfigFile(
+    cacheObj: CachedConfigFile
+  ): Promise<null> {
     if (fileIsLockable(cacheObj.absFilePath)) return null;
     CONFIG_FILE_CACHE.push(cacheObj);
   }
@@ -209,9 +222,10 @@ export namespace ConfigWriter {
     const configFilePath = path.join(configDir, filePath);
     const dir = path.dirname(configFilePath);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    const stringifyFilter = (k, v) => (v === null ? undefined : v);
+    const stringifyFilter = (_: string, v: unknown) =>
+      v === null ? undefined : v;
     const content = JSON.stringify(object, stringifyFilter, 2);
-    await fs.writeFileSync(
+    fs.writeFileSync(
       configFilePath,
       prettier.format(content, { parser: "json" })
     );

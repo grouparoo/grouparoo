@@ -70,7 +70,7 @@ const Page: NextPage<Props & InjectedProps> = ({
   >(props.propertyExamples);
   const [source, setSource] = useState<Models.SourceType>(props.source);
   const [connectionOptions, setConnectionOptions] = useState<
-    Actions.sourceConnectionOptions["options"]
+    Actions.SourceConnectionOptions["options"]
   >({});
   const { sourceId } = router.query;
   const mappingColumn = useMemo(
@@ -233,7 +233,7 @@ const Page: NextPage<Props & InjectedProps> = ({
 
   async function loadOptions() {
     setLoadingOptions(true);
-    const response: Actions.sourceConnectionOptions = await execApi(
+    const response: Actions.SourceConnectionOptions = await execApi(
       "get",
       `/source/${sourceId}/connectionOptions`,
       { options: source.options },

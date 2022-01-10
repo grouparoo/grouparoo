@@ -56,7 +56,7 @@ export namespace CLS {
   const wrapInternal: CLSWrapMethod = async (f, options = {}) => {
     const { write, priority } = options;
     let runResponse: any;
-    let afterCommitJobs: Array<Function> = [];
+    let afterCommitJobs: Function[] = [];
 
     const transOptions: any = {};
     const dialect = api.sequelize.options.dialect;

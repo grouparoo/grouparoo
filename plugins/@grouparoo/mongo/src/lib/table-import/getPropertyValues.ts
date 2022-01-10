@@ -146,7 +146,7 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   }
 
   try {
-    const rows: Array<{ [column: string]: DataResponse }> = await connection
+    const rows: { [column: string]: DataResponse }[] = await connection
       .db(appOptions.database)
       .collection(tableName)
       .aggregate(aggPipeline)

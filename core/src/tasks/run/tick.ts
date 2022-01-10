@@ -6,13 +6,10 @@ import { Op } from "sequelize";
 import { RunOps } from "../../modules/ops/runs";
 
 export class RunsTick extends CLSTask {
-  constructor() {
-    super();
-    this.name = "run:tick";
-    this.description = "process pending runs and enqueue the next batch";
-    this.frequency = config.tasks.timeout + 1;
-    this.queue = "runs";
-  }
+  name = "run:tick";
+  description = "process pending runs and enqueue the next batch";
+  frequency = config.tasks.timeout + 1;
+  queue = "runs";
 
   async runWithinTransaction() {
     const lastCheck = new Date().getTime() - Math.max(this.frequency, 1000);

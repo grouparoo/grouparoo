@@ -1,22 +1,20 @@
-import { Action, api, Connection } from "actionhero";
+import { Action, api, Connection, ParamsFrom } from "actionhero";
 import { OAuthRequest } from "../models/OAuthRequest";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { CLSAction } from "../classes/actions/clsAction";
 import { TeamMember } from "../models/TeamMember";
 import { Errors } from "../modules/errors";
+import { ActionPermission } from "../models/Permission";
 
 export class SessionCreate extends CLSAction {
-  constructor() {
-    super();
-    this.name = "session:create";
-    this.description = "to create a session and sign in";
-    this.inputs = {
-      email: { required: true },
-      password: { required: false },
-      requestId: { required: false },
-    };
-    this.outputExample = {};
-  }
+  name = "session:create";
+  description = "to create a session and sign in";
+  inputs = {
+    email: { required: true },
+    password: { required: false },
+    requestId: { required: false },
+  };
+  outputExample = {};
 
   isWriteTransaction() {
     return true;
@@ -27,7 +25,7 @@ export class SessionCreate extends CLSAction {
     params,
   }: {
     connection: Connection;
-    params: { email: string; password?: string; requestId?: string };
+    params: ParamsFrom<SessionCreate>;
   }) {
     if (!params.password && !params.requestId) {
       throw new Errors.AuthenticationError(
@@ -75,13 +73,10 @@ export class SessionCreate extends CLSAction {
 }
 
 export class SessionView extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "session:view";
-    this.description = "to view session information";
-    this.permission = { topic: "*", mode: "read" };
-    this.outputExample = {};
-  }
+  name = "session:view";
+  description = "to view session information";
+  permission: ActionPermission = { topic: "*", mode: "read" };
+  outputExample = {};
 
   async runWithinTransaction({
     connection,
@@ -101,14 +96,11 @@ export class SessionView extends AuthenticatedAction {
 }
 
 export class SessionDestroy extends Action {
-  constructor() {
-    super();
-    this.name = "session:destroy";
-    this.description = "to destroy a session and sign out";
-    this.outputExample = {};
-  }
+  name = "session:destroy";
+  description = "to destroy a session and sign out";
+  outputExample = {};
 
-  async run({ connection }) {
+  async run({ connection }: { connection: Connection }) {
     await api.session.destroy(connection);
     return { success: true };
   }

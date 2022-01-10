@@ -13,7 +13,7 @@ declare module "actionhero" {
 }
 
 export const DEFAULT = {
-  [namespace]: (config) => {
+  [namespace]: (config: Record<string, any>) => {
     const packageJSON: PackageJson = JSON.parse(
       fs
         .readFileSync(path.join(__dirname, "..", "..", "package.json"))

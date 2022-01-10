@@ -2,7 +2,7 @@ import { spawn } from "child_process";
 
 export async function spawnPromise(
   command: string,
-  args: Array<string> = [],
+  args: string[] = [],
   cwd: string = process.cwd(),
   extraEnv = {},
   logger?: any

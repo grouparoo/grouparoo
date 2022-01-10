@@ -1,16 +1,30 @@
 import { Api } from "actionhero";
 
 export namespace APIData {
+  export function ensureArray(
+    param: { [key: string]: any } | string,
+    api?: Api
+  ) {
+    return ensureObjectOrArray<"array">(param, api);
+  }
+
   export function ensureObject(
+    param: { [key: string]: any } | string,
+    api?: Api
+  ) {
+    return ensureObjectOrArray<"object">(param, api);
+  }
+
+  function ensureObjectOrArray<t extends "array" | "object">(
     param: { [key: string]: any } | string,
     api?: Api,
     recursing = false
-  ) {
+  ): t extends "array" ? any[] : Record<string, any> {
     if (!param) {
       return null;
     } else if (Array.isArray(param)) {
       try {
-        return param.map((row) => APIData.ensureObject(row, api, true));
+        return param.map((row) => ensureObjectOrArray(row, api, true));
       } catch (error) {
         throw new Error(
           `${param} cannot be converted to JSON object (${error})`
@@ -18,10 +32,14 @@ export namespace APIData {
       }
     } else if (typeof param === "string") {
       try {
-        return JSON.parse(param) as { [key: string]: any };
+        return JSON.parse(param) as t extends "array"
+          ? any[]
+          : Record<string, any>;
       } catch (error) {
         if (recursing) {
-          return param;
+          return param as unknown as t extends "array"
+            ? any[]
+            : Record<string, any>;
         } else {
           throw new Error(
             `${param} cannot be converted to JSON object (${error})`
@@ -29,8 +47,12 @@ export namespace APIData {
         }
       }
     } else {
-      return param;
+      return param as t extends "array" ? any[] : Record<string, any>;
     }
+  }
+
+  export function ensureString<T extends string>(param: unknown) {
+    return String(param) as T;
   }
 
   export function ensureBoolean(param: boolean | string | number) {

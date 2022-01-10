@@ -7,6 +7,7 @@ import {
   BeforeSave,
   ForeignKey,
   DataType,
+  Model,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
@@ -38,6 +39,10 @@ export const PermissionTopics = [
 
 export type ActionPermissionTopic = typeof PermissionTopics[number] | "*";
 export type ActionPermissionMode = "read" | "write";
+export type ActionPermission = {
+  topic: ActionPermissionTopic;
+  mode: ActionPermissionMode;
+};
 
 @Table({ tableName: "permissions", paranoid: false })
 export class Permission extends LoggedModel<Permission> {
@@ -97,7 +102,7 @@ export class Permission extends LoggedModel<Permission> {
   }
 
   @BeforeSave
-  static async noUpdateIfLocked(instance) {
+  static async noUpdateIfLocked(instance: LockableHelper.LockableModel) {
     await LockableHelper.beforeSave(instance);
   }
 
@@ -146,7 +151,7 @@ export class Permission extends LoggedModel<Permission> {
     return permission[mode];
   }
 
-  static validateTopic(topic) {
+  static validateTopic(topic: ActionPermissionTopic) {
     if (topic === "*") return;
 
     if (!PermissionTopics.includes(topic)) {

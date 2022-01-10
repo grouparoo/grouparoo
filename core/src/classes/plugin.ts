@@ -22,6 +22,7 @@ import {
   ScheduleFiltersWithKey,
 } from "../models/Schedule";
 import { ConfigTemplate } from "./configTemplate";
+import { FilterOpsDescriptions } from "../modules/filterOpsDictionary";
 
 /**
  * The plugin class
@@ -29,9 +30,9 @@ import { ConfigTemplate } from "./configTemplate";
 export interface GrouparooPlugin {
   name: string;
   icon?: string;
-  apps?: Array<PluginApp>;
-  connections?: Array<PluginConnection>;
-  templates?: Array<ConfigTemplateConstructor | ConfigTemplate>;
+  apps?: PluginApp[];
+  connections?: PluginConnection[];
+  templates?: (ConfigTemplateConstructor | ConfigTemplate)[];
 }
 
 /**
@@ -194,9 +195,12 @@ export interface RecordPropertyPluginMethod<AppConnection = any> {
   }): Promise<RecordPropertyPluginMethodResponse>;
 }
 
-export type RecordPropertyPluginMethodResponse = Array<
-  string | number | boolean | Date
->;
+export type RecordPropertyPluginMethodResponse = (
+  | string
+  | number
+  | boolean
+  | Date
+)[];
 
 /**
  * Method to load many record properties for a many records.
@@ -236,8 +240,8 @@ export interface ExportedRecord {
   recordId: string;
   oldRecordProperties: { [key: string]: any };
   newRecordProperties: { [key: string]: any };
-  oldGroups: Array<string>;
-  newGroups: Array<string>;
+  oldGroups: string[];
+  newGroups: string[];
   toDelete: boolean;
 }
 
@@ -389,7 +393,7 @@ export interface AppQueryMethod<AppConnection = any> {
     appOptions: SimpleAppOptions;
     connection: AppConnection;
     refreshQuery: string;
-  }): Promise<Array<unknown>>;
+  }): Promise<unknown[]>;
 }
 
 /**
@@ -428,7 +432,7 @@ export interface SourcePreviewMethod<AppConnection = any> {
     source: Source;
     sourceId: string;
     sourceOptions: SimpleSourceOptions;
-  }): Promise<Array<SourcePreviewMethodResponseRow>>;
+  }): Promise<SourcePreviewMethodResponseRow[]>;
 }
 
 export interface SourcePreviewMethodResponseRow {
@@ -455,12 +459,12 @@ export interface SourceFilterMethod<AppConnection = any> {
     schedule?: Schedule;
     scheduleId?: string;
     scheduleOptions?: SimpleScheduleOptions;
-  }): Promise<Array<SourceFilterMethodResponseRow>>;
+  }): Promise<SourceFilterMethodResponseRow[]>;
 }
 
 export interface SourceFilterMethodResponseRow {
   key: string;
-  ops: Array<string>;
+  ops: (keyof typeof FilterOpsDescriptions)[];
   canHaveRelativeMatch: boolean;
 }
 
@@ -532,12 +536,12 @@ export interface PluginConnectionPropertyOption<AppConnection = any> {
     property: Property;
     propertyId: string;
   }) => Promise<
-    Array<{
+    {
       key: string;
       description?: string;
       default?: boolean;
-      examples?: Array<any>;
-    }>
+      examples?: any[];
+    }[]
   >;
 }
 
@@ -611,8 +615,8 @@ export interface DestinationMappingOptionsResponseProperty {
   important?: boolean;
 }
 export interface DestinationMappingOptionsResponseProperties {
-  required: Array<DestinationMappingOptionsResponseProperty>;
-  known: Array<DestinationMappingOptionsResponseProperty>;
+  required: DestinationMappingOptionsResponseProperty[];
+  known: DestinationMappingOptionsResponseProperty[];
   allowOptionalFromProperties: boolean;
 }
 export interface DestinationMappingOptionsMethodResponse {
@@ -645,7 +649,7 @@ export interface ExportArrayPropertiesMethod<AppConnection = any> {
   }): Promise<ExportArrayPropertiesMethodResponse>;
 }
 
-export type ExportArrayPropertiesMethodResponse = Array<string>;
+export type ExportArrayPropertiesMethodResponse = string[];
 
 /** Template Utils */
 

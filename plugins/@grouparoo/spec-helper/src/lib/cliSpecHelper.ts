@@ -32,7 +32,7 @@ export namespace CLISpecHelper {
 
   export async function spawnPromise(
     command: string,
-    args: Array<string> = [],
+    args: string[] = [],
     cwd: string = process.cwd(),
     env = {}
   ): Promise<{ exitCode: number; stderr: string; stdout: string }> {
@@ -65,7 +65,7 @@ export namespace CLISpecHelper {
 
   export function spawnPromiseSync(
     command: string,
-    args: Array<string> = [],
+    args: string[] = [],
     cwd: string = process.cwd(),
     env = {}
   ): { exitCode: number; stderr: string; stdout: string } {

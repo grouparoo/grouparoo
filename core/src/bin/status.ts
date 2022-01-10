@@ -1,16 +1,16 @@
 import { GrouparooCLI } from "../modules/cli";
 import { plugin } from "../modules/plugin";
 import { GroupOps } from "../modules/ops/group";
-import { env, CLI } from "actionhero";
+import { env, CLI, ParamsFrom } from "actionhero";
 import { CLS } from "../modules/cls";
 import { Status } from "../modules/status";
 
 export class StatusCLI extends CLI {
+  name = "status";
+  description = "Display the status of your Grouparoo cluster";
+
   constructor() {
     super();
-    this.name = "status";
-    this.description = "Display the status of your Grouparoo cluster";
-
     GrouparooCLI.timestampOption(this);
     GrouparooCLI.jsonOption(this);
   }
@@ -20,7 +20,7 @@ export class StatusCLI extends CLI {
     GrouparooCLI.setNextDevelopmentMode();
   };
 
-  async run({ params }) {
+  async run({ params }: { params: ParamsFrom<StatusCLI> }) {
     if (!params.json) GrouparooCLI.logCLI(this.name);
 
     await CLS.wrap(async () => {
@@ -35,7 +35,7 @@ export class StatusCLI extends CLI {
       const { groups, newestMembersAdded } = await GroupOps.newestGroupMembers(
         100
       );
-      const groupsStatus = {};
+      const groupsStatus: Record<string, string[]> = {};
       for (const i in groups) {
         const group = groups[i];
         const additionTime = newestMembersAdded[group.id]
@@ -110,7 +110,7 @@ export class StatusCLI extends CLI {
       ];
 
       if (params.json) {
-        const jsonData = {};
+        const jsonData: Record<string, any> = {};
         data.map((collection) => {
           jsonData[collection.header] = collection.status;
         });

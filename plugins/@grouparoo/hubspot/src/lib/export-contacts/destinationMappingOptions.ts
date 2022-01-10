@@ -57,10 +57,10 @@ const mapTypesFromHubspotToGrouparoo = (fieldKey, hubspotType) => {
   return null;
 };
 
-export const getRequiredFields = (): Array<{
+export const getRequiredFields = (): {
   key: string;
   type: DestinationMappingOptionsResponseType;
-}> => {
+}[] => {
   return [{ key: "email", type: "email" }];
 };
 
@@ -72,11 +72,11 @@ export const getUserFields = async (
   client: any,
   appOptions: SimpleAppOptions
 ): Promise<
-  Array<{
+  {
     key: string;
     type: DestinationMappingOptionsResponseType;
     important?: boolean;
-  }>
+  }[]
 > => {
   const fields = await client.getAllContactsProperties();
   const out = [];

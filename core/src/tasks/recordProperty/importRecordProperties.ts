@@ -5,43 +5,42 @@ import { Property } from "../../models/Property";
 import { Mapping } from "../../models/Mapping";
 import { Option } from "../../models/Option";
 import { Op } from "sequelize";
-import { log } from "actionhero";
+import { log, ParamsFrom } from "actionhero";
 import { CLS } from "../../modules/cls";
 import { PropertyOps } from "../../modules/ops/property";
 import { ImportOps } from "../../modules/ops/import";
 import { RecordOps } from "../../modules/ops/record";
+import { APIData } from "../../modules/apiData";
 
 export class ImportRecordProperties extends RetryableTask {
-  constructor() {
-    super();
-    this.name = "recordProperty:importRecordProperties";
-    this.description = "Import the GrouparooRecord Properties for a Property";
-    this.frequency = 0;
-    this.queue = "recordProperties";
-    this.inputs = {
-      recordIds: { required: true },
-      propertyIds: { required: true },
-    };
-  }
+  name = "recordProperty:importRecordProperties";
+  description = "Import the GrouparooRecord Properties for a Property";
+  frequency = 0;
+  queue = "recordProperties";
+  inputs = {
+    recordIds: { required: true, formatter: APIData.ensureArray },
+    propertyIds: { required: true, formatter: APIData.ensureArray },
+  };
 
-  async runWithinTransaction(params) {
+  async runWithinTransaction({
+    recordIds,
+    propertyIds,
+  }: ParamsFrom<ImportRecordProperties>) {
     const records = await GrouparooRecord.findAll({
-      where: { id: { [Op.in]: params.recordIds } },
+      where: { id: { [Op.in]: recordIds } },
       include: RecordProperty,
     });
     if (records.length === 0) return;
 
     const allProperties = await Property.findAllWithCache();
-    const properties = allProperties.filter((p) =>
-      params.propertyIds.includes(p.id)
-    );
+    const properties = allProperties.filter((p) => propertyIds.includes(p.id));
     if (properties.length === 0) return;
     const sourceIds = properties
       .map((p) => p.sourceId)
       .filter((v, i, a) => a.indexOf(v) === i);
     if (sourceIds.length > 1) {
       throw new Error(
-        `More than one source for properties ${params.propertyIds.join(", ")}`
+        `More than one source for properties ${propertyIds.join(", ")}`
       );
     }
 
@@ -71,7 +70,7 @@ export class ImportRecordProperties extends RetryableTask {
       for (const property of properties) {
         // dependencies are not ready
         dependencies[property.id]
-          .filter((dep) => !params.propertyIds.includes(dep.id))
+          .filter((dep) => !propertyIds.includes(dep.id))
           .forEach((dep) => {
             if (
               record.recordProperties.find((p) => p.propertyId === dep.id)

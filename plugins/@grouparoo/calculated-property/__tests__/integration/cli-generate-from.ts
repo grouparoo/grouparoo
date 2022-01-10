@@ -7,7 +7,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 });
 
 import { helper } from "@grouparoo/spec-helper";
-import { Generate } from "@grouparoo/core/src/bin/generate";
+import { Generate } from "@grouparoo/core/dist/bin/generate";
 
 process.env.GROUPAROO_CONFIG_DIR = `${os.tmpdir()}/test/${
   process.env.JEST_WORKER_ID
@@ -44,7 +44,7 @@ describe("calculated-property cli tests", () => {
 
   test("the calculated-property commands appear in the generate list", async () => {
     const command = new Generate();
-    await command.run({ params: { list: true } });
+    await command.run({ params: { list: "true" } });
 
     const output = messages.join(" ");
     expect(output).toContain(`Available Templates:`);

@@ -12,6 +12,7 @@ import {
   RecordProperty,
   Errors,
   GroupMember,
+  Group,
 } from "../../src";
 
 describe("models/export", () => {
@@ -47,7 +48,7 @@ describe("models/export", () => {
         rawValue: ["+1 412 897 0001", "+1 412 897 0002"],
       },
     };
-    const oldGroups = [];
+    const oldGroups: Group[] = [];
     const newGroups = ["cool-people"];
 
     _export = await Export.create({
@@ -121,7 +122,7 @@ describe("models/export", () => {
       date: [new Date(1).toISOString(), new Date(2).toISOString()],
       phoneNumber: ["+1 412 897 0001", "+1 412 897 0002"],
     };
-    const oldGroups = [];
+    const oldGroups: Group[] = [];
     const newGroups = ["cool-people"];
 
     const oldExport = await Export.create({
@@ -159,22 +160,22 @@ describe("models/export", () => {
 
   test("export serialization is OK with null values with types", async () => {
     const oldRecordProperties = {
-      string: { type: "string", rawValue: null },
-      email: { type: "email", rawValue: null },
-      integer: { type: "integer", rawValue: null },
-      float: { type: "float", rawValue: null },
-      date: { type: "date", rawValue: null },
-      phoneNumber: { type: "phoneNumber", rawValue: null },
+      string: { type: "string", rawValue: null as string },
+      email: { type: "email", rawValue: null as string },
+      integer: { type: "integer", rawValue: null as string },
+      float: { type: "float", rawValue: null as string },
+      date: { type: "date", rawValue: null as string },
+      phoneNumber: { type: "phoneNumber", rawValue: null as string },
     };
     const newRecordProperties = {
-      string: { type: "string", rawValue: [null, null] },
-      email: { type: "email", rawValue: [null, null] },
-      integer: { type: "integer", rawValue: [null, null] },
-      float: { type: "float", rawValue: [null, null] },
-      date: { type: "date", rawValue: [null, null] },
+      string: { type: "string", rawValue: [null, null] as string[] },
+      email: { type: "email", rawValue: [null, null] as string[] },
+      integer: { type: "integer", rawValue: [null, null] as string[] },
+      float: { type: "float", rawValue: [null, null] as string[] },
+      date: { type: "date", rawValue: [null, null] as string[] },
       phoneNumber: {
         type: "phoneNumber",
-        rawValue: [null, null],
+        rawValue: [null, null] as string[],
       },
     };
 
@@ -210,7 +211,7 @@ describe("models/export", () => {
   });
 
   test("export serialization is OK with null values without types", async () => {
-    const oldRecordProperties = {
+    const oldRecordProperties: Record<string, any> = {
       string: null,
       email: null,
       integer: null,
@@ -218,7 +219,7 @@ describe("models/export", () => {
       date: null,
       phoneNumber: null,
     };
-    const newRecordProperties = {
+    const newRecordProperties: Record<string, any[]> = {
       string: [null, null],
       email: [null, null],
       integer: [null, null],
@@ -287,7 +288,9 @@ describe("models/export", () => {
       where: { recordId: record.id },
     });
 
-    const rawProperties = JSON.parse(_export["dataValues"].newRecordProperties);
+    const rawProperties: Record<string, { type: string; rawValue: string }> =
+      // @ts-ignore
+      JSON.parse(_export["dataValues"].newRecordProperties);
 
     expect(rawProperties["primary-id"]).toEqual({
       type: "integer",
@@ -356,9 +359,9 @@ describe("models/export", () => {
     const _exports = await record.export(false, [], false);
     expect(_exports.length).toEqual(1);
 
-    const rawProperties = JSON.parse(
-      _exports[0]["dataValues"].newRecordProperties
-    );
+    const rawProperties: Record<string, { type: string; rawValue: string }> =
+      //@ts-ignore
+      JSON.parse(_exports[0]["dataValues"].newRecordProperties);
 
     expect(rawProperties["primary-id"]).toEqual({
       type: "integer",
@@ -571,7 +574,7 @@ describe("models/export", () => {
     });
 
     let logMsgs: string[] = [];
-    let spies = [];
+    const spies: jest.SpyInstance[] = [];
     beforeEach(async () => {
       logMsgs = [];
       spies.push(
@@ -683,7 +686,7 @@ describe("models/export", () => {
   });
 
   describe("errors", () => {
-    let errorExport;
+    let errorExport: Export;
     beforeEach(async () => {
       errorExport = await Export.create({
         destinationId: destination.id,
@@ -714,6 +717,7 @@ describe("models/export", () => {
 
     test("an export needs a valid level", async () => {
       errorExport.errorMessage = "interesting stuff happened!";
+      //@ts-ignore
       errorExport.errorLevel = "other";
       await expect(errorExport.save()).rejects.toThrow(/Validation error/);
     });

@@ -47,15 +47,18 @@ export namespace MustacheUtils {
     configObjects: AnyConfigurationObject[] = []
   ) {
     const keys = getMustacheVariables(string);
-    const properties = await api.sequelize.models.Property.findAll();
-    const searchItems: Array<{ id: string; key: string }> = [].concat(
+    const properties: Record<string, any>[] =
+      await api.sequelize.models.Property.findAll();
+    const searchItems: { id: string; key: string }[] = [].concat(
       properties.map((p) => {
         return { id: p["id"], key: p["key"] };
       }),
       configObjects
         .filter((c) => c.class.toLowerCase() === "property")
         .map((c) => {
-          return { id: c.id, key: c["key"] || c["name"] };
+          //@ts-ignore
+          const key: string = c["key"] || c["name"];
+          return { id: c.id, key };
         })
     );
 

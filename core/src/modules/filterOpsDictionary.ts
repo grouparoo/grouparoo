@@ -1,6 +1,6 @@
 import { SourceFilterMethodResponseRow } from "../classes/plugin";
 
-export const filterOpsDescriptions = {
+export const FilterOpsDescriptions = {
   eq: "equals",
   ne: "does not equal",
   exists: "exists with any value",
@@ -21,7 +21,7 @@ export function buildPropertyFilterDictionary(
   for (const option of options) {
     for (const op of option.ops) {
       if (!propertyFilterDictionary[op])
-        propertyFilterDictionary[op] = filterOpsDescriptions[op];
+        propertyFilterDictionary[op] = FilterOpsDescriptions[op];
     }
   }
   return propertyFilterDictionary;

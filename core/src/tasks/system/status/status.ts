@@ -1,24 +1,26 @@
-import { api, log, task, env } from "actionhero";
+import { api, log, task, env, ParamsFrom } from "actionhero";
 import { GrouparooCLI } from "../../../modules/cli";
 import { APM } from "../../../modules/apm";
 import { Status, FinalSummary } from "../../../modules/status";
 import { plugin } from "../../../modules/plugin";
 import { CLSTask } from "../../../classes/tasks/clsTask";
+import { Worker } from "node-resque";
+import { APIData } from "../../../modules/apiData";
 
 export class StatusTask extends CLSTask {
-  constructor() {
-    super();
-    this.name = "status";
-    this.description =
-      "Calculate and store status.  If we are running via the CLI, log it there too";
-    this.frequency = 1000 * 5; // every 5 seconds by default, but will be modified by `updateTaskFrequency` after the first run
-    this.queue = "system";
-    this.inputs = {
-      toStop: { required: false },
-    };
-  }
+  name = "status";
+  description =
+    "Calculate and store status.  If we are running via the CLI, log it there too";
+  frequency = 1000 * 5; // every 5 seconds by default, but will be modified by `updateTaskFrequency` after the first run
+  queue = "system";
+  inputs = {
+    toStop: { required: false, formatter: APIData.ensureBoolean },
+  };
 
-  async runWithinTransaction({ toStop }: { toStop: boolean }, worker) {
+  async runWithinTransaction(
+    { toStop }: ParamsFrom<StatusTask>,
+    worker: Worker
+  ) {
     return APM.wrap(this.name, "task", worker, async () => {
       const runMode = process.env.GROUPAROO_RUN_MODE;
 
@@ -95,9 +97,9 @@ export class StatusTask extends CLSTask {
   logSamples(samples: Status.StatusGetResponse) {
     if (env === "test") return;
 
-    const totalItems = [];
-    const pendingItems = [];
-    const pendingRuns = [];
+    const totalItems: Record<string, number[]>[] = [];
+    const pendingItems: Record<string, number[]>[] = [];
+    const pendingRuns: Record<string, string[]>[] = [];
     const pendingDeletions = [];
 
     const pendingCollection = samples["Run"]

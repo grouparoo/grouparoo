@@ -56,11 +56,11 @@ export interface PluginConnectionScheduleOption {
     sourceMapping: SimpleSourceOptions;
     properties: Property[];
   }) => Promise<
-    Array<{
+    {
       key: string;
       description?: string;
-      examples?: Array<any>;
-    }>
+      examples?: any[];
+    }[]
   >;
 }
 
@@ -320,7 +320,7 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   @BeforeSave
-  static async noUpdateIfLocked(instance) {
+  static async noUpdateIfLocked(instance: Schedule) {
     await LockableHelper.beforeSave(instance, ["state"]);
   }
 
@@ -397,7 +397,7 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   @BeforeDestroy
-  static async noDestroyIfLocked(instance) {
+  static async noDestroyIfLocked(instance: Schedule) {
     await LockableHelper.beforeDestroy(instance);
   }
 

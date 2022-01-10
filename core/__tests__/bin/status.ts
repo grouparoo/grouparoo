@@ -8,8 +8,8 @@ describe("bin/status", () => {
     resetSettings: true,
   });
 
-  let messages = [];
-  let spy;
+  let messages: string[] = [];
+  let spy: jest.SpyInstance;
 
   beforeEach(() => {
     messages = [];
@@ -37,7 +37,7 @@ describe("bin/status", () => {
 
   test("the status command can output json", async () => {
     const command = new StatusCLI();
-    const toStop = await command.run({ params: { json: true } });
+    const toStop = await command.run({ params: { json: "true" } });
     expect(toStop).toBe(true);
 
     const output = messages.join(" ");

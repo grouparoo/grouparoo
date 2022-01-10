@@ -8,14 +8,11 @@ import { Run } from "../../models/Run";
 import { RecordOps } from "../../modules/ops/record";
 
 export class GrouparooRecordsConfirm extends CLSTask {
-  constructor() {
-    super();
-    this.name = "records:confirm";
-    this.description = "Confirm that records still exist in the source";
-    this.frequency = 1000 * 30;
-    this.queue = "records";
-    this.inputs = {};
-  }
+  name = "records:confirm";
+  description = "Confirm that records still exist in the source";
+  frequency = 1000 * 30;
+  queue = "records";
+  inputs = {};
 
   async runWithinTransaction() {
     const limit: number = config.batchSize.imports;

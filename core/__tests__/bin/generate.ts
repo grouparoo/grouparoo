@@ -17,8 +17,8 @@ describe("bin/generate", () => {
     fs.emptyDirSync(process.env.GROUPAROO_CONFIG_DIR);
   });
 
-  let messages = [];
-  let spies = [];
+  let messages: string[] = [];
+  const spies: jest.SpyInstance[] = [];
 
   beforeEach(() => {
     messages = [];
@@ -40,7 +40,7 @@ describe("bin/generate", () => {
 
   test("the generate command can list templates", async () => {
     const command = new Generate();
-    await command.run({ params: { list: true } });
+    await command.run({ params: { list: "true" } });
 
     const output = messages.join(" ");
     expect(output).toContain(`Available Templates:`);
@@ -51,7 +51,7 @@ describe("bin/generate", () => {
   test("the generate command can filter the list of templates", async () => {
     const command = new Generate();
     await command.run({
-      params: { template: "group", list: true },
+      params: { template: "group", list: "true" },
     });
 
     const output = messages.join(" ");
@@ -95,7 +95,7 @@ describe("bin/generate", () => {
       params: {
         template: "group",
         id: "new-group",
-        overwrite: true,
+        overwrite: "true",
       },
     });
 
@@ -110,7 +110,7 @@ describe("bin/generate", () => {
       params: {
         template: "group",
         id: "New Group",
-        overwrite: true,
+        overwrite: "true",
       },
     });
 
@@ -127,7 +127,7 @@ describe("bin/generate", () => {
       params: {
         template: "group",
         id: "new-group",
-        overwrite: true,
+        overwrite: "true",
       },
     });
 

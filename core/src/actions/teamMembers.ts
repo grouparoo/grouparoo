@@ -1,24 +1,28 @@
+import { ParamsFrom } from "actionhero";
+import { WhereAttributeHash } from "sequelize";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
+import { ActionPermission } from "../models/Permission";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
 import { APIData } from "../modules/apiData";
 import { GrouparooSubscription } from "../modules/grouparooSubscription";
 
 export class TeamMembersList extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "teamMembers:list";
-    this.description = "view all the members of a team";
-    this.outputExample = {};
-    this.permission = { topic: "team", mode: "read" };
-    this.inputs = {
-      id: { required: false },
-      teamId: { required: false },
-    };
-  }
+  name = "teamMembers:list";
+  description = "view all the members of a team";
+  outputExample = {};
+  permission: ActionPermission = { topic: "team", mode: "read" };
+  inputs = {
+    id: { required: false },
+    teamId: { required: false },
+  };
 
-  async runWithinTransaction({ params }) {
-    const where = {};
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<TeamMembersList>;
+  }) {
+    const where: WhereAttributeHash = {};
     if (params.id) where["teamId"] = params.id;
     if (params.teamId) where["teamId"] = params.teamId;
 
@@ -34,27 +38,28 @@ export class TeamMembersList extends AuthenticatedAction {
 }
 
 export class TeamMemberCreate extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "teamMember:create";
-    this.description = "create a team member";
-    this.outputExample = {};
-    this.permission = { topic: "team", mode: "write" };
-    this.inputs = {
-      teamId: { required: true },
-      firstName: { required: true },
-      lastName: { required: true },
-      password: { required: true },
-      email: { required: true },
-      subscribed: {
-        required: false,
-        default: true,
-        formatter: APIData.ensureBoolean,
-      },
-    };
-  }
+  name = "teamMember:create";
+  description = "create a team member";
+  outputExample = {};
+  permission: ActionPermission = { topic: "team", mode: "write" };
+  inputs = {
+    teamId: { required: true },
+    firstName: { required: true },
+    lastName: { required: true },
+    password: { required: true },
+    email: { required: true },
+    subscribed: {
+      required: false,
+      default: true,
+      formatter: APIData.ensureBoolean,
+    },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<TeamMemberCreate>;
+  }) {
     const team = await Team.findById(params.teamId);
 
     const teamMember = new TeamMember({
@@ -74,18 +79,19 @@ export class TeamMemberCreate extends AuthenticatedAction {
 }
 
 export class TeamMemberView extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "teamMember:view";
-    this.description = "view a team member";
-    this.outputExample = {};
-    this.permission = { topic: "team", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "teamMember:view";
+  description = "view a team member";
+  outputExample = {};
+  permission: ActionPermission = { topic: "team", mode: "read" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<TeamMemberView>;
+  }) {
     const teamMember = await TeamMember.findOne({
       where: { id: params.id },
       include: [Team],
@@ -100,23 +106,24 @@ export class TeamMemberView extends AuthenticatedAction {
 }
 
 export class TeamMemberEdit extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "teamMember:edit";
-    this.description = "edit a team member";
-    this.outputExample = {};
-    this.permission = { topic: "team", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-      firstName: { required: false },
-      lastName: { required: false },
-      password: { required: false },
-      email: { required: false },
-      teamId: { required: false },
-    };
-  }
+  name = "teamMember:edit";
+  description = "edit a team member";
+  outputExample = {};
+  permission: ActionPermission = { topic: "team", mode: "write" };
+  inputs = {
+    id: { required: true },
+    firstName: { required: false },
+    lastName: { required: false },
+    password: { required: false },
+    email: { required: false },
+    teamId: { required: false },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<TeamMemberEdit>;
+  }) {
     const teamMember = await TeamMember.findById(params.id);
 
     await teamMember.update(params);
@@ -128,22 +135,19 @@ export class TeamMemberEdit extends AuthenticatedAction {
 }
 
 export class TeamMemberDestroy extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "teamMember:destroy";
-    this.description = "destroy a team member";
-    this.outputExample = {};
-    this.permission = { topic: "team", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "teamMember:destroy";
+  description = "destroy a team member";
+  outputExample = {};
+  permission: ActionPermission = { topic: "team", mode: "write" };
+  inputs = {
+    id: { required: true },
+  };
 
   async runWithinTransaction({
     params,
     session: { teamMember: myself },
   }: {
-    params: { id: string };
+    params: ParamsFrom<TeamMemberDestroy>;
     session: { teamMember: TeamMember };
   }) {
     const teamMember = await TeamMember.findById(params.id);

@@ -4,15 +4,11 @@ import { AppRefreshQuery } from "../../models/AppRefreshQuery";
 import { CLS } from "../../modules/cls";
 
 export class AppRefreshQueriesCheck extends CLSTask {
-  constructor() {
-    super();
-    this.name = "appRefreshQueries:check";
-    this.description = "check all appRefreshQueries and run them";
-    this.frequency =
-      process.env.GROUPAROO_RUN_MODE === "cli:run" ? 0 : 1000 * 60; // Run every minute
-    this.queue = "apps";
-    this.inputs = {};
-  }
+  name = "appRefreshQueries:check";
+  description = "check all appRefreshQueries and run them";
+  frequency = process.env.GROUPAROO_RUN_MODE === "cli:run" ? 0 : 1000 * 60; // Run every minute
+  queue = "apps";
+  inputs = {};
 
   async runWithinTransaction() {
     const appRefreshQueries = await AppRefreshQuery.findAll();

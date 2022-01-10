@@ -451,8 +451,8 @@ export class Destination extends LoggedModel<Destination> {
     // optional rules can't be validated...
   }
 
-  async parameterizedOptions(): Promise<SimpleDestinationOptions> {
-    const parameterizedOptions = {};
+  async parameterizedOptions() {
+    const parameterizedOptions: SimpleDestinationOptions = {};
     const options = await this.getOptions();
     const keys = Object.keys(options);
     for (const i in keys) {
@@ -699,12 +699,12 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @BeforeSave
-  static async noUpdateIfLocked(instance) {
+  static async noUpdateIfLocked(instance: Destination) {
     await LockableHelper.beforeSave(instance, ["state"]);
   }
 
   @BeforeDestroy
-  static async noDestroyIfLocked(instance) {
+  static async noDestroyIfLocked(instance: Destination) {
     await LockableHelper.beforeDestroy(instance);
   }
 

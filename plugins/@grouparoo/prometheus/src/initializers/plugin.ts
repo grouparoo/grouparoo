@@ -7,7 +7,7 @@ declare module "actionhero" {
     prometheus: {
       registry: Registry;
       observe: () => Promise<void>;
-      gauges: Array<Gauge<any>>;
+      gauges: Gauge<any>[];
     };
   }
 }

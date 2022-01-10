@@ -701,6 +701,7 @@ describe("modules/configWriter", () => {
     test("schedules can provide their config objects", async () => {
       const schedule: Schedule = await helper.factories.schedule(source);
       const filterObj = { key: "id", match: "0", op: "gt" };
+      // @ts-ignore
       await schedule.setFilters([filterObj]);
       const config = await schedule.getConfigObject();
 
@@ -824,6 +825,7 @@ describe("modules/configWriter", () => {
 
     test("properties can provide their config objects", async () => {
       const filterObj = { key: "id", match: "0", op: "gt" };
+      // @ts-ignore
       await property.setFilters([filterObj]);
 
       const config = await property.getConfigObject();
@@ -965,7 +967,7 @@ describe("modules/configWriter", () => {
       );
       const app: App = await destination.$get("app");
 
-      const destinationGroupMemberships = {};
+      const destinationGroupMemberships: Record<string, string> = {};
       destinationGroupMemberships[group.id] = "My Dest Tag";
       await destination.setDestinationGroupMemberships(
         destinationGroupMemberships
@@ -1050,7 +1052,7 @@ describe("modules/configWriter", () => {
 
     test("record without a primary key property value will not be persisted", async () => {
       const record: GrouparooRecord = await helper.factories.record();
-      const properties = { [bootstrapPropertyId]: [null] };
+      const properties = { [bootstrapPropertyId]: [null as string] };
       await record.addOrUpdateProperties(properties);
       const config = await record.getConfigObject();
       expect(config).toBeUndefined();

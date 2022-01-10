@@ -1,5 +1,6 @@
 import { OptionallyAuthenticatedAction } from "../classes/actions/optionallyAuthenticatedAction";
 import { GrouparooModel } from "../models/GrouparooModel";
+import { ActionPermission } from "../models/Permission";
 import { Setting } from "../models/Setting";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
@@ -20,17 +21,13 @@ type NavigationItem = {
 };
 
 export class NavigationList extends OptionallyAuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "navigation:list";
-    this.description =
-      "returns a list of pages for the UI navigation for this user";
-    this.permission = { topic: "*", mode: "read" };
-    this.outputExample = {};
-    this.inputs = {
-      modelId: { required: false },
-    };
-  }
+  name = "navigation:list";
+  description = "returns a list of pages for the UI navigation for this user";
+  permission: ActionPermission = { topic: "*", mode: "read" };
+  outputExample = {};
+  inputs = {
+    modelId: { required: false },
+  };
 
   async runWithinTransaction({
     session: { teamMember },

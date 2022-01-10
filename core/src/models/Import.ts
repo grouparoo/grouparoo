@@ -40,7 +40,7 @@ const STATES = [
   "complete",
 ] as const;
 
-const STATE_TRANSITIONS = [
+const STATE_TRANSITIONS: StateMachine.StateTransition[] = [
   { from: "associating", to: "failed", checks: [] },
   { from: "associating", to: "importing", checks: [] },
   { from: "importing", to: "failed", checks: [] },

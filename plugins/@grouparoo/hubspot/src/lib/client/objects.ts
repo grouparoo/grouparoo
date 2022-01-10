@@ -28,7 +28,7 @@ export default class Contact {
     primaryKey: string,
     foreignKeys: string[],
     properties: string[] = []
-  ): Promise<Array<Record<string, string | number | Date>>> {
+  ): Promise<Record<string, string | number | Date>[]> {
     if (!properties.includes(primaryKey)) {
       properties.push(primaryKey);
     }

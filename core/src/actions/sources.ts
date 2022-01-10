@@ -1,4 +1,4 @@
-import { api } from "actionhero";
+import { api, ParamsFrom } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { App } from "../models/App";
 import { Source } from "../models/Source";
@@ -13,32 +13,31 @@ import { PropertyTypes } from "../models/Property";
 import { AsyncReturnType } from "type-fest";
 import { TableSpeculation } from "../modules/tableSpeculation";
 import { APIData } from "../modules/apiData";
+import { ActionPermission } from "../models/Permission";
+import { WhereAttributeHash } from "sequelize";
 
 export class SourcesList extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "sources:list";
-    this.description = "list all the sources";
-    this.outputExample = {};
-    this.permission = { topic: "source", mode: "read" };
-    this.inputs = {
-      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
-      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
-      state: { required: false },
-      modelId: { required: false },
-      order: {
-        required: false,
-        formatter: APIData.ensureObject,
-        default: [
-          ["appId", "desc"],
-          ["createdAt", "asc"],
-        ],
-      },
-    };
-  }
+  name = "sources:list";
+  description = "list all the sources";
+  outputExample = {};
+  permission: ActionPermission = { topic: "source", mode: "read" };
+  inputs = {
+    limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+    offset: { required: true, default: 0, formatter: APIData.ensureNumber },
+    state: { required: false },
+    modelId: { required: false },
+    order: {
+      required: false,
+      formatter: APIData.ensureArray,
+      default: [
+        ["appId", "desc"],
+        ["createdAt", "asc"],
+      ],
+    },
+  };
 
-  async runWithinTransaction({ params }) {
-    const where = {};
+  async runWithinTransaction({ params }: { params: ParamsFrom<SourcesList> }) {
+    const where: WhereAttributeHash = {};
     if (params.state) where["state"] = params.state;
     if (params.modelId) where["modelId"] = params.modelId;
 
@@ -59,24 +58,21 @@ export class SourcesList extends AuthenticatedAction {
 }
 
 export class SourceConnectionApps extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "sources:connectionApps";
-    this.description =
-      "enumerate the connection and app pairs for creating a new source";
-    this.outputExample = {};
-    this.permission = { topic: "source", mode: "read" };
-    this.inputs = {};
-  }
+  name = "sources:connectionApps";
+  description =
+    "enumerate the connection and app pairs for creating a new source";
+  outputExample = {};
+  permission: ActionPermission = { topic: "source", mode: "read" };
+  inputs = {};
 
   async runWithinTransaction() {
     const apps = await App.findAll();
     const existingAppTypes = apps.map((a) => a.type);
 
-    const connectionApps: Array<{
+    const connectionApps: {
       app: AsyncReturnType<App["apiData"]>;
       connection: PluginConnectionApiData;
-    }> = [];
+    }[] = [];
 
     let importConnections: PluginConnection[] = [];
     api.plugins.plugins.forEach((plugin: GrouparooPlugin) => {
@@ -98,7 +94,8 @@ export class SourceConnectionApps extends AuthenticatedAction {
       for (const connection of importConnections) {
         if (connection.apps.includes(app.type)) {
           const methods = Object.keys(connection.methods).filter(
-            (key) => typeof connection.methods[key] === "function"
+            (key: keyof PluginConnection["methods"]) =>
+              typeof connection.methods[key] === "function"
           );
           connectionApps.push({
             app: await app.apiData(),
@@ -119,24 +116,21 @@ export class SourceConnectionApps extends AuthenticatedAction {
 }
 
 export class SourceCreate extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "source:create";
-    this.description = "create a source";
-    this.outputExample = {};
-    this.permission = { topic: "source", mode: "write" };
-    this.inputs = {
-      appId: { required: true },
-      modelId: { required: true },
-      name: { required: false },
-      type: { required: true },
-      state: { required: false },
-      options: { required: false, formatter: APIData.ensureObject },
-      mapping: { required: false, formatter: APIData.ensureObject },
-    };
-  }
+  name = "source:create";
+  description = "create a source";
+  outputExample = {};
+  permission: ActionPermission = { topic: "source", mode: "write" };
+  inputs = {
+    appId: { required: true },
+    modelId: { required: true },
+    name: { required: false },
+    type: { required: true },
+    state: { required: false },
+    options: { required: false, formatter: APIData.ensureObject },
+    mapping: { required: false, formatter: APIData.ensureObject },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<SourceCreate> }) {
     const source = await Source.create({
       appId: params.appId,
       modelId: params.modelId,
@@ -155,42 +149,36 @@ export class SourceCreate extends AuthenticatedAction {
 }
 
 export class SourceView extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "source:view";
-    this.description = "view a source";
-    this.outputExample = {};
-    this.permission = { topic: "source", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "source:view";
+  description = "view a source";
+  outputExample = {};
+  permission: ActionPermission = { topic: "source", mode: "read" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<SourceView> }) {
     const source = await Source.findById(params.id);
     return { source: await source.apiData() };
   }
 }
 
 export class SourceEdit extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "source:edit";
-    this.description = "edit a source";
-    this.outputExample = {};
-    this.permission = { topic: "source", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-      appId: { required: false },
-      name: { required: false },
-      type: { required: false },
-      state: { required: false },
-      options: { required: false, formatter: APIData.ensureObject },
-      mapping: { required: false, formatter: APIData.ensureObject },
-    };
-  }
+  name = "source:edit";
+  description = "edit a source";
+  outputExample = {};
+  permission: ActionPermission = { topic: "source", mode: "write" };
+  inputs = {
+    id: { required: true },
+    appId: { required: false },
+    name: { required: false },
+    type: { required: false },
+    state: { required: false },
+    options: { required: false, formatter: APIData.ensureObject },
+    mapping: { required: false, formatter: APIData.ensureObject },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<SourceEdit> }) {
     const source = await Source.findById(params.id);
     if (params.options) await source.setOptions(params.options);
     if (params.mapping) await source.setMapping(params.mapping);
@@ -204,23 +192,27 @@ export class SourceEdit extends AuthenticatedAction {
 }
 
 export class SourceBootstrapUniqueProperty extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "source:bootstrapUniqueProperty";
-    this.description =
-      "bootstrap a new unique record property for this source before the mapping is set";
-    this.outputExample = {};
-    this.permission = { topic: "source", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-      key: { required: false },
-      type: { required: false },
-      mappedColumn: { required: true },
-      sourceOptions: { required: false },
-    };
-  }
+  name = "source:bootstrapUniqueProperty";
+  description =
+    "bootstrap a new unique record property for this source before the mapping is set";
+  outputExample = {};
+  permission: ActionPermission = { topic: "source", mode: "write" };
+  inputs = {
+    id: { required: true },
+    key: { required: true },
+    type: {
+      required: true,
+      formatter: (p: unknown) => p as typeof PropertyTypes[number],
+    },
+    mappedColumn: { required: true },
+    sourceOptions: { required: false, formatter: APIData.ensureObject },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<SourceBootstrapUniqueProperty>;
+  }) {
     const source = await Source.findById(params.id);
 
     const property = await source.bootstrapUniqueProperty({
@@ -239,39 +231,41 @@ export class SourceBootstrapUniqueProperty extends AuthenticatedAction {
   }
 }
 
-export class sourceConnectionOptions extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "source:connectionOptions";
-    this.description = "return option choices from this source";
-    this.outputExample = {};
-    this.permission = { topic: "source", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-      options: { required: false, formatter: APIData.ensureObject },
-    };
-  }
+export class SourceConnectionOptions extends AuthenticatedAction {
+  name = "source:connectionOptions";
+  description = "return option choices from this source";
+  outputExample = {};
+  permission: ActionPermission = { topic: "source", mode: "read" };
+  inputs = {
+    id: { required: true },
+    options: { required: false, formatter: APIData.ensureObject },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<SourceConnectionOptions>;
+  }) {
     const source = await Source.findById(params.id);
     return { options: await source.sourceConnectionOptions(params.options) };
   }
 }
 
 export class SourcePreview extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "source:preview";
-    this.description = "preview the data from this source";
-    this.outputExample = {};
-    this.permission = { topic: "source", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-      options: { required: false, formatter: APIData.ensureObject },
-    };
-  }
+  name = "source:preview";
+  description = "preview the data from this source";
+  outputExample = {};
+  permission: ActionPermission = { topic: "source", mode: "read" };
+  inputs = {
+    id: { required: true },
+    options: { required: false, formatter: APIData.ensureObject },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<SourcePreview>;
+  }) {
     const source = await Source.findById(params.id);
     const preview = await source.sourcePreview(params.options);
 
@@ -299,36 +293,38 @@ export class SourcePreview extends AuthenticatedAction {
 }
 
 export class SourceDefaultPropertyOptions extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "source:defaultPropertyOptions";
-    this.description = "view the default plugin options for a source";
-    this.outputExample = {};
-    this.permission = { topic: "source", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "source:defaultPropertyOptions";
+  description = "view the default plugin options for a source";
+  outputExample = {};
+  permission: ActionPermission = { topic: "source", mode: "read" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<SourceDefaultPropertyOptions>;
+  }) {
     const source = await Source.findById(params.id);
     return { defaultPropertyOptions: await source.defaultPropertyOptions() };
   }
 }
 
 export class SourceDestroy extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "source:destroy";
-    this.description = "destroy a source";
-    this.outputExample = {};
-    this.permission = { topic: "source", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "source:destroy";
+  description = "destroy a source";
+  outputExample = {};
+  permission: ActionPermission = { topic: "source", mode: "write" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<SourceDestroy>;
+  }) {
     const source = await Source.findById(params.id);
     await source.destroy();
     await ConfigWriter.run();

@@ -96,7 +96,7 @@ describe("models/exportProcessor", () => {
   });
 
   describe("errors", () => {
-    let processor;
+    let processor: ExportProcessor;
     beforeEach(async () => {
       processor = await ExportProcessor.create({
         destinationId: destination.id,
@@ -123,6 +123,7 @@ describe("models/exportProcessor", () => {
 
     test("an export processor needs a valid level", async () => {
       processor.errorMessage = "interesting stuff happened!";
+      // @ts-ignore
       processor.errorLevel = "other";
       await expect(processor.save()).rejects.toThrow(/Validation error/);
     });

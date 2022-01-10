@@ -1,21 +1,19 @@
+import { ParamsFrom } from "actionhero";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { Export } from "../../models/Export";
 import { GrouparooRecord } from "../../models/GrouparooRecord";
 
 export class RecordDestroy extends CLSTask {
-  constructor() {
-    super();
-    this.name = "record:destroy";
-    this.description =
-      "Export and destroy records that no longer have any directly mapped properties";
-    this.frequency = 0;
-    this.queue = "records";
-    this.inputs = {
-      recordId: { required: true },
-    };
-  }
+  name = "record:destroy";
+  description =
+    "Export and destroy records that no longer have any directly mapped properties";
+  frequency = 0;
+  queue = "records";
+  inputs = {
+    recordId: { required: true },
+  };
 
-  async runWithinTransaction({ recordId }: { recordId: string }) {
+  async runWithinTransaction({ recordId }: ParamsFrom<RecordDestroy>) {
     const record = await GrouparooRecord.findOne({
       where: { id: recordId, state: ["ready", "deleted"] },
     });

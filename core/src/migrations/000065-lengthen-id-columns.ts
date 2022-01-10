@@ -31,7 +31,7 @@ const tables = {
   sources: ["appId"],
   teamMembers: ["teamId"],
   teams: [],
-};
+} as const;
 
 const runMigration = async ({
   maxIdLength,
@@ -44,7 +44,7 @@ const runMigration = async ({
 }) => {
   const dialect = MigrationUtils.getDialect(queryInterface);
 
-  const changeColumn = async (tableName, columnName) => {
+  const changeColumn = async (tableName: string, columnName: string) => {
     if (dialect !== "sqlite") {
       const query = `ALTER TABLE "${tableName}" ALTER COLUMN "${columnName}" SET DATA TYPE varchar(${maxIdLength}); `;
       await queryInterface.sequelize.query(query);

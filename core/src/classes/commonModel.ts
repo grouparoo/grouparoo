@@ -21,17 +21,17 @@ export abstract class CommonModel<T> extends Model {
   id: string;
 
   @BeforeCreate
-  static generateId(instance) {
+  static generateId(instance: CommonModel<any>) {
     if (!instance.id) instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
   }
 
   @BeforeBulkCreate
-  static generateIds(instances) {
+  static generateIds(instances: CommonModel<any>[]) {
     instances.forEach((instance) => this.generateId(instance));
   }
 
   @BeforeCreate
-  static validateId(instance) {
+  static validateId(instance: CommonModel<any>) {
     const id: string = instance.id;
     let failing = false;
     if (id.length > 191) failing = true;
@@ -45,7 +45,7 @@ export abstract class CommonModel<T> extends Model {
   }
 
   @BeforeBulkCreate
-  static validateIds(instances) {
+  static validateIds(instances: CommonModel<any>[]) {
     instances.forEach((instance) => this.validateId(instance));
   }
 

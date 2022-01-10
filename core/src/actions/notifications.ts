@@ -1,32 +1,35 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Notification } from "../models/Notification";
-import { Op } from "sequelize";
+import { Op, WhereAttributeHash } from "sequelize";
 import { APIData } from "../modules/apiData";
+import { ActionPermission } from "../models/Permission";
+import { ParamsFrom } from "actionhero";
 
 export class NotificationsList extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "notifications:list";
-    this.description = "list notification";
-    this.outputExample = {};
-    this.permission = { topic: "notification", mode: "read" };
-    this.inputs = {
-      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
-      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
-      order: {
-        required: false,
-        formatter: APIData.ensureObject,
-        default: [["createdAt", "desc"]],
-      },
-    };
-  }
+  name = "notifications:list";
+  description = "list notification";
+  outputExample = {};
+  permission: ActionPermission = { topic: "notification", mode: "read" };
+  inputs = {
+    limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+    offset: { required: true, default: 0, formatter: APIData.ensureNumber },
+    order: {
+      required: false,
+      formatter: APIData.ensureArray,
+      default: [["createdAt", "desc"]],
+    },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<NotificationsList>;
+  }) {
     const search = {
       limit: params.limit,
       offset: params.offset,
       order: params.order,
-      where: {},
+      where: {} as WhereAttributeHash,
     };
 
     const total = await Notification.count(search);
@@ -46,18 +49,19 @@ export class NotificationsList extends AuthenticatedAction {
 }
 
 export class NotificationView extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "notification:view";
-    this.description = "view a notification";
-    this.outputExample = {};
-    this.permission = { topic: "notification", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "notification:view";
+  description = "view a notification";
+  outputExample = {};
+  permission: ActionPermission = { topic: "notification", mode: "read" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<NotificationView>;
+  }) {
     const notification = await Notification.findById(params.id);
     await notification.update({ readAt: new Date() });
     return { notification: await notification.apiData() };

@@ -42,7 +42,7 @@ describe("modules/cls", () => {
 
   describe("#afterCommit", () => {
     test("in a transaction, deferred jobs will be run afterwords", async () => {
-      const results = [];
+      const results = [] as string[];
       const runner = async () => {
         await CLS.afterCommit(() => results.push("side-effect-1"));
         await CLS.afterCommit(() => results.push("side-effect-2"));
@@ -54,7 +54,7 @@ describe("modules/cls", () => {
     });
 
     test("without a transaction, deferred jobs will be run in-line", async () => {
-      const results = [];
+      const results = [] as string[];
       const runner = async () => {
         await CLS.afterCommit(() => results.push("side-effect-1"));
         await CLS.afterCommit(() => results.push("side-effect-2"));

@@ -4,27 +4,22 @@ import { Import } from "../../models/Import";
 import { Destination } from "../../models/Destination";
 import { Group } from "../../models/Group";
 import { RetryableTask } from "../../classes/tasks/retryableTask";
-import { env, log } from "actionhero";
+import { env, log, ParamsFrom } from "actionhero";
 import { DestinationOps } from "../../modules/ops/destination";
+import { APIData } from "../../modules/apiData";
 
 export class RecordExport extends RetryableTask {
-  constructor() {
-    super();
-    this.name = "record:export";
-    this.description =
-      "export this record to the destinations who want to know";
-    this.frequency = 0;
-    this.queue = "exports";
-    this.inputs = {
-      recordId: { required: true },
-      force: { required: false },
-    };
-  }
+  name = "record:export";
+  description = "export this record to the destinations who want to know";
+  frequency = 0;
+  queue = "exports";
+  inputs = {
+    recordId: { required: true },
+    force: { required: false, formatter: APIData.ensureBoolean },
+  };
 
-  async runWithinTransaction(params) {
-    const record = await GrouparooRecord.findOne({
-      where: { id: params.recordId },
-    });
+  async runWithinTransaction({ force, recordId }: ParamsFrom<RecordExport>) {
+    const record = await GrouparooRecord.findOne({ where: { id: recordId } });
 
     if (!record) return; // the record may have been deleted or merged by the time this task ran
     if (record.state !== "ready") return;
@@ -81,7 +76,7 @@ export class RecordExport extends RetryableTask {
         await destinations[i].exportRecord(
           record,
           false,
-          params.force ? params.force : undefined
+          force ? force : undefined
         );
       }
 

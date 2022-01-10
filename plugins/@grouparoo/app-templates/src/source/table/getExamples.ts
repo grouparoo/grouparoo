@@ -31,11 +31,11 @@ export interface GetColumnExamplesMethod {
     getSampleRows: GetSampleRowsMethod;
     getColumns: GetColumnDefinitionsMethod;
   }): Promise<
-    Array<{
+    {
       key: string;
       description?: string;
-      examples?: Array<DataResponse>;
-    }>
+      examples?: DataResponse[];
+    }[]
   >;
 }
 

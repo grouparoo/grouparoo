@@ -69,10 +69,10 @@ const mapTypesFromHubspotToGrouparoo = (fieldKey, hubspotType) => {
 export const getRequiredFields = (
   customObject: CustomObjectHandler,
   primaryKey: string
-): Array<{
+): {
   key: string;
   type: DestinationMappingOptionsResponseType;
-}> => {
+}[] => {
   const requiredFields = customObject.getRequiredProperties();
   if (!requiredFields.includes(primaryKey)) {
     requiredFields.push(primaryKey);
@@ -96,11 +96,11 @@ const isImportant = (customObject: CustomObjectHandler, key): Boolean => {
 export const getObjectFields = (
   customObject: CustomObjectHandler,
   requiredFields: string[]
-): Array<{
+): {
   key: string;
   type: DestinationMappingOptionsResponseType;
   important?: boolean;
-}> => {
+}[] => {
   const properties = customObject.getProperties();
   const out = [];
   for (const property of properties) {

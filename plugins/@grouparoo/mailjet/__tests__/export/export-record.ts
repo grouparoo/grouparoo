@@ -85,7 +85,7 @@ async function deleteLists(suppressErrors) {
   }
 }
 
-function getUserProp(userProps: Array<any>, prop: string) {
+function getUserProp(userProps: any[], prop: string) {
   const props = userProps.filter((p) => p.Name === prop);
   return props.length > 0 ? props[0]["Value"] : null;
 }

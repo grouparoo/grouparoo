@@ -9,6 +9,7 @@ import {
   App,
   plugin,
   GrouparooModel,
+  ErrorWithRecordId,
 } from "../../../src";
 
 describe("tasks/export:sendBatch", () => {
@@ -67,7 +68,7 @@ describe("tasks/export:sendBatch", () => {
       await api.resque.queue.connection.redis.flushdb();
       await Run.truncate();
 
-      const destinationGroupMemberships = {};
+      const destinationGroupMemberships: Record<string, string> = {};
       destinationGroupMemberships[group.id] = group.name;
       await destination.setDestinationGroupMemberships(
         destinationGroupMemberships
@@ -144,8 +145,8 @@ describe("tasks/export:sendBatch", () => {
 
       let exportProfilesResponse = {
         success: true,
-        errors: undefined,
-        retryDelay: undefined,
+        errors: undefined as ErrorWithRecordId[],
+        retryDelay: undefined as number,
       };
 
       beforeAll(async () => {
@@ -260,7 +261,7 @@ describe("tasks/export:sendBatch", () => {
 
       test("if the export fails with a retryDelay, the export will have the error message appended", async () => {
         // this export will fail
-        const error = new Error("oh no!");
+        const error = new Error("oh no!") as ErrorWithRecordId;
         error["recordId"] = record.id;
         exportProfilesResponse = {
           success: false,
@@ -294,7 +295,7 @@ describe("tasks/export:sendBatch", () => {
 
       test("if the export fails without a retryDelay, the export will have the error message appended", async () => {
         // this export will fail
-        const error = new Error("oh no!");
+        const error = new Error("oh no!") as ErrorWithRecordId;
         error["recordId"] = record.id;
         exportProfilesResponse = {
           success: false,

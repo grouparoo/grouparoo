@@ -145,12 +145,12 @@ export namespace Status {
 }
 
 export namespace FinalSummary {
-  export type FinalSummaryLogArray = Array<
+  export type FinalSummaryLogArray = (
     | FinalSummaryReporters.Sources.SourceData[]
     | FinalSummaryReporters.GrouparooRecords.RecordData[]
     | FinalSummaryReporters.Destinations.DestinationData[]
     | FinalSummaryReporters.Warnings.WarningData[]
-  >;
+  )[];
 
   export async function getFinalSummary() {
     const finalSummaryLogs: FinalSummaryLogArray = [];

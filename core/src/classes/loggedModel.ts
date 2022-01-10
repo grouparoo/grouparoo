@@ -1,14 +1,13 @@
+import { Log } from "../models/Log";
+import { config, chatRoom } from "actionhero";
+import { modelName } from "../modules/modelName";
+import { CommonModel } from "./commonModel";
 import {
   AfterCreate,
   AfterUpdate,
   AfterDestroy,
   AfterBulkCreate,
 } from "sequelize-typescript";
-
-import { Log } from "../models/Log";
-import { config, chatRoom } from "actionhero";
-import { modelName } from "../modules/modelName";
-import { CommonModel } from "./commonModel";
 
 function filteredParams() {
   let filteredParams: string[] = [];
@@ -22,7 +21,7 @@ function filteredParams() {
 
 export abstract class LoggedModel<T> extends CommonModel<T> {
   async filteredDataForLogging() {
-    let apiData = {};
+    let apiData: Record<string, any> = {};
     try {
       apiData = await this.apiData();
     } catch {}
@@ -39,11 +38,13 @@ export abstract class LoggedModel<T> extends CommonModel<T> {
   async logMessage(verb: "create" | "update" | "destroy") {
     let message = "";
     let primaryName = this.id;
-    const possibleNames = ["name", "key", "email", "path"];
+    const possibleNames = ["name", "key", "email", "path"] as const;
     const _filteredParams = filteredParams();
-    for (let i in possibleNames) {
-      if (this[possibleNames[i]]) {
-        primaryName = this[possibleNames[i]];
+    for (const possibleName of possibleNames) {
+      //@ts-ignore
+      if (this[possibleName]) {
+        //@ts-ignore
+        primaryName = this[possibleName];
         break;
       }
     }
@@ -53,10 +54,11 @@ export abstract class LoggedModel<T> extends CommonModel<T> {
         message = `${modelName(this)} "${primaryName}" created`;
         break;
       case "update":
-        const changedValueStrings = [];
-        const changedKeys = this.changed() as Array<string>;
+        const changedValueStrings: string[] = [];
+        const changedKeys = this.changed();
         if (changedKeys) {
           changedKeys.forEach((k) => {
+            //@ts-ignore
             let value = this[k];
             if (_filteredParams.includes(k)) value = "** filtered **";
             changedValueStrings.push(`${k} -> ${value}`);
@@ -80,7 +82,7 @@ export abstract class LoggedModel<T> extends CommonModel<T> {
   // --- Class Methods --- //
 
   @AfterCreate
-  static async logCreate(instance) {
+  static async logCreate(instance: LoggedModel<any>) {
     let message = `${modelName(this)} "${instance.id}" created`;
     try {
       message = await instance.logMessage("create");
@@ -98,7 +100,7 @@ export abstract class LoggedModel<T> extends CommonModel<T> {
   }
 
   @AfterBulkCreate
-  static async logBulkCreate(instances) {
+  static async logBulkCreate(instances: LoggedModel<any>[]) {
     const bulkParams = [];
 
     for (const instance of instances) {
@@ -122,7 +124,7 @@ export abstract class LoggedModel<T> extends CommonModel<T> {
   }
 
   @AfterCreate
-  static async broadcast(instance) {
+  static async broadcast(instance: LoggedModel<any>) {
     try {
       await chatRoom.broadcast({}, `model:${modelName(instance)}`, {
         model: await instance.apiData(),
@@ -132,7 +134,7 @@ export abstract class LoggedModel<T> extends CommonModel<T> {
   }
 
   @AfterUpdate
-  static async logUpdate(instance) {
+  static async logUpdate(instance: LoggedModel<any>) {
     let message = `${modelName(this)} "${instance.id}" updated`;
     try {
       message = await instance.logMessage("update");
@@ -150,7 +152,7 @@ export abstract class LoggedModel<T> extends CommonModel<T> {
   }
 
   @AfterDestroy
-  static async logDestroy(instance) {
+  static async logDestroy(instance: LoggedModel<any>) {
     let message = `${modelName(this)} "${instance.id}" destroyed`;
     try {
       message = await instance.logMessage("destroy");

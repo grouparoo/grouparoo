@@ -63,7 +63,7 @@ export namespace MappingHelper {
   }
 
   export async function setMapping(
-    instance: Source | Destination,
+    instance: (Source | Destination) & { afterSetMapping?: Function },
     mappings: Mappings
   ) {
     delete instance.mappings;

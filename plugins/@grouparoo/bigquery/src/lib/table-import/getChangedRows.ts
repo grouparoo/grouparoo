@@ -52,8 +52,8 @@ export const getChangedRows: GetChangedRowsMethod = async ({
 export async function makeHighwaterWhereClause(
   columns: ColumnDefinitionMap,
   highWaterMarkCondition: MatchCondition,
-  params: Array<any>,
-  types: Array<any>
+  params: any[],
+  types: any[]
 ): Promise<string> {
   let query = "";
 

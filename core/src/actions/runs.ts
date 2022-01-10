@@ -3,30 +3,29 @@ import { Run } from "../models/Run";
 import { Op, WhereAttributeHash } from "sequelize";
 import { Schedule } from "../models/Schedule";
 import { APIData } from "../modules/apiData";
+import { ActionPermission } from "../models/Permission";
+import { ParamsFrom } from "actionhero";
 
 export class RunsList extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "runs:list";
-    this.description = "list the runs";
-    this.outputExample = {};
-    this.permission = { topic: "system", mode: "read" };
-    this.inputs = {
-      creatorId: { required: false },
-      topic: { required: false },
-      state: { required: false },
-      hasError: { required: false },
-      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
-      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
-      order: {
-        required: false,
-        formatter: APIData.ensureObject,
-        default: [["updatedAt", "desc"]],
-      },
-    };
-  }
+  name = "runs:list";
+  description = "list the runs";
+  outputExample = {};
+  permission: ActionPermission = { topic: "system", mode: "read" };
+  inputs = {
+    creatorId: { required: false },
+    topic: { required: false },
+    state: { required: false },
+    hasError: { required: false },
+    limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+    offset: { required: true, default: 0, formatter: APIData.ensureNumber },
+    order: {
+      required: false,
+      formatter: APIData.ensureArray,
+      default: [["updatedAt", "desc"]],
+    },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<RunsList> }) {
     let creatorId: string = params.creatorId;
 
     if (params.topic === "source") {
@@ -61,19 +60,16 @@ export class RunsList extends AuthenticatedAction {
 }
 
 export class RunEdit extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "run:edit";
-    this.description = "edit a run";
-    this.outputExample = {};
-    this.permission = { topic: "system", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-      state: { required: true },
-    };
-  }
+  name = "run:edit";
+  description = "edit a run";
+  outputExample = {};
+  permission: ActionPermission = { topic: "system", mode: "write" };
+  inputs = {
+    id: { required: true },
+    state: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<RunEdit> }) {
     const run = await Run.findById(params.id);
     await run.update({ state: params.state });
     return { run: await run.apiData() };
@@ -81,18 +77,15 @@ export class RunEdit extends AuthenticatedAction {
 }
 
 export class RunView extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "run:view";
-    this.description = "view a run";
-    this.outputExample = {};
-    this.permission = { topic: "system", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "run:view";
+  description = "view a run";
+  outputExample = {};
+  permission: ActionPermission = { topic: "system", mode: "read" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<RunView> }) {
     const run = await Run.findById(params.id);
     return {
       run: await run.apiData(),

@@ -10,6 +10,7 @@ import {
   Option,
   Property,
   RecordProperty,
+  RecordPropertyPluginMethod,
   Schedule,
   Source,
   SourceMapping,
@@ -969,7 +970,7 @@ describe("models/source", () => {
     let source: Source;
     let record: GrouparooRecord;
     let lnameProperty: Property;
-    let originalRecordPropertyMethod;
+    let originalRecordPropertyMethod: RecordPropertyPluginMethod;
 
     beforeAll(async () => {
       source = await Source.create({

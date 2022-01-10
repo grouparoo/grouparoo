@@ -10,20 +10,18 @@ export default {
       allowNull: true,
     });
 
-    const [destinations] = await queryInterface.sequelize.query(
-      'select * from "destinations"'
-    );
-    for (const i in destinations) {
-      const destination = destinations[i];
-
-      if (destinations["trackAllGroups"]) {
+    const [destinations]: [Record<string, any>[], unknown] =
+      await queryInterface.sequelize.query('select * from "destinations"');
+    for (const destination of destinations) {
+      if (destination["trackAllGroups"]) {
         await queryInterface.sequelize.query(
-          `delete from "destinationGroups" where "destinationGuid" = '${destinations["guid"]}'`
+          `delete from "destinationGroups" where "destinationGuid" = '${destination["guid"]}'`
         );
       } else {
-        const [destinationGroups] = await queryInterface.sequelize.query(
-          `select * from "destinationGroups" where "destinationGuid" = '${destination["guid"]}'`
-        );
+        const [destinationGroups]: [Record<string, any>[], unknown] =
+          await queryInterface.sequelize.query(
+            `select * from "destinationGroups" where "destinationGuid" = '${destination["guid"]}'`
+          );
         if (destinationGroups.length === 1) {
           await queryInterface.sequelize.query(
             `update destinations set "groupGuid" = '${destinationGroups[0]["groupGuid"]}'`

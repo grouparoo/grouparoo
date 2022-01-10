@@ -27,7 +27,7 @@ let user3 = null;
 const list1 = "(test) High Value";
 const list2 = "(test) Churned";
 
-async function deleteUsers(emails: Array<string>, suppressErrors) {
+async function deleteUsers(emails: string[], suppressErrors) {
   try {
     for (const emailToDelete of emails) {
       await client.ingestion.profile.delete(emailToDelete);
@@ -39,7 +39,7 @@ async function deleteUsers(emails: Array<string>, suppressErrors) {
   }
 }
 
-function getRecord(records: Array<any>, distinctId: string) {
+function getRecord(records: any[], distinctId: string) {
   const filtered = records.filter(
     (record) => record["$distinct_id"] === distinctId
   );

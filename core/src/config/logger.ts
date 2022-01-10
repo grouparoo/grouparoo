@@ -19,9 +19,7 @@ learn more about winston v3 loggers @
  - https://github.com/winstonjs/winston/blob/master/docs/transports.md
 */
 
-type ActionheroConfigLoggerBuilderArray = Array<
-  (config: any) => winston.Logger
->;
+type ActionheroConfigLoggerBuilderArray = ((config: any) => winston.Logger)[];
 
 export const DEFAULT = {
   [namespace]: (config: ActionheroConfigInterface) => {
@@ -54,7 +52,7 @@ export const test = {
 // helpers for building the winston loggers
 
 function buildConsoleLogger(level = "info") {
-  const formats = [];
+  const formats: any[] = [];
 
   if (!disableColor()) formats.push(winston.format.colorize());
   if (!disableTimestamps()) formats.push(winston.format.timestamp());
@@ -69,7 +67,7 @@ function buildConsoleLogger(level = "info") {
     })
   );
 
-  return function (config) {
+  return function () {
     return winston.createLogger({
       format: winston.format.combine(...formats),
       level,

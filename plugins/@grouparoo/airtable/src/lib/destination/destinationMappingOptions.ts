@@ -33,10 +33,10 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod<
 function getRequiredFields(
   table: Table,
   primaryKey: string
-): Array<{
+): {
   key: string;
   type: DestinationMappingOptionsResponseType;
-}> {
+}[] {
   const field = table.fields.find((field) => field.name === primaryKey);
   const key = field?.name || primaryKey;
   const type = mapTypesFromAirtableToGrouparoo(field) || "string";
@@ -46,15 +46,15 @@ function getRequiredFields(
 export const getTableFields = (
   table: Table,
   requiredFields: string[]
-): Array<{
+): {
   key: string;
   type: DestinationMappingOptionsResponseType;
-}> => {
-  const out: Array<{
+}[] => {
+  const out: {
     key: string;
     type: DestinationMappingOptionsResponseType;
     important: boolean;
-  }> = [];
+  }[] = [];
   for (const field of table.fields) {
     if (!requiredFields.includes(field.name)) {
       const type = mapTypesFromAirtableToGrouparoo(field);

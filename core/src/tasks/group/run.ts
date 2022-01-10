@@ -1,22 +1,19 @@
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { Group } from "../../models/Group";
 import { Run } from "../../models/Run";
-import { config } from "actionhero";
+import { config, ParamsFrom } from "actionhero";
 
 export class RunGroup extends CLSTask {
-  constructor() {
-    super();
-    this.name = "group:run";
-    this.description =
-      "calculate the groups members and create imports to update them all";
-    this.frequency = 0;
-    this.queue = "groups";
-    this.inputs = {
-      runId: { required: true },
-    };
-  }
+  name = "group:run";
+  description =
+    "calculate the groups members and create imports to update them all";
+  frequency = 0;
+  queue = "groups";
+  inputs = {
+    runId: { required: true },
+  };
 
-  async runWithinTransaction(params) {
+  async runWithinTransaction({ runId }: ParamsFrom<RunGroup>) {
     // 1. Calculate the set of records that should be in this group, with a limit and offset (looping)
     // 2. Find or create GroupMembers, touch the updatedAt for those that already exist. (group#runAddGroupMembers)
     //    > Create imports for new records
@@ -24,7 +21,7 @@ export class RunGroup extends CLSTask {
     //    > Create imports for those records whose last update is older than the run's start time to remove them
     // 4. Delete any group members still hanging around from a pervious run that this run may have canceled
 
-    const run = await Run.scope(null).findOne({ where: { id: params.runId } });
+    const run = await Run.scope(null).findOne({ where: { id: runId } });
     if (!run) return;
     if (run.state === "stopped") return;
     const group = await Group.scope(null).findOne({

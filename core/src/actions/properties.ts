@@ -1,5 +1,5 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
-import { Op, Order } from "sequelize";
+import { Op, Includeable, WhereAttributeHash } from "sequelize";
 import { GrouparooRecord } from "../models/GrouparooRecord";
 import { Property } from "../models/Property";
 import { RecordProperty } from "../models/RecordProperty";
@@ -11,56 +11,45 @@ import { FilterHelper } from "../modules/filterHelper";
 import { buildPropertyFilterDictionary } from "../modules/filterOpsDictionary";
 import { APIData } from "../modules/apiData";
 import { Source } from "../models/Source";
-import { Includeable } from "sequelize/types";
 import { DestinationOps } from "../modules/ops/destination";
+import { ActionPermission } from "../models/Permission";
+import { ParamsFrom } from "actionhero";
 
 export class PropertiesList extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "properties:list";
-    this.description = "list all the properties";
-    this.outputExample = {};
-    this.permission = { topic: "property", mode: "read" };
-    this.inputs = {
-      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
-      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
-      unique: { required: false, formatter: APIData.ensureBoolean },
-      state: { required: false },
-      modelId: { required: false },
-      sourceId: { required: false },
-      includeExamples: {
-        required: true,
-        default: "false",
-        formatter: APIData.ensureBoolean,
-      },
-      order: {
-        required: false,
-        formatter: APIData.ensureObject,
-        default: [
-          ["key", "asc"],
-          ["createdAt", "desc"],
-        ],
-      },
-    };
-  }
+  name = "properties:list";
+  description = "list all the properties";
+  outputExample = {};
+  permission: ActionPermission = { topic: "property", mode: "read" };
+  inputs = {
+    limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+    offset: { required: true, default: 0, formatter: APIData.ensureNumber },
+    unique: { required: false, formatter: APIData.ensureBoolean },
+    state: { required: false },
+    modelId: { required: false },
+    sourceId: { required: false },
+    includeExamples: {
+      required: true,
+      default: "false",
+      formatter: APIData.ensureBoolean,
+    },
+    order: {
+      required: false,
+      formatter: APIData.ensureArray,
+      default: [
+        ["key", "asc"],
+        ["createdAt", "desc"],
+      ],
+    },
+  };
 
   async runWithinTransaction({
     params,
   }: {
-    params: {
-      state: GrouparooRecord["state"] | "invalid";
-      sourceId: string;
-      includeExamples: boolean;
-      unique: boolean;
-      limit: number;
-      offset: number;
-      order: Order;
-      modelId: string;
-    };
+    params: ParamsFrom<PropertiesList>;
   }) {
     const includeExamples = params.includeExamples;
 
-    const where = {};
+    const where: WhereAttributeHash = {};
     if (params.state && params.state !== "invalid") {
       where["state"] = params.state;
     }
@@ -90,7 +79,7 @@ export class PropertiesList extends AuthenticatedAction {
       params.modelId ? p.source?.modelId === params.modelId : true
     );
 
-    const responseProperties: Array<AsyncReturnType<Property["apiData"]>> = [];
+    const responseProperties: AsyncReturnType<Property["apiData"]>[] = [];
     const responseExamples: { [id: string]: string[] } = {};
 
     for (const property of properties) {
@@ -130,14 +119,10 @@ export class PropertiesList extends AuthenticatedAction {
 }
 
 export class PropertiesOptions extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "properties:options";
-    this.description = "enumerate the options for creating a new property";
-    this.outputExample = {};
-    this.permission = { topic: "property", mode: "read" };
-    this.inputs = {};
-  }
+  name = "properties:options";
+  description = "enumerate the options for creating a new property";
+  outputExample = {};
+  permission: ActionPermission = { topic: "property", mode: "read" };
 
   async runWithinTransaction() {
     return { types: Property.rawAttributes.type.values };
@@ -145,17 +130,17 @@ export class PropertiesOptions extends AuthenticatedAction {
 }
 
 export class PropertyGroups extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "property:groups";
-    this.description =
-      "enumerate the groups using this property in their rules";
-    this.outputExample = {};
-    this.permission = { topic: "property", mode: "read" };
-    this.inputs = { id: { required: true } };
-  }
+  name = "property:groups";
+  description = "enumerate the groups using this property in their rules";
+  outputExample = {};
+  permission: ActionPermission = { topic: "property", mode: "read" };
+  inputs = { id: { required: true } };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<PropertyGroups>;
+  }) {
     const property = await Property.findById(params.id);
 
     const groups = await Group.findAll({
@@ -174,26 +159,27 @@ export class PropertyGroups extends AuthenticatedAction {
 }
 
 export class PropertyCreate extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "property:create";
-    this.description = "create a property";
-    this.outputExample = {};
-    this.permission = { topic: "property", mode: "write" };
-    this.inputs = {
-      id: { required: false },
-      key: { required: false },
-      type: { required: true },
-      unique: { required: false, formatter: APIData.ensureBoolean },
-      isArray: { required: false },
-      state: { required: false },
-      sourceId: { required: false },
-      options: { required: false, formatter: APIData.ensureObject },
-      filters: { required: false, formatter: APIData.ensureObject },
-    };
-  }
+  name = "property:create";
+  description = "create a property";
+  outputExample = {};
+  permission: ActionPermission = { topic: "property", mode: "write" };
+  inputs = {
+    id: { required: false },
+    key: { required: false },
+    type: { required: true },
+    unique: { required: false, formatter: APIData.ensureBoolean },
+    isArray: { required: false },
+    state: { required: false },
+    sourceId: { required: false },
+    options: { required: false, formatter: APIData.ensureObject },
+    filters: { required: false, formatter: APIData.ensureArray },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<PropertyCreate>;
+  }) {
     const property = await Property.create({
       id: params.id,
       key: params.key,
@@ -216,26 +202,23 @@ export class PropertyCreate extends AuthenticatedAction {
 }
 
 export class PropertyEdit extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "property:edit";
-    this.description = "edit a property";
-    this.outputExample = {};
-    this.permission = { topic: "property", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-      key: { required: false },
-      type: { required: false },
-      unique: { required: false, formatter: APIData.ensureBoolean },
-      isArray: { required: false },
-      state: { required: false },
-      sourceId: { required: false },
-      options: { required: false, formatter: APIData.ensureObject },
-      filters: { required: false, formatter: APIData.ensureObject },
-    };
-  }
+  name = "property:edit";
+  description = "edit a property";
+  outputExample = {};
+  permission: ActionPermission = { topic: "property", mode: "write" };
+  inputs = {
+    id: { required: true },
+    key: { required: false },
+    type: { required: false },
+    unique: { required: false, formatter: APIData.ensureBoolean },
+    isArray: { required: false },
+    state: { required: false },
+    sourceId: { required: false },
+    options: { required: false, formatter: APIData.ensureObject },
+    filters: { required: false, formatter: APIData.ensureArray },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<PropertyEdit> }) {
     const property = await Property.findById(params.id);
 
     if (params.options) await property.setOptions(params.options);
@@ -256,18 +239,19 @@ export class PropertyEdit extends AuthenticatedAction {
 }
 
 export class PropertyFilterOptions extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "property:filterOptions";
-    this.description = "view a the filter options for a property";
-    this.outputExample = {};
-    this.permission = { topic: "property", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "property:filterOptions";
+  description = "view a the filter options for a property";
+  outputExample = {};
+  permission: ActionPermission = { topic: "property", mode: "read" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<PropertyFilterOptions>;
+  }) {
     const property = await Property.findById(params.id);
 
     const options = await FilterHelper.pluginFilterOptions(property);
@@ -279,18 +263,15 @@ export class PropertyFilterOptions extends AuthenticatedAction {
 }
 
 export class PropertyView extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "property:view";
-    this.description = "view a property";
-    this.outputExample = {};
-    this.permission = { topic: "property", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "property:view";
+  description = "view a property";
+  outputExample = {};
+  permission: ActionPermission = { topic: "property", mode: "read" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<PropertyView> }) {
     const property = await Property.findById(params.id);
     const source = await property.$get("source", { scope: null });
 
@@ -302,40 +283,42 @@ export class PropertyView extends AuthenticatedAction {
 }
 
 export class PropertyPluginOptions extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "property:pluginOptions";
-    this.description = "view the plugin options for a property";
-    this.outputExample = {};
-    this.permission = { topic: "property", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-      options: { required: false, formatter: APIData.ensureObject },
-    };
-  }
+  name = "property:pluginOptions";
+  description = "view the plugin options for a property";
+  outputExample = {};
+  permission: ActionPermission = { topic: "property", mode: "read" };
+  inputs = {
+    id: { required: true },
+    options: { required: false, formatter: APIData.ensureObject },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<PropertyPluginOptions>;
+  }) {
     const property = await Property.findById(params.id);
     return { pluginOptions: await property.pluginOptions(params.options) };
   }
 }
 
 export class PropertyRecordPreview extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "property:recordPreview";
-    this.description = "view a property's new options against a record";
-    this.outputExample = {};
-    this.permission = { topic: "property", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-      recordId: { required: false },
-      options: { required: false, formatter: APIData.ensureObject },
-      filters: { required: false, formatter: APIData.ensureObject },
-    };
-  }
+  name = "property:recordPreview";
+  description = "view a property's new options against a record";
+  outputExample = {};
+  permission: ActionPermission = { topic: "property", mode: "read" };
+  inputs = {
+    id: { required: true },
+    recordId: { required: false },
+    options: { required: false, formatter: APIData.ensureObject },
+    filters: { required: false, formatter: APIData.ensureArray },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<PropertyRecordPreview>;
+  }) {
     let record: GrouparooRecord;
 
     const property = await Property.findById(params.id);
@@ -355,7 +338,7 @@ export class PropertyRecordPreview extends AuthenticatedAction {
 
     const apiData = await record.apiData();
 
-    let newPropertyValues: Array<string | number | boolean | Date> = [];
+    let newPropertyValues: (string | number | boolean | Date)[] = [];
     let errorMessage: string;
     try {
       newPropertyValues =
@@ -403,18 +386,15 @@ export class PropertyRecordPreview extends AuthenticatedAction {
 }
 
 export class PropertyTest extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "property:test";
-    this.description = "test a property";
-    this.outputExample = {};
-    this.permission = { topic: "property", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "property:test";
+  description = "test a property";
+  outputExample = {};
+  permission: ActionPermission = { topic: "property", mode: "write" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<PropertyTest> }) {
     const property = await Property.findById(params.id);
 
     return { test: (await property.test()) || true };
@@ -422,18 +402,19 @@ export class PropertyTest extends AuthenticatedAction {
 }
 
 export class PropertyDestroy extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "property:destroy";
-    this.description = "destroy a property";
-    this.outputExample = {};
-    this.permission = { topic: "property", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "property:destroy";
+  description = "destroy a property";
+  outputExample = {};
+  permission: ActionPermission = { topic: "property", mode: "write" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<PropertyDestroy>;
+  }) {
     const property = await Property.findById(params.id);
     await property.destroy();
     await ConfigWriter.run();

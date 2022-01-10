@@ -6,37 +6,33 @@ import { Mapping } from "../../models/Mapping";
 import { Option } from "../../models/Option";
 import { PropertyOps } from "../../modules/ops/property";
 import { ImportOps } from "../../modules/ops/import";
+import { ParamsFrom } from "actionhero";
 
 export class ImportRecordProperty extends RetryableTask {
-  constructor() {
-    super();
-    this.name = "recordProperty:importRecordProperty";
-    this.description = "Import the GrouparooRecord Property for a Property";
-    this.frequency = 0;
-    this.queue = "recordProperties";
-    this.inputs = {
-      recordId: { required: true },
-      propertyId: { required: true },
-    };
-  }
+  name = "recordProperty:importRecordProperty";
+  description = "Import the GrouparooRecord Property for a Property";
+  frequency = 0;
+  queue = "recordProperties";
+  inputs = {
+    recordId: { required: true },
+    propertyId: { required: true },
+  };
 
-  async runWithinTransaction(params) {
-    const record = await GrouparooRecord.findOne({
-      where: { id: params.recordId },
-    });
+  async runWithinTransaction({
+    recordId,
+    propertyId,
+  }: ParamsFrom<ImportRecordProperty>) {
+    const record = await GrouparooRecord.findOne({ where: { id: recordId } });
 
     // has this record been removed since we enqueued the import task?
     if (!record) {
       return RecordProperty.destroy({
-        where: {
-          recordId: params.recordId,
-          propertyId: params.propertyId,
-        },
+        where: { recordId, propertyId },
       });
     }
 
     const property = await Property.findOneWithCache(
-      params.propertyId,
+      propertyId,
       record.modelId
     );
     if (!property) return;
@@ -69,7 +65,7 @@ export class ImportRecordProperty extends RetryableTask {
     const propertyValues = await source.importRecordProperty(record, property);
 
     if (propertyValues) {
-      const hash = {};
+      const hash: Record<string, (string | number | boolean | Date)[]> = {};
       hash[property.id] = Array.isArray(propertyValues)
         ? propertyValues
         : [propertyValues];

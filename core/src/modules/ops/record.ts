@@ -30,7 +30,7 @@ export interface RecordPropertyType {
   [key: string]: {
     id: RecordProperty["id"];
     state: RecordProperty["state"];
-    values: Array<string | number | boolean | Date>;
+    values: (string | number | boolean | Date)[];
     invalidValue: RecordProperty["invalidValue"];
     invalidReason: RecordProperty["invalidReason"];
     configId: ReturnType<Property["getConfigId"]>;
@@ -102,7 +102,7 @@ export namespace RecordOps {
         "stateChangedAt",
         "createdAt",
         "updatedAt",
-      ];
+      ] as const;
 
       timeFields.forEach((field) => {
         if (hash[key][field] < recordProperties[i][field]) {
@@ -251,7 +251,7 @@ export namespace RecordOps {
   export async function addOrUpdateProperties(
     records: GrouparooRecord[],
     recordProperties: {
-      [key: string]: Array<string | number | boolean | Date> | any;
+      [key: string]: (string | number | boolean | Date)[] | any;
     }[],
     toLock = true,
     ignoreMissingProperties = false
@@ -264,7 +264,7 @@ export namespace RecordOps {
     }
 
     const releaseLocks: Function[] = [];
-    const bulkCreates: Array<{
+    const bulkCreates: {
       id?: string;
       propertyId: string;
       recordId: string;
@@ -278,7 +278,7 @@ export namespace RecordOps {
       confirmedAt: Date;
       startedAt: Date;
       valueChangedAt: Date;
-    }> = [];
+    }[] = [];
     const bulkDeletes = { where: { id: [] as string[] } };
     const now = new Date();
 
@@ -304,8 +304,7 @@ export namespace RecordOps {
           // this special, internal-ony key is used to send extra information though an Import.  `_meta` is prevented from being a valid Property key
           if (key === "_meta") continue checkKeys;
 
-          const h: { [key: string]: Array<string | number | boolean | Date> } =
-            {};
+          const h: { [key: string]: (string | number | boolean | Date)[] } = {};
           h[key] = Array.isArray(recordProperties[recordOffset][key])
             ? recordProperties[recordOffset][key]
             : [recordProperties[recordOffset][key]];
@@ -490,7 +489,7 @@ export namespace RecordOps {
    */
   export async function removeProperties(
     record: GrouparooRecord,
-    properties: Array<string>
+    properties: string[]
   ) {
     for (const i in properties) {
       await record.removeProperty(properties[i]);
@@ -743,7 +742,7 @@ export namespace RecordOps {
    */
   export async function findOrCreateByUniqueRecordProperties(
     hash: {
-      [key: string]: Array<string | number | boolean | Date>;
+      [key: string]: (string | number | boolean | Date)[];
     },
     source?: boolean | Source
   ) {
@@ -755,7 +754,10 @@ export namespace RecordOps {
         source instanceof Source ? source.modelId : undefined
       )
     ).filter((p) => p.unique === true);
-    const uniquePropertiesHash = {};
+    const uniquePropertiesHash: Record<
+      string,
+      (string | boolean | number | Date)[]
+    > = {};
 
     uniqueProperties.forEach((property) => {
       if (hash[property.key] !== null && hash[property.key] !== undefined) {
@@ -987,7 +989,10 @@ export namespace RecordOps {
       // transfer properties, keeping the newest values
       const properties = await record.getProperties();
       const otherProperties = await otherRecord.getProperties();
-      const newProperties = {};
+      const newProperties: Record<
+        string,
+        (string | number | boolean | Date)[]
+      > = {};
       for (const key in otherProperties) {
         if (
           !properties[key] ||

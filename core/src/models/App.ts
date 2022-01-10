@@ -82,7 +82,7 @@ export class App extends LoggedModel<App> {
   __options: Option[]; // the underscores are needed as "options" is an internal method on sequelize instances
 
   @HasMany(() => Source)
-  sources: Array<Source>;
+  sources: Source[];
 
   async appOptions() {
     const { pluginApp } = await this.getPlugin();
@@ -92,12 +92,9 @@ export class App extends LoggedModel<App> {
         ? await pluginApp.methods.appOptions()
         : {};
 
-    for (const o of staticAppOptions) {
-      if (o.type) {
-        if (!appOptions[o.key]) appOptions[o.key] = { type: o.type };
-        if (!appOptions[o.key].type) {
-          appOptions[o.key].type = staticAppOptions[o.key].type;
-        }
+    for (const staticOption of staticAppOptions) {
+      if (staticOption.type && !appOptions[staticOption.key]) {
+        appOptions[staticOption.key] = { type: staticOption.type };
       }
     }
 
@@ -136,7 +133,7 @@ export class App extends LoggedModel<App> {
     return OptionHelper.getPlugin(this);
   }
 
-  async setConnection(connection) {
+  async setConnection(connection: any) {
     api.plugins.persistentConnections[this.id] = connection;
   }
 
@@ -340,12 +337,12 @@ export class App extends LoggedModel<App> {
   }
 
   @BeforeSave
-  static async noUpdateIfLocked(instance) {
+  static async noUpdateIfLocked(instance: App) {
     await LockableHelper.beforeSave(instance, ["state"]);
   }
 
   @BeforeDestroy
-  static async noDestroyIfLocked(instance) {
+  static async noDestroyIfLocked(instance: App) {
     await LockableHelper.beforeDestroy(instance);
   }
 

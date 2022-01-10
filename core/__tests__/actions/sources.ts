@@ -1,11 +1,11 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper } from "actionhero";
+import { Connection, specHelper } from "actionhero";
 import { Option, Source, App, GrouparooModel } from "../../src";
 import { SessionCreate } from "../../src/actions/session";
 import {
   SourceBootstrapUniqueProperty,
   SourceConnectionApps,
-  sourceConnectionOptions,
+  SourceConnectionOptions,
   SourceCreate,
   SourceDefaultPropertyOptions,
   SourceDestroy,
@@ -44,8 +44,8 @@ describe("actions/sources", () => {
   });
 
   describe("administrator signed in", () => {
-    let connection;
-    let csrfToken;
+    let connection: Connection;
+    let csrfToken: string;
 
     beforeAll(async () => {
       connection = await specHelper.buildConnection();
@@ -164,7 +164,7 @@ describe("actions/sources", () => {
         id,
       };
       const { error, options } =
-        await specHelper.runAction<sourceConnectionOptions>(
+        await specHelper.runAction<SourceConnectionOptions>(
           "source:connectionOptions",
           connection
         );

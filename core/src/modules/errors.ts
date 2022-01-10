@@ -3,7 +3,7 @@ export namespace Errors {
   export type ErrorLevel = typeof ERROR_LEVELS[number];
 
   export class InfoError extends Error {
-    errorLevel: string;
+    errorLevel: ErrorLevel;
 
     constructor(message: string) {
       super(message);

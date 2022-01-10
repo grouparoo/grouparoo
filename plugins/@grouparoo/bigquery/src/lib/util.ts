@@ -8,8 +8,8 @@ import {
 export function makeWhereClause(
   columns: ColumnDefinitionMap,
   matchCondition: MatchCondition,
-  params: Array<any>,
-  types: Array<any>
+  params: any[],
+  types: any[]
 ) {
   const { columnName, filterOperation, value, values } = matchCondition;
 

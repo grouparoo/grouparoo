@@ -38,17 +38,17 @@ export async function getFieldsAndExamples({
   appOptions,
   sourceOptions,
 }): Promise<
-  Array<{
+  {
     key: string;
     description?: string;
-    examples?: Array<any>;
-  }>
+    examples?: any[];
+  }[]
 > {
-  const out: Array<{
+  const out: {
     key: string;
     description?: string;
-    examples?: Array<any>;
-  }> = [];
+    examples?: any[];
+  }[] = [];
 
   const client = await connect(appOptions);
   const { listId } = sourceOptions;
@@ -68,7 +68,7 @@ export async function getFieldsAndExamples({
 export async function getSampleRows({
   appOptions,
   sourceOptions,
-}): Promise<Array<{ [column: string]: any }>> {
+}): Promise<{ [column: string]: any }[]> {
   const client = await connect(appOptions);
   const { listId } = sourceOptions;
   const fieldMap = await getFieldTypes(client, listId);
@@ -79,8 +79,8 @@ async function fetchSampleRows(
   client: any,
   listId: string,
   fieldMap: MailchimpFieldMap
-): Promise<Array<{ [column: string]: any }>> {
-  const out: Array<{ [column: string]: any }> = [];
+): Promise<{ [column: string]: any }[]> {
+  const out: { [column: string]: any }[] = [];
 
   const fieldKeys = Object.keys(fieldMap);
   const path = `/lists/${listId}/members`;

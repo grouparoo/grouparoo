@@ -4,15 +4,10 @@ import { internalRun } from "../../modules/internalRun";
 import { CLSTask } from "../../classes/tasks/clsTask";
 
 export class RunRecurringInternalRun extends CLSTask {
-  constructor() {
-    super();
-    this.name = "run:recurringInternalRun";
-    this.description =
-      "check if we should run an internal import on a frequency";
-    this.frequency =
-      process.env.GROUPAROO_RUN_MODE === "cli:run" ? 0 : 1000 * 60 * 10; // 10 minutes
-    this.queue = "runs";
-  }
+  name = "run:recurringInternalRun";
+  description = "check if we should run an internal import on a frequency";
+  frequency = process.env.GROUPAROO_RUN_MODE === "cli:run" ? 0 : 1000 * 60 * 10; // 10 minutes
+  queue = "runs";
 
   async runWithinTransaction() {
     const setting = await Setting.findOne({

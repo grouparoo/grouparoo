@@ -165,7 +165,7 @@ export namespace Reset {
     return result;
   }
 
-  async function clearFailedTasks() {
+  async function clearFailedTasks(): Promise<void> {
     const failed = await task.failed(0, 0);
     if (failed && failed.length > 0) {
       const failedJob = failed[0];

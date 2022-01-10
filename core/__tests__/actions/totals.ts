@@ -61,7 +61,7 @@ describe("actions/totals", () => {
   });
 
   test("rolling per-day for all models can be returned", async () => {
-    function dateString(d) {
+    function dateString(d: Date) {
       return d.toJSON().slice(0, 10);
     }
 

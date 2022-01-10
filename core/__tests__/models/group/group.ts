@@ -121,7 +121,7 @@ describe("models/group", () => {
   });
 
   describe("run()", () => {
-    const getRuns = async (group) => {
+    const getRuns = async (group: Group) => {
       const runs = await Run.findAll({
         where: { creatorId: group.id, creatorType: "group" },
       });
@@ -302,7 +302,7 @@ describe("models/group", () => {
           });
 
           const destination = await helper.factories.destination();
-          const destinationGroupMemberships = {};
+          const destinationGroupMemberships: Record<string, string> = {};
           destinationGroupMemberships[group.id] = "remote-tag";
           await destination.setDestinationGroupMemberships(
             destinationGroupMemberships
@@ -332,7 +332,7 @@ describe("models/group", () => {
           "group",
           trackedGroup.id
         );
-        const destinationGroupMemberships = {};
+        const destinationGroupMemberships: Record<string, string> = {};
         destinationGroupMemberships[taggedGroup.id] = "remote-tagged-group";
         await destination.setDestinationGroupMemberships(
           destinationGroupMemberships
@@ -370,7 +370,7 @@ describe("models/group", () => {
 
         const destination = await helper.factories.destination();
         await destination.updateTracking("group", trackedGroup.id);
-        const destinationGroupMemberships = {};
+        const destinationGroupMemberships: Record<string, any> = {};
         destinationGroupMemberships[taggedGroup.id] = "remote-tagged-group";
         await destination.setDestinationGroupMemberships(
           destinationGroupMemberships

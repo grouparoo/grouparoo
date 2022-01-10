@@ -39,10 +39,9 @@ describe("tasks/recordProperty:importRecordProperties", () => {
         properties,
         records,
       }) => {
-        const response = {};
+        const response: Record<string, Record<string, any>> = {};
 
-        for (const i in records) {
-          const record = records[i];
+        for (const record of records) {
           const data = {
             userId: userIdCounter++,
             isVIP: true,
@@ -55,7 +54,8 @@ describe("tasks/recordProperty:importRecordProperties", () => {
 
           response[record.id] = {};
           for (const property of properties) {
-            response[record.id][property.id] = data[property.key];
+            response[record.id][property.id] =
+              data[property.key as keyof typeof data];
           }
         }
 
@@ -256,7 +256,7 @@ describe("tasks/recordProperty:importRecordProperties", () => {
         .spyOn(testPluginConnection.methods, "recordProperties")
         //@ts-ignore // partial mock
         .mockImplementation(({ records, properties }) => {
-          const response = {};
+          const response: Record<string, Record<string, any>> = {};
 
           for (const i in records) {
             const record = records[i];
@@ -264,7 +264,8 @@ describe("tasks/recordProperty:importRecordProperties", () => {
 
             response[record.id] = {};
             for (const property of properties) {
-              response[record.id][property.id] = data[property.key];
+              response[record.id][property.id] =
+                data[property.key as keyof typeof data];
             }
           }
 

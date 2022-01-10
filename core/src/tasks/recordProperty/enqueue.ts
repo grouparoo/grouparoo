@@ -1,21 +1,21 @@
-import { api, env, config } from "actionhero";
+import { api, env, config, ParamsFrom } from "actionhero";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { CLS } from "../../modules/cls";
 import { Source } from "../../models/Source";
 import { RecordPropertyOps } from "../../modules/ops/recordProperty";
+import { Worker } from "node-resque";
 
 export class RecordPropertiesEnqueue extends CLSTask {
-  constructor() {
-    super();
-    this.name = "recordProperties:enqueue";
-    this.description =
-      "Enqueue a batch of GrouparooRecords who need a GrouparooRecord Property";
-    this.frequency = 1000 * 10;
-    this.queue = "recordProperties";
-    this.inputs = {};
-  }
+  name = "recordProperties:enqueue";
+  description =
+    "Enqueue a batch of GrouparooRecords who need a GrouparooRecord Property";
+  frequency = 1000 * 10;
+  queue = "recordProperties";
 
-  async runWithinTransaction(worker) {
+  async runWithinTransaction(
+    params: ParamsFrom<RecordPropertiesEnqueue>,
+    worker: Worker
+  ) {
     let count = 0;
     const limit: number = config.batchSize.recordProperties;
 

@@ -33,7 +33,7 @@ export const getSourceFilters: GetSourceFiltersMethod = ({ getColumns }) => {
       const column = map[columnName];
       options.push({
         key: column.name,
-        ops: column.filterOperations,
+        ops: column.filterOperations as SourceFilterMethodResponseRow["ops"], // TODO: there's a type incompatibility between the literal string reposes and the Enum FilterOperation
         canHaveRelativeMatch: false,
       });
     }

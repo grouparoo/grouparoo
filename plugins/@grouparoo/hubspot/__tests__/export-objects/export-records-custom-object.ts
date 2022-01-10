@@ -39,7 +39,7 @@ const properties = [
   "date_field",
 ];
 
-async function deleteUsers(emails: Array<string>, suppressErrors) {
+async function deleteUsers(emails: string[], suppressErrors) {
   const { schemaId } = destinationOptions;
   const records = await getRecordsByForeignKeys(emails);
   try {
@@ -96,7 +96,7 @@ async function cleanUp(suppressErrors: boolean) {
   });
 }
 
-function getRecord(records: Array<any>, foreignKeyValue: string) {
+function getRecord(records: any[], foreignKeyValue: string) {
   const { primaryKey } = destinationOptions;
   const filtered = records.filter(
     (record) => record["properties"][primaryKey] === foreignKeyValue

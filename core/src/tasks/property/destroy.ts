@@ -1,22 +1,20 @@
+import { ParamsFrom } from "actionhero";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { Property } from "../../models/Property";
 
 export class PropertyDestroy extends CLSTask {
-  constructor() {
-    super();
-    this.name = "property:destroy";
-    this.description =
-      "wait for dependencies to finish being deleted, then delete the property";
-    this.frequency = 0;
-    this.queue = "properties";
-    this.inputs = {
-      propertyId: { required: true },
-    };
-  }
+  name = "property:destroy";
+  description =
+    "wait for dependencies to finish being deleted, then delete the property";
+  frequency = 0;
+  queue = "properties";
+  inputs = {
+    propertyId: { required: true },
+  };
 
-  async runWithinTransaction(params) {
+  async runWithinTransaction({ propertyId }: ParamsFrom<PropertyDestroy>) {
     const property = await Property.scope(null).findOne({
-      where: { id: params.propertyId, state: "deleted" },
+      where: { id: propertyId, state: "deleted" },
     });
 
     // the property may have been force-deleted

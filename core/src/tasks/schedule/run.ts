@@ -1,21 +1,19 @@
 import { Schedule } from "../../models/Schedule";
 import { Run } from "../../models/Run";
 import { RetryableTask } from "../../classes/tasks/retryableTask";
+import { ParamsFrom } from "actionhero";
 
 export class ScheduleRun extends RetryableTask {
-  constructor() {
-    super();
-    this.name = "schedule:run";
-    this.description = "run a schedule and import and export data";
-    this.frequency = 0;
-    this.queue = "schedules";
-    this.inputs = {
-      runId: { required: true },
-    };
-  }
+  name = "schedule:run";
+  description = "run a schedule and import and export data";
+  frequency = 0;
+  queue = "schedules";
+  inputs = {
+    runId: { required: true },
+  };
 
-  async runWithinTransaction(params) {
-    const run = await Run.scope(null).findOne({ where: { id: params.runId } });
+  async runWithinTransaction({ runId }: ParamsFrom<ScheduleRun>) {
+    const run = await Run.scope(null).findOne({ where: { id: runId } });
     if (!run) return;
 
     const schedule = await Schedule.findOne({

@@ -1,4 +1,4 @@
-import { Action, api } from "actionhero";
+import { Action, ActionProcessor, api } from "actionhero";
 
 export class NextRender extends Action {
   constructor() {
@@ -11,7 +11,7 @@ export class NextRender extends Action {
     this.blockedConnectionTypes = ["websocket", "socket"];
   }
 
-  async run(data) {
+  async run(data: ActionProcessor<NextRender>) {
     if (data.connection.rawConnection.responseHttpCode == 200) {
       data.toRender = false;
       return api.next.render(data.connection);

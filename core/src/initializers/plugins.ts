@@ -15,11 +15,11 @@ import { CLS } from "../modules/cls";
 declare module "actionhero" {
   export interface Api {
     plugins: {
-      plugins: Array<GrouparooPlugin>;
+      plugins: GrouparooPlugin[];
       validate: (plugin: GrouparooPlugin) => boolean;
       register: (plugin: GrouparooPlugin, validate: boolean) => void;
       announcePlugins: () => void;
-      templates: () => Array<ConfigTemplate>;
+      templates: () => ConfigTemplate[];
       persistentConnections: {
         [id: string]: any;
       };

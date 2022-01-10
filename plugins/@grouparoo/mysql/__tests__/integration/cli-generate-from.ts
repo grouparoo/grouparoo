@@ -8,8 +8,8 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 
 import { helper } from "@grouparoo/spec-helper";
 import { api } from "actionhero";
-import { Generate } from "@grouparoo/core/src/bin/generate";
-import { Apply } from "@grouparoo/core/src/bin/apply";
+import { Generate } from "@grouparoo/core/dist/bin/generate";
+import { Apply } from "@grouparoo/core/dist/bin/apply";
 import {
   beforeData,
   afterData,
@@ -55,7 +55,7 @@ describe("mysql cli tests", () => {
 
   test("the mysql commands appear in the generate list", async () => {
     const command = new Generate();
-    await command.run({ params: { list: true } });
+    await command.run({ params: { list: "true" } });
 
     const output = messages.join(" ");
     expect(output).toContain(`Available Templates:`);
@@ -153,7 +153,7 @@ describe("mysql cli tests", () => {
         with: "*",
         mapping: "id=user_id",
         highWaterMark: "stamp",
-        overwrite: true,
+        overwrite: "true",
       },
     });
 

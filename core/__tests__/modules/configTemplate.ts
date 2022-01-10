@@ -71,7 +71,7 @@ describe("bin/generate", () => {
   });
 
   describe("params", () => {
-    let template;
+    let template: ConfigTemplate;
 
     beforeEach(() => {
       template = templates.find((t) => t.name === "team");
@@ -91,7 +91,7 @@ describe("bin/generate", () => {
     describe("#extendId", () => {
       test("Returns null when there is no ID param", () => {
         template.params = {};
-        expect(template.extendId()).toBe(null);
+        expect(template.extendId(undefined)).toBe(null);
       });
       test("Appends some string to the ID, separated by an underscore, then wraps in quotes", () => {
         template.params.id = `"my_team"`;

@@ -90,11 +90,11 @@ export class CloudClient {
       process.env.GROUPAROO_CLOUD_API_URL ?? "https://cloud.grouparoo.com";
   }
 
-  async request(
+  async request<T>(
     url: string,
     options?: RequestInit & { _buildFormData?: () => FormData },
     attempts = 0
-  ) {
+  ): Promise<T> {
     const fetchUrl = new URL(url, this.baseUrl);
     fetchUrl.searchParams.append("apiToken", this.token);
 
@@ -107,9 +107,12 @@ export class CloudClient {
     }
 
     try {
-      const optionsToSend = { ...options, _buildFormData: undefined };
+      const optionsToSend = {
+        ...options,
+        _buildFormData: undefined as Function,
+      };
       const res = await fetch(fetchUrl.toString(), optionsToSend);
-      const data = await res.json();
+      const data = (await res.json()) as T & { error?: any };
 
       if (res.status !== 200) {
         if (data.error) throw new CloudError(data.error);
@@ -123,7 +126,7 @@ export class CloudClient {
         attempts < maxAttempts - 1
       ) {
         await utils.sleep(100);
-        return this.request(url, options, attempts + 1);
+        return this.request<T>(url, options, attempts + 1);
       } else throw error;
     }
   }
@@ -144,27 +147,26 @@ export class CloudClient {
       return formData;
     }
 
-    const data: { configuration: ConfigurationApiData } = await this.request(
-      "/api/v1/configuration",
-      {
-        method: "POST",
-        _buildFormData,
-      }
-    );
-    return data.configuration;
+    const { configuration } = await this.request<{
+      configuration: ConfigurationApiData;
+    }>("/api/v1/configuration", {
+      method: "POST",
+      _buildFormData,
+    });
+    return configuration;
   }
 
   async getConfiguration(configurationId: string) {
-    const data: { configuration: ConfigurationApiData } = await this.request(
-      `/api/v1/configuration/${configurationId}`
-    );
-    return data.configuration;
+    const { configuration } = await this.request<{
+      configuration: ConfigurationApiData;
+    }>(`/api/v1/configuration/${configurationId}`);
+    return configuration;
   }
 
   async getJob(jobId: string) {
-    const data: { job: JobApiData } = await this.request(
+    const { job } = await this.request<{ job: JobApiData }>(
       `/api/v1/job/${jobId}`
     );
-    return data.job;
+    return job;
   }
 }

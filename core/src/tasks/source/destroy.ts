@@ -1,23 +1,20 @@
+import { ParamsFrom } from "actionhero";
 import { CLSTask } from "../../classes/tasks/clsTask";
-import { Property } from "../../models/Property";
 import { Source } from "../../models/Source";
 
 export class SourceDestroy extends CLSTask {
-  constructor() {
-    super();
-    this.name = "source:destroy";
-    this.description =
-      "wait for dependencies to finish being deleted, then delete the source";
-    this.frequency = 0;
-    this.queue = "sources";
-    this.inputs = {
-      sourceId: { required: true },
-    };
-  }
+  name = "source:destroy";
+  description =
+    "wait for dependencies to finish being deleted, then delete the source";
+  frequency = 0;
+  queue = "sources";
+  inputs = {
+    sourceId: { required: true },
+  };
 
-  async runWithinTransaction(params) {
+  async runWithinTransaction({ sourceId }: ParamsFrom<SourceDestroy>) {
     const source = await Source.scope(null).findOne({
-      where: { id: params.sourceId, state: "deleted" },
+      where: { id: sourceId, state: "deleted" },
     });
 
     // the source may have been force-deleted

@@ -179,10 +179,10 @@ async function batchGroups(
   let currentCount = 0;
   let hasData = false;
 
-  const batches: Array<{
+  const batches: {
     groupMap: GroupNameListMap;
     destIdMap: DestinationIdMap;
-  }> = [];
+  }[] = [];
 
   for (const name in groupMap) {
     if (config.groupMode === BatchGroupMode.WithinGroup) {
@@ -246,7 +246,7 @@ async function createByForeignKey(
   methods: BatchMethods,
   config: BatchConfig
 ) {
-  const batches: Array<{ fkMap: ForeignKeyMap }> = [];
+  const batches: { fkMap: ForeignKeyMap }[] = [];
   let currentFkMap: ForeignKeyMap = {};
   let currentCount = 0;
 
@@ -302,10 +302,10 @@ async function updateByIds(
   let currentDeskIdMap: DestinationIdMap = {};
   let currentCount = 0;
 
-  const batches: Array<{
+  const batches: {
     fkMap: ForeignKeyMap;
     destIdMap: DestinationIdMap;
-  }> = [];
+  }[] = [];
 
   for (const exportedRecord of exports) {
     if (exportedRecord.processed || exportedRecord.error) {
@@ -364,10 +364,10 @@ async function deleteExports(
   let currentDeskIdMap: DestinationIdMap = {};
   let currentCount = 0;
 
-  const batches: Array<{
+  const batches: {
     fkMap: ForeignKeyMap;
     destIdMap: DestinationIdMap;
-  }> = [];
+  }[] = [];
 
   for (const exportedRecord of exports) {
     if (exportedRecord.processed || exportedRecord.error) {
@@ -434,11 +434,11 @@ async function lookupDestinationIds(
   let currentForeignKeys: string[] = [];
   let currentCount = 0;
 
-  const batches: Array<{
+  const batches: {
     fkMap: ForeignKeyMap;
     users: BatchExport[];
     foreignKeys: string[];
-  }> = [];
+  }[] = [];
 
   for (const exportedRecord of exports) {
     if (exportedRecord.error) {

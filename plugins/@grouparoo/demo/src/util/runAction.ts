@@ -70,8 +70,8 @@ export class ActionProcessor {
   params: {
     [key: string]: any;
   };
-  missingParams: Array<string>;
-  validatorErrors: Array<string | Error>;
+  missingParams: string[];
+  validatorErrors: (string | Error)[];
   actionStartTime: number;
   actionTemplate: Action;
   working: boolean;

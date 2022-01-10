@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper } from "actionhero";
+import { specHelper, Connection } from "actionhero";
 import { Import } from "../../src";
 import { ImportsList, ImportView } from "../../src/actions/imports";
 import { SessionCreate } from "../../src/actions/session";
@@ -20,8 +20,8 @@ describe("actions/imports", () => {
   });
 
   describe("with session", () => {
-    let connection;
-    let csrfToken;
+    let connection: Connection;
+    let csrfToken: string;
     let toadImport: Import;
     let peachImport: Import;
 

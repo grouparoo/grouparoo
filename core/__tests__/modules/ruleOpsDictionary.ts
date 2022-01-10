@@ -4,7 +4,7 @@ import {
 } from "../../src/modules/ruleOpsDictionary";
 
 describe("PropertyOpsDictionary", () => {
-  let dbDialect;
+  let dbDialect: string;
 
   beforeAll(() => {
     dbDialect = process.env.DB_DIALECT;

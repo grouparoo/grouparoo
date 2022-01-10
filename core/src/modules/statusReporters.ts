@@ -514,7 +514,7 @@ export namespace StatusReporters {
  * This is useful for when you have 2 sources using the same app, and you want to report on the app's totals
  */
 function mergeMetrics(metrics: StatusMetric[]) {
-  var mergedMetrics: Array<StatusMetric> = [];
+  var mergedMetrics: StatusMetric[] = [];
   metrics.forEach((item, idx) => {
     const found = mergedMetrics.some((el, i) => {
       if (i === idx) return false;
@@ -548,7 +548,7 @@ export namespace FinalSummaryReporters {
       importsCreated: number;
       error: string;
     }
-    export async function getData(): Promise<Array<SourceData>> {
+    export async function getData(): Promise<SourceData[]> {
       const runs = await Run.findAll({
         where: {
           updatedAt: { [Op.gte]: lastRunStart },
@@ -584,7 +584,7 @@ export namespace FinalSummaryReporters {
 
   export namespace GrouparooRecords {
     export interface RecordData {
-      name: null;
+      name?: string;
       recordsUpdated: number;
       recordsCreated: number;
       allRecords: number;
@@ -599,11 +599,9 @@ export namespace FinalSummaryReporters {
       const recordsCreated = await GrouparooRecord.count({
         where: { createdAt: { [Op.gte]: lastRunStart } },
       });
-      const name = null;
       const allRecords = await GrouparooRecord.count();
 
       const recordData = {
-        name,
         recordsUpdated,
         recordsCreated,
         allRecords,

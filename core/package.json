@@ -76,8 +76,11 @@
   },
   "devDependencies": {
     "@grouparoo/spec-helper": "0.8.0-alpha.5",
+    "@types/bcryptjs": "2.4.2",
+    "@types/cls-hooked": "4.3.3",
     "@types/isomorphic-fetch": "0.0.35",
     "@types/jest": "*",
+    "@types/mustache": "4.1.2",
     "@types/pacote": "11.1.2",
     "@types/pluralize": "0.0.29",
     "@types/semver": "7.3.9",

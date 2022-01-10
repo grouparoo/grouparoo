@@ -7,6 +7,7 @@ import {
   Log,
   Option,
   plugin,
+  PluginOptionType,
   Property,
   RecordProperty,
   Run,
@@ -686,7 +687,7 @@ describe("models/property", () => {
                   key: "column",
                   required: true,
                   description: "the column to choose",
-                  type: "list",
+                  type: "list" as PluginOptionType,
                   options: async () => {
                     return [
                       {
@@ -702,8 +703,8 @@ describe("models/property", () => {
                     key: "extra",
                     required: true,
                     description: "extra stuff",
-                    type: "string",
-                    options: async () => [],
+                    type: "text" as PluginOptionType,
+                    options: async () => [] as { key: string }[],
                   });
                 }
 
@@ -985,6 +986,7 @@ describe("models/property", () => {
         ).rejects.toThrow("other-key is not filterable");
 
         await expect(
+          // @ts-ignore
           property.setFilters([{ op: "max it out", match: 1, key: "id" }])
         ).rejects.toThrow('"max it out" cannot be applied to id');
 

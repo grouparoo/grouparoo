@@ -1,5 +1,8 @@
 import path from "path";
-import { ConfigTemplate } from "../classes/configTemplate";
+import {
+  ConfigTemplate,
+  ConfigTemplateParams,
+} from "../classes/configTemplate";
 
 export class TeamMemberTemplate extends ConfigTemplate {
   constructor() {
@@ -33,7 +36,7 @@ export class TeamMemberTemplate extends ConfigTemplate {
     this.parentId = "teamId";
   }
 
-  async run({ params }) {
+  async run({ params }: { params: ConfigTemplateParams }) {
     return this.mustacheAllFiles(params);
   }
 }

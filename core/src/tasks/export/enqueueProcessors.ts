@@ -5,15 +5,12 @@ import { plugin } from "../../modules/plugin";
 import { ExportProcessorOps } from "../../modules/ops/exportProcessor";
 
 export class EnqueueExportProcessors extends RetryableTask {
-  constructor() {
-    super();
-    this.name = "export:enqueueProcessors";
-    this.description =
-      "check for pending export processors and enqueue other tasks to process them";
-    this.frequency = 1000 * 30; // every 30 seconds
-    this.queue = "exports";
-    this.inputs = {};
-  }
+  name = "export:enqueueProcessors";
+  description =
+    "check for pending export processors and enqueue other tasks to process them";
+  frequency = 1000 * 30; // every 30 seconds
+  queue = "exports";
+  inputs = {};
 
   async runWithinTransaction() {
     const delayMs =

@@ -3,6 +3,7 @@ import { plugin } from "../../../../src/modules/plugin";
 import {
   App,
   Destination,
+  ErrorWithRecordId,
   Export,
   GrouparooModel,
   GroupMember,
@@ -16,21 +17,21 @@ describe("models/destination - with custom exportRecords plugin", () => {
   let model: GrouparooModel;
   let app: App;
   let destination: Destination;
-  let exportArgs = {
+  let exportArgs: Record<string, any> = {
     app: null,
     appOptions: null,
     destination: null,
     destinationOptions: null,
     exports: null,
   };
-  let exportArrayProperties = [];
+  let exportArrayProperties: string[] = [];
   let parallelismResponse = Infinity;
   let exportProfilesResponse = {
     success: true,
-    errors: undefined,
-    retryDelay: undefined,
+    errors: undefined as ErrorWithRecordId[],
+    retryDelay: undefined as number,
   };
-  let exportProfilesThrow = null;
+  let exportProfilesThrow: Error = null;
 
   beforeAll(async () => {
     ({ model } = await helper.factories.properties());
@@ -160,7 +161,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
 
       await destination.updateTracking("group", groupA.id);
 
-      const destinationGroupMemberships = {};
+      const destinationGroupMemberships: Record<string, string> = {};
       // modify the membership name
       destinationGroupMemberships[groupA.id] = groupA.name + "+";
       destinationGroupMemberships[groupB.id] = groupB.name + "+";
@@ -387,7 +388,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       const groupA = await helper.factories.group();
       const groupB = await helper.factories.group();
 
-      const destinationGroupMemberships = {};
+      const destinationGroupMemberships: Record<string, any> = {};
       destinationGroupMemberships[groupA.id] = groupA.name;
       destinationGroupMemberships[groupB.id] = groupB.name;
       await destination.setDestinationGroupMemberships(
@@ -486,7 +487,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       const groupB = await helper.factories.group();
       const groupC = await helper.factories.group();
 
-      const destinationGroupMemberships = {};
+      const destinationGroupMemberships: Record<string, any> = {};
       destinationGroupMemberships[groupA.id] = groupA.name;
       destinationGroupMemberships[groupB.id] = groupB.name;
       await destination.setDestinationGroupMemberships(
@@ -551,7 +552,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
         const groupB = await helper.factories.group();
         const groupC = await helper.factories.group();
 
-        const destinationGroupMemberships = {};
+        const destinationGroupMemberships: Record<string, any> = {};
         destinationGroupMemberships[groupA.id] = groupA.name;
         destinationGroupMemberships[groupB.id] = groupB.name;
         await destination.setDestinationGroupMemberships(
@@ -700,7 +701,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
         customer_email: "email",
       });
 
-      const destinationGroupMemberships = {};
+      const destinationGroupMemberships: Record<string, any> = {};
       destinationGroupMemberships[group.id] = group.name;
       await destination.setDestinationGroupMemberships(
         destinationGroupMemberships
@@ -735,7 +736,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       parallelismResponse = 0;
 
       const group = await helper.factories.group();
-      const destinationGroupMemberships = {};
+      const destinationGroupMemberships: Record<string, any> = {};
       destinationGroupMemberships[group.id] = group.name;
       await destination.setDestinationGroupMemberships(
         destinationGroupMemberships
@@ -784,7 +785,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       parallelismResponse = 0;
 
       const group = await helper.factories.group();
-      const destinationGroupMemberships = {};
+      const destinationGroupMemberships: Record<string, string> = {};
       destinationGroupMemberships[group.id] = group.name;
       await destination.setDestinationGroupMemberships(
         destinationGroupMemberships
@@ -802,7 +803,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
 
     test("sending an export with sync and throwing an error will throw in task", async () => {
       const group = await helper.factories.group();
-      const destinationGroupMemberships = {};
+      const destinationGroupMemberships: Record<string, string> = {};
       destinationGroupMemberships[group.id] = group.name;
       await destination.setDestinationGroupMemberships(
         destinationGroupMemberships
@@ -813,7 +814,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
 
       exportProfilesThrow = new Error("oh no!");
 
-      let thrownError: Error;
+      let thrownError: ErrorWithRecordId & { errors: ErrorWithRecordId[] };
       try {
         await destination.exportRecord(record, true);
       } catch (error) {
@@ -823,7 +824,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       exportProfilesThrow = null;
 
       expect(thrownError.message).toEqual("oh no!");
-      expect(thrownError["errors"]).toBeUndefined();
+      expect(thrownError.errors).toBeUndefined();
 
       await run.stop();
       await Export.truncate();
@@ -831,7 +832,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
 
     test("sending an export with sync and producing an error will throw combined of all sub errors", async () => {
       const group = await helper.factories.group();
-      const destinationGroupMemberships = {};
+      const destinationGroupMemberships: Record<string, string> = {};
       destinationGroupMemberships[group.id] = group.name;
       await destination.setDestinationGroupMemberships(
         destinationGroupMemberships
@@ -840,7 +841,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       const record = await helper.factories.record();
       const run = await helper.factories.run(group, { state: "running" });
 
-      const error = new Error("oh no!");
+      const error = new Error("oh no!") as ErrorWithRecordId;
       error["recordId"] = record.id;
 
       exportProfilesResponse = {
@@ -849,7 +850,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
         retryDelay: undefined,
       };
 
-      let combinedError: Error;
+      let combinedError: ErrorWithRecordId & { errors: ErrorWithRecordId[] };
       try {
         await destination.exportRecord(record, true);
       } catch (error) {
@@ -860,7 +861,9 @@ describe("models/destination - with custom exportRecords plugin", () => {
         /error exporting 1 records to destination test plugin destination/
       );
       expect(combinedError.message).toMatch(/oh no!/);
-      expect(combinedError["errors"].map((e) => e.message)).toEqual(["oh no!"]);
+      expect(
+        combinedError["errors"].map((e: ErrorWithRecordId) => e.message)
+      ).toEqual(["oh no!"]);
 
       await run.stop();
       await Export.truncate();
@@ -873,7 +876,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
 
     test("the app can be rate-limited and the export:sendBatches can retry the export", async () => {
       const group = await helper.factories.group();
-      const destinationGroupMemberships = {};
+      const destinationGroupMemberships: Record<string, string> = {};
       destinationGroupMemberships[group.id] = group.name;
       await destination.setDestinationGroupMemberships(
         destinationGroupMemberships
@@ -885,7 +888,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
         where: { destinationId: destination.id },
       });
 
-      const recordError = new Error("oh no!");
+      const recordError = new Error("oh no!") as ErrorWithRecordId;
       recordError["recordId"] = record.id;
       exportProfilesResponse = {
         success: false,
@@ -930,7 +933,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
 
     test("the app have export:sendBatches task with info level", async () => {
       const group = await helper.factories.group();
-      const destinationGroupMemberships = {};
+      const destinationGroupMemberships: Record<string, string> = {};
       destinationGroupMemberships[group.id] = group.name;
       await destination.setDestinationGroupMemberships(
         destinationGroupMemberships
@@ -942,7 +945,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
         where: { destinationId: destination.id },
       });
 
-      const recordError = new Error("oh no!");
+      const recordError = new Error("oh no!") as ErrorWithRecordId;
       recordError["recordId"] = record.id;
       recordError["errorLevel"] = "info";
       exportProfilesResponse = {
@@ -982,7 +985,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
 
     test("the export can be retried for some records", async () => {
       const group = await helper.factories.group();
-      const destinationGroupMemberships = {};
+      const destinationGroupMemberships: Record<string, string> = {};
       destinationGroupMemberships[group.id] = group.name;
       await destination.setDestinationGroupMemberships(
         destinationGroupMemberships
@@ -1015,9 +1018,9 @@ describe("models/destination - with custom exportRecords plugin", () => {
         },
       });
 
-      const recordError1 = new Error("oh no!");
+      const recordError1 = new Error("oh no!") as ErrorWithRecordId;
       recordError1["recordId"] = record1.id;
-      const recordError2 = new Error("inform me!");
+      const recordError2 = new Error("inform me!") as ErrorWithRecordId;
       recordError2["recordId"] = record2.id;
       recordError2["errorLevel"] = "info";
       exportProfilesResponse = {

@@ -1,35 +1,33 @@
-import { api } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { App } from "../models/App";
-import { GrouparooPlugin, PluginApp } from "../classes/plugin";
 import { OptionHelper } from "../modules/optionHelper";
 import { ConfigWriter } from "../modules/configWriter";
 import { APIData } from "../modules/apiData";
+import { ActionPermission } from "../models/Permission";
+import { ParamsFrom } from "actionhero";
+import { WhereAttributeHash } from "sequelize";
 
 export class AppsList extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "apps:list";
-    this.description = "list all the apps";
-    this.permission = { topic: "app", mode: "read" };
-    this.outputExample = {};
-    this.inputs = {
-      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
-      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
-      state: { required: false },
-      order: {
-        required: false,
-        formatter: APIData.ensureObject,
-        default: [
-          ["name", "desc"],
-          ["createdAt", "desc"],
-        ],
-      },
-    };
-  }
+  name = "apps:list";
+  description = "list all the apps";
+  permission: ActionPermission = { topic: "app", mode: "read" };
+  outputExample = {};
+  inputs = {
+    limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+    offset: { required: true, default: 0, formatter: APIData.ensureNumber },
+    state: { required: false },
+    order: {
+      required: false,
+      formatter: APIData.ensureArray,
+      default: [
+        ["name", "desc"],
+        ["createdAt", "desc"],
+      ],
+    },
+  };
 
-  async runWithinTransaction({ params }) {
-    const where = {};
+  async runWithinTransaction({ params }: { params: ParamsFrom<AppsList> }) {
+    const where: WhereAttributeHash = {};
 
     if (params.state) where["state"] = params.state;
     const total = await App.scope(null).count({ where });
@@ -49,18 +47,15 @@ export class AppsList extends AuthenticatedAction {
 }
 
 export class AppOptions extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "app:options";
-    this.description = "return option choices from this app";
-    this.outputExample = {};
-    this.permission = { topic: "app", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "app:options";
+  description = "return option choices from this app";
+  outputExample = {};
+  permission: ActionPermission = { topic: "app", mode: "read" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<AppOptions> }) {
     const environmentVariableOptions =
       OptionHelper.getEnvironmentVariableOptionsForTopic("app");
     const app = await App.findById(params.id);
@@ -75,21 +70,18 @@ export class AppOptions extends AuthenticatedAction {
 }
 
 export class AppCreate extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "app:create";
-    this.description = "create an app";
-    this.outputExample = {};
-    this.permission = { topic: "app", mode: "write" };
-    this.inputs = {
-      name: { required: false },
-      type: { required: true },
-      state: { required: false },
-      options: { required: false, formatter: APIData.ensureObject },
-    };
-  }
+  name = "app:create";
+  description = "create an app";
+  outputExample = {};
+  permission: ActionPermission = { topic: "app", mode: "write" };
+  inputs = {
+    name: { required: false },
+    type: { required: true },
+    state: { required: false },
+    options: { required: false, formatter: APIData.ensureObject },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<AppCreate> }) {
     const app = await App.create({
       name: params.name,
       type: params.type,
@@ -105,22 +97,19 @@ export class AppCreate extends AuthenticatedAction {
 }
 
 export class AppEdit extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "app:edit";
-    this.description = "edit an app";
-    this.outputExample = {};
-    this.permission = { topic: "app", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-      name: { required: false },
-      type: { required: false },
-      state: { required: false },
-      options: { required: false, formatter: APIData.ensureObject },
-    };
-  }
+  name = "app:edit";
+  description = "edit an app";
+  outputExample = {};
+  permission: ActionPermission = { topic: "app", mode: "write" };
+  inputs = {
+    id: { required: true },
+    name: { required: false },
+    type: { required: false },
+    state: { required: false },
+    options: { required: false, formatter: APIData.ensureObject },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<AppEdit> }) {
     const app = await App.findById(params.id);
     if (params.options) await app.setOptions(params.options);
     await app.update(params);
@@ -132,19 +121,16 @@ export class AppEdit extends AuthenticatedAction {
 }
 
 export class AppTest extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "app:test";
-    this.description = "test the options passed to an app";
-    this.outputExample = {};
-    this.permission = { topic: "app", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-      options: { required: false, formatter: APIData.ensureObject },
-    };
-  }
+  name = "app:test";
+  description = "test the options passed to an app";
+  outputExample = {};
+  permission: ActionPermission = { topic: "app", mode: "write" };
+  inputs = {
+    id: { required: true },
+    options: { required: false, formatter: APIData.ensureObject },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<AppTest> }) {
     const app = await App.findById(params.id);
     const test = await app.test(params.options);
     if (test.error) test.error = String(test.error);
@@ -157,36 +143,30 @@ export class AppTest extends AuthenticatedAction {
 }
 
 export class AppView extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "app:view";
-    this.description = "view an app";
-    this.outputExample = {};
-    this.permission = { topic: "app", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "app:view";
+  description = "view an app";
+  outputExample = {};
+  permission: ActionPermission = { topic: "app", mode: "read" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<AppView> }) {
     const app = await App.findById(params.id);
     return { app: await app.apiData() };
   }
 }
 
 export class AppDestroy extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "app:destroy";
-    this.description = "destroy an app";
-    this.outputExample = {};
-    this.permission = { topic: "app", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "app:destroy";
+  description = "destroy an app";
+  outputExample = {};
+  permission: ActionPermission = { topic: "app", mode: "write" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<AppDestroy> }) {
     const app = await App.findById(params.id);
     await app.destroy();
 

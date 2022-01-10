@@ -5,7 +5,7 @@ import {
   ConfigTemplateParams,
   ConfigTemplateRunResponse,
 } from "../classes/configTemplate";
-import { CLI, api } from "actionhero";
+import { CLI, api, ParamsFrom } from "actionhero";
 import path from "path";
 import fs from "fs-extra";
 import prettier from "prettier";
@@ -13,107 +13,116 @@ import { getConfigDir } from "../modules/pluginDetails";
 import { Deprecation } from "../modules/deprecation";
 
 export class Generate extends CLI {
-  constructor() {
-    super();
-    this.name = "generate [template] [id]"; // I will include the template ARG vs OPT
-    this.description = `Generate new code config files from templates. ${
-      process.argv.slice(2).includes("generate") // we want to add more to the description, but not in the top-level "help"
-        ? `
+  name = "generate [template] [id]"; // I will include the template ARG vs OPT
+  description = `Generate new code config files from templates. ${
+    process.argv.slice(2).includes("generate") // we want to add more to the description, but not in the top-level "help"
+      ? `
 
 Commands:
-  [options]   See "Options" section below.
-  [template]  Name of the template. This is a starting point for building your configuration.
-              Use --list for a list of available templates.
-  [id]        A unique ID used to link items created from templates.
-              The value must be unique, using lower case letters and underscores only.`
-        : ""
-    }`;
-    this.inputs = {
-      list: {
-        required: false,
-        default: false,
-        letter: "l",
-        flag: true,
-        description:
-          'Display the available config templates to use with config-generate.  You can filter the list of templates by providing a string to match against, ie: `grouparoo generate app --list` to see templates which match "app"',
-      },
-      describe: {
-        required: false,
-        default: false,
-        letter: "d",
-        flag: true,
-        description: "Display the options for the template in detail",
-      },
-      parent: {
-        required: false,
-        letter: "p",
-        description:
-          "The id of the object that is the direct parent of this new object, e.g. the appId if you are creating a new Source.",
-      },
-      from: {
-        required: false,
-        letter: "f",
-        description:
-          "For batch generators, where should we read the objects from?",
-      },
-      with: {
-        required: false,
-        letter: "w",
-        description:
-          'For batch generators, what additional objects should we create? Use commas to separate names (--with "id,first_name,last_name") or "*" for all (`--with "*"`). Default is ``',
-        default: "",
-      },
-      mapping: {
-        required: false,
-        letter: "m",
-        description:
-          'For batch generators, how should we map this object? The remote key precedes the Grouparoo Property name. Use = to set the pair (--mapping "id=user_id").',
-      },
-      "high-water-mark": {
-        required: false,
-        letter: "H",
-        description:
-          "For batch generators, what should we use for the high-water-mark?",
-      },
-      "sync-mode": {
-        required: false,
-        letter: "s",
-        description:
-          "For destination generators, how will we sync to the destination?",
-      },
-      overwrite: {
-        required: true,
-        default: false,
-        letter: "o",
-        flag: true,
-        description: "Overwrite existing files?",
-      },
-    };
-    this.example = `App generation:
-    grouparoo generate postgres:app data_warehouse
+[options]   See "Options" section below.
+[template]  Name of the template. This is a starting point for building your configuration.
+            Use --list for a list of available templates.
+[id]        A unique ID used to link items created from templates.
+            The value must be unique, using lower case letters and underscores only.`
+      : ""
+  }`;
+  inputs = {
+    list: {
+      required: false,
+      default: false,
+      letter: "l",
+      flag: true,
+      description:
+        'Display the available config templates to use with config-generate.  You can filter the list of templates by providing a string to match against, ie: `grouparoo generate app --list` to see templates which match "app"',
+    },
+    describe: {
+      required: false,
+      default: false,
+      letter: "d",
+      flag: true,
+      description: "Display the options for the template in detail",
+    },
+    parent: {
+      required: false,
+      letter: "p",
+      description:
+        "The id of the object that is the direct parent of this new object, e.g. the appId if you are creating a new Source.",
+    },
+    from: {
+      required: false,
+      letter: "f",
+      description:
+        "For batch generators, where should we read the objects from?",
+    },
+    with: {
+      required: false,
+      letter: "w",
+      description:
+        'For batch generators, what additional objects should we create? Use commas to separate names (--with "id,first_name,last_name") or "*" for all (`--with "*"`). Default is ``',
+      default: "",
+    },
+    mapping: {
+      required: false,
+      letter: "m",
+      description:
+        'For batch generators, how should we map this object? The remote key precedes the Grouparoo Property name. Use = to set the pair (--mapping "id=user_id").',
+    },
+    "high-water-mark": {
+      required: false,
+      letter: "H",
+      description:
+        "For batch generators, what should we use for the high-water-mark?",
+    },
+    "sync-mode": {
+      required: false,
+      letter: "s",
+      description:
+        "For destination generators, how will we sync to the destination?",
+    },
+    overwrite: {
+      required: true,
+      default: false,
+      letter: "o",
+      flag: true,
+      description: "Overwrite existing files?",
+    },
+  };
+  example = `App generation:
+  grouparoo generate postgres:app data_warehouse
 
-  Simple Source Generation (needs parent app):
-    grouparoo generate postgres:table:source users_table \\
-      --parent data_warehouse
+Simple Source Generation (needs parent app):
+  grouparoo generate postgres:table:source users_table \\
+    --parent data_warehouse
 
-  Batch Source Generation (needs parent app to be applied first):
-    grouparoo generate postgres:table:source users_table \\
-      --parent data_warehouse \\
-      --from users \\
-      --with id,first_name,email,last_name \\
-      --mapping 'id=user_id' \\
-      --high-water-mark updated_at
+Batch Source Generation (needs parent app to be applied first):
+  grouparoo generate postgres:table:source users_table \\
+    --parent data_warehouse \\
+    --from users \\
+    --with id,first_name,email,last_name \\
+    --mapping 'id=user_id' \\
+    --high-water-mark updated_at
 
-  Learn more about the options for a specific template:
-    grouparoo generate postgres:app --describe`;
-  }
+Learn more about the options for a specific template:
+  grouparoo generate postgres:app --describe`;
 
   preInitialize = () => {
     GrouparooCLI.setGrouparooRunMode(this);
     GrouparooCLI.setNextDevelopmentMode();
   };
 
-  async run({ params }) {
+  async run({
+    params,
+  }: {
+    params: Partial<
+      ParamsFrom<Generate> & {
+        template: string;
+        id: string;
+        path?: string;
+        highWaterMark?: string;
+        _arguments: string[];
+      }
+    >;
+  }) {
     Deprecation.warnReplaced("CLI", "grouparoo generate", "UI config");
 
     const [template, id] = params._arguments || [];
@@ -138,7 +147,13 @@ Commands:
     return true;
   }
 
-  async describe(params) {
+  async describe(
+    params: Partial<
+      ParamsFrom<Generate> & {
+        template: string;
+      }
+    >
+  ) {
     if (!params.template) {
       return GrouparooCLI.logger.fatal(`no template provided`);
     }
@@ -147,7 +162,14 @@ Commands:
     this.logTemplateAndOptions(template);
   }
 
-  async generate(params) {
+  async generate(
+    params: Partial<
+      ParamsFrom<Generate> & {
+        template: string;
+        id: string;
+      }
+    >
+  ) {
     const learnMoreText =
       "Learn more with `grouparoo generate --help`, `grouparoo generate --list`, and `grouparoo generate [template] --describe`";
 
@@ -196,7 +218,13 @@ Commands:
     });
   }
 
-  async list(params) {
+  async list(
+    params: Partial<
+      ParamsFrom<Generate> & {
+        template: string;
+      }
+    >
+  ) {
     GrouparooCLI.logger.log(
       `Available Templates:${
         params.template ? ` matching "${params.template}"` : ""

@@ -2,13 +2,10 @@ import { api } from "actionhero";
 import { CLSTask } from "../../classes/tasks/clsTask";
 
 export class Notifier extends CLSTask {
-  constructor() {
-    super();
-    this.name = "notifier";
-    this.description = "run all notifiers";
-    this.frequency = 1000 * 60 * 60 * 6; // every 6 hours
-    this.queue = "system";
-  }
+  name = "notifier";
+  description = "run all notifiers";
+  frequency = 1000 * 60 * 60 * 6; // every 6 hours
+  queue = "system";
 
   async runWithinTransaction() {
     for (const i in api.notifiers.notifiers) {

@@ -1,6 +1,3 @@
-import { Op } from "sequelize";
-import { config } from "actionhero";
-
 import Sequelize from "sequelize";
 
 export default {
@@ -14,9 +11,10 @@ export default {
       allowNull: true,
     });
 
-    const [properties] = await queryInterface.sequelize.query(
-      "SELECT * FROM \"properties\" WHERE state = 'ready'"
-    );
+    const [properties]: [Record<string, any>[], unknown] =
+      await queryInterface.sequelize.query(
+        "SELECT * FROM \"properties\" WHERE state = 'ready'"
+      );
     const uniqueProperties = properties.filter(
       (p) => p["unique"] === 1 || p["unique"] === "1" || p["unique"] === true
     );

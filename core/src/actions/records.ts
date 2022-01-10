@@ -1,51 +1,45 @@
-import { Action, config } from "actionhero";
+import { Action, config, ParamsFrom } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { GrouparooRecord } from "../models/GrouparooRecord";
 import { RecordProperty } from "../models/RecordProperty";
 import { GrouparooModel } from "../models/GrouparooModel";
 import { Group } from "../models/Group";
 import { internalRun } from "../modules/internalRun";
-import { Op } from "sequelize";
+import Sequelize, { Op, WhereAttributeHash } from "sequelize";
 import { ConfigWriter } from "../modules/configWriter";
 import { RecordOps } from "../modules/ops/record";
-import Sequelize from "sequelize";
 import { APIData } from "../modules/apiData";
-import {
-  ActionPermissionMode,
-  ActionPermissionTopic,
-} from "../models/Permission";
+import { ActionPermission } from "../models/Permission";
 import { CLS } from "../modules/cls";
 import { AsyncReturnType } from "type-fest";
 import { DestinationOps } from "../modules/ops/destination";
+import { TeamMember } from "../models/TeamMember";
 
 export class RecordsList extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "records:list";
-    this.description = "list all the records in a group";
-    this.outputExample = {};
-    this.permission = { topic: "record", mode: "read" };
-    this.inputs = {
-      groupId: { required: false },
-      searchKey: { required: false },
-      searchValue: { required: false },
-      state: { required: false },
-      modelId: { required: false },
-      caseSensitive: {
-        required: false,
-        formatter: APIData.ensureBoolean,
-      },
-      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
-      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
-      order: {
-        required: false,
-        formatter: APIData.ensureObject,
-        default: [["createdAt", "asc"]],
-      },
-    };
-  }
+  name = "records:list";
+  description = "list all the records in a group";
+  outputExample = {};
+  permission: ActionPermission = { topic: "record", mode: "read" };
+  inputs = {
+    groupId: { required: false },
+    searchKey: { required: false },
+    searchValue: { required: false },
+    state: { required: false },
+    modelId: { required: false },
+    caseSensitive: {
+      required: false,
+      formatter: APIData.ensureBoolean,
+    },
+    limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+    offset: { required: true, default: 0, formatter: APIData.ensureNumber },
+    order: {
+      required: false,
+      formatter: APIData.ensureArray,
+      default: [["createdAt", "asc"]],
+    },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<RecordsList> }) {
     const { records, total } = await RecordOps.search(params);
     return {
       total,
@@ -55,29 +49,31 @@ export class RecordsList extends AuthenticatedAction {
 }
 
 export class RecordAutocompleteRecordProperty extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "records:autocompleteRecordProperty";
-    this.description = "return matching record property values";
-    this.outputExample = {};
-    this.permission = { topic: "record", mode: "read" };
-    this.inputs = {
-      propertyId: { required: true },
-      match: { required: true },
-      limit: { required: false, default: 25, formatter: APIData.ensureNumber },
-      offset: { required: false, default: 0, formatter: APIData.ensureNumber },
-      order: {
-        required: false,
-        formatter: APIData.ensureObject,
-        default: [["rawValue", "asc"]],
-      },
-    };
-  }
+  name = "records:autocompleteRecordProperty";
+  description = "return matching record property values";
+  outputExample = {};
+  permission: ActionPermission = { topic: "record", mode: "read" };
+  inputs = {
+    propertyId: { required: true },
+    match: { required: true },
+    limit: { required: false, default: 25, formatter: APIData.ensureNumber },
+    offset: { required: false, default: 0, formatter: APIData.ensureNumber },
+    order: {
+      required: false,
+      formatter: APIData.ensureArray,
+      default: [["rawValue", "asc"]],
+    },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<RecordAutocompleteRecordProperty>;
+  }) {
     const op = config.sequelize.dialect === "postgres" ? Op.iLike : Op.like;
-    const rawValueWhereClause = {};
-    rawValueWhereClause[op] = `%${params.match}%`;
+    const rawValueWhereClause: WhereAttributeHash = {
+      [op]: `%${params.match}%`,
+    };
 
     const recordProperties = await RecordProperty.findAll({
       attributes: [
@@ -103,39 +99,37 @@ export class RecordAutocompleteRecordProperty extends AuthenticatedAction {
 }
 
 export class RecordsImportAndUpdate extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "records:importAndUpdate";
-    this.description = "create a run to import and update every record";
-    this.outputExample = {};
-    this.permission = { topic: "record", mode: "write" };
-    this.inputs = {};
-  }
+  name = "records:importAndUpdate";
+  description = "create a run to import and update every record";
+  outputExample = {};
+  permission: ActionPermission = { topic: "record", mode: "write" };
+  inputs = {};
 
-  async runWithinTransaction({ session }) {
+  async runWithinTransaction({
+    session,
+  }: {
+    session: { teamMember: TeamMember };
+  }) {
     const run = await internalRun("teamMember", session.teamMember.id);
     return { run: await run.apiData() };
   }
 }
 
 export class RecordCreate extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "record:create";
-    this.description = "create a record";
-    this.outputExample = {};
-    this.permission = { topic: "record", mode: "write" };
-    this.inputs = {
-      modelId: { required: true },
-      properties: {
-        required: false,
-        default: {},
-        formatter: APIData.ensureObject,
-      },
-    };
-  }
+  name = "record:create";
+  description = "create a record";
+  outputExample = {};
+  permission: ActionPermission = { topic: "record", mode: "write" };
+  inputs = {
+    modelId: { required: true },
+    properties: {
+      required: false,
+      default: {},
+      formatter: APIData.ensureObject,
+    },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<RecordCreate> }) {
     const record = new GrouparooRecord({ modelId: params.modelId });
     await record.save();
 
@@ -178,24 +172,16 @@ export class RecordCreate extends AuthenticatedAction {
 }
 
 export class RecordImport extends Action {
-  permission: {
-    topic: ActionPermissionTopic;
-    mode: ActionPermissionMode;
+  name = "record:import";
+  description = "fully import a record";
+  outputExample = {};
+  permission: ActionPermission = { topic: "record", mode: "write" };
+  middleware = ["authenticated-action"];
+  inputs = {
+    id: { required: true },
   };
 
-  constructor() {
-    super();
-    this.name = "record:import";
-    this.description = "fully import a record";
-    this.outputExample = {};
-    this.permission = { topic: "record", mode: "write" };
-    this.middleware = ["authenticated-action"];
-    this.inputs = {
-      id: { required: true },
-    };
-  }
-
-  async run({ params }: { params: { id: string } }) {
+  async run({ params }: { params: ParamsFrom<RecordImport> }) {
     let record: GrouparooRecord;
     let response: {
       success: boolean;
@@ -228,24 +214,16 @@ export class RecordImport extends Action {
 }
 
 export class RecordsImport extends Action {
-  permission: {
-    topic: ActionPermissionTopic;
-    mode: ActionPermissionMode;
+  name = "records:import";
+  description = "fully import all records associated with a model";
+  outputExample = {};
+  permission: ActionPermission = { topic: "record", mode: "write" };
+  middleware = ["authenticated-action"];
+  inputs = {
+    modelId: { required: true },
   };
 
-  constructor() {
-    super();
-    this.name = "records:import";
-    this.description = "fully import all records associated with a model";
-    this.outputExample = {};
-    this.permission = { topic: "record", mode: "write" };
-    this.middleware = ["authenticated-action"];
-    this.inputs = {
-      modelId: { required: true },
-    };
-  }
-
-  async run({ params }: { params: { modelId: string } }) {
+  async run({ params }: { params: ParamsFrom<RecordsImport> }) {
     let model: GrouparooModel;
     let records: GrouparooRecord[];
 
@@ -264,26 +242,15 @@ export class RecordsImport extends Action {
 }
 
 export class RecordExport extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "record:export";
-    this.description = "fully export a record";
-    this.outputExample = {};
-    this.permission = { topic: "record", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "record:export";
+  description = "fully export a record";
+  outputExample = {};
+  permission: ActionPermission = { topic: "record", mode: "write" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({
-    params,
-  }: {
-    params: {
-      id: string;
-      properties: Record<string, (string | number | boolean | Date)[]>;
-      removedProperties: string[];
-    };
-  }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<RecordExport> }) {
     const record = await GrouparooRecord.findById(params.id);
     const exports = await record.export(true);
 
@@ -296,18 +263,15 @@ export class RecordExport extends AuthenticatedAction {
 }
 
 export class RecordView extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "record:view";
-    this.description = "view a record and members";
-    this.outputExample = {};
-    this.permission = { topic: "record", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "record:view";
+  description = "view a record and members";
+  outputExample = {};
+  permission: ActionPermission = { topic: "record", mode: "read" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<RecordView> }) {
     const record = await GrouparooRecord.findById(params.id);
     const groups = await record.$get("groups");
     const destinations = await DestinationOps.relevantFor(record, groups);
@@ -322,18 +286,19 @@ export class RecordView extends AuthenticatedAction {
 }
 
 export class RecordDestroy extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "record:destroy";
-    this.description = "destroy a record";
-    this.outputExample = {};
-    this.permission = { topic: "record", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "record:destroy";
+  description = "destroy a record";
+  outputExample = {};
+  permission: ActionPermission = { topic: "record", mode: "write" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<RecordDestroy>;
+  }) {
     const record = await GrouparooRecord.findById(params.id);
     await record.destroy();
 

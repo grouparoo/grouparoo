@@ -66,7 +66,7 @@ export namespace ExportProcessorOps {
 
   export async function setError(
     instance: ExportProcessor,
-    error: Error,
+    error: Error & { errorLevel?: ExportProcessor["errorLevel"] },
     retryDelay: number = config.tasks.timeout
   ) {
     const maxAttempts = parseInt(

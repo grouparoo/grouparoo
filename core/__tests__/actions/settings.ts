@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper } from "actionhero";
+import { Connection, specHelper } from "actionhero";
 import { Setting, plugin } from "../../src";
 import { SessionCreate } from "../../src/actions/session";
 import {
@@ -8,7 +8,7 @@ import {
 } from "../../src/actions/settings";
 
 describe("actions/settings", () => {
-  let connection;
+  let connection: Connection;
 
   helper.grouparooTestServer({ truncate: true, resetSettings: true });
 
@@ -24,8 +24,8 @@ describe("actions/settings", () => {
   });
 
   describe("reader signed in", () => {
-    let csrfToken;
-    let id;
+    let csrfToken: string;
+    let id: string;
 
     beforeAll(async () => {
       await specHelper.runAction("team:initialize", {

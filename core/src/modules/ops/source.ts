@@ -27,6 +27,7 @@ import {
   RecordPropertyPluginMethodResponse,
 } from "../../classes/plugin";
 import { TableSpeculation } from "../tableSpeculation";
+import { RecordPropertyType } from "./record";
 
 export namespace SourceOps {
   /**
@@ -102,7 +103,7 @@ export namespace SourceOps {
       appOptions?: OptionHelper.SimpleOptions;
       sourceOptions?: OptionHelper.SimpleOptions;
       sourceMapping?: MappingHelper.Mappings;
-      recordProperties?: {};
+      recordProperties?: RecordPropertyType;
     } = {}
   ) {
     if (property.state !== "ready" && !propertyOptionsOverride) return;
@@ -452,7 +453,7 @@ export namespace SourceOps {
       throw new Error(`cannot find propertyOptions for type ${source.type}`);
     }
 
-    const response: Array<{
+    const response: {
       key: string;
       displayName?: string;
       default?: boolean;
@@ -460,13 +461,13 @@ export namespace SourceOps {
       required: boolean;
       type: string;
       primary?: boolean;
-      options: Array<{
+      options: {
         key: string;
         description?: string;
         default?: boolean;
-        examples?: Array<any>;
-      }>;
-    }> = [];
+        examples?: any[];
+      }[];
+    }[] = [];
     const app = await source.$get("app", { include: [Option], scope: null });
     const appOptions = await app.getOptions(true);
     const connection = await app.getConnection();
@@ -654,6 +655,7 @@ export namespace SourceOps {
 
     const counts: { [sourceId: string]: number } = {};
     countsBySource.forEach((record) => {
+      //@ts-ignore
       counts[record.sourceId] = record["count"];
     });
 

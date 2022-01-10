@@ -1,39 +1,37 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
-import { RecordProperty } from "../models/RecordProperty";
 import { Log } from "../models/Log";
-import { Op } from "sequelize";
+import { Op, WhereAttributeHash } from "sequelize";
 import { APIData } from "../modules/apiData";
+import { ActionPermission } from "../models/Permission";
+import { ParamsFrom } from "actionhero";
 
 export class LogsList extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "logs:list";
-    this.description = "list all the log entries";
-    this.outputExample = {};
-    this.permission = { topic: "log", mode: "read" };
-    this.inputs = {
-      topic: { required: false },
-      verb: { required: false },
-      ownerId: { required: false },
-      limit: { required: true, default: 100, formatter: APIData.ensureNumber },
-      offset: { required: true, default: 0, formatter: APIData.ensureNumber },
-      order: {
-        required: false,
-        formatter: APIData.ensureObject,
-        default: [
-          ["createdAt", "desc"],
-          ["topic", "desc"],
-        ],
-      },
-    };
-  }
+  name = "logs:list";
+  description = "list all the log entries";
+  outputExample = {};
+  permission: ActionPermission = { topic: "log", mode: "read" };
+  inputs = {
+    topic: { required: false },
+    verb: { required: false },
+    ownerId: { required: false },
+    limit: { required: true, default: 100, formatter: APIData.ensureNumber },
+    offset: { required: true, default: 0, formatter: APIData.ensureNumber },
+    order: {
+      required: false,
+      formatter: APIData.ensureArray,
+      default: [
+        ["createdAt", "desc"],
+        ["topic", "desc"],
+      ],
+    },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<LogsList> }) {
     const search = {
       limit: params.limit,
       offset: params.offset,
       order: params.order,
-      where: {},
+      where: {} as WhereAttributeHash,
     };
 
     let topic = params.topic;

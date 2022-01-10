@@ -1,22 +1,20 @@
+import { ParamsFrom } from "actionhero";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { GrouparooModel } from "../../models/GrouparooModel";
 
 export class ModelDestroy extends CLSTask {
-  constructor() {
-    super();
-    this.name = "model:destroy";
-    this.description =
-      "wait for dependencies to finish being deleted, then delete the model";
-    this.frequency = 0;
-    this.queue = "models";
-    this.inputs = {
-      modelId: { required: true },
-    };
-  }
+  name = "model:destroy";
+  description =
+    "wait for dependencies to finish being deleted, then delete the model";
+  frequency = 0;
+  queue = "models";
+  inputs = {
+    modelId: { required: true },
+  };
 
-  async runWithinTransaction(params) {
+  async runWithinTransaction({ modelId }: ParamsFrom<ModelDestroy>) {
     const model = await GrouparooModel.scope(null).findOne({
-      where: { id: params.modelId, state: "deleted" },
+      where: { id: modelId, state: "deleted" },
     });
 
     // the model may have been force-deleted

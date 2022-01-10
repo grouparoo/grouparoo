@@ -1,20 +1,18 @@
 import { QueryTypes } from "sequelize";
-import { api } from "actionhero";
+import { api, ParamsFrom } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
+import { ActionPermission } from "../models/Permission";
 
 export class ObjectFind extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "object:find";
-    this.description = "find an object by id";
-    this.outputExample = {};
-    this.permission = { topic: "*", mode: "read" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
+  name = "object:find";
+  description = "find an object by id";
+  outputExample = {};
+  permission: ActionPermission = { topic: "*", mode: "read" };
+  inputs = {
+    id: { required: true },
+  };
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({ params }: { params: ParamsFrom<ObjectFind> }) {
     const tables = [
       "apiKeys",
       "apps",

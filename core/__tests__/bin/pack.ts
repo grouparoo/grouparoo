@@ -10,8 +10,8 @@ describe("bin/pack", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   let tempDir: string;
-  let messages = [];
-  let spies = [];
+  let messages: string[] = [];
+  const spies: jest.SpyInstance[] = [];
 
   beforeEach(async () => {
     tempDir = await mkdtemp(path.join(os.tmpdir(), "grouparoo-pack-test-"));

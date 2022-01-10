@@ -10,11 +10,11 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod =
       [appOptions.database, destinationOptions.table]
     );
 
-    const columns: Array<{
+    const columns: {
       key: string;
       type: DestinationMappingOptionsResponseType;
       important: boolean;
-    }> = [];
+    }[] = [];
     for (const i in rows) {
       if (rows[i].column_name !== destinationOptions.primaryKey) {
         columns.push({

@@ -12,7 +12,7 @@ describe("modules/cache", () => {
   const objectId = "xyz_" + uuid.v4();
 
   describe("caching", () => {
-    function checkCaching(name, cacheKey) {
+    function checkCaching(name: string, cacheKey: any) {
       const meth3 = async () => {
         return 3;
       };

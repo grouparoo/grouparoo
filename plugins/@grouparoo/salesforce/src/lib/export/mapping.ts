@@ -163,15 +163,15 @@ const extractFields = async (
   match: string,
   prepend: string
 ): Promise<{
-  required: Array<{
+  required: {
     key: string;
     type: DestinationMappingOptionsResponseType;
-  }>;
-  known: Array<{
+  }[];
+  known: {
     key: string;
     type: DestinationMappingOptionsResponseType;
     important?: boolean;
-  }>;
+  }[];
 }> => {
   const required = [];
   let known = [];
@@ -229,15 +229,15 @@ export const getFields = async (
   recordReferenceMatchField: string,
   recordReferenceObject: string
 ): Promise<{
-  required: Array<{
+  required: {
     key: string;
     type: DestinationMappingOptionsResponseType;
-  }>;
-  known: Array<{
+  }[];
+  known: {
     key: string;
     type: DestinationMappingOptionsResponseType;
     important?: boolean;
-  }>;
+  }[];
 }> => {
   const objectFields = await extractFields(
     destination,

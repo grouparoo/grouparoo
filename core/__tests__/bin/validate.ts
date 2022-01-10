@@ -1,13 +1,8 @@
 import { helper } from "@grouparoo/spec-helper";
 import { Validate } from "../../src/bin/validate";
 import { join } from "path";
-import { GrouparooModel, Setting } from "../../src";
-let actionhero;
-
-const filename = join(
-  __dirname,
-  `../../log/test-server-${process.env.JEST_WORKER_ID}-test.log`
-);
+import { Setting } from "../../src";
+let actionhero: any;
 
 describe("bin/config-validate", () => {
   beforeAll(async () => {
@@ -17,8 +12,8 @@ describe("bin/config-validate", () => {
     await helper.enableTestPlugin();
   }, helper.setupTime);
 
-  let messages = [];
-  let spies = [];
+  let messages: string[] = [];
+  const spies: jest.SpyInstance[] = [];
 
   beforeEach(() => {
     messages = [];

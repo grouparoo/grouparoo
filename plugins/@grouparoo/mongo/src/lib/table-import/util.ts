@@ -196,7 +196,7 @@ export async function getFields(
   connection: any,
   database: string,
   tableName: string
-): Promise<Array<string>> {
+): Promise<string[]> {
   const firstLevelFieldsResult = await connection
     .db(database)
     .collection(tableName)
@@ -223,7 +223,7 @@ async function getAllFields(
   connection: any,
   database: string,
   tableName: string,
-  firstLevelFields: Array<string>
+  firstLevelFields: string[]
 ): Promise<Set<string>> {
   let allFields = new Set<string>();
   const docs = await connection

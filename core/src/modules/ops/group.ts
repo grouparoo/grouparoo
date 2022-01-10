@@ -69,7 +69,9 @@ export namespace GroupOps {
       );
 
       // and includes this record
+      //@ts-ignore
       if (!where[Op.and]) where[Op.and] = [];
+      //@ts-ignore
       where[Op.and].push({ id: { [Op.in]: records.map((p) => p.id) } });
 
       const matchedRecords = await RecordMultipleAssociationShim.findAll({
@@ -197,9 +199,10 @@ export namespace GroupOps {
       "ready"
     );
 
-    where["createdAt"] = { [Op.and]: [{ [Op.lt]: run.createdAt }] };
+    where.createdAt = { [Op.and]: [{ [Op.lt]: run.createdAt }] };
     if (highWaterMark) {
-      where["createdAt"][Op.and].push({ [Op.gte]: highWaterMark });
+      //@ts-ignore
+      where.createdAt[Op.and].push({ [Op.gte]: highWaterMark });
     }
 
     records = await RecordMultipleAssociationShim.findAll({

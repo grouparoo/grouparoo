@@ -1,5 +1,5 @@
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
-import { specHelper, utils } from "actionhero";
+import { Connection, specHelper, utils } from "actionhero";
 import { Run } from "../../src";
 import { SessionCreate } from "../../src/actions/session";
 import { ModelCreate } from "../../src/actions/models";
@@ -11,11 +11,7 @@ import {
   ScheduleEdit,
   ScheduleRun,
 } from "../../src/actions/schedules";
-import {
-  RecordCreate,
-  RecordsList,
-  RecordView,
-} from "../../src/actions/records";
+import { RecordCreate, RecordsList } from "../../src/actions/records";
 import { GroupCreate, GroupView } from "../../src/actions/groups";
 import {
   SourceBootstrapUniqueProperty,
@@ -23,9 +19,9 @@ import {
   SourceEdit,
 } from "../../src/actions/sources";
 
-function simpleRecordValues(complexProfileValues): { [key: string]: any } {
+function simpleRecordValues(complexProfileValues: Record<string, any>) {
   const keys = Object.keys(complexProfileValues);
-  const simpleRecordProperties = {};
+  const simpleRecordProperties: Record<string, Record<string, any[]>> = {};
   keys.forEach((key) => {
     simpleRecordProperties[key] = complexProfileValues[key].values;
   });
@@ -42,9 +38,8 @@ describe("integration/happyPath", () => {
   let modelId: string;
   let appId: string;
   let sourceId: string;
-  let recordId: string;
   let scheduleId: string;
-  let connection;
+  let connection: Connection;
   let csrfToken: string;
 
   test("the first user can create an account and the first team", async () => {
@@ -252,7 +247,6 @@ describe("integration/happyPath", () => {
         ltv: [100.12],
         userId: [null],
       });
-      recordId = record.id;
     });
 
     test("a group can be created", async () => {

@@ -9,9 +9,9 @@ import {
 } from "../../../src";
 import { api } from "actionhero";
 
-function simpleRecordValues(complexProfileValues): { [key: string]: any } {
+function simpleRecordValues(complexProfileValues: Record<string, any>) {
   const keys = Object.keys(complexProfileValues);
-  const simpleRecordProperties = {};
+  const simpleRecordProperties: Record<string, any[]> = {};
   keys.forEach((key) => {
     simpleRecordProperties[key] = complexProfileValues[key].values;
   });
@@ -196,7 +196,7 @@ describe("record sync", () => {
             firstName: ["Luigi"],
           };
 
-          return data[property.key];
+          return data[property.key as keyof typeof data];
         };
 
         // test

@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper } from "actionhero";
-import { Team, TeamMember, Permission, Setting } from "../../src";
+import { specHelper, Connection } from "actionhero";
+import { Team, TeamMember, Setting } from "../../src";
 import { SessionCreate } from "../../src/actions/session";
 import {
   TeamCreate,
@@ -116,8 +116,8 @@ describe("actions/teams", () => {
   });
 
   describe("administrator signed in", () => {
-    let connection;
-    let csrfToken;
+    let connection: Connection;
+    let csrfToken: string;
 
     beforeAll(async () => {
       connection = await specHelper.buildConnection();
@@ -342,8 +342,8 @@ describe("actions/teams", () => {
   });
 
   describe("read-only user signed in", () => {
-    let connection;
-    let csrfToken;
+    let connection: Connection;
+    let csrfToken: string;
 
     beforeAll(async () => {
       const teamMember = new TeamMember({

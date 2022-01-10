@@ -119,7 +119,7 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   validateQuery(query);
 
   try {
-    const rows: Array<{ [column: string]: DataResponse }> =
+    const rows: { [column: string]: DataResponse }[] =
       await connection.asyncQuery(query);
 
     for (const row of rows) {

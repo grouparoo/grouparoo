@@ -1,25 +1,24 @@
+import { ParamsFrom } from "actionhero";
 import { RetryableTask } from "../../../classes/tasks/retryableTask";
+import { APIData } from "../../../modules/apiData";
 import { Telemetry } from "../../../modules/telemetry";
 
 export class TelemetryTask extends RetryableTask {
-  constructor() {
-    super();
-    this.name = "telemetry";
-    this.description =
-      "send telemetry information about this cluster (recurring)";
-    this.frequency =
-      process.env.GROUPAROO_RUN_MODE === "cli:run" ? 0 : 1000 * 60 * 60 * 24; // every 24 hours
-    this.queue = "system";
-    this.inputs = {
-      trigger: { required: false, default: "timer" },
-    };
-  }
+  name = "telemetry";
+  description = "send telemetry information about this cluster (recurring)";
+  frequency =
+    process.env.GROUPAROO_RUN_MODE === "cli:run" ? 0 : 1000 * 60 * 60 * 24; // every 24 hours
+  queue = "system";
+  inputs = {
+    trigger: {
+      required: true,
+      default: "timer",
+      formatter: (p: unknown) =>
+        APIData.ensureString<Telemetry.TelemetryCallTrigger>(p),
+    },
+  };
 
-  async runWithinTransaction({
-    trigger,
-  }: {
-    trigger: Telemetry.TelemetryCallTrigger;
-  }) {
+  async runWithinTransaction({ trigger }: ParamsFrom<TelemetryTask>) {
     return Telemetry.send(trigger, [], true);
   }
 }

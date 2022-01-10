@@ -70,10 +70,10 @@ export const isReadOnlyField = (key): boolean => {
   return readOnlyFields.includes(key);
 };
 
-export const getRequiredFields = (): Array<{
+export const getRequiredFields = (): {
   key: string;
   type: DestinationMappingOptionsResponseType;
-}> => {
+}[] => {
   return [{ key: "email", type: "email" }];
 };
 
@@ -103,11 +103,11 @@ export const getUserFields = async (
   appOptions: SimpleAppOptions,
   appId: String
 ): Promise<
-  Array<{
+  {
     key: string;
     type: DestinationMappingOptionsResponseType;
     important?: boolean;
-  }>
+  }[]
 > => {
   const fields = await getFields(client, appId, appOptions, true);
   const out = [];

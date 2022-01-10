@@ -2,6 +2,7 @@ import { Action, config, api, RouteType } from "actionhero";
 import * as fs from "fs";
 import * as path from "path";
 import { PackageJson } from "type-fest";
+import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 
 const SWAGGER_VERSION = "2.0";
 const API_VERSION = "v1";
@@ -28,15 +29,12 @@ const responses = {
 };
 
 export class Swagger extends Action {
-  constructor() {
-    super();
-    this.name = "swagger";
-    this.description = "return API documentation in the OpenAPI specification";
-    this.outputExample = {};
-  }
+  name = "swagger";
+  description = "return API documentation in the OpenAPI specification";
+  outputExample = {};
 
   getLatestAction(route: RouteType) {
-    let matchedAction: Action;
+    let matchedAction: Action | AuthenticatedAction;
     Object.keys(api.actions.actions).forEach((actionName) => {
       Object.keys(api.actions.actions[actionName]).forEach((version) => {
         const action = api.actions.actions[actionName][version];
@@ -62,13 +60,13 @@ export class Swagger extends Action {
           summary: string;
           consumes: string[];
           produces: string[];
-          parameters: Array<{
+          parameters: {
             in: string;
             name: string;
             type: string;
             required: boolean;
             default: string | number | boolean;
-          }>;
+          }[];
           responses: typeof responses;
           security: Record<string, any>;
         };
@@ -117,12 +115,13 @@ export class Swagger extends Action {
               };
             }),
           responses,
-          security: action["permission"]
-            ? [
-                { GrouparooCSRFTokenAndSessionCookie: [] },
-                { GrouparooAPIKey: [] },
-              ]
-            : [],
+          security:
+            action instanceof AuthenticatedAction && action["permission"]
+              ? [
+                  { GrouparooCSRFTokenAndSessionCookie: [] },
+                  { GrouparooAPIKey: [] },
+                ]
+              : [],
         };
 
         if (!tags.includes(tag)) {

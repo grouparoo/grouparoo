@@ -392,7 +392,7 @@ async function getForeignKeyType(
 function parseForeignKeys(
   foreignKeys: string[],
   type: string
-): Array<number | string> {
+): (number | string)[] {
   if (!type) {
     return foreignKeys;
   }

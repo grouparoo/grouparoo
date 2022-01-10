@@ -48,7 +48,7 @@ function RealRedisConfig() {
     // ssl options
     tls: protocol === "rediss" ? { rejectUnauthorized: false } : undefined,
     // you can learn more about retryStrategy @ https://github.com/luin/ioredis#auto-reconnect
-    retryStrategy: (times) => {
+    retryStrategy: (times: number) => {
       if (times === 1) {
         console.error(
           "Unable to connect to Redis - please check your Redis config!"
@@ -91,17 +91,17 @@ function MockRedisConfig() {
     _toExpand: false,
     client: {
       konstructor: () => baseRedis,
-      args: [],
+      args: [] as string[],
       buildNew: false,
     },
     subscriber: {
       konstructor: () => baseRedis.createConnectedClient(),
-      args: [],
+      args: [] as string[],
       buildNew: false,
     },
     tasks: {
       konstructor: () => baseRedis.createConnectedClient(),
-      args: [],
+      args: [] as string[],
       buildNew: false,
     },
   };

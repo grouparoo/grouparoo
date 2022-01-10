@@ -1,5 +1,8 @@
 import path from "path";
-import { ConfigTemplate } from "../classes/configTemplate";
+import {
+  ConfigTemplate,
+  ConfigTemplateParams,
+} from "../classes/configTemplate";
 
 export class ApiKeyTemplate extends ConfigTemplate {
   constructor() {
@@ -27,7 +30,7 @@ export class ApiKeyTemplate extends ConfigTemplate {
     this.destinationDir = "apiKeys";
   }
 
-  async run({ params }) {
+  async run({ params }: { params: ConfigTemplateParams }) {
     return this.mustacheAllFiles(params);
   }
 }

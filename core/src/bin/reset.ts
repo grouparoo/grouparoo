@@ -1,32 +1,35 @@
 import { GrouparooCLI } from "../modules/cli";
-import { CLI } from "actionhero";
+import { CLI, ParamsFrom } from "actionhero";
 import { Reset } from "../modules/reset";
 import { CLS } from "../modules/cls";
 
 export class ResetCLI extends CLI {
-  constructor() {
-    super();
-    this.name = "reset <mode>";
-    this.description =
-      "Reset part of this Cluster. Mode can be `cluster` (all data), `data` (imported data) and `cache`";
-    this.inputs = {
-      confirm: {
-        required: false,
-        default: false,
-        flag: true,
-        letter: "c",
-        description: "Confirm the command",
-      },
-    };
-  }
+  name = "reset <mode>";
+  description =
+    "Reset part of this Cluster. Mode can be `cluster` (all data), `data` (imported data) and `cache`";
+  inputs = {
+    confirm: {
+      required: false,
+      default: false,
+      flag: true,
+      letter: "c",
+      description: "Confirm the command",
+    },
+  };
 
   preInitialize = () => {
     GrouparooCLI.setGrouparooRunMode(this);
     GrouparooCLI.setNextDevelopmentMode();
   };
 
-  async run({ params }) {
-    const [mode]: [string] = params._arguments || [];
+  async run({
+    params,
+  }: {
+    params: Partial<
+      ParamsFrom<ResetCLI> & { mode?: string; _arguments: string[] }
+    >;
+  }) {
+    const [mode] = params._arguments || [];
     if (mode) params.mode = mode;
 
     GrouparooCLI.logCLI(
