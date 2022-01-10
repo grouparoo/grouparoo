@@ -222,10 +222,10 @@ export namespace ConfigWriter {
     const configFilePath = path.join(configDir, filePath);
     const dir = path.dirname(configFilePath);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    const stringifyFilter = (k: string, v: string) =>
+    const stringifyFilter = (_: string, v: unknown) =>
       v === null ? undefined : v;
     const content = JSON.stringify(object, stringifyFilter, 2);
-    await fs.writeFileSync(
+    fs.writeFileSync(
       configFilePath,
       prettier.format(content, { parser: "json" })
     );
