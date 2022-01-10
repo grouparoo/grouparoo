@@ -34,9 +34,9 @@ describe("tasks/records:enqueueExports", () => {
         record.id
       );
       await _import.update({
-        state: "exporting",
+        state: "processing",
         importedAt: new Date(),
-        exportedAt: null,
+        processedAt: null,
       });
 
       await specHelper.runTask("records:enqueueExports", {});
@@ -58,9 +58,9 @@ describe("tasks/records:enqueueExports", () => {
         record.id
       );
       await _import.update({
-        state: "exporting",
+        state: "processing",
         importedAt: new Date(),
-        exportedAt: null,
+        processedAt: null,
       });
 
       const emailProperty = await Property.findOne({ where: { key: "email" } });
@@ -88,9 +88,9 @@ describe("tasks/records:enqueueExports", () => {
         mario.id
       );
       await marioImport.update({
-        state: "exporting",
+        state: "processing",
         importedAt: new Date(),
-        exportedAt: null,
+        processedAt: null,
       });
 
       // luigi is ready, but his import has not been marked completed yet
@@ -104,7 +104,7 @@ describe("tasks/records:enqueueExports", () => {
       );
       await luigiImport.update({
         importedAt: null,
-        exportedAt: null,
+        processedAt: null,
       });
 
       // toad has a pending import, but is not ready
@@ -117,9 +117,9 @@ describe("tasks/records:enqueueExports", () => {
         toad.id
       );
       await toadImport.update({
-        state: "exporting",
+        state: "processing",
         importedAt: new Date(),
-        exportedAt: null,
+        processedAt: null,
       });
 
       await specHelper.runTask("records:enqueueExports", {});

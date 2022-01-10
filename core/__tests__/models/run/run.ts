@@ -540,7 +540,7 @@ describe("models/run", () => {
         creatorId: run.id,
         recordAssociatedAt: new Date(),
         importedAt: new Date(),
-        exportedAt: new Date(),
+        processedAt: new Date(),
         createdRecord: true,
       });
 
@@ -552,7 +552,7 @@ describe("models/run", () => {
         creatorId: run.id,
         recordAssociatedAt: new Date(),
         importedAt: new Date(),
-        exportedAt: new Date(),
+        processedAt: new Date(),
       });
 
       await utils.sleep(100);
@@ -563,7 +563,7 @@ describe("models/run", () => {
         creatorId: run.id,
         recordAssociatedAt: new Date(),
         importedAt: new Date(),
-        exportedAt: new Date(),
+        processedAt: new Date(),
       });
 
       await utils.sleep(100);
@@ -586,7 +586,7 @@ describe("models/run", () => {
       quantizedTimeline.map((q) => {
         expect(q.steps.associate).toBeLessThanOrEqual(1);
         expect(q.steps.imported).toBeLessThanOrEqual(1);
-        expect(q.steps.exported).toBeLessThanOrEqual(1);
+        expect(q.steps.processed).toBeLessThanOrEqual(1);
 
         associateTotal += q.steps.associate;
         importTotal += q.steps.imported;

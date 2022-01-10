@@ -20,9 +20,9 @@ describe("tasks/records:enqueueExports", () => {
         mario.id
       );
       await marioImport.update({
-        state: "exporting",
+        state: "processing",
         importedAt: new Date(),
-        exportedAt: null,
+        processedAt: null,
       });
 
       const luigi: GrouparooRecord = await helper.factories.record();
@@ -34,9 +34,9 @@ describe("tasks/records:enqueueExports", () => {
         luigi.id
       );
       await luigiImport.update({
-        state: "exporting",
+        state: "processing",
         importedAt: new Date(),
-        exportedAt: null,
+        processedAt: null,
       });
 
       await specHelper.runTask("records:enqueueExports", {});

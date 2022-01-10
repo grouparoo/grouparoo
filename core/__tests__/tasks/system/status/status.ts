@@ -95,7 +95,7 @@ describe("tasks/status", () => {
       const _import = await helper.factories.import(null, null, record.id);
       await _import.update({
         state: "failed",
-        exportedAt: null,
+        processedAt: null,
         errorMessage: "oh no!",
         errorMetadata: "errored",
       });

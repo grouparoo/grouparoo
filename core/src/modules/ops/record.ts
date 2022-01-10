@@ -1133,11 +1133,11 @@ export namespace RecordOps {
 
         await Import.update(
           {
-            state: toExport ? "exporting" : "complete",
+            state: toExport ? "processing" : "complete",
             newRecordProperties: newRecordProperties,
             newGroupIds: newGroupIds,
             importedAt: now,
-            exportedAt: toExport ? undefined : now, // we want to indicate that the import's lifecycle is complete
+            processedAt: toExport ? undefined : now, // we want to indicate that the import's lifecycle is complete
           },
           {
             where: { id: { [Op.in]: imports.map((i) => i.id) } },

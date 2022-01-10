@@ -31,7 +31,7 @@ export class RecordExport extends RetryableTask {
 
     const imports = await Import.findAll({
       where: {
-        state: "exporting",
+        state: "processing",
         recordId: record.id,
       },
       order: [["createdAt", "asc"]],
@@ -87,7 +87,7 @@ export class RecordExport extends RetryableTask {
 
       if (imports.length > 0) {
         await Import.update(
-          { exportedAt: new Date(), state: "complete" },
+          { processedAt: new Date(), state: "complete" },
           { where: { id: imports.map((i) => i.id) } }
         );
       }
