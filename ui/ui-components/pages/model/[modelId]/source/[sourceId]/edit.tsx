@@ -203,6 +203,15 @@ const Page: NextPage<Props & InjectedProps> = ({
       setSource(response.source);
       sourceHandler.set(response.source);
 
+      // we made the first source, and now should attempt to make sample properties
+      if (isBootstrappingUniqueProperty && response.source.state === "ready") {
+        await execApi<Actions.SourceGenerateSampleRecords>(
+          "post",
+          `/source/${sourceId}/generateSampleRecords`,
+          { id: sourceId }
+        );
+      }
+
       // this source can have a schedule, and we have no schedules yet
       if (scheduleCount === 0 && response.source.scheduleAvailable) {
         await createSchedule({

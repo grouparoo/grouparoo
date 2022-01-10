@@ -186,42 +186,58 @@ export class SourceEdit extends AuthenticatedAction {
 
     await source.update(params);
 
-    // create sample records automatically when in config mode
-    if (
-      process.env.GROUPAROO_RUN_MODE === "cli:config" &&
-      source.state === "ready" &&
-      (await source.previewAvailable())
-    ) {
-      if ((await Source.count()) === 1) {
-        let successfulRecords = 0;
-        let attempt = 0;
-        const mapping = await source.getMapping();
-        const mappingKey = Object.keys(mapping)[0];
-        const mappingValue = Object.values(mapping)[0];
-        const preview = await source.sourcePreview();
-
-        while (successfulRecords < 3 && attempt < preview.length) {
-          const value = preview[attempt][mappingKey];
-          if (value) {
-            const record = new GrouparooRecord({ modelId: source.modelId });
-            await record.save();
-            try {
-              await record.addOrUpdateProperties({ [mappingValue]: value });
-              successfulRecords++;
-            } catch (error) {
-              log(error, "error");
-              await record.destroy();
-            }
-          }
-
-          attempt++;
-        }
-      }
-    }
-
     await ConfigWriter.run();
 
     return { source: await source.apiData() };
+  }
+}
+
+export class SourceGenerateSampleRecords extends AuthenticatedAction {
+  name = "source:generateSampleRecords";
+  description = "create 3 sample records for this model";
+  permission: ActionPermission = { topic: "source", mode: "write" };
+  inputs = { id: { required: true } };
+
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<SourceGenerateSampleRecords>;
+  }) {
+    const source = await Source.findById(params.id);
+
+    if (process.env.GROUPAROO_RUN_MODE !== "cli:config")
+      throw new Error(`this action is only valid in cli:config mode`);
+    if (source.state !== "ready") throw new Error(`source is not ready`);
+    if (!(await source.previewAvailable()))
+      throw new Error(`source does not provide a preview`);
+
+    let attempt = 0;
+    let records: GrouparooRecord[] = [];
+    const mapping = await source.getMapping();
+    const mappingKey = Object.keys(mapping)[0];
+    const mappingValue = Object.values(mapping)[0];
+    const preview = await source.sourcePreview();
+
+    while (records.length < 3 && attempt < preview.length) {
+      const value = preview[attempt][mappingKey];
+      if (value) {
+        const record = new GrouparooRecord({ modelId: source.modelId });
+        await record.save();
+        try {
+          await record.addOrUpdateProperties({ [mappingValue]: value });
+          records.push(record);
+        } catch (error) {
+          log(error, "error");
+          await record.destroy();
+        }
+      }
+
+      attempt++;
+    }
+
+    return {
+      records: await Promise.all(records.map((record) => record.apiData())),
+    };
   }
 }
 

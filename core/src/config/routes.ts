@@ -120,6 +120,7 @@ export const DEFAULT: { [namespace]: () => RoutesConfig } = {
         { path: "/v:apiVersion/oauth/:provider/client/start", action: "oAuth:client:start" },
         { path: "/v:apiVersion/source", action: "source:create" },
         { path: "/v:apiVersion/source/:id/bootstrapUniqueProperty", action: "source:bootstrapUniqueProperty" },
+        { path: "/v:apiVersion/source/:id/generateSampleRecords", action: "source:generateSampleRecords" },
         { path: "/v:apiVersion/team", action: "team:create" },
         { path: "/v:apiVersion/team/initialize", action: "team:initialize" },
         { path: "/v:apiVersion/team/member", action: "teamMember:create" },

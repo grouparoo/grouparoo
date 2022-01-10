@@ -9,27 +9,26 @@ import {
   GrouparooPlugin,
   PluginConnection,
   SourcePreviewMethod,
+  Property,
+  RecordProperty,
 } from "../../../src";
 import { SessionCreate } from "../../../src/actions/session";
 import {
+  SourceGenerateSampleRecords,
   SourceBootstrapUniqueProperty,
   SourceEdit,
 } from "../../../src/actions/sources";
 import { ConfigUser } from "../../../src/modules/configUser";
 import fs from "fs";
 
-describe("actions/sources", () => {
+describe("actions/sources/generateSampleRecords", () => {
   let model: GrouparooModel;
   let app: App;
   let source: Source;
   let connection: Connection;
   let csrfToken: string;
 
-  helper.grouparooTestServer({
-    truncate: true,
-    enableTestPlugin: true,
-    resetSettings: true,
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   beforeAll(async () => {
     await specHelper.runAction("team:initialize", {
@@ -54,7 +53,10 @@ describe("actions/sources", () => {
   });
 
   beforeEach(async () => {
-    if (source) await source.destroy();
+    if (source) {
+      await Property.destroy({ where: { sourceId: source.id } });
+      await source.destroy();
+    }
     source = await helper.factories.source(app);
 
     connection.params = {
@@ -74,13 +76,15 @@ describe("actions/sources", () => {
     connection.params = {
       csrfToken,
       id: source.id,
+      state: "ready",
+      mapping: { id: "userId" },
       options: { table: "users" },
     };
-    const { error: optionsError } = await specHelper.runAction<SourceEdit>(
+    const { error: editError } = await specHelper.runAction<SourceEdit>(
       "source:edit",
       connection
     );
-    expect(optionsError).toBeUndefined();
+    expect(editError).toBeUndefined();
   });
 
   describe("cli:run", () => {
@@ -93,10 +97,13 @@ describe("actions/sources", () => {
         mapping: { id: "userId" },
         state: "ready",
       };
-      const { error, source: sourceResponse } =
-        await specHelper.runAction<SourceEdit>("source:edit", connection);
-      expect(error).toBeUndefined();
-      expect(sourceResponse.state).toEqual("ready");
+      const { error } = await specHelper.runAction<SourceGenerateSampleRecords>(
+        "source:generateSampleRecords",
+        connection
+      );
+      expect(error.message).toMatch(
+        /this action is only valid in cli:config mode/
+      );
 
       expect(await GrouparooRecord.count()).toBe(0);
     });
@@ -130,6 +137,7 @@ describe("actions/sources", () => {
 
     beforeEach(async () => {
       await GrouparooRecord.truncate();
+      await RecordProperty.truncate();
     });
 
     afterAll(async () => {
@@ -149,14 +157,15 @@ describe("actions/sources", () => {
       connection.params = {
         csrfToken,
         id: source.id,
-        mapping: { id: "userId" },
-        state: "ready",
       };
-      const { error, source: sourceResponse } =
-        await specHelper.runAction<SourceEdit>("source:edit", connection);
+      const { error, records } =
+        await specHelper.runAction<SourceGenerateSampleRecords>(
+          "source:generateSampleRecords",
+          connection
+        );
       expect(error).toBeUndefined();
-      expect(sourceResponse.state).toEqual("ready");
 
+      expect(records.length).toEqual(3);
       expect(await GrouparooRecord.count()).toBe(3);
     });
 
@@ -170,14 +179,15 @@ describe("actions/sources", () => {
       connection.params = {
         csrfToken,
         id: source.id,
-        mapping: { id: "userId" },
-        state: "ready",
       };
-      const { error, source: sourceResponse } =
-        await specHelper.runAction<SourceEdit>("source:edit", connection);
+      const { error, records } =
+        await specHelper.runAction<SourceGenerateSampleRecords>(
+          "source:generateSampleRecords",
+          connection
+        );
       expect(error).toBeUndefined();
-      expect(sourceResponse.state).toEqual("ready");
 
+      expect(records.length).toEqual(2);
       expect(await GrouparooRecord.count()).toBe(2);
     });
 
@@ -187,14 +197,15 @@ describe("actions/sources", () => {
       connection.params = {
         csrfToken,
         id: source.id,
-        mapping: { id: "userId" },
-        state: "ready",
       };
-      const { error, source: sourceResponse } =
-        await specHelper.runAction<SourceEdit>("source:edit", connection);
+      const { error, records } =
+        await specHelper.runAction<SourceGenerateSampleRecords>(
+          "source:generateSampleRecords",
+          connection
+        );
       expect(error).toBeUndefined();
-      expect(sourceResponse.state).toEqual("ready");
 
+      expect(records.length).toEqual(0);
       expect(await GrouparooRecord.count()).toBe(0);
     });
   });
