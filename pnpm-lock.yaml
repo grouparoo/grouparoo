@@ -1710,7 +1710,7 @@ importers:
       '@grouparoo/spec-helper': 0.8.0-alpha.5
       '@types/jest': '*'
       '@types/node': 16.*.*
-      actionhero: 28.1.2
+      actionhero: 28.1.3
       axios: 0.24.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
@@ -1728,7 +1728,7 @@ importers:
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 27.0.1
       '@types/node': 16.9.1
-      actionhero: 28.1.2
+      actionhero: 28.1.3
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
@@ -15113,7 +15113,7 @@ packages:
       '@types/jest': 27.0.1
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
-      jest: 27.4.5
+      jest: 27.4.5_ts-node@10.4.0
       jest-util: 27.4.2
       json5: 2.2.0
       lodash.memoize: 4.1.2
