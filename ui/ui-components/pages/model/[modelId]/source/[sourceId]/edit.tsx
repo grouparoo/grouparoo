@@ -552,6 +552,7 @@ const Page: NextPage<Props & InjectedProps> = ({
                       propertyExamples={propertyExamples}
                       register={register}
                       source={source}
+                      isPrimarySource={isPrimarySource}
                     />
                   </>
                 )

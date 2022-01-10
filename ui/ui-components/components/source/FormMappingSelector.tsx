@@ -19,6 +19,7 @@ interface Props {
   propertyExamples: Record<string, string[]>;
   source: Models.SourceType;
   register: ReturnType<typeof useForm>["register"];
+  isPrimarySource?: boolean;
 }
 
 const FormMappingSelector: React.FC<Props> = ({
@@ -30,6 +31,7 @@ const FormMappingSelector: React.FC<Props> = ({
   propertyExamples,
   register,
   source,
+  isPrimarySource,
 }) => {
   const [selectedProperty, setSelectedProperty] = useState<Models.PropertyType>(
     () =>
@@ -139,7 +141,7 @@ const FormMappingSelector: React.FC<Props> = ({
         {columnExample && renderExamples(columnExample)}
       </Col>
       <Col>
-        {hasAvailableProperties && (
+        {hasAvailableProperties && !isPrimarySource && (
           <>
             <FormInputContainer
               controlId="mapping_property"
