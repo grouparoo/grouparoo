@@ -120,7 +120,7 @@ export async function makePayload(oldRecordProperties, newRecordProperties) {
       payload.$unset ??= [];
       payload.$unset.push(key);
     } else {
-      payload[key] = formatVar(formattedValue);
+      payload[key] = formattedValue;
     }
   }
 
