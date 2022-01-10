@@ -69,7 +69,7 @@ async function runExport({
 }
 
 const manualCheck = async (...instructions: string[]) => {
-  if (process.env.CI) {
+  if (!newNock) {
     return;
   }
 
