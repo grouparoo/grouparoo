@@ -28,7 +28,7 @@ export namespace ConfigUser {
     email: string,
     subscribed: boolean = true
   ): Promise<void> {
-    if (!subscribed) return null;
+    if (!subscribed) return;
     await GrouparooSubscription({ email, subscribed });
   }
 
