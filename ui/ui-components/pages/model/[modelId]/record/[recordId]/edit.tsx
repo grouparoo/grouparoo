@@ -150,7 +150,7 @@ export default function Page(props) {
           <br />
           <LinkButton
             size="sm"
-            href={`/model/${router.query.modelId}/properties`}
+            href={`/model/${router.query.modelId}/property/new`}
           >
             Add a Property
           </LinkButton>

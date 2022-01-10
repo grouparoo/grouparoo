@@ -29,7 +29,10 @@ export default function NewRecord(props) {
           There are no Properties added yet.
           <br />
           <br />
-          <Button size="sm" href={`/model/${router.query.modelId}/properties`}>
+          <Button
+            size="sm"
+            href={`/model/${router.query.modelId}/property/new`}
+          >
             Add a Property
           </Button>
         </Alert>
