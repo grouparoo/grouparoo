@@ -59,6 +59,7 @@ importers:
       '@grouparoo/sqlite': 0.8.0-alpha.5
       '@grouparoo/ui-community': 0.8.0-alpha.5
       '@grouparoo/ui-config': 0.8.0-alpha.5
+      '@grouparoo/vero': 0.8.0-alpha.5
       '@grouparoo/zendesk': 0.8.0-alpha.5
       jest: 27.4.5
     dependencies:
@@ -97,6 +98,7 @@ importers:
       '@grouparoo/snowflake': link:../../plugins/@grouparoo/snowflake
       '@grouparoo/sqlite': link:../../plugins/@grouparoo/sqlite
       '@grouparoo/ui-community': link:../../ui/ui-community
+      '@grouparoo/vero': link:../../plugins/@grouparoo/vero
       '@grouparoo/zendesk': link:../../plugins/@grouparoo/zendesk
     devDependencies:
       '@grouparoo/spec-helper': link:../../plugins/@grouparoo/spec-helper
@@ -164,6 +166,7 @@ importers:
       '@grouparoo/sqlite': 0.8.0-alpha.5
       '@grouparoo/ui-config': 0.8.0-alpha.5
       '@grouparoo/ui-enterprise': 0.8.0-alpha.5
+      '@grouparoo/vero': 0.8.0-alpha.5
       '@grouparoo/zendesk': 0.8.0-alpha.5
       jest: 27.4.5
     dependencies:
@@ -201,6 +204,7 @@ importers:
       '@grouparoo/snowflake': link:../../plugins/@grouparoo/snowflake
       '@grouparoo/sqlite': link:../../plugins/@grouparoo/sqlite
       '@grouparoo/ui-enterprise': link:../../ui/ui-enterprise
+      '@grouparoo/vero': link:../../plugins/@grouparoo/vero
       '@grouparoo/zendesk': link:../../plugins/@grouparoo/zendesk
     devDependencies:
       '@grouparoo/spec-helper': link:../../plugins/@grouparoo/spec-helper
@@ -1697,6 +1701,41 @@ importers:
       sequelize: 6.11.0_sqlite3@5.0.2
       ts-jest: 27.1.2_7d0b94f8a3f5aee865ab4c59ede8c0bf
       type-fest: 2.8.0
+      typescript: 4.5.4
+
+  plugins/@grouparoo/vero:
+    specifiers:
+      '@grouparoo/app-templates': 0.8.0-alpha.5
+      '@grouparoo/core': 0.8.0-alpha.5
+      '@grouparoo/spec-helper': 0.8.0-alpha.5
+      '@types/jest': '*'
+      '@types/node': 16.*.*
+      actionhero: 28.1.2
+      axios: 0.24.0
+      dotenv: 10.0.0
+      fs-extra: 10.0.0
+      jest: 27.4.5
+      nock: 13.2.1
+      prettier: 2.5.1
+      sequelize: 6.11.0
+      ts-jest: 27.1.2
+      typescript: 4.5.4
+    dependencies:
+      '@grouparoo/app-templates': link:../app-templates
+      axios: 0.24.0
+    devDependencies:
+      '@grouparoo/core': link:../../../core
+      '@grouparoo/spec-helper': link:../spec-helper
+      '@types/jest': 27.0.1
+      '@types/node': 16.9.1
+      actionhero: 28.1.2
+      dotenv: 10.0.0
+      fs-extra: 10.0.0
+      jest: 27.4.5
+      nock: 13.2.1
+      prettier: 2.5.1
+      sequelize: 6.11.0
+      ts-jest: 27.1.2_7d0b94f8a3f5aee865ab4c59ede8c0bf
       typescript: 4.5.4
 
   plugins/@grouparoo/zendesk:
