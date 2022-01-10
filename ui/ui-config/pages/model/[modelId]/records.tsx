@@ -1,29 +1,34 @@
-import { Button } from "react-bootstrap";
-import { useRouter } from "next/router";
+import { useState } from "react";
+
 import RecordsPage from "@grouparoo/ui-components/pages/model/[modelId]/records";
-import { Actions } from "@grouparoo/ui-components/utils/apiData";
+import { Actions, Models } from "@grouparoo/ui-components/utils/apiData";
 import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
 import { SuccessHandler } from "@grouparoo/ui-components/utils/successHandler";
 import { RecordsHandler } from "@grouparoo/ui-components/utils/recordsHandler";
 import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
-import { useState } from "react";
 import LoadingButton from "@grouparoo/ui-components/components/LoadingButton";
+import AddSampleRecordModal from "@grouparoo/ui-components/components/record/AddSampleRecordModal";
+import { useRouter } from "next/router";
 
 export default function Page(props) {
   const {
     modelId,
+    properties,
     errorHandler,
     successHandler,
     recordsHandler,
   }: {
     modelId: string;
+    properties: Models.PropertyType[];
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
     recordsHandler: RecordsHandler;
   } = props;
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
+
+  const [loading, setLoading] = useState(false);
+  const [addingRecord, setAddingRecord] = useState(false);
 
   async function importAllRecords() {
     setLoading(true);
@@ -42,20 +47,17 @@ export default function Page(props) {
     }
     setLoading(false);
   }
+
   return (
     <>
       <RecordsPage {...props} />
-      <Button
+      <LoadingButton
+        disabled={addingRecord || loading}
         variant="primary"
-        onClick={() => {
-          router.push(
-            "/model/[modelId]/record/new",
-            `/model/${router.query.modelId}/record/new`
-          );
-        }}
+        onClick={() => setAddingRecord(true)}
       >
         Add Sample Record
-      </Button>
+      </LoadingButton>
       &nbsp;
       <LoadingButton
         variant="primary"
@@ -64,6 +66,18 @@ export default function Page(props) {
       >
         Import All Records
       </LoadingButton>
+      <AddSampleRecordModal
+        modelId={modelId}
+        properties={properties}
+        execApi={execApi}
+        show={addingRecord}
+        onRecordCreated={() => {
+          router.reload();
+        }}
+        onHide={() => {
+          setAddingRecord(false);
+        }}
+      />
     </>
   );
 }
