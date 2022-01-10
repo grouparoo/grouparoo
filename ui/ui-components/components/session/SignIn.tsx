@@ -53,7 +53,7 @@ export default function SignInForm(props) {
     setLoadingOauthProviders(true);
     const response: Actions.OAuthListProviders = await execApi(
       "get",
-      `/oauth/providers`
+      `/oauth/providers?type=user`
     );
     if (response.providers) {
       setProviders(response.providers);
