@@ -70,7 +70,7 @@ function makeCacheString(cacheKey: CacheKey) {
       const date: Date = <Date>cacheKey;
       return date.toISOString();
     } else if (type === "Array") {
-      const array: CacheKey[] = cacheKey;
+      const array = <CacheKey[]>cacheKey;
       let buffer = "";
       for (let i = 0; i < array.length; i++) {
         const value = makeCacheString(array[i]);
