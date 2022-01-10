@@ -76,7 +76,7 @@ export namespace RunOps {
       steps: {
         associate: number;
         imported: number;
-        exported: number;
+        processed: number;
       };
     }[] = [];
     const start = run.createdAt.getTime();
