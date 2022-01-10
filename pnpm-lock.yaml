@@ -37,6 +37,7 @@ importers:
       '@grouparoo/hubspot': 0.8.0-alpha.5
       '@grouparoo/intercom': 0.8.0-alpha.5
       '@grouparoo/iterable': 0.8.0-alpha.5
+      '@grouparoo/klaviyo': 0.8.0-alpha.5
       '@grouparoo/logger': 0.8.0-alpha.5
       '@grouparoo/mailchimp': 0.8.0-alpha.5
       '@grouparoo/mailjet': 0.8.0-alpha.5
@@ -78,6 +79,7 @@ importers:
       '@grouparoo/hubspot': link:../../plugins/@grouparoo/hubspot
       '@grouparoo/intercom': link:../../plugins/@grouparoo/intercom
       '@grouparoo/iterable': link:../../plugins/@grouparoo/iterable
+      '@grouparoo/klaviyo': link:../../plugins/@grouparoo/klaviyo
       '@grouparoo/logger': link:../../plugins/@grouparoo/logger
       '@grouparoo/mailchimp': link:../../plugins/@grouparoo/mailchimp
       '@grouparoo/mailjet': link:../../plugins/@grouparoo/mailjet
@@ -145,6 +147,7 @@ importers:
       '@grouparoo/hubspot': 0.8.0-alpha.5
       '@grouparoo/intercom': 0.8.0-alpha.5
       '@grouparoo/iterable': 0.8.0-alpha.5
+      '@grouparoo/klaviyo': 0.8.0-alpha.5
       '@grouparoo/logger': 0.8.0-alpha.5
       '@grouparoo/mailchimp': 0.8.0-alpha.5
       '@grouparoo/mailjet': 0.8.0-alpha.5
@@ -185,6 +188,7 @@ importers:
       '@grouparoo/hubspot': link:../../plugins/@grouparoo/hubspot
       '@grouparoo/intercom': link:../../plugins/@grouparoo/intercom
       '@grouparoo/iterable': link:../../plugins/@grouparoo/iterable
+      '@grouparoo/klaviyo': link:../../plugins/@grouparoo/klaviyo
       '@grouparoo/logger': link:../../plugins/@grouparoo/logger
       '@grouparoo/mailchimp': link:../../plugins/@grouparoo/mailchimp
       '@grouparoo/mailjet': link:../../plugins/@grouparoo/mailjet
@@ -948,6 +952,43 @@ importers:
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
       node-iterable-api: 1.1.0
+    devDependencies:
+      '@grouparoo/core': link:../../../core
+      '@grouparoo/spec-helper': link:../spec-helper
+      '@types/jest': 27.0.1
+      '@types/node': 16.9.1
+      actionhero: 28.1.2
+      dotenv: 10.0.0
+      fs-extra: 10.0.0
+      jest: 27.4.5
+      nock: 13.2.1
+      prettier: 2.5.1
+      sequelize: 6.11.0
+      ts-jest: 27.1.2_7d0b94f8a3f5aee865ab4c59ede8c0bf
+      typescript: 4.5.4
+
+  plugins/@grouparoo/klaviyo:
+    specifiers:
+      '@grouparoo/app-templates': 0.8.0-alpha.5
+      '@grouparoo/core': 0.8.0-alpha.5
+      '@grouparoo/spec-helper': 0.8.0-alpha.5
+      '@types/jest': '*'
+      '@types/node': 16.*.*
+      actionhero: 28.1.2
+      axios: 0.24.0
+      dotenv: 10.0.0
+      fs-extra: 10.0.0
+      jest: 27.4.5
+      nock: 13.2.1
+      node-klaviyo: 1.1.3
+      prettier: 2.5.1
+      sequelize: 6.11.0
+      ts-jest: 27.1.2
+      typescript: 4.5.4
+    dependencies:
+      '@grouparoo/app-templates': link:../app-templates
+      axios: 0.24.0
+      node-klaviyo: 1.1.3
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -11440,6 +11481,10 @@ packages:
       debug: 4.3.2
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /node-klaviyo/1.1.3:
+    resolution: {integrity: sha512-243mRnPdGT0z+gBYOpPjVrKtDkDLd1NjFAZcSPGHrRVaGfgkAXz91kKso1qXqsDT9PxjCT1F28ZuDJrkH6H3hQ==}
     dev: false
 
   /node-mailjet/3.3.4:
