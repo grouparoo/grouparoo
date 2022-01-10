@@ -1,0 +1,29 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      id: {{{id}}},
+      name: {{{id}}},
+      class: "destination",
+      type: "klaviyo-export-profiles",
+      appId: {{{appId}}}, // The ID of the App this Destination uses - e.g. `appId: "klaviyo_app"`
+      modelId: "mod_profiles", // The ID of the Grouparoo Model that this Destination will send
+      collection: "group", // What collection of Records should be sent?  "group" requires a groupId below, and "model" will sync all Records from "modelId"
+      groupId: "...", // The ID of the group whose members you want to export - e.g. `groupId: "high_value_customers"`
+      syncMode: {{{syncMode}}}, // How should Grouparoo sync with this destination? Options: "sync", "additive", "enrich"
+
+      // Mappings are how you choose which properties to export to this destination.
+      // Keys are the name to display in the destination, values are the IDs of the Properties in Grouparoo.
+      mapping: {
+        email: "$email",
+      },
+
+      // You can export group memberships.
+      // Keys are the name to display in the destination, values are the IDs of the Groups in Grouparoo.
+      // Filters will be automatically created on Klaviyo for these groups.
+      // A custom field will also be created to keep track of group membership.
+      destinationGroupMemberships: {
+        "High Value Customers": "highValueCustomers",
+      },
+    },
+  ];
+};
