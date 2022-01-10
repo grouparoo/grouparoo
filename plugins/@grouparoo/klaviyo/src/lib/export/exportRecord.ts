@@ -115,11 +115,12 @@ export async function makePayload(oldRecordProperties, newRecordProperties) {
     const klaviyoKey = fieldKeys[fieldName];
     const key = klaviyoKey ? klaviyoKey : fieldName;
 
-    if (value === undefined) {
+    const formattedValue = formatVar(value);
+    if (!formattedValue) {
       payload.$unset ??= [];
       payload.$unset.push(key);
     } else {
-      payload[key] = formatVar(value);
+      payload[key] = formatVar(formattedValue);
     }
   }
 
