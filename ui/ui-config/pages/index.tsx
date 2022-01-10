@@ -4,7 +4,7 @@ import Head from "next/head";
 import { Row, Col, Image, Button } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import Loader from "../../ui-components/components/Loader";
-import { string } from "prop-types";
+import { Actions } from "@grouparoo/ui-components/utils/apiData";
 
 export default function Page(props) {
   const router = useRouter();
@@ -17,7 +17,6 @@ export default function Page(props) {
   }>({
     link: "/session/sign-in",
     message: "Register",
-    target: null,
   });
 
   useEffect(() => {
@@ -41,7 +40,20 @@ export default function Page(props) {
           target: null,
         });
       } else if (navigationMode === "config:authenticated" && !currentStep) {
-        setCTA(undefined);
+        const {
+          models: [model],
+        } = await execApi<Actions.ModelsList>("get", "/models", {
+          limit: 1,
+          order: [["name", "asc"]],
+        });
+        setCTA(
+          model
+            ? {
+                message: "Configure Records",
+                link: `/model/${model?.id}/records`,
+              }
+            : undefined
+        );
       }
       setShouldRender(true);
     }

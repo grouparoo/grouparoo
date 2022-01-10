@@ -29,7 +29,6 @@ export default function SignInPage(props) {
       "/config/user",
       data
     );
-    setLoading(false);
 
     if (response?.user?.email) {
       if (nextPage) {
@@ -37,9 +36,21 @@ export default function SignInPage(props) {
       } else {
         const { setupSteps } = await getSetupSteps();
         const isSetupComplete = setupSteps.every((step) => step.complete);
-        router.push(isSetupComplete ? "/" : "/setup");
+        if (isSetupComplete) {
+          const {
+            models: [model],
+          } = await execApi<Actions.ModelsList>("get", "/models", {
+            limit: 1,
+            order: [["name", "asc"]],
+          });
+          router.push(model ? `/model/${model.id}/records` : "/");
+        } else {
+          router.push("/setup");
+        }
       }
     }
+
+    setLoading(false);
   };
 
   async function getSetupSteps() {

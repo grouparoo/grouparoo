@@ -114,7 +114,9 @@ describe("integration", () => {
     helper.mediumTime
   );
 
-  test("if all the stepup steps are complete, visiting / goes to records", async () => {
+  test("if all the setup steps are complete, visiting / goes to records", async () => {
+    await helper.factories.model({ name: "User", type: "profile" });
+
     const setupSteps = await SetupStep.findAll();
     for (const step of setupSteps) {
       await step.update({ complete: true });
