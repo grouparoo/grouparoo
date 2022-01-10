@@ -88,7 +88,7 @@ export const getSetupStepDescriptions = (modelId?: string) => {
         "Create Sources and Properties to define the data in your Grouparoo Model.",
       href: modelId ? `/model/${modelId}/overview` : "/models",
       cta: "Configure the Model",
-      helpLink: `${configURL}/models`,
+      helpLink: `${configURL}/sources`,
       check: async () => {
         const count = await Source.count();
         return count > 0;
