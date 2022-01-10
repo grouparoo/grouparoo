@@ -191,16 +191,6 @@ export class NavigationList extends OptionallyAuthenticatedAction {
       { type: "link", title: "Export Processors", href: "/exportProcessors" },
     ];
 
-    if (modelId) {
-      platformItems.unshift({
-        type: "link",
-        title: "Records",
-        href: `/model/${modelId}/records`,
-        mainPathSectionIdx: 3,
-        icon: "list",
-      });
-    }
-
     if (showSystemLinks) {
       platformItems.push({
         type: "link",
