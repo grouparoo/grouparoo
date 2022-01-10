@@ -119,7 +119,7 @@ export default function Page(props) {
             <strong>
               <DurationTime
                 start={_import.createdAt}
-                end={_import.exportedAt}
+                end={_import.processedAt}
               />
             </strong>
           </p>
@@ -172,17 +172,17 @@ export default function Page(props) {
                 </td>
               </tr>
               <tr>
-                <td>Exports Created</td>
+                <td>Processed</td>
                 <td>
-                  {_import.exportedAt
-                    ? formatTimestamp(_import.exportedAt)
+                  {_import.processedAt
+                    ? formatTimestamp(_import.processedAt)
                     : "pending"}
                 </td>
                 <td>
                   ⇣
                   <DurationTime
                     start={_import.importedAt}
-                    end={_import.exportedAt}
+                    end={_import.processedAt}
                   />
                 </td>
               </tr>

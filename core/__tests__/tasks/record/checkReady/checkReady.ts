@@ -169,16 +169,16 @@ describe("tasks/record:checkReady", () => {
       expect(_importA.newRecordProperties.lastName).toEqual(["Mario"]);
       expect(_importA.newGroupIds).toEqual([group.id]);
       expect(_importA.importedAt).toBeTruthy();
-      expect(_importA.exportedAt).toBeNull();
-      expect(_importA.state).toBe("exporting");
+      expect(_importA.processedAt).toBeNull();
+      expect(_importA.state).toBe("processing");
 
       expect(_importB.newRecordProperties.email).toEqual(["mario@example.com"]);
       expect(_importB.newRecordProperties.firstName).toEqual(["Super"]);
       expect(_importB.newRecordProperties.lastName).toEqual(["Mario"]);
       expect(_importB.newGroupIds).toEqual([group.id]);
       expect(_importB.importedAt).toBeTruthy();
-      expect(_importB.exportedAt).toBeNull();
-      expect(_importB.state).toBe("exporting");
+      expect(_importB.processedAt).toBeNull();
+      expect(_importB.state).toBe("processing");
 
       expect(run.recordsCreated).toEqual(1);
       expect(run.recordsImported).toEqual(1);
@@ -209,7 +209,7 @@ describe("tasks/record:checkReady", () => {
 
       await _importA.reload();
       expect(_importA.importedAt).toBeTruthy();
-      expect(_importA.exportedAt).toBeTruthy();
+      expect(_importA.processedAt).toBeTruthy();
       expect(_importA.state).toBe("complete");
 
       process.env.GROUPAROO_DISABLE_EXPORTS = "false";

@@ -540,7 +540,7 @@ describe("models/run", () => {
         creatorId: run.id,
         recordAssociatedAt: new Date(),
         importedAt: new Date(),
-        exportedAt: new Date(),
+        processedAt: new Date(),
         createdRecord: true,
       });
 
@@ -552,7 +552,7 @@ describe("models/run", () => {
         creatorId: run.id,
         recordAssociatedAt: new Date(),
         importedAt: new Date(),
-        exportedAt: new Date(),
+        processedAt: new Date(),
       });
 
       await utils.sleep(100);
@@ -563,7 +563,7 @@ describe("models/run", () => {
         creatorId: run.id,
         recordAssociatedAt: new Date(),
         importedAt: new Date(),
-        exportedAt: new Date(),
+        processedAt: new Date(),
       });
 
       await utils.sleep(100);

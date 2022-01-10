@@ -26,7 +26,7 @@ export class GrouparooRecordsEnqueueExports extends CLSTask {
         [Sequelize.fn("DISTINCT", Sequelize.col("recordId")), "recordId"],
       ],
       where: {
-        state: "exporting",
+        state: "processing",
       },
       group: ["recordId"],
       limit,

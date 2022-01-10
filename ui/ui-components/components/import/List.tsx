@@ -18,7 +18,7 @@ const states = [
   "all",
   "associating",
   "importing",
-  "exporting",
+  "processing",
   "complete",
   "failed",
 ] as const;
@@ -169,9 +169,9 @@ export default function ImportList(props) {
                     {_import.importedAt
                       ? formatTimestamp(_import.importedAt)
                       : "pending"}
-                    <br /> Exported:{" "}
-                    {_import.exportedAt
-                      ? formatTimestamp(_import.exportedAt)
+                    <br /> Processed:{" "}
+                    {_import.processedAt
+                      ? formatTimestamp(_import.processedAt)
                       : "pending"}
                   </td>
                   <td>

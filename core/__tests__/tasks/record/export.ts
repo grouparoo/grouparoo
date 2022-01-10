@@ -236,8 +236,8 @@ describe("tasks/record:export", () => {
         await importB.reload();
         expect(importA.state).toBe("complete");
         expect(importB.state).toBe("complete");
-        expect(importA.exportedAt).toBeTruthy();
-        expect(importB.exportedAt).toBeTruthy();
+        expect(importA.processedAt).toBeTruthy();
+        expect(importB.processedAt).toBeTruthy();
       });
 
       test("it will append destinationIds from imports", async () => {
@@ -344,7 +344,7 @@ describe("tasks/record:export", () => {
           });
 
           await _import.update({
-            state: "exporting",
+            state: "processing",
             importedAt: new Date(),
           });
 

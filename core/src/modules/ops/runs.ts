@@ -72,9 +72,9 @@ export namespace RunOps {
     const data = [];
     const start = run.createdAt.getTime();
 
-    const lastExportedImport = await Import.findOne({
+    const lastProcessedImport = await Import.findOne({
       where: { creatorId: run.id },
-      order: [["exportedAt", "desc"]],
+      order: [["processedAt", "desc"]],
       limit: 1,
     });
 
@@ -85,8 +85,8 @@ export namespace RunOps {
     });
 
     const end =
-      lastExportedImport?.exportedAt?.getTime() ||
-      lastImportedImport?.exportedAt?.getTime() ||
+      lastProcessedImport?.processedAt?.getTime() ||
+      lastImportedImport?.processedAt?.getTime() ||
       run?.completedAt?.getTime() ||
       new Date().getTime();
 
@@ -119,9 +119,9 @@ export namespace RunOps {
               },
             },
           }),
-          exported: await run.$count("imports", {
+          processed: await run.$count("imports", {
             where: {
-              exportedAt: {
+              processedAt: {
                 [Op.gte]: lastBoundary,
                 [Op.lt]: nextBoundary,
               },

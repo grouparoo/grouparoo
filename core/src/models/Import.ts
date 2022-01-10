@@ -35,7 +35,7 @@ const IMPORT_CREATORS = ["run"] as const;
 const STATES = [
   "associating",
   "importing",
-  "exporting",
+  "processing",
   "failed",
   "complete",
 ] as const;
@@ -45,9 +45,9 @@ const STATE_TRANSITIONS = [
   { from: "associating", to: "importing", checks: [] },
   { from: "importing", to: "failed", checks: [] },
   { from: "importing", to: "complete", checks: [] },
-  { from: "importing", to: "exporting", checks: [] },
-  { from: "exporting", to: "failed", checks: [] },
-  { from: "exporting", to: "complete", checks: [] },
+  { from: "importing", to: "processing", checks: [] },
+  { from: "processing", to: "failed", checks: [] },
+  { from: "processing", to: "complete", checks: [] },
 ];
 
 @Table({ tableName: "imports", paranoid: false })
@@ -158,7 +158,7 @@ export class Import extends CommonModel<Import> {
   importedAt: Date;
 
   @Column
-  exportedAt: Date;
+  processedAt: Date;
 
   @Column
   errorMessage: string;
@@ -197,7 +197,7 @@ export class Import extends CommonModel<Import> {
       startedAt: APIData.formatDate(this.startedAt),
       recordAssociatedAt: APIData.formatDate(this.recordAssociatedAt),
       importedAt: APIData.formatDate(this.importedAt),
-      exportedAt: APIData.formatDate(this.exportedAt),
+      processedAt: APIData.formatDate(this.processedAt),
 
       // data before and after
       createdRecord: this.createdRecord,
