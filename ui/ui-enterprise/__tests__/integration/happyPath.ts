@@ -47,7 +47,7 @@ describe("integration", () => {
       const menuText = await browser
         .findElement(by.id("bottomNavigationMenu"))
         .getText();
-      expect(menuText).toEqual("Hello »");
+      expect(menuText).toEqual("Hello");
 
       const button = await browser.findElement(by.id("bottomNavigationMenu"));
       await button.click();
