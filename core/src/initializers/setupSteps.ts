@@ -1,6 +1,6 @@
 import { Op } from "sequelize";
 import { SetupStep } from "../models/SetupStep";
-import { SetupStepOps } from "../modules/ops/setupSteps";
+import { getSetupStepDescriptions } from "../modules/ops/setupSteps";
 import { CLSInitializer } from "../classes/initializers/clsInitializer";
 
 export class OnboardingSteps extends CLSInitializer {
@@ -13,7 +13,7 @@ export class OnboardingSteps extends CLSInitializer {
 
   async startWithinTransaction() {
     // insert or update the setup steps we want
-    const setupSteps = SetupStepOps.setupStepDescriptions();
+    const setupSteps = getSetupStepDescriptions();
     for (const ssd of setupSteps) {
       const onboardingStep = await SetupStep.findOne({
         where: { key: ssd.key },

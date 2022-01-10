@@ -6,7 +6,10 @@ import {
   Length,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
-import { SetupStepOps } from "../modules/ops/setupSteps";
+import {
+  SetupStepDescription,
+  getSetupStepDescriptions,
+} from "../modules/ops/setupSteps";
 import { APIData } from "../modules/apiData";
 
 @Table({ tableName: "setupSteps", paranoid: false })
@@ -64,43 +67,37 @@ export class SetupStep extends LoggedModel<SetupStep> {
     };
   }
 
-  getTitle(ssd?: SetupStepOps.setupStepDescription, modelId?: string) {
+  getTitle(ssd?: SetupStepDescription, modelId?: string) {
     if (!ssd) ssd = this.getSetupStepDescription(modelId);
     return ssd.title;
   }
 
-  getDescription(ssd?: SetupStepOps.setupStepDescription, modelId?: string) {
+  getDescription(ssd?: SetupStepDescription, modelId?: string) {
     if (!ssd) ssd = this.getSetupStepDescription(modelId);
     return ssd.description;
   }
 
-  getHref(ssd?: SetupStepOps.setupStepDescription, modelId?: string) {
+  getHref(ssd?: SetupStepDescription, modelId?: string) {
     if (!ssd) ssd = this.getSetupStepDescription(modelId);
     return ssd.href;
   }
 
-  getCta(ssd?: SetupStepOps.setupStepDescription, modelId?: string) {
+  getCta(ssd?: SetupStepDescription, modelId?: string) {
     if (!ssd) ssd = this.getSetupStepDescription(modelId);
     return ssd.cta;
   }
 
-  getHelpLink(ssd?: SetupStepOps.setupStepDescription, modelId?: string) {
+  getHelpLink(ssd?: SetupStepDescription, modelId?: string) {
     if (!ssd) ssd = this.getSetupStepDescription(modelId);
     return ssd.helpLink;
   }
 
-  getShowCtaOnCommunity(
-    ssd?: SetupStepOps.setupStepDescription,
-    modelId?: string
-  ) {
+  getShowCtaOnCommunity(ssd?: SetupStepDescription, modelId?: string) {
     if (!ssd) ssd = this.getSetupStepDescription(modelId);
     return ssd.showCtaOnCommunity || false;
   }
 
-  async performCheck(
-    ssd?: SetupStepOps.setupStepDescription,
-    modelId?: string
-  ) {
+  async performCheck(ssd?: SetupStepDescription, modelId?: string) {
     if (this.complete) return true;
 
     if (!ssd) ssd = this.getSetupStepDescription(modelId);
@@ -113,22 +110,21 @@ export class SetupStep extends LoggedModel<SetupStep> {
     }
   }
 
-  async getOutcome(ssd?: SetupStepOps.setupStepDescription, modelId?: string) {
+  async getOutcome(ssd?: SetupStepDescription, modelId?: string) {
     if (!ssd) ssd = this.getSetupStepDescription(modelId);
     if (ssd.outcome) return ssd.outcome();
     return null;
   }
 
-  async getDisabled(ssd?: SetupStepOps.setupStepDescription, modelId?: string) {
+  async getDisabled(ssd?: SetupStepDescription, modelId?: string) {
     if (!ssd) ssd = this.getSetupStepDescription(modelId);
     return ssd.disabled();
   }
 
   getSetupStepDescription(modelId: string) {
-    const setupSteps = SetupStepOps.setupStepDescriptions(modelId);
-    const ssdFilteredArray = setupSteps.filter((ssd) => ssd.key === this.key);
-
-    if (ssdFilteredArray.length === 1) return ssdFilteredArray[0];
+    const setupSteps = getSetupStepDescriptions(modelId);
+    const ssdMatch = setupSteps.find((ssd) => ssd.key === this.key);
+    if (ssdMatch) return ssdMatch;
 
     throw new Error(`Cannot find Setup Step Description for key ${this.key}`);
   }

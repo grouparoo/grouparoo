@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { plugin, SetupStep } from "../../src";
+import { plugin, SetupStep, GrouparooModel } from "../../src";
 import { SessionCreate } from "../../src/actions/session";
 import { SetupStepEdit, SetupStepsList } from "../../src/actions/setupSteps";
 
@@ -39,6 +39,10 @@ describe("actions/setupSteps", () => {
       );
     });
 
+    beforeEach(async () => {
+      await GrouparooModel.truncate();
+    });
+
     test("a reader can list setupSteps", async () => {
       connection.params = {
         csrfToken,
@@ -50,7 +54,7 @@ describe("actions/setupSteps", () => {
 
       expect(error).toBeFalsy();
 
-      expect(setupSteps.length).toBe(8);
+      expect(setupSteps.length).toBe(5);
       expect(setupSteps[0].position).toBe(1);
       expect(setupSteps[0].key).toBe("name_your_grouparoo_instance");
       expect(setupSteps[0].title).toBe("Name your Grouparoo Instance");
@@ -81,7 +85,7 @@ describe("actions/setupSteps", () => {
         "setupSteps:list",
         connection
       );
-      expect(setupSteps.length).toBe(8);
+      expect(setupSteps.length).toBe(5);
       expect(setupSteps[0].key).toBe("name_your_grouparoo_instance");
       expect(setupSteps[0].complete).toBe(true);
     });
@@ -118,35 +122,52 @@ describe("actions/setupSteps", () => {
       expect(destinationStep.disabled).toEqual(true);
     });
 
-    test.each(["source", "group", "schedule", "destination"])(
-      "%s setupSteps href changes based on modelId",
-      async (topic) => {
-        connection.params = { csrfToken, modelId: null };
-        const { setupSteps: setupStepsNoModelId } =
-          await specHelper.runAction<SetupStepsList>(
-            "setupSteps:list",
-            connection
-          );
-        let destinationStep = setupStepsNoModelId.find(
-          (s) => s.key === `create_a_${topic}`
+    test("configure your model setupStep href changes based on modelId", async () => {
+      connection.params = { csrfToken, modelId: null };
+      const { setupSteps: setupStepsNoModelId } =
+        await specHelper.runAction<SetupStepsList>(
+          "setupSteps:list",
+          connection
         );
-        expect(destinationStep.href).toEqual(`/models`);
+      let modelStep = setupStepsNoModelId.find(
+        (s) => s.key === `configure_a_model`
+      );
+      expect(modelStep.href).toEqual(`/models`);
 
-        connection.params = { csrfToken, modelId: "mod_abc123" };
-        const { setupSteps: setupStepsWithModelId } =
-          await specHelper.runAction<SetupStepsList>(
-            "setupSteps:list",
-            connection
-          );
-        destinationStep = setupStepsWithModelId.find(
-          (s) => s.key === `create_a_${topic}`
+      connection.params = { csrfToken, modelId: "mod_abc123" };
+      const { setupSteps: setupStepsWithModelId } =
+        await specHelper.runAction<SetupStepsList>(
+          "setupSteps:list",
+          connection
         );
-        expect(destinationStep.href).toEqual(
-          topic === "schedule"
-            ? `/model/mod_abc123/sources`
-            : `/model/mod_abc123/${topic}s`
+      modelStep = setupStepsWithModelId.find(
+        (s) => s.key === `create_a_destination`
+      );
+      expect(modelStep.href).toEqual(`/model/mod_abc123/overview`);
+    });
+
+    test("destination setupSteps href changes based on modelId", async () => {
+      connection.params = { csrfToken, modelId: null };
+      const { setupSteps: setupStepsNoModelId } =
+        await specHelper.runAction<SetupStepsList>(
+          "setupSteps:list",
+          connection
         );
-      }
-    );
+      let destinationStep = setupStepsNoModelId.find(
+        (s) => s.key === `create_a_destination`
+      );
+      expect(destinationStep.href).toEqual(`/models`);
+
+      connection.params = { csrfToken, modelId: "mod_abc123" };
+      const { setupSteps: setupStepsWithModelId } =
+        await specHelper.runAction<SetupStepsList>(
+          "setupSteps:list",
+          connection
+        );
+      destinationStep = setupStepsWithModelId.find(
+        (s) => s.key === `create_a_destination`
+      );
+      expect(destinationStep.href).toEqual(`/model/mod_abc123/overview`);
+    });
   });
 });
