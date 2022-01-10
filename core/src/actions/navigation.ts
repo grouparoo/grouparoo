@@ -12,14 +12,14 @@ type NavigationMode =
   | "config:authenticated"
   | "config:unauthenticated";
 
-type NavigationItem = {
+export interface NavigationItem {
   type: "link" | "divider" | "subNavMenu";
   title?: string;
   icon?: string;
   href?: string;
   mainPathSectionIdx?: number;
   small?: boolean;
-};
+}
 
 export class NavigationList extends OptionallyAuthenticatedAction {
   name = "navigation:list";
@@ -73,20 +73,13 @@ export class NavigationList extends OptionallyAuthenticatedAction {
 
     switch (navigationMode) {
       case "authenticated":
-        navResponse = await this.authenticatedNav(
-          teamMember,
-          models,
-          currentModelId
-        );
+        navResponse = await this.authenticatedNav(teamMember, models);
         break;
       case "unauthenticated":
         navResponse = await this.unauthenticatedNav(teamMember);
         break;
       case "config:authenticated":
-        navResponse = await this.authenticatedConfigNav(
-          configUser,
-          currentModelId
-        );
+        navResponse = await this.authenticatedConfigNav(configUser, models);
         break;
       case "config:unauthenticated":
         navResponse = await this.unauthenticatedConfigNav(configUser);
@@ -116,39 +109,8 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     };
   }
 
-  async authenticatedNav(
-    teamMember: TeamMember,
-    models: GrouparooModel[],
-    modelId?: string
-  ) {
-    const systemPermissionsCount = await teamMember.team.$count("permissions", {
-      where: {
-        read: true,
-        topic: [
-          "system",
-          "app",
-          "file",
-          "log",
-          "import",
-          "export",
-          "run",
-          "notifications",
-          "resque",
-        ],
-      },
-    });
-    const showSystemLinks = systemPermissionsCount > 0;
-
-    const navigationItems: NavigationItem[] = [
-      {
-        type: "link",
-        title: "Dashboard",
-        href: "/dashboard",
-        icon: "home",
-      },
-      { type: "link", title: "Apps", href: "/apps", icon: "th-large" },
-    ];
-
+  private static createModelNavigationItems(models: GrouparooModel[]) {
+    const navigationItems: NavigationItem[] = [];
     const hasModels = !!models.length;
 
     if (hasModels) {
@@ -177,6 +139,40 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     if (hasModels) {
       navigationItems.push({ type: "divider" });
     }
+
+    return navigationItems;
+  }
+
+  async authenticatedNav(teamMember: TeamMember, models: GrouparooModel[]) {
+    const systemPermissionsCount = await teamMember.team.$count("permissions", {
+      where: {
+        read: true,
+        topic: [
+          "system",
+          "app",
+          "file",
+          "log",
+          "import",
+          "export",
+          "run",
+          "notifications",
+          "resque",
+        ],
+      },
+    });
+    const showSystemLinks = systemPermissionsCount > 0;
+
+    const navigationItems: NavigationItem[] = [
+      {
+        type: "link",
+        title: "Dashboard",
+        href: "/dashboard",
+        icon: "home",
+      },
+      { type: "link", title: "Apps", href: "/apps", icon: "th-large" },
+    ];
+
+    navigationItems.push(...NavigationList.createModelNavigationItems(models));
 
     navigationItems.push({
       type: "subNavMenu",
@@ -284,7 +280,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
 
   async authenticatedConfigNav(
     configUser: ConfigUser.ConfigUserType,
-    modelId?: string
+    models: GrouparooModel[]
   ) {
     const navigationItems: NavigationItem[] = [
       {
@@ -293,58 +289,11 @@ export class NavigationList extends OptionallyAuthenticatedAction {
         href: "/apps",
         icon: "th-large",
       },
-      {
-        type: "link",
-        title: "Models",
-        href: "/models",
-        icon: "clipboard-list",
-      },
     ];
 
-    if (modelId) {
-      navigationItems.push(
-        {
-          type: "link",
-          title: "Sources",
-          href: `/model/${modelId}/sources`,
-          mainPathSectionIdx: 3,
-          icon: "file-import",
-        },
-        {
-          type: "link",
-          title: "Properties",
-          href: `/model/${modelId}/properties`,
-          mainPathSectionIdx: 3,
-          icon: "address-card",
-        },
-        {
-          type: "link",
-          title: "Records",
-          href: `/model/${modelId}/records`,
-          mainPathSectionIdx: 3,
-          icon: "list",
-        },
-        {
-          type: "link",
-          title: "Groups",
-          href: `/model/${modelId}/groups`,
-          mainPathSectionIdx: 3,
-          icon: "users",
-        },
-        {
-          type: "link",
-          title: "Destinations",
-          href: `/model/${modelId}/destinations`,
-          mainPathSectionIdx: 3,
-          icon: "file-export",
-        }
-      );
-    }
+    navigationItems.push(...NavigationList.createModelNavigationItems(models));
 
-    const platformItems: NavigationItem[] = [];
-    const bottomMenuItems: NavigationItem[] = [];
-
-    return { navigationItems, platformItems, bottomMenuItems };
+    return { navigationItems, platformItems: [], bottomMenuItems: [] };
   }
 
   async unauthenticatedConfigNav(configUser: ConfigUser.ConfigUserType) {

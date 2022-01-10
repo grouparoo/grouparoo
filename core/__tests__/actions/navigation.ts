@@ -3,8 +3,35 @@ import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { GrouparooModel } from "../../dist";
 import { ConfigUserCreate } from "../../src/actions/config";
-import { NavigationList } from "../../src/actions/navigation";
+import { NavigationItem, NavigationList } from "../../src/actions/navigation";
 import { SessionCreate } from "../../src/actions/session";
+
+const expectModelsInNav = (
+  navigationItems: NavigationItem[],
+  startIndex: number,
+  modelNames?: string[]
+) => {
+  let index = startIndex;
+
+  if (modelNames) {
+    expect(navigationItems[index].type).toEqual("divider");
+    index++;
+
+    modelNames.forEach((modelName) => {
+      expect(navigationItems[index].title).toEqual(modelName);
+      expect(navigationItems[index].type).toEqual("link");
+      expect(navigationItems[index].icon).toBeDefined();
+      expect(navigationItems[index].href).toBeDefined();
+      index++;
+    });
+  }
+
+  expect(navigationItems[index].title).toEqual("New Model");
+
+  if (modelNames) {
+    expect(navigationItems[index + 1].type).toEqual("divider");
+  }
+};
 
 describe("actions/navigation", () => {
   helper.grouparooTestServer({ truncate: true, resetSettings: true });
@@ -46,7 +73,11 @@ describe("actions/navigation", () => {
         email: "peach@example.com",
       });
 
-      model = await helper.factories.model();
+      model = await helper.factories.model({
+        name: "Accounts",
+        type: "account",
+      });
+      await helper.factories.model();
     });
 
     test("the navigation action does not include the teamMember if not logged in", async () => {
@@ -74,6 +105,31 @@ describe("actions/navigation", () => {
         connection
       );
       expect(teamMember.email).toBe("peach@example.com");
+    });
+
+    test("includes Dashboard, Apps and Models", async () => {
+      const connection = await specHelper.buildConnection();
+      connection.params = {
+        email: "peach@example.com",
+        password: "P@ssw0rd!",
+      };
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
+        "session:create",
+        connection
+      );
+      const csrfToken = sessionResponse.csrfToken;
+      connection.params = { csrfToken };
+
+      const {
+        navigation: { navigationItems },
+      } = await specHelper.runAction<NavigationList>(
+        "navigation:list",
+        connection
+      );
+
+      expect(navigationItems[0].title).toEqual("Dashboard");
+      expect(navigationItems[1].title).toEqual("Apps");
+      expectModelsInNav(navigationItems, 2, ["Accounts", "Profiles"]);
     });
 
     test("the navigation action does not include models if not logged in", async () => {
@@ -104,7 +160,7 @@ describe("actions/navigation", () => {
         connection
       );
       expect(navigationModel.value).toBe(model.id);
-      expect(navigationModel.options).toHaveLength(1);
+      expect(navigationModel.options).toHaveLength(2);
     });
 
     describe("with additional models", () => {
@@ -115,27 +171,6 @@ describe("actions/navigation", () => {
 
       afterAll(async () => {
         await adminModel.destroy();
-      });
-
-      test("navigation action returns first model if passed model does not exist", async () => {
-        const connection = await specHelper.buildConnection();
-        connection.params = {
-          email: "peach@example.com",
-          password: "P@ssw0rd!",
-        };
-        const sessionResponse = await specHelper.runAction<SessionCreate>(
-          "session:create",
-          connection
-        );
-        const csrfToken = sessionResponse.csrfToken;
-        connection.params = { csrfToken, modelId: "some-other-model" };
-
-        const { navigationModel } = await specHelper.runAction<NavigationList>(
-          "navigation:list",
-          connection
-        );
-        expect(navigationModel.value).toBe(model.id);
-        expect(navigationModel.options).toHaveLength(2);
       });
 
       test("navigation action returns selected model if model has been passed", async () => {
@@ -156,7 +191,7 @@ describe("actions/navigation", () => {
           connection
         );
         expect(navigationModel.value).toBe(adminModel.id);
-        expect(navigationModel.options).toHaveLength(2);
+        expect(navigationModel.options).toHaveLength(3);
       });
     });
   });
@@ -199,9 +234,11 @@ describe("actions/navigation", () => {
         connection
       );
 
-      expect(navigation.navigationItems[0].type).toEqual("modelMenu");
-      expect(navigation.navigationItems[1].title).toEqual("Apps");
-      expect(navigation.navigationItems[2].title).toEqual("Models");
+      expect(navigation.navigationItems[0].title).toEqual("Apps");
+      expectModelsInNav(navigation.navigationItems, 1, [
+        "Accounts",
+        "Profiles",
+      ]);
     });
 
     test("the navigation does not include Platform items if in config mode", async () => {
