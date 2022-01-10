@@ -43,6 +43,7 @@
     "@grouparoo/snowflake": "0.8.0-alpha.5",
     "@grouparoo/sqlite": "0.8.0-alpha.5",
     "@grouparoo/ui-enterprise": "0.8.0-alpha.5",
+    "@grouparoo/vero": "0.8.0-alpha.5",
     "@grouparoo/zendesk": "0.8.0-alpha.5"
   },
   "devDependencies": {
@@ -90,6 +91,7 @@
       "@grouparoo/sendgrid",
       "@grouparoo/snowflake",
       "@grouparoo/sqlite",
+      "@grouparoo/vero",
       "@grouparoo/zendesk"
     ]
   }
