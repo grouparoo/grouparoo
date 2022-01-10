@@ -179,22 +179,21 @@ const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = async (
   const { config, client, getByForeignKey, foreignKeys } = options;
   const { table: tableIdOrName, primaryKey } =
     config.destinationOptions as AirtableDestinationOptions;
-  const records = await client.listRecordsByField(
-    tableIdOrName,
-    primaryKey,
-    foreignKeys
-  );
-  records.forEach((record) => {
-    const key = record.fields[primaryKey.toString()];
-    if (!key) {
-      return;
+  for (const foreignKey of foreignKeys) {
+    // look for each one at a time to make sure we don't miss any
+    const record = await client.getRecordByKey(
+      tableIdOrName,
+      primaryKey,
+      foreignKey
+    );
+    if (record) {
+      const found = getByForeignKey(foreignKey);
+      if (found) {
+        found.destinationId = record.id;
+        found.result = record.fields;
+      }
     }
-    const found = getByForeignKey(key.toString());
-    if (found) {
-      found.destinationId = record.id;
-      found.result = record.fields;
-    }
-  });
+  }
 };
 
 function buildUpdatePayload(
