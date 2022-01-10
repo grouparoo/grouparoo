@@ -35,7 +35,7 @@ export default function Page(props) {
 
   useEffect(() => {
     if (isPrimarySourceNotReady) {
-      router.push(`/model/${model.id}/sources`);
+      router.push(`/model/${model.id}/overview`);
     }
   }, [isPrimarySourceNotReady, model]);
 

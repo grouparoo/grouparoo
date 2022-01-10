@@ -89,7 +89,10 @@ export default function Page(props) {
           There are no Sources yet.
           <br />
           <br />
-          <LinkButton size="sm" href={`/model/${router.query.modelId}/sources`}>
+          <LinkButton
+            size="sm"
+            href={`/model/${router.query.modelId}/source/new`}
+          >
             Add Source
           </LinkButton>
         </Alert>
