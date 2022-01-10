@@ -521,41 +521,35 @@ const Page: NextPage<Props & InjectedProps> = ({
                 </Row>
               ) : null}
 
-              {loading ? (
-                <Loader />
-              ) : (
-                source.previewAvailable && (
-                  <>
-                    <hr />
-                    <h3>
-                      {isPrimarySource ? "Primary Key Mapping" : "Mapping"}
-                    </h3>
-                    {isPrimarySource ? (
-                      <p>
-                        Select a column that uniquely identifies each record in
-                        this Source. The Property mapped to this column will be
-                        assigned as the Model's Primary Key.
-                      </p>
-                    ) : (
-                      <p>
-                        Select a column that relates each record in this Source
-                        back to the Model's Primary Source. You can map the
-                        column to any Property in another Source in the Model.
-                      </p>
-                    )}
+              {source.previewAvailable && (
+                <>
+                  <hr />
+                  <h3>{isPrimarySource ? "Primary Key Mapping" : "Mapping"}</h3>
+                  {isPrimarySource ? (
+                    <p>
+                      Select a column that uniquely identifies each record in
+                      this Source. The Property mapped to this column will be
+                      assigned as the Model's Primary Key.
+                    </p>
+                  ) : (
+                    <p>
+                      Select a column that relates each record in this Source
+                      back to the Model's Primary Source. You can map the column
+                      to any Property in another Source in the Model.
+                    </p>
+                  )}
 
-                    <FormMappingSelector
-                      columnName={mappingColumn}
-                      propertyKey={mappingPropertyKey}
-                      preview={preview}
-                      properties={properties}
-                      propertyExamples={propertyExamples}
-                      register={register}
-                      source={source}
-                      isPrimarySource={isPrimarySource}
-                    />
-                  </>
-                )
+                  <FormMappingSelector
+                    columnName={mappingColumn}
+                    propertyKey={mappingPropertyKey}
+                    preview={preview}
+                    properties={properties}
+                    propertyExamples={propertyExamples}
+                    register={register}
+                    source={source}
+                    isPrimarySource={isPrimarySource}
+                  />
+                </>
               )}
 
               <hr />
