@@ -115,8 +115,8 @@ export default function Page(props) {
       );
       if (success) {
         router.push(
-          "/model/[modelId]/destinations",
-          `/model/${destination.modelId}/destinations`
+          "/model/[modelId]/overview",
+          `/model/${destination.modelId}/overview`
         );
       } else {
         setLoading(false);
