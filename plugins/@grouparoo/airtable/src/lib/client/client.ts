@@ -209,19 +209,25 @@ export class Client implements IClient {
     return this.baseClient(tableIdOrName).select().all();
   }
 
-  async listRecordsByField(
+  async getRecordByKey(
     tableIdOrName: string,
     primaryKey: string,
-    foreignKeys: string[]
-  ): Promise<Records<FieldSet>> {
-    const conditionals = foreignKeys.map((key) => `{${primaryKey}}="${key}"`);
-    const filterString = `OR(${conditionals.join(",")})`;
-    return this.baseClient(tableIdOrName)
+    foreignKey: string
+  ): Promise<Record<FieldSet>> {
+    // escape separators
+    foreignKey = foreignKey.replace(/\"/gi, '\\"');
+    primaryKey = primaryKey.replace(/\{/gi, "\\{");
+    const filterByFormula = `{${primaryKey}}="${foreignKey}"`;
+    const list = await this.baseClient(tableIdOrName)
       .select({
-        filterByFormula: filterString,
-        maxRecords: 100,
+        filterByFormula,
+        maxRecords: 1,
       })
       .all();
+    if (list.length === 0) {
+      return null;
+    }
+    return list[0];
   }
 
   async getRecordById(tableIdOrName: string, recordId: string) {
