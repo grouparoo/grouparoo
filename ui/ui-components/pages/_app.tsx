@@ -20,7 +20,6 @@ export default function GrouparooWebApp(props) {
   const combinedProps = Object.assign({}, pageProps || {}, {
     navigation: props.navigation,
     navigationMode: props.navigationMode,
-    navigationModel: props.navigationModel,
     clusterName: props.clusterName,
     currentTeamMember: props.currentTeamMember,
     ...eventHandlers,
@@ -61,10 +60,6 @@ GrouparooWebApp.getInitialProps = async (appContext: AppContext) => {
       currentTeamMember = navigationResponse.teamMember;
     }
 
-    if (navigationResponse.navigationModel.value) {
-      setModelCookie(navigationResponse.navigationModel.value, appContext.ctx);
-    }
-
     // render page-specific getInitialProps
     let appProps = {};
     let hydrationError: string;
@@ -89,7 +84,6 @@ GrouparooWebApp.getInitialProps = async (appContext: AppContext) => {
     return {
       ...appProps,
       currentTeamMember,
-      navigationModel: navigationResponse.navigationModel,
       navigationMode: navigationResponse.navigationMode,
       navigation: navigationResponse.navigation,
       clusterName: navigationResponse.clusterName,

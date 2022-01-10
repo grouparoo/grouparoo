@@ -12,11 +12,9 @@ export default function Page(props) {
   const {
     errorHandler,
     setupStepHandler,
-    navigationModel,
   }: {
     errorHandler: ErrorHandler;
     setupStepHandler: SetupStepHandler;
-    navigationModel: Actions.NavigationList["navigationModel"];
   } = props;
   const { execApi } = UseApi(props, errorHandler);
   const [setupSteps, setSetupSteps] = useState<Models.SetupStepType[]>([]);
@@ -37,10 +35,16 @@ export default function Page(props) {
   );
 
   async function load() {
+    const {
+      models: [model],
+    } = await execApi<Actions.ModelsList>("get", "/models", {
+      limit: 1,
+    });
+
     const response = await execApi(
       "get",
       `/setupSteps`,
-      { modelId: navigationModel.value },
+      { modelId: model?.id },
       null,
       null,
       false

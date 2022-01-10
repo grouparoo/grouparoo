@@ -131,69 +131,6 @@ describe("actions/navigation", () => {
       expect(navigationItems[1].title).toEqual("Apps");
       expectModelsInNav(navigationItems, 2, ["Accounts", "Profiles"]);
     });
-
-    test("the navigation action does not include models if not logged in", async () => {
-      const { navigationModel, navigationMode } =
-        await specHelper.runAction<NavigationList>("navigation:list");
-
-      expect(navigationMode).toBe("unauthenticated");
-
-      expect(navigationModel.value).toBe(null);
-      expect(navigationModel.options).toHaveLength(0);
-    });
-
-    test("the navigation action includes models if logged in", async () => {
-      const connection = await specHelper.buildConnection();
-      connection.params = {
-        email: "peach@example.com",
-        password: "P@ssw0rd!",
-      };
-      const sessionResponse = await specHelper.runAction<SessionCreate>(
-        "session:create",
-        connection
-      );
-      const csrfToken = sessionResponse.csrfToken;
-      connection.params = { csrfToken };
-
-      const { navigationModel } = await specHelper.runAction<NavigationList>(
-        "navigation:list",
-        connection
-      );
-      expect(navigationModel.value).toBe(model.id);
-      expect(navigationModel.options).toHaveLength(2);
-    });
-
-    describe("with additional models", () => {
-      let adminModel: GrouparooModel;
-      beforeAll(async () => {
-        adminModel = await helper.factories.model({ name: "Admins" });
-      });
-
-      afterAll(async () => {
-        await adminModel.destroy();
-      });
-
-      test("navigation action returns selected model if model has been passed", async () => {
-        const connection = await specHelper.buildConnection();
-        connection.params = {
-          email: "peach@example.com",
-          password: "P@ssw0rd!",
-        };
-        const sessionResponse = await specHelper.runAction<SessionCreate>(
-          "session:create",
-          connection
-        );
-        const csrfToken = sessionResponse.csrfToken;
-        connection.params = { csrfToken, modelId: adminModel.id };
-
-        const { navigationModel } = await specHelper.runAction<NavigationList>(
-          "navigation:list",
-          connection
-        );
-        expect(navigationModel.value).toBe(adminModel.id);
-        expect(navigationModel.options).toHaveLength(3);
-      });
-    });
   });
 
   describe("in config mode", () => {

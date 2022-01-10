@@ -4,15 +4,20 @@ import Head from "next/head";
 import { Row, Col, Image, Button } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import Loader from "../../ui-components/components/Loader";
+import { string } from "prop-types";
 
 export default function Page(props) {
   const router = useRouter();
-  const { navigationMode, navigationModel } = props;
+  const { navigationMode } = props;
   const [shouldRender, setShouldRender] = useState(false);
-  const [CTAs, setCTAs] = useState({
-    CTALink: "/session/sign-in",
-    CTAMessage: "Register",
-    CTATarget: null,
+  const [cta, setCTA] = useState<{
+    link: string;
+    message: string;
+    target?: string;
+  }>({
+    link: "/session/sign-in",
+    message: "Register",
+    target: null,
   });
 
   useEffect(() => {
@@ -30,18 +35,13 @@ export default function Page(props) {
       );
 
       if (navigationMode === "config:authenticated" && currentStep) {
-        setCTAs({
-          CTAMessage: "Set Up Grouparoo",
-          CTALink: "/setup",
-          CTATarget: null,
+        setCTA({
+          message: "Set Up Grouparoo",
+          link: "/setup",
+          target: null,
         });
       } else if (navigationMode === "config:authenticated" && !currentStep) {
-        const currentModel = navigationModel.value;
-        setCTAs({
-          CTAMessage: "Configure Records",
-          CTALink: `/model/${currentModel}/records`,
-          CTATarget: null,
-        });
+        setCTA(undefined);
       }
       setShouldRender(true);
     }
@@ -84,19 +84,21 @@ export default function Page(props) {
             <br />
             <br />
 
-            <div style={{ textAlign: "center" }}>
-              <Button
-                variant="primary"
-                size="lg"
-                onClick={() => {
-                  CTAs.CTATarget
-                    ? window.open(CTAs.CTALink, CTAs.CTATarget)
-                    : router.push(CTAs.CTALink);
-                }}
-              >
-                {CTAs.CTAMessage}
-              </Button>
-            </div>
+            {cta && (
+              <div style={{ textAlign: "center" }}>
+                <Button
+                  variant="primary"
+                  size="lg"
+                  onClick={() => {
+                    cta.target
+                      ? window.open(cta.link, cta.target)
+                      : router.push(cta.link);
+                  }}
+                >
+                  {cta.message}
+                </Button>
+              </div>
+            )}
           </Col>
         </Row>
       </div>

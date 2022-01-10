@@ -39,7 +39,6 @@ export const iconConstrainedStyle: React.CSSProperties = { width: 20 };
 
 export default function Navigation(props) {
   const {
-    navigationModel,
     navigationMode,
     navigation,
     clusterName,
@@ -53,7 +52,6 @@ export default function Navigation(props) {
     navigationMode: Actions.NavigationList["navigationMode"];
     navigation: Actions.NavigationList["navigation"];
     clusterName: { value: string; default: boolean };
-    navigationModel: Actions.NavigationList["navigationModel"];
     navExpanded: boolean;
     toggleNavExpanded: () => {};
     errorHandler: ErrorHandler;

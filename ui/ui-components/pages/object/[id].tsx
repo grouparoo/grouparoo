@@ -13,10 +13,8 @@ export default function FindObject(props) {
   const router = useRouter();
   const {
     errorHandler,
-    navigationModel,
   }: {
     errorHandler: ErrorHandler;
-    navigationModel: Actions.NavigationList["navigationModel"];
   } = props;
   const { execApi } = UseApi(props, errorHandler);
   const [error, setError] = useState<string>(null);
@@ -123,21 +121,7 @@ export default function FindObject(props) {
     };
   }
 
-  function getListPage(tableName: string) {
-    const byModel = [
-      "records",
-      "groups",
-      "destinations",
-      "sources",
-      "properties",
-      "schedules",
-    ];
-    if (byModel.includes(tableName) && props.navigationModel.value) {
-      return `/model/${navigationModel.value}/${tableName}`;
-    }
-
-    return `/${tableName}`;
-  }
+  const getListPage = (tableName: string) => `/${tableName}`;
 
   if (records.length > 0) {
     return (

@@ -26,16 +26,12 @@ export class NavigationList extends OptionallyAuthenticatedAction {
   description = "returns a list of pages for the UI navigation for this user";
   permission: ActionPermission = { topic: "*", mode: "read" };
   outputExample = {};
-  inputs = {
-    modelId: { required: false },
-  };
+  inputs = {};
 
   async runWithinTransaction({
     session: { teamMember },
-    params,
   }: {
     session: { teamMember: TeamMember };
-    params: { modelId: string };
   }) {
     let configUser: ConfigUser.ConfigUserType;
     if (process.env.GROUPAROO_RUN_MODE === "cli:config") {
@@ -58,12 +54,6 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     const models = await GrouparooModel.findAll({
       order: [["name", "asc"]],
     });
-    const currentModel = models.find((m) => m.id === params.modelId);
-    const currentModelId = currentModel
-      ? currentModel.id
-      : models.length > 0
-      ? models[0].id
-      : null;
 
     let navResponse: {
       navigationItems: NavigationItem[];
@@ -100,12 +90,6 @@ export class NavigationList extends OptionallyAuthenticatedAction {
         value: clusterNameSetting?.value || "",
       },
       teamMember: teamMember ? await teamMember.apiData() : undefined,
-      navigationModel: isAuthenticated
-        ? {
-            value: currentModelId,
-            options: await Promise.all(models.map((m) => m.apiData())),
-          }
-        : { value: null, options: [] },
     };
   }
 
@@ -293,7 +277,11 @@ export class NavigationList extends OptionallyAuthenticatedAction {
 
     navigationItems.push(...NavigationList.createModelNavigationItems(models));
 
-    return { navigationItems, platformItems: [], bottomMenuItems: [] };
+    return {
+      navigationItems,
+      platformItems: [] as NavigationItem[],
+      bottomMenuItems: [] as NavigationItem[],
+    };
   }
 
   async unauthenticatedConfigNav(configUser: ConfigUser.ConfigUserType) {
