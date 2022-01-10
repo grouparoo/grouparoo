@@ -83,14 +83,16 @@ export default class Spreadsheet {
 
   async read({ limit, offset }) {
     const sheet = await this.load();
-    const rows = await sheet.getRows({ limit, offset });
     const results = [];
-    for (const row of rows) {
-      const result: any = {};
-      for (const header of sheet.headerValues) {
-        result[header] = row[header];
+    if (offset < sheet.rowCount) {
+      const rows = await sheet.getRows({ limit, offset });
+      for (const row of rows) {
+        const result: any = {};
+        for (const header of sheet.headerValues) {
+          result[header] = row[header];
+        }
+        results.push(result);
       }
-      results.push(result);
     }
     return results;
   }

@@ -7,6 +7,7 @@ import Spreadsheet from "./Spreadsheet";
 import csvWriter from "csv-write-stream";
 
 const CSV_CACHE_MILLISECONDS = 1000 * 60;
+const GOOGLE_SHEETS_ROWS_LIMIT = 10000;
 
 export async function downloadAndRefreshFile(
   sourceId: string,
@@ -36,28 +37,36 @@ export async function downloadAndRefreshFile(
   if (toDownload) {
     log(`Saving Google Sheet to \`${localPath}\``, "debug");
     const localPathAux = path.join(localDir, `${sheet.docId}-aux.csv`);
-    if (fs.existsSync(localPathAux)) fs.rmSync(localPathAux, { force: true });
-
-    const writer = csvWriter({
-      sendHeaders: true,
-      headers: await sheet.getHeaders(),
-    });
-    writer.pipe(fs.createWriteStream(localPathAux));
-    const limit = 900;
-    let offset = 0;
-    let rows = await sheet.read({ limit, offset });
-
-    while (rows.length > 0) {
-      for (const row of rows) {
-        writer.write(row);
-      }
-      offset += limit;
-      rows = await sheet.read({ limit, offset });
-    }
-    writer.end();
-    fs.copySync(localPathAux, localPath, {
+    await writeSheetToFile(localPathAux, sheet);
+    await fs.copy(localPathAux, localPath, {
       overwrite: true,
+      preserveTimestamps: true,
     });
   }
   return localPath;
+}
+
+async function writeSheetToFile(localPathAux: string, sheet: Spreadsheet) {
+  const writer = csvWriter({
+    sendHeaders: true,
+    headers: await sheet.getHeaders(),
+  });
+  return new Promise<void>(async (resolve, reject) => {
+    if (fs.existsSync(localPathAux)) fs.rmSync(localPathAux, { force: true });
+    const writeStream = fs.createWriteStream(localPathAux);
+    writer.pipe(writeStream);
+    let offset = 0;
+    let rows = await sheet.read({ limit: GOOGLE_SHEETS_ROWS_LIMIT, offset });
+
+    while (rows.length > 0) {
+      for (const row of rows) {
+        await writer.write(row);
+      }
+      offset += GOOGLE_SHEETS_ROWS_LIMIT;
+      rows = await sheet.read({ limit: GOOGLE_SHEETS_ROWS_LIMIT, offset });
+    }
+    await writer.end();
+    writeStream.on("finish", resolve);
+    writeStream.on("error", reject);
+  });
 }
