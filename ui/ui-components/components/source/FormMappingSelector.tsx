@@ -19,7 +19,7 @@ interface Props {
   propertyExamples: Record<string, string[]>;
   source: Models.SourceType;
   register: ReturnType<typeof useForm>["register"];
-  isPrimarySource?: boolean;
+  mappingDisabled?: boolean;
 }
 
 const FormMappingSelector: React.FC<Props> = ({
@@ -31,7 +31,7 @@ const FormMappingSelector: React.FC<Props> = ({
   propertyExamples,
   register,
   source,
-  isPrimarySource,
+  mappingDisabled,
 }) => {
   const [selectedProperty, setSelectedProperty] = useState<Models.PropertyType>(
     () =>
@@ -140,46 +140,48 @@ const FormMappingSelector: React.FC<Props> = ({
         </FormInputContainer>
         {columnExample && renderExamples(columnExample)}
       </Col>
-      <Col>
-        {hasAvailableProperties && !isPrimarySource && (
-          <>
-            <FormInputContainer
-              controlId="mapping_property"
-              label="Mapped to Grouparoo Property"
-              required
-            >
-              <Form.Control
-                as="select"
+      {!mappingDisabled && (
+        <Col>
+          {hasAvailableProperties && (
+            <>
+              <FormInputContainer
+                controlId="mapping_property"
+                label="Mapped to Grouparoo Property"
                 required
-                disabled={disabled}
-                value={selectedProperty?.key}
-                onChange={(e) => {
-                  setSelectedProperty(
-                    availableProperties.find(
-                      ({ key }) => key === e.target.value
-                    )
-                  );
-                }}
-                name="mapping.propertyKey"
-                ref={register}
               >
-                <option value={""} disabled>
-                  Select an option
-                </option>
-                {availableProperties.map((property) => (
-                  <option
-                    key={`mapping-property-${property.key}`}
-                    value={property.key}
-                  >
-                    {property.key} {property.unique && "(unique)"}
+                <Form.Control
+                  as="select"
+                  required
+                  disabled={disabled}
+                  value={selectedProperty?.key}
+                  onChange={(e) => {
+                    setSelectedProperty(
+                      availableProperties.find(
+                        ({ key }) => key === e.target.value
+                      )
+                    );
+                  }}
+                  name="mapping.propertyKey"
+                  ref={register}
+                >
+                  <option value={""} disabled>
+                    Select an option
                   </option>
-                ))}
-              </Form.Control>
-            </FormInputContainer>
-            {!!availableProperties.length && renderExamples(propertyExample)}
-          </>
-        )}
-      </Col>
+                  {availableProperties.map((property) => (
+                    <option
+                      key={`mapping-property-${property.key}`}
+                      value={property.key}
+                    >
+                      {property.key} {property.unique && "(unique)"}
+                    </option>
+                  ))}
+                </Form.Control>
+              </FormInputContainer>
+              {!!availableProperties.length && renderExamples(propertyExample)}
+            </>
+          )}
+        </Col>
+      )}
     </Row>
   );
 };

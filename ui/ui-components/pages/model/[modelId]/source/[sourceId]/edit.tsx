@@ -83,10 +83,9 @@ const Page: NextPage<Props & InjectedProps> = ({
   );
   const isPrimarySource = useMemo(
     () =>
-      (totalSources === 1 && source.state !== "ready") ||
       properties.filter(
         ({ isPrimaryKey, sourceId }) => isPrimaryKey && sourceId === source.id
-      ).length > 0,
+      ).length > 0 || totalSources === 1,
     [properties, source]
   );
 
@@ -152,21 +151,6 @@ const Page: NextPage<Props & InjectedProps> = ({
         mapping = {
           [data.mapping.sourceColumn]: bootstrapResponse.property.key,
         };
-        const prrResponse = await execApi<Actions.PropertiesList>(
-          "get",
-          `/properties`,
-          {
-            includeExamples: true,
-            unique: true,
-            state: "ready",
-            modelId: source.modelId,
-          }
-        );
-
-        if (prrResponse?.properties) {
-          setProperties(prrResponse.properties);
-          setPropertyExamples(prrResponse.examples);
-        }
       } else if (!Object.keys(bootstrapResponse).length) {
         errorHandler.set({
           message: "Unable to map to property.",
@@ -200,7 +184,6 @@ const Page: NextPage<Props & InjectedProps> = ({
     );
 
     if (response?.source) {
-      setSource(response.source);
       sourceHandler.set(response.source);
 
       // we made the first source, and now should attempt to make sample properties
@@ -231,6 +214,22 @@ const Page: NextPage<Props & InjectedProps> = ({
       } else {
         successHandler.set({ message: "Source updated" });
       }
+    }
+
+    const { properties, examples } = await execApi<Actions.PropertiesList>(
+      "get",
+      `/properties`,
+      {
+        includeExamples: true,
+        state: "ready",
+        modelId: source?.modelId,
+      }
+    );
+
+    setProperties(properties);
+    setPropertyExamples(examples);
+    if (response?.source) {
+      setSource(response.source);
     }
     setLoading(false);
   };
@@ -547,7 +546,9 @@ const Page: NextPage<Props & InjectedProps> = ({
                     propertyExamples={propertyExamples}
                     register={register}
                     source={source}
-                    isPrimarySource={isPrimarySource}
+                    mappingDisabled={
+                      isPrimarySource && source.state !== "ready"
+                    }
                   />
                 </>
               )}
