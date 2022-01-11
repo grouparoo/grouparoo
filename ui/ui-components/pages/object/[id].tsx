@@ -41,11 +41,12 @@ export default function FindObject(props) {
 
   async function load() {
     const response: Actions.ObjectFind = await execApi("get", `/object/${id}`);
-    const table = response.records[0].tableName.toLowerCase();
-    if (response.records.length === 0) {
+    const table = response?.records[0]?.tableName?.toLowerCase();
+    const itemsFound = response?.records?.length ?? 0;
+    if (itemsFound === 0) {
       setError(`Cannot find object "${id}"`);
     } else if (
-      response.records.length === 1 &&
+      itemsFound === 1 &&
       (grouparooUiEdition() === "enterprise" ||
         editPagesForCommunityEdition.includes(table))
     ) {
@@ -55,10 +56,7 @@ export default function FindObject(props) {
       } else {
         router.replace(`/${singular(table)}/${id}/${detailPage}`);
       }
-    } else if (
-      response.records.length === 1 &&
-      grouparooUiEdition() === "community"
-    ) {
+    } else if (itemsFound === 1 && grouparooUiEdition() === "community") {
       const listPage = getListPage(table);
       router.replace(listPage);
     } else {
