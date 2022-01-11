@@ -214,7 +214,6 @@ export class SourceBootstrapUniqueProperty extends AuthenticatedAction {
     params: ParamsFrom<SourceBootstrapUniqueProperty>;
   }) {
     const source = await Source.findById(params.id);
-    console.log({ params });
 
     const property = await source.bootstrapUniqueProperty({
       mappedColumn: params.mappedColumn,
