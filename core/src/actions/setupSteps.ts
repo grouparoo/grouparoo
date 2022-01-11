@@ -1,10 +1,10 @@
+import { ParamsFrom } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { SetupStep } from "../models/SetupStep";
 import { AsyncReturnType } from "type-fest";
 import { APIData } from "../modules/apiData";
 import { ActionPermission } from "../models/Permission";
-import { ParamsFrom } from "actionhero";
-import { GrouparooModel } from "..";
+import { GrouparooModel } from "../models/GrouparooModel";
 
 export class SetupStepsList extends AuthenticatedAction {
   name = "setupSteps:list";
