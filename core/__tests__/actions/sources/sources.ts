@@ -1,7 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Connection, specHelper } from "actionhero";
-import { Option, Source, App, GrouparooModel } from "../../src";
-import { SessionCreate } from "../../src/actions/session";
+import { specHelper, Connection } from "actionhero";
+import { Option, Source, App, GrouparooModel } from "../../../src";
+import { SessionCreate } from "../../../src/actions/session";
 import {
   SourceBootstrapUniqueProperty,
   SourceConnectionApps,
@@ -13,9 +13,9 @@ import {
   SourcePreview,
   SourcesList,
   SourceView,
-} from "../../src/actions/sources";
-import { PropertyDestroy } from "../../src/actions/properties";
-import { ConfigWriter } from "../../src/modules/configWriter";
+} from "../../../src/actions/sources";
+import { PropertyDestroy } from "../../../src/actions/properties";
+import { ConfigWriter } from "../../../src/modules/configWriter";
 
 describe("actions/sources", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -295,7 +295,7 @@ describe("actions/sources", () => {
       expect(configSpy).toBeCalledTimes(1);
     });
 
-    test("a source can be made active", async () => {
+    test("a source can be made ready", async () => {
       connection.params = {
         csrfToken,
         id,

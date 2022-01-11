@@ -6,7 +6,6 @@ import { ConfigUser } from "../../src/modules/configUser";
 import { Status } from "../../src/modules/status";
 import { PrivateStatus, PublicStatus } from "../../src/actions/status";
 import { SessionCreate } from "../../src/actions/session";
-import { Team } from "../../src";
 
 const workerId = process.env.JEST_WORKER_ID;
 const configDir = `${os.tmpdir()}/test/${workerId}/configUser/config`;

@@ -1,7 +1,8 @@
-import { api, ParamsFrom } from "actionhero";
+import { api, ParamsFrom, log } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { App } from "../models/App";
 import { Source } from "../models/Source";
+import { GrouparooRecord } from "../models/GrouparooRecord";
 import {
   GrouparooPlugin,
   PluginConnection,
@@ -188,6 +189,55 @@ export class SourceEdit extends AuthenticatedAction {
     await ConfigWriter.run();
 
     return { source: await source.apiData() };
+  }
+}
+
+export class SourceGenerateSampleRecords extends AuthenticatedAction {
+  name = "source:generateSampleRecords";
+  description = "create 3 sample records for this model";
+  permission: ActionPermission = { topic: "source", mode: "write" };
+  inputs = { id: { required: true } };
+
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<SourceGenerateSampleRecords>;
+  }) {
+    const source = await Source.findById(params.id);
+
+    if (process.env.GROUPAROO_RUN_MODE !== "cli:config")
+      throw new Error(`this action is only valid in cli:config mode`);
+    if (source.state !== "ready") throw new Error(`source is not ready`);
+    if (!(await source.previewAvailable()))
+      throw new Error(`source does not provide a preview`);
+
+    let attempt = 0;
+    let records: GrouparooRecord[] = [];
+    const mapping = await source.getMapping();
+    const mappingKey = Object.keys(mapping)[0];
+    const mappingValue = Object.values(mapping)[0];
+    const preview = await source.sourcePreview();
+
+    while (records.length < 3 && attempt < preview.length) {
+      const value = preview[attempt][mappingKey];
+      if (value) {
+        const record = new GrouparooRecord({ modelId: source.modelId });
+        await record.save();
+        try {
+          await record.addOrUpdateProperties({ [mappingValue]: value });
+          records.push(record);
+        } catch (error) {
+          log(error, "error");
+          await record.destroy();
+        }
+      }
+
+      attempt++;
+    }
+
+    return {
+      records: await Promise.all(records.map((record) => record.apiData())),
+    };
   }
 }
 
