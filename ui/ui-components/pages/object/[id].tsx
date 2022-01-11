@@ -33,31 +33,34 @@ export default function FindObject(props) {
     schedules: redirectSchedule,
   };
 
+  const editPagesForCommunityEdition = ["records"];
+
   useEffect(() => {
     load();
   }, []);
 
   async function load() {
     const response: Actions.ObjectFind = await execApi("get", `/object/${id}`);
+    const table = response.records[0].tableName.toLowerCase();
     if (response.records.length === 0) {
       setError(`Cannot find object "${id}"`);
     } else if (
       response.records.length === 1 &&
-      grouparooUiEdition() === "enterprise"
+      (grouparooUiEdition() === "enterprise" ||
+        editPagesForCommunityEdition.includes(table))
     ) {
-      const table = response.records[0].tableName.toLowerCase();
       const detailPage = detailPages[table] || "edit";
       if (typeof detailPage === "function") {
         await detailPage(id);
       } else {
-        router.push(`/${singular(table)}/${id}/${detailPage}`);
+        router.replace(`/${singular(table)}/${id}/${detailPage}`);
       }
     } else if (
       response.records.length === 1 &&
       grouparooUiEdition() === "community"
     ) {
-      const listPage = getListPage(response.records[0].tableName.toLowerCase());
-      router.push(listPage);
+      const listPage = getListPage(table);
+      router.replace(listPage);
     } else {
       setRecords(response.records.map((r) => r.tableName.toLowerCase()));
     }
