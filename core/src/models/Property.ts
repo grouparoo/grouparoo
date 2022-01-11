@@ -40,7 +40,7 @@ import { Run } from "./Run";
 import { Source } from "./Source";
 
 const jsMap = {
-  boolean: config.sequelize.dialect === "sqlite" ? "text" : "boolean", // there is no boolean type in SQLite
+  boolean: config?.sequelize?.dialect === "sqlite" ? "text" : "boolean", // there is no boolean type in SQLite
   date: "bigint", // we store things via timestamps in the DB
   email: "text",
   float: "float",
