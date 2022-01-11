@@ -38,9 +38,10 @@ export default function Page(props) {
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [app, setApp] = useState<Models.AppType>(props.app);
-  const { register, handleSubmit, setValue } = useForm<Models.AppType>({
-    defaultValues: props.app,
-  });
+  const { register, handleSubmit, setValue, getValues } =
+    useForm<Models.AppType>({
+      defaultValues: props.app,
+    });
   const [loading, setLoading] = useState(false);
   const [loadingOAuth, setLoadingOAuth] = useState(false);
   const [oAuthPopup, setOAuthPopup] = useState<Window>(null);
@@ -78,15 +79,12 @@ export default function Page(props) {
   }, [oAuthPopup]);
 
   async function edit(appData: Models.AppType) {
-    console.log("EDIT", appData);
-    return;
-    // event.preventDefault();
     const state = app.state === "ready" ? undefined : "ready";
     setLoading(true);
     const response: Actions.AppEdit = await execApi(
       "put",
       `/app/${id}`,
-      Object.assign({}, app, { state })
+      Object.assign({}, appData, { state })
     );
     if (response?.app) {
       if (response.app.state === "ready" && app.state === "draft") {
@@ -122,8 +120,9 @@ export default function Page(props) {
     setTestLoading(true);
     setRanTest(false);
     setTestResult({ success: null, message: null, error: null });
+    const { options } = getValues();
     const response: Actions.AppTest = await execApi("put", `/app/${id}/test`, {
-      options: app.options,
+      options,
     });
     if (response?.test) {
       setRanTest(true);
