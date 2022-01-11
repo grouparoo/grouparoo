@@ -208,7 +208,7 @@ export default function Navigation(props) {
               if (nav.type === "link") {
                 return (
                   <HighlightingNavLink
-                    key={idx}
+                    key={nav.href}
                     href={nav.href}
                     mainPathSectionIdx={nav.mainPathSectionIdx ?? 1}
                     text={
