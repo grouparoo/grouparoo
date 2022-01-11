@@ -35,20 +35,7 @@ export default function Page(props) {
   );
 
   async function load() {
-    const {
-      models: [model],
-    } = await execApi<Actions.ModelsList>("get", "/models", {
-      limit: 1,
-    });
-
-    const response = await execApi(
-      "get",
-      `/setupSteps`,
-      { modelId: model?.id },
-      null,
-      null,
-      false
-    );
+    const response = await execApi("get", `/setupSteps`, {}, null, null, false);
     if (response.setupSteps) {
       setSetupSteps(response.setupSteps);
       setupStepHandler.set(response.setupSteps);
