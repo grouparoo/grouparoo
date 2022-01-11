@@ -52,21 +52,6 @@ export const getSetupStepDescriptions = (modelId?: string) => {
       runModes: ["cli:start", "cli:run"],
     },
     {
-      key: "add_a_model",
-      title: "Add a Model",
-      description:
-        "Models define the shape of your Records.  Grouparoo uses a Profile Model by default.  You can add new Models and customize them when you begin adding Sources and Properties.",
-      href: "/models",
-      cta: "Add a Model",
-      helpLink: `${configURL}/models`,
-      check: async () => {
-        const count = await GrouparooModel.count();
-        return count > 0;
-      },
-      disabled: async () => false,
-      runModes: ["cli:start", "cli:run", "cli:config"],
-    },
-    {
       key: "add_an_app",
       title: "Add an App",
       description:
@@ -76,6 +61,21 @@ export const getSetupStepDescriptions = (modelId?: string) => {
       helpLink: `${configURL}/apps`,
       check: async () => {
         const count = await App.count();
+        return count > 0;
+      },
+      disabled: async () => false,
+      runModes: ["cli:start", "cli:run", "cli:config"],
+    },
+    {
+      key: "add_a_model",
+      title: "Add a Model",
+      description:
+        "Models define the shape of your Records.  Grouparoo uses a Profile Model by default.  You can add new Models and customize them when you begin adding Sources and Properties.",
+      href: "/models",
+      cta: "Add a Model",
+      helpLink: `${configURL}/models`,
+      check: async () => {
+        const count = await GrouparooModel.count();
         return count > 0;
       },
       disabled: async () => false,

@@ -37,8 +37,8 @@ describe("models/setupStep", () => {
   test("setupSteps ops returns standard versions when not in config mode", async () => {
     const setupSteps = getSetupStepDescriptions();
     expect(setupSteps[0].key).toEqual("name_your_grouparoo_instance");
-    expect(setupSteps[1].key).toEqual("add_a_model");
-    expect(setupSteps[2].key).toEqual("add_an_app");
+    expect(setupSteps[1].key).toEqual("add_an_app");
+    expect(setupSteps[2].key).toEqual("add_a_model");
     expect(setupSteps[3].key).toEqual("configure_a_model");
   });
 
@@ -46,8 +46,8 @@ describe("models/setupStep", () => {
     process.env.GROUPAROO_RUN_MODE = "cli:config";
     const setupSteps = getSetupStepDescriptions();
     expect(setupSteps[0].key).toEqual("install_grouparoo");
-    expect(setupSteps[1].key).toEqual("add_a_model");
-    expect(setupSteps[2].key).toEqual("add_an_app");
+    expect(setupSteps[1].key).toEqual("add_an_app");
+    expect(setupSteps[2].key).toEqual("add_a_model");
     expect(setupSteps[3].key).toEqual("configure_a_model");
   });
 
