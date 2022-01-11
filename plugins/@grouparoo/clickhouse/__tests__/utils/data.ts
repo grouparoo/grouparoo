@@ -1,7 +1,7 @@
 import { SimpleAppOptions } from "@grouparoo/core";
 import path from "path";
 import fs from "fs";
-import parse from "csv-parse/lib/sync";
+import { parse } from "csv-parse/lib/sync";
 
 import { connect } from "../../src/lib/connect";
 

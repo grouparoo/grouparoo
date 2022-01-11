@@ -1,5 +1,5 @@
 import Connection from "./connection";
-import parse from "csv-parse/lib/sync";
+import { parse } from "csv-parse/lib/sync";
 import fs from "fs";
 import path from "path";
 import { log } from "actionhero";
