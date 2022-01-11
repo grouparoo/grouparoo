@@ -60,6 +60,9 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
     field = required.find((f) => f.key === "AccountNumber");
     expect(field.type).toBe("string");
 
+    field = known.find((f) => f.key === "Name");
+    expect(field.type).toBe("string");
+
     field = known.find((f) => f.key === "OwnerId");
     expect(field.type).toBe("string");
     expect(field.important).toBe(false);
