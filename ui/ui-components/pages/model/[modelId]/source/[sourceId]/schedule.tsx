@@ -126,7 +126,6 @@ export default function Page(props) {
     _localFilters.push({
       key: filterOptions[0].key,
       op: filterOptions[0].ops[0],
-      match: "",
     });
 
     setLocalFilters(_localFilters);
@@ -528,7 +527,9 @@ export default function Page(props) {
                                         required
                                         type="text"
                                         disabled={loading}
-                                        value={localFilter.match.toString()}
+                                        value={
+                                          localFilter.match?.toString() || ""
+                                        }
                                         onChange={(e: any) => {
                                           const _localFilter = [
                                             ...localFilters,
