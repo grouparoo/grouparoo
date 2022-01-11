@@ -135,7 +135,10 @@ const Page: NextPage<Props & InjectedProps> = ({
     event.preventDefault();
     setLoading(true);
 
-    const isBootstrappingUniqueProperty = !data.mapping?.propertyKey;
+    const isBootstrappingUniqueProperty =
+      source.previewAvailable &&
+      !source.connection.skipSourceMapping &&
+      !data.mapping?.propertyKey;
     let bootstrapSuccess = false;
     let mapping: Record<string, string>;
 
