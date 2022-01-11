@@ -198,11 +198,10 @@ export default function Page(props) {
     _localFilters.push({
       key: filterOptions[0].key,
       op: filterOptions[0].ops[0],
-      match: "",
+      match: null,
     });
 
     setLocalFilters(_localFilters);
-    console.log(_localFilters);
   }
 
   function deleteRule(idx: number) {
@@ -678,9 +677,8 @@ export default function Page(props) {
                                               localFilter.op.includes("exist")
                                             }
                                             value={
-                                              localFilter.match
-                                                ? localFilter.match.toString()
-                                                : ""
+                                              localFilter.match?.toString() ||
+                                              ""
                                             }
                                             onChange={(e: any) => {
                                               const _localFilter = [
