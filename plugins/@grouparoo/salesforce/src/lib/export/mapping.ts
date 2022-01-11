@@ -201,8 +201,7 @@ const extractFields = async (
       // needs to be set to create
       const syncMode = await destination.getSyncMode();
       if (syncMode === DestinationSyncModeData.enrich.key) {
-        const important = isFieldImportant(field);
-        known.push({ key, type, important });
+        known.push({ key, type, important: true });
       } else {
         required.push({ key, type });
       }
