@@ -12,7 +12,6 @@ import "../components/Icons";
 
 import { Actions } from "../utils/apiData";
 import * as eventHandlers from "../utils/eventHandlers";
-import { getModelFromUrlOrCookie, setModelCookie } from "../utils/modelHelper";
 
 export default function GrouparooWebApp(props) {
   const { Component, pageProps, err, hydrationError } = props;
@@ -47,13 +46,10 @@ GrouparooWebApp.getInitialProps = async (appContext: AppContext) => {
     id: null,
   };
 
-  const modelId = getModelFromUrlOrCookie(appContext.ctx);
-
   try {
     const navigationResponse: Actions.NavigationList = await execApi(
       "get",
-      `/navigation`,
-      { modelId }
+      `/navigation`
     );
 
     if (navigationResponse.teamMember) {
