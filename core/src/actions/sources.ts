@@ -199,9 +199,9 @@ export class SourceBootstrapUniqueProperty extends AuthenticatedAction {
   permission: ActionPermission = { topic: "source", mode: "write" };
   inputs = {
     id: { required: true },
-    key: { required: true },
+    key: { required: false },
     type: {
-      required: true,
+      required: false,
       formatter: (p: unknown) => p as typeof PropertyTypes[number],
     },
     mappedColumn: { required: true },
