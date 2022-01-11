@@ -11,3 +11,7 @@ In your Grouparoo project, run `grouparoo install @grouparoo/klaviyo`.
 ## Groups
 
 Lists will automatically be created for configured groups.
+
+## Attribution
+
+The logo used in this Plugin is from https://cdn.shopify.com/app-store/listing_images/5edd9000b933a8fa88c152d1e498531f/icon/CJ+t/tP0lu8CEAE=.jpg
