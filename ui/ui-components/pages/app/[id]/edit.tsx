@@ -174,24 +174,13 @@ export default function Page(props) {
       );
 
       if (response.oAuthRequest) {
-        console.log("REQ", response.oAuthRequest);
-        if (response.oAuthRequest.identities.length === 0) {
-          errorHandler.set({
-            message: `No identities returned from ${response.oAuthRequest.provider}`,
-          });
-        } else if (response.oAuthRequest.identities.length === 1) {
-          console.log("got an identity");
-          setValue(
-            `options.${response.oAuthRequest.appOption}`,
-            // @ts-ignore TODO fix types
-            response.oAuthRequest.identities[0].accessToken
-          );
-          successHandler.set({
-            message: `Loaded app options from ${response.oAuthRequest.provider}`,
-          });
-        } else {
-          console.log("got multiple identites");
-        }
+        setValue(
+          `options.${response.oAuthRequest.appOption}`,
+          response.oAuthRequest.token
+        );
+        successHandler.set({
+          message: `Loaded app options from ${response.oAuthRequest.provider}`,
+        });
       }
     }
   };
