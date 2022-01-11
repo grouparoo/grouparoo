@@ -18,7 +18,7 @@ export default function FindObject(props) {
   } = props;
   const { execApi } = UseApi(props, errorHandler);
   const [error, setError] = useState<string>(null);
-  const [records, setRecords] = useState<string[]>([]);
+  const [results, setResults] = useState<{ name: string; href: string }[]>();
 
   const id = router.query.id?.toString();
 
@@ -54,10 +54,24 @@ export default function FindObject(props) {
       response.records.length === 1 &&
       grouparooUiEdition() === "community"
     ) {
-      const listPage = getListPage(response.records[0].tableName.toLowerCase());
-      router.push(listPage);
+      const tableName = response.records[0].tableName.toLowerCase();
+      await redirectToListPage(tableName);
     } else {
-      setRecords(response.records.map((r) => r.tableName.toLowerCase()));
+      const isEnterprise = grouparooUiEdition() === "enterprise";
+      const tableNames = response.records.map((r) => r.tableName.toLowerCase());
+
+      const nextResults: { name: string; href: string }[] = [];
+      for (const name of tableNames) {
+        const detailPage = detailPages[name] || "edit";
+        const href =
+          isEnterprise && typeof detailPage === "string"
+            ? `/${singular(name)}/${id}/${detailPage}`
+            : await getListPage(name);
+
+        nextResults.push({ name, href });
+      }
+
+      setResults(nextResults);
     }
   }
 
@@ -121,55 +135,59 @@ export default function FindObject(props) {
     };
   }
 
-  const getListPage = (tableName: string) => `/${tableName}`;
+  async function getListPage(topic: string) {
+    const singularTopic = singular(topic);
+    const response = await execApi("get", `/${singularTopic}/${id}`);
 
-  if (records.length > 0) {
-    return (
-      <>
-        <h2>Multiple objects found:</h2>
-        <table>
-          <tbody>
-            {records.map((r) => {
-              const detailPage = detailPages[r] || "edit";
-              return (
-                <tr>
-                  <td>{id} in </td>
-                  <td>
-                    <Link
-                      href={
-                        grouparooUiEdition() === "enterprise" &&
-                        typeof detailPage === "string"
-                          ? `/${singular(r)}/${id}/${detailPage}`
-                          : getListPage(r)
-                      }
-                    >
-                      <a>{r}</a>
-                    </Link>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </>
-    );
+    if (!response || !response[singularTopic]) {
+      setError(`Cannot find object "${id}"`);
+      return undefined;
+    }
+
+    const page = topic === "records" ? topic : "overview";
+    const modelId = response[singularTopic].modelId;
+    return `/model/${modelId}/${page}`;
   }
 
-  return (
+  async function redirectToListPage(topic: string) {
+    const href = await getListPage(topic);
+    if (href) {
+      const page = topic === "records" ? topic : "overview";
+      router.replace(`/model/[modelId]/${page}`, href);
+    }
+  }
+
+  return results?.length > 0 ? (
     <>
-      {error ? (
-        <Card border={"warning"}>
-          <Card.Body>
-            <blockquote className="blockquote mb-0">
-              <p>{error}</p>
-            </blockquote>
-          </Card.Body>
-        </Card>
-      ) : (
-        <div style={{ textAlign: "center" }}>
-          <Loader />{" "}
-        </div>
-      )}
+      <h2>Multiple objects found:</h2>
+      <table>
+        <tbody>
+          {results.map(({ name, href }) => {
+            return (
+              <tr>
+                <td>{id} in </td>
+                <td>
+                  <Link href={href}>
+                    <a>{name}</a>
+                  </Link>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </>
+  ) : error ? (
+    <Card border={"warning"}>
+      <Card.Body>
+        <blockquote className="blockquote mb-0">
+          <p>{error}</p>
+        </blockquote>
+      </Card.Body>
+    </Card>
+  ) : (
+    <div style={{ textAlign: "center" }}>
+      <Loader />{" "}
+    </div>
   );
 }
