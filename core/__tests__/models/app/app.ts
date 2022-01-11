@@ -1,7 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, redis, utils } from "actionhero";
 import { App, Log, Option, plugin, PluginOptionType } from "../../../src";
-import { ObfuscatedPasswordString } from "../../../src/modules/optionHelper";
+import { ObfuscatedOptionString } from "../../../src/modules/optionHelper";
 
 describe("models/app", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -446,13 +446,13 @@ describe("models/app", () => {
       expect(apiData.icon).toBe("/path/to/icon.svg");
     });
 
-    test("apiData returns ObfuscatedPasswordString for any appOption of type 'password'", async () => {
+    test("apiData returns ObfuscatedOptionString for any appOption of type 'password'", async () => {
       await app.setOptions({ password: "SECRET", test_key: "something" });
 
       const apiData = await app.apiData();
       expect(apiData.options).toEqual({
         test_key: "something",
-        password: ObfuscatedPasswordString,
+        password: ObfuscatedOptionString,
       });
     });
 
@@ -484,7 +484,7 @@ describe("models/app", () => {
 
       await app.test({
         test_key: "something",
-        password: ObfuscatedPasswordString,
+        password: ObfuscatedOptionString,
       });
 
       expect(spy).toHaveBeenCalledWith(
@@ -499,7 +499,7 @@ describe("models/app", () => {
       expect(spy).not.toHaveBeenCalledWith(
         expect.objectContaining({
           appOptions: {
-            password: ObfuscatedPasswordString,
+            password: ObfuscatedOptionString,
           },
         })
       );

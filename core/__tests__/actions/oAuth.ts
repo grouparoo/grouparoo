@@ -123,6 +123,7 @@ describe("actions/oAuth", () => {
       consumed: false,
       appId: null,
       appOption: null,
+      token: null,
     });
   });
 });

@@ -272,6 +272,11 @@ export namespace helper {
               required: false,
             },
             {
+              key: "oAuthToken",
+              type: "oauth-token",
+              required: false,
+            },
+            {
               key: "_failRemoteValidation",
               required: false,
             },

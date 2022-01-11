@@ -2,7 +2,7 @@ import { helper } from "@grouparoo/spec-helper";
 import { Option, App, Destination, GrouparooModel, plugin } from "../../src";
 import {
   OptionHelper,
-  ObfuscatedPasswordString,
+  ObfuscatedOptionString,
 } from "../../src/modules/optionHelper";
 
 describe("models/option", () => {
@@ -155,19 +155,24 @@ describe("models/option", () => {
       expect(await OptionHelper.getOptions(app)).toEqual(opts);
     });
 
-    test("I can choose to obfuscate passwords", async () => {
-      const opts = { fileId: "abc123", password: "SECRET" };
+    test("I can choose to obfuscate sensitive options", async () => {
+      const opts = {
+        fileId: "abc123",
+        password: "SECRET",
+        oAuthToken: "ALSO_SECRET",
+      };
       await OptionHelper.setOptions(app, opts);
       const options = await OptionHelper.getOptions(app, undefined, true);
       expect(options["fileId"]).toEqual(opts.fileId);
-      expect(options["password"]).toEqual(ObfuscatedPasswordString);
+      expect(options["password"]).toEqual(ObfuscatedOptionString);
+      expect(options["oAuthToken"]).toEqual(ObfuscatedOptionString);
     });
 
-    test("If I try to set options with the ObfuscatedPasswordString, the previous value will be used", async () => {
+    test("If I try to set options with the ObfuscatedOptionString, the previous value will be used", async () => {
       const originalOpts = { fileId: "abc123", password: "SECRET" };
       await OptionHelper.setOptions(app, originalOpts);
 
-      const opts = { fileId: "abc123", password: ObfuscatedPasswordString };
+      const opts = { fileId: "abc123", password: ObfuscatedOptionString };
       await OptionHelper.setOptions(app, opts);
 
       const options = await OptionHelper.getOptions(app);
@@ -189,12 +194,12 @@ describe("models/option", () => {
         expect(await app.getOptions(false)).toEqual({ fileId: "TEST_OPTION" });
       });
 
-      test("options remain set with ENV re-set withObfuscatedPasswordString ", async () => {
+      test("options remain set with ENV re-set with ObfuscatedOptionString ", async () => {
         await OptionHelper.setOptions(app, { fileId: "TEST_OPTION" });
         expect(await app.getOptions(false)).toEqual({ fileId: "TEST_OPTION" });
         // shouldn't change value in DB from ENV
         await OptionHelper.setOptions(app, {
-          fileId: ObfuscatedPasswordString,
+          fileId: ObfuscatedOptionString,
         });
         expect(await app.getOptions(true)).toEqual({ fileId: "abc123" });
         expect(await app.getOptions(false)).toEqual({ fileId: "TEST_OPTION" });
