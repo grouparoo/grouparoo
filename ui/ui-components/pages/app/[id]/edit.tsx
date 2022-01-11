@@ -1,9 +1,10 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useState, useEffect, Fragment } from "react";
-import { UseApi } from "../../../hooks/useApi";
+import { useForm } from "react-hook-form";
 import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
-import { useRouter } from "next/router";
+import { UseApi } from "../../../hooks/useApi";
 import PageHeader from "../../../components/PageHeader";
 import StateBadge from "../../../components/badges/StateBadge";
 import SourceBadge from "../../../components/badges/SourceBadge";
@@ -37,8 +38,12 @@ export default function Page(props) {
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [app, setApp] = useState<Models.AppType>(props.app);
+  const { register, handleSubmit, setValue } = useForm<Models.AppType>({
+    defaultValues: props.app,
+  });
   const [loading, setLoading] = useState(false);
   const [loadingOAuth, setLoadingOAuth] = useState(false);
+  const [oAuthPopup, setOAuthPopup] = useState<Window>(null);
   const [testLoading, setTestLoading] = useState(false);
   const [testResult, setTestResult] = useState<{
     success: boolean;
@@ -46,14 +51,36 @@ export default function Page(props) {
     message: string;
   }>({ success: null, error: null, message: null });
   const [ranTest, setRanTest] = useState(false);
-  const { id, requestId } = router.query;
+  const { id } = router.query;
 
   useEffect(() => {
-    loadOAuthRequest();
-  }, []);
+    if (!oAuthPopup) return;
 
-  async function edit(event) {
-    event.preventDefault();
+    const onMessage = (event: MessageEvent) => {
+      if (event.source === oAuthPopup) {
+        loadOAuthRequest(event.data.requestId);
+      }
+    };
+
+    window.addEventListener("message", onMessage, false);
+
+    const interval = setInterval(() => {
+      if (oAuthPopup.closed) {
+        setLoadingOAuth(false);
+        clearInterval(interval);
+      }
+    }, 500);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("message", onMessage);
+    };
+  }, [oAuthPopup]);
+
+  async function edit(appData: Models.AppType) {
+    console.log("EDIT", appData);
+    return;
+    // event.preventDefault();
     const state = app.state === "ready" ? undefined : "ready";
     setLoading(true);
     const response: Actions.AppEdit = await execApi(
@@ -118,24 +145,29 @@ export default function Page(props) {
   };
 
   const startOauthLogin = async (optionKey: string) => {
-    console.log(optionKey);
-
-    const provider = app.pluginName.replace("@grouparoo/", "");
-
+    const providerName = app.pluginName.replace("@grouparoo/", "");
     setLoadingOAuth(true);
+
     const response: Actions.OAuthClientStart = await execApi(
       "post",
-      `/oauth/${provider}/client/start`,
+      `/oauth/${providerName}/client/start`,
       { type: "app", appId: id, appOption: optionKey }
     );
     if (response.location) {
-      window.location.assign(response.location);
+      const windowFeatures =
+        "toolbar=no, menubar=no, width=600, height=850, top=100, left=100";
+      const oAuthPopupWindow = window.open(
+        response.location,
+        "grouparoo-oauth-popup",
+        windowFeatures
+      );
+      setOAuthPopup(oAuthPopupWindow);
     } else {
       setLoadingOAuth(false);
     }
   };
 
-  const loadOAuthRequest = async () => {
+  const loadOAuthRequest = async (requestId: string) => {
     if (requestId) {
       const response: Actions.OAuthClientView = await execApi(
         "get",
@@ -145,9 +177,19 @@ export default function Page(props) {
       if (response.oAuthRequest) {
         console.log("REQ", response.oAuthRequest);
         if (response.oAuthRequest.identities.length === 0) {
-          console.log("no identities");
+          errorHandler.set({
+            message: `No identities returned from ${response.oAuthRequest.provider}`,
+          });
         } else if (response.oAuthRequest.identities.length === 1) {
           console.log("got an identity");
+          setValue(
+            `options.${response.oAuthRequest.appOption}`,
+            // @ts-ignore TODO fix types
+            response.oAuthRequest.identities[0].accessToken
+          );
+          successHandler.set({
+            message: `Loaded app options from ${response.oAuthRequest.provider}`,
+          });
         } else {
           console.log("got multiple identites");
         }
@@ -176,17 +218,17 @@ export default function Page(props) {
 
       <Row>
         <Col>
-          <Form id="form" onSubmit={edit} autoComplete="off">
+          <Form id="form" onSubmit={handleSubmit(edit)} autoComplete="off">
             <fieldset disabled={Boolean(app.locked)}>
               <Form.Group controlId="name">
                 <Form.Label>Name</Form.Label>
                 <Form.Control
                   required
                   type="text"
+                  name="name"
                   placeholder="Name"
-                  value={app.name}
                   disabled={loading}
-                  onChange={(e) => update(e)}
+                  ref={register}
                 />
                 <Form.Control.Feedback type="invalid">
                   Name is required
@@ -314,13 +356,9 @@ export default function Page(props) {
                                   <Form.Control
                                     as="select"
                                     required={opt.required}
-                                    defaultValue={
-                                      app.options[opt.key]?.toString() || ""
-                                    }
                                     disabled={loading}
-                                    onChange={(e) => {
-                                      updateOption(e.target.id, e.target.value);
-                                    }}
+                                    name={`options.${opt.key}`}
+                                    ref={register}
                                   >
                                     <option value={""} disabled>
                                       Select an option
@@ -378,8 +416,9 @@ export default function Page(props) {
                                     className="mt-2"
                                     required={opt.required}
                                     type="password"
-                                    value={app.options[opt.key]?.toString()}
                                     placeholder={opt.placeholder}
+                                    name={`options.${opt.key}`}
+                                    ref={register}
                                   />
                                   <Form.Text className="text-muted">
                                     {opt.description}
@@ -397,13 +436,9 @@ export default function Page(props) {
                                         : "text" // textarea not supported here
                                     }
                                     disabled={loading}
-                                    defaultValue={app.options[
-                                      opt.key
-                                    ]?.toString()}
                                     placeholder={opt.placeholder}
-                                    onChange={(e) => {
-                                      updateOption(e.target.id, e.target.value);
-                                    }}
+                                    name={`options.${opt.key}`}
+                                    ref={register}
                                   />
                                   <Form.Text className="text-muted">
                                     {opt.description}
