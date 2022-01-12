@@ -1,5 +1,5 @@
 const nock = require("nock");
-process.env.GOOGLE_SHEETS_JEST_TIMESTAMP = "1641837993052";
+process.env.GOOGLE_SHEETS_JEST_TIMESTAMP = "1642014244190";
 
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
   .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
@@ -19,11 +19,14 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "1d",
       "d0",
-      "4b",
+      "cb",
       "72",
       "82",
       "30",
-      "0000d0bb64ad0ec347a53ba280160505b4864d06422c8822104c089ddebd4e8ff0de0f4809a18ce1fe59d11a7c0099aae68ccc32c5ba70658c8368aedb153a6c77a77bbe7ce2573822a272bf729814838e57350a969dab388968d5b28ddd454019af0bbf3c5b778236c6dc83b251965526ec9b7620dcb251f405d94150772f059d4ebd9627c7d558a8cd27b66876cb6dec0db15f86f0215e3eb357468ba6d4d7f743a43df895a6372b338bb99b3bdda51f4e0659c73bb44edc5a625e47f7f02cf0b620e7ab357a0b5935e2881c034a3ba11accab620b83ef53df6f7430017468ca8e325cbedd9a619a13f09f807bd9d0f704a469473bf0fb07f83d57ce23010000",
+      "00",
+      "40",
+      "d1",
+      "7fc95a1c7cb6e92e80306a0b1511814d26a629a0bc4c820974faef75fa07f79e1f4028654260d9de5803dec040e6704aa71713250f738c3eab655cb9d139389b3b817a793c6dbafdda390cdd4a513e180892712c718f845ddfee388b981928be3d5cd709f2a5f36d6cdbc44ac2e0356f6acfca91281667510c442b273369e68417e5ea8f551ab628f41716b63dcfce34b4196f3d14f74d08d3c7beac8eeff77863c819797651ee5fbf0a5a41b736a8b3d459b0b34e3c9feb02237d942f56c694f4dd38aa14722e4d9adb29238d31747dad66c5bc161b71970730014c7725670297cfefc50ac209f847c072e8d853c26284330e7eff007b7e1ece23010000",
     ],
     [
       "Content-Type",
@@ -37,7 +40,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Mon, 10 Jan 2022 18:06:38 GMT",
+      "Wed, 12 Jan 2022 19:04:06 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -189,7 +192,7 @@ nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
       "Vary",
       "Referer",
       "Date",
-      "Mon, 10 Jan 2022 18:06:39 GMT",
+      "Wed, 12 Jan 2022 19:04:07 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -214,28 +217,15 @@ nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/v4/spreadsheets/11zccS101c27B9mYLMJiaAPfDgoj2chOq39n3MZrcKTk/values/%27profiles-10.csv%27!A1:Z1"
+    "/v4/spreadsheets/11zccS101c27B9mYLMJiaAPfDgoj2chOq39n3MZrcKTk/values/%27food.csv%27!A1:Z1"
   )
   .once()
   .reply(
     200,
     {
-      range: "'profiles-10.csv'!A1:Z1",
+      range: "food.csv!A1:Z1",
       majorDimension: "ROWS",
-      values: [
-        [
-          "id",
-          "first_name",
-          "last_name",
-          "email",
-          "gender",
-          "ip_address",
-          "ios_app",
-          "android_app",
-          "vip",
-          "ltv",
-        ],
-      ],
+      values: [["id", "fruit", "vegetable"]],
     },
     [
       "Content-Type",
@@ -245,7 +235,7 @@ nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
       "Vary",
       "Referer",
       "Date",
-      "Mon, 10 Jan 2022 18:06:39 GMT",
+      "Wed, 12 Jan 2022 19:04:07 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -270,135 +260,25 @@ nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/v4/spreadsheets/11zccS101c27B9mYLMJiaAPfDgoj2chOq39n3MZrcKTk/values/%27profiles-10.csv%27!A2:J10001"
+    "/v4/spreadsheets/11zccS101c27B9mYLMJiaAPfDgoj2chOq39n3MZrcKTk/values/%27food.csv%27!A2:C10001"
   )
   .once()
   .reply(
     200,
     {
-      range: "'profiles-10.csv'!A2:J1000",
+      range: "food.csv!A2:C991",
       majorDimension: "ROWS",
       values: [
-        [
-          "1",
-          "Erie",
-          "Jervois",
-          "ejervois0@example.com",
-          "Male",
-          "15.247.38.72",
-          "TRUE",
-          "FALSE",
-          "TRUE",
-          "259.12",
-        ],
-        [
-          "2",
-          "Cacilie",
-          "Eate",
-          "ceate1@example.com",
-          "Female",
-          "253.146.41.201",
-          "FALSE",
-          "TRUE",
-          "FALSE",
-          "94.36",
-        ],
-        [
-          "3",
-          "Gretel",
-          "Groucock",
-          "ggroucock2@example.com",
-          "Female",
-          "211.89.110.134",
-          "TRUE",
-          "FALSE",
-          "TRUE",
-          "668.3",
-        ],
-        [
-          "4",
-          "Amata",
-          "Cotesford",
-          "acotesford3@example.com",
-          "Female",
-          "193.9.240.246",
-          "TRUE",
-          "TRUE",
-          "TRUE",
-          "489",
-        ],
-        [
-          "5",
-          "Lira",
-          "Johnston",
-          "ljohnston4@example.com",
-          "Female",
-          "53.161.58.99",
-          "FALSE",
-          "TRUE",
-          "FALSE",
-          "823.16",
-        ],
-        [
-          "6",
-          "Deni",
-          "Scalia",
-          "dscalia5@example.com",
-          "Female",
-          "138.131.148.74",
-          "TRUE",
-          "FALSE",
-          "TRUE",
-          "273.98",
-        ],
-        [
-          "7",
-          "Helga",
-          "Kleis",
-          "hkleis6@example.com",
-          "Female",
-          "85.248.8.158",
-          "TRUE",
-          "TRUE",
-          "TRUE",
-          "407.05",
-        ],
-        [
-          "8",
-          "Gertie",
-          "Cubitt",
-          "gcubitt7@example.com",
-          "Female",
-          "123.255.130.24",
-          "FALSE",
-          "FALSE",
-          "TRUE",
-          "841.45",
-        ],
-        [
-          "9",
-          "Lurleen",
-          "Browell",
-          "lbrowell8@example.com",
-          "Female",
-          "231.159.55.43",
-          "TRUE",
-          "FALSE",
-          "FALSE",
-          "623.34",
-        ],
-        [
-          "10",
-          "Dorthy",
-          "Iston",
-          "diston9@example.com",
-          "Female",
-          "45.241.64.163",
-          "FALSE",
-          "TRUE",
-          "FALSE",
-          "290.53",
-        ],
+        ["1", "apple", "cucumber"],
+        ["2", "tomato", "tomato"],
+        ["3", "pear", "brussel sprouts"],
+        ["4", "apple", "squash"],
+        ["5", "tomato", "cucumber"],
+        ["6", "pear", "tomato"],
+        ["7", "apple", "brussel sprouts"],
+        ["8", "tomato", "squash"],
+        ["9", "pear", "cucumber"],
+        ["10", "apple", "tomato"],
       ],
     },
     [
@@ -409,7 +289,7 @@ nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
       "Vary",
       "Referer",
       "Date",
-      "Mon, 10 Jan 2022 18:06:40 GMT",
+      "Wed, 12 Jan 2022 19:04:08 GMT",
       "Server",
       "ESF",
       "Cache-Control",

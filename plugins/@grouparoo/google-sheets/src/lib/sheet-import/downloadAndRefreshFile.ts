@@ -20,7 +20,12 @@ export async function downloadAndRefreshFile(
   );
 
   const localDir = path.join(tmpdir(), "google-sheets-cache", sourceId);
-  const localPath = path.join(localDir, `${sheet.docId}.csv`);
+  const fileSuffix = `${sheet.docId}-${sheet.sheetId || "default"}.csv`;
+  const lastFile = await getLastFile(localDir, fileSuffix);
+  const fileName = `${new Date().getTime()}-${fileSuffix}`;
+  const localPath = lastFile
+    ? path.join(localDir, lastFile)
+    : path.join(localDir, fileName);
 
   let toDownload = false;
   if (!fs.existsSync(localPath)) {
@@ -36,24 +41,30 @@ export async function downloadAndRefreshFile(
 
   if (toDownload) {
     log(`Saving Google Sheet to \`${localPath}\``, "debug");
-    const localPathAux = path.join(localDir, `${sheet.docId}-aux.csv`);
-    await writeSheetToFile(localPathAux, sheet);
-    await fs.copy(localPathAux, localPath, {
-      overwrite: true,
-      preserveTimestamps: true,
-    });
+    await writeSheetToFile(localPath, sheet);
   }
   return localPath;
 }
 
-async function writeSheetToFile(localPathAux: string, sheet: Spreadsheet) {
+async function getLastFile(localDir: string, suffix: string) {
+  if (!fs.existsSync(localDir)) {
+    return null;
+  }
+  const files = await fs.readdir(localDir);
+  const filesWithSuffix = files.filter((file) => file.includes(suffix));
+  filesWithSuffix.sort();
+  filesWithSuffix.reverse();
+  return filesWithSuffix[0];
+}
+
+async function writeSheetToFile(localPath: string, sheet: Spreadsheet) {
   const writer = csvWriter({
     sendHeaders: true,
     headers: await sheet.getHeaders(),
   });
   return new Promise<void>(async (resolve, reject) => {
-    if (fs.existsSync(localPathAux)) fs.rmSync(localPathAux, { force: true });
-    const writeStream = fs.createWriteStream(localPathAux);
+    if (fs.existsSync(localPath)) fs.rmSync(localPath, { force: true });
+    const writeStream = fs.createWriteStream(localPath);
     writer.pipe(writeStream);
     let offset = 0;
     let rows = await sheet.read({ limit: GOOGLE_SHEETS_ROWS_LIMIT, offset });

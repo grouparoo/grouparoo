@@ -45,4 +45,27 @@ describe("downloadAndRefreshFile", () => {
     expect(contents).toContain("1,Erie,Jervois,ejervois0@example.com");
     expect(contents).toContain("MODIFIED!");
   });
+
+  test("a different file will be downloaded if the gid was specified", async () => {
+    localPath = await downloadAndRefreshFile(
+      sourceId,
+      appOptions,
+      sourceOptions
+    );
+    const oldContents = fs.readFileSync(localPath).toString();
+    expect(oldContents).toContain("1,Erie,Jervois,ejervois0@example.com"); //keep the old file
+
+    const newSourceOptions = {
+      sheet_url:
+        "https://docs.google.com/spreadsheets/d/11zccS101c27B9mYLMJiaAPfDgoj2chOq39n3MZrcKTk/edit#gid=1019017811",
+    };
+
+    const newLocalPath = await downloadAndRefreshFile(
+      sourceId,
+      appOptions,
+      newSourceOptions
+    );
+    const contents = fs.readFileSync(newLocalPath).toString();
+    expect(contents).toContain("1,apple,cucumber"); //downloads the new file.
+  });
 });
