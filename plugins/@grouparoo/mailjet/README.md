@@ -10,4 +10,4 @@ In your Grouparoo project, run `grouparoo install @grouparoo/mailjet`.
 
 ## Attribution
 
-The Mailjet icon used in this plugin is from https://worldvectorlogo.com/logo/mailjet-logo
+The Mailjet icon used in this plugin is from https://assets.mailjet.com/lib/images/mailjetLogo/MailjetBySinchLogo.svg
