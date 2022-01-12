@@ -108,7 +108,7 @@ export class PropertiesList extends AuthenticatedAction {
       }
     }
 
-    const total = await Property.findAndCountAll({ where });
+    const { count: total } = await Property.findAndCountAll({ where });
 
     return {
       total,
