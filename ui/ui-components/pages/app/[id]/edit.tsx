@@ -38,7 +38,7 @@ export default function Page(props) {
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [app, setApp] = useState<Models.AppType>(props.app);
-  const { register, handleSubmit, setValue, getValues, control } =
+  const { register, handleSubmit, setValue, getValues, reset, control } =
     useForm<Models.AppType>({
       defaultValues: props.app,
     });
@@ -93,6 +93,7 @@ export default function Page(props) {
         setLoading(false);
         successHandler.set({ message: "App Updated" });
         setApp(response.app);
+        reset(response.app);
         appHandler.set(response.app);
       }
     } else {
