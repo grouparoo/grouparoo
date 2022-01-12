@@ -7,11 +7,7 @@ import RecordImageFromEmail from "../components/visualizations/RecordImageFromEm
 import LoadingButton from "../components/LoadingButton";
 import { Models, Actions } from "../utils/apiData";
 import { PageWithInferredProps } from "../types/page";
-import {
-  errorHandler,
-  sessionHandler,
-  successHandler,
-} from "../utils/eventHandlers";
+import { errorHandler, sessionHandler, successHandler } from "../eventHandlers";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { execApi } = UseApi(ctx);

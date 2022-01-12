@@ -21,7 +21,7 @@ import {
   sessionHandler,
   setupStepHandler,
   statusHandler,
-} from "../utils/eventHandlers";
+} from "../eventHandlers";
 
 export const navLiStyle: React.CSSProperties = {
   marginTop: 16,

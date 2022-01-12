@@ -18,7 +18,7 @@ import LoadingButton from "../components/LoadingButton";
 import { grouparooUiEdition } from "../utils/uiEdition";
 import { formatName } from "../utils/formatName";
 import { PageWithInferredProps } from "../types/page";
-import { errorHandler, successHandler } from "../utils/eventHandlers";
+import { errorHandler, successHandler } from "../eventHandlers";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { execApi } = UseApi(ctx);

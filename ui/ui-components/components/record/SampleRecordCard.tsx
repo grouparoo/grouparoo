@@ -11,7 +11,7 @@ import EnterpriseLink from "../../components/GrouparooLink";
 import { ApiHook } from "../../hooks/useApi";
 import { usePrevious } from "../../hooks/usePrevious";
 import { Actions, Models } from "../../utils/apiData";
-import { errorHandler, successHandler } from "../../utils/eventHandlers";
+import { errorHandler, successHandler } from "../../eventHandlers";
 import { grouparooUiEdition } from "../../utils/uiEdition";
 import StateBadge from "../badges/StateBadge";
 import ManagedCard from "../lib/ManagedCard";

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, ButtonProps } from "react-bootstrap";
 import { ApiHook } from "../../hooks/useApi";
 import { Actions } from "../../utils/apiData";
-import { successHandler } from "../../utils/eventHandlers";
+import { successHandler } from "../../eventHandlers";
 import { grouparooUiEdition } from "../../utils/uiEdition";
 import LoadingButton from "../LoadingButton";
 

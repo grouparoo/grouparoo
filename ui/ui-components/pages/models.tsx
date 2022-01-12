@@ -14,7 +14,7 @@ import GrouparooLink from "../components/GrouparooLink";
 import StateBadge from "../components/badges/StateBadge";
 import LinkButton from "../components/LinkButton";
 import { PageWithInferredProps } from "../types/page";
-import { errorHandler } from "../utils/eventHandlers";
+import { errorHandler } from "../eventHandlers";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { execApi } = UseApi(ctx);

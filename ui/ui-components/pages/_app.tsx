@@ -13,8 +13,9 @@ import "../components/Icons";
 
 import { PageContext } from "../contexts/page";
 
+import * as eventHandlers from "../eventHandlers";
+
 import { Actions } from "../utils/apiData";
-import * as eventHandlers from "../utils/eventHandlers";
 
 export interface GrouparooNextAppProps {
   clusterName: Actions.NavigationList["clusterName"];

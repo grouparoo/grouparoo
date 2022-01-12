@@ -5,7 +5,7 @@ import Toast from "../alerts/Toast";
 import Navigation from "../Navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import HydrationError from "../alerts/HydrationError";
-import { errorHandler, successHandler } from "../../utils/eventHandlers";
+import { errorHandler, successHandler } from "../../eventHandlers";
 
 const fontFamilies = [
   "IBM+Plex+Mono:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700",
