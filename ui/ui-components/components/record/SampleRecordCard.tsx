@@ -173,7 +173,14 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
     }
 
     setLoading(false);
-  }, [recordId, saveRecord, execApi, modelId, fetchRecord]);
+  }, [
+    recordId,
+    allowFetchWithoutRecordId,
+    fetchRecord,
+    modelId,
+    execApi,
+    saveRecord,
+  ]);
 
   const sortedPropertyKeys = useMemo(() => {
     const id = highlightProperty?.id;
@@ -186,7 +193,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
             : a.localeCompare(b)
         )
       : undefined;
-  }, [record, highlightProperty, allowFetchWithoutRecordId]);
+  }, [highlightProperty?.id, record]);
 
   useEffect(() => {
     if (prevReloadKey !== reloadKey) {
@@ -205,7 +212,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
       setHasRecords(true);
       setLoading(false);
     }
-  }, [record, modelId]);
+  }, [record, modelId, prevModelId]);
 
   useEffect(() => {
     if (
@@ -238,6 +245,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   const cardActions = useMemo(() => {
     const result = [
       <LinkButton
+        key={modelId + (record?.id || "")}
         disabled={!record || disabled}
         href={`/model/${modelId}/record${record ? `/${record.id}/edit` : "s"}`}
         size="sm"
@@ -261,7 +269,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
     return result;
   }, [modelId, disabled, record, hideViewAllRecords]);
 
-  if (!sortedPropertyKeys?.length) {
+  if (!sortedPropertyKeys?.length && !properties.length) {
     return (
       <ManagedCard title="Sample Record">
         <Card.Body>
@@ -295,6 +303,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
 
   const actions = [
     <LoadingButton
+      key="clear-record-id"
       disabled={disabled || !hasRecords || loading || importing}
       loading={loading && !recordId}
       size="sm"
