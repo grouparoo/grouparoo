@@ -67,15 +67,15 @@ export class PropertiesList extends AuthenticatedAction {
       },
     ];
 
-    const properties = (
-      await Property.scope(null).findAll({
-        include,
-        limit: params.limit,
-        offset: params.offset,
-        order: params.order,
-        where,
-      })
-    ).filter((p) =>
+    const { rows, count: total } = await Property.scope(null).findAndCountAll({
+      include,
+      limit: params.limit,
+      offset: params.offset,
+      order: params.order,
+      where,
+    });
+
+    const properties: Property[] = rows.filter((p) =>
       params.modelId ? p.source?.modelId === params.modelId : true
     );
 
@@ -107,8 +107,6 @@ export class PropertiesList extends AuthenticatedAction {
         responseExamples[property.id] = exampleValues;
       }
     }
-
-    const { count: total } = await Property.findAndCountAll({ where });
 
     return {
       total,
