@@ -77,22 +77,18 @@ export const updater = {
       new RegExp(`${realHost}.api.mailchimp.com`, "gi"),
       `${nockHost}.api.mailchimp.com`
     );
-
     nockCall = nockCall.replace(
       new RegExp(realEnv.MAILCHIMP_API_KEY, "gi"),
       nockEnv.MAILCHIMP_API_KEY
     );
-
     nockCall = nockCall.replace(
       new RegExp(realEnv.MAILCHIMP_SOURCE_LIST_ID, "gi"),
       nockEnv.MAILCHIMP_SOURCE_LIST_ID
     );
-
     nockCall = nockCall.replace(
       new RegExp(realEnv.MAILCHIMP_DESTINATION_LIST_ID, "gi"),
       nockEnv.MAILCHIMP_DESTINATION_LIST_ID
     );
-
     // remove contact data for organization
     nockCall = nockCall.replace(/\"?contact\"?:\s*{[\s\S]*?}\s*,?/gm, "");
 
