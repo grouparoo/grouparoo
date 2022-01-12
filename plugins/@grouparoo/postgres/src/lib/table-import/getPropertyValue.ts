@@ -80,7 +80,7 @@ export const getPropertyValue: GetPropertyValueMethod = async ({
       if (!isArray) {
         response = [rows[0].__result];
       } else {
-        response = rows.map((row) => row.__result);
+        response = rows.map((row: any) => row.__result);
       }
     }
   } catch (error) {

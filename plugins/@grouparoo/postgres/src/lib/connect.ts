@@ -36,6 +36,7 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
   sslOptions.forEach((opt) => {
     if (formattedOptions[opt] !== null && formattedOptions[opt] !== undefined) {
       if (!formattedOptions["ssl"]) formattedOptions["ssl"] = {};
+      // @ts-ignore I think this is wrong, but don't want to mess with it
       formattedOptions["ssl"][opt.replace("ssl_", "")] = formattedOptions[opt];
       delete formattedOptions[opt];
     }
@@ -88,9 +89,7 @@ export function formatInUtcDefault(text: string) {
     if (dateInUTC instanceof Date) date = dateInUTC;
   }
 
-  throw new Error(
-    "date is of type " + typeof date + " and should be type Date"
-  );
+  return date;
 }
 
 // from parseDate library

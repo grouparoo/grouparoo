@@ -4,6 +4,7 @@ import {
   GetChangedRowsMethod,
   DataResponseRow,
   MatchCondition,
+  DataResponse,
 } from "@grouparoo/app-templates/dist/source/table";
 import format from "pg-format";
 
@@ -43,13 +44,13 @@ export const getChangedRows: GetChangedRowsMethod = async ({
 
   const out: DataResponseRow[] = [];
   const { rows } = await connection.query(format(query, ...params));
-  rows.forEach((row) => out.push(row));
+  rows.forEach((row: any) => out.push(row));
   return out;
 };
 
 export async function makeHighwaterWhereClause(
   highWaterMarkCondition: MatchCondition,
-  params
+  params: (DataResponse | DataResponse[])[]
 ): Promise<string> {
   let query = "";
 

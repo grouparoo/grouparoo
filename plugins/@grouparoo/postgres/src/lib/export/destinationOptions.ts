@@ -19,7 +19,7 @@ export const destinationOptions: DestinationOptionsMethod = async ({
       )
     );
 
-    return colRows.map((row) => row.column_name).sort();
+    return colRows.map((row: any) => row.column_name).sort();
   }
 
   const response: DestinationOptionsMethodResponse = {

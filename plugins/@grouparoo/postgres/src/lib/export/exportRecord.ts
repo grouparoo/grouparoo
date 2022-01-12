@@ -143,7 +143,7 @@ export const exportRecord: ExportRecordPluginMethod = async ({
   // add groups
   if (!toDelete) {
     for (const i in newGroups) {
-      const data = {};
+      const data: Record<string, any> = {};
       data[groupForeignKey] = newRecordProperties[primaryKey];
       data[groupColumnName] = newGroups[i];
 
@@ -171,10 +171,10 @@ export const exportRecord: ExportRecordPluginMethod = async ({
 };
 
 const insert = async (
-  connection,
-  table,
-  syncOperations,
-  newRecordProperties
+  connection: any,
+  table: any,
+  syncOperations: Record<string, any>,
+  newRecordProperties: Record<string, any>
 ) => {
   if (!syncOperations.create) {
     throw new Errors.InfoError(

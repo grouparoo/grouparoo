@@ -19,7 +19,7 @@ export const getSampleRows: GetSampleRowsMethod = async ({
   const { rows } = await connection.query(
     format(`SELECT * FROM %I LIMIT 10`, tableName)
   );
-  rows.forEach((row) => out.push(row));
+  rows.forEach((row: any) => out.push(row));
 
   return out;
 };
