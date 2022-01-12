@@ -569,9 +569,11 @@ export class Property extends LoggedModel<Property> {
   @AfterSave
   static async updateSampleRecords(instance: Property) {
     if (config.general.runMode !== "cli:config") return;
+    if (instance.state !== "ready") return;
 
     const source = await instance.$get("source");
     if (!source) return;
+
     const records = await GrouparooRecord.findAll({
       where: { modelId: source.modelId },
     });

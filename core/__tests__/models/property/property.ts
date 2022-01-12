@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { api, specHelper } from "actionhero";
+import { api, specHelper, rebuildConfig } from "actionhero";
 import {
   App,
   Filter,
@@ -266,6 +266,66 @@ describe("models/property", () => {
     });
     expect(runningRunsAgain.length).toBe(1);
     expect(runningRunsAgain[0].id).not.toEqual(runningRuns[0].id);
+  });
+
+  describe("#updateSampleRecords", () => {
+    let source: Source;
+
+    beforeAll(async () => {
+      source = await helper.factories.source();
+      await source.setOptions({ table: "some table" });
+      await source.setMapping({ id: "userId" });
+      await source.update({ state: "ready" });
+    });
+
+    afterAll(async () => {
+      await source.destroy();
+      process.env.GROUPAROO_RUN_MODE = undefined;
+      rebuildConfig();
+    });
+
+    test("in cli:config, after creating a property, null properties are built", async () => {
+      process.env.GROUPAROO_RUN_MODE = "cli:config";
+      rebuildConfig();
+
+      const record = await helper.factories.record();
+
+      const property = await Property.create({
+        sourceId: source.id,
+        key: "newName",
+        type: "string",
+      });
+      await property.setOptions({ column: "newName" });
+      await property.update({ state: "ready" });
+
+      const properties = await record.getProperties();
+      expect(properties["newName"]).toBeTruthy();
+      expect(properties["newName"].state).toBe("pending");
+
+      await property.destroy();
+      await record.destroy();
+    });
+
+    test("in cli:run, after creating a property, null properties are not built in a model hook", async () => {
+      process.env.GROUPAROO_RUN_MODE = "cli:run";
+      rebuildConfig();
+
+      const record = await helper.factories.record();
+
+      const property = await Property.create({
+        sourceId: source.id,
+        key: "newName",
+        type: "string",
+      });
+      await property.setOptions({ column: "newName" });
+      await property.update({ state: "ready" });
+
+      const properties = await record.getProperties();
+      expect(properties["newName"]).toBeFalsy();
+
+      await property.destroy();
+      await record.destroy();
+    });
   });
 
   test("when a property with no options or filters first becomes ready, a run will be started", async () => {
