@@ -206,10 +206,7 @@ export default function Navigation(props) {
         >
           <ul style={{ padding: 0, margin: 0, listStyleType: "none" }}>
             {navigation?.navigationItems
-              .filter(
-                ({ blockedUiEditions }) =>
-                  !blockedUiEditions?.includes(uiEdition)
-              )
+              .filter(({ hideOn }) => !hideOn?.includes(uiEdition))
               .map((nav, idx) => {
                 if (nav.type === "link") {
                   return (

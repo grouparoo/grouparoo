@@ -19,7 +19,7 @@ export interface NavigationItem {
   href?: string;
   mainPathSectionIdx?: number;
   small?: boolean;
-  blockedUiEditions?: ("community" | "config" | "enterprise")[];
+  hideOn?: ("community" | "config" | "enterprise")[];
 }
 
 export class NavigationList extends OptionallyAuthenticatedAction {
@@ -119,7 +119,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
       href: `/model/new`,
       mainPathSectionIdx: 2,
       small: hasModels,
-      blockedUiEditions: ["community"],
+      hideOn: ["community"],
     });
 
     if (hasModels) {
