@@ -111,7 +111,7 @@ const FormMappingSelector: React.FC<Props> = ({
 
   return (
     <Row>
-      <Col md={hasAvailableProperties ? 6 : 12} xl={12}>
+      <Col md={!mappingDisabled && hasAvailableProperties ? 6 : 12} xl={12}>
         <FormInputContainer
           controlId="mapping_source_column"
           label="Source Column"
@@ -140,46 +140,44 @@ const FormMappingSelector: React.FC<Props> = ({
         </FormInputContainer>
         {columnExample && renderExamples(columnExample)}
       </Col>
-      {!mappingDisabled && (
+      {!mappingDisabled && hasAvailableProperties && (
         <Col>
-          {hasAvailableProperties && (
-            <>
-              <FormInputContainer
-                controlId="mapping_property"
-                label="Mapped to Grouparoo Property"
+          <>
+            <FormInputContainer
+              controlId="mapping_property"
+              label="Mapped to Grouparoo Property"
+              required
+            >
+              <Form.Control
+                as="select"
                 required
+                disabled={disabled}
+                value={selectedProperty?.key}
+                onChange={(e) => {
+                  setSelectedProperty(
+                    availableProperties.find(
+                      ({ key }) => key === e.target.value
+                    )
+                  );
+                }}
+                name="mapping.propertyKey"
+                ref={register}
               >
-                <Form.Control
-                  as="select"
-                  required
-                  disabled={disabled}
-                  value={selectedProperty?.key}
-                  onChange={(e) => {
-                    setSelectedProperty(
-                      availableProperties.find(
-                        ({ key }) => key === e.target.value
-                      )
-                    );
-                  }}
-                  name="mapping.propertyKey"
-                  ref={register}
-                >
-                  <option value={""} disabled>
-                    Select an option
+                <option value={""} disabled>
+                  Select an option
+                </option>
+                {availableProperties.map((property) => (
+                  <option
+                    key={`mapping-property-${property.key}`}
+                    value={property.key}
+                  >
+                    {property.key} {property.unique && "(unique)"}
                   </option>
-                  {availableProperties.map((property) => (
-                    <option
-                      key={`mapping-property-${property.key}`}
-                      value={property.key}
-                    >
-                      {property.key} {property.unique && "(unique)"}
-                    </option>
-                  ))}
-                </Form.Control>
-              </FormInputContainer>
-              {!!availableProperties.length && renderExamples(propertyExample)}
-            </>
-          )}
+                ))}
+              </Form.Control>
+            </FormInputContainer>
+            {!!availableProperties.length && renderExamples(propertyExample)}
+          </>
         </Col>
       )}
     </Row>

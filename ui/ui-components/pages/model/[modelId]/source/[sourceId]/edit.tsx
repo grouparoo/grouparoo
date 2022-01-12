@@ -83,9 +83,10 @@ const Page: NextPage<Props & InjectedProps> = ({
   );
   const isPrimarySource = useMemo(
     () =>
+      totalSources === 1 ||
       properties.filter(
         ({ isPrimaryKey, sourceId }) => isPrimaryKey && sourceId === source.id
-      ).length > 0 || totalSources === 1,
+      ).length > 0,
     [properties, source]
   );
 
@@ -220,6 +221,7 @@ const Page: NextPage<Props & InjectedProps> = ({
       "get",
       `/properties`,
       {
+        unique: true,
         includeExamples: true,
         state: "ready",
         modelId: source?.modelId,
