@@ -22,10 +22,10 @@ export async function downloadAndRefreshFile(
   const localDir = path.join(tmpdir(), "google-sheets-cache", sourceId);
   const fileSuffix = `${sheet.docId}-${sheet.sheetId || "default"}.csv`;
   const lastFile = await getLastFile(localDir, fileSuffix);
-  const fileName = `${new Date().getTime()}-${fileSuffix}`;
-  const localPath = lastFile
+  const currentCount = getCurrentCount(localDir, fileSuffix);
+  let localPath = lastFile
     ? path.join(localDir, lastFile)
-    : path.join(localDir, fileName);
+    : path.join(localDir, `${currentCount}-${fileSuffix}`);
 
   let toDownload = false;
   if (!fs.existsSync(localPath)) {
@@ -44,6 +44,11 @@ export async function downloadAndRefreshFile(
     await writeSheetToFile(localPath, sheet);
   }
   return localPath;
+}
+
+function getCurrentCount(lastFile, fileSuffix) {
+  const currentCount = lastFile.replace(`-${fileSuffix}`, "");
+  return currentCount.trim() === "" ? 0 : parseInt(currentCount);
 }
 
 async function getLastFile(localDir: string, suffix: string) {
