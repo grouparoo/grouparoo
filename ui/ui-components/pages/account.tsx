@@ -6,7 +6,12 @@ import { Form, Row, Col } from "react-bootstrap";
 import RecordImageFromEmail from "../components/visualizations/RecordImageFromEmail";
 import LoadingButton from "../components/LoadingButton";
 import { Models, Actions } from "../utils/apiData";
-import { GrouparooPage } from "../types/app";
+import { PageWithInferredProps } from "../types/page";
+import {
+  errorHandler,
+  sessionHandler,
+  successHandler,
+} from "../utils/eventHandlers";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { execApi } = UseApi(ctx);
@@ -14,12 +19,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   return { props: { teamMember } };
 };
 
-const Page: GrouparooPage<typeof getServerSideProps> = ({
-  errorHandler,
-  successHandler,
-  sessionHandler,
-  ...props
-}) => {
+const Page: PageWithInferredProps<typeof getServerSideProps> = (props) => {
   const { execApi } = UseApi(undefined, errorHandler);
   const [loading, setLoading] = useState(false);
   const [teamMember, setTeamMember] = useState<Models.TeamMemberType>(

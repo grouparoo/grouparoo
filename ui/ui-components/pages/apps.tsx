@@ -17,7 +17,8 @@ import LinkButton from "../components/LinkButton";
 import LoadingButton from "../components/LoadingButton";
 import { grouparooUiEdition } from "../utils/uiEdition";
 import { formatName } from "../utils/formatName";
-import { GrouparooPage } from "../types/app";
+import { PageWithInferredProps } from "../types/page";
+import { errorHandler, successHandler } from "../utils/eventHandlers";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { execApi } = UseApi(ctx);
@@ -29,9 +30,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   return { props: { apps, total } };
 };
 
-const Page: GrouparooPage<typeof getServerSideProps> = ({
-  errorHandler,
-  successHandler,
+const Page: PageWithInferredProps<typeof getServerSideProps> = ({
   ...props
 }) => {
   const router = useRouter();

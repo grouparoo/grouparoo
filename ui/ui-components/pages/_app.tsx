@@ -1,6 +1,7 @@
 import { AxiosError } from "axios";
 import App from "next/app";
 import type { AppContext, AppProps } from "next/app";
+import { useMemo } from "react";
 
 import { UseApi } from "../hooks/useApi";
 
@@ -10,17 +11,25 @@ import PageTransition from "../components/PageTransition";
 import StatusSubscription from "../components/StatusSubscription";
 import "../components/Icons";
 
-import { GrouparooPageProps, GrouparooWebAppProps } from "../types/app";
+import { PageContext } from "../contexts/page";
 
 import { Actions } from "../utils/apiData";
 import * as eventHandlers from "../utils/eventHandlers";
 
-export default function GrouparooWebApp(
-  props: AppProps & GrouparooWebAppProps & { err: any }
+export interface GrouparooNextAppProps {
+  clusterName: Actions.NavigationList["clusterName"];
+  currentTeamMember: Partial<Actions.NavigationList["teamMember"]>;
+  hydrationError?: string;
+  navigation: Actions.NavigationList["navigation"];
+  navigationMode: Actions.NavigationList["navigationMode"];
+}
+
+export default function GrouparooNextApp(
+  props: AppProps & GrouparooNextAppProps & { err: any }
 ) {
   const { Component, pageProps, err, hydrationError } = props;
 
-  const combinedProps: GrouparooPageProps<any> = {
+  const combinedProps = {
     ...pageProps,
     ...eventHandlers,
     navigation: props.navigation,
@@ -29,11 +38,20 @@ export default function GrouparooWebApp(
     currentTeamMember: props.currentTeamMember,
   };
 
+  const pageContext = useMemo<PageContext>(() => {
+    return {
+      navigation: props.navigation,
+      navigationMode: props.navigationMode,
+      clusterName: props.clusterName,
+      currentTeamMember: props.currentTeamMember,
+    };
+  }, [props]);
+
   return (
-    <Injection {...combinedProps}>
+    <Injection contextValues={[[PageContext, pageContext]]}>
       <PageTransition />
 
-      <Layout hydrationError={hydrationError} {...combinedProps}>
+      <Layout hydrationError={hydrationError}>
         <Component {...combinedProps} err={err} />
       </Layout>
 
@@ -44,7 +62,7 @@ export default function GrouparooWebApp(
   );
 }
 
-GrouparooWebApp.getInitialProps = async (appContext: AppContext) => {
+GrouparooNextApp.getInitialProps = async (appContext: AppContext) => {
   const { execApi } = UseApi(appContext.ctx);
   let currentTeamMember: Partial<Actions.SessionView["teamMember"]> = {
     firstName: "",
