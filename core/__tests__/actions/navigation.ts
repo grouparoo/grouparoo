@@ -9,8 +9,10 @@ import { SessionCreate } from "../../src/actions/session";
 const expectModelsInNav = (
   navigationItems: NavigationItem[],
   startIndex: number,
-  modelNames?: string[]
+  modelNames?: string[],
+  options?: { includeNewModel?: boolean }
 ) => {
+  const { includeNewModel = true } = options || {};
   let index = startIndex;
 
   if (modelNames) {
@@ -26,10 +28,13 @@ const expectModelsInNav = (
     });
   }
 
-  expect(navigationItems[index].title).toEqual("New Model");
+  if (includeNewModel) {
+    expect(navigationItems[index].title).toEqual("New Model");
+    index++;
+  }
 
   if (modelNames) {
-    expect(navigationItems[index + 1].type).toEqual("divider");
+    expect(navigationItems[index].type).toEqual("divider");
   }
 };
 
@@ -130,6 +135,37 @@ describe("actions/navigation", () => {
       expect(navigationItems[0].title).toEqual("Dashboard");
       expect(navigationItems[1].title).toEqual("Apps");
       expectModelsInNav(navigationItems, 2, ["Accounts", "Profiles"]);
+    });
+
+    test("does not include add model button in community mode", async () => {
+      process.env.GROUPAROO_UI_EDITION = "community";
+
+      const connection = await specHelper.buildConnection();
+      connection.params = {
+        email: "peach@example.com",
+        password: "P@ssw0rd!",
+      };
+      const sessionResponse = await specHelper.runAction<SessionCreate>(
+        "session:create",
+        connection
+      );
+      const csrfToken = sessionResponse.csrfToken;
+      connection.params = { csrfToken };
+
+      const {
+        navigation: { navigationItems },
+      } = await specHelper.runAction<NavigationList>(
+        "navigation:list",
+        connection
+      );
+
+      expect(navigationItems[0].title).toEqual("Dashboard");
+      expect(navigationItems[1].title).toEqual("Apps");
+      expectModelsInNav(navigationItems, 2, ["Accounts", "Profiles"], {
+        includeNewModel: false,
+      });
+
+      process.env.GROUPAROO_UI_EDITION = undefined;
     });
   });
 

@@ -19,7 +19,6 @@ export interface NavigationItem {
   href?: string;
   mainPathSectionIdx?: number;
   small?: boolean;
-  hideOn?: ("community" | "config" | "enterprise")[];
 }
 
 export class NavigationList extends OptionallyAuthenticatedAction {
@@ -112,15 +111,16 @@ export class NavigationList extends OptionallyAuthenticatedAction {
       });
     }
 
-    navigationItems.push({
-      type: "link",
-      title: "New Model",
-      icon: "plus",
-      href: `/model/new`,
-      mainPathSectionIdx: 2,
-      small: hasModels,
-      hideOn: ["community"],
-    });
+    if (process.env.GROUPAROO_UI_EDITION !== "community") {
+      navigationItems.push({
+        type: "link",
+        title: "New Model",
+        icon: "plus",
+        href: `/model/new`,
+        mainPathSectionIdx: 2,
+        small: hasModels,
+      });
+    }
 
     if (hasModels) {
       navigationItems.push({ type: "divider" });
