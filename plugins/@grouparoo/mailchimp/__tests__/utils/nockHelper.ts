@@ -14,7 +14,10 @@ const realPath = path.join(dirPath, ".env");
 function readEnv(filePath) {
   return dotenv.parse(fs.readFileSync(filePath));
 }
-export function loadAppOptions(newNock: boolean = false): SimpleAppOptions {
+export function loadAppOptions(
+  newNock = false,
+  useOAuth = false
+): SimpleAppOptions {
   let envFile;
   if (newNock) {
     envFile = realPath;
@@ -23,10 +26,9 @@ export function loadAppOptions(newNock: boolean = false): SimpleAppOptions {
   }
 
   const parsed = readEnv(envFile);
-  return {
-    apiKey: parsed.MAILCHIMP_API_KEY,
-    oAuthToken: parsed.MAILCHIMP_OAUTH_TOKEN,
-  };
+  return useOAuth
+    ? { oAuthToken: parsed.MAILCHIMP_OAUTH_TOKEN }
+    : { apiKey: parsed.MAILCHIMP_API_KEY };
 }
 
 export function loadSourceOptions(
@@ -76,26 +78,20 @@ export const updater = {
       `${nockHost}.api.mailchimp.com`
     );
 
-    if (realEnv.MAILCHIMP_API_KEY) {
-      nockCall = nockCall.replace(
-        new RegExp(realEnv.MAILCHIMP_API_KEY, "gi"),
-        nockEnv.MAILCHIMP_API_KEY
-      );
-    }
+    nockCall = nockCall.replace(
+      new RegExp(realEnv.MAILCHIMP_API_KEY, "gi"),
+      nockEnv.MAILCHIMP_API_KEY
+    );
 
-    if (realEnv.MAILCHIMP_SOURCE_LIST_ID) {
-      nockCall = nockCall.replace(
-        new RegExp(realEnv.MAILCHIMP_SOURCE_LIST_ID, "gi"),
-        nockEnv.MAILCHIMP_SOURCE_LIST_ID
-      );
-    }
+    nockCall = nockCall.replace(
+      new RegExp(realEnv.MAILCHIMP_SOURCE_LIST_ID, "gi"),
+      nockEnv.MAILCHIMP_SOURCE_LIST_ID
+    );
 
-    if (realEnv.MAILCHIMP_DESTINATION_LIST_ID) {
-      nockCall = nockCall.replace(
-        new RegExp(realEnv.MAILCHIMP_DESTINATION_LIST_ID, "gi"),
-        nockEnv.MAILCHIMP_DESTINATION_LIST_ID
-      );
-    }
+    nockCall = nockCall.replace(
+      new RegExp(realEnv.MAILCHIMP_DESTINATION_LIST_ID, "gi"),
+      nockEnv.MAILCHIMP_DESTINATION_LIST_ID
+    );
 
     // remove contact data for organization
     nockCall = nockCall.replace(/\"?contact\"?:\s*{[\s\S]*?}\s*,?/gm, "");

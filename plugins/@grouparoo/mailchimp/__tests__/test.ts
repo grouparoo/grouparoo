@@ -8,9 +8,10 @@ const { newNock } = helper.useNock(__filename, updater);
 
 describe("mailchimp/test", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
-  const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 
   test("Can connect with an API Key", async () => {
+    const appOptions: SimpleAppOptions = loadAppOptions(newNock, false);
+
     const { success } = await testConnection({
       app: null,
       appId: null,
@@ -22,7 +23,7 @@ describe("mailchimp/test", () => {
   });
 
   test("Can connect with an OAuth Token", async () => {
-    appOptions.apiToken = null;
+    const appOptions: SimpleAppOptions = loadAppOptions(newNock, true);
 
     const { success } = await testConnection({
       app: null,
