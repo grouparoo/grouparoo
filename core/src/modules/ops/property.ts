@@ -5,7 +5,6 @@ import { Mapping } from "../../models/Mapping";
 import { GroupRule } from "../../models/GroupRule";
 import { internalRun } from "../internalRun";
 import { PluginOptionType } from "../../classes/plugin";
-import { Op } from "sequelize";
 import Mustache from "mustache";
 
 export namespace PropertyOps {

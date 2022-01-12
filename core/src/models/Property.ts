@@ -349,6 +349,14 @@ export class Property extends LoggedModel<Property> {
     CachedProperties.expires = 0;
   }
 
+  // --- Class Methods --- //
+
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
+    return instance;
+  }
+
   @AfterSave
   @AfterDestroy
   static async invalidateCache() {
@@ -356,33 +364,6 @@ export class Property extends LoggedModel<Property> {
     await CLS.afterCommit(
       async () => await redis.doCluster("api.rpc.property.invalidateCache")
     );
-  }
-
-  @AfterSave
-  static async ensureRecordsMarkedPendingOnTypeChange(instance: Property) {
-    // Check to see if type changed
-    if (instance.changed("type") && instance.state === "ready") {
-      //mark all relevant recordproperties as "pending"
-      await RecordProperty.update(
-        { state: "pending", startedAt: null },
-        { where: { propertyId: instance.id } }
-      );
-
-      const source = await instance.$get("source");
-
-      await GrouparooRecord.update(
-        { state: "pending" },
-        { where: { modelId: source.modelId } }
-      );
-    }
-  }
-
-  // --- Class Methods --- //
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
   }
 
   @BeforeSave
@@ -566,6 +547,35 @@ export class Property extends LoggedModel<Property> {
         `cannot delete property "${instance.key}" as ${mapping.ownerId} is using it in a mapping`
       );
     }
+  }
+
+  @AfterSave
+  static async ensureRecordsMarkedPendingOnTypeChange(instance: Property) {
+    if (instance.changed("type") && instance.state === "ready") {
+      await RecordProperty.update(
+        { state: "pending", startedAt: null },
+        { where: { propertyId: instance.id } }
+      );
+
+      const source = await instance.$get("source");
+
+      await GrouparooRecord.update(
+        { state: "pending" },
+        { where: { modelId: source.modelId } }
+      );
+    }
+  }
+
+  @AfterSave
+  static async updateSampleRecords(instance: Property) {
+    if (process.env.GROUPAROO_RUN_MODE !== "cli:config") return;
+
+    const source = await instance.$get("source");
+    if (!source) return;
+    const records = await GrouparooRecord.findAll({
+      where: { modelId: source.modelId },
+    });
+    for (const record of records) await record.buildNullProperties();
   }
 
   @BeforeDestroy
