@@ -13,6 +13,7 @@ import { ErrorHandler } from "../../utils/errorHandler";
 import { ImportRecordPropertiesDiff, ImportGroupsDiff } from "./Diff";
 import StateBadge from "../badges/StateBadge";
 import { capitalize } from "../../utils/languageHelper";
+import { grouparooUiEdition } from "../../utils/uiEdition";
 
 const states = [
   "all",
@@ -146,7 +147,7 @@ export default function ImportList(props) {
                     )}
                     <br />
                     Model:{" "}
-                    <Link href={`/model/${_import.modelId}/edit`}>
+                    <Link href={`/model/${_import.modelId}/overview`}>
                       <a>{_import.modelId}</a>
                     </Link>
                     <br />
