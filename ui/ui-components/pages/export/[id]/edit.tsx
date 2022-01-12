@@ -66,7 +66,7 @@ export default function Page({
             </Link>
             <br />
             Model:{" "}
-            <Link href={`/model/${_export.modelId}/edit`}>
+            <Link href={`/model/${_export.modelId}/overview`}>
               <a>{_export.modelId}</a>
             </Link>
             <br />

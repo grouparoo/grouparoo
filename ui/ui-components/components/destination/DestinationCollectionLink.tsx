@@ -16,7 +16,7 @@ const DestinationCollectionLink: React.FC<{
     }
     case "model": {
       return (
-        <EnterpriseLink href={`/model/${destination.modelId}/edit`}>
+        <EnterpriseLink href={`/model/${destination.modelId}/overview`}>
           <a>{destination.modelName}</a>
         </EnterpriseLink>
       );

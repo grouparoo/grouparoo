@@ -199,7 +199,7 @@ export default function ExportsList(props) {
                     )}
                     <br />
                     Model:{" "}
-                    <EnterpriseLink href={`/model/${_export.modelId}/edit`}>
+                    <EnterpriseLink href={`/model/${_export.modelId}/overview`}>
                       <a>{_export.modelId}</a>
                     </EnterpriseLink>
                     <br />

@@ -42,7 +42,7 @@ export default function Page(props) {
             State: <StateBadge state={_import.state} marginBottom={0} />
             <br />
             Model:{" "}
-            <Link href={`/model/${_import.modelId}/edit`}>
+            <Link href={`/model/${_import.modelId}/overview`}>
               <a>{_import.modelId}</a>
             </Link>
             <br />
