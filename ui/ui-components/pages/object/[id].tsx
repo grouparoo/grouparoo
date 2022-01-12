@@ -9,6 +9,8 @@ import { singular } from "pluralize";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { grouparooUiEdition } from "../../utils/uiEdition";
 
+const editPagesForCommunityEdition: readonly string[] = ["records"];
+
 export default function FindObject(props) {
   const router = useRouter();
   const {
@@ -37,34 +39,34 @@ export default function FindObject(props) {
 
   async function load() {
     const response: Actions.ObjectFind = await execApi("get", `/object/${id}`);
-    if (response.records.length === 0) {
+    const table: string = response?.records[0]?.tableName?.toLowerCase();
+    const itemsFound: number = response?.records?.length ?? 0;
+    const uiEdition = grouparooUiEdition();
+
+    if (itemsFound === 0) {
       setError(`Cannot find object "${id}"`);
     } else if (
-      response.records.length === 1 &&
-      grouparooUiEdition() === "enterprise"
+      itemsFound === 1 &&
+      (uiEdition === "enterprise" ||
+        editPagesForCommunityEdition.includes(table))
     ) {
-      const table = response.records[0].tableName.toLowerCase();
       const detailPage = detailPages[table] || "edit";
       if (typeof detailPage === "function") {
         await detailPage(id);
       } else {
-        router.push(`/${singular(table)}/${id}/${detailPage}`);
+        router.replace(`/${singular(table)}/${id}/${detailPage}`);
       }
-    } else if (
-      response.records.length === 1 &&
-      grouparooUiEdition() === "community"
-    ) {
-      const tableName = response.records[0].tableName.toLowerCase();
-      await redirectToListPage(tableName);
+    } else if (itemsFound === 1 && uiEdition === "community") {
+      await replaceWithListPage(table);
     } else {
-      const isEnterprise = grouparooUiEdition() === "enterprise";
+      const isEnterpriseUI = uiEdition === "enterprise";
       const tableNames = response.records.map((r) => r.tableName.toLowerCase());
 
       const nextResults: { name: string; href: string }[] = [];
       for (const name of tableNames) {
         const detailPage = detailPages[name] || "edit";
         const href =
-          isEnterprise && typeof detailPage === "string"
+          isEnterpriseUI && typeof detailPage === "string"
             ? `/${singular(name)}/${id}/${detailPage}`
             : await getListPage(name);
 
@@ -149,7 +151,7 @@ export default function FindObject(props) {
     return `/model/${modelId}/${page}`;
   }
 
-  async function redirectToListPage(topic: string) {
+  async function replaceWithListPage(topic: string) {
     const href = await getListPage(topic);
     if (href) {
       const page = topic === "records" ? topic : "overview";
