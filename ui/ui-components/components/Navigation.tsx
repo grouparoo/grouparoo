@@ -59,6 +59,7 @@ export default function Navigation(props) {
     sessionHandler: SessionHandler;
     statusHandler: StatusHandler;
   } = props;
+  const uiEdition = grouparooUiEdition();
   const { execApi } = UseApi(props, errorHandler);
   const router = useRouter();
   const [teamMember, setTeamMember] = useState(props.currentTeamMember);
@@ -120,7 +121,7 @@ export default function Navigation(props) {
 
   if (!navExpanded && !hasBeenCollapsed) setHasBeenCollapsed(true);
 
-  const uiPlugin = `@grouparoo/ui-${grouparooUiEdition()}`;
+  const uiPlugin = `@grouparoo/ui-${uiEdition}`;
   return (
     <div
       id="navigation"
@@ -204,131 +205,142 @@ export default function Navigation(props) {
           style={{ paddingLeft: 20, paddingRight: 20 }}
         >
           <ul style={{ padding: 0, margin: 0, listStyleType: "none" }}>
-            {navigation?.navigationItems.map((nav, idx) => {
-              if (nav.type === "link") {
-                return (
-                  <HighlightingNavLink
-                    key={nav.href}
-                    href={nav.href}
-                    mainPathSectionIdx={nav.mainPathSectionIdx ?? 1}
-                    text={
-                      <>
-                        {nav.title}
-                        {nav.title === "Runs" ? (
-                          <>
-                            {" "}
-                            <RunningRunsBadge statusHandler={statusHandler} />
-                          </>
-                        ) : null}
-                      </>
-                    }
-                    icon={nav.icon}
-                    small={nav.small}
-                  />
-                );
-              } else if (nav.type === "divider") {
-                return (
-                  <li key={idx}>
-                    <hr className="dark" key={`separator-${idx}`} />
-                  </li>
-                );
-              } else if (nav.type === "subNavMenu") {
-                return (
-                  <li style={navLiStyle} key={idx}>
-                    <Accordion activeKey={expandPlatformMenu ? "1" : null}>
-                      <Accordion.Toggle
-                        as={Button}
-                        style={{ padding: 0 }}
-                        variant="link"
-                        eventKey="0"
-                        onClick={() =>
-                          setExpandPlatformMenu(!expandPlatformMenu)
-                        }
-                      >
-                        <span style={navIconStyle}>
-                          {nav.icon ? (
-                            <FontAwesomeIcon
-                              style={iconConstrainedStyle}
-                              icon={nav.icon as FontAwesomeIconProps["icon"]}
-                              size="xs"
-                            />
-                          ) : null}{" "}
-                        </span>
-                        <span
-                          style={{
-                            marginLeft: 4,
-                            fontSize: 18,
-                            fontWeight: 300,
-                            paddingLeft: 0,
-                            color: "white",
-                          }}
+            {navigation?.navigationItems
+              .filter(
+                ({ blockedUiEditions }) =>
+                  !blockedUiEditions?.includes(uiEdition)
+              )
+              .map((nav, idx) => {
+                if (nav.type === "link") {
+                  return (
+                    <HighlightingNavLink
+                      key={nav.href}
+                      href={nav.href}
+                      mainPathSectionIdx={nav.mainPathSectionIdx ?? 1}
+                      text={
+                        <>
+                          {nav.title}
+                          {nav.title === "Runs" ? (
+                            <>
+                              {" "}
+                              <RunningRunsBadge statusHandler={statusHandler} />
+                            </>
+                          ) : null}
+                        </>
+                      }
+                      icon={nav.icon}
+                      small={nav.small}
+                    />
+                  );
+                } else if (nav.type === "divider") {
+                  return (
+                    <li key={idx}>
+                      <hr className="dark" key={`separator-${idx}`} />
+                    </li>
+                  );
+                } else if (nav.type === "subNavMenu") {
+                  return (
+                    <li style={navLiStyle} key={idx}>
+                      <Accordion activeKey={expandPlatformMenu ? "1" : null}>
+                        <Accordion.Toggle
+                          as={Button}
+                          style={{ padding: 0 }}
+                          variant="link"
+                          eventKey="0"
+                          onClick={() =>
+                            setExpandPlatformMenu(!expandPlatformMenu)
+                          }
                         >
-                          {nav.title}{" "}
-                          <FontAwesomeIcon
-                            icon={`caret-${expandPlatformMenu ? "up" : "down"}`}
-                          />{" "}
-                          {!expandPlatformMenu ? (
-                            <ResqueFailedCountBadge
-                              navigationMode={navigationMode}
-                              statusHandler={statusHandler}
-                            />
-                          ) : null}
-                          {!expandPlatformMenu ? (
-                            <UnreadNotificationsBadge
-                              navigationMode={navigationMode}
-                              statusHandler={statusHandler}
-                            />
-                          ) : null}
-                        </span>
-                        <div style={{ padding: 6 }} />
-                      </Accordion.Toggle>
-                      <Accordion.Collapse eventKey="1">
-                        <div>
-                          {navigation.platformItems.map((nav, platformIdx) => {
-                            if (nav.type === "link") {
-                              return (
-                                <p
-                                  style={{ paddingLeft: 30 }}
-                                  key={`platform-dropdown-${platformIdx}`}
-                                >
-                                  <Link href={nav.href}>
-                                    <a style={{ color: "white" }}>
-                                      {nav.title}
-                                    </a>
-                                  </Link>
-                                  {expandPlatformMenu &&
-                                  nav.title === "Notifications" ? (
-                                    <UnreadNotificationsBadge
-                                      navigationMode={navigationMode}
-                                      statusHandler={statusHandler}
+                          <span style={navIconStyle}>
+                            {nav.icon ? (
+                              <FontAwesomeIcon
+                                style={iconConstrainedStyle}
+                                icon={nav.icon as FontAwesomeIconProps["icon"]}
+                                size="xs"
+                              />
+                            ) : null}{" "}
+                          </span>
+                          <span
+                            style={{
+                              marginLeft: 4,
+                              fontSize: 18,
+                              fontWeight: 300,
+                              paddingLeft: 0,
+                              color: "white",
+                            }}
+                          >
+                            {nav.title}{" "}
+                            <FontAwesomeIcon
+                              icon={`caret-${
+                                expandPlatformMenu ? "up" : "down"
+                              }`}
+                            />{" "}
+                            {!expandPlatformMenu ? (
+                              <ResqueFailedCountBadge
+                                navigationMode={navigationMode}
+                                statusHandler={statusHandler}
+                              />
+                            ) : null}
+                            {!expandPlatformMenu ? (
+                              <UnreadNotificationsBadge
+                                navigationMode={navigationMode}
+                                statusHandler={statusHandler}
+                              />
+                            ) : null}
+                          </span>
+                          <div style={{ padding: 6 }} />
+                        </Accordion.Toggle>
+                        <Accordion.Collapse eventKey="1">
+                          <div>
+                            {navigation.platformItems.map(
+                              (nav, platformIdx) => {
+                                if (nav.type === "link") {
+                                  return (
+                                    <p
+                                      style={{ paddingLeft: 30 }}
+                                      key={`platform-dropdown-${platformIdx}`}
+                                    >
+                                      <Link href={nav.href}>
+                                        <a style={{ color: "white" }}>
+                                          {nav.title}
+                                        </a>
+                                      </Link>
+                                      {expandPlatformMenu &&
+                                      nav.title === "Notifications" ? (
+                                        <UnreadNotificationsBadge
+                                          navigationMode={navigationMode}
+                                          statusHandler={statusHandler}
+                                        />
+                                      ) : null}
+                                      {expandPlatformMenu &&
+                                      nav.title === "Resque" ? (
+                                        <ResqueFailedCountBadge
+                                          navigationMode={navigationMode}
+                                          statusHandler={statusHandler}
+                                        />
+                                      ) : null}
+                                    </p>
+                                  );
+                                } else if (nav.type === "divider") {
+                                  return (
+                                    <hr
+                                      key={`platform-dropdown-${platformIdx}`}
                                     />
-                                  ) : null}
-                                  {expandPlatformMenu &&
-                                  nav.title === "Resque" ? (
-                                    <ResqueFailedCountBadge
-                                      navigationMode={navigationMode}
-                                      statusHandler={statusHandler}
-                                    />
-                                  ) : null}
-                                </p>
-                              );
-                            } else if (nav.type === "divider") {
-                              return (
-                                <hr key={`platform-dropdown-${platformIdx}`} />
-                              );
-                            }
-                          })}
-                        </div>
-                      </Accordion.Collapse>
-                    </Accordion>
-                  </li>
-                );
-              }
-            })}
+                                  );
+                                }
+                              }
+                            )}
+                          </div>
+                        </Accordion.Collapse>
+                      </Accordion>
+                    </li>
+                  );
+                }
+              })}
           </ul>
         </div>
       </div>
-      <div className={grouparooUiEdition() === "config" ? "mb-5" : null}>
+      <div className={uiEdition === "config" ? "mb-5" : null}>
         <div
           id="bottomNavigationMenuCTA"
           style={{
