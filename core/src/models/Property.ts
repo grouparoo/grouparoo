@@ -568,7 +568,7 @@ export class Property extends LoggedModel<Property> {
 
   @AfterSave
   static async updateSampleRecords(instance: Property) {
-    if (process.env.GROUPAROO_RUN_MODE !== "cli:config") return;
+    if (config.general.runMode !== "cli:config") return;
 
     const source = await instance.$get("source");
     if (!source) return;

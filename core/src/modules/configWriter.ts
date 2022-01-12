@@ -1,4 +1,4 @@
-import { api } from "actionhero";
+import { api, config } from "actionhero";
 import fs from "fs";
 import path from "path";
 import prettier from "prettier";
@@ -84,7 +84,7 @@ export namespace ConfigWriter {
 
   export async function run() {
     // If we're not in config mode, do nothing.
-    if (process.env.GROUPAROO_RUN_MODE !== "cli:config") return;
+    if (config.general.runMode !== "cli:config") return;
     // Any models we see before starting would be from existing code config
     // files.
     if (!api.process.started) return;
@@ -170,7 +170,7 @@ export namespace ConfigWriter {
   export function getLockKey(
     configObject: AnyConfigurationObject
   ): string | null {
-    if (process.env.GROUPAROO_RUN_MODE !== "cli:config") {
+    if (config.general.runMode !== "cli:config") {
       return getCodeConfigLockKey();
     }
     if (isLockable(configObject)) {

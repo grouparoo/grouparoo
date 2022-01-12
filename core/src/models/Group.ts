@@ -278,9 +278,7 @@ export class Group extends LoggedModel<Group> {
 
     if (this.state !== "deleted" && rules.length > 0) {
       this.state =
-        process.env.GROUPAROO_RUN_MODE === "cli:config"
-          ? "ready"
-          : "initializing";
+        config.general.runMode === "cli:config" ? "ready" : "initializing";
       this.changed("updatedAt", true);
       await this.save();
       return this.run();

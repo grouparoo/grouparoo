@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { api, specHelper } from "actionhero";
+import { api, rebuildConfig, specHelper } from "actionhero";
 import path from "path";
 import {
   ApiKey,
@@ -1132,6 +1132,7 @@ describe("modules/codeConfig", () => {
         await helper.truncate();
 
         process.env.GROUPAROO_RUN_MODE = "cli:config";
+        rebuildConfig();
         api.codeConfig.allowLockedModelChanges = true;
         const { errors, seenIds, deletedIds } = await loadConfigDirectory(
           path.join(__dirname, "..", "..", "fixtures", "codeConfig", "records")
@@ -1203,6 +1204,7 @@ describe("modules/codeConfig", () => {
         await helper.truncate();
 
         process.env.GROUPAROO_RUN_MODE = "cli:config";
+        rebuildConfig();
         api.codeConfig.allowLockedModelChanges = true;
         const { errors, seenIds, deletedIds } = await loadConfigDirectory(
           path.join(__dirname, "..", "..", "fixtures", "codeConfig", "initial")
@@ -1244,6 +1246,7 @@ describe("modules/codeConfig", () => {
       afterAll(async () => {
         await helper.truncate();
         process.env.GROUPAROO_RUN_MODE = undefined;
+        rebuildConfig();
       });
 
       test('settings are locked with "config:code"', async () => {
@@ -1538,6 +1541,7 @@ describe("modules/codeConfig", () => {
     describe("record", () => {
       beforeAll(async () => {
         process.env.GROUPAROO_RUN_MODE = "cli:config";
+        rebuildConfig();
         api.codeConfig.allowLockedModelChanges = true;
       });
 
@@ -1579,6 +1583,7 @@ describe("modules/codeConfig", () => {
 
       afterAll(() => {
         process.env.GROUPAROO_RUN_MODE = undefined;
+        rebuildConfig();
       });
     });
   });

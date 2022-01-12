@@ -1,3 +1,4 @@
+import { config } from "actionhero";
 import { Setting } from "../../models/Setting";
 import { Run } from "../../models/Run";
 import { internalRun } from "../../modules/internalRun";
@@ -6,7 +7,7 @@ import { CLSTask } from "../../classes/tasks/clsTask";
 export class RunRecurringInternalRun extends CLSTask {
   name = "run:recurringInternalRun";
   description = "check if we should run an internal import on a frequency";
-  frequency = process.env.GROUPAROO_RUN_MODE === "cli:run" ? 0 : 1000 * 60 * 10; // 10 minutes
+  frequency = config.general.runMode === "cli:run" ? 0 : 1000 * 60 * 10; // 10 minutes
   queue = "runs";
 
   async runWithinTransaction() {

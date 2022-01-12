@@ -1,3 +1,4 @@
+import { config } from "actionhero";
 import { Group } from "../../models/Group";
 import { Run } from "../../models/Run";
 import { plugin } from "../../modules/plugin";
@@ -7,7 +8,7 @@ import { CLSTask } from "../../classes/tasks/clsTask";
 export class GroupsUpdateCalculatedGroups extends CLSTask {
   name = "group:updateCalculatedGroups";
   description = "enqueue an update of groups that to be updated";
-  frequency = process.env.GROUPAROO_RUN_MODE === "cli:run" ? 0 : 1000 * 60 * 5; // Run every 5 minutes
+  frequency = config.general.runMode === "cli:run" ? 0 : 1000 * 60 * 5; // Run every 5 minutes
   queue = "groups";
 
   async runWithinTransaction() {

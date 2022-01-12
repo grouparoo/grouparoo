@@ -1,4 +1,4 @@
-import { api, log, task, env, ParamsFrom } from "actionhero";
+import { api, log, task, env, config, ParamsFrom } from "actionhero";
 import { GrouparooCLI } from "../../../modules/cli";
 import { APM } from "../../../modules/apm";
 import { Status, FinalSummary } from "../../../modules/status";
@@ -22,7 +22,7 @@ export class StatusTask extends CLSTask {
     worker: Worker
   ) {
     return APM.wrap(this.name, "task", worker, async () => {
-      const runMode = process.env.GROUPAROO_RUN_MODE;
+      const runMode = config.general.runMode;
 
       if (runMode === "cli:run") {
         // calculate stats inline

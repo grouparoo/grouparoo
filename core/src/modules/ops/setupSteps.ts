@@ -1,3 +1,4 @@
+import { config } from "actionhero";
 import { plugin } from "../plugin";
 import { GrouparooModel } from "../../models/GrouparooModel";
 import { App } from "../../models/App";
@@ -120,7 +121,7 @@ export const getSetupStepDescriptions = (modelId?: string) => {
 
   return allSetupStepDescriptions
     .filter((ssd) =>
-      ssd.runModes.includes(process.env.GROUPAROO_RUN_MODE ?? "cli:start")
+      ssd.runModes.includes(config.general.runMode ?? "cli:start")
     )
     .map((ssd, idx) => {
       return { ...ssd, position: idx + 1 };

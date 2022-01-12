@@ -1,3 +1,4 @@
+import { config } from "actionhero";
 import { Property, SimplePropertyOptions } from "../../models/Property";
 import { Group } from "../../models/Group";
 import { Option } from "../../models/Option";
@@ -12,7 +13,7 @@ export namespace PropertyOps {
    * Enqueue Runs to update all Groups that rely on this Property
    */
   export async function enqueueRuns(property: Property) {
-    if (process.env.GROUPAROO_RUN_MODE === "cli:validate") return;
+    if (config.general.runMode === "cli:validate") return;
 
     await internalRun("property", property.id); // update *all* records
 

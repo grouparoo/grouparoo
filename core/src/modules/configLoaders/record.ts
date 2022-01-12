@@ -1,3 +1,4 @@
+import { config } from "actionhero";
 import {
   RecordConfigurationObject,
   validateConfigObjectKeys,
@@ -12,7 +13,7 @@ export async function loadRecord(
   externallyValidate: boolean,
   validate = false
 ) {
-  if (process.env.GROUPAROO_RUN_MODE !== "cli:config") return;
+  if (config.general.runMode !== "cli:config") return;
 
   validateConfigObjectKeys(GrouparooRecord, configObject, ["properties"]);
 
