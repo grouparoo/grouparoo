@@ -18,7 +18,7 @@ export class SetupStepsList extends AuthenticatedAction {
     return true;
   }
 
-  async runWithinTransaction({ params }: { params: { modelId?: string } }) {
+  async runWithinTransaction() {
     const responseSetupSteps: AsyncReturnType<SetupStep["apiData"]>[] = [];
 
     const setupSteps = await SetupStep.findAll({
