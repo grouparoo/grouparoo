@@ -131,18 +131,6 @@ export default function Page(props) {
     setTestLoading(false);
   }
 
-  const update = async (event) => {
-    const _app = Object.assign({}, app);
-    _app[event.target.id] = event.target.value;
-    setApp(_app);
-  };
-
-  const updateOption = async (optKey, optValue) => {
-    const _app = Object.assign({}, app);
-    _app.options[optKey] = optValue;
-    setApp(_app);
-  };
-
   const startOauthLogin = async (optionKey: string) => {
     const providerName = app.pluginName.replace("@grouparoo/", "");
     setLoadingOAuth(true);
@@ -225,12 +213,7 @@ export default function Page(props) {
 
               <Form.Group controlId="type">
                 <Form.Label>Type</Form.Label>
-                <Form.Control
-                  as="select"
-                  value={app.type}
-                  onChange={(e) => update(e)}
-                  disabled
-                >
+                <Form.Control as="select" value={app.type} disabled>
                   <option>{app.type}</option>
                 </Form.Control>
               </Form.Group>
