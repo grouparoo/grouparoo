@@ -505,6 +505,35 @@ describe("models/app", () => {
       );
     });
 
+    test("it will filter empty app options for the plugin's test method", async () => {
+      const plugin = api.plugins.plugins.find(
+        (plugin) => plugin.name === "test-plugin"
+      );
+
+      const spy = jest.spyOn(plugin.apps[0].methods, "test");
+
+      await app.test({
+        test_key: "my_key",
+        password: "",
+      });
+
+      expect(spy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          appOptions: {
+            test_key: "my_key",
+          },
+        })
+      );
+
+      expect(spy).not.toHaveBeenCalledWith(
+        expect.objectContaining({
+          appOptions: {
+            password: "",
+          },
+        })
+      );
+    });
+
     test("it can run a plugin's test method", async () => {
       testCounter = 0;
       const { error, success } = await app.test();
