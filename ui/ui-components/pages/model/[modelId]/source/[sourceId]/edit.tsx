@@ -22,6 +22,7 @@ import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import FormMappingSelector from "../../../../../components/source/FormMappingSelector";
 import { createSchedule } from "../../../../../components/schedule/Add";
 import ManagedCard from "../../../../../components/lib/ManagedCard";
+import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 
 interface FormData {
   mapping?: {
@@ -135,7 +136,10 @@ const Page: NextPage<Props & InjectedProps> = ({
     event.preventDefault();
     setLoading(true);
 
-    const isBootstrappingUniqueProperty = !data.mapping?.propertyKey;
+    const isBootstrappingUniqueProperty =
+      source.previewAvailable &&
+      !source.connection.skipSourceMapping &&
+      !data.mapping?.propertyKey;
     let bootstrapSuccess = false;
     let mapping: Record<string, string>;
 
@@ -204,7 +208,11 @@ const Page: NextPage<Props & InjectedProps> = ({
       sourceHandler.set(response.source);
 
       // we made the first source, and now should attempt to make sample properties
-      if (isBootstrappingUniqueProperty && response.source.state === "ready") {
+      if (
+        grouparooUiEdition() === "config" &&
+        isBootstrappingUniqueProperty &&
+        response.source.state === "ready"
+      ) {
         await execApi<Actions.SourceGenerateSampleRecords>(
           "post",
           `/source/${sourceId}/generateSampleRecords`,
