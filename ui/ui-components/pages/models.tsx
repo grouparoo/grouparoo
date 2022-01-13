@@ -13,7 +13,7 @@ import { formatTimestamp } from "../utils/formatTimestamp";
 import GrouparooLink from "../components/GrouparooLink";
 import StateBadge from "../components/badges/StateBadge";
 import LinkButton from "../components/LinkButton";
-import { PageWithInferredProps } from "../types/page";
+import { PageWithInferredProps } from "../utils/pageHelper";
 import { errorHandler } from "../eventHandlers";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {

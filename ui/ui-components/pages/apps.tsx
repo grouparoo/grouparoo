@@ -17,7 +17,7 @@ import LinkButton from "../components/LinkButton";
 import LoadingButton from "../components/LoadingButton";
 import { grouparooUiEdition } from "../utils/uiEdition";
 import { formatName } from "../utils/formatName";
-import { PageWithInferredProps } from "../types/page";
+import { PageWithInferredProps } from "../utils/pageHelper";
 import { errorHandler, successHandler } from "../eventHandlers";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {

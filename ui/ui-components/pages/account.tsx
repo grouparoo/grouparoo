@@ -6,7 +6,7 @@ import { Form, Row, Col } from "react-bootstrap";
 import RecordImageFromEmail from "../components/visualizations/RecordImageFromEmail";
 import LoadingButton from "../components/LoadingButton";
 import { Models, Actions } from "../utils/apiData";
-import { PageWithInferredProps } from "../types/page";
+import { PageWithInferredProps } from "../utils/pageHelper";
 import { errorHandler, sessionHandler, successHandler } from "../eventHandlers";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
