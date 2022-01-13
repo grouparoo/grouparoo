@@ -63,7 +63,7 @@
     "prettier": "2.5.1",
     "reflect-metadata": "0.1.13",
     "semver": "7.3.5",
-    "sequelize": "6.11.0",
+    "sequelize": "6.13.0",
     "sequelize-typescript": "2.1.2",
     "sqlite3": "5.0.2",
     "tar": "6.1.11",
