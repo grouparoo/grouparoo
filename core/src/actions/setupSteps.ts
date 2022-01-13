@@ -11,7 +11,6 @@ export class SetupStepsList extends AuthenticatedAction {
   description = "List the SetupSteps and their status";
   permission: ActionPermission = { topic: "setupStep", mode: "read" };
   outputExample = {};
-  inputs = {};
 
   isWriteTransaction() {
     // setupStep.performCheck() can do an update

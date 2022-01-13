@@ -26,7 +26,6 @@ export class NavigationList extends OptionallyAuthenticatedAction {
   description = "returns a list of pages for the UI navigation for this user";
   permission: ActionPermission = { topic: "*", mode: "read" };
   outputExample = {};
-  inputs = {};
 
   async runWithinTransaction({
     session: { teamMember },

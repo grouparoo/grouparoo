@@ -13,7 +13,6 @@ import { ErrorHandler } from "../../utils/errorHandler";
 import { ImportRecordPropertiesDiff, ImportGroupsDiff } from "./Diff";
 import StateBadge from "../badges/StateBadge";
 import { capitalize } from "../../utils/languageHelper";
-import { grouparooUiEdition } from "../../utils/uiEdition";
 
 const states = [
   "all",
