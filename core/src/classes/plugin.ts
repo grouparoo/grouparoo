@@ -442,7 +442,7 @@ export interface SourcePreviewMethodResponseRow {
 
 /**
  * Return a list of things that this property can be filtered by
- * [{key: createdAt, ops: ['greater than', 'less than'], canHaveRelativeMatch: true}]
+ * [{key: createdAt, ops: ['gt', 'lt'], canHaveRelativeMatch: true}]
  */
 export interface SourceFilterMethod<AppConnection = any> {
   (argument: {

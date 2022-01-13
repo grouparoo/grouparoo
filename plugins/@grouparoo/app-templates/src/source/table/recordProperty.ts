@@ -3,6 +3,7 @@ import {
   FilterOperation,
   RecordPropertyPluginMethod,
 } from "@grouparoo/core";
+import { getFilterOperation } from "./getFilterOperation";
 import {
   MatchCondition,
   GetPropertyValueMethod,
@@ -101,15 +102,3 @@ export const getRecordProperty: GetRecordPropertyMethod = ({
 
   return recordProperty;
 };
-
-function getFilterOperation(op): FilterOperation {
-  // op is one of the values
-  const operations = Object.keys(FilterOperation);
-  for (const key of operations) {
-    const value = FilterOperation[key];
-    if (value === op) {
-      return value;
-    }
-  }
-  throw `filter operation not found: ${op}`;
-}

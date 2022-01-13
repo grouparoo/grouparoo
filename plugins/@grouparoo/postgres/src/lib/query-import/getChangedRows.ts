@@ -9,7 +9,7 @@ export const getChangedRows: GetChangedRowsMethod = async ({
   offset,
   connection,
 }) => {
-  if (!scheduleOptions?.query || typeof scheduleOptions.query === "string") {
+  if (!scheduleOptions?.query || typeof scheduleOptions.query !== "string") {
     throw new Error("query required");
   }
 

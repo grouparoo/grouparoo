@@ -3,7 +3,7 @@ import { getChangedRows } from "../../src/lib/query-import/getChangedRows";
 describe("getChangedRows", () => {
   let loggedQuery = "";
 
-  const commonArgs = {
+  const commonArgs: any = {
     limit: 1000,
     offset: 0,
     scheduleOptions: {},
