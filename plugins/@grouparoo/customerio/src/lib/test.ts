@@ -4,7 +4,7 @@ import { connect } from "./connect";
 export const test: TestPluginMethod = async ({ appOptions }) => {
   const client = await connect(appOptions);
 
-  await client.trackAnonymous({
+  await client.trackAnonymous("123", {
     name: "grouparoo_test_connection",
   });
 
