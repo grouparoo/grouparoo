@@ -77,7 +77,6 @@ export default function Page(props) {
     let otherProperties: Models.PropertyType[] = [];
 
     for (const property of properties) {
-      // console.log(property)
       if (property.sourceId !== source.id) continue;
       if (property.options[primaryOptionKey] !== column) continue;
 
@@ -395,7 +394,6 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     `/propertyOptions`
   );
 
-  console.log(preview)
 
   return {
     model,
