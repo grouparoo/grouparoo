@@ -105,6 +105,11 @@ export class Schedule extends LoggedModel<Schedule> {
   locked: string;
 
   @AllowNull(false)
+  @Default(true)
+  @Column
+  incremental: boolean;
+
+  @AllowNull(false)
   @Default(false)
   @Column
   recurring: boolean;
@@ -210,6 +215,7 @@ export class Schedule extends LoggedModel<Schedule> {
       name: this.name,
       state: this.state,
       sourceId: this.sourceId,
+      incremental: this.incremental,
       recurring: this.recurring,
       refreshEnabled: this.refreshEnabled,
       locked: this.locked,
