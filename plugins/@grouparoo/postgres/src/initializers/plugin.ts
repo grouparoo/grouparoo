@@ -2,6 +2,9 @@ import { Initializer } from "actionhero";
 import { DestinationSyncMode, plugin } from "@grouparoo/core";
 import path from "path";
 
+// This import fixes an issue where typescript was not aware of the types api.plugins
+import "@grouparoo/core/src/initializers/plugins";
+
 import { appQuery } from "../lib/appQuery";
 import { test } from "./../lib/test";
 import { connect } from "./../lib/connect";
