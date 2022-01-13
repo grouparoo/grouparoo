@@ -435,7 +435,7 @@ export default function Page(props) {
                               }}
                               options={
                                 autocompleteResults[rule.key]?.map((v) =>
-                                  v.toString()
+                                  v?.toString()
                                 ) || []
                               }
                               onSearch={(_match) => {

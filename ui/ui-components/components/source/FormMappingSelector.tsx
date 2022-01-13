@@ -19,6 +19,7 @@ interface Props {
   propertyExamples: Record<string, string[]>;
   source: Models.SourceType;
   register: ReturnType<typeof useForm>["register"];
+  mappingDisabled?: boolean;
 }
 
 const FormMappingSelector: React.FC<Props> = ({
@@ -30,6 +31,7 @@ const FormMappingSelector: React.FC<Props> = ({
   propertyExamples,
   register,
   source,
+  mappingDisabled,
 }) => {
   const [selectedProperty, setSelectedProperty] = useState<Models.PropertyType>(
     () =>
@@ -109,7 +111,7 @@ const FormMappingSelector: React.FC<Props> = ({
 
   return (
     <Row>
-      <Col md={hasAvailableProperties ? 6 : 12} xl={12}>
+      <Col md={!mappingDisabled && hasAvailableProperties ? 6 : 12} xl={12}>
         <FormInputContainer
           controlId="mapping_source_column"
           label="Source Column"
@@ -138,8 +140,8 @@ const FormMappingSelector: React.FC<Props> = ({
         </FormInputContainer>
         {columnExample && renderExamples(columnExample)}
       </Col>
-      <Col>
-        {hasAvailableProperties && (
+      {!mappingDisabled && hasAvailableProperties && (
+        <Col>
           <>
             <FormInputContainer
               controlId="mapping_property"
@@ -176,8 +178,8 @@ const FormMappingSelector: React.FC<Props> = ({
             </FormInputContainer>
             {!!availableProperties.length && renderExamples(propertyExample)}
           </>
-        )}
-      </Col>
+        </Col>
+      )}
     </Row>
   );
 };

@@ -22,6 +22,7 @@ import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import FormMappingSelector from "../../../../../components/source/FormMappingSelector";
 import { createSchedule } from "../../../../../components/schedule/Add";
 import ManagedCard from "../../../../../components/lib/ManagedCard";
+import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 
 interface FormData {
   mapping?: {
@@ -83,7 +84,7 @@ const Page: NextPage<Props & InjectedProps> = ({
   );
   const isPrimarySource = useMemo(
     () =>
-      (totalSources === 1 && source.state !== "ready") ||
+      totalSources === 1 ||
       properties.filter(
         ({ isPrimaryKey, sourceId }) => isPrimaryKey && sourceId === source.id
       ).length > 0,
@@ -135,7 +136,10 @@ const Page: NextPage<Props & InjectedProps> = ({
     event.preventDefault();
     setLoading(true);
 
-    const isBootstrappingUniqueProperty = !data.mapping?.propertyKey;
+    const isBootstrappingUniqueProperty =
+      source.previewAvailable &&
+      !source.connection.skipSourceMapping &&
+      !data.mapping?.propertyKey;
     let bootstrapSuccess = false;
     let mapping: Record<string, string>;
 
@@ -152,21 +156,6 @@ const Page: NextPage<Props & InjectedProps> = ({
         mapping = {
           [data.mapping.sourceColumn]: bootstrapResponse.property.key,
         };
-        const prrResponse = await execApi<Actions.PropertiesList>(
-          "get",
-          `/properties`,
-          {
-            includeExamples: true,
-            unique: true,
-            state: "ready",
-            modelId: source.modelId,
-          }
-        );
-
-        if (prrResponse?.properties) {
-          setProperties(prrResponse.properties);
-          setPropertyExamples(prrResponse.examples);
-        }
       } else if (!Object.keys(bootstrapResponse).length) {
         errorHandler.set({
           message: "Unable to map to property.",
@@ -200,11 +189,14 @@ const Page: NextPage<Props & InjectedProps> = ({
     );
 
     if (response?.source) {
-      setSource(response.source);
       sourceHandler.set(response.source);
 
       // we made the first source, and now should attempt to make sample properties
-      if (isBootstrappingUniqueProperty && response.source.state === "ready") {
+      if (
+        grouparooUiEdition() === "config" &&
+        isBootstrappingUniqueProperty &&
+        response.source.state === "ready"
+      ) {
         await execApi<Actions.SourceGenerateSampleRecords>(
           "post",
           `/source/${sourceId}/generateSampleRecords`,
@@ -220,10 +212,6 @@ const Page: NextPage<Props & InjectedProps> = ({
           source: response.source,
           setLoading: () => {},
         });
-        router.push(
-          "/model/[modelId]/source/[sourceId]/schedule",
-          `/model/${response.source.modelId}/source/${sourceId}/schedule`
-        );
       } else if (
         response.source.state === "ready" &&
         source.state === "draft"
@@ -237,6 +225,22 @@ const Page: NextPage<Props & InjectedProps> = ({
       }
     }
 
+    const { properties, examples } = await execApi<Actions.PropertiesList>(
+      "get",
+      `/properties`,
+      {
+        unique: true,
+        includeExamples: true,
+        state: "ready",
+        modelId: source?.modelId,
+      }
+    );
+
+    setProperties(properties);
+    setPropertyExamples(examples);
+    if (response?.source) {
+      setSource(response.source);
+    }
     setLoading(false);
   };
 
@@ -552,6 +556,9 @@ const Page: NextPage<Props & InjectedProps> = ({
                     propertyExamples={propertyExamples}
                     register={register}
                     source={source}
+                    mappingDisabled={
+                      isPrimarySource && source.state !== "ready"
+                    }
                   />
                 </>
               )}
