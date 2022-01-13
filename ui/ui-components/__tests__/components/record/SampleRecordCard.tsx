@@ -27,6 +27,8 @@ describe("SampleRecordCard", () => {
 
   it("should render with no records", async () => {
     cardProps.execApi = async () => ({ records: [], total: 0 } as any);
+    cardProps.properties = [{ id: "some-property" }];
+
     let card: ReturnType<typeof render>;
     await act(async () => {
       card = render(<SampleRecordCard {...cardProps} />);
@@ -37,6 +39,8 @@ describe("SampleRecordCard", () => {
   it("should render with no records in 'config mode'", async () => {
     require("../../../components/record/SampleRecordCard").isConfigUI = true;
     cardProps.execApi = async () => ({ records: [], total: 0 } as any);
+    cardProps.properties = [{ id: "some-property" }];
+
     let card: ReturnType<typeof render>;
     await act(async () => {
       card = render(<SampleRecordCard {...cardProps} />);

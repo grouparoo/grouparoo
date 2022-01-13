@@ -367,15 +367,38 @@ exports[`SampleRecordCard should render with no records 1`] = `
           <h5
             class="my-1"
           >
-            Sample Record
+            Sample Record 
           </h5>
         </div>
+        <div
+          class="text-right col-lg-6 col-md-7 col-sm-12"
+        />
       </div>
     </div>
     <div
       class="card-body"
     >
-      At least one Grouparoo Property needs to be mapped before showing the Sample Record.
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <p>
+            A Sample Record can be used to validate your configuration is importing the correct data to Groups and Destinations.
+          </p>
+          <p>
+            Run a Schedule on your Primary Source to generate Records.
+          </p>
+        </div>
+      </div>
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        />
+      </div>
     </div>
   </div>
 </div>
@@ -398,15 +421,74 @@ exports[`SampleRecordCard should render with no records in 'config mode' 1`] = `
           <h5
             class="my-1"
           >
-            Sample Record
+            Sample Record 
           </h5>
         </div>
+        <div
+          class="text-right col-lg-6 col-md-7 col-sm-12"
+        />
       </div>
     </div>
     <div
       class="card-body"
     >
-      At least one Grouparoo Property needs to be mapped before showing the Sample Record.
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <p>
+            A Sample Record can be used to validate your configuration is importing the correct data to Groups and Destinations.
+          </p>
+        </div>
+      </div>
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <button
+            class="btn btn-outline-success btn-sm"
+            disabled=""
+            style="display: inline-flex; align-items: center; justify-content: center;"
+            type="button"
+          >
+            <span
+              style="opacity: 1;"
+            >
+              Import Record Data
+            </span>
+          </button>
+            
+          <button
+            class="btn btn-outline-primary btn-sm"
+            disabled=""
+            style="display: inline-flex; align-items: center; justify-content: center;"
+            type="button"
+          >
+            <span
+              style="opacity: 1;"
+            >
+              Switch to random Record
+            </span>
+          </button>
+            
+          <button
+            class="btn btn-outline-primary btn-sm"
+            style="display: inline-flex; align-items: center; justify-content: center;"
+            type="button"
+          >
+            <span
+              style="opacity: 1;"
+            >
+              Add Sample Record
+            </span>
+          </button>
+          
+        </div>
+      </div>
     </div>
   </div>
 </div>
