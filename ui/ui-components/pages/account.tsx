@@ -6,7 +6,7 @@ import { Form, Row, Col } from "react-bootstrap";
 import RecordImageFromEmail from "../components/visualizations/RecordImageFromEmail";
 import LoadingButton from "../components/LoadingButton";
 import { Models, Actions } from "../utils/apiData";
-import { PageWithInferredProps } from "../utils/pageHelper";
+import { NextPageWithInferredProps } from "../utils/pageHelper";
 import { errorHandler, sessionHandler, successHandler } from "../eventHandlers";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
@@ -15,7 +15,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   return { props: { teamMember } };
 };
 
-const Page: PageWithInferredProps<typeof getServerSideProps> = (props) => {
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   const { execApi } = UseApi(undefined, errorHandler);
   const [loading, setLoading] = useState(false);
   const [teamMember, setTeamMember] = useState<Models.TeamMemberType>(

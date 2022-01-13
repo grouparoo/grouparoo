@@ -4,6 +4,6 @@ import {
   NextPage,
 } from "next";
 
-export type PageWithInferredProps<
+export type NextPageWithInferredProps<
   GetServerSidePropsFn extends GetServerSideProps
 > = NextPage<InferGetServerSidePropsType<GetServerSidePropsFn>>;

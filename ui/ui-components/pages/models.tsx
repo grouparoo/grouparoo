@@ -13,7 +13,7 @@ import { formatTimestamp } from "../utils/formatTimestamp";
 import GrouparooLink from "../components/GrouparooLink";
 import StateBadge from "../components/badges/StateBadge";
 import LinkButton from "../components/LinkButton";
-import { PageWithInferredProps } from "../utils/pageHelper";
+import { NextPageWithInferredProps } from "../utils/pageHelper";
 import { errorHandler } from "../eventHandlers";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
@@ -27,7 +27,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   return { props: { models, total } };
 };
 
-const Page: PageWithInferredProps<typeof getServerSideProps> = (props) => {
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   const router = useRouter();
   const { execApi } = UseApi(undefined, errorHandler);
   const [models, setModels] = useState<Models.GrouparooModelType[]>(

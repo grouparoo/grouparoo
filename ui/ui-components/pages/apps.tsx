@@ -17,7 +17,7 @@ import LinkButton from "../components/LinkButton";
 import LoadingButton from "../components/LoadingButton";
 import { grouparooUiEdition } from "../utils/uiEdition";
 import { formatName } from "../utils/formatName";
-import { PageWithInferredProps } from "../utils/pageHelper";
+import { NextPageWithInferredProps } from "../utils/pageHelper";
 import { errorHandler, successHandler } from "../eventHandlers";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
@@ -30,7 +30,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   return { props: { apps, total } };
 };
 
-const Page: PageWithInferredProps<typeof getServerSideProps> = ({
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
   ...props
 }) => {
   const router = useRouter();
