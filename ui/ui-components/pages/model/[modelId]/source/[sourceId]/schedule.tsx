@@ -346,9 +346,6 @@ export default function Page(props) {
                             </option>
                           ))}
                         </Form.Control>
-                        <Form.Text className="text-muted">
-                          {opt.description}
-                        </Form.Text>
                       </>
                     ) : null}
 
