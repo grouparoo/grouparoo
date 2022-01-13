@@ -63,7 +63,7 @@ export default function Page(props) {
       }
     };
 
-    window.addEventListener("message", onMessage, false);
+    globalThis.addEventListener("message", onMessage, false);
 
     const interval = setInterval(() => {
       if (oAuthPopup.closed) {
@@ -74,7 +74,7 @@ export default function Page(props) {
 
     return () => {
       clearInterval(interval);
-      window.removeEventListener("message", onMessage);
+      globalThis.removeEventListener("message", onMessage);
     };
   }, [oAuthPopup]);
 
