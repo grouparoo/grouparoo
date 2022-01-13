@@ -5,8 +5,10 @@ import { grouparooUiEdition } from "../../utils/uiEdition";
 
 export default function RecordTabs({
   record,
+  model,
 }: {
   record: Models.GrouparooRecordType;
+  model: Models.GrouparooModelType;
 }) {
   const tabs = ["edit", "imports", "exports", "logs"];
 
@@ -14,5 +16,11 @@ export default function RecordTabs({
     tabs.splice(tabs.indexOf("imports"), 1);
   }
 
-  return <Tabs name={getRecordDisplayName(record)} tabs={tabs} />;
+  return (
+    <Tabs
+      name={getRecordDisplayName(record)}
+      tabs={tabs}
+      scopeName={model.name}
+    />
+  );
 }
