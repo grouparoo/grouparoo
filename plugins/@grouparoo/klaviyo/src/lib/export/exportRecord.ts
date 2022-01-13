@@ -93,7 +93,9 @@ export const exportRecord = async (args) => {
   } catch (error) {
     // look for the rate limit exceeded status code.
     if (error?.statusCode === 429) {
-      return { error, success: false, retryDelay: 1000 * error.retryAfter };
+      const retryInSeconds =
+        error.retryAfter || Math.floor(Math.random() * 10) + 1;
+      return { error, success: false, retryDelay: 1000 * retryInSeconds };
     }
     throw error;
   }
