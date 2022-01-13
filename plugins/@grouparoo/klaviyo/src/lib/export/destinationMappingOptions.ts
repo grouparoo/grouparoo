@@ -8,19 +8,25 @@ type KnownKlaviyoField = {
   klaviyoKey: string;
   type: DestinationMappingOptionsResponseType;
   required: boolean;
+  important: boolean;
 };
 
 export const fetchKnownFields = async (): Promise<KnownKlaviyoField[]> => {
   const required: Record<string, DestinationMappingOptionsResponseType> = {
     email: "email",
   };
-  const allowedFields: Record<string, DestinationMappingOptionsResponseType> = {
-    ...required,
+
+  const important: Record<string, DestinationMappingOptionsResponseType> = {
     first_name: "string",
     last_name: "string",
     phone_number: "phoneNumber",
     city: "string",
     region: "string",
+  };
+
+  const allowedFields: Record<string, DestinationMappingOptionsResponseType> = {
+    ...required,
+    ...important,
     country: "string",
     zip: "string",
     image: "url",
@@ -38,6 +44,7 @@ export const fetchKnownFields = async (): Promise<KnownKlaviyoField[]> => {
     klaviyoKey: `$${field}`,
     type: type,
     required: required.hasOwnProperty(field),
+    important: important.hasOwnProperty(field),
   }));
 };
 
