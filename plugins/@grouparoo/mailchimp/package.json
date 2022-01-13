@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@grouparoo/app-templates": "0.8.0-alpha.7",
+    "axios": "0.24.0",
     "mailchimp-api-v3": "1.15.0"
   },
   "devDependencies": {

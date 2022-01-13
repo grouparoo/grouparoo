@@ -73,10 +73,7 @@ export const updater = {
     const realHost = realServerPieces[realServerPieces.length - 1]; //us4
     const nockHost = nockServerPieces[nockServerPieces.length - 1]; //us3
 
-    nockCall = nockCall.replace(
-      new RegExp(`${realHost}.api.mailchimp.com`, "gi"),
-      `${nockHost}.api.mailchimp.com`
-    );
+    nockCall = nockCall.replace(new RegExp(realHost, "gi"), nockHost);
     nockCall = nockCall.replace(
       new RegExp(realEnv.MAILCHIMP_API_KEY, "gi"),
       nockEnv.MAILCHIMP_API_KEY

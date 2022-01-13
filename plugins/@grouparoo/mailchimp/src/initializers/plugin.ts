@@ -77,7 +77,7 @@ export class Plugins extends Initializer {
               displayName: "OAuth Access Token",
               required: true,
               description:
-                "Mailchimp OAuth access token and datacenter prefix.",
+                'Mailchimp OAuth access token. Click the "Sign in with OAuth" button above to automatically fill it in.',
             },
           ],
           methods: { test, parallelism },
