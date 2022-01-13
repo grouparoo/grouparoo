@@ -5,6 +5,7 @@ import { tmpdir } from "os";
 import { SimpleSourceOptions } from "@grouparoo/core";
 import Spreadsheet from "./Spreadsheet";
 import csvWriter from "csv-write-stream";
+import * as uuid from "uuid";
 
 const CSV_CACHE_MILLISECONDS = 1000 * 60;
 const GOOGLE_SHEETS_ROWS_LIMIT = 10000;
@@ -19,41 +20,58 @@ export async function downloadAndRefreshFile(
     sourceOptions.sheet_url?.toString()
   );
 
-  const localDir = path.join(tmpdir(), "google-sheets-cache", sourceId);
-  const localPath = path.join(localDir, `${sheet.docId}.csv`);
+  const sheetDir = `${sheet.docId}-${sheet.sheetId || "default"}`;
+  const localDir = path.join(
+    tmpdir(),
+    "google-sheets-cache",
+    sourceId,
+    sheetDir
+  );
+  const lastFile = await getLastValidFile(localDir);
+  let localPath = lastFile
+    ? path.join(localDir, lastFile)
+    : path.join(localDir, `${uuid.v4()}.csv`);
 
   let toDownload = false;
   if (!fs.existsSync(localPath)) {
     toDownload = true;
     fs.mkdirpSync(localDir);
-  } else {
-    const stats = fs.statSync(localPath);
-    const now = new Date();
-    if (now.getTime() - stats.birthtime.getTime() > CSV_CACHE_MILLISECONDS) {
-      toDownload = true;
-    }
   }
-
   if (toDownload) {
     log(`Saving Google Sheet to \`${localPath}\``, "debug");
-    const localPathAux = path.join(localDir, `${sheet.docId}-aux.csv`);
-    await writeSheetToFile(localPathAux, sheet);
-    await fs.copy(localPathAux, localPath, {
-      overwrite: true,
-      preserveTimestamps: true,
-    });
+    await writeSheetToFile(localPath, sheet);
   }
   return localPath;
 }
 
-async function writeSheetToFile(localPathAux: string, sheet: Spreadsheet) {
+async function getLastValidFile(localDir: string) {
+  if (!fs.existsSync(localDir)) {
+    return null;
+  }
+  const files = await fs.readdir(localDir);
+  files.sort((a, b) => {
+    const statsA = fs.statSync(path.join(localDir, a));
+    const statsB = fs.statSync(path.join(localDir, b));
+    return statsB.birthtime.getTime() - statsA.birthtime.getTime();
+  });
+  if (files[0]) {
+    const stats = fs.statSync(path.join(localDir, files[0]));
+    const now = new Date();
+    if (now.getTime() - stats.birthtime.getTime() <= CSV_CACHE_MILLISECONDS) {
+      return files[0];
+    }
+  }
+  return null;
+}
+
+async function writeSheetToFile(localPath: string, sheet: Spreadsheet) {
   const writer = csvWriter({
     sendHeaders: true,
     headers: await sheet.getHeaders(),
   });
   return new Promise<void>(async (resolve, reject) => {
-    if (fs.existsSync(localPathAux)) fs.rmSync(localPathAux, { force: true });
-    const writeStream = fs.createWriteStream(localPathAux);
+    if (fs.existsSync(localPath)) fs.rmSync(localPath, { force: true });
+    const writeStream = fs.createWriteStream(localPath);
     writer.pipe(writeStream);
     let offset = 0;
     let rows = await sheet.read({ limit: GOOGLE_SHEETS_ROWS_LIMIT, offset });

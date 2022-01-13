@@ -15,7 +15,7 @@ function parseUrl(sheetUrl: string): Record<string, string> {
     docId = docMatch[1];
   }
 
-  const sheetMatch = docRegex.exec(sheetUrl);
+  const sheetMatch = sheetRegex.exec(sheetUrl);
   let sheetId = null;
   if (sheetMatch) {
     sheetId = sheetMatch[1];
