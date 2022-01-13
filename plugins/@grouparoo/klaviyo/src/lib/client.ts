@@ -25,7 +25,10 @@ export class KlaviyoClient extends Klaviyo {
     try {
       data = await this.profiles.getProfileIdByEmail(email);
     } catch (e) {
-      return null;
+      if (e.statusCode === 404) {
+        return null;
+      }
+      throw e;
     }
 
     return data.id;
