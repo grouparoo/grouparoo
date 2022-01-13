@@ -49,7 +49,8 @@ export interface SampleRecordCardProps {
   warning?: string;
 }
 
-const isConfigUI = grouparooUiEdition() === "config";
+// This is exported so we can manipulate it in tests, but is unused elsewhere.
+export const isConfigUI = grouparooUiEdition() === "config";
 
 const getCachedSampleRecordId = (modelId: string): string => {
   return globalThis.localStorage?.getItem(
