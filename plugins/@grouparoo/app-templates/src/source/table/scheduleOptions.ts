@@ -26,7 +26,7 @@ export const getScheduleOptions: GetScheduleOptionsMethod = async (
     {
       key: columnNameKey,
       required: true,
-      description: "which column to scan for changes",
+      description: "the column used to sort your data (ORDER BY, ASC)",
       type: "list",
       options: async ({ connection, appOptions, appId, sourceOptions }) => {
         const tableName = sourceOptions[tableNameKey]?.toString();
