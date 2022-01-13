@@ -344,6 +344,11 @@ describe("modules/configWriter", () => {
         configObject = await app.getConfigObject();
       });
 
+      afterEach(() => {
+        process.env.GROUPAROO_RUN_MODE = undefined;
+        rebuildConfig();
+      });
+
       test('returns "config:writer" for JS files (LOCKED)', async () => {
         process.env.GROUPAROO_RUN_MODE = "cli:config";
         rebuildConfig();
@@ -356,9 +361,8 @@ describe("modules/configWriter", () => {
           objects: [configObject],
         });
         expect(ConfigWriter.getLockKey(configObject)).toEqual("config:writer");
-        process.env.GROUPAROO_RUN_MODE = undefined;
-        rebuildConfig();
       });
+
       test("returns null for JSON files (UNLOCKED)", async () => {
         process.env.GROUPAROO_RUN_MODE = "cli:config";
         rebuildConfig();
@@ -371,15 +375,12 @@ describe("modules/configWriter", () => {
           objects: [configObject],
         });
         expect(ConfigWriter.getLockKey(configObject)).toEqual(null);
-        process.env.GROUPAROO_RUN_MODE = undefined;
-        rebuildConfig();
       });
+
       test('returns "code:config" when in start mode', async () => {
         process.env.GROUPAROO_RUN_MODE = "cli:start";
         rebuildConfig();
         expect(ConfigWriter.getLockKey(configObject)).toEqual("config:code");
-        process.env.GROUPAROO_RUN_MODE = undefined;
-        rebuildConfig();
       });
     });
   });
