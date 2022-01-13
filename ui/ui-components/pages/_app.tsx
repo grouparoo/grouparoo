@@ -5,7 +5,6 @@ import { useMemo } from "react";
 
 import { UseApi } from "../hooks/useApi";
 
-import Injection from "../components/ComponentInjection";
 import Layout from "../components/layouts/Main";
 import PageTransition from "../components/PageTransition";
 import StatusSubscription from "../components/StatusSubscription";
@@ -16,6 +15,7 @@ import { PageContext } from "../contexts/page";
 import * as eventHandlers from "../eventHandlers";
 
 import { Actions } from "../utils/apiData";
+import { renderNestedContextProviders } from "../utils/contextHelper";
 
 export interface GrouparooNextAppProps {
   clusterName: Actions.NavigationList["clusterName"];
@@ -48,8 +48,9 @@ export default function GrouparooNextApp(
     };
   }, [props]);
 
-  return (
-    <Injection contextValues={[[PageContext, pageContext]]}>
+  return renderNestedContextProviders(
+    [[PageContext, pageContext]],
+    <>
       <PageTransition />
 
       <Layout hydrationError={hydrationError}>
@@ -59,7 +60,7 @@ export default function GrouparooNextApp(
       {combinedProps.currentTeamMember?.id ? (
         <StatusSubscription {...combinedProps} />
       ) : null}
-    </Injection>
+    </>
   );
 }
 
