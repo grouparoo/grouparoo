@@ -271,8 +271,8 @@ const Page: NextPage<Props & InjectedProps> = ({
       if (success) {
         successHandler.set({ message: "source deleted" });
         router.push(
-          "/model/[modelId]/sources",
-          `/model/${source.modelId}/sources`
+          "/model/[modelId]/overview",
+          `/model/${source.modelId}/overview`
         );
       } else {
         setLoading(false);
