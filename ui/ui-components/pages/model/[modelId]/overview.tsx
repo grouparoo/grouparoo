@@ -11,6 +11,7 @@ import ModelOverviewSampleRecord from "../../../components/model/overview/ModelO
 import ModelOverviewSchedules from "../../../components/model/overview/ModelOverviewSchedules";
 import ModelOverviewSecondarySources from "../../../components/model/overview/ModelOverviewSecondarySources";
 import PageHeader from "../../../components/PageHeader";
+import ModelTabs from "../../../components/tabs/Model";
 import { GrouparooModelContextProvider } from "../../../contexts/grouparooModel";
 import { UseApi } from "../../../hooks/useApi";
 import { Actions, Models } from "../../../utils/apiData";
@@ -61,11 +62,12 @@ const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
         <title>Grouparoo: {model.name}</title>
       </Head>
 
+      <ModelTabs model={model} />
+
       <PageHeader
         iconType="grouparooModel"
         icon={model.icon}
         title={model.name}
-        actions={[<Link href={`/model/${model.id}/edit`}>Edit</Link>]}
       />
       <p>
         Define your {model.name} Model here with Sources, Groups, and

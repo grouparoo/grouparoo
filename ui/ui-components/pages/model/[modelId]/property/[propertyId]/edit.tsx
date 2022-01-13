@@ -26,6 +26,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Page(props) {
   const {
+    model,
     errorHandler,
     successHandler,
     sources,
@@ -36,6 +37,7 @@ export default function Page(props) {
     properties,
     hydrationError,
   }: {
+    model: Models.GrouparooModelType;
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
     sources: Models.SourceType[];
@@ -221,7 +223,7 @@ export default function Page(props) {
         <title>Grouparoo: {property.key}</title>
       </Head>
 
-      <PropertyTabs property={property} source={source} />
+      <PropertyTabs property={property} source={source} model={model} />
 
       <PageHeader
         icon={source.app.icon}
@@ -774,6 +776,10 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
 
   const { sources } = await execApi("get", "/sources");
   const { types } = await execApi("get", `/propertyOptions`);
+  const { model } = await execApi<Actions.ModelView>(
+    "get",
+    `/model/${modelId}`
+  );
 
   let property: Models.PropertyType = {};
   let properties = [];
@@ -814,6 +820,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   }
 
   return {
+    model,
     property,
     properties,
     sources,

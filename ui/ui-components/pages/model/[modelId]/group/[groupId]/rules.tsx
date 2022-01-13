@@ -20,6 +20,7 @@ import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 
 export default function Page(props) {
   const {
+    model,
     errorHandler,
     successHandler,
     properties,
@@ -27,6 +28,7 @@ export default function Page(props) {
     ops,
     topLevelGroupRules,
   }: {
+    model: Models.GrouparooModelType;
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
     properties: Models.PropertyType[];
@@ -157,7 +159,7 @@ export default function Page(props) {
       <Head>
         <title>Grouparoo: {group.name}</title>
       </Head>
-      <GroupTabs group={group} />
+      <GroupTabs group={group} model={model} />
 
       <PageHeader
         title={`${group.name} - Rules`}
@@ -519,6 +521,11 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   const { execApi } = UseApi(ctx);
   const { group } = await execApi("get", `/group/${groupId}`);
   ensureMatchingModel("Group", group.modelId, modelId.toString());
+
+  const { model } = await execApi<Actions.ModelView>(
+    "get",
+    `/model/${modelId}`
+  );
   const { properties } = await execApi("get", `/properties`, {
     state: "ready",
     modelId: group?.modelId,
@@ -527,7 +534,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     "get",
     `/groups/ruleOptions`
   );
-  return { group, properties, ruleLimit, ops, topLevelGroupRules };
+  return { group, model, properties, ruleLimit, ops, topLevelGroupRules };
 };
 
 function rulesAreEqual(a, b) {

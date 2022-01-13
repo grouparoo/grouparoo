@@ -29,7 +29,10 @@ export default function Page(props) {
       Object.assign({}, data)
     );
     if (response?.model) {
-      router.push(`/model/[modelId]/edit`, `/model/${response.model.id}/edit`);
+      router.push(
+        `/model/[modelId]/overview`,
+        `/model/${response.model.id}/overview`
+      );
     } else {
       setLoading(false);
     }
@@ -41,7 +44,7 @@ export default function Page(props) {
         <title>Grouparoo: New Model</title>
       </Head>
 
-      <h1>Add Model</h1>
+      <h1>New Model</h1>
 
       <Form id="form" onSubmit={handleSubmit(onSubmit)}>
         <Form.Group>

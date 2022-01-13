@@ -21,6 +21,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Page(props) {
   const {
+    model,
     errorHandler,
     successHandler,
     properties,
@@ -30,6 +31,7 @@ export default function Page(props) {
     exportArrayProperties,
     hydrationError,
   }: {
+    model: Models.GrouparooModelType;
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
     hydrationError: Error;
@@ -272,7 +274,7 @@ export default function Page(props) {
         <title>Grouparoo: {destination.name}</title>
       </Head>
 
-      <DestinationTabs destination={destination} />
+      <DestinationTabs destination={destination} model={model} />
 
       <PageHeader
         icon={destination.app.icon}
@@ -872,6 +874,10 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     state: "ready",
     modelId: destination?.modelId,
   });
+  const { model } = await execApi<Actions.ModelView>(
+    "get",
+    `/model/${modelId}`
+  );
 
   let mappingOptions = {};
   let destinationTypeConversions = {};
@@ -899,6 +905,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   return {
     destination,
     properties,
+    model,
     mappingOptions,
     destinationTypeConversions,
     exportArrayProperties,

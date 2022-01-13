@@ -22,11 +22,13 @@ import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 
 export default function Page(props) {
   const {
+    model,
     errorHandler,
     successHandler,
     destinationHandler,
     environmentVariableOptions,
   }: {
+    model: Models.GrouparooModelType;
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
     destinationHandler: DestinationHandler;
@@ -145,7 +147,7 @@ export default function Page(props) {
         <title>Grouparoo: {destination.name}</title>
       </Head>
 
-      <DestinationTabs destination={destination} />
+      <DestinationTabs destination={destination} model={model} />
 
       <PageHeader
         icon={destination.app.icon}
@@ -445,6 +447,11 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   const { destinationId, modelId } = ctx.query;
   const { destination } = await execApi("get", `/destination/${destinationId}`);
   ensureMatchingModel("Destination", destination.modelId, modelId.toString());
+
+  const { model } = await execApi<Actions.ModelView>(
+    "get",
+    `/model/${modelId}`
+  );
   const { environmentVariableOptions } = await execApi(
     "get",
     "/destinations/connectionApps"
@@ -453,5 +460,6 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   return {
     destination,
     environmentVariableOptions,
+    model,
   };
 };

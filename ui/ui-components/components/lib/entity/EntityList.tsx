@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   Col,
@@ -10,23 +10,34 @@ import {
   ListGroupItem,
   Row,
 } from "react-bootstrap";
+import EnterpriseLink from "../../GrouparooLink";
 import { useGrouparooModelContext } from "../../../contexts/grouparooModel";
 import { Models } from "../../../utils/apiData";
 import { formatName } from "../../../utils/formatName";
+import { grouparooUiEdition } from "../../../utils/uiEdition";
 import StateBadge from "../../badges/StateBadge";
 import SeparatedItems from "../SeparatedItems";
+
+const getPageForItemType = (itemType: string) => {
+  switch (itemType) {
+    case "schedule":
+      return "schedule";
+    case "source":
+      return "overview";
+    case "group": {
+      return grouparooUiEdition() === "community" ? "members" : "rules";
+    }
+    default:
+      return "edit";
+  }
+};
 
 const renderNameList = function <T extends Models.EntityTypes>(
   items: T[],
   itemType: string,
   model: Models.GrouparooModelType
 ): React.ReactNode {
-  const page =
-    itemType === "schedule"
-      ? "schedule"
-      : itemType === "source"
-      ? "overview"
-      : "edit";
+  const page = getPageForItemType(itemType);
   const itemPath = itemType === "schedule" ? "source" : itemType;
   const style: React.CSSProperties = {
     verticalAlign: "middle",
@@ -35,16 +46,19 @@ const renderNameList = function <T extends Models.EntityTypes>(
     marginBottom: 0,
   };
 
-  const links = items.map((item, index) => {
+  const links = items.map((item) => {
     const itemId =
       itemType === "schedule"
         ? (item as Models.ScheduleType).sourceId
         : item.id;
+    const LinkComponent = itemType === "group" ? Link : EnterpriseLink;
     return (
       <>
-        <Link href={`/model/${model.id}/${itemPath}/${itemId}/${page}`}>
+        <LinkComponent
+          href={`/model/${model.id}/${itemPath}/${itemId}/${page}`}
+        >
           <a>{formatName(item)}</a>
-        </Link>
+        </LinkComponent>
         {item.state !== "ready" && (
           <StateBadge state={item.state} style={style} />
         )}

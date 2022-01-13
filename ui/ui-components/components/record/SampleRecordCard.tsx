@@ -370,11 +370,11 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
                       {isHighlightedProperty || propertyLinkDisabled ? (
                         name
                       ) : (
-                        <Link
+                        <EnterpriseLink
                           href={`/model/${modelId}/property/${property.id}/edit`}
                         >
                           <a>{name}</a>
-                        </Link>
+                        </EnterpriseLink>
                       )}
                       {property.state !== "ready" && (
                         <StateBadge state={property.state} marginBottom={0} />
@@ -418,11 +418,11 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
             ? groups.map((group) => {
                 return (
                   <Fragment key={`group-${group.id}`}>
-                    <Link
+                    <EnterpriseLink
                       href={`/model/${group.modelId}/group/${group.id}/rules`}
                     >
                       {group.name}
-                    </Link>
+                    </EnterpriseLink>
                     <br />
                   </Fragment>
                 );

@@ -20,10 +20,12 @@ import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 
 export default function Page(props) {
   const {
+    model,
     errorHandler,
     successHandler,
     groupHandler,
   }: {
+    model: Models.GrouparooModelType;
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
     groupHandler: GroupHandler;
@@ -94,7 +96,7 @@ export default function Page(props) {
         <title>Grouparoo: {group.name}</title>
       </Head>
 
-      <GroupTabs group={group} />
+      <GroupTabs group={group} model={model} />
 
       <PageHeader
         title={group.name}
@@ -212,5 +214,11 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   const { execApi } = UseApi(ctx);
   const { group } = await execApi("get", `/group/${groupId}`);
   ensureMatchingModel("Group", group.modelId, modelId.toString());
-  return { group };
+
+  const { model } = await execApi<Actions.ModelView>(
+    "get",
+    `/model/${modelId}`
+  );
+
+  return { group, model };
 };

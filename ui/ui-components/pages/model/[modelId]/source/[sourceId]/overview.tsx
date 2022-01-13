@@ -11,7 +11,7 @@ import PropertyAddButton from "../../../../../components/property/Add";
 import PropertyAddMultipleButton from "../../../../../components/property/AddMultiple";
 import SourceTabs from "../../../../../components/tabs/Source";
 import Head from "next/head";
-import { Models } from "../../../../../utils/apiData";
+import { Actions, Models } from "../../../../../utils/apiData";
 import { ErrorHandler } from "../../../../../utils/errorHandler";
 import { SuccessHandler } from "../../../../../utils/successHandler";
 import { formatTimestamp } from "../../../../../utils/formatTimestamp";
@@ -24,6 +24,7 @@ import ManagedCard from "../../../../../components/lib/ManagedCard";
 export default function Page({
   errorHandler,
   successHandler,
+  model,
   source,
   totalSources,
   run,
@@ -31,6 +32,7 @@ export default function Page({
 }: {
   errorHandler: ErrorHandler;
   successHandler: SuccessHandler;
+  model: Models.GrouparooModelType;
   source: Models.SourceType;
   totalSources: number;
   run: Models.RunType;
@@ -70,7 +72,7 @@ export default function Page({
         <title>Grouparoo: {source.name}</title>
       </Head>
 
-      <SourceTabs source={source} />
+      <SourceTabs source={source} model={model} />
 
       <PageHeader
         icon={source.app.icon}
@@ -338,6 +340,11 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   const { source } = await execApi("get", `/source/${sourceId}`);
   ensureMatchingModel("Source", source.modelId, modelId.toString());
 
+  const { model } = await execApi<Actions.ModelView>(
+    "get",
+    `/model/${modelId}`
+  );
+
   const { total: totalSources } = await execApi("get", `/sources`, {
     modelId,
     limit: 1,
@@ -355,5 +362,5 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     run = runs[0];
   }
 
-  return { source, totalSources, run, properties };
+  return { model, source, totalSources, run, properties };
 };

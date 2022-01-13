@@ -12,7 +12,6 @@ import "../components/Icons";
 
 import { Actions } from "../utils/apiData";
 import * as eventHandlers from "../utils/eventHandlers";
-import { getModelFromUrlOrCookie, setModelCookie } from "../utils/modelHelper";
 
 export default function GrouparooWebApp(props) {
   const { Component, pageProps, err, hydrationError } = props;
@@ -20,7 +19,6 @@ export default function GrouparooWebApp(props) {
   const combinedProps = Object.assign({}, pageProps || {}, {
     navigation: props.navigation,
     navigationMode: props.navigationMode,
-    navigationModel: props.navigationModel,
     clusterName: props.clusterName,
     currentTeamMember: props.currentTeamMember,
     ...eventHandlers,
@@ -48,21 +46,14 @@ GrouparooWebApp.getInitialProps = async (appContext: AppContext) => {
     id: null,
   };
 
-  const modelId = getModelFromUrlOrCookie(appContext.ctx);
-
   try {
     const navigationResponse: Actions.NavigationList = await execApi(
       "get",
-      `/navigation`,
-      { modelId }
+      `/navigation`
     );
 
     if (navigationResponse.teamMember) {
       currentTeamMember = navigationResponse.teamMember;
-    }
-
-    if (navigationResponse.navigationModel.value) {
-      setModelCookie(navigationResponse.navigationModel.value, appContext.ctx);
     }
 
     // render page-specific getInitialProps
@@ -89,7 +80,6 @@ GrouparooWebApp.getInitialProps = async (appContext: AppContext) => {
     return {
       ...appProps,
       currentTeamMember,
-      navigationModel: navigationResponse.navigationModel,
       navigationMode: navigationResponse.navigationMode,
       navigation: navigationResponse.navigation,
       clusterName: navigationResponse.clusterName,

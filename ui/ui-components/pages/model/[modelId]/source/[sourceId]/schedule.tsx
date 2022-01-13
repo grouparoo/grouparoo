@@ -27,18 +27,24 @@ export default function Page(props) {
     errorHandler,
     successHandler,
     source,
+    model,
     run,
     pluginOptions,
     filterOptions,
     filterOptionDescriptions,
+    totalProperties,
+    totalSources,
   }: {
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
     source: Models.SourceType;
+    model: Models.GrouparooModelType;
     run: Models.RunType;
     pluginOptions: Actions.ScheduleView["pluginOptions"];
     filterOptions: Actions.ScheduleFilterOptions["options"];
     filterOptionDescriptions: Actions.ScheduleFilterOptions["optionDescriptions"];
+    totalProperties: number;
+    totalSources: number;
   } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
@@ -78,6 +84,13 @@ export default function Page(props) {
       } else {
         setLoading(false);
         successHandler.set({ message: "Schedule Updated" });
+      }
+
+      if (totalSources === 1 && totalProperties === 1) {
+        router.push(
+          "/model/[modelId]/source/[sourceId]/multipleProperties",
+          `/model/${source.modelId}/source/${source.id}/multipleProperties`
+        );
       }
     } else {
       setLoading(false);
@@ -138,12 +151,13 @@ export default function Page(props) {
   }
 
   let rowChanges = false;
+
   return (
     <>
       <Head>
         <title>Grouparoo: {source.name}</title>
       </Head>
-      <SourceTabs source={source} />
+      <SourceTabs source={source} model={model} />
       <PageHeader
         icon={source.app.icon}
         title={`${source.name} - Schedule`}
@@ -609,6 +623,12 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   let filterOptions = {};
   let filterOptionDescriptions = {};
   ensureMatchingModel("Source", source.modelId, modelId.toString());
+
+  const { model } = await execApi<Actions.ModelView>(
+    "get",
+    `/model/${modelId}`
+  );
+
   const { schedule, pluginOptions } = await execApi(
     "get",
     `/schedule/${source.schedule.id}`
@@ -625,12 +645,26 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     limit: 1,
   });
 
+  const { total: totalSources } = await execApi<Actions.SourcesList>(
+    "get",
+    "/sources",
+    { modelId, limit: 1 }
+  );
+  const { total: totalProperties } = await execApi<Actions.PropertiesList>(
+    "get",
+    `/properties`,
+    { sourceId, modelId, limit: 1 }
+  );
+
   return {
     source,
+    model,
     schedule,
     pluginOptions,
     filterOptions,
     filterOptionDescriptions,
     run: runs ? runs[0] : null,
+    totalSources,
+    totalProperties,
   };
 };

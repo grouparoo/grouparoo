@@ -146,7 +146,7 @@ export default function ImportList(props) {
                     )}
                     <br />
                     Model:{" "}
-                    <Link href={`/model/${_import.modelId}/edit`}>
+                    <Link href={`/model/${_import.modelId}/overview`}>
                       <a>{_import.modelId}</a>
                     </Link>
                     <br />

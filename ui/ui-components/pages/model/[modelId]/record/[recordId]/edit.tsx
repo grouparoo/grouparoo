@@ -24,12 +24,14 @@ import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 
 export default function Page(props) {
   const {
+    model,
     errorHandler,
     successHandler,
     properties,
     recordHandler,
     allGroups,
   }: {
+    model: Models.GrouparooModelType;
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
     properties: Models.PropertyType[];
@@ -172,7 +174,7 @@ export default function Page(props) {
         <title>Grouparoo: {getRecordDisplayName(record)}</title>
       </Head>
 
-      <RecordTabs record={record} />
+      <RecordTabs record={record} model={model} />
 
       <PageHeader
         title={uniqueRecordProperties
@@ -376,11 +378,26 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     `/record/${recordId}`
   );
   ensureMatchingModel("Record", record?.modelId, modelId.toString());
+
+  const { model } = await execApi<Actions.ModelView>(
+    "get",
+    `/model/${modelId}`
+  );
   const { properties } = await execApi("get", `/properties`, {
     modelId: record?.modelId,
   });
   const { groups: allGroups } = await execApi("get", `/groups`);
   const { apps } = await execApi("get", `/apps`);
   const { sources } = await execApi("get", `/sources`);
-  return { record, properties, groups, allGroups, destinations, sources, apps };
+
+  return {
+    record,
+    properties,
+    model,
+    groups,
+    allGroups,
+    destinations,
+    sources,
+    apps,
+  };
 };

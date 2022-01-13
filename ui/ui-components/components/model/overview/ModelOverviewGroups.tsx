@@ -5,13 +5,16 @@ import EntityInfoHeader from "../../lib/entity/EntityInfoHeader";
 import LinkButton from "../../LinkButton";
 import { useGrouparooModelContext } from "../../../contexts/grouparooModel";
 import EntityList from "../../lib/entity/EntityList";
+import { grouparooUiEdition } from "../../../utils/uiEdition";
 
 const GroupInfo: React.FC<{ group: Models.GroupType }> = ({ group }) => {
   return (
     <EntityInfoContainer>
       <EntityInfoHeader
         entity={group}
-        href={`/model/${group.modelId}/group/${group.id}/rules`}
+        href={`/model/${group.modelId}/group/${group.id}/${
+          grouparooUiEdition() === "community" ? "members" : "rules"
+        }`}
       />
       <div>Records: {group.recordsCount || 0}</div>
     </EntityInfoContainer>

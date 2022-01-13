@@ -9,18 +9,18 @@ import { singular } from "pluralize";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { grouparooUiEdition } from "../../utils/uiEdition";
 
+const editPagesForCommunityEdition: readonly string[] = ["records"];
+
 export default function FindObject(props) {
   const router = useRouter();
   const {
     errorHandler,
-    navigationModel,
   }: {
     errorHandler: ErrorHandler;
-    navigationModel: Actions.NavigationList["navigationModel"];
   } = props;
   const { execApi } = UseApi(props, errorHandler);
   const [error, setError] = useState<string>(null);
-  const [records, setRecords] = useState<string[]>([]);
+  const [results, setResults] = useState<{ name: string; href: string }[]>();
 
   const id = router.query.id?.toString();
 
@@ -39,27 +39,41 @@ export default function FindObject(props) {
 
   async function load() {
     const response: Actions.ObjectFind = await execApi("get", `/object/${id}`);
-    if (response.records.length === 0) {
+    const table: string = response?.records[0]?.tableName?.toLowerCase();
+    const itemsFound: number = response?.records?.length ?? 0;
+    const uiEdition = grouparooUiEdition();
+
+    if (itemsFound === 0) {
       setError(`Cannot find object "${id}"`);
     } else if (
-      response.records.length === 1 &&
-      grouparooUiEdition() === "enterprise"
+      itemsFound === 1 &&
+      (uiEdition === "enterprise" ||
+        editPagesForCommunityEdition.includes(table))
     ) {
-      const table = response.records[0].tableName.toLowerCase();
       const detailPage = detailPages[table] || "edit";
       if (typeof detailPage === "function") {
         await detailPage(id);
       } else {
-        router.push(`/${singular(table)}/${id}/${detailPage}`);
+        router.replace(`/${singular(table)}/${id}/${detailPage}`);
       }
-    } else if (
-      response.records.length === 1 &&
-      grouparooUiEdition() === "community"
-    ) {
-      const listPage = getListPage(response.records[0].tableName.toLowerCase());
-      router.push(listPage);
+    } else if (itemsFound === 1 && uiEdition === "community") {
+      await replaceWithListPage(table);
     } else {
-      setRecords(response.records.map((r) => r.tableName.toLowerCase()));
+      const isEnterpriseUI = uiEdition === "enterprise";
+      const tableNames = response.records.map((r) => r.tableName.toLowerCase());
+
+      const nextResults: { name: string; href: string }[] = [];
+      for (const name of tableNames) {
+        const detailPage = detailPages[name] || "edit";
+        const href =
+          isEnterpriseUI && typeof detailPage === "string"
+            ? `/${singular(name)}/${id}/${detailPage}`
+            : await getListPage(name);
+
+        nextResults.push({ name, href });
+      }
+
+      setResults(nextResults);
     }
   }
 
@@ -123,69 +137,59 @@ export default function FindObject(props) {
     };
   }
 
-  function getListPage(tableName: string) {
-    const byModel = [
-      "records",
-      "groups",
-      "destinations",
-      "sources",
-      "properties",
-      "schedules",
-    ];
-    if (byModel.includes(tableName) && props.navigationModel.value) {
-      return `/model/${navigationModel.value}/${tableName}`;
+  async function getListPage(topic: string) {
+    const singularTopic = singular(topic);
+    const response = await execApi("get", `/${singularTopic}/${id}`);
+
+    if (!response || !response[singularTopic]) {
+      setError(`Cannot find object "${id}"`);
+      return undefined;
     }
 
-    return `/${tableName}`;
+    const page = topic === "records" ? topic : "overview";
+    const modelId = response[singularTopic].modelId;
+    return `/model/${modelId}/${page}`;
   }
 
-  if (records.length > 0) {
-    return (
-      <>
-        <h2>Multiple objects found:</h2>
-        <table>
-          <tbody>
-            {records.map((r) => {
-              const detailPage = detailPages[r] || "edit";
-              return (
-                <tr>
-                  <td>{id} in </td>
-                  <td>
-                    <Link
-                      href={
-                        grouparooUiEdition() === "enterprise" &&
-                        typeof detailPage === "string"
-                          ? `/${singular(r)}/${id}/${detailPage}`
-                          : getListPage(r)
-                      }
-                    >
-                      <a>{r}</a>
-                    </Link>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </>
-    );
+  async function replaceWithListPage(topic: string) {
+    const href = await getListPage(topic);
+    if (href) {
+      const page = topic === "records" ? topic : "overview";
+      router.replace(`/model/[modelId]/${page}`, href);
+    }
   }
 
-  return (
+  return results?.length > 0 ? (
     <>
-      {error ? (
-        <Card border={"warning"}>
-          <Card.Body>
-            <blockquote className="blockquote mb-0">
-              <p>{error}</p>
-            </blockquote>
-          </Card.Body>
-        </Card>
-      ) : (
-        <div style={{ textAlign: "center" }}>
-          <Loader />{" "}
-        </div>
-      )}
+      <h2>Multiple objects found:</h2>
+      <table>
+        <tbody>
+          {results.map(({ name, href }) => {
+            return (
+              <tr>
+                <td>{id} in </td>
+                <td>
+                  <Link href={href}>
+                    <a>{name}</a>
+                  </Link>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </>
+  ) : error ? (
+    <Card border={"warning"}>
+      <Card.Body>
+        <blockquote className="blockquote mb-0">
+          <p>{error}</p>
+        </blockquote>
+      </Card.Body>
+    </Card>
+  ) : (
+    <div style={{ textAlign: "center" }}>
+      <Loader />{" "}
+    </div>
   );
 }

@@ -4,8 +4,10 @@ import { grouparooUiEdition } from "../../utils/uiEdition";
 
 export default function DestinationTabs({
   destination,
+  model,
 }: {
   destination: Models.DestinationType;
+  model: Models.GrouparooModelType;
 }) {
   let tabs = [];
   switch (grouparooUiEdition()) {
@@ -24,6 +26,11 @@ export default function DestinationTabs({
   }
 
   return (
-    <Tabs name={destination.name} draftType={destination.type} tabs={tabs} />
+    <Tabs
+      name={destination.name}
+      draftType={destination.type}
+      tabs={tabs}
+      scopeName={model.name}
+    />
   );
 }

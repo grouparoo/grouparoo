@@ -4,6 +4,8 @@ import { plugin, SetupStep, GrouparooModel } from "../../src";
 import { SessionCreate } from "../../src/actions/session";
 import { SetupStepEdit, SetupStepsList } from "../../src/actions/setupSteps";
 
+const sharedModelId = "mod_abc123";
+
 describe("actions/setupSteps", () => {
   helper.grouparooTestServer({ truncate: true, resetSettings: true });
 
@@ -132,18 +134,20 @@ describe("actions/setupSteps", () => {
       let modelStep = setupStepsNoModelId.find(
         (s) => s.key === `configure_a_model`
       );
-      expect(modelStep.href).toEqual(`/models`);
+      expect(modelStep.href).toEqual("/model/new");
 
-      connection.params = { csrfToken, modelId: "mod_abc123" };
+      await helper.factories.model({ id: sharedModelId });
+
+      connection.params = { csrfToken, modelId: sharedModelId };
       const { setupSteps: setupStepsWithModelId } =
         await specHelper.runAction<SetupStepsList>(
           "setupSteps:list",
           connection
         );
       modelStep = setupStepsWithModelId.find(
-        (s) => s.key === `create_a_destination`
+        (s) => s.key === `configure_a_model`
       );
-      expect(modelStep.href).toEqual(`/model/mod_abc123/overview`);
+      expect(modelStep.href).toEqual(`/model/${sharedModelId}/overview`);
     });
 
     test("destination setupSteps href changes based on modelId", async () => {
@@ -156,9 +160,11 @@ describe("actions/setupSteps", () => {
       let destinationStep = setupStepsNoModelId.find(
         (s) => s.key === `create_a_destination`
       );
-      expect(destinationStep.href).toEqual(`/models`);
+      expect(destinationStep.href).toEqual("/model/new");
 
-      connection.params = { csrfToken, modelId: "mod_abc123" };
+      await helper.factories.model({ id: sharedModelId });
+
+      connection.params = { csrfToken, modelId: sharedModelId };
       const { setupSteps: setupStepsWithModelId } =
         await specHelper.runAction<SetupStepsList>(
           "setupSteps:list",
@@ -167,7 +173,7 @@ describe("actions/setupSteps", () => {
       destinationStep = setupStepsWithModelId.find(
         (s) => s.key === `create_a_destination`
       );
-      expect(destinationStep.href).toEqual(`/model/mod_abc123/overview`);
+      expect(destinationStep.href).toEqual(`/model/${sharedModelId}/overview`);
     });
   });
 });

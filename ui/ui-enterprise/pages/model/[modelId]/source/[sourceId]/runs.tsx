@@ -13,6 +13,7 @@ import { SuccessHandler } from "@grouparoo/ui-components/utils/successHandler";
 import { RunsHandler } from "@grouparoo/ui-components/utils/runsHandler";
 import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
 import LoadingButton from "@grouparoo/ui-components/components/LoadingButton";
+import { ensureMatchingModel } from "@grouparoo/ui-components/utils/ensureMatchingModel";
 
 export default function Page(props) {
   const {
@@ -20,11 +21,13 @@ export default function Page(props) {
     successHandler,
     runsHandler,
     source,
+    model,
   }: {
     errorHandler: ErrorHandler;
     successHandler: SuccessHandler;
     runsHandler: RunsHandler;
     source: Models.SourceType;
+    model: Models.GrouparooModelType;
   } = props;
   const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
@@ -51,7 +54,7 @@ export default function Page(props) {
         <title>Grouparoo: {source.name}</title>
       </Head>
 
-      <SourceTabs source={source} />
+      <SourceTabs source={source} model={model} />
 
       <RunsList
         header={
@@ -95,9 +98,16 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { sourceId } = ctx.query;
+  const { sourceId, modelId } = ctx.query;
   const { execApi } = UseApi(ctx);
   const { source } = await execApi("get", `/source/${sourceId}`);
+  ensureMatchingModel("Source", source.modelId, modelId.toString());
+
+  const { model } = await execApi<Actions.ModelView>(
+    "get",
+    `/model/${modelId}`
+  );
   const runsListInitialProps = await RunsList.hydrate(ctx, { topic: "source" });
-  return { source, ...runsListInitialProps };
+
+  return { source, model, ...runsListInitialProps };
 };

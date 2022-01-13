@@ -1,4 +1,4 @@
-import Link from "next/link";
+import EnterpriseLink from "../../GrouparooLink";
 import { Models } from "../../../utils/apiData";
 import { formatSchedule } from "../../../utils/formatSchedule";
 import StateBadge from "../../badges/StateBadge";
@@ -24,9 +24,11 @@ const renderSchedule = (
   if (schedule) {
     return (
       <>
-        <Link href={`/model/${source.modelId}/source/${source.id}/schedule`}>
+        <EnterpriseLink
+          href={`/model/${source.modelId}/source/${source.id}/schedule`}
+        >
           {scheduleNode}
-        </Link>
+        </EnterpriseLink>
         <StateBadge state={schedule.state} marginBottom={0} />
       </>
     );
@@ -46,6 +48,7 @@ const SourceInfo: React.FC<{
       <EntityInfoHeader
         entity={source}
         href={`/model/${source.modelId}/source/${source.id}/overview`}
+        linkComponent={EnterpriseLink}
       />
       <div>{connection?.displayName}</div>
       {isPrimarySource && <div>Primary Key: {renderMapping(mapping)}</div>}

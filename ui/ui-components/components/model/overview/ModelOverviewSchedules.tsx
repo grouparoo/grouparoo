@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import EnterpriseLink from "../../GrouparooLink";
 import { Models } from "../../../utils/apiData";
 import { formatName } from "../../../utils/formatName";
 import { formatSchedule } from "../../../utils/formatSchedule";
@@ -19,6 +20,7 @@ const ScheduleInfo: React.FC<{
       <EntityInfoHeader
         entity={schedule}
         href={`/model/${source.modelId}/source/${source.id}/schedule`}
+        linkComponent={EnterpriseLink}
       />
       <div>Source: {formatName(source)}</div>
       <div>Schedule: {formatSchedule(schedule)}</div>

@@ -1,14 +1,31 @@
+import { useMemo } from "react";
 import Tabs from "../Tabs";
 import { Models } from "../../utils/apiData";
 import { grouparooUiEdition } from "../../utils/uiEdition";
 
-export default function SourceTabs({ source }: { source: Models.SourceType }) {
-  const tabs = ["overview", "edit"];
+interface Props {
+  source: Models.SourceType;
+  model: Models.GrouparooModelType;
+}
 
-  if (source.schedule) {
-    tabs.push("schedule");
-    if (grouparooUiEdition() === "enterprise") tabs.push("runs");
-  }
+export default function SourceTabs({ source, model }: Props) {
+  const tabs = useMemo<string[]>(() => {
+    const tabs = ["overview", "edit"];
 
-  return <Tabs name={source.name} draftType={source.type} tabs={tabs} />;
+    if (source.schedule) {
+      tabs.push("schedule");
+      if (grouparooUiEdition() === "enterprise") tabs.push("runs");
+    }
+
+    return tabs;
+  }, [source.schedule]);
+
+  return (
+    <Tabs
+      name={source.name}
+      draftType={source.type}
+      tabs={tabs}
+      scopeName={model.name}
+    />
+  );
 }

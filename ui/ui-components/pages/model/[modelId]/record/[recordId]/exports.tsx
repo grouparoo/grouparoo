@@ -3,7 +3,7 @@ import { UseApi } from "../../../../../hooks/useApi";
 import ExportsList from "../../../../../components/export/List";
 import { getRecordDisplayName } from "../../../../../components/record/GetRecordDisplayName";
 import RecordTabs from "../../../../../components/tabs/Record";
-import { Models } from "../../../../../utils/apiData";
+import { Actions, Models } from "../../../../../utils/apiData";
 import PageHeader from "../../../../../components/PageHeader";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import StateBadge from "../../../../../components/badges/StateBadge";
@@ -13,9 +13,13 @@ import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 export default function Page(props) {
   const {
     record,
+    model,
     properties,
-  }: { record: Models.GrouparooRecordType; properties: Models.PropertyType[] } =
-    props;
+  }: {
+    record: Models.GrouparooRecordType;
+    model: Models.GrouparooModelType;
+    properties: Models.PropertyType[];
+  } = props;
 
   const uniqueRecordProperties = [];
   let email: string;
@@ -35,7 +39,7 @@ export default function Page(props) {
         <title>Grouparoo: {getRecordDisplayName(record)}</title>
       </Head>
 
-      <RecordTabs record={record} />
+      <RecordTabs record={record} model={model} />
 
       <ExportsList
         header={
@@ -63,7 +67,11 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   const { recordId, modelId } = ctx.query;
   const { record } = await execApi("get", `/record/${recordId}`);
   ensureMatchingModel("Record", record?.modelId, modelId.toString());
+  const { model } = await execApi<Actions.ModelView>(
+    "get",
+    `/model/${modelId}`
+  );
   const { properties } = await execApi("get", `/properties`, { modelId });
   const exportListInitialProps = await ExportsList.hydrate(ctx);
-  return { record, properties, ...exportListInitialProps };
+  return { record, model, properties, ...exportListInitialProps };
 };

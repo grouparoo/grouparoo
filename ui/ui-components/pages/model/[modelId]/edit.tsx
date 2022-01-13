@@ -59,7 +59,7 @@ export default function Page(props) {
       );
       if (response?.success) {
         successHandler.set({ message: "Model Deleted" });
-        router.push("/models");
+        router.push("/");
       } else {
         setLoading(false);
       }

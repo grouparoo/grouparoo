@@ -78,7 +78,7 @@ export class GrouparooModel extends LoggedModel<GrouparooModel> {
       case "account":
         return "building";
       case "custom":
-        return "cogs";
+        return "database";
       default:
         throw new Error(`no icon for ${this.type} model`);
     }

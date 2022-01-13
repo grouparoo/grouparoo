@@ -18,27 +18,27 @@ import { SetupStepHandler } from "../utils/setupStepsHandler";
 import { SessionHandler } from "../utils/sessionHandler";
 import { StatusHandler } from "../utils/statusHandler";
 import { truncate } from "../utils/truncate";
-import { onChangeModelId } from "../utils/modelHelper";
 import LinkButton from "./LinkButton";
 import { grouparooUiEdition } from "../utils/uiEdition";
 
-export const navLiStyle = { marginTop: 20, marginBottom: 20 };
+export const navLiStyle: React.CSSProperties = {
+  marginTop: 16,
+  marginBottom: 16,
+};
 
-export const navIconStyle = {
+export const navIconStyle: React.CSSProperties = {
   fontSize: 18,
   fontWeight: 300,
   paddingLeft: 0,
   marginLeft: 0,
-  marginRight: 10,
   color: "white",
   textDecoration: "none",
 };
 
-export const iconConstrainedStyle = { width: 20 };
+export const iconConstrainedStyle: React.CSSProperties = { width: 20 };
 
 export default function Navigation(props) {
   const {
-    navigationModel,
     navigationMode,
     navigation,
     clusterName,
@@ -52,7 +52,6 @@ export default function Navigation(props) {
     navigationMode: Actions.NavigationList["navigationMode"];
     navigation: Actions.NavigationList["navigation"];
     clusterName: { value: string; default: boolean };
-    navigationModel: Actions.NavigationList["navigationModel"];
     navExpanded: boolean;
     toggleNavExpanded: () => {};
     errorHandler: ErrorHandler;
@@ -60,13 +59,13 @@ export default function Navigation(props) {
     sessionHandler: SessionHandler;
     statusHandler: StatusHandler;
   } = props;
+  const uiEdition = grouparooUiEdition();
   const { execApi } = UseApi(props, errorHandler);
   const router = useRouter();
   const [teamMember, setTeamMember] = useState(props.currentTeamMember);
   const [hasBeenCollapsed, setHasBeenCollapsed] = useState(!navExpanded);
   const [expandPlatformMenu, setExpandPlatformMenu] = useState(false);
   const [expandAccountMenu, setExpandAccountMenu] = useState(false);
-  const subMenuGreeting = `Hello ${teamMember ? teamMember.firstName : ""} »`;
   const logoLink = teamMember?.id ? "/dashboard" : "/";
 
   useEffect(() => {
@@ -122,7 +121,7 @@ export default function Navigation(props) {
 
   if (!navExpanded && !hasBeenCollapsed) setHasBeenCollapsed(true);
 
-  const uiPlugin = `@grouparoo/ui-${grouparooUiEdition()}`;
+  const uiPlugin = `@grouparoo/ui-${uiEdition}`;
   return (
     <div
       id="navigation"
@@ -164,9 +163,9 @@ export default function Navigation(props) {
               <a>
                 <Image
                   style={{
-                    maxHeight: 50,
-                    marginTop: 30,
-                    marginBottom: 20,
+                    maxHeight: 32,
+                    marginTop: 16,
+                    marginBottom: 16,
                   }}
                   src="/public/images/logo/logo.svg"
                 />
@@ -205,60 +204,35 @@ export default function Navigation(props) {
           id="navBottomSection"
           style={{ paddingLeft: 20, paddingRight: 20 }}
         >
-          <ul style={{ padding: 0, margin: 0 }}>
+          <ul style={{ padding: 0, margin: 0, listStyleType: "none" }}>
             {navigation?.navigationItems.map((nav, idx) => {
               if (nav.type === "link") {
                 return (
-                  <Fragment key={nav.href}>
-                    <HighlightingNavLink
-                      href={nav.href}
-                      mainPathSectionIdx={nav.mainPathSectionIdx ?? 1}
-                      text={
-                        <>
-                          {nav.title}
-                          {nav.title === "Runs" ? (
-                            <>
-                              {" "}
-                              <RunningRunsBadge statusHandler={statusHandler} />
-                            </>
-                          ) : null}
-                        </>
-                      }
-                      icon={nav.icon}
-                      idx={idx}
-                    />
-                  </Fragment>
-                );
-              } else if (nav.type === "modelMenu") {
-                return (
-                  <Fragment key={idx}>
-                    <Form.Control
-                      name="selectedModel"
-                      as="select"
-                      value={navigationModel.value ?? "_none"}
-                      style={{ marginTop: 20 }}
-                      disabled={navigationModel.options.length === 0}
-                      onChange={(
-                        event: React.ChangeEvent<HTMLInputElement>
-                      ) => {
-                        onChangeModelId(event.target.value);
-                      }}
-                    >
-                      {navigationModel.options.length === 0 ? (
-                        <option value="_none" disabled>
-                          (no models)
-                        </option>
-                      ) : null}
-                      {navigationModel.options.map((m) => (
-                        <option value={m.id} key={`model-${m.id}`}>
-                          {m.name}
-                        </option>
-                      ))}
-                    </Form.Control>
-                  </Fragment>
+                  <HighlightingNavLink
+                    key={nav.href}
+                    href={nav.href}
+                    mainPathSectionIdx={nav.mainPathSectionIdx ?? 1}
+                    text={
+                      <>
+                        {nav.title}
+                        {nav.title === "Runs" ? (
+                          <>
+                            {" "}
+                            <RunningRunsBadge statusHandler={statusHandler} />
+                          </>
+                        ) : null}
+                      </>
+                    }
+                    icon={nav.icon}
+                    small={nav.small}
+                  />
                 );
               } else if (nav.type === "divider") {
-                return <li key={idx} style={navLiStyle} />;
+                return (
+                  <li key={idx}>
+                    <hr className="dark" key={`separator-${idx}`} />
+                  </li>
+                );
               } else if (nav.type === "subNavMenu") {
                 return (
                   <li style={navLiStyle} key={idx}>
@@ -283,6 +257,7 @@ export default function Navigation(props) {
                         </span>
                         <span
                           style={{
+                            marginLeft: 4,
                             fontSize: 18,
                             fontWeight: 300,
                             paddingLeft: 0,
@@ -290,6 +265,9 @@ export default function Navigation(props) {
                           }}
                         >
                           {nav.title}{" "}
+                          <FontAwesomeIcon
+                            icon={`caret-${expandPlatformMenu ? "up" : "down"}`}
+                          />{" "}
                           {!expandPlatformMenu ? (
                             <ResqueFailedCountBadge
                               navigationMode={navigationMode}
@@ -301,8 +279,7 @@ export default function Navigation(props) {
                               navigationMode={navigationMode}
                               statusHandler={statusHandler}
                             />
-                          ) : null}{" "}
-                          »
+                          ) : null}
                         </span>
                         <div style={{ padding: 6 }} />
                       </Accordion.Toggle>
@@ -312,7 +289,7 @@ export default function Navigation(props) {
                             if (nav.type === "link") {
                               return (
                                 <p
-                                  style={{ paddingLeft: 35 }}
+                                  style={{ paddingLeft: 30 }}
                                   key={`platform-dropdown-${platformIdx}`}
                                 >
                                   <Link href={nav.href}>
@@ -352,7 +329,7 @@ export default function Navigation(props) {
           </ul>
         </div>
       </div>
-      <div className={grouparooUiEdition() === "config" ? "mb-5" : null}>
+      <div className={uiEdition === "config" ? "mb-5" : null}>
         <div
           id="bottomNavigationMenuCTA"
           style={{
@@ -368,6 +345,7 @@ export default function Navigation(props) {
             href="https://www.grouparoo.com/chat"
             target="_blank"
             className="col-12 mx-auto font-weight-light"
+            size="sm"
           >
             <FontAwesomeIcon
               style={iconConstrainedStyle}
@@ -408,13 +386,16 @@ export default function Navigation(props) {
                     fontWeight: 300,
                   }}
                 >
-                  {subMenuGreeting}
+                  Hello {teamMember ? teamMember.firstName : ""}{" "}
+                  <FontAwesomeIcon
+                    icon={`caret-${expandAccountMenu ? "up" : "down"}`}
+                  />
                 </span>
               </Accordion.Toggle>
               <Accordion.Collapse eventKey="1">
                 <div
                   style={{
-                    marginLeft: 10,
+                    marginLeft: 15,
                   }}
                 >
                   {navigation?.bottomMenuItems.map((nav, idx) => {
@@ -427,7 +408,13 @@ export default function Navigation(props) {
                         </p>
                       );
                     } else if (nav.type === "divider") {
-                      return <hr key={`bottom-dropdown-${idx}`} />;
+                      return (
+                        <hr
+                          key={`bottom-dropdown-${idx}`}
+                          className="dark"
+                          style={{ marginRight: 35 }}
+                        />
+                      );
                     }
                   })}
                 </div>

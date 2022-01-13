@@ -7,24 +7,28 @@ describe("<PropertyTab />", () => {
 
   const property = { key: "Email" };
   const source = { name: "User Table" };
+  const model = { name: "Users", id: "users_123" };
 
   beforeEach(async () => {
     useRouter.mockImplementationOnce(() => ({
       pathname: "/model/[modelId]/property/[propertyId]/edit",
-      asPath: "/model/xyz321/property/abc123/edit",
+      asPath: `/model/${model.id}/property/abc123/edit`,
     }));
 
-    render(<PropertyTab property={property} source={source} />);
+    render(<PropertyTab property={property} source={source} model={model} />);
   });
 
-  it("renders the plural word properly", async () => {
-    const link = screen.getByRole("link", { name: "Properties" });
-    expect(link).toHaveAttribute("href", "/model/xyz321/properties");
+  it("renders the model link properly", async () => {
+    const link = screen.getByRole("link", { name: model.name });
+    expect(link).toHaveAttribute("href", `/model/${model.id}/overview`);
   });
 
   it("shows the property key", () => {
     const link = screen.getByRole("link", { name: "Email" });
-    expect(link).toHaveAttribute("href", "/model/xyz321/property/abc123/edit");
+    expect(link).toHaveAttribute(
+      "href",
+      `/model/${model.id}/property/abc123/edit`
+    );
   });
 });
 
