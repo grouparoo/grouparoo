@@ -86,7 +86,7 @@ export const getSetupStepDescriptions = (modelId?: string) => {
       title: "Define your Model Data",
       description:
         "Create Sources and Properties to define the data in your Grouparoo Model.",
-      href: modelId ? `/model/${modelId}/overview` : "/",
+      href: modelId ? `/model/${modelId}/overview` : "/model/new",
       cta: "Configure the Model",
       helpLink: `${configURL}/sources`,
       check: async () => {
@@ -102,7 +102,7 @@ export const getSetupStepDescriptions = (modelId?: string) => {
       title: "Create a Destination",
       description:
         "Create a Destination to sync your Records and Group Memberships.  Grouparoo will automatically send all new information to the Destinations relevant to each Record.",
-      href: modelId ? `/model/${modelId}/overview` : "/",
+      href: modelId ? `/model/${modelId}/overview` : "/model/new",
       cta: "Add a Destination",
       helpLink: `${configURL}/destinations`,
       check: async () => {

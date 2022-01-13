@@ -134,7 +134,7 @@ describe("actions/setupSteps", () => {
       let modelStep = setupStepsNoModelId.find(
         (s) => s.key === `configure_a_model`
       );
-      expect(modelStep.href).toEqual(`/`);
+      expect(modelStep.href).toEqual("/model/new");
 
       await helper.factories.model({ id: sharedModelId });
 
@@ -160,7 +160,7 @@ describe("actions/setupSteps", () => {
       let destinationStep = setupStepsNoModelId.find(
         (s) => s.key === `create_a_destination`
       );
-      expect(destinationStep.href).toEqual(`/`);
+      expect(destinationStep.href).toEqual("/model/new");
 
       await helper.factories.model({ id: sharedModelId });
 
