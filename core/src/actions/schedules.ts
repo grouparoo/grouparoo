@@ -239,6 +239,7 @@ export class ScheduleEdit extends AuthenticatedAction {
       name: params.name,
       confirmRecords: params.confirmRecords,
       incremental: params.incremental,
+      refreshEnabled: params.refreshEnabled,
     });
 
     await ConfigWriter.run();

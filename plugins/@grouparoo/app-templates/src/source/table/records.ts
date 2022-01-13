@@ -31,6 +31,7 @@ export const getRecords: GetRecordsMethod = ({ getChangedRows }) => {
     highWaterMark,
     sourceOffset,
     scheduleFilters,
+    schedule,
   }) => {
     const { tableName, highWaterMarkCondition } = await getChangeVariables({
       run,
@@ -66,6 +67,7 @@ export const getRecords: GetRecordsMethod = ({ getChangedRows }) => {
       highWaterMarkKey,
       highWaterMarkCondition,
       matchConditions,
+      incremental: schedule.incremental,
     });
 
     let nextSourceOffset = 0;

@@ -122,6 +122,7 @@ export interface GetChangedRowsMethod<AppConnection = any> {
     highWaterMarkAndSortColumnASC: string;
     secondarySortColumnASC: string;
     matchConditions: MatchCondition[];
+    incremental: boolean;
     highWaterMarkKey: string; // for the result in the returned row
   }): Promise<DataResponseRow[]>;
 }

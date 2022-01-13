@@ -17,6 +17,7 @@ export interface GetChangedRowsMethod<ConnectionType = any> {
     limit: number;
     offset: number;
     sourceOptions?: SimpleSourceOptions;
+    incremental: boolean;
   }): Promise<DataResponseRow[]>;
 }
 
@@ -30,6 +31,7 @@ export const getRecordsMethod = (getChangedRows: GetChangedRowsMethod) => {
     appOptions,
     properties,
     sourceOptions,
+    schedule,
   }) => {
     let offset = highWaterMark.offset
       ? parseInt(highWaterMark.offset.toString())
@@ -46,6 +48,7 @@ export const getRecordsMethod = (getChangedRows: GetChangedRowsMethod) => {
       limit,
       offset,
       connection,
+      incremental: schedule.incremental,
     });
 
     const property = properties.find(
