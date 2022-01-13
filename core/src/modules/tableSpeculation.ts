@@ -1,6 +1,7 @@
 import { GrouparooModel, Option } from "..";
 import { Property, PropertyTypes } from "../models/Property";
 import { Source } from "../models/Source";
+import { ConfigWriter } from "../modules/configWriter";
 
 export namespace TableSpeculation {
   const uniqueMatchers = [
@@ -67,7 +68,7 @@ export namespace TableSpeculation {
   ): string {
     for (const property of existingProperties) {
       if (property.key === key) {
-        return `${model.name}_${key}`;
+        return `${ConfigWriter.generateId(model.name)}_${key}`;
       }
     }
     return key;
