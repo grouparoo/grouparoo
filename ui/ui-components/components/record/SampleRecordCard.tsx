@@ -1,5 +1,11 @@
 import Link from "next/link";
-import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { Card, Col, Row, Table } from "react-bootstrap";
 import EnterpriseLink from "../../components/GrouparooLink";
 import { ApiHook } from "../../hooks/useApi";
@@ -17,7 +23,7 @@ import RecordImageFromEmail from "../visualizations/RecordImageFromEmail";
 import AddSampleRecordModal from "./AddSampleRecordModal";
 import ArrayRecordPropertyList from "./ArrayRecordPropertyList";
 
-type RecordType =
+export type RecordType =
   | Models.GrouparooRecordType
   | Models.DestinationRecordPreviewType;
 
@@ -43,7 +49,8 @@ export interface SampleRecordCardProps {
   warning?: string;
 }
 
-const isConfigUI = grouparooUiEdition() === "config";
+// This is exported so we can manipulate it in tests, but is unused elsewhere.
+export const isConfigUI = grouparooUiEdition() === "config";
 
 const getCachedSampleRecordId = (modelId: string): string => {
   return globalThis.localStorage?.getItem(
@@ -173,7 +180,14 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
     }
 
     setLoading(false);
-  }, [recordId, saveRecord, execApi, modelId, fetchRecord]);
+  }, [
+    recordId,
+    allowFetchWithoutRecordId,
+    fetchRecord,
+    modelId,
+    execApi,
+    saveRecord,
+  ]);
 
   const sortedPropertyKeys = useMemo(() => {
     const id = highlightProperty?.id;
@@ -186,7 +200,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
             : a.localeCompare(b)
         )
       : undefined;
-  }, [record, highlightProperty, allowFetchWithoutRecordId]);
+  }, [highlightProperty?.id, record]);
 
   useEffect(() => {
     if (prevReloadKey !== reloadKey) {
@@ -205,7 +219,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
       setHasRecords(true);
       setLoading(false);
     }
-  }, [record, modelId]);
+  }, [record, modelId, prevModelId]);
 
   useEffect(() => {
     if (
@@ -232,21 +246,27 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
       (property) => property.type === "email" && property.values.length > 0
     );
 
-    return emailProperty ? emailProperty.values[0].toString() : undefined;
+    return emailProperty?.values?.[0]?.toString() ?? undefined;
   }, [record]);
 
   const cardActions = useMemo(() => {
-    const result = [
-      <LinkButton
-        disabled={!record || disabled}
-        href={`/model/${modelId}/record${record ? `/${record.id}/edit` : "s"}`}
-        size="sm"
-        variant="outline-primary"
-      >
-        View Record
-      </LinkButton>,
-    ];
-    if (!hideViewAllRecords) {
+    const result: React.ReactNode[] = [];
+    if (record) {
+      result.push(
+        <LinkButton
+          key={modelId + (record?.id || "")}
+          disabled={!record || disabled}
+          href={`/model/${modelId}/record${
+            record ? `/${record.id}/edit` : "s"
+          }`}
+          size="sm"
+          variant="outline-primary"
+        >
+          View Record
+        </LinkButton>
+      );
+    }
+    if (!hideViewAllRecords && hasRecords) {
       result.push(
         <LinkButton
           disabled={disabled}
@@ -259,9 +279,9 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
       );
     }
     return result;
-  }, [modelId, disabled, record, hideViewAllRecords]);
+  }, [record, hideViewAllRecords, hasRecords, modelId, disabled]);
 
-  if (!sortedPropertyKeys?.length) {
+  if (!sortedPropertyKeys?.length && !properties.length) {
     return (
       <ManagedCard title="Sample Record">
         <Card.Body>
@@ -295,6 +315,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
 
   const actions = [
     <LoadingButton
+      key="clear-record-id"
       disabled={disabled || !hasRecords || loading || importing}
       loading={loading && !recordId}
       size="sm"
@@ -318,7 +339,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
         size="sm"
         variant="outline-success"
       >
-        Import Record data
+        Import Record Data
       </LoadingButton>
     );
   }
@@ -473,6 +494,9 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
           A Sample Record can be used to validate your configuration is
           importing the correct data to Groups and Destinations.
         </p>
+        {!isConfigUI && (
+          <p>Run a Schedule on your Primary Source to generate Records.</p>
+        )}
       </Col>
     </Row>
   );
@@ -488,7 +512,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
         {content}
         <Row>
           <Col>
-            <SeparatedItems items={actions} />
+            <SeparatedItems items={!hasRecords && !isConfigUI ? [] : actions} />
           </Col>
         </Row>
       </Card.Body>
