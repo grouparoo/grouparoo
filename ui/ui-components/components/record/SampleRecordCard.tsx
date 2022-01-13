@@ -23,7 +23,7 @@ import RecordImageFromEmail from "../visualizations/RecordImageFromEmail";
 import AddSampleRecordModal from "./AddSampleRecordModal";
 import ArrayRecordPropertyList from "./ArrayRecordPropertyList";
 
-type RecordType =
+export type RecordType =
   | Models.GrouparooRecordType
   | Models.DestinationRecordPreviewType;
 
