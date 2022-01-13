@@ -3,14 +3,13 @@ import {
   DestinationOptionsMethod,
   DestinationOptionsMethodResponse,
 } from "@grouparoo/core";
+import { PostgresPoolClient } from "../connect";
 
-export const destinationOptions: DestinationOptionsMethod = async ({
-  connection,
-  appOptions,
-  destinationOptions,
-}) => {
+export const destinationOptions: DestinationOptionsMethod<
+  PostgresPoolClient
+> = async ({ connection, appOptions, destinationOptions }) => {
   async function getColumns(tableName: string) {
-    const { rows: colRows } = await connection.query(
+    const { rows: colRows } = await connection.query<{ column_name: string }>(
       format(
         `SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_catalog = %L AND table_schema = %L AND table_name = %L`,
         appOptions.database,
@@ -19,7 +18,7 @@ export const destinationOptions: DestinationOptionsMethod = async ({
       )
     );
 
-    return colRows.map((row: any) => row.column_name).sort();
+    return colRows.map((row) => row.column_name).sort();
   }
 
   const response: DestinationOptionsMethodResponse = {

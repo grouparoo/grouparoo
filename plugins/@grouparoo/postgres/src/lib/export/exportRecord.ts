@@ -1,8 +1,15 @@
-import { Errors, ExportRecordPluginMethod } from "@grouparoo/core";
+import {
+  DestinationSyncOperations,
+  Errors,
+  ExportRecordPluginMethod,
+} from "@grouparoo/core";
 import { validateQuery } from "../validateQuery";
 import format from "pg-format";
+import { PostgresPoolClient } from "../connect";
 
-export const exportRecord: ExportRecordPluginMethod = async ({
+export const exportRecord: ExportRecordPluginMethod<
+  PostgresPoolClient
+> = async ({
   connection,
   destination,
   syncOperations,
@@ -171,9 +178,9 @@ export const exportRecord: ExportRecordPluginMethod = async ({
 };
 
 const insert = async (
-  connection: any,
-  table: any,
-  syncOperations: Record<string, any>,
+  connection: PostgresPoolClient,
+  table: string,
+  syncOperations: DestinationSyncOperations,
   newRecordProperties: Record<string, any>
 ) => {
   if (!syncOperations.create) {

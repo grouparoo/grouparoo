@@ -6,8 +6,11 @@ import {
   AggregationMethod,
 } from "@grouparoo/app-templates/dist/source/table";
 import format from "pg-format";
+import { PostgresPoolClient } from "../connect";
 
-export const getPropertyValue: GetPropertyValueMethod = async ({
+export const getPropertyValue: GetPropertyValueMethod<
+  PostgresPoolClient
+> = async ({
   connection,
   tableName,
   columnName,
@@ -75,12 +78,14 @@ export const getPropertyValue: GetPropertyValueMethod = async ({
 
   let response: DataResponse[];
   try {
-    const { rows } = await connection.query(format(query, ...params));
+    const { rows } = await connection.query<{ __result: DataResponse }>(
+      format(query, ...params)
+    );
     if (rows && rows.length > 0) {
       if (!isArray) {
         response = [rows[0].__result];
       } else {
-        response = rows.map((row: any) => row.__result);
+        response = rows.map((row) => row.__result);
       }
     }
   } catch (error) {

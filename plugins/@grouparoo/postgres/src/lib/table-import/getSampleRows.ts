@@ -3,8 +3,9 @@ import {
   DataResponseRow,
 } from "@grouparoo/app-templates/dist/source/table";
 import format from "pg-format";
+import { PostgresPoolClient } from "../connect";
 
-export const getSampleRows: GetSampleRowsMethod = async ({
+export const getSampleRows: GetSampleRowsMethod<PostgresPoolClient> = async ({
   connection,
   tableName,
 }) => {
@@ -16,10 +17,10 @@ export const getSampleRows: GetSampleRowsMethod = async ({
   // We cannot use TABLESAMPLE as it was only introduced in Postgres 9.5 (redshift for example uses Postgres 8)
   // https://stackoverflow.com/questions/8674718/best-way-to-select-random-rows-postgresql
   // ... But for now we will just show the first 10 rows of the table
-  const { rows } = await connection.query(
+  const { rows } = await connection.query<DataResponseRow>(
     format(`SELECT * FROM %I LIMIT 10`, tableName)
   );
-  rows.forEach((row: any) => out.push(row));
+  rows.forEach((row) => out.push(row));
 
   return out;
 };
