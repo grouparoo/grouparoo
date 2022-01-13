@@ -18,6 +18,8 @@ module.exports = {
     "prefer-arrow-callback": "error",
     "prefer-object-spread": "error",
     "no-useless-computed-key": "error",
+    "@typescript-eslint/no-explicit-any": "off", // Remove this in some Ivory Tower future.
+    "@typescript-eslint/ban-ts-comment": "off", // Remove this in some Ivory Tower future.
   },
   ignorePatterns: ["/dist/", "*.js"],
 };

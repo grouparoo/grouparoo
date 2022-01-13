@@ -81,7 +81,7 @@ export function formatInUtcDefault(text: string) {
   const zone = timeZoneOffset(text);
 
   let date: Date;
-  let parsed = parseDate(text);
+  const parsed = parseDate(text);
   date = parsed instanceof Date ? parsed : new Date(parsed);
 
   if (!zone) {
