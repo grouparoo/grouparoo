@@ -494,7 +494,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
           importing the correct data to Groups and Destinations.
         </p>
         {!isConfigUI && (
-          <p>Run a schedule on your primary source to generate records.</p>
+          <p>Run a Schedule on your Primary Source to generate Records.</p>
         )}
       </Col>
     </Row>
