@@ -132,7 +132,7 @@ export default function Page(props) {
     setTestLoading(false);
   }
 
-  const startOauthLogin = async (optionKey: string) => {
+  const startOAuthLogin = async (optionKey: string) => {
     const providerName = app.pluginName.replace("@grouparoo/", "");
     setLoadingOAuth(true);
 
@@ -391,7 +391,7 @@ export default function Page(props) {
                                     disabled={loadingOAuth}
                                     loading={loadingOAuth}
                                     variant="outline-primary"
-                                    onClick={() => startOauthLogin(opt.key)}
+                                    onClick={() => startOAuthLogin(opt.key)}
                                   >
                                     Sign in with OAuth
                                   </LoadingButton>
