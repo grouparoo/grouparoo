@@ -576,6 +576,7 @@ describe("models/property", () => {
     let emailProperty: Property;
 
     beforeAll(async () => {
+      await Run.truncate();
       emailProperty = await Property.findOne({ where: { id: "email" } });
     });
 
@@ -583,27 +584,14 @@ describe("models/property", () => {
       await emailProperty.update({ type: "email" });
     });
 
-    test("updating a property's type will put associated records and recordprops into `pending` state", async () => {
-      const record = await helper.factories.record();
-
-      await RecordProperty.update(
-        { state: "ready" },
-        { where: { recordId: record.id } }
-      );
-      await record.update({ state: "ready" });
-      const recordProperty = await RecordProperty.findOne({
-        where: { propertyId: "email", recordId: record.id },
-      });
-
-      expect(recordProperty.state).toBe("ready");
-      expect(record.state).toBe("ready");
+    test("updating a property's type will enqueue an internal run", async () => {
+      expect(await Run.count()).toBe(0);
 
       await emailProperty.update({ type: "string" });
 
-      await record.reload();
-      await recordProperty.reload();
-      expect(recordProperty.state).toBe("pending");
-      expect(record.state).toBe("pending");
+      const run = await Run.findOne();
+      expect(run.creatorType).toBe("property");
+      expect(run.creatorId).toBe(emailProperty.id);
     });
   });
 

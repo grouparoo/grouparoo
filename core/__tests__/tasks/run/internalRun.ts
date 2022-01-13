@@ -21,23 +21,27 @@ describe("tasks/run:internalRun", () => {
   beforeAll(async () => await helper.factories.properties());
 
   let record: GrouparooRecord;
+  let otherRecord: GrouparooRecord;
 
   describe("run:internalRun", () => {
     beforeAll(async () => {
       await Run.truncate();
       record = await helper.factories.record();
       await record.buildNullProperties();
+
+      const otherModel = await helper.factories.model({ name: "other model" });
+      otherRecord = await GrouparooRecord.create({ modelId: otherModel.id });
     });
 
     beforeEach(async () => {
       await RecordProperty.update(
         { state: "ready" },
-        { where: { recordId: record.id } }
+        { where: { recordId: [record.id, otherRecord.id] } }
       );
-      await record.reload({
-        include: RecordProperty,
-      });
+      await record.reload({ include: RecordProperty });
+      await otherRecord.reload({ include: RecordProperty });
       await record.update({ state: "ready" });
+      await otherRecord.update({ state: "ready" });
     });
 
     beforeEach(async () => {
@@ -50,7 +54,7 @@ describe("tasks/run:internalRun", () => {
 
       await run.reload();
       expect(run.memberLimit).toBe(100);
-      expect(run.memberOffset).toBe(1);
+      expect(run.memberOffset).toBe(2);
       expect(run.method).toBe("internalRun");
 
       await record.reload({
@@ -60,8 +64,9 @@ describe("tasks/run:internalRun", () => {
       record.recordProperties.forEach((p) => expect(p.state).toBe("pending"));
 
       const imports = await Import.findAll();
-      expect(imports.length).toBe(1);
-      expect(imports[0].recordId).toBe(record.id);
+      expect(imports.map((i) => i.recordId).sort()).toEqual(
+        [record.id, otherRecord.id].sort()
+      );
     });
 
     test("if the run was created due to a property, only those recordProperties will become pending", async () => {
