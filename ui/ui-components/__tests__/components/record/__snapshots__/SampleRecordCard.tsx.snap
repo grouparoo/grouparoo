@@ -114,11 +114,11 @@ exports[`SampleRecordCard should render with 1 record 1`] = `
                 <th
                   scope="row"
                 >
-                  <a
-                    href="/model/test-model/property/fake-property/edit"
-                  >
-                    asdf
-                  </a>
+                  <span>
+                    <a>
+                      asdf
+                    </a>
+                  </span>
                   <span
                     class="badge badge-warning"
                     style="margin-left: 3px; margin-right: 3px; margin-bottom: 0px;"
@@ -264,11 +264,11 @@ exports[`SampleRecordCard should render with 1 record in config mode 1`] = `
                 <th
                   scope="row"
                 >
-                  <a
-                    href="/model/test-model/property/fake-property/edit"
-                  >
-                    asdf
-                  </a>
+                  <span>
+                    <a>
+                      asdf
+                    </a>
+                  </span>
                   <span
                     class="badge badge-warning"
                     style="margin-left: 3px; margin-right: 3px; margin-bottom: 0px;"
