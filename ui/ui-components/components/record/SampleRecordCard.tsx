@@ -245,7 +245,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
       (property) => property.type === "email" && property.values.length > 0
     );
 
-    return emailProperty ? emailProperty.values[0].toString() : undefined;
+    return emailProperty?.values?.[0]?.toString() ?? undefined;
   }, [record]);
 
   const cardActions = useMemo(() => {
