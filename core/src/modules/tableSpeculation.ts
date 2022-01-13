@@ -1,6 +1,5 @@
-import { GrouparooModel, Option } from "..";
+import { GrouparooModel } from "../models/GrouparooModel";
 import { Property, PropertyTypes } from "../models/Property";
-import { Source } from "../models/Source";
 import { ConfigWriter } from "../modules/configWriter";
 
 export namespace TableSpeculation {
