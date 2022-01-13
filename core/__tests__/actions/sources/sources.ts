@@ -17,7 +17,6 @@ import {
 import { PropertyDestroy } from "../../../src/actions/properties";
 import { ConfigWriter } from "../../../src/modules/configWriter";
 
-
 describe("actions/sources", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   const configSpy = jest.spyOn(ConfigWriter, "run");
