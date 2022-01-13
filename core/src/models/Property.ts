@@ -374,6 +374,7 @@ export class Property extends LoggedModel<Property> {
         id: { [Op.ne]: instance.id },
         key: instance.key,
         state: { [Op.notIn]: ["draft", "deleted"] },
+        // sourceId: instance.sourceId
       },
     });
     if (count > 0) {

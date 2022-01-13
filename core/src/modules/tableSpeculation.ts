@@ -1,4 +1,6 @@
-import { PropertyTypes } from "../models/Property";
+import { GrouparooModel, Option } from "..";
+import { Property, PropertyTypes } from "../models/Property";
+import { Source } from "../models/Source";
 
 export namespace TableSpeculation {
   const uniqueMatchers = [
@@ -56,5 +58,18 @@ export namespace TableSpeculation {
     }
 
     return databaseType;
+  }
+
+  export function suggestKey(
+    key: string,
+    model: GrouparooModel,
+    existingProperties: Property[]
+  ): string {
+    for (const property of existingProperties) {
+      if (property.key === key) {
+        return `${model.name}_${key}`;
+      }
+    }
+    return key;
   }
 }

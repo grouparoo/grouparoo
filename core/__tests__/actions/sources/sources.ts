@@ -202,9 +202,17 @@ describe("actions/sources", () => {
         { id: 2, fname: "luigi", lname: "mario" },
       ]);
       expect(columnSpeculation).toEqual({
-        id: { isUnique: true, type: "integer" },
-        fname: { isUnique: false, type: "string" },
-        lname: { isUnique: false, type: "string" },
+        id: { isUnique: true, type: "integer", suggestedPropertyKey: "id" },
+        fname: {
+          isUnique: false,
+          type: "string",
+          suggestedPropertyKey: "fname",
+        },
+        lname: {
+          isUnique: false,
+          type: "string",
+          suggestedPropertyKey: "lname",
+        },
       });
     });
 
@@ -278,6 +286,61 @@ describe("actions/sources", () => {
         { id: 1, fname: "mario", lname: "mario" },
         { id: 2, fname: "luigi", lname: "mario" },
       ]);
+    });
+
+    describe("a source with column(s) that conflict with an existing property", () => {
+      let otherSource: Source;
+      let otherProperty: Property;
+      beforeAll(async () => {
+        otherSource = await helper.factories.source(app, {
+          modelId: model.id,
+          table: "users",
+        });
+        otherProperty = await helper.factories.property(
+          null,
+          {
+            key: "fname",
+            table: "users",
+          },
+          { table: "users" }
+        );
+      });
+
+      afterAll(async () => {
+        otherSource.destroy();
+        otherProperty.destroy();
+      });
+
+      test("can provide suggested property keys", async () => {
+        connection.params = {
+          csrfToken,
+          id,
+          options: { table: "users" },
+        };
+        const { error, preview, columnSpeculation } =
+          await specHelper.runAction<SourcePreview>(
+            "source:preview",
+            connection
+          );
+        expect(error).toBeUndefined();
+        expect(preview).toEqual([
+          { id: 1, fname: "mario", lname: "mario" },
+          { id: 2, fname: "luigi", lname: "mario" },
+        ]);
+        expect(columnSpeculation).toEqual({
+          id: { isUnique: true, type: "integer", suggestedPropertyKey: "id" },
+          fname: {
+            isUnique: false,
+            type: "string",
+            suggestedPropertyKey: "fname",
+          },
+          lname: {
+            isUnique: false,
+            type: "string",
+            suggestedPropertyKey: "lname",
+          },
+        });
+      });
     });
 
     test("a source can have mapping set", async () => {

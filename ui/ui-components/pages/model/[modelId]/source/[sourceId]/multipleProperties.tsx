@@ -77,6 +77,7 @@ export default function Page(props) {
     let otherProperties: Models.PropertyType[] = [];
 
     for (const property of properties) {
+      // console.log(property)
       if (property.sourceId !== source.id) continue;
       if (property.options[primaryOptionKey] !== column) continue;
 
@@ -110,9 +111,8 @@ export default function Page(props) {
     const [key, setKey] = useState(
       exactProperty && exactProperty.sourceId === source.id
         ? exactProperty.key
-        : exactProperty && exactProperty.sourceId !== source.id
-        ? generateId(`${source.name}-${column}`)
-        : generateId(column)
+        : columnSpeculation[column].suggestedPropertyKey
+        
     );
     const [type, setType] = useState<typeof exactProperty["type"]>(
       exactProperty && exactProperty.sourceId === source.id
@@ -198,7 +198,7 @@ export default function Page(props) {
               value={key}
               onChange={(e) => setKey(e.target.value)}
               disabled={disabled}
-            />
+            />{!exactProperty && key !== column ? <Alert variant="info">Property with key "{column}" already exists</Alert>: null}
           </td>
           <td>
             <Form.Control
@@ -394,6 +394,8 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     "get",
     `/propertyOptions`
   );
+
+  console.log(preview)
 
   return {
     model,
