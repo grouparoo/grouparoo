@@ -79,3 +79,4 @@ import "./config/tasks";
 import "./config/telemetry";
 import "./config/web";
 import "./config/websocket";
+import "./initializers/plugins";
