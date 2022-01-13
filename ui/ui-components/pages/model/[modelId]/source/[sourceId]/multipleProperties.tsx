@@ -227,7 +227,7 @@ export default function Page(props) {
               <LinkButton
                 variant="outline-info"
                 size="sm"
-                href={`/model/${source.modelId}/property/${exactProperty.id}/edit`}
+                href={`/model/${source.modelId}/source/${source.id}/property/${exactProperty.id}/edit`}
               >
                 View
               </LinkButton>
@@ -255,7 +255,7 @@ export default function Page(props) {
               <LinkButton
                 variant="outline-info"
                 size="sm"
-                href={`/model/${source.modelId}/property/${otherProperty.id}/edit`}
+                href={`/model/${source.modelId}/source/${source.id}/property/${otherProperty.id}/edit`}
               >
                 View
               </LinkButton>

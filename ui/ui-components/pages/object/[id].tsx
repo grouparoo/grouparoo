@@ -116,8 +116,8 @@ export default function FindObject(props) {
     );
 
     router.replace(
-      `/model/[modelId]/property/[propertyId]/edit`,
-      `/model/${source.modelId}/property/${id}/edit`
+      `/model/[modelId]/source/[sourceId]/property/[propertyId]/edit`,
+      `/model/${source.modelId}/source/${source.id}/property/${id}/edit`
     );
   }
 
