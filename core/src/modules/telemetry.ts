@@ -39,7 +39,9 @@ export namespace Telemetry {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(await generateErrorPayload(error, trigger)),
         });
-      } catch (newError) {}
+      } catch (newError) {
+        console.error(newError);
+      }
 
       if (toThrowOnError) {
         throw error;

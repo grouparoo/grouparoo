@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { api, utils, config } from "actionhero";
+import { api, utils, config, rebuildConfig } from "actionhero";
 import {
   StatusMetric,
   FinalSummaryReporters,
@@ -20,6 +20,7 @@ describe("modules/status", () => {
 
   beforeAll(async () => {
     process.env.GROUPAROO_RUN_MODE = "x";
+    rebuildConfig();
     await helper.factories.properties();
   });
 

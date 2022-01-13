@@ -1,3 +1,4 @@
+import { config } from "actionhero";
 import { OptionallyAuthenticatedAction } from "../classes/actions/optionallyAuthenticatedAction";
 import { GrouparooModel } from "../models/GrouparooModel";
 import { ActionPermission } from "../models/Permission";
@@ -33,12 +34,12 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     session: { teamMember: TeamMember };
   }) {
     let configUser: ConfigUser.ConfigUserType;
-    if (process.env.GROUPAROO_RUN_MODE === "cli:config") {
+    if (config.general.runMode === "cli:config") {
       configUser = await ConfigUser.get();
     }
 
     const navigationMode: NavigationMode =
-      process.env.GROUPAROO_RUN_MODE === "cli:config"
+      config.general.runMode === "cli:config"
         ? configUser
           ? "config:authenticated"
           : "config:unauthenticated"

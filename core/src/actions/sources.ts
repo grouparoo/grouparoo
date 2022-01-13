@@ -1,4 +1,4 @@
-import { api, ParamsFrom, log } from "actionhero";
+import { api, ParamsFrom, config, log } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { App } from "../models/App";
 import { Source } from "../models/Source";
@@ -205,7 +205,7 @@ export class SourceGenerateSampleRecords extends AuthenticatedAction {
   }) {
     const source = await Source.findById(params.id);
 
-    if (process.env.GROUPAROO_RUN_MODE !== "cli:config")
+    if (config.general.runMode !== "cli:config")
       throw new Error(`this action is only valid in cli:config mode`);
     if (source.state !== "ready") throw new Error(`source is not ready`);
     if (!(await source.previewAvailable()))

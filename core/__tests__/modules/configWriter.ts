@@ -24,6 +24,7 @@ import {
   ScheduleConfigurationObject,
   SourceConfigurationObject,
 } from "../../src/classes/codeConfig";
+import { rebuildConfig } from "actionhero";
 
 const workerId = process.env.JEST_WORKER_ID;
 const configDir = `${os.tmpdir()}/test/${workerId}/configWriter`;
@@ -59,10 +60,12 @@ describe("modules/configWriter", () => {
 
   beforeEach(async () => {
     process.env.GROUPAROO_RUN_MODE = "cli:config";
+    rebuildConfig();
   });
 
   afterEach(async () => {
     process.env.GROUPAROO_RUN_MODE = undefined;
+    rebuildConfig();
   });
 
   // ---------------------------------------- | ConfigWriter.generateId()
@@ -147,11 +150,13 @@ describe("modules/configWriter", () => {
       );
 
       process.env.GROUPAROO_RUN_MODE = "x";
+      rebuildConfig();
       await ConfigWriter.run();
       let files = glob.sync(configFilePattern);
       expect(files).toEqual([]);
 
       process.env.GROUPAROO_RUN_MODE = "cli:config";
+      rebuildConfig();
       await ConfigWriter.run();
       files = glob.sync(configFilePattern);
       expect(files).toContain(appFilePath);
@@ -339,8 +344,14 @@ describe("modules/configWriter", () => {
         configObject = await app.getConfigObject();
       });
 
+      afterEach(() => {
+        process.env.GROUPAROO_RUN_MODE = undefined;
+        rebuildConfig();
+      });
+
       test('returns "config:writer" for JS files (LOCKED)', async () => {
         process.env.GROUPAROO_RUN_MODE = "cli:config";
+        rebuildConfig();
         const absFilePath = path.join(
           configDir,
           `apps/${app.getConfigId()}.js`
@@ -350,10 +361,11 @@ describe("modules/configWriter", () => {
           objects: [configObject],
         });
         expect(ConfigWriter.getLockKey(configObject)).toEqual("config:writer");
-        process.env.GROUPAROO_RUN_MODE = undefined;
       });
+
       test("returns null for JSON files (UNLOCKED)", async () => {
         process.env.GROUPAROO_RUN_MODE = "cli:config";
+        rebuildConfig();
         const absFilePath = path.join(
           configDir,
           `apps/${app.getConfigId()}.json`
@@ -363,12 +375,12 @@ describe("modules/configWriter", () => {
           objects: [configObject],
         });
         expect(ConfigWriter.getLockKey(configObject)).toEqual(null);
-        process.env.GROUPAROO_RUN_MODE = undefined;
       });
+
       test('returns "code:config" when in start mode', async () => {
         process.env.GROUPAROO_RUN_MODE = "cli:start";
+        rebuildConfig();
         expect(ConfigWriter.getLockKey(configObject)).toEqual("config:code");
-        process.env.GROUPAROO_RUN_MODE = undefined;
       });
     });
   });

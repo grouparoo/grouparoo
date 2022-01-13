@@ -1,6 +1,6 @@
 import { CLSInitializer } from "../classes/initializers/clsInitializer";
 import { Telemetry } from "../modules/telemetry";
-import { api } from "actionhero";
+import { api, config } from "actionhero";
 
 export class TelemetryInitializer extends CLSInitializer {
   constructor() {
@@ -12,8 +12,7 @@ export class TelemetryInitializer extends CLSInitializer {
   async startWithinTransaction() {}
 
   async stopWithinTransaction() {
-    const runMode = process.env.GROUPAROO_RUN_MODE;
-    if (runMode === "cli:run")
+    if (config.general.runMode === "cli:run")
       await Telemetry.send("cli_run", api.process.stopReasons);
   }
 }

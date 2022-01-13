@@ -1,12 +1,12 @@
+import { config, ParamsFrom } from "actionhero";
 import { Schedule } from "../../models/Schedule";
 import { CLSTask } from "../../classes/tasks/clsTask";
-import { ParamsFrom } from "actionhero";
 import { APIData } from "../../modules/apiData";
 
 export class ScheduleEnqueueRuns extends CLSTask {
   name = "schedules:enqueueRuns";
   description = "check all schedules and run them if it is time";
-  frequency = process.env.GROUPAROO_RUN_MODE === "cli:run" ? 0 : 1000 * 60; // Run every minute
+  frequency = config.general.runMode === "cli:run" ? 0 : 1000 * 60; // Run every minute
   queue = "schedules";
   inputs = {
     ignoreDeltas: {

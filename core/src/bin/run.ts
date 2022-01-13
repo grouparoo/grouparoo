@@ -59,7 +59,7 @@ export class RunCLI extends CLI {
     this.checkWorkers();
 
     if (!params.web) GrouparooCLI.disableWebServer();
-    if (params.reset) await Reset.data(process.env.GROUPAROO_RUN_MODE);
+    if (params.reset) await Reset.data(config.general.runMode);
     if (params.resetHighWatermarks) await Reset.resetHighWatermarks();
     process.env.GROUPAROO_DISABLE_EXPORTS = String(
       params.export?.toString()?.toLowerCase() !== "true"

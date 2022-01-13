@@ -166,7 +166,7 @@ export class PropertyCreate extends AuthenticatedAction {
     key: { required: false },
     type: { required: true },
     unique: { required: false, formatter: APIData.ensureBoolean },
-    isArray: { required: false },
+    isArray: { required: false, formatter: APIData.ensureBoolean },
     state: { required: false },
     sourceId: { required: false },
     options: { required: false, formatter: APIData.ensureObject },

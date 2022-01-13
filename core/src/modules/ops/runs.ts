@@ -1,3 +1,4 @@
+import { config, log, api, task } from "actionhero";
 import { Run } from "../../models/Run";
 import { GrouparooRecord } from "../../models/GrouparooRecord";
 import { Group } from "../../models/Group";
@@ -7,7 +8,6 @@ import { GrouparooModel } from "../../models/GrouparooModel";
 import { Property } from "../../models/Property";
 import { Import } from "../../models/Import";
 import { Op } from "sequelize";
-import { log, api, task } from "actionhero";
 import { Log } from "../../models/Log";
 import { TaskInputs } from "actionhero/dist/classes/task";
 
@@ -19,8 +19,8 @@ export namespace RunOps {
     creator: Group | GrouparooModel,
     destinationId?: string
   ) {
-    if (process.env.GROUPAROO_RUN_MODE === "cli:validate") return;
-    if (process.env.GROUPAROO_RUN_MODE === "cli:config") return;
+    if (config.general.runMode === "cli:validate") return;
+    if (config.general.runMode === "cli:config") return;
 
     await stopPreviousRuns(creator);
 

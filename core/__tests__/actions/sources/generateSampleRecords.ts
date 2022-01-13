@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Connection, specHelper, api } from "actionhero";
+import { Connection, specHelper, api, rebuildConfig } from "actionhero";
 import { ConfigWriter } from "../../../src/modules/configWriter";
 import {
   Source,
@@ -88,7 +88,10 @@ describe("actions/sources/generateSampleRecords", () => {
   });
 
   describe("cli:run", () => {
-    beforeEach(() => (process.env.GROUPAROO_RUN_MODE = "cli:run"));
+    beforeEach(() => {
+      process.env.GROUPAROO_RUN_MODE = "cli:run";
+      rebuildConfig();
+    });
 
     test("no sample records are created", async () => {
       connection.params = {
@@ -116,6 +119,7 @@ describe("actions/sources/generateSampleRecords", () => {
 
     beforeAll(() => {
       process.env.GROUPAROO_RUN_MODE = "cli:config";
+      rebuildConfig();
 
       ConfigUser.create({
         email: "mario@example.com",

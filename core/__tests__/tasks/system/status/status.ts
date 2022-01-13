@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { Import, GrouparooRecord, RecordProperty, Run } from "../../../../src";
-import { api, task, specHelper } from "actionhero";
+import { api, task, specHelper, rebuildConfig } from "actionhero";
 import { StatusTask } from "../../../../src/tasks/system/status/status";
 import { Status } from "../../../../src/modules/status";
 
@@ -16,6 +16,7 @@ describe("tasks/status", () => {
 
     beforeEach(() => {
       process.env.GROUPAROO_RUN_MODE = "test";
+      rebuildConfig();
     });
 
     test("it can be enqueued", async () => {
@@ -29,6 +30,7 @@ describe("tasks/status", () => {
       await Status.setAll();
 
       process.env.GROUPAROO_RUN_MODE = "cli:run";
+      rebuildConfig();
       const instance = new StatusTask();
       const samples = await instance.getSamples();
       const complete = await instance.checkForComplete(samples);
@@ -42,6 +44,7 @@ describe("tasks/status", () => {
       await Status.setAll();
 
       process.env.GROUPAROO_RUN_MODE = "cli:run";
+      rebuildConfig();
       const instance = new StatusTask();
       const samples = await instance.getSamples();
       expect(await instance.checkForComplete(samples)).toBe(false);
@@ -60,6 +63,7 @@ describe("tasks/status", () => {
       await Status.setAll();
 
       process.env.GROUPAROO_RUN_MODE = "cli:run";
+      rebuildConfig();
       const instance = new StatusTask();
       const samples = await instance.getSamples();
       expect(await instance.checkForComplete(samples)).toBe(false);
@@ -79,6 +83,7 @@ describe("tasks/status", () => {
       await Status.setAll();
 
       process.env.GROUPAROO_RUN_MODE = "cli:run";
+      rebuildConfig();
       const instance = new StatusTask();
       const samples = await instance.getSamples();
       expect(await instance.checkForComplete(samples)).toBe(true);
@@ -103,6 +108,7 @@ describe("tasks/status", () => {
       await Status.setAll();
 
       process.env.GROUPAROO_RUN_MODE = "cli:run";
+      rebuildConfig();
       const instance = new StatusTask();
       const samples = await instance.getSamples();
       expect(await instance.checkForComplete(samples)).toBe(true);
@@ -122,6 +128,7 @@ describe("tasks/status", () => {
       await Status.setAll();
 
       process.env.GROUPAROO_RUN_MODE = "cli:run";
+      rebuildConfig();
       const instance = new StatusTask();
       const samples = await instance.getSamples();
       expect(await instance.checkForComplete(samples)).toBe(false);
@@ -134,6 +141,7 @@ describe("tasks/status", () => {
       await Status.setAll();
 
       process.env.GROUPAROO_RUN_MODE = "cli:run";
+      rebuildConfig();
       const instance = new StatusTask();
       const samples = await instance.getSamples();
       expect(await instance.checkForComplete(samples)).toBe(false);
@@ -154,6 +162,7 @@ describe("tasks/status", () => {
       await Status.setAll();
 
       process.env.GROUPAROO_RUN_MODE = "cli:run";
+      rebuildConfig();
       const instance = new StatusTask();
       const samples = await instance.getSamples();
       expect(await instance.checkForComplete(samples)).toBe(false);

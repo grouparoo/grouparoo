@@ -1,6 +1,6 @@
 import os from "os";
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper } from "actionhero";
+import { rebuildConfig, specHelper } from "actionhero";
 import { GrouparooModel } from "../../dist";
 import { ConfigUserCreate } from "../../src/actions/config";
 import { NavigationItem, NavigationList } from "../../src/actions/navigation";
@@ -179,6 +179,8 @@ describe("actions/navigation", () => {
       });
 
       process.env.GROUPAROO_RUN_MODE = "cli:config";
+      rebuildConfig();
+
       process.env.GROUPAROO_CONFIG_DIR = `${os.tmpdir()}/test/${
         process.env.JEST_WORKER_ID
       }/config/navigation`;

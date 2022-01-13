@@ -133,7 +133,7 @@ async function authenticateTeamMember(
   let error: Error & { code?: string };
 
   if (
-    process.env.GROUPAROO_RUN_MODE === "cli:config" &&
+    config.general.runMode === "cli:config" &&
     ["development", "test"].includes(env)
   ) {
     error = await authenticateConfigUser(data, optional);
@@ -195,12 +195,7 @@ async function authenticateTeamMemberInRoom(
     roomNameParts[0] === "model" ? roomNameParts[1] : roomNameParts[0]
   ) as ActionPermissionTopic;
 
-  if (
-    process.env.GROUPAROO_RUN_MODE === "cli:config" &&
-    env === "development"
-  ) {
-    return;
-  }
+  if (config.general.runMode === "cli:config" && env === "development") return;
 
   await CLS.wrap(async () => {
     const session = await api.session.load(connection);

@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper, api, task, config } from "actionhero";
+import { config, rebuildConfig } from "actionhero";
 import { Environment } from "../../src/initializers/environment";
 
 describe("initializers/environment", () => {
@@ -14,6 +14,7 @@ describe("initializers/environment", () => {
     config.sequelize.dialect = initialDialect;
     process.env.NODE_ENV = initialEnv;
     process.env.GROUPAROO_RUN_MODE = initialRunMode;
+    rebuildConfig();
   });
 
   describe("SQLite checks", () => {
@@ -22,6 +23,7 @@ describe("initializers/environment", () => {
       async (runMode) => {
         process.env.NODE_ENV = "production";
         process.env.GROUPAROO_RUN_MODE = runMode;
+        rebuildConfig();
         config.sequelize.dialect = "sqlite";
 
         expect(instance.initialize()).rejects.toThrow(
@@ -35,6 +37,7 @@ describe("initializers/environment", () => {
       async (runMode) => {
         process.env.NODE_ENV = "production";
         process.env.GROUPAROO_RUN_MODE = runMode;
+        rebuildConfig();
         config.sequelize.dialect = "sqlite";
 
         const res = await instance.initialize();
@@ -51,6 +54,7 @@ describe("initializers/environment", () => {
     ])("it will not throw if in dev mode with %p run mode", async (runMode) => {
       process.env.NODE_ENV = "development";
       process.env.GROUPAROO_RUN_MODE = runMode;
+      rebuildConfig();
       config.sequelize.dialect = "sqlite";
 
       const res = await instance.initialize();
@@ -68,6 +72,7 @@ describe("initializers/environment", () => {
       async (runMode) => {
         process.env.NODE_ENV = "production";
         process.env.GROUPAROO_RUN_MODE = runMode;
+        rebuildConfig();
         config.sequelize.dialect = "postgres";
 
         const res = await instance.initialize();
