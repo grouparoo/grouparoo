@@ -46,14 +46,14 @@ export class Plugins extends Initializer {
           options: [
             {
               key: "privateToken",
-              displayName: "Private Token",
+              displayName: "Private API Key (e.g. pk_abcdef123456789)",
               type: "password",
               required: true,
               description: "Klaviyo Private Token",
             },
             {
               key: "publicToken",
-              displayName: "Public Token",
+              displayName: "Public API Key / Site ID (e.g. PIWjoN)",
               type: "text",
               required: true,
               description: "Klaviyo Public Token",
