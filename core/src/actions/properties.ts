@@ -352,6 +352,7 @@ export class PropertyRecordPreview extends AuthenticatedAction {
 
     apiData.properties[property.key] = {
       id: property.id,
+      sourceId: property.sourceId,
       state: null,
       values: newPropertyValues,
       invalidValue: null,
