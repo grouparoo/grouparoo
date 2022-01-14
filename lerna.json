@@ -6,7 +6,7 @@
     "ui/*",
     "plugins/@grouparoo/*"
   ],
-  "version": "0.8.0-alpha.5",
+  "version": "0.8.0-alpha.6",
   "command": {
     "bootstrap": {
       "ignore": "@grouparoo/app-local*"
