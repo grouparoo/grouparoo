@@ -84,10 +84,10 @@ const AddSampleRecordForm: React.FC<Props> = ({
         <Form.Control
           name="uniqueProperty"
           as="select"
-          ref={register}
           disabled={submitting}
           value={selectedUniquePropertyValue}
           onChange={onSelectUniqueProperty}
+          {...register("uniqueProperty")}
         >
           {propertiesWithPrimaryKey.map((rule) => (
             <option key={`rule-${rule.key}`} value={rule.key}>
@@ -99,12 +99,12 @@ const AddSampleRecordForm: React.FC<Props> = ({
       <Form.Group>
         <Form.Label>Value</Form.Label>
         <Form.Control
+          name="value"
           autoFocus
           required
           type={getInputType(selectedUniqueProperty?.type)}
-          name="value"
-          ref={register}
           disabled={submitting}
+          {...register("value")}
         />
         <Form.Control.Feedback type="invalid">
           Value is required

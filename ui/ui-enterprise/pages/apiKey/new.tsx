@@ -45,7 +45,7 @@ export default function Page(props) {
             disabled={loading}
             type="text"
             name="name"
-            ref={register}
+            {...register("name")}
             placeholder="API Key Name"
           />
           <Form.Control.Feedback type="invalid">

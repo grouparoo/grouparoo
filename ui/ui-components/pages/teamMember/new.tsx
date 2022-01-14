@@ -63,7 +63,7 @@ export default function Page(props) {
           <Form.Control
             as="select"
             name="teamId"
-            ref={register}
+            {...register("teamId")}
             defaultValue={
               teamId ? teamId : teams.length > 0 ? teams[0].id : null
             }
@@ -85,7 +85,7 @@ export default function Page(props) {
             type="text"
             name="firstName"
             placeholder="First Name"
-            ref={register}
+            {...register("firstName")}
             disabled={loading}
           />
           <Form.Control.Feedback type="invalid">
@@ -100,7 +100,7 @@ export default function Page(props) {
             type="text"
             name="lastName"
             placeholder="Last Name"
-            ref={register}
+            {...register("lastName")}
             disabled={loading}
           />
           <Form.Control.Feedback type="invalid">
@@ -115,7 +115,7 @@ export default function Page(props) {
             type="email"
             name="email"
             placeholder="email"
-            ref={register}
+            {...register("email")}
             disabled={loading}
           />
           <Form.Control.Feedback type="invalid">
@@ -130,7 +130,7 @@ export default function Page(props) {
             name="password"
             type="password"
             placeholder="password"
-            ref={register}
+            {...register("password")}
             disabled={loading}
           />
           <Form.Control.Feedback type="invalid">
@@ -144,12 +144,16 @@ export default function Page(props) {
             name="subscribed"
             label={`Subscribe to the Grouparoo Newsletter`}
             defaultChecked
-            ref={register}
+            {...register("subscribed")}
             disabled={loading}
           />
         </Form.Group>
         <p>
-          <a href="https://www.grouparoo.com/legal/privacy" target="_blank">
+          <a
+            href="https://www.grouparoo.com/legal/privacy"
+            target="_blank"
+            rel="noreferrer"
+          >
             Privacy Policy
           </a>
         </p>

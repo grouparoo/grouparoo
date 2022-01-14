@@ -58,9 +58,9 @@ export default function NewGroup(props) {
             required
             type="text"
             name="name"
-            ref={register}
             disabled={loading}
             placeholder="Group Name"
+            {...register("name")}
           />
           <Form.Control.Feedback type="invalid">
             Name is required

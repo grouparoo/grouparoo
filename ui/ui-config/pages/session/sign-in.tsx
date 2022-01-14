@@ -79,8 +79,8 @@ export default function SignInPage(props) {
                   name="company"
                   type="text"
                   placeholder="Company Name"
-                  ref={register}
                   defaultValue={clusterName.default ? "" : clusterName.value}
+                  {...register("company")}
                 />
                 <Form.Control.Feedback type="invalid">
                   Company name is required
@@ -95,7 +95,7 @@ export default function SignInPage(props) {
                   name="email"
                   type="email"
                   placeholder="Email Address"
-                  ref={register}
+                  {...register("email")}
                 />
                 <Form.Control.Feedback type="invalid">
                   Email is required
@@ -107,7 +107,7 @@ export default function SignInPage(props) {
                   name="subscribed"
                   label={`Subscribe to the Grouparoo Newsletter`}
                   defaultChecked
-                  ref={register}
+                  {...register("subscribed")}
                   disabled={loading}
                 />
               </Form.Group>
