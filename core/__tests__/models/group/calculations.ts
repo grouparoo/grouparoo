@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper, config,  } from "actionhero";
+import { specHelper, config } from "actionhero";
 import {
   Log,
   GrouparooRecord,
