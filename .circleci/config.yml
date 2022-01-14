@@ -3195,9 +3195,13 @@ jobs:
       - run:
           name: create test databases
           command: cd core && ./bin/create_test_databases
-      - run:
-          name: test
-          command: cd plugins/@grouparoo/redshift && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+      - run: |
+          if [ -z "$REDSHIFT_URL" ]; then
+            echo "No REDSHIFT_URL is set! Skipping tests..."
+            exit 0;
+          else
+            cd plugins/@grouparoo/redshift && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+          fi
   test-plugin-rollbar:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"

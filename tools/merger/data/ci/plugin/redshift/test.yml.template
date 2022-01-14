@@ -1,0 +1,7 @@
+      - run: |
+          if [ -z "$REDSHIFT_URL" ]; then
+            echo "No REDSHIFT_URL is set! Skipping tests..."
+            exit 0;
+          else
+            cd {{{relative_path}}} && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+          fi

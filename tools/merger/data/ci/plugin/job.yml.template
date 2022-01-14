@@ -33,7 +33,11 @@
           name: create test databases
           command: cd core && ./bin/create_test_databases
 {{{custom_steps}}}
+{{^custom_test}}
       - run:
           name: test
           command: cd {{{relative_path}}} && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
-{{custom_test}}
+{{/custom_test}}
+{{#custom_test}}
+{{{custom_test}}}
+{{/custom_test}}
