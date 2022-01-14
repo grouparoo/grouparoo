@@ -23,10 +23,11 @@ export default function OauthCallbackPage(props) {
     if (response.oAuthRequest) {
       if (response.oAuthRequest.type === "user") {
         router.replace(`/session/sign-in?requestId=${requestId}`);
+      } else if (response.oAuthRequest.type === "app" && window.opener) {
+        window.opener?.postMessage({ requestId });
+        window.close();
       } else {
-        router.replace(
-          `/object/${response.oAuthRequest.appId}?requestId=${requestId}&appOption=${response.oAuthRequest.appOption}`
-        );
+        throw new Error("OAuth Request could not be handled.");
       }
     }
   };

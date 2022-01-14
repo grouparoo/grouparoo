@@ -191,7 +191,7 @@ export class App extends LoggedModel<App> {
     const options = await this.getOptions(false, true);
     const icon = await this._getIcon();
     const provides = this.provides();
-    const { pluginApp } = await this.getPlugin();
+    const { plugin, pluginApp } = await this.getPlugin();
 
     const refreshQueryAvailable = await this.refreshQueryAvailable();
     const appRefreshQuery: AppRefreshQuery = await this.$get(
@@ -208,6 +208,7 @@ export class App extends LoggedModel<App> {
       locked: this.locked,
       options,
       provides,
+      pluginName: plugin.name,
       pluginApp,
       refreshQueryAvailable,
       createdAt: APIData.formatDate(this.createdAt),

@@ -16,7 +16,7 @@ import { LockableHelper } from "./lockableHelper";
 import { plural } from "pluralize";
 import { modelName } from "./modelName";
 
-export const ObfuscatedPasswordString = "__ObfuscatedPassword";
+export const ObfuscatedOptionString = "__ObfuscatedOption";
 
 export namespace OptionHelper {
   export interface SimpleOptions {
@@ -26,7 +26,7 @@ export namespace OptionHelper {
   export async function getOptions(
     instance: Source | Destination | Schedule | Property | App,
     sourceFromEnvironment = true,
-    obfuscatePasswords = false
+    obfuscateSensitive = false
   ) {
     if (sourceFromEnvironment === null || sourceFromEnvironment === undefined) {
       sourceFromEnvironment = true;
@@ -42,13 +42,13 @@ export namespace OptionHelper {
 
     const optionsToObfuscate = await getOptionsToObfuscate(
       instance,
-      obfuscatePasswords
+      obfuscateSensitive
     );
 
     let optionsObject = await getDefaultOptionValues(instance);
     options.forEach((option) => {
       if (optionsToObfuscate.includes(option.key)) {
-        optionsObject[option.key] = ObfuscatedPasswordString;
+        optionsObject[option.key] = ObfuscatedOptionString;
       } else {
         optionsObject[option.key] = option.typedValue();
       }
@@ -70,7 +70,7 @@ export namespace OptionHelper {
     delete instance.__options;
 
     const filteredOptions = filterEmptyOptions(options);
-    const sanitizedOptions = await replaceObfuscatedPasswords(
+    const sanitizedOptions = await replaceObfuscatedOptions(
       instance,
       filteredOptions,
       false
@@ -433,9 +433,10 @@ export namespace OptionHelper {
 
   export async function getOptionsToObfuscate(
     instance: Source | Destination | Schedule | Property | App,
-    obfuscatePasswords = false
+    obfuscateSensitive = false
   ) {
     const optionsToObfuscate: string[] = [];
+    const obfuscatedOptionTypes = ["password", "oauth-token"];
 
     // TODO: only for Apps for now
     if (instance instanceof App) {
@@ -443,7 +444,7 @@ export namespace OptionHelper {
       const staticAppOptions = plugin.pluginApp.options;
 
       staticAppOptions.forEach((option) => {
-        if (option.type === "password" && obfuscatePasswords) {
+        if (obfuscatedOptionTypes.includes(option.type) && obfuscateSensitive) {
           optionsToObfuscate.push(option.key);
         }
       });
@@ -452,7 +453,10 @@ export namespace OptionHelper {
       const appOptionKeys = Object.keys(appOptions);
 
       appOptionKeys.forEach((k) => {
-        if (appOptions[k].type === "password" && obfuscatePasswords) {
+        if (
+          obfuscatedOptionTypes.includes(appOptions[k].type) &&
+          obfuscateSensitive
+        ) {
           optionsToObfuscate.push(k);
         }
       });
@@ -461,7 +465,7 @@ export namespace OptionHelper {
     return optionsToObfuscate;
   }
 
-  export async function replaceObfuscatedPasswords(
+  export async function replaceObfuscatedOptions(
     instance: Source | Destination | Schedule | Property | App,
     options?: SimpleOptions,
     sourceFromEnvironment = true
@@ -478,7 +482,7 @@ export namespace OptionHelper {
     }
 
     for (const key of Object.keys(sanitizedOptions)) {
-      if (sanitizedOptions[key] === ObfuscatedPasswordString) {
+      if (sanitizedOptions[key] === ObfuscatedOptionString) {
         sanitizedOptions[key] = optionsFromDatabase[key];
       }
     }

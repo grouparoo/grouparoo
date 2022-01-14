@@ -1043,6 +1043,7 @@ importers:
       '@types/jest': '*'
       '@types/node': 16.*.*
       actionhero: 28.1.4
+      axios: 0.24.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
@@ -1055,6 +1056,7 @@ importers:
       typescript: 4.5.4
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
+      axios: 0.24.0
       mailchimp-api-v3: 1.15.0
     devDependencies:
       '@grouparoo/core': link:../../../core
@@ -5257,7 +5259,7 @@ packages:
   /axios/0.24.0:
     resolution: {integrity: sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==}
     dependencies:
-      follow-redirects: 1.14.4_debug@4.3.2
+      follow-redirects: 1.14.7
     transitivePeerDependencies:
       - debug
 
@@ -7751,6 +7753,16 @@ packages:
         optional: true
     dependencies:
       debug: 4.3.2
+    dev: false
+
+  /follow-redirects/1.14.7:
+    resolution: {integrity: sha512-+hbxoLbFMbRKDwohX8GkTataGqO6Jb7jGwpAlwgy2bIz25XtRm7KEzJM76R1WiNT5SwZkX4Y75SwBolkpmE7iQ==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
 
   /follow-redirects/1.5.10:
     resolution: {integrity: sha512-0V5l4Cizzvqt5D44aTXbFZz+FtyXV1vrDN6qrelxtfYQKW0KO0W2T/hkE8xvGa/540LkZlkaUjO4ailYTFtHVQ==}

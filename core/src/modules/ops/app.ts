@@ -97,9 +97,10 @@ export namespace AppOps {
       throw new Error(`cannot find a pluginApp type of ${app.type}`);
     }
 
-    let sanitizedOptions = await OptionHelper.replaceObfuscatedPasswords(
+    const filteredOptions = OptionHelper.filterEmptyOptions(options);
+    let sanitizedOptions = await OptionHelper.replaceObfuscatedOptions(
       app,
-      options
+      filteredOptions
     );
     sanitizedOptions = OptionHelper.sourceEnvironmentVariableOptions(
       app,

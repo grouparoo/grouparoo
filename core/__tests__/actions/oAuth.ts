@@ -14,7 +14,7 @@ const requestId = "req_123";
 let realRequestId: string;
 
 // These tests can be re-nocked against a locally-running telemetry server via:
-//  GROUPAROO_AUTH_URL="http://localhost:8080" NOCK=true pnpm jest __tests__/actions/oAuth.ts
+//  GROUPAROO_AUTH_URL="http://localhost:8080" NOCK=true pnpm test __tests__/actions/oAuth.ts
 const updater = {
   rewrite: function (nockCall: string) {
     nockCall = nockCall.replace(
@@ -27,7 +27,7 @@ const updater = {
 };
 helper.useNock(__filename, updater);
 
-describe("actions/plugins", () => {
+describe("actions/oAuth", () => {
   helper.grouparooTestServer({ truncate: true, resetSettings: true });
 
   beforeAll(async () => {
@@ -37,6 +37,34 @@ describe("actions/plugins", () => {
   test("oauth providers can be listed", async () => {
     const { providers, error } = await specHelper.runAction<OAuthListProviders>(
       "oAuth:listProviders"
+    );
+    expect(error).toBeUndefined();
+    expect(providers).toEqual([
+      {
+        authTypes: ["user"],
+        description: "Sign in with GitHub",
+        icon: "http://localhost:8080/images/auth-providers/github.png",
+        name: "github",
+      },
+      {
+        authTypes: ["user"],
+        description: "Sign in with Google",
+        icon: "http://localhost:8080/images/auth-providers/google.png",
+        name: "google",
+      },
+      {
+        authTypes: ["app"],
+        description: "Connect to Mailchimp",
+        icon: "http://localhost:8080/images/auth-providers/mailchimp.png",
+        name: "mailchimp",
+      },
+    ]);
+  });
+
+  test("oauth providers can be listed and filtered by type", async () => {
+    const { providers, error } = await specHelper.runAction<OAuthListProviders>(
+      "oAuth:listProviders",
+      { type: "user" }
     );
     expect(error).toBeUndefined();
     expect(providers).toEqual([
@@ -95,6 +123,7 @@ describe("actions/plugins", () => {
       consumed: false,
       appId: null,
       appOption: null,
+      token: null,
     });
   });
 });

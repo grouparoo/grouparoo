@@ -67,6 +67,21 @@ export class Plugins extends Initializer {
           ],
           methods: { test, parallelism },
         },
+        {
+          name: "mailchimp-oauth",
+          displayName: "Mailchimp (OAuth)",
+          options: [
+            {
+              key: "oAuthToken",
+              type: "oauth-token",
+              displayName: "OAuth Access Token",
+              required: true,
+              description:
+                'Mailchimp OAuth access token. Click the "Sign in with OAuth" button above to automatically fill it in.',
+            },
+          ],
+          methods: { test, parallelism },
+        },
       ],
       connections: [
         importSource,

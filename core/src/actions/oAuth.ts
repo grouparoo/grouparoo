@@ -13,16 +13,23 @@ export type TelemetryError = {
 export class OAuthListProviders extends Action {
   name = "oAuth:listProviders";
   description = "list the available oAuth Providers";
+  inputs = {
+    type: { required: false },
+  };
   outputExample = {};
 
-  async run() {
-    const fullUrl = `${config.oAuth.host}/api/v1/oauth/providers`;
+  async run({ params }: { params: ParamsFrom<OAuthListProviders> }) {
+    let fullUrl = `${config.oAuth.host}/api/v1/oauth/providers`;
+    if (params.type) fullUrl += `?type=${params.type}`;
+
     const response: { error?: TelemetryError; providers: oAuthProvider[] } =
       await fetch(fullUrl, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       }).then((r) => r.json());
+
     throwTelemetryError(response);
+
     return response;
   }
 }
@@ -36,6 +43,8 @@ export class OAuthClientStart extends CLSAction {
     id: { required: false },
     provider: { required: true },
     type: { required: true },
+    appId: { required: false },
+    appOption: { required: false },
   };
 
   async runWithinTransaction({
@@ -47,6 +56,8 @@ export class OAuthClientStart extends CLSAction {
       id: params.id,
       type: params.type,
       provider: params.provider,
+      appId: params.appId,
+      appOption: params.appOption,
     });
 
     const callbackUrl = `${process.env.WEB_URL}/oauth/callback`;

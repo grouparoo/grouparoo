@@ -14,7 +14,10 @@ const realPath = path.join(dirPath, ".env");
 function readEnv(filePath) {
   return dotenv.parse(fs.readFileSync(filePath));
 }
-export function loadAppOptions(newNock: boolean = false): SimpleAppOptions {
+export function loadAppOptions(
+  newNock = false,
+  useOAuth = false
+): SimpleAppOptions {
   let envFile;
   if (newNock) {
     envFile = realPath;
@@ -23,9 +26,9 @@ export function loadAppOptions(newNock: boolean = false): SimpleAppOptions {
   }
 
   const parsed = readEnv(envFile);
-  return {
-    apiKey: parsed.MAILCHIMP_API_KEY,
-  };
+  return useOAuth
+    ? { oAuthToken: parsed.MAILCHIMP_OAUTH_TOKEN }
+    : { apiKey: parsed.MAILCHIMP_API_KEY };
 }
 
 export function loadSourceOptions(
@@ -70,10 +73,7 @@ export const updater = {
     const realHost = realServerPieces[realServerPieces.length - 1]; //us4
     const nockHost = nockServerPieces[nockServerPieces.length - 1]; //us3
 
-    nockCall = nockCall.replace(
-      new RegExp(`${realHost}.api.mailchimp.com`, "gi"),
-      `${nockHost}.api.mailchimp.com`
-    );
+    nockCall = nockCall.replace(new RegExp(realHost, "gi"), nockHost);
     nockCall = nockCall.replace(
       new RegExp(realEnv.MAILCHIMP_API_KEY, "gi"),
       nockEnv.MAILCHIMP_API_KEY

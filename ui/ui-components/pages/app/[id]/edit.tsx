@@ -1,9 +1,10 @@
 import Head from "next/head";
-import { useState, Fragment } from "react";
-import { UseApi } from "../../../hooks/useApi";
+import { useRouter } from "next/router";
+import { useState, useEffect, Fragment } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
-import { useRouter } from "next/router";
+import { UseApi } from "../../../hooks/useApi";
 import PageHeader from "../../../components/PageHeader";
 import StateBadge from "../../../components/badges/StateBadge";
 import SourceBadge from "../../../components/badges/SourceBadge";
@@ -37,7 +38,13 @@ export default function Page(props) {
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [app, setApp] = useState<Models.AppType>(props.app);
+  const { register, handleSubmit, setValue, getValues, reset, control } =
+    useForm<Models.AppType>({
+      defaultValues: props.app,
+    });
   const [loading, setLoading] = useState(false);
+  const [loadingOAuth, setLoadingOAuth] = useState(false);
+  const [oAuthPopup, setOAuthPopup] = useState<Window>(null);
   const [testLoading, setTestLoading] = useState(false);
   const [testResult, setTestResult] = useState<{
     success: boolean;
@@ -47,15 +54,37 @@ export default function Page(props) {
   const [ranTest, setRanTest] = useState(false);
   const { id } = router.query;
 
-  async function edit(event) {
-    event.preventDefault();
+  useEffect(() => {
+    if (!oAuthPopup) return;
+
+    const onMessage = (event: MessageEvent) => {
+      if (event.source === oAuthPopup) {
+        loadOAuthRequest(event.data.requestId);
+      }
+    };
+
+    globalThis.addEventListener("message", onMessage, false);
+
+    const interval = setInterval(() => {
+      if (oAuthPopup.closed) {
+        setLoadingOAuth(false);
+        clearInterval(interval);
+      }
+    }, 500);
+
+    return () => {
+      clearInterval(interval);
+      globalThis.removeEventListener("message", onMessage);
+    };
+  }, [oAuthPopup]);
+
+  async function edit(appData: Models.AppType) {
     const state = app.state === "ready" ? undefined : "ready";
     setLoading(true);
-    const response: Actions.AppEdit = await execApi(
-      "put",
-      `/app/${id}`,
-      Object.assign({}, app, { state })
-    );
+    const response: Actions.AppEdit = await execApi("put", `/app/${id}`, {
+      ...appData,
+      state,
+    });
     if (response?.app) {
       if (response.app.state === "ready" && app.state === "draft") {
         router.push("/apps");
@@ -63,6 +92,7 @@ export default function Page(props) {
         setLoading(false);
         successHandler.set({ message: "App Updated" });
         setApp(response.app);
+        reset(response.app);
         appHandler.set(response.app);
       }
     } else {
@@ -90,8 +120,9 @@ export default function Page(props) {
     setTestLoading(true);
     setRanTest(false);
     setTestResult({ success: null, message: null, error: null });
+    const { options } = getValues();
     const response: Actions.AppTest = await execApi("put", `/app/${id}/test`, {
-      options: app.options,
+      options,
     });
     if (response?.test) {
       setRanTest(true);
@@ -100,17 +131,48 @@ export default function Page(props) {
     setTestLoading(false);
   }
 
-  const update = async (event) => {
-    const _app = Object.assign({}, app);
-    _app[event.target.id] = event.target.value;
-    setApp(_app);
+  const startOAuthLogin = async (optionKey: string) => {
+    const providerName = app.pluginName.replace("@grouparoo/", "");
+    setLoadingOAuth(true);
+
+    const response: Actions.OAuthClientStart = await execApi(
+      "post",
+      `/oauth/${providerName}/client/start`,
+      { type: "app", appId: id, appOption: optionKey }
+    );
+    if (response.location) {
+      const windowFeatures =
+        "toolbar=no, menubar=no, width=600, height=850, top=100, left=100";
+      const oAuthPopupWindow = window.open(
+        response.location,
+        "grouparoo-oauth-popup",
+        windowFeatures
+      );
+      setOAuthPopup(oAuthPopupWindow);
+    } else {
+      setLoadingOAuth(false);
+    }
   };
 
-  const updateOption = async (optKey, optValue) => {
-    const _app = Object.assign({}, app);
-    _app.options[optKey] = optValue;
-    setApp(_app);
+  const loadOAuthRequest = async (requestId: string) => {
+    if (requestId) {
+      const response: Actions.OAuthClientView = await execApi(
+        "get",
+        `/oauth/client/request/${requestId}/view`
+      );
+
+      if (response.oAuthRequest) {
+        setValue(
+          `options.${response.oAuthRequest.appOption}`,
+          response.oAuthRequest.token
+        );
+        successHandler.set({
+          message: `Loaded app options from ${response.oAuthRequest.provider}`,
+        });
+      }
+    }
   };
+
   return (
     <>
       <Head>
@@ -132,17 +194,17 @@ export default function Page(props) {
 
       <Row>
         <Col>
-          <Form id="form" onSubmit={edit} autoComplete="off">
+          <Form id="form" onSubmit={handleSubmit(edit)} autoComplete="off">
             <fieldset disabled={Boolean(app.locked)}>
               <Form.Group controlId="name">
                 <Form.Label>Name</Form.Label>
                 <Form.Control
                   required
                   type="text"
+                  name="name"
                   placeholder="Name"
-                  value={app.name}
                   disabled={loading}
-                  onChange={(e) => update(e)}
+                  ref={register}
                 />
                 <Form.Control.Feedback type="invalid">
                   Name is required
@@ -151,12 +213,7 @@ export default function Page(props) {
 
               <Form.Group controlId="type">
                 <Form.Label>Type</Form.Label>
-                <Form.Control
-                  as="select"
-                  value={app.type}
-                  onChange={(e) => update(e)}
-                  disabled
-                >
+                <Form.Control as="select" value={app.type} disabled>
                   <option>{app.type}</option>
                 </Form.Control>
               </Form.Group>
@@ -211,54 +268,66 @@ export default function Page(props) {
                             if (options[opt.key]?.type === "typeahead") {
                               return (
                                 <>
-                                  <Typeahead
-                                    id="typeahead"
-                                    labelKey="key"
-                                    disabled={loading}
-                                    onChange={(selected) => {
-                                      updateOption(opt.key, selected[0]?.key);
+                                  <Controller
+                                    control={control}
+                                    name={`options.${opt.key}`}
+                                    render={({ onChange }) => {
+                                      return (
+                                        <Typeahead
+                                          id="typeahead"
+                                          labelKey="key"
+                                          disabled={loading}
+                                          onChange={(selected) => {
+                                            onChange(selected[0]?.key);
+                                          }}
+                                          options={options[
+                                            opt.key
+                                          ]?.options.map((k, idx) => {
+                                            return {
+                                              key: k,
+                                              descriptions:
+                                                options[k]?.descriptions[idx],
+                                            };
+                                          })}
+                                          placeholder={
+                                            opt.placeholder ||
+                                            `Select ${opt.key}`
+                                          }
+                                          renderMenuItemChildren={(
+                                            opt,
+                                            props,
+                                            idx
+                                          ) => {
+                                            return [
+                                              <span key={`opt-${idx}-key`}>
+                                                {opt.key}
+                                                <br />
+                                              </span>,
+                                              <small
+                                                key={`opt-${idx}-descriptions`}
+                                                className="text-small"
+                                              >
+                                                <em>
+                                                  Descriptions:{" "}
+                                                  {opt.descriptions
+                                                    ? opt.descriptions.join(
+                                                        ", "
+                                                      )
+                                                    : "None"}
+                                                </em>
+                                              </small>,
+                                            ];
+                                          }}
+                                          defaultSelected={
+                                            app.options[opt.key]
+                                              ? [app.options[opt.key]]
+                                              : undefined
+                                          }
+                                        />
+                                      );
                                     }}
-                                    options={options[opt.key]?.options.map(
-                                      (k, idx) => {
-                                        return {
-                                          key: k,
-                                          descriptions:
-                                            options[k]?.descriptions[idx],
-                                        };
-                                      }
-                                    )}
-                                    placeholder={
-                                      opt.placeholder || `Select ${opt.key}`
-                                    }
-                                    renderMenuItemChildren={(
-                                      opt,
-                                      props,
-                                      idx
-                                    ) => {
-                                      return [
-                                        <span key={`opt-${idx}-key`}>
-                                          {opt.key}
-                                          <br />
-                                        </span>,
-                                        <small
-                                          key={`opt-${idx}-descriptions`}
-                                          className="text-small"
-                                        >
-                                          <em>
-                                            Descriptions:{" "}
-                                            {opt.descriptions
-                                              ? opt.descriptions.join(", ")
-                                              : "None"}
-                                          </em>
-                                        </small>,
-                                      ];
-                                    }}
-                                    defaultSelected={
-                                      app.options[opt.key]
-                                        ? [app.options[opt.key]]
-                                        : undefined
-                                    }
                                   />
+
                                   <Form.Text className="text-muted">
                                     {opt.description}
                                   </Form.Text>
@@ -270,13 +339,9 @@ export default function Page(props) {
                                   <Form.Control
                                     as="select"
                                     required={opt.required}
-                                    defaultValue={
-                                      app.options[opt.key]?.toString() || ""
-                                    }
                                     disabled={loading}
-                                    onChange={(e) => {
-                                      updateOption(e.target.id, e.target.value);
-                                    }}
+                                    name={`options.${opt.key}`}
+                                    ref={register}
                                   >
                                     <option value={""} disabled>
                                       Select an option
@@ -314,6 +379,35 @@ export default function Page(props) {
                                   ></Form.Control>
                                 </>
                               );
+                            } else if (
+                              options[opt.key]?.type === "oauth-token"
+                            ) {
+                              return (
+                                <>
+                                  <br />
+                                  <LoadingButton
+                                    size="sm"
+                                    disabled={loadingOAuth}
+                                    loading={loadingOAuth}
+                                    variant="outline-primary"
+                                    onClick={() => startOAuthLogin(opt.key)}
+                                  >
+                                    Sign in with OAuth
+                                  </LoadingButton>
+
+                                  <Form.Control
+                                    className="mt-2"
+                                    required={opt.required}
+                                    type="password"
+                                    placeholder={opt.placeholder}
+                                    name={`options.${opt.key}`}
+                                    ref={register}
+                                  />
+                                  <Form.Text className="text-muted">
+                                    {opt.description}
+                                  </Form.Text>
+                                </>
+                              );
                             } else {
                               return (
                                 <>
@@ -325,13 +419,9 @@ export default function Page(props) {
                                         : "text" // textarea not supported here
                                     }
                                     disabled={loading}
-                                    defaultValue={app.options[
-                                      opt.key
-                                    ]?.toString()}
                                     placeholder={opt.placeholder}
-                                    onChange={(e) => {
-                                      updateOption(e.target.id, e.target.value);
-                                    }}
+                                    name={`options.${opt.key}`}
+                                    ref={register}
                                   />
                                   <Form.Text className="text-muted">
                                     {opt.description}

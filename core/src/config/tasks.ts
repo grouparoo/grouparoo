@@ -22,7 +22,9 @@ export const DEFAULT = {
           ["system", "imports", "runs", "schedules", "groups", "exports"],
           api?.plugins?.plugins
             .filter((plugin) => plugin.apps?.length > 0)
-            .map((plugin) => plugin.apps.map((app) => `exports:${app.name}`)),
+            .flatMap((plugin) =>
+              plugin.apps.map((app) => `exports:${app.name}`)
+            ),
           [
             "records",
             "recordProperties",

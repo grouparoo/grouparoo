@@ -11,7 +11,7 @@ import {
   AppTest,
   AppView,
 } from "../../src/actions/apps";
-import { ObfuscatedPasswordString } from "../../src/modules/optionHelper";
+import { ObfuscatedOptionString } from "../../src/modules/optionHelper";
 import { ConfigWriter } from "../../src/modules/configWriter";
 
 describe("actions/apps", () => {
@@ -91,11 +91,13 @@ describe("actions/apps", () => {
       expect(pluginOptions).toEqual([
         { key: "fileId", required: true },
         { key: "password", required: false },
+        { key: "oAuthToken", type: "oauth-token", required: false },
         { key: "_failRemoteValidation", required: false },
       ]);
       expect(options).toEqual({
         fileId: { options: ["a", "b"], type: "list" },
         password: { type: "password" },
+        oAuthToken: { type: "oauth-token" },
       });
     });
 
@@ -160,7 +162,7 @@ describe("actions/apps", () => {
       expect(app.id).toBeTruthy();
       expect(app.name).toBe("new app name");
       expect(app.options.fileId).toBe("zzz");
-      expect(app.options.password).toBe(ObfuscatedPasswordString);
+      expect(app.options.password).toBe(ObfuscatedOptionString);
       expect(configSpy).toBeCalledTimes(1);
     });
 
@@ -168,7 +170,7 @@ describe("actions/apps", () => {
       connection.params = {
         csrfToken,
         id,
-        options: { fileId: "zzz", password: ObfuscatedPasswordString },
+        options: { fileId: "zzz", password: ObfuscatedOptionString },
       };
       const { error, app } = await specHelper.runAction<AppEdit>(
         "app:edit",
@@ -177,7 +179,7 @@ describe("actions/apps", () => {
 
       expect(error).toBeUndefined();
       expect(app.id).toBeTruthy();
-      expect(app.options.password).toBe(ObfuscatedPasswordString);
+      expect(app.options.password).toBe(ObfuscatedOptionString);
 
       // but, it's not really saved to the DB:
       const appDB = await App.findById(id);
@@ -200,7 +202,7 @@ describe("actions/apps", () => {
       expect(app.options.fileId).toBe("zzz");
       expect(app.pluginApp.displayName).toBe("test-plugin-app");
       expect(app.pluginApp.name).toBe("test-plugin-app");
-      expect(app.options.password).toBe(ObfuscatedPasswordString);
+      expect(app.options.password).toBe(ObfuscatedOptionString);
       expect(configSpy).toBeCalledTimes(0);
     });
 

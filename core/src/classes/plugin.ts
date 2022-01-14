@@ -136,6 +136,7 @@ export type PluginOptionType =
   | "text"
   | "textarea"
   | "password"
+  | "oauth-token"
   | "pending";
 
 /**
