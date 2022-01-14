@@ -3196,15 +3196,15 @@ jobs:
           name: create test databases
           command: cd core && ./bin/create_test_databases
       - run:
-        name: test
-        command: cd plugins/@grouparoo/redshift && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
-        when:
-          condition:
-            equal:
-              [
-                "https://github.com/grouparoo/grouparoo",
-                << pipeline.project.git_url >>,
-              ]
+          name: test
+          command: cd plugins/@grouparoo/redshift && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+          when:
+            condition:
+              equal:
+                [
+                  "https://github.com/grouparoo/grouparoo",
+                  << pipeline.project.git_url >>,
+                ]
   test-plugin-rollbar:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
