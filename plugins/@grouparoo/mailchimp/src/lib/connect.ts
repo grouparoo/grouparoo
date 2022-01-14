@@ -19,6 +19,7 @@ export async function connect(appOptions: SimpleAppOptions) {
     );
 
     const datacenter = metaResponse.data?.dc;
+    if (!datacenter) throw new Error("Unable to determine datacenter (dc).");
 
     //@ts-ignore Mailchimp client typings have not been updated for OAuth support (with dc param)
     return new Mailchimp(oAuthToken, datacenter);
