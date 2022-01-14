@@ -2,8 +2,9 @@ import { config, ParamsFrom } from "actionhero";
 import { Run } from "../../models/Run";
 import { GrouparooRecord } from "../../models/GrouparooRecord";
 import { RecordProperty } from "../../models/RecordProperty";
+import { Property } from "../../models/Property";
 import { CLSTask } from "../../classes/tasks/clsTask";
-import { Op } from "sequelize";
+import { Op, WhereAttributeHash } from "sequelize";
 import { RecordOps } from "../../modules/ops/record";
 import { Import } from "../../models/Import";
 import { GroupMember } from "../../models/GroupMember";
@@ -25,8 +26,14 @@ export class RunInternalRun extends CLSTask {
 
     const offset: number = run.memberOffset || 0;
     const limit: number = run.memberLimit || config.batchSize.imports;
-
+    const where: WhereAttributeHash = {};
+    if (run.creatorType === "property") {
+      const property = await Property.findById(run.creatorId);
+      const source = await property.$get("source");
+      where["modelId"] = source.modelId;
+    }
     const records = await GrouparooRecord.findAll({
+      where,
       order: [["createdAt", "asc"]],
       include: [RecordProperty, GroupMember],
       limit,

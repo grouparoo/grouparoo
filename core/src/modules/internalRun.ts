@@ -13,9 +13,7 @@ export async function internalRun(creatorType: string, creatorId: string) {
     },
   });
 
-  for (const i in previousRuns) {
-    await previousRuns[i].stop();
-  }
+  for (const previousRun of previousRuns) await previousRun.stop();
 
   const run = await Run.create({
     creatorType,

@@ -2,6 +2,8 @@ import { Property, SimplePropertyOptions } from "../../models/Property";
 import { Group } from "../../models/Group";
 import { Option } from "../../models/Option";
 import { Mapping } from "../../models/Mapping";
+import { RecordProperty } from "../../models/RecordProperty";
+import { GrouparooRecord } from "../../models/GrouparooRecord";
 import { GroupRule } from "../../models/GroupRule";
 import { internalRun } from "../internalRun";
 import { PluginOptionType } from "../../classes/plugin";
@@ -14,22 +16,34 @@ export namespace PropertyOps {
    */
   export async function enqueueRuns(property: Property) {
     if (getGrouparooRunMode() === "cli:validate") return;
+    if (getGrouparooRunMode() === "cli:config") {
+      await RecordProperty.update(
+        { state: "pending", startedAt: null },
+        { where: { propertyId: property.id } }
+      );
 
-    await internalRun("property", property.id); // update *all* records
+      const source = await property.$get("source", { scope: null });
+      await GrouparooRecord.update(
+        { state: "pending" },
+        { where: { modelId: source.modelId } }
+      );
+    } else {
+      await internalRun("property", property.id); // update *all* records
 
-    const groups = await Group.findAll({
-      include: [
-        {
-          model: GroupRule,
-          where: { propertyId: property.id },
-        },
-      ],
-    });
+      const groups = await Group.findAll({
+        include: [
+          {
+            model: GroupRule,
+            where: { propertyId: property.id },
+          },
+        ],
+      });
 
-    for (const i in groups) {
-      const group = groups[i];
-      await group.update({ state: "initializing" });
-      await group.run();
+      for (const i in groups) {
+        const group = groups[i];
+        await group.update({ state: "initializing" });
+        await group.run();
+      }
     }
   }
 
