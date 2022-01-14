@@ -1,5 +1,5 @@
 import { GrouparooCLI } from "../modules/cli";
-import { CLI, ParamsFrom } from "actionhero";
+import { CLI, ParamsFrom, rebuildConfig } from "actionhero";
 import { Reset } from "../modules/reset";
 import { CLS } from "../modules/cls";
 
@@ -21,6 +21,8 @@ export class ResetCLI extends CLI {
     GrouparooCLI.setGrouparooRunMode(this);
     GrouparooCLI.setNextDevelopmentMode();
   };
+
+  preRun = async () => rebuildConfig();
 
   async run({
     params,

@@ -1,5 +1,5 @@
 import { GrouparooCLI } from "../modules/cli";
-import { CLI, Task, api, config, ParamsFrom } from "actionhero";
+import { CLI, Task, api, config, ParamsFrom, rebuildConfig } from "actionhero";
 import { Reset } from "../modules/reset";
 import { Worker } from "node-resque";
 
@@ -44,6 +44,8 @@ export class RunCLI extends CLI {
     GrouparooCLI.setGrouparooRunMode(this);
     GrouparooCLI.setNextDevelopmentMode();
   };
+
+  preRun = async () => rebuildConfig();
 
   async run({
     params,

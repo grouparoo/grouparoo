@@ -15,9 +15,10 @@ type ActionheroCLIStub = {
   inputs: {
     [key: string]: ActionheroCLIInputStub;
   };
-  preInitialize: () => Promise<void>;
+  preInitialize?: () => Promise<void>;
   initialize: (() => Promise<void>) | boolean;
   start: (() => Promise<void>) | boolean;
+  preRun?: () => Promise<void>;
   run: (args: Record<string, unknown>) => Promise<boolean>;
 };
 
@@ -243,6 +244,9 @@ async function runCommand(
       if (instance.initialize) await actionHeroProcess.initialize();
       if (instance.start) await actionHeroProcess.start();
 
+      if (typeof instance.preRun === "function") {
+        await instance.preRun();
+      }
       toStop = await instance.run({ params });
     } catch (error) {
       console.error(error.message || error.toString());

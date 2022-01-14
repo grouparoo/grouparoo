@@ -1,5 +1,5 @@
 import { GrouparooCLI } from "../modules/cli";
-import { CLI } from "actionhero";
+import { CLI, rebuildConfig } from "actionhero";
 
 export class Start extends CLI {
   name = "start";
@@ -15,6 +15,8 @@ export class Start extends CLI {
     GrouparooCLI.setGrouparooRunMode(this);
     GrouparooCLI.setNextDevelopmentMode();
   };
+
+  preRun = async () => rebuildConfig();
 
   async run() {
     GrouparooCLI.logCLI(this.name, false);
