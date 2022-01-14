@@ -81,11 +81,10 @@ export default function Page(props) {
   async function edit(appData: Models.AppType) {
     const state = app.state === "ready" ? undefined : "ready";
     setLoading(true);
-    const response: Actions.AppEdit = await execApi(
-      "put",
-      `/app/${id}`,
-      Object.assign({}, appData, { state })
-    );
+    const response: Actions.AppEdit = await execApi("put", `/app/${id}`, {
+      ...appData,
+      state,
+    });
     if (response?.app) {
       if (response.app.state === "ready" && app.state === "draft") {
         router.push("/apps");
