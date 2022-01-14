@@ -264,7 +264,7 @@ importers:
       '@types/tar': 6.1.1
       '@types/validator': '*'
       actionhero: 28.1.4
-      ah-sequelize-plugin: 5.1.0
+      ah-sequelize-plugin: 5.1.1
       bcryptjs: 2.4.3
       cls-hooked: 4.2.2
       colors: 1.4.0
@@ -312,7 +312,7 @@ importers:
       '@types/node': 16.9.1
       '@types/validator': 13.6.3
       actionhero: 28.1.4
-      ah-sequelize-plugin: 5.1.0_f29751961d501bdbc450ca676b95fe81
+      ah-sequelize-plugin: 5.1.1_f29751961d501bdbc450ca676b95fe81
       bcryptjs: 2.4.3
       cls-hooked: 4.2.2
       colors: 1.4.0
@@ -4842,8 +4842,8 @@ packages:
       clean-stack: 2.2.0
       indent-string: 4.0.0
 
-  /ah-sequelize-plugin/5.1.0_f29751961d501bdbc450ca676b95fe81:
-    resolution: {integrity: sha512-TFDK46Sfis+rSyrNzGutJqtzSRg7hW26acB+Pc+fouP1n9pysyGJUDLeVjDkn8ajA8AspOk9+s5gcCZ77xz8OA==}
+  /ah-sequelize-plugin/5.1.1_f29751961d501bdbc450ca676b95fe81:
+    resolution: {integrity: sha512-p1OrQvYqBG47cTqxOwtM6UYtwpQrkBmnoJaWZpAWkkAJS7m2j69g9okdli0qP75QUlfOTPBLyrNw1MJ9+lPMvQ==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       actionhero: '>=22.0.0'
