@@ -63,7 +63,7 @@ modes:
     });
     const sequelizeInstance = new Sequelize(CONFIG);
 
-    const umzugs = Migrations.importMigrationsFromDirectory(
+    const umzugs = await Migrations.importMigrationsFromDirectory(
       CONFIG,
       sequelizeInstance,
       logger,
