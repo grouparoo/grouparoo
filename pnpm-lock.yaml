@@ -5259,7 +5259,7 @@ packages:
   /axios/0.24.0:
     resolution: {integrity: sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==}
     dependencies:
-      follow-redirects: 1.14.4_debug@4.3.2
+      follow-redirects: 1.14.7
     transitivePeerDependencies:
       - debug
 
@@ -7753,6 +7753,7 @@ packages:
         optional: true
     dependencies:
       debug: 4.3.2
+    dev: false
 
   /follow-redirects/1.14.7:
     resolution: {integrity: sha512-+hbxoLbFMbRKDwohX8GkTataGqO6Jb7jGwpAlwgy2bIz25XtRm7KEzJM76R1WiNT5SwZkX4Y75SwBolkpmE7iQ==}
@@ -15194,7 +15195,7 @@ packages:
       '@types/jest': 27.0.1
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
-      jest: 27.4.5
+      jest: 27.4.5_ts-node@10.4.0
       jest-util: 27.4.2
       json5: 2.2.0
       lodash.memoize: 4.1.2
