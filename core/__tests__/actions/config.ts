@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Connection, specHelper, rebuildConfig } from "actionhero";
+import { Connection, specHelper } from "actionhero";
 import { ConfigUserCreate } from "../../src/actions/config";
 import os from "os";
 
@@ -28,17 +28,14 @@ describe("actions/config", () => {
 
   beforeEach(async () => {
     process.env.GROUPAROO_RUN_MODE = "cli:config";
-    rebuildConfig();
   });
 
   afterEach(async () => {
     process.env.GROUPAROO_RUN_MODE = undefined;
-    rebuildConfig();
   });
 
   test("throws an error unless in config mode", async () => {
     process.env.GROUPAROO_RUN_MODE = undefined;
-    rebuildConfig();
     const { error } = await specHelper.runAction(
       "config:user:create",
       connection

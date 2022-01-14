@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper, config, rebuildConfig } from "actionhero";
+import { specHelper, config,  } from "actionhero";
 import {
   Log,
   GrouparooRecord,
@@ -41,7 +41,6 @@ describe("models/group", () => {
       await SharedGroupTests.afterEach();
       await run.destroy();
       process.env.GROUPAROO_RUN_MODE = undefined;
-      rebuildConfig();
     });
 
     test("an empty group can be created", async () => {
@@ -96,7 +95,6 @@ describe("models/group", () => {
 
     test("groups with at least one rule are set to ready in config mode", async () => {
       process.env.GROUPAROO_RUN_MODE = "cli:config";
-      rebuildConfig();
       expect(group.state).toBe("draft");
       await group.setRules([
         { key: "firstName", match: "nobody", operation: { op: "eq" } },

@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { api, specHelper, rebuildConfig } from "actionhero";
+import { api, specHelper } from "actionhero";
 import {
   App,
   Filter,
@@ -281,13 +281,10 @@ describe("models/property", () => {
     afterAll(async () => {
       await source.destroy();
       process.env.GROUPAROO_RUN_MODE = undefined;
-      rebuildConfig();
     });
 
     test("in cli:config, after creating a property, null properties are built", async () => {
       process.env.GROUPAROO_RUN_MODE = "cli:config";
-      rebuildConfig();
-
       const record = await helper.factories.record();
 
       const property = await Property.create({
@@ -308,7 +305,6 @@ describe("models/property", () => {
 
     test("in cli:run, after creating a property, null properties are not built in a model hook", async () => {
       process.env.GROUPAROO_RUN_MODE = "cli:run";
-      rebuildConfig();
 
       const record = await helper.factories.record();
 

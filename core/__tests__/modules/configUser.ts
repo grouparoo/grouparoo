@@ -1,10 +1,8 @@
 import fs from "fs";
 import os from "os";
 import { helper } from "@grouparoo/spec-helper";
-
 import { ConfigUser } from "../../src/modules/configUser";
 import { Setting, plugin } from "../../src";
-import { rebuildConfig } from "actionhero";
 
 const workerId = process.env.JEST_WORKER_ID;
 const configDir = `${os.tmpdir()}/test/${workerId}/configUser/config`;
@@ -16,7 +14,6 @@ describe("modules/ConfigUser", () => {
 
   beforeEach(async () => {
     process.env.GROUPAROO_RUN_MODE = "cli:config";
-    rebuildConfig();
 
     const localFile = await ConfigUser.localUserFilePath();
     if (fs.existsSync(localFile)) fs.rmSync(localFile);
@@ -25,14 +22,12 @@ describe("modules/ConfigUser", () => {
 
   afterEach(async () => {
     process.env.GROUPAROO_RUN_MODE = undefined;
-    rebuildConfig();
     const localFile = await ConfigUser.localUserFilePath();
     if (fs.existsSync(localFile)) fs.rmSync(localFile);
   });
 
   test("does nothing unless in cli:config mode", async () => {
     process.env.GROUPAROO_RUN_MODE = undefined;
-    rebuildConfig();
     expect(fs.existsSync(await ConfigUser.localUserFilePath())).toEqual(false);
     await ConfigUser.create({
       email: "demo@grouparoo.com",
