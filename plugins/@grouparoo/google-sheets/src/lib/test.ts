@@ -1,5 +1,5 @@
 import { TestPluginMethod } from "@grouparoo/core";
-import Spreadsheet from "./sheet-import/Spreadsheet";
+import Spreadsheet from "./shared/Spreadsheet";
 
 const TEST_SHEET_ID =
   "https://docs.google.com/spreadsheets/d/11zccS101c27B9mYLMJiaAPfDgoj2chOq39n3MZrcKTk/edit#gid=0"; // can be anything. not used for test
