@@ -583,7 +583,6 @@ describe("models/property", () => {
     afterEach(async () => {
       await emailProperty.update({ type: "email" });
       process.env.GROUPAROO_RUN_MODE = undefined;
-      rebuildConfig();
     });
 
     test("updating a property's type will enqueue an internal run in most run modes", async () => {
@@ -598,7 +597,6 @@ describe("models/property", () => {
 
     test("updating a property's type will mark the records and properties pending in cli:config", async () => {
       process.env.GROUPAROO_RUN_MODE = "cli:config";
-      rebuildConfig();
 
       const record = await helper.factories.record();
 
