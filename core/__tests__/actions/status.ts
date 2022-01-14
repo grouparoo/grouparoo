@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Connection, rebuildConfig, specHelper } from "actionhero";
+import { Connection, specHelper } from "actionhero";
 import os from "os";
 import fs from "fs";
 import { ConfigUser } from "../../src/modules/configUser";
@@ -51,7 +51,6 @@ describe("actions/status", () => {
 
         beforeEach(async () => {
           process.env.GROUPAROO_RUN_MODE = "cli:config";
-          rebuildConfig();
 
           await ConfigUser.create({
             email: "mario@example.com",
@@ -60,15 +59,12 @@ describe("actions/status", () => {
         });
         afterEach(async () => {
           process.env.GROUPAROO_RUN_MODE = undefined;
-          rebuildConfig();
-
           if (fs.existsSync(localFile)) fs.rmSync(localFile);
           await helper.resetSettings();
         });
 
         test("cannot use status:private with a local users file in run mode", async () => {
           process.env.GROUPAROO_RUN_MODE = "cli:run";
-          rebuildConfig();
 
           const { error, metrics } = await specHelper.runAction<PrivateStatus>(
             "status:private"

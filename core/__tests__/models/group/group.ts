@@ -1,5 +1,4 @@
 import { helper } from "@grouparoo/spec-helper";
-import { rebuildConfig } from "actionhero";
 import {
   Destination,
   Group,
@@ -131,7 +130,6 @@ describe("models/group", () => {
 
     afterEach(async () => {
       process.env.GROUPAROO_RUN_MODE = undefined;
-      rebuildConfig();
     });
 
     test("creates a run and sets state to initialized", async () => {
@@ -148,7 +146,6 @@ describe("models/group", () => {
     });
     test("does not create a run when in config mode", async () => {
       process.env.GROUPAROO_RUN_MODE = "cli:config";
-      rebuildConfig();
 
       const group = await Group.create({
         name: "group that will not create a run",

@@ -14,6 +14,7 @@ import { TeamMember } from "../../models/TeamMember";
 import { Errors } from "../errors";
 import { ConfigUser } from "../configUser";
 import { ActionPermissionTopic, Permission } from "../../models/Permission";
+import { getGrouparooRunMode } from "../runMode";
 
 export const AuthenticatedActionMiddleware: action.ActionMiddleware = {
   name: "authenticated-action",
@@ -133,7 +134,7 @@ async function authenticateTeamMember(
   let error: Error & { code?: string };
 
   if (
-    config.general.runMode === "cli:config" &&
+    getGrouparooRunMode() === "cli:config" &&
     ["development", "test"].includes(env)
   ) {
     error = await authenticateConfigUser(data, optional);
@@ -195,7 +196,7 @@ async function authenticateTeamMemberInRoom(
     roomNameParts[0] === "model" ? roomNameParts[1] : roomNameParts[0]
   ) as ActionPermissionTopic;
 
-  if (config.general.runMode === "cli:config" && env === "development") return;
+  if (getGrouparooRunMode() === "cli:config" && env === "development") return;
 
   await CLS.wrap(async () => {
     const session = await api.session.load(connection);

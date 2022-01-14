@@ -15,7 +15,7 @@ type ActionheroCLIStub = {
   inputs: {
     [key: string]: ActionheroCLIInputStub;
   };
-  preInitialize: () => Promise<void>;
+  preInitialize?: () => Promise<void>;
   initialize: (() => Promise<void>) | boolean;
   start: (() => Promise<void>) | boolean;
   run: (args: Record<string, unknown>) => Promise<boolean>;

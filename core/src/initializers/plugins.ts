@@ -1,4 +1,4 @@
-import { Initializer, config, api, log, utils } from "actionhero";
+import { Initializer, api, log, utils } from "actionhero";
 import { GrouparooPlugin } from "../classes/plugin";
 import { plugin } from "../modules/plugin";
 import { App } from "../models/App";
@@ -11,6 +11,7 @@ import { TeamTemplate } from "../templates/team";
 import { TeamMemberTemplate } from "../templates/teamMember";
 import { SettingTemplate } from "../templates/setting";
 import { CLS } from "../modules/cls";
+import { getGrouparooRunMode } from "../modules/runMode";
 
 declare module "actionhero" {
   export interface Api {
@@ -73,7 +74,7 @@ export class Plugins extends Initializer {
     if (uiPlugins) {
       const relevantUiPlugin =
         uiPlugins[
-          config.general.runMode === "cli:config" ? uiPlugins.length - 1 : 0
+          getGrouparooRunMode() === "cli:config" ? uiPlugins.length - 1 : 0
         ];
       if (relevantUiPlugin) {
         this.registerPlugin({

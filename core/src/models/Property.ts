@@ -38,6 +38,7 @@ import { GrouparooRecord } from "./GrouparooRecord";
 import { RecordProperty } from "./RecordProperty";
 import { Run } from "./Run";
 import { Source } from "./Source";
+import { getGrouparooRunMode } from "../modules/runMode";
 
 const jsMap = {
   boolean: config?.sequelize?.dialect === "sqlite" ? "text" : "boolean", // there is no boolean type in SQLite
@@ -568,7 +569,7 @@ export class Property extends LoggedModel<Property> {
 
   @AfterSave
   static async updateSampleRecords(instance: Property) {
-    if (config.general.runMode !== "cli:config") return;
+    if (getGrouparooRunMode() !== "cli:config") return;
     if (instance.state !== "ready") return;
 
     const source = await instance.$get("source");

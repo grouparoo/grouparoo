@@ -1,4 +1,4 @@
-import { api, config } from "actionhero";
+import { api } from "actionhero";
 import fs from "fs";
 import path from "path";
 import prettier from "prettier";
@@ -17,6 +17,7 @@ import {
 
 import { getConfigDir } from "../modules/pluginDetails";
 import { GrouparooRecord } from "../models/GrouparooRecord";
+import { getGrouparooRunMode } from "./runMode";
 
 type WritableConfigObject = {
   filePath: string;
@@ -84,7 +85,7 @@ export namespace ConfigWriter {
 
   export async function run() {
     // If we're not in config mode, do nothing.
-    if (config.general.runMode !== "cli:config") return;
+    if (getGrouparooRunMode() !== "cli:config") return;
     // Any models we see before starting would be from existing code config
     // files.
     if (!api.process.started) return;
@@ -170,7 +171,7 @@ export namespace ConfigWriter {
   export function getLockKey(
     configObject: AnyConfigurationObject
   ): string | null {
-    if (config.general.runMode !== "cli:config") {
+    if (getGrouparooRunMode() !== "cli:config") {
       return getCodeConfigLockKey();
     }
     if (isLockable(configObject)) {

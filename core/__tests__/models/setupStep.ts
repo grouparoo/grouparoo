@@ -1,5 +1,4 @@
 import { helper } from "@grouparoo/spec-helper";
-import { rebuildConfig } from "actionhero";
 import { SetupStep, plugin } from "../../src";
 import { getSetupStepDescriptions } from "../../src/modules/ops/setupSteps";
 
@@ -12,7 +11,6 @@ describe("models/setupStep", () => {
 
   beforeEach(async () => {
     process.env.GROUPAROO_RUN_MODE = "cli:start";
-    rebuildConfig();
   });
 
   test("setupSteps will be created when the server boots", async () => {
@@ -46,7 +44,6 @@ describe("models/setupStep", () => {
 
   test("setupSteps ops returns config versions when in config mode", async () => {
     process.env.GROUPAROO_RUN_MODE = "cli:config";
-    rebuildConfig();
     const setupSteps = getSetupStepDescriptions();
     expect(setupSteps[0].key).toEqual("install_grouparoo");
     expect(setupSteps[1].key).toEqual("add_an_app");

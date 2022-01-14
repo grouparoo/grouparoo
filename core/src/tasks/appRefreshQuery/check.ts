@@ -1,13 +1,13 @@
-import { config } from "actionhero";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { App } from "../../models/App";
 import { AppRefreshQuery } from "../../models/AppRefreshQuery";
 import { CLS } from "../../modules/cls";
+import { getGrouparooRunMode } from "../../modules/runMode";
 
 export class AppRefreshQueriesCheck extends CLSTask {
   name = "appRefreshQueries:check";
   description = "check all appRefreshQueries and run them";
-  frequency = config.general.runMode === "cli:run" ? 0 : 1000 * 60; // Run every minute
+  frequency = getGrouparooRunMode() === "cli:run" ? 0 : 1000 * 60; // Run every minute
   queue = "apps";
   inputs = {};
 

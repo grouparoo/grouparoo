@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { api, config, rebuildConfig } from "actionhero";
+import { api, config } from "actionhero";
 import fetch, { enableFetchMocks } from "jest-fetch-mock";
 
 import { Telemetry } from "../../src/modules/telemetry";
@@ -18,7 +18,6 @@ describe("modules/status", () => {
     await helper.truncate();
     await api.resque.queue.connection.redis.flushdb();
     process.env.GROUPAROO_RUN_MODE = "x";
-    rebuildConfig();
     config.telemetry.enabled = true;
   });
 
@@ -184,7 +183,6 @@ describe("modules/status", () => {
   describe("telemetry initializer", () => {
     test("will send telemetry when running via the CLI", async () => {
       process.env.GROUPAROO_RUN_MODE = "cli:run";
-      rebuildConfig();
       config.telemetry.enabled = true;
       fetch.mockResponseOnce(JSON.stringify({ response: "FROM TEST" }));
 
