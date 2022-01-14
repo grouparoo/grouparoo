@@ -4,6 +4,7 @@ import Loader from "../../components/Loader";
 import { UseApi } from "../../hooks/useApi";
 import { Actions } from "../../utils/apiData";
 import { ErrorHandler } from "../../utils/errorHandler";
+import { grouparooUiEdition } from "../../utils/uiEdition";
 
 export default function OauthCallbackPage(props) {
   const router = useRouter();
@@ -21,7 +22,10 @@ export default function OauthCallbackPage(props) {
       `/oauth/client/request/${requestId}/edit`
     );
     if (response.oAuthRequest) {
-      if (response.oAuthRequest.type === "user") {
+      if (
+        response.oAuthRequest.type === "user" &&
+        grouparooUiEdition() !== "config"
+      ) {
         router.replace(`/session/sign-in?requestId=${requestId}`);
       } else if (response.oAuthRequest.type === "app" && window.opener) {
         window.opener?.postMessage({ requestId });
