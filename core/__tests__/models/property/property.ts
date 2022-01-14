@@ -580,11 +580,13 @@ describe("models/property", () => {
       emailProperty = await Property.findOne({ where: { id: "email" } });
     });
 
-    afterAll(async () => {
+    afterEach(async () => {
       await emailProperty.update({ type: "email" });
+      process.env.GROUPAROO_RUN_MODE = undefined;
+      rebuildConfig();
     });
 
-    test("updating a property's type will enqueue an internal run", async () => {
+    test("updating a property's type will enqueue an internal run in most run modes", async () => {
       expect(await Run.count()).toBe(0);
 
       await emailProperty.update({ type: "string" });
@@ -592,6 +594,32 @@ describe("models/property", () => {
       const run = await Run.findOne();
       expect(run.creatorType).toBe("property");
       expect(run.creatorId).toBe(emailProperty.id);
+    });
+
+    test("updating a property's type will mark the records and properties pending in cli:config", async () => {
+      process.env.GROUPAROO_RUN_MODE = "cli:config";
+      rebuildConfig();
+
+      const record = await helper.factories.record();
+
+      await RecordProperty.update(
+        { state: "ready" },
+        { where: { recordId: record.id } }
+      );
+      await record.update({ state: "ready" });
+      const recordProperty = await RecordProperty.findOne({
+        where: { propertyId: "email", recordId: record.id },
+      });
+
+      expect(recordProperty.state).toBe("ready");
+      expect(record.state).toBe("ready");
+
+      await emailProperty.update({ type: "string" });
+
+      await record.reload();
+      await recordProperty.reload();
+      expect(recordProperty.state).toBe("pending");
+      expect(record.state).toBe("pending");
     });
   });
 
