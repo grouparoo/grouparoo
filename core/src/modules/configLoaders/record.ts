@@ -1,4 +1,3 @@
-import { config } from "actionhero";
 import {
   RecordConfigurationObject,
   validateConfigObjectKeys,
@@ -7,13 +6,14 @@ import {
 } from "../../classes/codeConfig";
 import { GrouparooRecord } from "../../models/GrouparooRecord";
 import { Property } from "../../models/Property";
+import { getGrouparooRunMode } from "../runMode";
 
 export async function loadRecord(
   configObject: RecordConfigurationObject,
   externallyValidate: boolean,
   validate = false
 ) {
-  if (config.general.runMode !== "cli:config") return;
+  if (getGrouparooRunMode() !== "cli:config") return;
 
   validateConfigObjectKeys(GrouparooRecord, configObject, ["properties"]);
 

@@ -1,7 +1,8 @@
 import { GrouparooCLI } from "../modules/cli";
-import { CLI, Task, api, config, ParamsFrom, rebuildConfig } from "actionhero";
+import { CLI, Task, api, config, ParamsFrom } from "actionhero";
 import { Reset } from "../modules/reset";
 import { Worker } from "node-resque";
+import { getGrouparooRunMode } from "../modules/runMode";
 
 export class RunCLI extends CLI {
   name = "run";
@@ -45,8 +46,6 @@ export class RunCLI extends CLI {
     GrouparooCLI.setNextDevelopmentMode();
   };
 
-  preRun = async () => rebuildConfig();
-
   async run({
     params,
   }: {
@@ -61,7 +60,7 @@ export class RunCLI extends CLI {
     this.checkWorkers();
 
     if (!params.web) GrouparooCLI.disableWebServer();
-    if (params.reset) await Reset.data(config.general.runMode);
+    if (params.reset) await Reset.data(getGrouparooRunMode());
     if (params.resetHighWatermarks) await Reset.resetHighWatermarks();
     process.env.GROUPAROO_DISABLE_EXPORTS = String(
       params.export?.toString()?.toLowerCase() !== "true"

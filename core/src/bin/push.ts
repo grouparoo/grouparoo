@@ -1,4 +1,4 @@
-import { CLI, ParamsFrom, rebuildConfig } from "actionhero";
+import { CLI, ParamsFrom } from "actionhero";
 import { GrouparooCLI } from "../modules/cli";
 import { CloudCLI } from "../modules/cloudCli";
 
@@ -51,8 +51,6 @@ export class Push extends CLI {
     GrouparooCLI.setGrouparooRunMode(this);
     GrouparooCLI.setNextDevelopmentMode();
   }
-
-  preRun = async () => rebuildConfig();
 
   async run({ params }: { params: Partial<ParamsFrom<Push>> }) {
     GrouparooCLI.logCLI(this.name);

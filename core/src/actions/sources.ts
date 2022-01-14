@@ -1,4 +1,4 @@
-import { api, ParamsFrom, config, log } from "actionhero";
+import { api, ParamsFrom, log } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { App } from "../models/App";
 import { Source } from "../models/Source";
@@ -16,6 +16,7 @@ import { TableSpeculation } from "../modules/tableSpeculation";
 import { APIData } from "../modules/apiData";
 import { ActionPermission } from "../models/Permission";
 import { WhereAttributeHash } from "sequelize";
+import { getGrouparooRunMode } from "../modules/runMode";
 
 export class SourcesList extends AuthenticatedAction {
   name = "sources:list";
@@ -205,7 +206,7 @@ export class SourceGenerateSampleRecords extends AuthenticatedAction {
   }) {
     const source = await Source.findById(params.id);
 
-    if (config.general.runMode !== "cli:config")
+    if (getGrouparooRunMode() !== "cli:config")
       throw new Error(`this action is only valid in cli:config mode`);
     if (source.state !== "ready") throw new Error(`source is not ready`);
     if (!(await source.previewAvailable()))

@@ -1,10 +1,10 @@
 import fs from "fs";
 import path from "path";
-import { config } from "actionhero";
 import { getConfigDir } from "../modules/pluginDetails";
 import { GrouparooSubscription } from "./grouparooSubscription";
 import { plugin } from "../modules/plugin";
 import { Setting } from "../models/Setting";
+import { getGrouparooRunMode } from "./runMode";
 
 export namespace ConfigUser {
   export type ConfigUserType = { email: boolean };
@@ -53,7 +53,7 @@ export namespace ConfigUser {
     subscribed?: boolean;
     company: string;
   }) {
-    if (config.general.runMode !== "cli:config") return;
+    if (getGrouparooRunMode() !== "cli:config") return;
     await store();
     if (subscribed) await subscribe(email, subscribed);
     await storeCompanyName(company);

@@ -1,4 +1,4 @@
-import { api, log, task, env, config, ParamsFrom } from "actionhero";
+import { api, log, task, env, ParamsFrom } from "actionhero";
 import { GrouparooCLI } from "../../../modules/cli";
 import { APM } from "../../../modules/apm";
 import { Status, FinalSummary } from "../../../modules/status";
@@ -6,6 +6,7 @@ import { plugin } from "../../../modules/plugin";
 import { CLSTask } from "../../../classes/tasks/clsTask";
 import { Worker } from "node-resque";
 import { APIData } from "../../../modules/apiData";
+import { getGrouparooRunMode } from "../../../modules/runMode";
 
 export class StatusTask extends CLSTask {
   name = "status";
@@ -22,9 +23,7 @@ export class StatusTask extends CLSTask {
     worker: Worker
   ) {
     return APM.wrap(this.name, "task", worker, async () => {
-      const runMode = config.general.runMode;
-
-      if (runMode === "cli:run") {
+      if (getGrouparooRunMode() === "cli:run") {
         // calculate stats inline
         await Status.setAll();
       } else {
@@ -35,11 +34,11 @@ export class StatusTask extends CLSTask {
       }
 
       const samples = await this.getSamples();
-      if (runMode === "cli:run") this.logSamples(samples);
+      if (getGrouparooRunMode() === "cli:run") this.logSamples(samples);
 
       const complete = await this.checkForComplete(samples);
 
-      if (runMode === "cli:run" && complete) {
+      if (getGrouparooRunMode() === "cli:run" && complete) {
         await this.logFinalSummary();
         await this.stopServer(toStop);
       }

@@ -1,5 +1,5 @@
 import { GrouparooCLI } from "../modules/cli";
-import { CLI, config, log, api, ParamsFrom, rebuildConfig } from "actionhero";
+import { CLI, config, log, api, ParamsFrom } from "actionhero";
 import { CLS } from "../modules/cls";
 import {
   loadConfigObjects,
@@ -33,8 +33,6 @@ export class Apply extends CLI {
     GrouparooCLI.setGrouparooRunMode(this);
     GrouparooCLI.setNextDevelopmentMode();
   };
-
-  preRun = async () => rebuildConfig();
 
   async run({ params }: { params: Partial<ParamsFrom<Apply>> }) {
     GrouparooCLI.logCLI(this.name);

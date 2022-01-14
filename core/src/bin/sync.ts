@@ -1,6 +1,6 @@
 import { GrouparooCLI } from "../modules/cli";
 import { GrouparooRecord, RecordProperty, Property } from "..";
-import { CLI, ParamsFrom, rebuildConfig } from "actionhero";
+import { CLI, ParamsFrom } from "actionhero";
 import { Op } from "sequelize";
 
 export class SyncCLI extends CLI {
@@ -32,8 +32,6 @@ export class SyncCLI extends CLI {
     GrouparooCLI.setGrouparooRunMode(this);
     GrouparooCLI.setNextDevelopmentMode();
   };
-
-  preRun = async () => rebuildConfig();
 
   async run({
     params,

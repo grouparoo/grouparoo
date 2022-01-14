@@ -5,7 +5,7 @@ import {
   ConfigTemplateParams,
   ConfigTemplateRunResponse,
 } from "../classes/configTemplate";
-import { CLI, api, ParamsFrom, rebuildConfig } from "actionhero";
+import { CLI, api, ParamsFrom } from "actionhero";
 import path from "path";
 import fs from "fs-extra";
 import prettier from "prettier";
@@ -109,8 +109,6 @@ Learn more about the options for a specific template:
     GrouparooCLI.setGrouparooRunMode(this);
     GrouparooCLI.setNextDevelopmentMode();
   };
-
-  preRun = async () => rebuildConfig();
 
   async run({
     params,

@@ -25,12 +25,6 @@ export const DEFAULT = {
       serverName: packageJSON.name,
       // you can manually set the server id (not recommended)
       id: undefined as string,
-      runMode: process.env.GROUPAROO_RUN_MODE as
-        | "cli:run"
-        | "cli:start"
-        | "cli:config"
-        | "cli:apply"
-        | "cli:validate",
       welcomeMessage: `Welcome to the ${packageJSON.name} api`,
       // A unique token to your application that servers will use to authenticate to each other
       serverToken: process.env.SERVER_TOKEN ? process.env.SERVER_TOKEN : null,

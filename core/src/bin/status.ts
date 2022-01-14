@@ -1,7 +1,7 @@
 import { GrouparooCLI } from "../modules/cli";
 import { plugin } from "../modules/plugin";
 import { GroupOps } from "../modules/ops/group";
-import { env, CLI, ParamsFrom, rebuildConfig } from "actionhero";
+import { env, CLI, ParamsFrom } from "actionhero";
 import { CLS } from "../modules/cls";
 import { Status } from "../modules/status";
 
@@ -19,8 +19,6 @@ export class StatusCLI extends CLI {
     GrouparooCLI.setGrouparooRunMode(this);
     GrouparooCLI.setNextDevelopmentMode();
   };
-
-  preRun = async () => rebuildConfig();
 
   async run({ params }: { params: ParamsFrom<StatusCLI> }) {
     if (!params.json) GrouparooCLI.logCLI(this.name);

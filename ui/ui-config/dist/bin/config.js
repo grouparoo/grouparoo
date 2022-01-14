@@ -1,5 +1,5 @@
 const cli = require("@grouparoo/core/dist/modules/cli");
-const { CLI, log, rebuildConfig } = require("actionhero");
+const { CLI, log } = require("actionhero");
 const open = require("open");
 
 class Config extends CLI {
@@ -24,8 +24,6 @@ class Config extends CLI {
     process.env.WEB_SERVER = "true";
     if (!process.env.PORT) process.env.PORT = "3000";
   }
-
-  preRun = async () => rebuildConfig();
 
   async run() {
     cli.GrouparooCLI.logCLI(this.name, false);

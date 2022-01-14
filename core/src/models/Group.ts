@@ -50,6 +50,7 @@ import { GrouparooModel } from "./GrouparooModel";
 import { Source } from "./Source";
 import { RunOps } from "../modules/ops/runs";
 import { ModelGuard } from "../modules/modelGuard";
+import { getGrouparooRunMode } from "../modules/runMode";
 
 export const GROUP_RULE_LIMIT = 10;
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -278,7 +279,7 @@ export class Group extends LoggedModel<Group> {
 
     if (this.state !== "deleted" && rules.length > 0) {
       this.state =
-        config.general.runMode === "cli:config" ? "ready" : "initializing";
+        getGrouparooRunMode() === "cli:config" ? "ready" : "initializing";
       this.changed("updatedAt", true);
       await this.save();
       return this.run();

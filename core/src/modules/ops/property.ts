@@ -1,4 +1,3 @@
-import { config } from "actionhero";
 import { Property, SimplePropertyOptions } from "../../models/Property";
 import { Group } from "../../models/Group";
 import { Option } from "../../models/Option";
@@ -6,6 +5,7 @@ import { Mapping } from "../../models/Mapping";
 import { GroupRule } from "../../models/GroupRule";
 import { internalRun } from "../internalRun";
 import { PluginOptionType } from "../../classes/plugin";
+import { getGrouparooRunMode } from "../runMode";
 import Mustache from "mustache";
 
 export namespace PropertyOps {
@@ -13,7 +13,7 @@ export namespace PropertyOps {
    * Enqueue Runs to update all Groups that rely on this Property
    */
   export async function enqueueRuns(property: Property) {
-    if (config.general.runMode === "cli:validate") return;
+    if (getGrouparooRunMode() === "cli:validate") return;
 
     await internalRun("property", property.id); // update *all* records
 

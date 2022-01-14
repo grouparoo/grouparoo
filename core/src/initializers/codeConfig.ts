@@ -1,10 +1,11 @@
-import { api, log, config, Initializer } from "actionhero";
+import { api, log, Initializer } from "actionhero";
 import { loadConfigDirectory } from "../modules/configLoaders";
 import { getConfigDir } from "../modules/pluginDetails";
 import { GrouparooModel } from "../models/GrouparooModel";
 import { GrouparooRecord } from "../models/GrouparooRecord";
 import { RecordOps } from "../modules/ops/record";
 import { CLS } from "../modules/cls";
+import { getGrouparooRunMode } from "../modules/runMode";
 
 declare module "actionhero" {
   export interface Api {
@@ -31,7 +32,7 @@ export class CodeConfig extends Initializer {
   async start() {
     await CLS.wrap(async () => {
       const configDir = await getConfigDir(
-        config.general.runMode === "cli:config"
+        getGrouparooRunMode() === "cli:config"
       );
       const { errors } = await loadConfigDirectory(configDir);
       if (errors.length > 0)
@@ -46,7 +47,7 @@ export class CodeConfig extends Initializer {
 }
 
 async function loadSampleProfiles() {
-  if (config.general.runMode !== "cli:config") return;
+  if (getGrouparooRunMode() !== "cli:config") return;
 
   const models = await GrouparooModel.findAll();
   for (const model of models) {

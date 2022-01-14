@@ -1,4 +1,4 @@
-import { config, ParamsFrom } from "actionhero";
+import { ParamsFrom } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { OptionallyAuthenticatedAction } from "../classes/actions/optionallyAuthenticatedAction";
 import { spawnPromise } from "../modules/spawnPromise";
@@ -6,6 +6,7 @@ import { ConfigUser } from "../modules/configUser";
 import { ConfigWriter } from "../modules/configWriter";
 import { APIData } from "../modules/apiData";
 import { ActionPermission } from "../models/Permission";
+import { getGrouparooRunMode } from "../modules/runMode";
 
 export class ConfigValidate extends AuthenticatedAction {
   name = "config:validate";
@@ -88,7 +89,7 @@ export class ConfigUserCreate extends OptionallyAuthenticatedAction {
   }: {
     params: ParamsFrom<ConfigUserCreate>;
   }) {
-    if (config.general.runMode !== "cli:config") {
+    if (getGrouparooRunMode() !== "cli:config") {
       throw new Error("Action only available in config mode.");
     }
     await ConfigUser.create(params);
