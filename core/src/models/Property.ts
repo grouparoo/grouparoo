@@ -369,13 +369,38 @@ export class Property extends LoggedModel<Property> {
 
   @BeforeSave
   static async ensureUniqueKey(instance: Property) {
+    // Example of model-scoped properties
+    // const source = await Source.findOne({ where: { id: instance.sourceId } });
+    // const siblingSources = await Source.findAll({
+    //   where: { modelId: source.modelId },
+    // });
+    // const count = await Property.count({
+    //   where: {
+    //     id: { [Op.ne]: instance.id },
+    //     key: instance.key,
+    //     sourceId: { [Op.in]: siblingSources.map((source) => source.id) },
+    //     state: { [Op.notIn]: ["draft", "deleted"] },
+    //   },
+    // });
+
+    // Example of source-scoped properties
     const count = await Property.count({
       where: {
         id: { [Op.ne]: instance.id },
         key: instance.key,
+        sourceId: instance.sourceId,
         state: { [Op.notIn]: ["draft", "deleted"] },
       },
     });
+
+    // Current behavior
+    // const count = await Property.count({
+    //   where: {
+    //     id: { [Op.ne]: instance.id },
+    //     key: instance.key,
+    //     state: { [Op.notIn]: ["draft", "deleted"] },
+    //   },
+    // });
     if (count > 0) {
       throw new Error(`key "${instance.key}" is already in use`);
     }
