@@ -387,7 +387,7 @@ export default function Page(props) {
                                   <br />
                                   <LoadingButton
                                     size="sm"
-                                    disabled={loadingOAuth}
+                                    disabled={app.locked || loadingOAuth}
                                     loading={loadingOAuth}
                                     variant="outline-primary"
                                     onClick={() => startOAuthLogin(opt.key)}
