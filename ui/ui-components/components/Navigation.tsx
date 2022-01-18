@@ -292,11 +292,28 @@ export default function Navigation(props) {
                                   style={{ paddingLeft: 30 }}
                                   key={`platform-dropdown-${platformIdx}`}
                                 >
-                                  <Link href={nav.href}>
-                                    <a style={{ color: "white" }}>
-                                      {nav.title}
-                                    </a>
-                                  </Link>
+                                  <HighlightingNavLink
+                                    key={nav.href}
+                                    href={nav.href}
+                                    mainPathSectionIdx={
+                                      nav.mainPathSectionIdx ?? 1
+                                    }
+                                    text={
+                                      <>
+                                        {nav.title}
+                                        {nav.title === "Runs" ? (
+                                          <>
+                                            {" "}
+                                            <RunningRunsBadge
+                                              statusHandler={statusHandler}
+                                            />
+                                          </>
+                                        ) : null}
+                                      </>
+                                    }
+                                    icon={nav.icon}
+                                    small={nav.small}
+                                  />
                                   {expandPlatformMenu &&
                                   nav.title === "Notifications" ? (
                                     <UnreadNotificationsBadge
