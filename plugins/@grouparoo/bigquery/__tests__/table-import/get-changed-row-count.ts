@@ -54,6 +54,7 @@ describe("bigquery/table/scheduleOptions", () => {
       appOptions,
       appId: app.id,
       tableName: "records",
+      incremental: true,
       matchConditions: [],
       highWaterMarkCondition: {
         columnName: "stamp",
@@ -71,6 +72,7 @@ describe("bigquery/table/scheduleOptions", () => {
       appOptions,
       appId: app.id,
       tableName: "records",
+      incremental: true,
       matchConditions: [
         {
           columnName: "id",

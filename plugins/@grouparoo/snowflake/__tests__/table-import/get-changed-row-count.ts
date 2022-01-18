@@ -53,6 +53,7 @@ describe("snowflake/table/scheduleOptions", () => {
       appOptions,
       appId: app.id,
       tableName: "PROFILES",
+      incremental: true,
       matchConditions: [],
       highWaterMarkCondition: {
         columnName: "STAMP",
@@ -70,6 +71,7 @@ describe("snowflake/table/scheduleOptions", () => {
       appOptions,
       appId: app.id,
       tableName: "PROFILES",
+      incremental: true,
       matchConditions: [
         {
           columnName: "ID",

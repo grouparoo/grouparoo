@@ -16,6 +16,7 @@ export const getChangedRows: GetChangedRowsMethod = async ({
   secondarySortColumnASC,
   matchConditions,
   highWaterMarkKey,
+  incremental,
 }) => {
   const params = [];
   let query = `SELECT *, CAST(?? as CHAR) as ?? FROM ??`;
@@ -23,7 +24,9 @@ export const getChangedRows: GetChangedRowsMethod = async ({
   params.push(highWaterMarkKey);
   params.push(tableName);
 
-  query += await makeHighwaterWhereClause(highWaterMarkCondition, params);
+  if (incremental) {
+    query += await makeHighwaterWhereClause(highWaterMarkCondition, params);
+  }
 
   for (const [idx, condition] of matchConditions.entries()) {
     const filterClause = makeWhereClause(condition, params);

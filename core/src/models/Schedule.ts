@@ -105,7 +105,7 @@ export class Schedule extends LoggedModel<Schedule> {
   locked: string;
 
   @AllowNull(false)
-  @Default(false)
+  @Default(true)
   @Column
   incremental: boolean;
 
@@ -375,6 +375,21 @@ export class Schedule extends LoggedModel<Schedule> {
     }
   }
 
+  @BeforeCreate
+  @BeforeUpdate
+  static async checkIncremental(instance: Schedule) {
+    const { pluginConnection } = await instance.getPlugin();
+    if (instance.incremental && !pluginConnection.supportIncrementalSchedule) {
+      if (instance.isNewRecord) {
+        instance.incremental = false;
+      } else {
+        throw new Error(
+          `${pluginConnection.name} does not support incremental schedules`
+        );
+      }
+    }
+  }
+
   @BeforeSave
   static async ensureSourceMapping(instance: Schedule) {
     const source = await Source.findById(instance.sourceId);
@@ -404,16 +419,6 @@ export class Schedule extends LoggedModel<Schedule> {
   static async runAfterSave(instance: Schedule) {
     const shouldRun = await instance.shouldRun();
     if (shouldRun) await instance.enqueueRun();
-  }
-
-  @BeforeUpdate
-  static async checkIncremental(instance: Schedule) {
-    const { pluginConnection } = await instance.getPlugin();
-    if (instance.incremental && !pluginConnection.supportIncrementalSchedule) {
-      throw new Error(
-        `${pluginConnection.name} does not support incremental schedules`
-      );
-    }
   }
 
   @BeforeDestroy

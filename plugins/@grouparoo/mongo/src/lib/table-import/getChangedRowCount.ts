@@ -7,10 +7,11 @@ export const getChangedRowCount: GetChangedRowCountMethod = async ({
   tableName,
   matchConditions,
   highWaterMarkCondition,
+  incremental,
 }) => {
   let aggPipeline = [];
 
-  if (highWaterMarkCondition) {
+  if (incremental && highWaterMarkCondition) {
     const query = makeFindQuery(highWaterMarkCondition);
     if (Object.keys(query).length > 0) {
       aggPipeline.push({

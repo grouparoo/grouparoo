@@ -16,12 +16,15 @@ export const getChangedRows: GetChangedRowsMethod = async ({
   secondarySortColumnASC,
   matchConditions,
   highWaterMarkKey,
+  incremental,
 }) => {
   const tempHighWaterMarkKey = "__SNOWFLAKEHWM";
   const params = [];
   let query = `SELECT *, CAST("${highWaterMarkAndSortColumnASC}" as STRING) as "${tempHighWaterMarkKey}" FROM "${tableName}"`;
 
-  query += await makeHighwaterWhereClause(highWaterMarkCondition, params);
+  if (incremental) {
+    query += await makeHighwaterWhereClause(highWaterMarkCondition, params);
+  }
 
   for (const [idx, condition] of matchConditions.entries()) {
     const filterClause = makeWhereClause(condition, params);

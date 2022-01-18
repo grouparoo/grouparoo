@@ -57,6 +57,7 @@ describe("mongo/table/scheduleOptions", () => {
       appOptions,
       appId: app.id,
       tableName: usersTableName,
+      incremental: true,
       matchConditions: [],
       highWaterMarkCondition: {
         columnName: "stamp",
@@ -71,6 +72,7 @@ describe("mongo/table/scheduleOptions", () => {
       appOptions,
       appId: app.id,
       tableName: usersTableName,
+      incremental: true,
       matchConditions: [],
       highWaterMarkCondition: {
         columnName: "stamp",
@@ -87,6 +89,7 @@ describe("mongo/table/scheduleOptions", () => {
       appOptions,
       appId: app.id,
       tableName: usersTableName,
+      incremental: true,
       matchConditions: [
         {
           columnName: "id",

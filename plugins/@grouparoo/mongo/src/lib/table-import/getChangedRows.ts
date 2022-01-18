@@ -15,10 +15,11 @@ export const getChangedRows: GetChangedRowsMethod = async ({
   secondarySortColumnASC,
   matchConditions,
   highWaterMarkKey,
+  incremental,
 }) => {
   let aggPipeline = [];
 
-  if (highWaterMarkCondition) {
+  if (incremental && highWaterMarkCondition) {
     highWaterMarkCondition.value = new Date(
       String(highWaterMarkCondition.value)
     );

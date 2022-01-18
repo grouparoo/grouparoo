@@ -8,11 +8,14 @@ export const getChangedRowCount: GetChangedRowCountMethod = async ({
   tableName,
   matchConditions,
   highWaterMarkCondition,
+  incremental,
 }) => {
   const params = [];
   let query = `SELECT COUNT (*) AS __COUNT FROM "${tableName}"`;
 
-  query += await makeHighwaterWhereClause(highWaterMarkCondition, params);
+  if (incremental) {
+    query += await makeHighwaterWhereClause(highWaterMarkCondition, params);
+  }
 
   for (const [idx, condition] of matchConditions.entries()) {
     const filterClause = makeWhereClause(condition, params);

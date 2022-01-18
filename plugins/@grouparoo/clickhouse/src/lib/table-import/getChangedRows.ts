@@ -21,6 +21,7 @@ export const getChangedRows: GetChangedRowsMethod<MySQLConnection> = async ({
   secondarySortColumnASC,
   matchConditions,
   highWaterMarkKey,
+  incremental,
 }) => {
   const columns = await getColumns({
     connection,
@@ -34,11 +35,13 @@ export const getChangedRows: GetChangedRowsMethod<MySQLConnection> = async ({
   params.push(highWaterMarkKey);
   params.push(tableName);
 
-  query += await makeHighwaterWhereClause(
-    columns,
-    highWaterMarkCondition,
-    params
-  );
+  if (incremental) {
+    query += await makeHighwaterWhereClause(
+      columns,
+      highWaterMarkCondition,
+      params
+    );
+  }
 
   for (const [idx, condition] of matchConditions.entries()) {
     const filterClause = makeWhereClause(columns, condition, params);

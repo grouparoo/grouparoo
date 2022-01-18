@@ -16,6 +16,7 @@ export const getChangedRows: GetChangedRowsMethod = async ({
   secondarySortColumnASC,
   matchConditions,
   highWaterMarkKey,
+  incremental,
 }: {
   highWaterMarkCondition: MatchCondition;
   [key: string]: any;
@@ -24,7 +25,7 @@ export const getChangedRows: GetChangedRowsMethod = async ({
   let query = `SELECT *, ${highWaterMarkAndSortColumnASC} AS ${highWaterMarkKey} FROM "${tableName}"`;
 
   // Add WHERE clause, if there is a condition for the HWM.
-  if (highWaterMarkCondition) {
+  if (incremental && highWaterMarkCondition) {
     query += ` WHERE ${makeWhereClause(highWaterMarkCondition)}`;
   }
 

@@ -53,6 +53,7 @@ describe("mysql/table/scheduleOptions", () => {
       appOptions,
       appId: app.id,
       tableName: usersTableName,
+      incremental: true,
       matchConditions: [],
       highWaterMarkCondition: {
         columnName: "stamp",
@@ -70,6 +71,7 @@ describe("mysql/table/scheduleOptions", () => {
       appOptions,
       appId: app.id,
       tableName: usersTableName,
+      incremental: true,
       matchConditions: [
         {
           columnName: "id",
