@@ -35,7 +35,7 @@ export namespace ScheduleOps {
     let highWaterMark = {};
     if (run.highWaterMark && Object.keys(run.highWaterMark).length > 0) {
       highWaterMark = run.highWaterMark;
-    } else {
+    } else if (schedule.incremental) {
       const previousRun = await run.previousRun();
       if (previousRun?.highWaterMark) highWaterMark = previousRun.highWaterMark;
     }
