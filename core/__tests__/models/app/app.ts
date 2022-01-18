@@ -508,6 +508,8 @@ describe("models/app", () => {
     test("it will disconnect app after changing options", async () => {
       const spy = jest.spyOn(App, "disconnect");
 
+      await app.update({ state: "ready" });
+
       // options haven't changed, keep connection
       await app.setOptions({ password: "SECRET", test_key: "something" });
       expect(App.disconnect).toHaveBeenCalledTimes(0);
