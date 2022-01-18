@@ -41,7 +41,7 @@ async function getColumns() {
 }
 
 describe("snowflake/table/scheduleOptions", () => {
-  test("gets list of columns that can handle highwatermark", async () => {
+  test("gets list of columns", async () => {
     const columns = await getColumns();
     const columnNames = columns.map((r) => r.key).sort();
     expect(columnNames).toEqual([
@@ -49,9 +49,10 @@ describe("snowflake/table/scheduleOptions", () => {
       "DATE",
       "ID",
       "PROFILE_ID",
+      "PURCHASE",
       "STAMP",
     ]);
-    expect(columns.length).toBe(5);
+    expect(columns.length).toBe(6);
 
     let column, value;
     column = columns.find((col) => col.key === "ID");

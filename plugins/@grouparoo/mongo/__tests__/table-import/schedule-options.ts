@@ -41,14 +41,22 @@ describe("mongo/table/scheduleOptions", () => {
   afterAll(async () => {
     await afterData();
   });
-  test("gets list of columns that can handle highwatermark", async () => {
+  test("gets list of columns", async () => {
     const sourceOptions = {
       table: purchasesTableName,
     };
     const columns = await getColumns(sourceOptions);
     const columnNames = columns.map((r) => r.key).sort();
-    expect(columnNames).toEqual(["amount", "date", "id", "record_id", "stamp"]); // leaves out
-    expect(columns.length).toBe(5);
+    expect(columnNames).toEqual([
+      "_id",
+      "amount",
+      "date",
+      "id",
+      "purchase",
+      "record_id",
+      "stamp",
+    ]);
+    expect(columns.length).toBe(7);
   });
 
   test("gets list of columns from location collection", async () => {
@@ -58,20 +66,37 @@ describe("mongo/table/scheduleOptions", () => {
     const columns = await getColumns(locationSourceOptions);
     const columnNames = columns.map((r) => r.key).sort();
     expect(columnNames).toEqual([
+      "_id",
+      "geometry.type",
       "id",
+      "properties.alert",
       "properties.cdi",
+      "properties.code",
+      "properties.detail",
       "properties.dmin",
       "properties.felt",
       "properties.gap",
+      "properties.ids",
       "properties.mag",
+      "properties.magType",
       "properties.mmi",
+      "properties.net",
       "properties.nst",
+      "properties.place",
       "properties.rms",
       "properties.sig",
+      "properties.sources",
+      "properties.status",
       "properties.time",
+      "properties.title",
       "properties.tsunami",
+      "properties.type",
+      "properties.types",
+      "properties.tz",
       "properties.updated",
-    ]); // leaves out
-    expect(columns.length).toBe(13);
+      "properties.url",
+      "type",
+    ]);
+    expect(columns.length).toBe(30);
   });
 });

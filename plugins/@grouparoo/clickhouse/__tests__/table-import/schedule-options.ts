@@ -42,10 +42,17 @@ describe("clickhouse/table/scheduleOptions", () => {
   afterAll(async () => {
     await afterData();
   });
-  test("gets list of columns that can handle highwatermark", async () => {
+  test("gets list of columns", async () => {
     const columns = await getColumns();
     const columnNames = columns.map((r) => r.key).sort();
-    expect(columnNames).toEqual(["amount", "date", "id", "record_id", "stamp"]); // leaves out
-    expect(columns.length).toBe(5);
+    expect(columnNames).toEqual([
+      "amount",
+      "date",
+      "id",
+      "purchase",
+      "record_id",
+      "stamp",
+    ]); // leaves out
+    expect(columns.length).toBe(6);
   });
 });
