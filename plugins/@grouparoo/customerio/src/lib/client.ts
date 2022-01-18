@@ -2,7 +2,7 @@ import { TrackClient } from "customerio-node";
 import axios from "axios";
 
 class CustomerioClient {
-  client: any;
+  client: TrackClient;
   appApiKey: string;
 
   constructor(siteId, trackingApiKey, appApiKey) {
