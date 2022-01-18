@@ -27,8 +27,9 @@ export default function HighlightingNavLink({
       let objectHrefSection = hrefParts[1];
 
       active =
-        objectPathSection === objectHrefSection ||
-        `${objectPathSection}s` === objectHrefSection;
+        active &&
+        (objectPathSection === objectHrefSection ||
+          `${objectPathSection}s` === objectHrefSection);
     }
 
     return active;
