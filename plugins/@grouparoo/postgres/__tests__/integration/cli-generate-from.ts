@@ -32,8 +32,8 @@ describe("postgres cli tests", () => {
   beforeAll(async () => await beforeData());
   afterAll(async () => await afterData());
 
-  let messages = [];
-  const spies = [];
+  let messages: string[] = [];
+  const spies: jest.SpyInstance[] = [];
 
   beforeEach(() => {
     messages = [];

@@ -4,7 +4,11 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 });
 
 import { helper } from "@grouparoo/spec-helper";
-import { GrouparooRecord, Property } from "@grouparoo/core";
+import {
+  GrouparooRecord,
+  Property,
+  PropertyFiltersWithKey,
+} from "@grouparoo/core";
 
 import { beforeData, afterData, getConfig } from "../utils/data";
 
@@ -20,8 +24,16 @@ let client: PostgresPoolClient;
 
 let sourceOptions: { table: string };
 async function getPropertyValue(
-  { column, sourceMapping, aggregationMethod },
-  usePropertyFilters?,
+  {
+    column,
+    sourceMapping,
+    aggregationMethod,
+  }: {
+    column: string;
+    sourceMapping: Record<string, string>;
+    aggregationMethod: string;
+  },
+  usePropertyFilters?: PropertyFiltersWithKey[],
   useRecord?: GrouparooRecord
 ) {
   const array = await getPropertyArray(
@@ -32,8 +44,16 @@ async function getPropertyValue(
   return array ? array[0] : array;
 }
 async function getPropertyArray(
-  { column, sourceMapping, aggregationMethod },
-  usePropertyFilters?,
+  {
+    column,
+    sourceMapping,
+    aggregationMethod,
+  }: {
+    column: string;
+    sourceMapping: Record<string, string>;
+    aggregationMethod: string;
+  },
+  usePropertyFilters?: PropertyFiltersWithKey[],
   useRecord?: GrouparooRecord
 ) {
   const propertyOptions = {

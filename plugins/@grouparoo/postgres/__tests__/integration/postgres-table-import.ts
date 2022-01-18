@@ -6,7 +6,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { beforeData, afterData, getConfig } from "../utils/data";
 import { api, specHelper } from "actionhero";
-import { GrouparooRecord, RecordProperty, Run } from "@grouparoo/core";
+import { Group, GrouparooRecord, RecordProperty, Run } from "@grouparoo/core";
 import { SessionCreate } from "@grouparoo/core/src/actions/session";
 import { ModelCreate } from "@grouparoo/core/src/actions/models";
 import { AppCreate, AppTest } from "@grouparoo/core/src/actions/apps";
@@ -26,6 +26,7 @@ import {
   DestinationEdit,
   DestinationMappingOptions,
 } from "@grouparoo/core/src/actions/destinations";
+import { SpecHelperConnection } from "actionhero/dist/modules/specHelper";
 
 const {
   appOptions,
@@ -39,14 +40,14 @@ describe("integration/runs/postgres", () => {
   beforeAll(async () => helper.disableTestPluginImport());
   beforeAll(async () => await api.resque.queue.connection.redis.flushdb());
 
-  let session;
-  let csrfToken;
+  let session: SpecHelperConnection;
+  let csrfToken: string;
   let model;
-  let app;
-  let source;
-  let schedule;
-  let destination;
-  let group;
+  let app: Awaited<ReturnType<AppCreate["run"]>>["app"];
+  let source: Awaited<ReturnType<SourceCreate["run"]>>["source"];
+  let schedule: Awaited<ReturnType<ScheduleCreate["run"]>>["schedule"];
+  let destination: Awaited<ReturnType<DestinationCreate["run"]>>["destination"];
+  let group: Group;
 
   beforeAll(async () => await beforeData());
   afterAll(async () => await afterData());

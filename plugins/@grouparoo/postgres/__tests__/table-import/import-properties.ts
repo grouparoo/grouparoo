@@ -6,10 +6,13 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 import { helper } from "@grouparoo/spec-helper";
 import {
   AggregationMethod,
+  Filter,
   GrouparooRecord,
   Property,
+  PropertyFiltersWithKey,
   RecordPropertiesPluginMethodResponse,
   SimplePropertyOptions,
+  SimpleSourceOptions,
   SourceMapping,
 } from "@grouparoo/core";
 
@@ -21,6 +24,7 @@ import {
 } from "../utils/data";
 
 import { getConnection } from "../../src/lib/table-import/connection";
+import { PostgresPoolClient } from "../../src/lib/connect";
 const recordProperties = getConnection().methods.recordProperties;
 
 // these used and set by test
@@ -32,9 +36,9 @@ let fourthRecord: GrouparooRecord;
 let emailProperty: Property;
 let firstNameProperty: Property;
 let lastNameProperty: Property;
-let client;
+let client: PostgresPoolClient;
 
-let sourceOptions;
+let sourceOptions: SimpleSourceOptions;
 async function getPropertyValues(
   {
     columns,
@@ -47,7 +51,7 @@ async function getPropertyValues(
     aggregationMethod: string;
     sortColumn?: string;
   },
-  usePropertyFilters?
+  usePropertyFilters?: any // TODO: Correct type here
 ) {
   const arrays = await getPropertyArrays(
     { columns, sourceMapping, aggregationMethod, sortColumn },
@@ -67,8 +71,9 @@ async function getPropertyArrays(
     aggregationMethod: string;
     sortColumn?: string;
   },
-  usePropertyFilters?
-) {
+  usePropertyFilters?: any // TODO: Correct type here
+): Promise<[any, any]> {
+  // TODO: Correct type above
   const properties = [
     emailProperty,
     firstNameProperty,
@@ -85,8 +90,8 @@ async function getPropertyArrays(
     };
     counter++;
   }
-
-  const propertyFilters = usePropertyFilters
+  // TODO: This type
+  const propertyFilters: any = usePropertyFilters
     ? { [properties[0].id]: usePropertyFilters }
     : { [properties[0].id]: [] };
 

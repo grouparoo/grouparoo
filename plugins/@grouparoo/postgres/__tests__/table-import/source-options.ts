@@ -3,11 +3,12 @@ import "@grouparoo/spec-helper";
 import { beforeData, afterData, getConfig } from "../utils/data";
 
 import { getConnection } from "../../src/lib/table-import/connection";
+import { PostgresPoolClient } from "../../src/lib/connect";
 const sourceOptions = getConnection().methods.sourceOptions;
 
 // these used and set by test
 const { appOptions, usersTableName, purchasesTableName } = getConfig();
-let client;
+let client: PostgresPoolClient;
 
 async function getTables() {
   const response = await sourceOptions({

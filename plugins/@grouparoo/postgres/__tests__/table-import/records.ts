@@ -5,25 +5,45 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 import { helper } from "@grouparoo/spec-helper";
 
 import { beforeData, afterData, getConfig } from "../utils/data";
-import { Import, plugin, Run } from "@grouparoo/core";
+import {
+  HighWaterMark,
+  Import,
+  plugin,
+  Run,
+  Schedule,
+  ScheduleFiltersWithKey,
+  Source,
+  SourceMapping,
+} from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/table-import/connection";
+import { PostgresPoolClient } from "../../src/lib/connect";
 const records = getConnection().methods.records;
 
 const { appOptions, usersTableName } = getConfig();
-let client;
+let client: PostgresPoolClient;
 
-let source;
-let run;
-let schedule;
-let sourceMapping;
+let source: Source;
+let run: Run;
+let schedule: Schedule;
+let sourceMapping: SourceMapping;
 
-async function runIt({ highWaterMark, sourceOffset, limit, scheduleFilters }) {
-  const imports = [];
+async function runIt({
+  highWaterMark,
+  sourceOffset,
+  limit,
+  scheduleFilters,
+}: {
+  highWaterMark: HighWaterMark;
+  sourceOffset: string | number;
+  limit: number;
+  scheduleFilters: ScheduleFiltersWithKey[];
+}) {
+  const imports: Record<string, unknown>[] = [];
   plugin.createImports = jest.fn(
     async (
-      mapping: Record<string, string>,
-      run: Run,
+      _: Record<string, string>,
+      __: Run,
       rows: Record<string, unknown>[]
     ): Promise<Import[]> => {
       rows.forEach((r) => imports.push(r));
@@ -98,7 +118,7 @@ describe("postgres/table/records", () => {
     const limit = 100;
     const highWaterMark = {};
     const sourceOffset = 0;
-    const scheduleFilters = [];
+    const scheduleFilters: ScheduleFiltersWithKey[] = [];
     const { imports, importsCount } = await runIt({
       limit,
       highWaterMark,
@@ -114,7 +134,7 @@ describe("postgres/table/records", () => {
     const limit = 100;
     const highWaterMark = { stamp: "2020-02-07T12:13:14.000Z" };
     const sourceOffset = 0;
-    const scheduleFilters = [];
+    const scheduleFilters: ScheduleFiltersWithKey[] = [];
     const { imports, importsCount } = await runIt({
       limit,
       highWaterMark,
@@ -130,7 +150,7 @@ describe("postgres/table/records", () => {
     const limit = 100;
     const sourceOffset = 0;
     const highWaterMark = { stamp: "2020-02-11T12:13:14.000Z" }; // past the last one
-    const scheduleFilters = [];
+    const scheduleFilters: ScheduleFiltersWithKey[] = [];
     const { imports, importsCount } = await runIt({
       limit,
       highWaterMark,
@@ -147,7 +167,7 @@ describe("postgres/table/records", () => {
     async () => {
       const limit = 4;
       const highWaterMark = {};
-      const scheduleFilters = [];
+      const scheduleFilters: ScheduleFiltersWithKey[] = [];
       let importedIds;
 
       const page1 = await runIt({
@@ -195,7 +215,7 @@ describe("postgres/table/records", () => {
     const limit = 100;
     const highWaterMark = {};
     const sourceOffset = 0;
-    const scheduleFilters = [
+    const scheduleFilters: ScheduleFiltersWithKey[] = [
       { key: "id", op: "gt", match: 4 },
       { key: "id", op: "lt", match: 7 },
     ];

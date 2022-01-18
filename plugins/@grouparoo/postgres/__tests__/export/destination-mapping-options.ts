@@ -1,12 +1,13 @@
 import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
+import { PostgresPoolClient } from "../../src/lib/connect";
 
 import { destinationMappingOptions } from "../../src/lib/export/destinationMappingOptions";
 import { afterData, beforeData, getConfig } from "../utils/data";
 
 const { appOptions, usersTableName } = getConfig();
 
-let client;
+let client: PostgresPoolClient;
 
 async function runDestinationMappingOptions() {
   return destinationMappingOptions({

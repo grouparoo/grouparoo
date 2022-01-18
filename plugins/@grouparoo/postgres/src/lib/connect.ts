@@ -1,11 +1,10 @@
 import { ConnectPluginAppMethod, SimpleAppOptions } from "@grouparoo/core";
 import { log } from "actionhero";
-import { Pool, types } from "pg";
+import { Pool, PoolClient, types } from "pg";
 import { TypeId } from "pg-types";
 import format from "pg-format";
 import parseDate from "postgres-date";
 
-type PoolClient = Parameters<Parameters<InstanceType<typeof Pool>["on"]>[1]>[0];
 export interface PostgresPoolClient extends PoolClient {
   setTypeParser: (
     type: TypeId,

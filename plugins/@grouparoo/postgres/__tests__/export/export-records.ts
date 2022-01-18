@@ -10,7 +10,7 @@ import {
 } from "@grouparoo/core/dist/models/Destination";
 import { afterData, beforeData, getConfig } from "../utils/data";
 import { helper } from "@grouparoo/spec-helper";
-import { App } from "@grouparoo/core";
+import { App, DestinationSyncOperations } from "@grouparoo/core";
 import { PostgresPoolClient } from "../../src/lib/connect";
 
 let app: App;
@@ -47,7 +47,7 @@ const ltv = 3039;
 
 const { appOptions, usersTableName, groupsDestinationTableName } = getConfig();
 
-async function getUser(userId) {
+async function getUser(userId: number) {
   const result = await client.query(
     `SELECT * FROM ${usersTableName} WHERE "id" = ${userId}`
   );
@@ -57,7 +57,7 @@ async function getUser(userId) {
   return null;
 }
 
-async function getUserGroups(userId) {
+async function getUserGroups(userId: number) {
   const { groupsTable, groupForeignKey, groupColumnName } =
     await destination.parameterizedOptions();
   const result = await client.query(
@@ -73,6 +73,13 @@ async function runExport({
   oldGroups,
   newGroups,
   toDelete,
+}: {
+  syncOperations?: DestinationSyncOperations;
+  oldRecordProperties: Record<string, string | number>;
+  newRecordProperties: Record<string, string | number>;
+  oldGroups: string[];
+  newGroups: string[];
+  toDelete: boolean;
 }) {
   return exportRecord({
     appOptions,
