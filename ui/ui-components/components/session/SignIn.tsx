@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment, useCallback } from "react";
+import { useState, useEffect, Fragment, useCallback, useMemo } from "react";
 import { useRouter } from "next/router";
 import { Form, Row, Col, Button, Modal, ButtonGroup } from "react-bootstrap";
 import { useForm } from "react-hook-form";
@@ -58,19 +58,22 @@ export default function SignInForm() {
     setLoadingOauthProviders(false);
   }, [client]);
 
-  const startOauthLogin = async (provider: string, type: string) => {
-    setLoadingOAuth(true);
-    const response: Actions.OAuthClientStart = await client.request(
-      "post",
-      `/oauth/${provider}/client/start`,
-      { type }
-    );
-    if (response.location) {
-      window.location.assign(response.location);
-    } else {
-      setLoadingOAuth(false);
-    }
-  };
+  const startOauthLogin = useCallback(
+    async (provider: string, type: string) => {
+      setLoadingOAuth(true);
+      const response: Actions.OAuthClientStart = await client.request(
+        "post",
+        `/oauth/${provider}/client/start`,
+        { type }
+      );
+      if (response.location) {
+        window.location.assign(response.location);
+      } else {
+        setLoadingOAuth(false);
+      }
+    },
+    [client]
+  );
 
   const getSetupSteps = useCallback(async () => {
     const { setupSteps }: Actions.SetupStepsList = await client.request(
@@ -140,7 +143,6 @@ export default function SignInForm() {
   }, [client, onSubmit, requestId, router]);
 
   useEffect(() => {
-    setConfirmingOauthRequest(true);
     loadOauthOptions();
     loadOAuthRequest();
   }, [loadOAuthRequest, loadOauthOptions]);

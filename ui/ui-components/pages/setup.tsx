@@ -1,7 +1,7 @@
 import { useApi } from "../contexts/api";
 import Head from "next/head";
-import { useState } from "react";
-import { Actions } from "../utils/apiData";
+import { useCallback, useEffect, useState } from "react";
+import { Actions, Models } from "../utils/apiData";
 import { Row, Col, ProgressBar, Alert } from "react-bootstrap";
 import SetupStepCard from "../components/setupSteps/SetupStepCard";
 import { setupStepsHandler } from "../eventHandlers";
@@ -65,11 +65,19 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
         <Alert variant="success">
           You’ve finished the Setup Guide! 🎉 <br />
           If you have additional questions, please read our{" "}
-          <a target="_blank" href="https://www.grouparoo.com/docs">
+          <a
+            target="_blank"
+            href="https://www.grouparoo.com/docs"
+            rel="noreferrer"
+          >
             Docs
           </a>{" "}
           or ask our{" "}
-          <a target="_blank" href="https://www.grouparoo.com/docs/community">
+          <a
+            target="_blank"
+            href="https://www.grouparoo.com/docs/community"
+            rel="noreferrer"
+          >
             Community
           </a>
           <br />

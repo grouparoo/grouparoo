@@ -118,14 +118,14 @@ describe("integration", () => {
       await button.click();
 
       await browser.wait(
-        until.elementLocated(by.css("[data-test-id=setupPageProgressBar]")),
+        until.elementLocated(by.css("[data-test-id=dashboardRuns]")),
         1000 * 4
       );
 
       const header = await browser
-        .findElement(by.tagName("h1"), 4000)
+        .findElement(by.tagName("h1"), 1000 * 4)
         .getText();
-      expect(header).toContain("Setup Grouparoo");
+      expect(header).toContain("Dashboard");
     },
     helper.longTime
   );
