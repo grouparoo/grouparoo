@@ -19,6 +19,7 @@
     "name": "Users Schedule",
     "sourceId": "demo_users",
     "recurring": true,
+    "incremental": true,
     "recurringFrequency": 900000,
     "confirmRecords": false,
     "options": {

@@ -279,7 +279,8 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   async getConfigObject(): Promise<ScheduleConfigurationObject> {
-    const { name, recurring, recurringFrequency, confirmRecords } = this;
+    const { name, recurring, incremental, recurringFrequency, confirmRecords } =
+      this;
 
     this.source = await this.$get("source");
     const sourceId = this.source?.getConfigId();
@@ -295,6 +296,7 @@ export class Schedule extends LoggedModel<Schedule> {
       name,
       sourceId,
       recurring,
+      incremental,
       recurringFrequency,
       confirmRecords,
       options,

@@ -19,6 +19,7 @@
     "name": "Demo Admins schedule",
     "sourceId": "demo_admins",
     "recurring": true,
+    "incremental": true,
     "recurringFrequency": 900000,
     "confirmRecords": true,
     "options": {

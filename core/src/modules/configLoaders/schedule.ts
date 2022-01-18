@@ -51,6 +51,7 @@ export async function loadSchedule(
   await schedule.update({
     name: configObject.name,
     recurring: configObject.recurring,
+    incremental: configObject.incremental,
     recurringFrequency: configObject.recurringFrequency,
     confirmRecords: configObject.confirmRecords,
   });
