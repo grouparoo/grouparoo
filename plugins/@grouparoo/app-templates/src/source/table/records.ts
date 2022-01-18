@@ -84,7 +84,10 @@ export const getRecords: GetRecordsMethod = ({ getChangedRows }) => {
       const currentValue = highWaterMark[highWaterMarkAndSortColumnASC];
       const newValue = lastRow[highWaterMarkKey].toString();
 
-      if (currentValue && newValue === currentValue) {
+      if (!schedule.incremental) {
+        nextSourceOffset = sourceOffset + limit;
+        nextHighWaterMark[highWaterMarkAndSortColumnASC] = newValue;
+      } else if (currentValue && newValue === currentValue) {
         nextSourceOffset = sourceOffset + limit;
       } else {
         nextHighWaterMark[highWaterMarkAndSortColumnASC] = newValue;
