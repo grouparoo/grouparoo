@@ -19,6 +19,7 @@ import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
+import { useDebouncedCallback } from "../../../../../hooks/useDebouncedCallback";
 
 export default function Page(props) {
   const {
@@ -91,7 +92,7 @@ export default function Page(props) {
     }
   };
 
-  async function loadOptions() {
+  const loadOptions = useDebouncedCallback(async () => {
     setLoadingOptions(true);
     const response: Actions.DestinationConnectionOptions = await execApi(
       "get",
@@ -103,7 +104,7 @@ export default function Page(props) {
     );
     if (response?.options) setConnectionOptions(response.options);
     setLoadingOptions(false);
-  }
+  }, 500);
 
   async function handleDelete(force = false) {
     if (window.confirm("are you sure?")) {
@@ -131,14 +132,14 @@ export default function Page(props) {
         ? event.target.checked
         : event.target.value;
     setDestination(_destination);
-    if (event.target.id !== "name") setTimeout(loadOptions, 100);
+    if (event.target.id !== "name") loadOptions();
   };
 
   const updateOption = async (optKey, optValue) => {
     const _destination = Object.assign({}, destination);
     _destination.options[optKey] = optValue;
     setDestination(_destination);
-    setTimeout(loadOptions, 100);
+    loadOptions();
   };
 
   return (
