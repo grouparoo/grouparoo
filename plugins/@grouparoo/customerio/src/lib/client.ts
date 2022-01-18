@@ -2,7 +2,7 @@ import { TrackClient } from "customerio-node";
 import axios from "axios";
 
 class CustomerioClient {
-  client: any;
+  client: TrackClient;
   appApiKey: string;
 
   constructor(siteId, trackingApiKey, appApiKey) {
@@ -18,8 +18,8 @@ class CustomerioClient {
     return this.client.identify(customerId, payload);
   }
 
-  async trackAnonymous(data: object) {
-    return this.client.trackAnonymous(data);
+  async trackAnonymous(anonymousId: string | number, data: object) {
+    return this.client.trackAnonymous(anonymousId, data);
   }
 
   async getCustomer(customerId: string) {
