@@ -75,8 +75,8 @@ export default function Page(props) {
           message: force ? "Group Deleted" : "Group scheduled to be deleted",
         });
         router.push(
-          "/model/[modelId]/groups",
-          `/model/${group.modelId}/groups`
+          "/model/[modelId]/overview",
+          `/model/${group.modelId}/overview`
         );
       } else {
         setLoading(false);
