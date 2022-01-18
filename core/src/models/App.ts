@@ -114,7 +114,7 @@ export class App extends LoggedModel<App> {
   }
 
   async afterSetOptions(hasChanges: boolean) {
-    if (hasChanges) {
+    if (hasChanges && this.state === "ready") {
       await redis.doCluster(
         "api.rpc.app.disconnect",
         [this.id],
