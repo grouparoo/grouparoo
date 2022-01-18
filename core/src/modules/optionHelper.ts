@@ -130,7 +130,7 @@ export namespace OptionHelper {
     await instance.touch();
     await LoggedModel.logUpdate(instance);
 
-    // if there's an afterSetMapping hook and we want to commit our changes
+    // if there's an afterSetOptions hook and we want to commit our changes
     if (typeof instance["afterSetOptions"] === "function") {
       await instance["afterSetOptions"](hasChanges);
     }
