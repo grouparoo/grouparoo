@@ -3,9 +3,7 @@ import Mailchimp from "mailchimp-api-v3";
 import axios from "axios";
 
 export async function connect(appOptions: SimpleAppOptions) {
-  if (appOptions.apiKey) {
-    return new Mailchimp(appOptions.apiKey?.toString());
-  } else if (appOptions.oAuthToken) {
+  if (appOptions.oAuthToken) {
     const oAuthToken = appOptions.oAuthToken.toString();
 
     const metaResponse = await axios.get(
@@ -30,4 +28,6 @@ export async function connect(appOptions: SimpleAppOptions) {
     //@ts-ignore Mailchimp client typings have not been updated for OAuth support (with dc param)
     return new Mailchimp(oAuthToken, datacenter);
   }
+
+  return new Mailchimp(appOptions.apiKey?.toString());
 }
