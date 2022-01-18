@@ -21,6 +21,16 @@ export default function HighlightingNavLink({
       mainPathSection === mainHrefSection ||
       `${mainPathSection}s` === mainHrefSection;
 
+    // Potential conflict for `/app/new` and `/model/new`
+    if (active && mainPathSectionIdx === 2) {
+      let objectPathSection = (pathParts[1] || "").split("?")[0];
+      let objectHrefSection = hrefParts[1];
+
+      active =
+        objectPathSection === objectHrefSection ||
+        `${objectPathSection}s` === objectHrefSection;
+    }
+
     return active;
   }, [globalThis?.location?.href, router, href]);
 
