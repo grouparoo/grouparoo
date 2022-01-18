@@ -11,8 +11,6 @@ export const useDebouncedCallback = (callback: Function, ms: number) => {
 
   return useCallback(() => {
     clearTimeout(timeout.current);
-    timeout.current = setTimeout(() => {
-      callback();
-    }, ms);
+    timeout.current = setTimeout(callback, ms);
   }, [callback, ms]);
 };
