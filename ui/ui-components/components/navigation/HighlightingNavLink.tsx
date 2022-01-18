@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMemo } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { navIconStyle, navLiStyle, iconConstrainedStyle } from "../Navigation";
+import { navIconStyle, iconConstrainedStyle } from "../Navigation";
 
 export default function HighlightingNavLink({
   href,
@@ -36,7 +36,7 @@ export default function HighlightingNavLink({
   }, [globalThis?.location?.href, router, href]);
 
   return (
-    <li style={navLiStyle}>
+    <div>
       <Link href={href}>
         <a role="tab" aria-selected={active} style={navIconStyle}>
           {icon && (
@@ -67,6 +67,6 @@ export default function HighlightingNavLink({
           </span>
         </a>
       </Link>
-    </li>
+    </div>
   );
 }

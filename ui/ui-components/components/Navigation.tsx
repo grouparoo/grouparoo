@@ -204,134 +204,144 @@ export default function Navigation(props) {
           id="navBottomSection"
           style={{ paddingLeft: 20, paddingRight: 20 }}
         >
-          <ul style={{ padding: 0, margin: 0, listStyleType: "none" }}>
-            {navigation?.navigationItems.map((nav, idx) => {
-              if (nav.type === "link") {
-                return (
-                  <HighlightingNavLink
-                    key={nav.href}
-                    href={nav.href}
-                    mainPathSectionIdx={nav.mainPathSectionIdx ?? 1}
-                    text={
-                      <>
-                        {nav.title}
-                        {nav.title === "Runs" ? (
+          {navigation?.navigationItems && (
+            <ul style={{ padding: 0, margin: 0, listStyleType: "none" }}>
+              {navigation?.navigationItems.map((nav, idx) => {
+                if (nav.type === "link") {
+                  return (
+                    <li key={nav.href}>
+                      <HighlightingNavLink
+                        href={nav.href}
+                        mainPathSectionIdx={nav.mainPathSectionIdx ?? 1}
+                        text={
                           <>
-                            {" "}
-                            <RunningRunsBadge statusHandler={statusHandler} />
+                            {nav.title}
+                            {nav.title === "Runs" ? (
+                              <>
+                                {" "}
+                                <RunningRunsBadge
+                                  statusHandler={statusHandler}
+                                />
+                              </>
+                            ) : null}
                           </>
-                        ) : null}
-                      </>
-                    }
-                    icon={nav.icon}
-                    small={nav.small}
-                  />
-                );
-              } else if (nav.type === "divider") {
-                return (
-                  <li key={idx}>
-                    <hr className="dark" key={`separator-${idx}`} />
-                  </li>
-                );
-              } else if (nav.type === "subNavMenu") {
-                return (
-                  <li style={navLiStyle} key={idx}>
-                    <Accordion activeKey={expandPlatformMenu ? "1" : null}>
-                      <Accordion.Toggle
-                        as={Button}
-                        style={{ padding: 0 }}
-                        variant="link"
-                        eventKey="0"
-                        onClick={() =>
-                          setExpandPlatformMenu(!expandPlatformMenu)
                         }
-                      >
-                        <span style={navIconStyle}>
-                          {nav.icon ? (
-                            <FontAwesomeIcon
-                              style={iconConstrainedStyle}
-                              icon={nav.icon as FontAwesomeIconProps["icon"]}
-                              size="xs"
-                            />
-                          ) : null}{" "}
-                        </span>
-                        <span
-                          style={{
-                            marginLeft: 4,
-                            fontSize: 18,
-                            fontWeight: 300,
-                            paddingLeft: 0,
-                            color: "white",
-                          }}
+                        icon={nav.icon}
+                        small={nav.small}
+                      />
+                    </li>
+                  );
+                } else if (nav.type === "divider") {
+                  return (
+                    <li key={idx}>
+                      <hr className="dark" key={`separator-${idx}`} />
+                    </li>
+                  );
+                } else if (nav.type === "subNavMenu") {
+                  return (
+                    <li style={navLiStyle} key={idx}>
+                      <Accordion activeKey={expandPlatformMenu ? "1" : null}>
+                        <Accordion.Toggle
+                          as={Button}
+                          style={{ padding: 0 }}
+                          variant="link"
+                          eventKey="0"
+                          onClick={() =>
+                            setExpandPlatformMenu(!expandPlatformMenu)
+                          }
                         >
-                          {nav.title}{" "}
-                          <FontAwesomeIcon
-                            icon={`caret-${expandPlatformMenu ? "up" : "down"}`}
-                          />{" "}
-                          {!expandPlatformMenu ? (
-                            <ResqueFailedCountBadge
-                              navigationMode={navigationMode}
-                              statusHandler={statusHandler}
-                            />
-                          ) : null}
-                          {!expandPlatformMenu ? (
-                            <UnreadNotificationsBadge
-                              navigationMode={navigationMode}
-                              statusHandler={statusHandler}
-                            />
-                          ) : null}
-                        </span>
-                        <div style={{ padding: 6 }} />
-                      </Accordion.Toggle>
-                      <Accordion.Collapse eventKey="1">
-                        <div>
-                          {navigation.platformItems.map((nav, platformIdx) => {
-                            if (nav.type === "link") {
-                              return (
-                                <p
-                                  style={{ paddingLeft: 30 }}
-                                  key={`platform-dropdown-${platformIdx}`}
-                                >
-                                  <HighlightingNavLink
-                                    key={nav.href}
-                                    href={nav.href}
-                                    mainPathSectionIdx={
-                                      nav.mainPathSectionIdx ?? 1
-                                    }
-                                    text={nav.title}
-                                    icon={nav.icon}
-                                    small={nav.small}
-                                  />
-                                  {expandPlatformMenu &&
-                                  nav.title === "Notifications" ? (
-                                    <UnreadNotificationsBadge
-                                      navigationMode={navigationMode}
-                                      statusHandler={statusHandler}
+                          <span style={navIconStyle}>
+                            {nav.icon ? (
+                              <FontAwesomeIcon
+                                style={iconConstrainedStyle}
+                                icon={nav.icon as FontAwesomeIconProps["icon"]}
+                                size="xs"
+                              />
+                            ) : null}{" "}
+                          </span>
+                          <span
+                            style={{
+                              marginLeft: 4,
+                              fontSize: 18,
+                              fontWeight: 300,
+                              paddingLeft: 0,
+                              color: "white",
+                            }}
+                          >
+                            {nav.title}{" "}
+                            <FontAwesomeIcon
+                              icon={`caret-${
+                                expandPlatformMenu ? "up" : "down"
+                              }`}
+                            />{" "}
+                            {!expandPlatformMenu ? (
+                              <ResqueFailedCountBadge
+                                navigationMode={navigationMode}
+                                statusHandler={statusHandler}
+                              />
+                            ) : null}
+                            {!expandPlatformMenu ? (
+                              <UnreadNotificationsBadge
+                                navigationMode={navigationMode}
+                                statusHandler={statusHandler}
+                              />
+                            ) : null}
+                          </span>
+                        </Accordion.Toggle>
+                        <Accordion.Collapse eventKey="1">
+                          <ul className="pl-4">
+                            {navigation.platformItems.map(
+                              (nav, platformIdx) => {
+                                if (nav.type === "link") {
+                                  return (
+                                    <li
+                                      key={`platform-dropdown-${platformIdx}`}
+                                      className="py-2 pl-2"
+                                    >
+                                      <HighlightingNavLink
+                                        key={nav.href}
+                                        href={nav.href}
+                                        mainPathSectionIdx={
+                                          nav.mainPathSectionIdx ?? 1
+                                        }
+                                        text={nav.title}
+                                        icon={nav.icon}
+                                        small={true}
+                                      />
+                                      {expandPlatformMenu &&
+                                      nav.title === "Notifications" ? (
+                                        <UnreadNotificationsBadge
+                                          navigationMode={navigationMode}
+                                          statusHandler={statusHandler}
+                                        />
+                                      ) : null}
+                                      {expandPlatformMenu &&
+                                      nav.title === "Resque" ? (
+                                        <ResqueFailedCountBadge
+                                          navigationMode={navigationMode}
+                                          statusHandler={statusHandler}
+                                        />
+                                      ) : null}
+                                    </li>
+                                  );
+                                } else if (nav.type === "divider") {
+                                  return (
+                                    <hr
+                                      key={`platform-dropdown-${platformIdx}`}
                                     />
-                                  ) : null}
-                                  {expandPlatformMenu &&
-                                  nav.title === "Resque" ? (
-                                    <ResqueFailedCountBadge
-                                      navigationMode={navigationMode}
-                                      statusHandler={statusHandler}
-                                    />
-                                  ) : null}
-                                </p>
-                              );
-                            } else if (nav.type === "divider") {
-                              return (
-                                <hr key={`platform-dropdown-${platformIdx}`} />
-                              );
-                            }
-                          })}
-                        </div>
-                      </Accordion.Collapse>
-                    </Accordion>
-                  </li>
-                );
-              }
-            })}
-          </ul>
+                                  );
+                                }
+                              }
+                            )}
+                          </ul>
+                        </Accordion.Collapse>
+                      </Accordion>
+                    </li>
+                  );
+                }
+              })}
+            </ul>
+          )}
         </div>
       </div>
       <div className={uiEdition === "config" ? "mb-5" : null}>
@@ -403,25 +413,43 @@ export default function Navigation(props) {
                     marginLeft: 15,
                   }}
                 >
-                  {navigation?.bottomMenuItems.map((nav, idx) => {
-                    if (nav.type === "link") {
-                      return (
-                        <p key={`bottom-dropdown-${idx}`}>
-                          <Link href={nav.href}>
-                            <a style={{ color: "white" }}>{nav.title}</a>
-                          </Link>
-                        </p>
-                      );
-                    } else if (nav.type === "divider") {
-                      return (
-                        <hr
-                          key={`bottom-dropdown-${idx}`}
-                          className="dark"
-                          style={{ marginRight: 35 }}
-                        />
-                      );
-                    }
-                  })}
+                  <ul>
+                    {navigation?.bottomMenuItems.map((nav, idx) => {
+                      if (nav.type === "link") {
+                        return (
+                          <li key={`bottom-dropdown-${idx}`}>
+                            <HighlightingNavLink
+                              href={nav.href}
+                              mainPathSectionIdx={nav.mainPathSectionIdx ?? 1}
+                              text={
+                                <>
+                                  {nav.title}
+                                  {nav.title === "Runs" ? (
+                                    <>
+                                      {" "}
+                                      <RunningRunsBadge
+                                        statusHandler={statusHandler}
+                                      />
+                                    </>
+                                  ) : null}
+                                </>
+                              }
+                              icon={nav.icon}
+                              small={nav.small}
+                            />
+                          </li>
+                        );
+                      } else if (nav.type === "divider") {
+                        return (
+                          <hr
+                            key={`bottom-dropdown-${idx}`}
+                            className="dark"
+                            style={{ marginRight: 35 }}
+                          />
+                        );
+                      }
+                    })}
+                  </ul>
                 </div>
               </Accordion.Collapse>
             </Accordion>
