@@ -914,7 +914,35 @@ export namespace DestinationOps {
   }> {
     const _exports: Export[] = []; // only ones we are sending
     for (const _export of givenExports) {
-      // TODO: maybe should recalcuate hasChanges and from current mostRecent
+      /*  Notes from pairing with Brian: 
+    // assuming we update these to the newest as below...
+    // 1. Add lock as below to only do one per record at time
+    //    trouble: slow
+    // 2. when creating an export and there is a current "pending" with null startedAt,
+    //    don't create or immediately mark as "canceled" or "duplicate"
+    //    trouble: one does have a started at, so you make it, then you have two "pending"
+    //             they could still happen in parallel on different threads or even the same batch
+    //             especially, if it fails and tries again, but even normally
+    // 3. when enqueuing in processPendingExportsForDestination, cancel older ones
+    //    trouble: timing gaps possible
+    */
+
+      // -- check if the record is locked already
+      // const isLocked: boolean = getLock(`grouparoo:lock:${_export.recordId}`)
+      // ---> downsides to locking the entire record (ie: now no destinations can use it)? speed mainly methinks
+      //
+
+      // if (isLocked) {
+      // try again later
+      // return;
+      // }
+
+      // -- now, lock this one to update it and send it
+      // await awaitLock(_export.recordId)
+      // -- update newProperties to the newest properties
+      //   --> maybe these shouldn't be set with a getter/setter on the model
+      //   --> that way we can update them more dynamically
+
       if (!_export.hasChanges) {
         await _export.complete(); // do not include exports with hasChanges=false
       } else {
@@ -980,6 +1008,8 @@ export namespace DestinationOps {
     } finally {
       await app.checkAndUpdateParallelism("decr");
     }
+
+    // -- unlock the record
 
     return updateExports(
       destination,
