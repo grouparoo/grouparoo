@@ -298,19 +298,7 @@ export default function Navigation(props) {
                                     mainPathSectionIdx={
                                       nav.mainPathSectionIdx ?? 1
                                     }
-                                    text={
-                                      <>
-                                        {nav.title}
-                                        {nav.title === "Runs" ? (
-                                          <>
-                                            {" "}
-                                            <RunningRunsBadge
-                                              statusHandler={statusHandler}
-                                            />
-                                          </>
-                                        ) : null}
-                                      </>
-                                    }
+                                    text={nav.title}
                                     icon={nav.icon}
                                     small={nav.small}
                                   />
