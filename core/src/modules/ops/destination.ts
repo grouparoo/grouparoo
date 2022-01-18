@@ -902,6 +902,7 @@ export namespace DestinationOps {
     return { success, error, retryexportIds, retryDelay };
   }
 
+  // where we actuall talk to plugin
   export async function sendExports(
     destination: Destination,
     givenExports: Export[],
@@ -912,9 +913,30 @@ export namespace DestinationOps {
     success: boolean;
     error: Error;
   }> {
+    // assuming we update these to the newest as below...
+    // 1. Add lock as below to only do one per record at time
+    //    trouble: slow
+    // 2. when creating an export and there is a current "pending" with null startedAt,
+    //    don't create or immediately mark as "canceled" or "duplicate"
+    //    trouble: one does have a started at, so you make it, then you have two "pending"
+    //             they could still happen in parallel on different threads or even the same batch
+    //             especially, if it fails and tries again, but even normally
+    // 3. when enqueuing in processPendingExportsForDestination, cancel older ones
+    //    trouble: timing gaps possible
+
     const _exports: Export[] = []; // only ones we are sending
     for (const _export of givenExports) {
-      // TODO: maybe should recalcuate hasChanges and from current mostRecent
+      // get a lock on this record id (if it's currently being processed in another thread, don't deal with it now)
+      if (!cantGetLock) {
+        // reset export so it tries again later
+        return;
+      }
+      _exports.push(_export);
+    }
+
+    // update the export with the newest properties from all the records and save them if changed
+
+    for (const _export of givenExports) {
       if (!_export.hasChanges) {
         await _export.complete(); // do not include exports with hasChanges=false
       } else {
@@ -979,6 +1001,7 @@ export namespace DestinationOps {
       combinedError = error;
     } finally {
       await app.checkAndUpdateParallelism("decr");
+      // unlock all
     }
 
     return updateExports(
