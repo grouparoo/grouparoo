@@ -8,9 +8,9 @@ import {
 import { config } from "actionhero";
 import { DataResponseRow } from "../shared/types";
 
-export interface GetChangedRowsMethod {
+export interface GetChangedRowsMethod<ConnectionType = any> {
   (argument: {
-    connection: any;
+    connection: ConnectionType;
     appOptions: SimpleAppOptions;
     scheduleOptions: SimpleScheduleOptions;
     appId: string;

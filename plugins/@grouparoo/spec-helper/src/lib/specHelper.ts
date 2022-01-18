@@ -680,4 +680,11 @@ export namespace helper {
       }WHERE id IN (${instances.map((i) => `'${i.id}'`)})`
     );
   }
+
+  export function fixedLengthFloat<Value = any>(
+    value: Value,
+    decimalDigits = 2
+  ) {
+    return parseFloat(parseFloat(value.toString()).toFixed(decimalDigits));
+  }
 }

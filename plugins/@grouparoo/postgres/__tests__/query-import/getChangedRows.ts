@@ -1,9 +1,10 @@
+import { PostgresPoolClient } from "../../src/lib/connect";
 import { getChangedRows } from "../../src/lib/query-import/getChangedRows";
 
 describe("getChangedRows", () => {
   let loggedQuery = "";
 
-  const commonArgs: any = {
+  const commonArgs: Parameters<typeof getChangedRows>[0] = {
     limit: 1000,
     offset: 0,
     scheduleOptions: {},
@@ -12,7 +13,9 @@ describe("getChangedRows", () => {
         loggedQuery = query;
         return [];
       },
-    },
+    } as PostgresPoolClient,
+    appOptions: {},
+    appId: "test-app",
   };
 
   beforeEach(() => {

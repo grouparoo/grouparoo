@@ -150,7 +150,7 @@ export const exportRecord: ExportRecordPluginMethod<
   // add groups
   if (!toDelete) {
     for (const i in newGroups) {
-      const data: Record<string, any> = {};
+      const data: Record<string, unknown> = {};
       data[groupForeignKey] = newRecordProperties[primaryKey];
       data[groupColumnName] = newGroups[i];
 
@@ -181,7 +181,7 @@ const insert = async (
   connection: PostgresPoolClient,
   table: string,
   syncOperations: DestinationSyncOperations,
-  newRecordProperties: Record<string, any>
+  newRecordProperties: Record<string, unknown>
 ) => {
   if (!syncOperations.create) {
     throw new Errors.InfoError(

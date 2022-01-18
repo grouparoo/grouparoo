@@ -6,10 +6,8 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 import { helper } from "@grouparoo/spec-helper";
 import {
   AggregationMethod,
-  Filter,
   GrouparooRecord,
   Property,
-  PropertyFiltersWithKey,
   RecordPropertiesPluginMethodResponse,
   SimplePropertyOptions,
   SimpleSourceOptions,
@@ -403,10 +401,14 @@ describe("postgres/table/recordProperties", () => {
           aggregationMethod: "average",
         });
         expect(
-          fixedLengthFloat(values[record.id][properties[0].id][0])
+          helper.fixedLengthFloat<
+            Property[] | RecordPropertiesPluginMethodResponse
+          >(values[record.id][properties[0].id][0])
         ).toEqual(1.63);
         expect(
-          fixedLengthFloat(values[otherRecord.id][properties[0].id][0])
+          helper.fixedLengthFloat<
+            Property[] | RecordPropertiesPluginMethodResponse
+          >(values[otherRecord.id][properties[0].id][0])
         ).toEqual(1.88);
         expect(values[thirdRecord.id]).toBeUndefined();
       });
@@ -427,13 +429,19 @@ describe("postgres/table/recordProperties", () => {
           aggregationMethod: "sum",
         });
         expect(
-          fixedLengthFloat(values[record.id][properties[0].id][0])
+          helper.fixedLengthFloat<
+            Property[] | RecordPropertiesPluginMethodResponse
+          >(values[record.id][properties[0].id][0])
         ).toEqual(11.38);
         expect(
-          fixedLengthFloat(values[otherRecord.id][properties[0].id][0])
+          helper.fixedLengthFloat<
+            Property[] | RecordPropertiesPluginMethodResponse
+          >(values[otherRecord.id][properties[0].id][0])
         ).toEqual(9.38);
         expect(
-          fixedLengthFloat(values[thirdRecord.id][properties[0].id][0])
+          helper.fixedLengthFloat<
+            Property[] | RecordPropertiesPluginMethodResponse
+          >(values[thirdRecord.id][properties[0].id][0])
         ).toEqual(0);
       });
       test("min", async () => {
@@ -1170,10 +1178,3 @@ describe("postgres/table/recordProperties", () => {
     });
   });
 });
-
-function fixedLengthFloat(
-  value: Property[] | RecordPropertiesPluginMethodResponse,
-  decimalDigits = 2
-) {
-  return parseFloat(parseFloat(value.toString()).toFixed(decimalDigits));
-}

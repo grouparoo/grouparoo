@@ -3,6 +3,7 @@ import path from "path";
 import fs from "fs";
 import parse from "csv-parse/lib/sync";
 import { config } from "actionhero";
+import { userInfo } from "os";
 
 export const usersTableName = `users_${process.env.JEST_WORKER_ID || 1}`;
 export const purchasesTableName = `purchases_${
@@ -72,7 +73,7 @@ CREATE TABLE ${groupsDestinationTableName}(
 
 export const appOptions = {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  user: config.sequelize.username || require("os").userInfo().username,
+  user: config.sequelize.username || userInfo().username,
   password: config.sequelize.password || "password",
   host: config.sequelize.host,
   port: config.sequelize.port,

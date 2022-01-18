@@ -1,9 +1,10 @@
 import { GetChangedRowsMethod } from "@grouparoo/app-templates/dist/source/query";
 import format from "pg-format";
+import type { PostgresPoolClient } from "../connect";
 
 import { validateQuery } from "../validateQuery";
 
-export const getChangedRows: GetChangedRowsMethod = async ({
+export const getChangedRows: GetChangedRowsMethod<PostgresPoolClient> = async ({
   scheduleOptions,
   limit,
   offset,

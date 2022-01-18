@@ -228,7 +228,11 @@ describe("postgres/table/recordProperty", () => {
           sourceMapping,
           aggregationMethod: "average",
         });
-        expect(fixedLengthFloat(value)).toEqual(1.63);
+        expect(
+          helper.fixedLengthFloat<Awaited<ReturnType<typeof getPropertyValue>>>(
+            value
+          )
+        ).toEqual(1.63);
       });
       test("count", async () => {
         const value = await getPropertyValue({
@@ -244,7 +248,11 @@ describe("postgres/table/recordProperty", () => {
           sourceMapping,
           aggregationMethod: "sum",
         });
-        expect(fixedLengthFloat(value)).toEqual(11.38);
+        expect(
+          helper.fixedLengthFloat<Awaited<ReturnType<typeof getPropertyValue>>>(
+            value
+          )
+        ).toEqual(11.38);
       });
       test("min", async () => {
         const value = await getPropertyValue({
@@ -780,10 +788,3 @@ describe("postgres/table/recordProperty", () => {
     });
   });
 });
-
-function fixedLengthFloat(
-  value: Awaited<ReturnType<typeof getPropertyValue>>,
-  decimalDigits = 2
-) {
-  return parseFloat(parseFloat(value.toString()).toFixed(decimalDigits));
-}
