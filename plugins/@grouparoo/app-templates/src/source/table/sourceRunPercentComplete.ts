@@ -17,6 +17,7 @@ export const getSourceRunPercentComplete: GetSourceRunPercentCompleteMethod = ({
     appOptions,
     appId,
     source,
+    schedule,
     highWaterMark,
     run,
     scheduleFilters,
@@ -45,6 +46,7 @@ export const getSourceRunPercentComplete: GetSourceRunPercentCompleteMethod = ({
       tableName,
       matchConditions,
       highWaterMarkCondition,
+      incremental: schedule.incremental,
     });
 
     const percentComplete =

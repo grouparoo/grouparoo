@@ -133,6 +133,7 @@ export interface GetChangedRowCountMethod<AppConnection = any> {
     appOptions: SimpleAppOptions;
     sourceOptions?: SimpleSourceOptions;
     appId: string;
+    incremental: boolean;
     tableName: string;
     highWaterMarkCondition: MatchCondition;
     matchConditions: MatchCondition[];
