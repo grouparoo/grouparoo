@@ -20,7 +20,8 @@ export default function RecordTabs({
     <Tabs
       name={getRecordDisplayName(record)}
       tabs={tabs}
-      scopeName={model.name}
+      parentNames={[model.name]}
+      hideScopeBreadcrumb
     />
   );
 }

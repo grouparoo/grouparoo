@@ -30,7 +30,8 @@ export default function DestinationTabs({
       name={destination.name}
       draftType={destination.type}
       tabs={tabs}
-      scopeName={model.name}
+      parentNames={[model.name]}
+      hideScopeBreadcrumb
     />
   );
 }

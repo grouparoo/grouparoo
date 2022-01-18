@@ -14,6 +14,11 @@ export default function ModelTabs({ model }: Props) {
   const tabs = ["overview", "edit"];
 
   return (
-    <Tabs name={model.name} draftType={model.type} tabs={tabs} hideScope />
+    <Tabs
+      name={model.name}
+      draftType={model.type}
+      tabs={tabs}
+      hideScopeBreadcrumb
+    />
   );
 }
