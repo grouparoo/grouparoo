@@ -32,7 +32,7 @@ export namespace ScheduleOps {
     const limit: number = config.batchSize.imports;
     const sourceOffset: number | string = run.sourceOffset || 0;
 
-    let highWaterMark = {};
+    let highWaterMark: HighWaterMark = {};
     if (run.highWaterMark && Object.keys(run.highWaterMark).length > 0) {
       highWaterMark = run.highWaterMark;
     } else if (schedule.incremental) {
