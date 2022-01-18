@@ -1170,7 +1170,7 @@ jobs:
           command: cd core && ./bin/create_test_databases
       - run:
           name: test
-          command: cd ui/ui-enterprise && ./node_modules/.bin/jest --ci --maxWorkers 2 --passWithNoTests
+          command: cd ui/ui-enterprise && node --experimental-vm-modules ./node_modules/.bin/jest --ci --maxWorkers 2 --passWithNoTests
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
   test-ui-config:
@@ -1231,7 +1231,7 @@ jobs:
           command: cd core && ./bin/create_test_databases
       - run:
           name: test
-          command: cd ui/ui-config && ./node_modules/.bin/jest --ci --maxWorkers 2 --passWithNoTests
+          command: cd ui/ui-config && node --experimental-vm-modules ./node_modules/.bin/jest --ci --maxWorkers 2 --passWithNoTests
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
   test-staging-community:
