@@ -27,7 +27,7 @@ describe("SampleRecordCard", () => {
 
   it("should render with no records", async () => {
     cardProps.execApi = async () => ({ records: [], total: 0 } as any);
-    cardProps.properties = [{ id: "some-property" }];
+    cardProps.properties = [{ id: "some-property", sourceId: "some-source" }];
 
     let card: ReturnType<typeof render>;
     await act(async () => {
@@ -39,7 +39,7 @@ describe("SampleRecordCard", () => {
   it("should render with no records in 'config mode'", async () => {
     require("../../../components/record/SampleRecordCard").isConfigUI = true;
     cardProps.execApi = async () => ({ records: [], total: 0 } as any);
-    cardProps.properties = [{ id: "some-property" }];
+    cardProps.properties = [{ id: "some-property", sourceId: "some-source" }];
 
     let card: ReturnType<typeof render>;
     await act(async () => {
@@ -55,6 +55,7 @@ describe("SampleRecordCard", () => {
       properties: {
         asdf: {
           id: "fake-property",
+          sourceId: "some-source",
           configId: "fake-config-id",
           state: "pending",
           values: [2],
@@ -106,6 +107,7 @@ describe("SampleRecordCard", () => {
       properties: {
         asdf: {
           id: "fake-property",
+          sourceId: "some-source",
           configId: "fake-config-id",
           state: "pending",
           values: [2],
