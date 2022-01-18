@@ -505,6 +505,26 @@ describe("models/app", () => {
       );
     });
 
+    test("it will disconnect app after changing options", async () => {
+      const spy = jest.spyOn(App, "disconnect");
+
+      await app.update({ state: "ready" });
+
+      // options haven't changed, keep connection
+      await app.setOptions({ password: "SECRET", test_key: "something" });
+      expect(App.disconnect).toHaveBeenCalledTimes(0);
+
+      // options changed, disconnect
+      await app.setOptions({
+        password: "SECRET",
+        test_key: "some other thing",
+      });
+      expect(App.disconnect).toHaveBeenCalledTimes(1);
+      expect(App.disconnect).toHaveBeenCalledWith(app.id);
+
+      spy.mockRestore();
+    });
+
     test("it will filter empty app options for the plugin's test method", async () => {
       const plugin = api.plugins.plugins.find(
         (plugin) => plugin.name === "test-plugin"
