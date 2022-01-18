@@ -65,11 +65,9 @@ export namespace TableSpeculation {
     model: GrouparooModel,
     existingProperties: Property[]
   ): string {
-    for (const property of existingProperties) {
-      if (property.key === key) {
-        return `${ConfigWriter.generateId(model.name)}_${key}`;
-      }
-    }
-    return key;
+    const matchingProperty = existingProperties.find((p) => p.key === key);
+    return matchingProperty
+      ? `${ConfigWriter.generateId(model.name)}_${key}`
+      : key;
   }
 }
