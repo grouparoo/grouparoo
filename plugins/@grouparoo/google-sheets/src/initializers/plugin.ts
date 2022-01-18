@@ -65,6 +65,7 @@ export class Plugins extends Initializer {
           displayName: "Google Sheets Import",
           direction: "import",
           description: "Import or update Records from a Google Sheet.",
+          supportIncrementalSchedule: false,
           apps: ["google-sheets"],
           groupAggregations: [AggregationMethod.Exact],
           options: [

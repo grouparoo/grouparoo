@@ -10,6 +10,7 @@ const connection: PluginConnection = {
   displayName: "Mailchimp Import Contacts",
   direction: "import",
   description: "Import or update records with data from Mailchimp contacts.",
+  supportIncrementalSchedule: false,
   apps: ["mailchimp", "mailchimp-oauth"],
   options: [
     {

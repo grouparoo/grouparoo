@@ -198,6 +198,15 @@ export class Plugins extends Initializer {
           );
         }
         if (
+          connection.direction === "import" &&
+          connection.methods.records &&
+          connection.supportIncrementalSchedule === undefined
+        ) {
+          errors.push(
+            `import connections that support schedules must declare supportIncrementalSchedule`
+          );
+        }
+        if (
           connection.direction === "export" &&
           !connection.methods.exportRecord &&
           !connection.methods.exportRecords

@@ -64,6 +64,7 @@ export const buildConnection: BuildConnectionMethod = ({
     displayName,
     direction: "import",
     description,
+    supportIncrementalSchedule: true,
     apps,
     options,
     skipSourceMapping: true,

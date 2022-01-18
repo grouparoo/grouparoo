@@ -105,7 +105,7 @@ export class Schedule extends LoggedModel<Schedule> {
   locked: string;
 
   @AllowNull(false)
-  @Default(true)
+  @Default(false)
   @Column
   incremental: boolean;
 
@@ -209,6 +209,7 @@ export class Schedule extends LoggedModel<Schedule> {
   async apiData() {
     const options = await this.getOptions(null);
     const filters = await this.getFilters();
+    const { pluginConnection } = await this.getPlugin();
 
     return {
       id: this.id,
@@ -220,6 +221,7 @@ export class Schedule extends LoggedModel<Schedule> {
       refreshEnabled: this.refreshEnabled,
       locked: this.locked,
       confirmRecords: this.confirmRecords,
+      supportIncrementalSchedule: pluginConnection.supportIncrementalSchedule,
       options,
       filters,
       recurringFrequency: this.recurringFrequency,
@@ -348,6 +350,19 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   @BeforeCreate
+  static async ensureSourceCanUseSchedule(instance: Schedule) {
+    const source = await Source.findById(instance.sourceId);
+    if (source.state !== "ready") throw new Error("source is not ready");
+
+    const scheduleAvailable = await source.scheduleAvailable();
+    if (!scheduleAvailable) {
+      throw new Error(
+        `source ${source.name} (${instance.sourceId}) cannot have a schedule`
+      );
+    }
+  }
+
+  @BeforeCreate
   static async ensureOnePerSource(instance: Schedule) {
     const existingCount = await Schedule.scope(null).count({
       where: {
@@ -360,16 +375,11 @@ export class Schedule extends LoggedModel<Schedule> {
     }
   }
 
-  @BeforeCreate
-  static async ensureSourceCanUseSchedule(instance: Schedule) {
+  @BeforeSave
+  static async ensureSourceMapping(instance: Schedule) {
     const source = await Source.findById(instance.sourceId);
-    if (source.state !== "ready") throw new Error("source is not ready");
-
-    const scheduleAvailable = await source.scheduleAvailable();
-    if (!scheduleAvailable) {
-      throw new Error(
-        `source ${source.name} (${instance.sourceId}) cannot have a schedule`
-      );
+    if (!source.scheduleAvailable()) {
+      throw new Error(`a ${source.type} source cannot have a schedule`);
     }
   }
 
@@ -394,6 +404,16 @@ export class Schedule extends LoggedModel<Schedule> {
   static async runAfterSave(instance: Schedule) {
     const shouldRun = await instance.shouldRun();
     if (shouldRun) await instance.enqueueRun();
+  }
+
+  @BeforeUpdate
+  static async checkIncremental(instance: Schedule) {
+    const { pluginConnection } = await instance.getPlugin();
+    if (instance.incremental && !pluginConnection.supportIncrementalSchedule) {
+      throw new Error(
+        `${pluginConnection.name} does not support incremental schedules`
+      );
+    }
   }
 
   @BeforeDestroy

@@ -187,9 +187,11 @@ export default function Page(props) {
                   type="checkbox"
                   label={renderCheckboxLabel(
                     "Incremental",
-                    "Only update records that have changed since last schedule run"
+                    schedule.supportIncrementalSchedule
+                      ? "Only update records that have changed since last schedule run"
+                      : "Not supported"
                   )}
-                  disabled={loading}
+                  disabled={!schedule.supportIncrementalSchedule || loading}
                   checked={schedule.incremental}
                   onChange={(e) => update(e)}
                 />

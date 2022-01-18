@@ -75,6 +75,7 @@ export interface PluginConnection {
   description: string;
   direction: "import" | "export";
   skipSourceMapping?: boolean;
+  supportIncrementalSchedule?: boolean;
   apps: string[];
   options: ConnectionOptionsOption[];
   syncModes?: DestinationSyncMode[];

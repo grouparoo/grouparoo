@@ -47,6 +47,7 @@ export class Plugins extends Initializer {
           description: "Import or update Records from a remote CSV.",
           apps: ["csv"],
           groupAggregations: [AggregationMethod.Exact],
+          supportIncrementalSchedule: false,
           options: [
             {
               key: "url",
