@@ -1,4 +1,5 @@
 import { Op, WhereAttributeHash } from "sequelize";
+import { ParamsFrom } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Export } from "../models/Export";
 import { ExportOps } from "../modules/ops/export";
@@ -6,7 +7,6 @@ import { Destination } from "../models/Destination";
 import { GrouparooRecord } from "../models/GrouparooRecord";
 import { APIData } from "../modules/apiData";
 import { ActionPermission } from "../models/Permission";
-import { ParamsFrom } from "actionhero";
 
 export class ExportsList extends AuthenticatedAction {
   name = "exports:list";
@@ -106,5 +106,34 @@ export class ExportView extends AuthenticatedAction {
   async runWithinTransaction({ params }: { params: ParamsFrom<ExportView> }) {
     const _export = await Export.findById(params.id);
     return { export: await _export.apiData() };
+  }
+}
+
+export class ExportsRetryFailed extends AuthenticatedAction {
+  name = "exports:retryFailed";
+  description = "retry failed exports within a timeframe";
+  permission: ActionPermission = { topic: "destination", mode: "write" };
+  inputs = {
+    destinationId: { required: false },
+    startTimestamp: { required: true, formatter: APIData.ensureNumber },
+    endTimestamp: { required: true, formatter: APIData.ensureNumber },
+    preview: { required: false, formatter: APIData.ensureBoolean },
+  };
+
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<ExportsRetryFailed>;
+  }) {
+    const count = await Export.retryFailed(
+      new Date(params.startTimestamp),
+      new Date(params.endTimestamp),
+      params.destinationId
+        ? await Destination.findById(params.destinationId)
+        : null,
+      !params.preview
+    );
+
+    return { count };
   }
 }
