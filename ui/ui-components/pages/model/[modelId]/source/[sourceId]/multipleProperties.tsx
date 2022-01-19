@@ -198,10 +198,10 @@ export default function Page(props) {
               disabled={disabled}
             />
             {!exactProperty && key !== column ? (
-              <Alert variant="info" className="mt-2">
-                Property with key "{column}" already exists, suggesting "{key}"
-                instead.
-              </Alert>
+              <Form.Text
+                id="suggestedKeyText"
+                muted
+              >{`Property with key "${column}" already exists, suggesting "${key}" instead.`}</Form.Text>
             ) : null}
           </td>
           <td>
