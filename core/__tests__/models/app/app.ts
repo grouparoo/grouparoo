@@ -414,6 +414,7 @@ describe("models/app", () => {
             name: "import-from-test-template-app",
             displayName: "import-from-test-template-app",
             description: "a test app connection",
+            supportIncrementalSchedule: true,
             apps: ["test-template-app"],
             direction: "import" as "import",
             options: [],

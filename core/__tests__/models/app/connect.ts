@@ -1,7 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api } from "actionhero";
-import { App } from "../../src";
-import { AppOps } from "../../src/modules/ops/app";
+import { App } from "../../../src";
+import { AppOps } from "../../../src/modules/ops/app";
 
 describe("AppOps", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

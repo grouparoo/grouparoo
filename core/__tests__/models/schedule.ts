@@ -112,7 +112,7 @@ describe("models/schedule", () => {
           type: "test-plugin-import",
           sourceId: source.id,
         })
-      ).rejects.toThrow(/table is required/);
+      ).rejects.toThrow(/source is not ready/);
     });
 
     test("creating 2 schedules for the same source will throw an error", async () => {
@@ -672,6 +672,7 @@ describe("models/schedule", () => {
           {
             name: "import-from-test-template-app",
             displayName: "import-from-test-template-app",
+            supportIncrementalSchedule: true,
             description: "a test app connection",
             apps: ["test-template-app"],
             direction: "import" as "import",
