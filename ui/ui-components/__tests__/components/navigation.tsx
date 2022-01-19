@@ -46,7 +46,7 @@ describe("navigation", () => {
   test("shows the nav returned from the server", async () => {
     const navigation = screen.getByTestId("navigation");
     expect(navigation.outerHTML).toContain("<span>Dashboard</span>");
-    expect(navigation.outerHTML).toContain("Something Cool</a>");
-    expect(navigation.outerHTML).toContain("Sign Out</a>");
+    expect(navigation.outerHTML).toContain("Something Cool</span>");
+    expect(navigation.outerHTML).toContain("Sign Out</span>");
   });
 });
