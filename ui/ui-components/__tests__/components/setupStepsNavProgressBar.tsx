@@ -1,13 +1,11 @@
 import { render, screen } from "@testing-library/react";
-import Component from "../../components/navigation/SetupStepsNavProgressBar";
 import mockAxios from "jest-mock-axios";
+import { NextPageContext } from "next";
+import Component from "../../components/navigation/SetupStepsNavProgressBar";
 import { Actions } from "../../utils/apiData";
 import { UseApi } from "../../hooks/useApi";
-import { EventDispatcher } from "../../utils/eventDispatcher";
-import { NextPageContext } from "next";
 
 const useRouter = jest.spyOn(require("next/router"), "useRouter");
-const mockSetupStepHandler = new EventDispatcher<any>();
 
 describe("setupStepsNavProgressBar", () => {
   describe("hidden", () => {
@@ -21,12 +19,7 @@ describe("setupStepsNavProgressBar", () => {
     for (const page of ["/", "/session/sign-in"]) {
       it(`does not render on ${page}`, () => {
         useRouter.mockImplementation(() => ({ pathname: page, asPath: page }));
-        render(
-          <Component
-            execApi={() => {}}
-            setupStepHandler={mockSetupStepHandler}
-          />
-        );
+        render(<Component execApi={() => {}} />);
         expect(screen.queryByTestId("setupStepsProgressBar")).toBeNull();
       });
     }
@@ -48,9 +41,7 @@ describe("setupStepsNavProgressBar", () => {
     });
 
     it("doesn't display without steps", async () => {
-      render(
-        <Component execApi={execApi} setupStepHandler={mockSetupStepHandler} />
-      );
+      render(<Component execApi={execApi} />);
 
       expect(screen.queryByTestId("setupStepsProgressBar")).toBeNull();
     });
@@ -78,9 +69,7 @@ describe("setupStepsNavProgressBar", () => {
         ],
       };
 
-      render(
-        <Component execApi={execApi} setupStepHandler={mockSetupStepHandler} />
-      );
+      render(<Component execApi={execApi} />);
 
       expect(mockAxios).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -118,9 +107,7 @@ describe("setupStepsNavProgressBar", () => {
         ],
       };
 
-      render(
-        <Component execApi={execApi} setupStepHandler={mockSetupStepHandler} />
-      );
+      render(<Component execApi={execApi} />);
 
       mockAxios.mockResponse({ data: stepsResponse });
       await expect(

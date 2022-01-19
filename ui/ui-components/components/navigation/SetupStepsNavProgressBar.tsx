@@ -22,13 +22,13 @@ export default function SetupStepsNavProgressBar({
     getSetupSteps();
     router?.events?.on("routeChangeStart", getSetupSteps);
 
-    setupStepHandler?.subscribe("setup-steps-nav-progress-bar", () =>
+    setupStepHandler.subscribe("setup-steps-nav-progress-bar", () =>
       getSetupSteps()
     );
 
     return () => {
       router?.events?.off("routeChangeStart", getSetupSteps);
-      setupStepHandler?.unsubscribe("setup-steps-nav-progress-bar");
+      setupStepHandler.unsubscribe("setup-steps-nav-progress-bar");
     };
   }, []);
 
