@@ -1,1 +1,4 @@
-export { default } from "@grouparoo/ui-components/pages/apps";
+export {
+  default,
+  getServerSideProps,
+} from "@grouparoo/ui-components/pages/apps";

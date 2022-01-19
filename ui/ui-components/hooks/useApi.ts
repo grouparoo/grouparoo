@@ -18,7 +18,7 @@ export interface ApiHook {
 }
 
 export function UseApi(
-  ctx: GetServerSidePropsContext | NextPageContext,
+  ctx?: GetServerSidePropsContext | NextPageContext,
   errorHandler?: ErrorHandler,
   uploadHandler?: UploadHandler
 ): ApiHook {

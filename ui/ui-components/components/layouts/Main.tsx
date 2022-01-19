@@ -5,8 +5,7 @@ import Toast from "../alerts/Toast";
 import Navigation from "../Navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import HydrationError from "../alerts/HydrationError";
-import { SuccessHandler } from "../../utils/successHandler";
-import { ErrorHandler } from "../../utils/errorHandler";
+import { errorHandler, successHandler } from "../../eventHandlers";
 
 const fontFamilies = [
   "IBM+Plex+Mono:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700",
@@ -20,14 +19,10 @@ const fontUrl = `https://fonts.googleapis.com/css2?${fontFamilies
 export default function Main(props) {
   const {
     children,
-    successHandler,
-    errorHandler,
     hydrationError,
   }: {
-    children: any;
-    successHandler: SuccessHandler;
-    errorHandler: ErrorHandler;
-    hydrationError: string;
+    children: React.ReactNode;
+    hydrationError?: string;
   } = props;
   const [navExpanded, setNavExpanded] = useState(true);
   const contentAreaLeftPadding = 250;

@@ -1,45 +1,70 @@
-import App from "next/app";
 import { AxiosError } from "axios";
-import type { AppContext } from "next/app";
+import App from "next/app";
+import type { AppContext, AppProps } from "next/app";
+import { useMemo } from "react";
 
 import { UseApi } from "../hooks/useApi";
 
-import Injection from "../components/ComponentInjection";
 import Layout from "../components/layouts/Main";
 import PageTransition from "../components/PageTransition";
 import StatusSubscription from "../components/StatusSubscription";
 import "../components/Icons";
 
-import { Actions } from "../utils/apiData";
-import * as eventHandlers from "../utils/eventHandlers";
+import { WebAppContext } from "../contexts/webApp";
 
-export default function GrouparooWebApp(props) {
+import * as eventHandlers from "../eventHandlers";
+
+import { Actions } from "../utils/apiData";
+import { renderNestedContextProviders } from "../utils/contextHelper";
+
+export interface GrouparooNextAppProps {
+  clusterName: Actions.NavigationList["clusterName"];
+  currentTeamMember: Partial<Actions.NavigationList["teamMember"]>;
+  hydrationError?: string;
+  navigation: Actions.NavigationList["navigation"];
+  navigationMode: Actions.NavigationList["navigationMode"];
+}
+
+export default function GrouparooNextApp(
+  props: AppProps & GrouparooNextAppProps & { err: any }
+) {
   const { Component, pageProps, err, hydrationError } = props;
 
-  const combinedProps = Object.assign({}, pageProps || {}, {
+  const combinedProps = {
+    ...pageProps,
+    ...eventHandlers,
     navigation: props.navigation,
     navigationMode: props.navigationMode,
     clusterName: props.clusterName,
     currentTeamMember: props.currentTeamMember,
-    ...eventHandlers,
-  });
+  };
 
-  return (
-    <Injection {...combinedProps}>
+  const pageContext = useMemo<WebAppContext>(() => {
+    return {
+      navigation: props.navigation,
+      navigationMode: props.navigationMode,
+      clusterName: props.clusterName,
+      currentTeamMember: props.currentTeamMember,
+    };
+  }, [props]);
+
+  return renderNestedContextProviders(
+    [[WebAppContext, pageContext]],
+    <>
       <PageTransition />
 
-      <Layout hydrationError={hydrationError} {...combinedProps}>
+      <Layout hydrationError={hydrationError}>
         <Component {...combinedProps} err={err} />
       </Layout>
 
       {combinedProps.currentTeamMember?.id ? (
         <StatusSubscription {...combinedProps} />
       ) : null}
-    </Injection>
+    </>
   );
 }
 
-GrouparooWebApp.getInitialProps = async (appContext: AppContext) => {
+GrouparooNextApp.getInitialProps = async (appContext: AppContext) => {
   const { execApi } = UseApi(appContext.ctx);
   let currentTeamMember: Partial<Actions.SessionView["teamMember"]> = {
     firstName: "",

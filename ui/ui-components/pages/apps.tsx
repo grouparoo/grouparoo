@@ -3,6 +3,7 @@ import { UseApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import { useCallback } from "react";
+import { GetServerSidePropsContext } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Link from "../components/GrouparooLink";
@@ -12,20 +13,28 @@ import AppIcon from "../components/AppIcon";
 import StateBadge from "../components/badges/StateBadge";
 import { Models, Actions } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
-import { ErrorHandler } from "../utils/errorHandler";
-import { SuccessHandler } from "../utils/successHandler";
 import LinkButton from "../components/LinkButton";
 import LoadingButton from "../components/LoadingButton";
 import { grouparooUiEdition } from "../utils/uiEdition";
 import { formatName } from "../utils/formatName";
+import { NextPageWithInferredProps } from "../utils/pageHelper";
+import { errorHandler, successHandler } from "../eventHandlers";
 
-export default function Page(props) {
-  const {
-    errorHandler,
-    successHandler,
-  }: { errorHandler: ErrorHandler; successHandler: SuccessHandler } = props;
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const { execApi } = UseApi(ctx);
+  const { limit, offset } = ctx.query;
+  const { apps, total } = await execApi<Actions.AppsList>("get", `/apps`, {
+    limit,
+    offset,
+  });
+  return { props: { apps, total } };
+};
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  ...props
+}) => {
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { execApi } = UseApi(undefined, errorHandler);
   const [apps, setApps] = useState<Models.AppType[]>(props.apps);
   const [total, setTotal] = useState<number>(props.total);
   const [loading, setLoading] = useState(false);
@@ -189,11 +198,6 @@ export default function Page(props) {
       </LinkButton>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
-  const { limit, offset } = ctx.query;
-  const { apps, total } = await execApi("get", `/apps`, { limit, offset });
-  return { apps, total };
 };
+
+export default Page;

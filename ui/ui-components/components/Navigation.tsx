@@ -1,6 +1,6 @@
-import { Fragment, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { Image, Accordion, Button, Badge, Form } from "react-bootstrap";
+import { Image, Accordion, Button, Badge } from "react-bootstrap";
 import Link from "next/link";
 import {
   FontAwesomeIcon,
@@ -12,14 +12,16 @@ import RunningRunsBadge from "./navigation/RunningRunsBadge";
 import ResqueFailedCountBadge from "./navigation/ResqueFailedBadgeCount";
 import UnreadNotificationsBadge from "./navigation/UnreadNotificationsBadge";
 import HighlightingNavLink from "./navigation/HighlightingNavLink";
-import { Actions } from "../utils/apiData";
-import { ErrorHandler } from "../utils/errorHandler";
-import { SetupStepHandler } from "../utils/setupStepsHandler";
-import { SessionHandler } from "../utils/sessionHandler";
-import { StatusHandler } from "../utils/statusHandler";
 import { truncate } from "../utils/truncate";
 import LinkButton from "./LinkButton";
 import { grouparooUiEdition } from "../utils/uiEdition";
+import { useWebAppContext } from "../contexts/webApp";
+import {
+  errorHandler,
+  sessionHandler,
+  setupStepHandler,
+  statusHandler,
+} from "../eventHandlers";
 
 export const navLiStyle: React.CSSProperties = {
   marginTop: 16,
@@ -39,30 +41,18 @@ export const iconConstrainedStyle: React.CSSProperties = { width: 20 };
 
 export default function Navigation(props) {
   const {
-    navigationMode,
-    navigation,
-    clusterName,
     navExpanded,
     toggleNavExpanded,
-    errorHandler,
-    setupStepHandler,
-    sessionHandler,
-    statusHandler,
   }: {
-    navigationMode: Actions.NavigationList["navigationMode"];
-    navigation: Actions.NavigationList["navigation"];
-    clusterName: { value: string; default: boolean };
     navExpanded: boolean;
     toggleNavExpanded: () => {};
-    errorHandler: ErrorHandler;
-    setupStepHandler: SetupStepHandler;
-    sessionHandler: SessionHandler;
-    statusHandler: StatusHandler;
   } = props;
+  const { navigationMode, navigation, clusterName, currentTeamMember } =
+    useWebAppContext();
   const uiEdition = grouparooUiEdition();
-  const { execApi } = UseApi(props, errorHandler);
+  const { execApi } = UseApi(undefined, errorHandler);
   const router = useRouter();
-  const [teamMember, setTeamMember] = useState(props.currentTeamMember);
+  const [teamMember, setTeamMember] = useState(currentTeamMember);
   const [hasBeenCollapsed, setHasBeenCollapsed] = useState(!navExpanded);
   const [expandPlatformMenu, setExpandPlatformMenu] = useState(false);
   const [expandAccountMenu, setExpandAccountMenu] = useState(false);

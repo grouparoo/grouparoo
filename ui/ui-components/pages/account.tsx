@@ -1,3 +1,4 @@
+import { GetServerSidePropsContext } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import { UseApi } from "../hooks/useApi";
@@ -5,21 +6,17 @@ import { Form, Row, Col } from "react-bootstrap";
 import RecordImageFromEmail from "../components/visualizations/RecordImageFromEmail";
 import LoadingButton from "../components/LoadingButton";
 import { Models, Actions } from "../utils/apiData";
-import { ErrorHandler } from "../utils/errorHandler";
-import { SuccessHandler } from "../utils/successHandler";
-import { SessionHandler } from "../utils/sessionHandler";
+import { NextPageWithInferredProps } from "../utils/pageHelper";
+import { errorHandler, sessionHandler, successHandler } from "../eventHandlers";
 
-export default function Page(props) {
-  const {
-    errorHandler,
-    successHandler,
-    sessionHandler,
-  }: {
-    errorHandler: ErrorHandler;
-    successHandler: SuccessHandler;
-    sessionHandler: SessionHandler;
-  } = props;
-  const { execApi } = UseApi(props, errorHandler);
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const { execApi } = UseApi(ctx);
+  const { teamMember } = await execApi<Actions.AccountView>("get", `/account`);
+  return { props: { teamMember } };
+};
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
+  const { execApi } = UseApi(undefined, errorHandler);
   const [loading, setLoading] = useState(false);
   const [teamMember, setTeamMember] = useState<Models.TeamMemberType>(
     props.teamMember
@@ -120,10 +117,6 @@ export default function Page(props) {
       </Row>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
-  const { teamMember }: Actions.AccountView = await execApi("get", `/account`);
-  return { teamMember };
 };
+
+export default Page;

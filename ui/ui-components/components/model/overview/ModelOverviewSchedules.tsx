@@ -8,7 +8,7 @@ import EntityInfoContainer from "../../lib/entity/EntityInfoContainer";
 import EntityInfoHeader from "../../lib/entity/EntityInfoHeader";
 import RunAllSchedulesButton from "../../schedule/RunAllSchedulesButton";
 import { ApiHook } from "../../../hooks/useApi";
-import { successHandler } from "../../../utils/eventHandlers";
+import { successHandler } from "../../../eventHandlers";
 import { useGrouparooModelContext } from "../../../contexts/grouparooModel";
 import EntityList from "../../lib/entity/EntityList";
 import LoadingButton from "../../LoadingButton";

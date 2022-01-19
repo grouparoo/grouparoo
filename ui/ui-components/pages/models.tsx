@@ -1,23 +1,35 @@
+import { GetServerSidePropsContext } from "next";
+import Head from "next/head";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { UseApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
-import Head from "next/head";
-import { useRouter } from "next/router";
 import Pagination from "../components/Pagination";
 import LoadingTable from "../components/LoadingTable";
 import ModelIcon from "../components/ModelIcon";
 import { Models, Actions } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
-import { ErrorHandler } from "../utils/errorHandler";
 import GrouparooLink from "../components/GrouparooLink";
 import StateBadge from "../components/badges/StateBadge";
 import LinkButton from "../components/LinkButton";
+import { NextPageWithInferredProps } from "../utils/pageHelper";
+import { errorHandler } from "../eventHandlers";
 
-export default function Page(props) {
-  const { errorHandler }: { errorHandler: ErrorHandler } = props;
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const { execApi } = UseApi(ctx);
+  const { limit, offset } = ctx.query;
+  const { models, total } = await execApi<Actions.ModelsList>(
+    "get",
+    `/models`,
+    { limit, offset }
+  );
+  return { props: { models, total } };
+};
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { execApi } = UseApi(undefined, errorHandler);
   const [models, setModels] = useState<Models.GrouparooModelType[]>(
     props.models
   );
@@ -113,11 +125,6 @@ export default function Page(props) {
       </LinkButton>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
-  const { limit, offset } = ctx.query;
-  const { models, total } = await execApi("get", `/models`, { limit, offset });
-  return { models, total };
 };
+
+export default Page;
