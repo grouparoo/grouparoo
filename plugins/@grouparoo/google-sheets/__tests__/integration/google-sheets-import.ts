@@ -338,6 +338,8 @@ describe("integration/runs/google-sheets", () => {
     test(
       "a google sheet schedule can run and update records",
       async () => {
+        await api.resque.queue.connection.redis.flushdb();
+
         // enqueue the run
         session.params = {
           csrfToken,
@@ -352,8 +354,8 @@ describe("integration/runs/google-sheets", () => {
 
         // check that the run is enqueued
         const found = await specHelper.findEnqueuedTasks("schedule:run");
-        expect(found.length).toEqual(2);
-        expect(found[1].args[0].scheduleId).toBe(schedule.id);
+        expect(found.length).toEqual(1);
+        expect(found[0].args[0].scheduleId).toBe(schedule.id);
 
         // run the schedule
         const run = await Run.findById(apiRun.id);
@@ -410,9 +412,9 @@ describe("integration/runs/google-sheets", () => {
         await run.updateTotals();
 
         expect(run.state).toBe("complete");
-        expect(run.importsCreated).toBe(0);
+        expect(run.importsCreated).toBe(10);
         expect(run.recordsCreated).toBe(0);
-        expect(run.recordsImported).toBe(0);
+        expect(run.recordsImported).toBe(10);
         expect(run.percentComplete).toBe(100);
       },
       helper.longTime
