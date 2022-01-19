@@ -207,4 +207,68 @@ describe("snowflake/table/records", () => {
     const importedIds = imports.map((r) => r.ID);
     expect(importedIds).toEqual([5, 6]);
   });
+
+  describe("not incremental", () => {
+    beforeAll(async () => await schedule.update({ incremental: false }));
+    afterAll(async () => await schedule.update({ incremental: true }));
+
+    test("paginates", async () => {
+      const limit = 4;
+      let importedIds: number[] = [];
+
+      const page1 = await runIt({
+        limit,
+        sourceOffset: 0,
+        highWaterMark: {},
+        scheduleFilters: [],
+      });
+      expect(page1.importsCount).toBe(4);
+      expect(page1.sourceOffset).toBe(4);
+      importedIds = page1.imports.map((r) => r.ID);
+      expect(importedIds).toEqual([1, 2, 3, 4]);
+
+      // do the next page
+      const page2 = await runIt({
+        limit,
+        highWaterMark: page1.highWaterMark,
+        sourceOffset: page1.sourceOffset,
+        scheduleFilters: [],
+      });
+      expect(page2.importsCount).toBe(4);
+      expect(page2.sourceOffset).toBe(8);
+      importedIds = page2.imports.map((r) => r.ID);
+      expect(importedIds).toEqual([5, 6, 7, 8]);
+
+      // do the next page
+      const page3 = await runIt({
+        limit,
+        highWaterMark: page2.highWaterMark,
+        sourceOffset: page2.sourceOffset,
+        scheduleFilters: [],
+      });
+      expect(page3.importsCount).toBe(2);
+      expect(page3.sourceOffset).toBe(12);
+      importedIds = page3.imports.map((r) => r.ID);
+      expect(importedIds).toEqual([9, 10]);
+    });
+
+    test("can be filtered", async () => {
+      let limit = 100;
+      let highWaterMark = {};
+      let sourceOffset = 0;
+      let scheduleFilters = [
+        { key: "ID", op: "gt", match: 4 },
+        { key: "ID", op: "lt", match: 7 },
+      ];
+      const { imports, importsCount } = await runIt({
+        limit,
+        highWaterMark,
+        sourceOffset,
+        scheduleFilters,
+      });
+      expect(importsCount).toBe(2);
+      const importedIds = imports.map((r) => r.ID);
+      expect(importedIds).toEqual([5, 6]);
+    });
+  });
 });

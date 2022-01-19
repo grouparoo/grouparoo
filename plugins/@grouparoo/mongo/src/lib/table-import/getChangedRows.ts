@@ -47,8 +47,9 @@ export const getChangedRows: GetChangedRowsMethod = async ({
       [highWaterMarkKey]: `$${highWaterMarkAndSortColumnASC}`,
     },
   });
+
+  aggPipeline.push({ $skip: sourceOffset }); // skip needs to go before limit in Mongo - pipeline order matters
   aggPipeline.push({ $limit: limit });
-  aggPipeline.push({ $skip: sourceOffset });
 
   const rows = await connection
     .db(appOptions.database)

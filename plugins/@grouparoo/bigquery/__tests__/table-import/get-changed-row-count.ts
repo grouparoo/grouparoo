@@ -95,6 +95,24 @@ describe("bigquery/table/scheduleOptions", () => {
     expect(rowCount).toBe(2);
   });
 
+  test("highwatermark is ignored when not incremental", async () => {
+    const rowCount = await getChangedRowCount({
+      connection,
+      appOptions,
+      appId: app.id,
+      tableName: "records",
+      incremental: false,
+      matchConditions: [],
+      highWaterMarkCondition: {
+        columnName: "stamp",
+        value: new Date("2020-02-05"),
+        filterOperation: FilterOperation.GreaterThan,
+      },
+    });
+
+    expect(rowCount).toBe(10);
+  });
+
   test("gets the percentage complete of a run", async () => {
     const run = await helper.factories.run(schedule, { state: "running" });
     const percentComplete = await run.determinePercentComplete();
