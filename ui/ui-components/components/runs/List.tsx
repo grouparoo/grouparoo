@@ -1,28 +1,22 @@
+import { NextPageContext } from "next";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { errorHandler, runsHandler } from "../../eventHandlers";
 import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { Fragment, useEffect, useState } from "react";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import { Row, Col, Button, ButtonGroup, Alert, Card } from "react-bootstrap";
-import { useRouter } from "next/router";
-import Link from "next/link";
 import EnterpriseLink from "../GrouparooLink";
 import Pagination from "../Pagination";
 import LoadingTable from "../LoadingTable";
 import RunDurationChart from "../visualizations/RunDurations";
 import { Models, Actions } from "../../utils/apiData";
 import { formatTimestamp } from "../../utils/formatTimestamp";
-import { ErrorHandler } from "../../utils/errorHandler";
-import { RunsHandler } from "../../utils/runsHandler";
 import { DurationTime } from "../DurationTime";
-import { NextPageContext } from "next";
 
 export default function RunsList(props) {
-  const {
-    errorHandler,
-    runsHandler,
-    topic,
-  }: { errorHandler: ErrorHandler; runsHandler: RunsHandler; topic: string } =
-    props;
+  const { topic }: { topic: string } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);

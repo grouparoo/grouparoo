@@ -1,8 +1,8 @@
 import { AxiosRequestConfig, Method } from "axios";
 import { GetServerSidePropsContext, NextPageContext } from "next";
 import { Client } from "../client/client";
-import { ErrorHandler } from "../utils/errorHandler";
-import { UploadHandler } from "../utils/uploadHandler";
+import { ErrorHandler } from "../eventHandlers/errorHandler";
+import { UploadHandler } from "../eventHandlers/uploadHandler";
 
 export const client = new Client();
 

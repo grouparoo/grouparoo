@@ -4,16 +4,14 @@ import { useState } from "react";
 import { Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
-import { ErrorHandler } from "../../utils/errorHandler";
+import { errorHandler } from "../../eventHandlers";
 import { Actions, Models } from "../../utils/apiData";
 import LoadingButton from "../../components/LoadingButton";
 
 export default function Page(props) {
   const {
-    errorHandler,
     types,
   }: {
-    errorHandler: ErrorHandler;
     types: Actions.ModelOptions["types"];
   } = props;
   const router = useRouter();

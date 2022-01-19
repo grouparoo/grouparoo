@@ -1,25 +1,18 @@
 import { useState, useEffect, Fragment } from "react";
 import { useRouter } from "next/router";
 import { Form, Row, Col, Button, Modal, ButtonGroup } from "react-bootstrap";
-import LoadingButton from "../LoadingButton";
 import { useForm } from "react-hook-form";
-import { Actions, OAuth, Models } from "../../utils/apiData";
+import {
+  errorHandler,
+  sessionHandler,
+  successHandler,
+} from "../../eventHandlers";
 import { UseApi } from "../../hooks/useApi";
+import { Actions, OAuth, Models } from "../../utils/apiData";
+import LoadingButton from "../LoadingButton";
 import Loader from "../Loader";
-import { ErrorHandler } from "../../utils/errorHandler";
-import { SuccessHandler } from "../../utils/successHandler";
-import { SessionHandler } from "../../utils/sessionHandler";
 
 export default function SignInForm(props) {
-  const {
-    errorHandler,
-    successHandler,
-    sessionHandler,
-  }: {
-    errorHandler: ErrorHandler;
-    successHandler: SuccessHandler;
-    sessionHandler: SessionHandler;
-  } = props;
   const { execApi } = UseApi(props, errorHandler);
   const { handleSubmit, register } = useForm();
   const router = useRouter();

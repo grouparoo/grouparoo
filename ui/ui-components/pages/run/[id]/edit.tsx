@@ -6,21 +6,16 @@ import { GrouparooChart } from "../../../components/visualizations/GrouparooChar
 import RunTabs from "../../../components/tabs/Run";
 import Head from "next/head";
 import LoadingButton from "../../../components/LoadingButton";
+import { DurationTime } from "../../../components/DurationTime";
+import { errorHandler, successHandler } from "../../../eventHandlers";
 import { Models, Actions } from "../../../utils/apiData";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
-import { SuccessHandler } from "../../../utils/successHandler";
-import { ErrorHandler } from "../../../utils/errorHandler";
-import { DurationTime } from "../../../components/DurationTime";
 
 export default function Page(props) {
   const {
     quantizedTimeline,
-    successHandler,
-    errorHandler,
   }: {
     quantizedTimeline: any;
-    successHandler: SuccessHandler;
-    errorHandler: ErrorHandler;
   } = props;
   const { execApi } = UseApi(props, errorHandler);
   const [run, setRun] = useState<Models.RunType>(props.run);

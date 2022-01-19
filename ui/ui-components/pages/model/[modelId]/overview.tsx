@@ -13,6 +13,7 @@ import ModelOverviewSecondarySources from "../../../components/model/overview/Mo
 import PageHeader from "../../../components/PageHeader";
 import ModelTabs from "../../../components/tabs/Model";
 import { GrouparooModelContextProvider } from "../../../contexts/grouparooModel";
+import { errorHandler } from "../../../eventHandlers";
 import { UseApi } from "../../../hooks/useApi";
 import { Actions, Models } from "../../../utils/apiData";
 
@@ -27,9 +28,7 @@ interface Props {
   destinations?: Models.DestinationType[];
 }
 
-const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
-  ctx,
-  errorHandler,
+const Page: NextPage<Props> = ({
   model,
   primarySource,
   secondarySources,
@@ -39,7 +38,7 @@ const Page: NextPage<Props & { ctx: any; errorHandler: any }> = ({
   schedules,
   destinations,
 }) => {
-  const { execApi } = UseApi(ctx, errorHandler);
+  const { execApi } = UseApi(undefined, errorHandler);
   const sources = useMemo(() => {
     const result = [...secondarySources];
     if (primarySource) {

@@ -12,26 +12,25 @@ import Loader from "../../../../../../../components/Loader";
 import PageHeader from "../../../../../../../components/PageHeader";
 import StateBadge from "../../../../../../../components/badges/StateBadge";
 import LockedBadge from "../../../../../../../components/badges/LockedBadge";
+import ModelBadge from "../../../../../../../components/badges/ModelBadge";
 import DatePicker from "../../../../../../../components/DatePicker";
 import LoadingButton from "../../../../../../../components/LoadingButton";
 import PropertyTabs from "../../../../../../../components/tabs/Property";
 import { Models, Actions } from "../../../../../../../utils/apiData";
 import { filtersAreEqual } from "../../../../../../../utils/filtersAreEqual";
 import { makeLocal } from "../../../../../../../utils/makeLocal";
-import { ErrorHandler } from "../../../../../../../utils/errorHandler";
-import { SuccessHandler } from "../../../../../../../utils/successHandler";
-import { PropertiesHandler } from "../../../../../../../utils/propertiesHandler";
-import ModelBadge from "../../../../../../../components/badges/ModelBadge";
 import { ensureMatchingModel } from "../../../../../../../utils/ensureMatchingModel";
 import PropertySampleRecord from "../../../../../../../components/property/PropertySampleRecord";
+import {
+  errorHandler,
+  propertiesHandler,
+  successHandler,
+} from "../../../../../../../eventHandlers";
 
 export default function Page(props) {
   const {
     model,
-    errorHandler,
-    successHandler,
     sources,
-    propertiesHandler,
     types,
     filterOptions,
     filterOptionDescriptions,
@@ -39,10 +38,7 @@ export default function Page(props) {
     hydrationError,
   }: {
     model: Models.GrouparooModelType;
-    errorHandler: ErrorHandler;
-    successHandler: SuccessHandler;
     sources: Models.SourceType[];
-    propertiesHandler: PropertiesHandler;
     types: Actions.PropertiesOptions["types"];
     filterOptions: Actions.PropertyFilterOptions["options"];
     filterOptionDescriptions: Actions.PropertyFilterOptions["optionDescriptions"];

@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Form, Alert, Button, Container } from "react-bootstrap";
 import { useRouter } from "next/router";
+import { errorHandler, successHandler } from "../../../eventHandlers";
 import PageHeader from "../../../components/PageHeader";
 import AppTabs from "../../../components/tabs/App";
 import Loader from "../../../components/Loader";
@@ -13,18 +14,9 @@ import StateBadge from "../../../components/badges/StateBadge";
 import AppRefreshQueryScheduleList from "../../../components/app/AppRefreshSchedulesList";
 import AppRefreshQueryStats from "../../../components/app/AppRefreshQueryStats";
 import { Actions, Models } from "../../../utils/apiData";
-import { ErrorHandler } from "../../../utils/errorHandler";
-import { SuccessHandler } from "../../../utils/successHandler";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
 
 export default function Page(props) {
-  const {
-    errorHandler,
-    successHandler,
-  }: {
-    errorHandler: ErrorHandler;
-    successHandler: SuccessHandler;
-  } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [app, setApp] = useState<Models.AppType>(props.app);

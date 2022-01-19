@@ -1,19 +1,17 @@
 import Head from "next/head";
-import { UseApi } from "../../../hooks/useApi";
-import { Fragment, useState } from "react";
-import { Alert, Badge, Card, Col, Form, Row } from "react-bootstrap";
 import { useRouter } from "next/router";
-import { ErrorHandler } from "../../../utils/errorHandler";
+import { Fragment, useState } from "react";
+import { Alert, Badge, Card } from "react-bootstrap";
+import { errorHandler } from "../../../eventHandlers";
+import { UseApi } from "../../../hooks/useApi";
 import { Actions } from "../../../utils/apiData";
 import LoadingButton from "../../../components/LoadingButton";
 import PageHeader from "../../../components/PageHeader";
 
 export default function Page(props) {
   const {
-    errorHandler,
     plugins,
   }: {
-    errorHandler: ErrorHandler;
     plugins: Actions.PluginsList["plugins"];
   } = props;
   const router = useRouter();

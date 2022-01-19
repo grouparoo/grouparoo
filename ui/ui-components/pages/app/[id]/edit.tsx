@@ -4,6 +4,11 @@ import { useState, useEffect, Fragment } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
+import {
+  appHandler,
+  errorHandler,
+  successHandler,
+} from "../../../eventHandlers";
 import { UseApi } from "../../../hooks/useApi";
 import PageHeader from "../../../components/PageHeader";
 import StateBadge from "../../../components/badges/StateBadge";
@@ -14,23 +19,14 @@ import Loader from "../../../components/Loader";
 import LoadingButton from "../../../components/LoadingButton";
 import LockedBadge from "../../../components/badges/LockedBadge";
 import { Actions, Models } from "../../../utils/apiData";
-import { ErrorHandler } from "../../../utils/errorHandler";
-import { SuccessHandler } from "../../../utils/successHandler";
-import { AppHandler } from "../../../utils/appHandler";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
 
 export default function Page(props) {
   const {
-    errorHandler,
-    successHandler,
-    appHandler,
     environmentVariableOptions,
     options,
     pluginOptions,
   }: {
-    errorHandler: ErrorHandler;
-    successHandler: SuccessHandler;
-    appHandler: AppHandler;
     environmentVariableOptions: Actions.AppOptions["environmentVariableOptions"];
     options: Actions.AppOptions["options"];
     pluginOptions: Actions.AppOptions["pluginOptions"];

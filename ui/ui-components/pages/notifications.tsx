@@ -1,19 +1,18 @@
 import { useState } from "react";
-import { UseApi } from "../hooks/useApi";
-import { useOffset, updateURLParams } from "../hooks/URLParams";
-import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
+import { Badge } from "react-bootstrap";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Pagination from "../components/Pagination";
 import LoadingTable from "../components/LoadingTable";
+import { errorHandler } from "../eventHandlers";
+import { UseApi } from "../hooks/useApi";
+import { useOffset, updateURLParams } from "../hooks/URLParams";
+import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import { Models, Actions } from "../utils/apiData";
-import { Badge } from "react-bootstrap";
 import { formatTimestamp } from "../utils/formatTimestamp";
-import { ErrorHandler } from "../utils/errorHandler";
 
 export default function Page(props) {
-  const { errorHandler }: { errorHandler: ErrorHandler } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [notifications, setNotifications] = useState<Models.NotificationType[]>(

@@ -7,18 +7,13 @@ import LoadingTable from "../../../components/LoadingTable";
 import RecordImageFromEmail from "../../../components/visualizations/RecordImageFromEmail";
 import { Models, Actions } from "../../../utils/apiData";
 import TeamTabs from "../../../components/tabs/Team";
-import { ErrorHandler } from "../../../utils/errorHandler";
-import { SuccessHandler } from "../../../utils/successHandler";
+import { errorHandler, successHandler } from "../../../eventHandlers";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 
 export default function Page(props) {
   const {
-    errorHandler,
-    successHandler,
     team,
   }: {
-    errorHandler: ErrorHandler;
-    successHandler: SuccessHandler;
     team: Models.TeamType;
   } = props;
   const router = useRouter();

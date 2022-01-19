@@ -6,10 +6,10 @@ import Link from "next/link";
 import EnterpriseLink from "../GrouparooLink";
 import { useRouter } from "next/router";
 import { Row, Col, Button, ButtonGroup, Badge, Alert } from "react-bootstrap";
+import { errorHandler } from "../../eventHandlers";
 import Pagination from "../Pagination";
 import LoadingTable from "../LoadingTable";
 import { Models, Actions } from "../../utils/apiData";
-import { ErrorHandler } from "../../utils/errorHandler";
 import { ExportGroupsDiff, ExportRecordPropertiesDiff } from "./Diff";
 import { capitalize } from "../../utils/languageHelper";
 import { formatTimestamp } from "../../utils/formatTimestamp";
@@ -26,10 +26,7 @@ const states = [
 ];
 
 export default function ExportsList(props) {
-  const {
-    errorHandler,
-    groups,
-  }: { errorHandler: ErrorHandler; groups: Models.GroupType[] } = props;
+  const { groups }: { groups: Models.GroupType[] } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);

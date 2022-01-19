@@ -9,15 +9,8 @@ import {
   PendingImports,
   PendingExports,
 } from "../components/visualizations/HomepageWidgets";
-import { StatusHandler } from "../utils/statusHandler";
 
 export default function Page(props) {
-  const {
-    statusHandler,
-  }: {
-    statusHandler: StatusHandler;
-  } = props;
-
   return (
     <>
       <Head>
@@ -27,43 +20,35 @@ export default function Page(props) {
       <h2>Totals</h2>
       <Row>
         <Col>
-          <BigTotalNumber
-            statusHandler={statusHandler}
-            topic="GrouparooRecord"
-            title="Records"
-          />
+          <BigTotalNumber topic="GrouparooRecord" title="Records" />
         </Col>
 
         <Col>
-          <BigTotalNumber
-            statusHandler={statusHandler}
-            topic="Group"
-            title="Groups"
-          />
+          <BigTotalNumber topic="Group" title="Groups" />
         </Col>
 
         <Col>
-          <RecordsExported statusHandler={statusHandler} />
+          <RecordsExported />
         </Col>
       </Row>
 
       <br />
       <h2>Runs</h2>
-      <RunningRuns statusHandler={statusHandler} />
+      <RunningRuns />
       <br />
-      <ScheduleRuns statusHandler={statusHandler} />
+      <ScheduleRuns />
 
       <br />
       <h2>Updating Data in Grouparoo</h2>
-      <PendingImports statusHandler={statusHandler} />
+      <PendingImports />
 
       <br />
       <h2>Exporting Data to Destinations</h2>
-      <PendingExports statusHandler={statusHandler} />
+      <PendingExports />
 
       <br />
       <h2>Recently Updated Groups</h2>
-      <GroupsByNewestMember statusHandler={statusHandler} />
+      <GroupsByNewestMember />
     </>
   );
 }

@@ -1,23 +1,21 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import EnterpriseLink from "../GrouparooLink";
-import { Card, Table, ProgressBar } from "react-bootstrap";
-import { Misc, Models } from "../../utils/apiData";
 import Moment from "react-moment";
-import { GrouparooChart, ChartLinData } from "./GrouparooChart";
-import { StatusHandler } from "../../utils/statusHandler";
+import { Card, Table, ProgressBar } from "react-bootstrap";
+import { statusHandler } from "../../eventHandlers";
+import { Misc, Models } from "../../utils/apiData";
+import EnterpriseLink from "../GrouparooLink";
 import Loading from "../Loader";
+import { GrouparooChart, ChartLinData } from "./GrouparooChart";
 
 const maxSampleLength = 30;
 
 export function BigTotalNumber({
-  statusHandler,
   topic,
   title,
   collection = "totals",
   href = null,
 }: {
-  statusHandler: StatusHandler;
   title: string;
   topic: string;
   collection?: string;
@@ -60,11 +58,7 @@ export function BigTotalNumber({
   );
 }
 
-export function RecordsExported({
-  statusHandler,
-}: {
-  statusHandler: StatusHandler;
-}) {
+export function RecordsExported() {
   const [days1, setDays1] = useState<number>(null);
   const [days7, setDays7] = useState<number>(null);
   const [days30, setDays30] = useState<number>(null);
@@ -106,11 +100,7 @@ export function RecordsExported({
   );
 }
 
-export function GroupsByNewestMember({
-  statusHandler,
-}: {
-  statusHandler: StatusHandler;
-}) {
+export function GroupsByNewestMember() {
   type GroupType = {
     id: string;
     name: string;
@@ -195,11 +185,7 @@ export function GroupsByNewestMember({
   );
 }
 
-export function RunningRuns({
-  statusHandler,
-}: {
-  statusHandler: StatusHandler;
-}) {
+export function RunningRuns() {
   const [runs, setRuns] = useState<Models.RunType[]>([]);
 
   useEffect(() => {
@@ -294,11 +280,7 @@ export function RunningRuns({
   );
 }
 
-export function ScheduleRuns({
-  statusHandler,
-}: {
-  statusHandler: StatusHandler;
-}) {
+export function ScheduleRuns() {
   type SourceScheduleType = {
     id: string;
     name: string;
@@ -386,11 +368,7 @@ export function ScheduleRuns({
   );
 }
 
-export function PendingImports({
-  statusHandler,
-}: {
-  statusHandler: StatusHandler;
-}) {
+export function PendingImports() {
   type ImportsBySource = {
     id: string;
     name: string;
@@ -489,11 +467,7 @@ export function PendingImports({
   );
 }
 
-export function PendingExports({
-  statusHandler,
-}: {
-  statusHandler: StatusHandler;
-}) {
+export function PendingExports() {
   type ExportsByDestination = {
     id: string;
     name: string;

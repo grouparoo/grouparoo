@@ -1,25 +1,18 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Form } from "react-bootstrap";
 import { useRouter } from "next/router";
+import { errorHandler, successHandler } from "../../../eventHandlers";
 import PageHeader from "../../../components/PageHeader";
-
 import ModelTabs from "../../../components/tabs/Model";
 import LoadingButton from "../../../components/LoadingButton";
-
+import { UseApi } from "../../../hooks/useApi";
 import { Actions, Models } from "../../../utils/apiData";
-import { ErrorHandler } from "../../../utils/errorHandler";
-import { SuccessHandler } from "../../../utils/successHandler";
 
 export default function Page(props) {
   const {
-    errorHandler,
-    successHandler,
     types,
   }: {
-    errorHandler: ErrorHandler;
-    successHandler: SuccessHandler;
     types: Actions.ModelOptions["types"];
   } = props;
   const router = useRouter();

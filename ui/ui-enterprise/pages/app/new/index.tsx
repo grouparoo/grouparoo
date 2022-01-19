@@ -4,15 +4,11 @@ import { useState } from "react";
 import { Form } from "react-bootstrap";
 import { useRouter } from "next/router";
 import AppSelectorList from "@grouparoo/ui-components/components/AppSelectorList";
-import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
+import { errorHandler } from "@grouparoo/ui-components/eventHandlers";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
 
 export default function Page(props) {
-  const {
-    errorHandler,
-    plugins,
-  }: { errorHandler: ErrorHandler; plugins: Actions.PluginsList["plugins"] } =
-    props;
+  const { plugins }: { plugins: Actions.PluginsList["plugins"] } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [plugin, setPlugin] = useState<

@@ -3,15 +3,13 @@ import { useState } from "react";
 import { Row, Col, Button } from "react-bootstrap";
 import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
+import {
+  errorHandler,
+  successHandler,
+} from "@grouparoo/ui-components/eventHandlers";
 import { CLIStream } from "../components/cliStream";
-import { SuccessHandler } from "../../ui-components/utils/successHandler";
-import { ErrorHandler } from "../../ui-components/utils/errorHandler";
 
 export default function ValidatePage(props) {
-  const {
-    successHandler,
-    errorHandler,
-  }: { successHandler: SuccessHandler; errorHandler: ErrorHandler } = props;
   const [loading, setLoading] = useState(false);
   const { execApi } = UseApi(props, errorHandler);
 

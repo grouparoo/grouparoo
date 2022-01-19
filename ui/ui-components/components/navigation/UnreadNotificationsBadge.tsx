@@ -1,13 +1,11 @@
 import { Badge } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import { StatusHandler } from "../../utils/statusHandler";
+import { statusHandler } from "../../eventHandlers";
 import { Misc } from "../../utils/apiData";
 
 export default function UnreadNotificationCountBadge({
-  statusHandler,
   navigationMode,
 }: {
-  statusHandler: StatusHandler;
   navigationMode: string;
 }) {
   const [unreadCount, setUnreadCount] = useState(0);

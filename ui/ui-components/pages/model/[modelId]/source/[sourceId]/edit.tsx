@@ -1,4 +1,4 @@
-import { GetServerSideProps, NextPage, NextPageContext } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState, useEffect, useMemo } from "react";
@@ -10,13 +10,15 @@ import SourceTabs from "../../../../../components/tabs/Source";
 import PageHeader from "../../../../../components/PageHeader";
 import StateBadge from "../../../../../components/badges/StateBadge";
 import LockedBadge from "../../../../../components/badges/LockedBadge";
+import {
+  errorHandler,
+  sourceHandler,
+  successHandler,
+} from "../../../../../eventHandlers";
 import { Models, Actions } from "../../../../../utils/apiData";
 import LoadingTable from "../../../../../components/LoadingTable";
 import LoadingButton from "../../../../../components/LoadingButton";
 import Loader from "../../../../../components/Loader";
-import { ErrorHandler } from "../../../../../utils/errorHandler";
-import { SuccessHandler } from "../../../../../utils/successHandler";
-import { SourceHandler } from "../../../../../utils/sourceHandler";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import FormMappingSelector from "../../../../../components/source/FormMappingSelector";
@@ -42,24 +44,15 @@ interface Props {
   totalSources: number;
 }
 
-interface InjectedProps extends NextPageContext {
-  errorHandler: ErrorHandler;
-  successHandler: SuccessHandler;
-  sourceHandler: SourceHandler;
-}
-
-const Page: NextPage<Props & InjectedProps> = ({
+const Page: NextPage<Props> = ({
   model,
   environmentVariableOptions,
-  errorHandler,
-  successHandler,
-  sourceHandler,
   scheduleCount,
   totalSources,
   ...props
 }) => {
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { execApi } = UseApi(undefined, errorHandler);
   const { handleSubmit, register } = useForm();
   const [preview, setPreview] = useState([]);
   const [loading, setLoading] = useState(false);

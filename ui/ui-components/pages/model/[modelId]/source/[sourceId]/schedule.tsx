@@ -11,9 +11,8 @@ import PageHeader from "../../../../../components/PageHeader";
 import StateBadge from "../../../../../components/badges/StateBadge";
 import LockedBadge from "../../../../../components/badges/LockedBadge";
 import DatePicker from "../../../../../components/DatePicker";
+import { errorHandler, successHandler } from "../../../../../eventHandlers";
 import { Models, Actions } from "../../../../../utils/apiData";
-import { ErrorHandler } from "../../../../../utils/errorHandler";
-import { SuccessHandler } from "../../../../../utils/successHandler";
 import { formatTimestamp } from "../../../../../utils/formatTimestamp";
 import { filtersAreEqual } from "../../../../../utils/filtersAreEqual";
 import { makeLocal } from "../../../../../utils/makeLocal";
@@ -24,8 +23,6 @@ import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 
 export default function Page(props) {
   const {
-    errorHandler,
-    successHandler,
     source,
     model,
     run,
@@ -35,8 +32,6 @@ export default function Page(props) {
     totalProperties,
     totalSources,
   }: {
-    errorHandler: ErrorHandler;
-    successHandler: SuccessHandler;
     source: Models.SourceType;
     model: Models.GrouparooModelType;
     run: Models.RunType;

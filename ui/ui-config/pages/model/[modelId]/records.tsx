@@ -1,28 +1,24 @@
+import { useRouter } from "next/router";
 import { useState } from "react";
 
+import {
+  errorHandler,
+  recordsHandler,
+  successHandler,
+} from "@grouparoo/ui-components/eventHandlers";
 import RecordsPage from "@grouparoo/ui-components/pages/model/[modelId]/records";
 import { Actions, Models } from "@grouparoo/ui-components/utils/apiData";
-import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
-import { SuccessHandler } from "@grouparoo/ui-components/utils/successHandler";
-import { RecordsHandler } from "@grouparoo/ui-components/utils/recordsHandler";
 import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import LoadingButton from "@grouparoo/ui-components/components/LoadingButton";
 import AddSampleRecordModal from "@grouparoo/ui-components/components/record/AddSampleRecordModal";
-import { useRouter } from "next/router";
 
 export default function Page(props) {
   const {
     modelId,
     properties,
-    errorHandler,
-    successHandler,
-    recordsHandler,
   }: {
     modelId: string;
     properties: Models.PropertyType[];
-    errorHandler: ErrorHandler;
-    successHandler: SuccessHandler;
-    recordsHandler: RecordsHandler;
   } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);

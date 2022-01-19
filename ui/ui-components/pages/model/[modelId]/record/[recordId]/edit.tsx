@@ -1,18 +1,20 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
+import { Row, Col, ListGroup, Alert } from "react-bootstrap";
 import EnterpriseLink from "../../../../../components/GrouparooLink";
 import RecordTabs from "../../../../../components/tabs/Record";
-import { useState, useEffect } from "react";
 import { UseApi } from "../../../../../hooks/useApi";
-import { Row, Col, Form, ListGroup, Alert, Button } from "react-bootstrap";
 import LoadingButton from "../../../../../components/LoadingButton";
-import { useRouter } from "next/router";
 import LoadingTable from "../../../../../components/LoadingTable";
 import { getRecordDisplayName } from "../../../../../components/record/GetRecordDisplayName";
 import ArrayRecordPropertyList from "../../../../../components/record/ArrayRecordPropertyList";
+import {
+  errorHandler,
+  recordHandler,
+  successHandler,
+} from "../../../../../eventHandlers";
 import { Models, Actions } from "../../../../../utils/apiData";
-import { ErrorHandler } from "../../../../../utils/errorHandler";
-import { SuccessHandler } from "../../../../../utils/successHandler";
-import { RecordHandler } from "../../../../../utils/recordHandler";
 import StateBadge from "../../../../../components/badges/StateBadge";
 import { formatTimestamp } from "../../../../../utils/formatTimestamp";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
@@ -25,20 +27,14 @@ import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 export default function Page(props) {
   const {
     model,
-    errorHandler,
-    successHandler,
     properties,
-    recordHandler,
     allGroups,
   }: {
     model: Models.GrouparooModelType;
-    errorHandler: ErrorHandler;
-    successHandler: SuccessHandler;
     properties: Models.PropertyType[];
     allGroups: Models.GroupType[];
     apps: Models.AppType[];
     sources: Models.SourceType[];
-    recordHandler: RecordHandler;
   } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);

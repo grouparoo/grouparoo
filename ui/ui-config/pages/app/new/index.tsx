@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import { Form, Modal, Spinner, Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
 import AppSelectorList from "@grouparoo/ui-components/components/AppSelectorList";
-import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
+import { errorHandler } from "@grouparoo/ui-components/eventHandlers";
+import { ErrorHandler } from "@grouparoo/ui-components/eventHandlers/errorHandler";
 import { EventDispatcher } from "@grouparoo/ui-components/utils/eventDispatcher";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
 
@@ -32,10 +33,8 @@ class CustomErrorHandler extends EventDispatcher<{ message: string }> {
 
 export default function Page(props) {
   const {
-    errorHandler,
     plugins,
   }: {
-    errorHandler: ErrorHandler;
     plugins: Actions.PluginsList["plugins"];
   } = props;
 

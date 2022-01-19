@@ -1,18 +1,15 @@
-import { useEffect, useState } from "react";
-import { Models } from "../../utils/apiData";
-import { ProgressBar, Row, Col, Button } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Actions } from "../../utils/apiData";
-import { SetupStepHandler } from "../../utils/setupStepsHandler";
+import { useEffect, useState } from "react";
+import { ProgressBar, Row, Col, Button } from "react-bootstrap";
+import { setupStepHandler } from "../../eventHandlers";
+import { Actions, Models } from "../../utils/apiData";
 
 export default function SetupStepsNavProgressBar({
   execApi,
-  setupStepHandler,
 }: {
   execApi: any;
-  setupStepHandler: SetupStepHandler;
 }) {
   const [steps, setSteps] = useState<Models.SetupStepType[]>([]);
   const [initialOnBoardingState, setInitialOnBoardingState] =

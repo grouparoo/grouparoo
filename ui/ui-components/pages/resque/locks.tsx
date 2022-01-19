@@ -1,20 +1,15 @@
-import { useState, useEffect } from "react";
-import { UseApi } from "../../hooks/useApi";
-import { useOffset, updateURLParams } from "../../hooks/URLParams";
-import { Table, Row, Col } from "react-bootstrap";
-import Pagination from "../../components/Pagination";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { useState, useEffect } from "react";
+import { Table, Row, Col } from "react-bootstrap";
+import { successHandler } from "../../eventHandlers";
+import { UseApi } from "../../hooks/useApi";
+import { useOffset, updateURLParams } from "../../hooks/URLParams";
+import Pagination from "../../components/Pagination";
 import ResqueTabs from "../../components/tabs/Resque";
 import LoadingButton from "../../components/LoadingButton";
-import { ErrorHandler } from "../../utils/errorHandler";
-import { SuccessHandler } from "../../utils/successHandler";
 
 export default function ResqueLocksList(props) {
-  const {
-    errorHandler,
-    successHandler,
-  }: { errorHandler: ErrorHandler; successHandler: SuccessHandler } = props;
   const router = useRouter();
   const { execApi } = UseApi(props);
   const [locks, setLocks] = useState([]);

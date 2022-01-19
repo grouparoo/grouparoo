@@ -1,15 +1,15 @@
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
+import { Alert, Button, ButtonGroup, Col, Row } from "react-bootstrap";
 import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
-import Link from "next/link";
-import { useRouter } from "next/router";
+import { errorHandler } from "../../eventHandlers";
 import Pagination from "../Pagination";
 import LoadingTable from "../LoadingTable";
-import { Alert, Button, ButtonGroup, Col, Row } from "react-bootstrap";
 import { Models, Actions } from "../../utils/apiData";
 import { formatTimestamp } from "../../utils/formatTimestamp";
-import { ErrorHandler } from "../../utils/errorHandler";
 import { ImportRecordPropertiesDiff, ImportGroupsDiff } from "./Diff";
 import StateBadge from "../badges/StateBadge";
 import { capitalize } from "../../utils/languageHelper";
@@ -26,10 +26,7 @@ const states = [
 type ImportStateOption = typeof states[number];
 
 export default function ImportList(props) {
-  const {
-    errorHandler,
-    groups,
-  }: { errorHandler: ErrorHandler; groups: Models.GroupType[] } = props;
+  const { groups }: { groups: Models.GroupType[] } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);

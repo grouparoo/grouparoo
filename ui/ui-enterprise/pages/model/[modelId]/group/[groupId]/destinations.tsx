@@ -8,7 +8,7 @@ import Link from "next/link";
 import LoadingTable from "@grouparoo/ui-components/components/LoadingTable";
 import AppIcon from "@grouparoo/ui-components/components/AppIcon";
 import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
-import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
+import { errorHandler } from "@grouparoo/ui-components/eventHandlers";
 import { formatTimestamp } from "@grouparoo/ui-components/utils/formatTimestamp";
 import PageHeader from "@grouparoo/ui-components/components/PageHeader";
 import LockedBadge from "@grouparoo/ui-components/components/badges/LockedBadge";
@@ -19,11 +19,9 @@ import { NextPageContext } from "next";
 export default function Page(props) {
   const {
     model,
-    errorHandler,
     group,
   }: {
     model: Models.GrouparooModelType;
-    errorHandler: ErrorHandler;
     group: Models.GroupType;
   } = props;
   const { execApi } = UseApi(props, errorHandler);

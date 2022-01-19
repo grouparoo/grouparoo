@@ -1,4 +1,4 @@
-import { EventDispatcher } from "./eventDispatcher";
+import { EventDispatcher } from "../utils/eventDispatcher";
 import { Actions, Misc } from "../utils/apiData";
 
 export class StatusHandler extends EventDispatcher<

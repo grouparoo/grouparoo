@@ -1,34 +1,30 @@
 import { useEffect, useState } from "react";
-import { UseApi } from "../../../../../hooks/useApi";
 import { Row, Col, Form } from "react-bootstrap";
-import StateBadge from "../../../../../components/badges/StateBadge";
-import LockedBadge from "../../../../../components/badges/LockedBadge";
+import { NextPageContext } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import StateBadge from "../../../../../components/badges/StateBadge";
+import LockedBadge from "../../../../../components/badges/LockedBadge";
 import GroupTabs from "../../../../../components/tabs/Group";
 import LoadingButton from "../../../../../components/LoadingButton";
 import { Models, Actions } from "../../../../../utils/apiData";
 import { formatTimestamp } from "../../../../../utils/formatTimestamp";
-import { ErrorHandler } from "../../../../../utils/errorHandler";
-import { SuccessHandler } from "../../../../../utils/successHandler";
-import { GroupHandler } from "../../../../../utils/groupHandler";
 import PageHeader from "../../../../../components/PageHeader";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
-import { NextPageContext } from "next";
+import {
+  errorHandler,
+  groupHandler,
+  successHandler,
+} from "../../../../../eventHandlers";
+import { UseApi } from "../../../../../hooks/useApi";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 
 export default function Page(props) {
   const {
     model,
-    errorHandler,
-    successHandler,
-    groupHandler,
   }: {
     model: Models.GrouparooModelType;
-    errorHandler: ErrorHandler;
-    successHandler: SuccessHandler;
-    groupHandler: GroupHandler;
   } = props;
   const router = useRouter();
   const [group, setGroup] = useState<Models.GroupType>(props.group);

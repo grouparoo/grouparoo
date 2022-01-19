@@ -8,17 +8,12 @@ import RecordImageFromEmail from "../../../components/visualizations/RecordImage
 import { Models, Actions } from "../../../utils/apiData";
 import TeamMemberTabs from "../../../components/tabs/TeamMember";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
-import { ErrorHandler } from "../../../utils/errorHandler";
-import { SuccessHandler } from "../../../utils/successHandler";
+import { errorHandler, successHandler } from "../../../eventHandlers";
 
 export default function Page(props) {
   const {
-    errorHandler,
-    successHandler,
     teams,
   }: {
-    errorHandler: ErrorHandler;
-    successHandler: SuccessHandler;
     teams: Models.TeamType[];
   } = props;
   const router = useRouter();
