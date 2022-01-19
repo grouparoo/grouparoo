@@ -342,6 +342,8 @@ describe("integration/runs/mailchimp-import", () => {
     test(
       "schedule can run and update records",
       async () => {
+        await api.resque.queue.connection.redis.flushdb();
+
         // NOTE: this assumes all timestamps are the same in Mailchimp last_changed
         // enqueue the run
         session.params = {
@@ -357,8 +359,8 @@ describe("integration/runs/mailchimp-import", () => {
 
         // check that the run is enqueued
         const found = await specHelper.findEnqueuedTasks("schedule:run");
-        expect(found.length).toEqual(2);
-        expect(found[1].args[0].scheduleId).toBe(schedule.id);
+        expect(found.length).toEqual(1);
+        expect(found[0].args[0].scheduleId).toBe(schedule.id);
 
         // run the schedule
         const run = await Run.findById(apiRun.id);
@@ -366,12 +368,13 @@ describe("integration/runs/mailchimp-import", () => {
         // run the schedule twice to complete the run
         await specHelper.runTask("schedule:run", { runId: run.id });
         await specHelper.runTask("schedule:run", { runId: run.id });
+        await specHelper.runTask("schedule:run", { runId: run.id });
 
         // run all enqueued associateRecord tasks
         const foundAssociateTasks = await specHelper.findEnqueuedTasks(
           "import:associateRecord"
         );
-        expect(foundAssociateTasks.length).toEqual(20 + 10); // imports + records
+        expect(foundAssociateTasks.length).toEqual(20); // 2x because all timestamps are the same
 
         await Promise.all(
           foundAssociateTasks.map((t) =>
@@ -414,7 +417,7 @@ describe("integration/runs/mailchimp-import", () => {
 
         await run.updateTotals();
         expect(run.state).toBe("complete");
-        expect(run.importsCreated).toBe(10);
+        expect(run.importsCreated).toBe(20);
         expect(run.recordsCreated).toBe(0);
         expect(run.recordsImported).toBe(10);
         expect(run.percentComplete).toBe(100);
