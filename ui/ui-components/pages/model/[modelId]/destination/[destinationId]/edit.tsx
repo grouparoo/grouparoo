@@ -104,7 +104,7 @@ export default function Page(props) {
     );
     if (response?.options) setConnectionOptions(response.options);
     setLoadingOptions(false);
-  }, 500);
+  }, 1000);
 
   async function handleDelete(force = false) {
     if (window.confirm("are you sure?")) {
