@@ -25,7 +25,7 @@ export async function waitForLock(
     );
   }
 
-  const set = await client.setnx(lockKey, requestId);
+  const set = await client.setnx(lockKey, requestId); // lock:grouparoo:export-locker:rec_abc:des_efg
   const checkValue = await client.get(lockKey);
 
   if (!set || checkValue !== requestId) {
@@ -41,3 +41,32 @@ export async function waitForLock(
 
   return { releaseLock, attempts };
 }
+
+
+// option 1: sleep 
+ 
+try {
+  const {releaseLock} = await waitForLock('mystring')
+  // do stuff like send exports
+} finally {
+  releaseLock()
+}
+
+// option 2: re-enuque job for later
+
+  const {myturn, releaseLock} = await getLock(_export) // use the record and destination id to make a lock string // lock:grouparoo:export-locker:rec_abc:des_efg
+  if (myturn) {
+    try {
+    // do stuff like send exports
+    finally {
+      releaseLock()
+    }
+  } else (
+    // A) re-enqueue this job
+    // B) do nothing, and the export plumbing already knows to try again later << --- WINNER
+   //   * If I'm a newer Export, just wit an I'll be retried
+         // How do I know what new / old means?  
+   //   * If I'm an older Export, cancel me 
+
+  )
+} 
