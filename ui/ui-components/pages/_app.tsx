@@ -10,7 +10,7 @@ import PageTransition from "../components/PageTransition";
 import StatusSubscription from "../components/StatusSubscription";
 import "../components/Icons";
 
-import { PageContext } from "../contexts/page";
+import { WebAppContext } from "../contexts/webApp";
 
 import * as eventHandlers from "../eventHandlers";
 
@@ -39,7 +39,7 @@ export default function GrouparooNextApp(
     currentTeamMember: props.currentTeamMember,
   };
 
-  const pageContext = useMemo<PageContext>(() => {
+  const pageContext = useMemo<WebAppContext>(() => {
     return {
       navigation: props.navigation,
       navigationMode: props.navigationMode,
@@ -49,7 +49,7 @@ export default function GrouparooNextApp(
   }, [props]);
 
   return renderNestedContextProviders(
-    [[PageContext, pageContext]],
+    [[WebAppContext, pageContext]],
     <>
       <PageTransition />
 

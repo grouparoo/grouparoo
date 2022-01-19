@@ -3,7 +3,7 @@ import mockAxios from "jest-mock-axios";
 import Component from "../../components/Navigation";
 import "../../components/Icons"; // this is needed to load the library
 import commonProps from "../__utils__/commonProps";
-import { PageContext } from "../../contexts/page";
+import { WebAppContext } from "../../contexts/webApp";
 
 const useRouter = jest.spyOn(require("next/router"), "useRouter");
 
@@ -14,7 +14,7 @@ describe("navigation", () => {
       asPath: "/",
     }));
 
-    const pageContext: PageContext = {
+    const webAppContext: WebAppContext = {
       currentTeamMember: {
         firstName: "mario",
         id: "abc123",
@@ -38,9 +38,9 @@ describe("navigation", () => {
     };
 
     render(
-      <PageContext.Provider value={pageContext}>
+      <WebAppContext.Provider value={webAppContext}>
         <Component {...commonProps} />
-      </PageContext.Provider>
+      </WebAppContext.Provider>
     );
   });
 

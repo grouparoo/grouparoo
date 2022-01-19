@@ -15,7 +15,7 @@ import HighlightingNavLink from "./navigation/HighlightingNavLink";
 import { truncate } from "../utils/truncate";
 import LinkButton from "./LinkButton";
 import { grouparooUiEdition } from "../utils/uiEdition";
-import { usePageContext } from "../contexts/page";
+import { useWebAppContext } from "../contexts/webApp";
 import {
   errorHandler,
   sessionHandler,
@@ -48,7 +48,7 @@ export default function Navigation(props) {
     toggleNavExpanded: () => {};
   } = props;
   const { navigationMode, navigation, clusterName, currentTeamMember } =
-    usePageContext();
+    useWebAppContext();
   const uiEdition = grouparooUiEdition();
   const { execApi } = UseApi(undefined, errorHandler);
   const router = useRouter();
