@@ -30,7 +30,6 @@
   },
   "dependencies": {
     "@grouparoo/app-templates": "0.8.0-alpha.8",
-    "@grouparoo/core": "0.8.0-alpha.8",
     "airtable": "0.11.1",
     "axios": "0.24.0"
   },
