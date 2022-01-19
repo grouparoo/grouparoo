@@ -110,9 +110,7 @@ export default function Page(props) {
     const [key, setKey] = useState(
       exactProperty && exactProperty.sourceId === source.id
         ? exactProperty.key
-        : exactProperty && exactProperty.sourceId !== source.id
-        ? generateId(`${source.name}-${column}`)
-        : generateId(column)
+        : columnSpeculation[column].suggestedPropertyKey
     );
     const [type, setType] = useState<typeof exactProperty["type"]>(
       exactProperty && exactProperty.sourceId === source.id
@@ -199,6 +197,12 @@ export default function Page(props) {
               onChange={(e) => setKey(e.target.value)}
               disabled={disabled}
             />
+            {!exactProperty && key !== column ? (
+              <Form.Text
+                id="suggestedKeyText"
+                muted
+              >{`Property with key "${column}" already exists, suggesting "${key}" instead.`}</Form.Text>
+            ) : null}
           </td>
           <td>
             <Form.Control

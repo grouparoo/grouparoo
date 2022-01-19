@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper, Connection } from "actionhero";
-import { Option, Source, App, GrouparooModel } from "../../../src";
+import { Option, Source, App, GrouparooModel, Property } from "../../../src";
 import { SessionCreate } from "../../../src/actions/session";
 import {
   SourceBootstrapUniqueProperty,
@@ -202,9 +202,17 @@ describe("actions/sources", () => {
         { id: 2, fname: "luigi", lname: "mario" },
       ]);
       expect(columnSpeculation).toEqual({
-        id: { isUnique: true, type: "integer" },
-        fname: { isUnique: false, type: "string" },
-        lname: { isUnique: false, type: "string" },
+        id: { isUnique: true, type: "integer", suggestedPropertyKey: "id" },
+        fname: {
+          isUnique: false,
+          type: "string",
+          suggestedPropertyKey: "fname",
+        },
+        lname: {
+          isUnique: false,
+          type: "string",
+          suggestedPropertyKey: "lname",
+        },
       });
     });
 
@@ -307,6 +315,58 @@ describe("actions/sources", () => {
       );
       expect(error).toBeUndefined();
       expect(source.state).toBe("ready");
+    });
+
+    describe("a source with column(s) that conflict with an existing property", () => {
+      let otherProperty: Property;
+      let source: Source;
+      beforeAll(async () => {
+        source = await Source.findOne();
+        otherProperty = await helper.factories.property(
+          source,
+          {
+            key: "fname",
+          },
+          { column: "fname" }
+        );
+      });
+
+      afterAll(async () => {
+        otherProperty.destroy();
+      });
+
+      test("can provide suggested property keys", async () => {
+        connection.params = {
+          csrfToken,
+          id,
+          options: { table: "users" },
+        };
+        const { error, preview, columnSpeculation } =
+          await specHelper.runAction<SourcePreview>(
+            "source:preview",
+            connection
+          );
+        expect(error).toBeUndefined();
+        expect(preview).toEqual([
+          { id: 1, fname: "mario", lname: "mario" },
+          { id: 2, fname: "luigi", lname: "mario" },
+        ]);
+        expect(columnSpeculation).toEqual({
+          id: { isUnique: true, type: "integer", suggestedPropertyKey: "id" },
+
+          // Check for rename in the case of a conflict
+          fname: {
+            isUnique: false,
+            type: "string",
+            suggestedPropertyKey: "profiles_fname",
+          },
+          lname: {
+            isUnique: false,
+            type: "string",
+            suggestedPropertyKey: "lname",
+          },
+        });
+      });
     });
 
     test("an administrator can view a source", async () => {

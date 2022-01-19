@@ -10,7 +10,7 @@ import {
 } from "../classes/plugin";
 import { OptionHelper } from "../modules/optionHelper";
 import { ConfigWriter } from "../modules/configWriter";
-import { PropertyTypes } from "../models/Property";
+import { Property, PropertyTypes } from "../models/Property";
 import { AsyncReturnType } from "type-fest";
 import { TableSpeculation } from "../modules/tableSpeculation";
 import { APIData } from "../modules/apiData";
@@ -318,10 +318,13 @@ export class SourcePreview extends AuthenticatedAction {
     params: ParamsFrom<SourcePreview>;
   }) {
     const source = await Source.findById(params.id);
+    const model = await source.$get("model");
     const preview = await source.sourcePreview(params.options);
+    const existingProperties: Property[] = await Property.findAll();
 
     const columnSpeculation: {
       [column: string]: {
+        suggestedPropertyKey?: string;
         type: typeof PropertyTypes[number];
         isUnique: boolean;
       };
@@ -329,7 +332,14 @@ export class SourcePreview extends AuthenticatedAction {
     if (preview.length > 0) {
       const keys = Object.keys(preview[0]);
       for (const key of keys) {
+        const suggestedPropertyKey = TableSpeculation.suggestKey(
+          key,
+          model,
+          existingProperties
+        );
+
         columnSpeculation[key] = {
+          suggestedPropertyKey,
           isUnique: TableSpeculation.isUniqueColumn(key),
           type: TableSpeculation.columnType(
             key,

@@ -1,4 +1,6 @@
-import { PropertyTypes } from "../models/Property";
+import { GrouparooModel } from "../models/GrouparooModel";
+import { Property, PropertyTypes } from "../models/Property";
+import { ConfigWriter } from "../modules/configWriter";
 
 export namespace TableSpeculation {
   const uniqueMatchers = [
@@ -56,5 +58,16 @@ export namespace TableSpeculation {
     }
 
     return databaseType;
+  }
+
+  export function suggestKey(
+    key: string,
+    model: GrouparooModel,
+    existingProperties: Property[]
+  ) {
+    const matchingProperty = existingProperties.find((p) => p.key === key);
+    return matchingProperty
+      ? `${ConfigWriter.generateId(model.name)}_${key}`
+      : key;
   }
 }
