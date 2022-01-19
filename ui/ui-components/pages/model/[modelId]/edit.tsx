@@ -37,10 +37,9 @@ export default function Page(props) {
     if (response?.model) {
       setLoading(false);
       successHandler.set({ message: "Model Updated" });
-      router.push(
-        `/model/[modelId]/overview`,
-        `/model/${response.model.id}/overview`
-      );
+      setModel(response.model);
+
+      router.replace(router.asPath);
     } else {
       setLoading(false);
     }
