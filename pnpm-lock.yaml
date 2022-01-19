@@ -389,10 +389,10 @@ importers:
       typescript: 4.5.4
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      '@grouparoo/core': link:../../../core
       airtable: 0.11.1
       axios: 0.24.0
     devDependencies:
+      '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 27.0.1
       '@types/node': 16.9.1
@@ -15195,7 +15195,7 @@ packages:
       '@types/jest': 27.0.1
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
-      jest: 27.4.5_ts-node@10.4.0
+      jest: 27.4.5
       jest-util: 27.4.2
       json5: 2.2.0
       lodash.memoize: 4.1.2
