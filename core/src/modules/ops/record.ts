@@ -26,32 +26,35 @@ import { GrouparooModel } from "../../models/GrouparooModel";
 import { CLS } from "../cls";
 import { DestinationOps } from "./destination";
 
-export interface RecordPropertyType {
-  [key: string]: {
-    id: RecordProperty["id"];
-    state: RecordProperty["state"];
-    values: (string | number | boolean | Date)[];
-    invalidValue: RecordProperty["invalidValue"];
-    invalidReason: RecordProperty["invalidReason"];
-    configId: ReturnType<Property["getConfigId"]>;
-    type: Property["type"];
-    unique: Property["unique"];
-    isPrimaryKey: Property["isPrimaryKey"];
-    isArray: Property["isArray"];
-    valueChangedAt: RecordProperty["valueChangedAt"];
-    confirmedAt: RecordProperty["confirmedAt"];
-    stateChangedAt: RecordProperty["stateChangedAt"];
-    startedAt: RecordProperty["startedAt"];
-    createdAt: RecordProperty["createdAt"];
-    updatedAt: RecordProperty["updatedAt"];
-  };
+export interface RecordPropertyValue {
+  id: RecordProperty["id"];
+  sourceId: Property["sourceId"];
+  state: RecordProperty["state"];
+  values: (string | number | boolean | Date)[];
+  invalidValue: RecordProperty["invalidValue"];
+  invalidReason: RecordProperty["invalidReason"];
+  configId: ReturnType<Property["getConfigId"]>;
+  type: Property["type"];
+  unique: Property["unique"];
+  isPrimaryKey: Property["isPrimaryKey"];
+  isArray: Property["isArray"];
+  valueChangedAt: RecordProperty["valueChangedAt"];
+  confirmedAt: RecordProperty["confirmedAt"];
+  stateChangedAt: RecordProperty["stateChangedAt"];
+  startedAt: RecordProperty["startedAt"];
+  createdAt: RecordProperty["createdAt"];
+  updatedAt: RecordProperty["updatedAt"];
 }
+
+export type RecordPropertyType = Record<string, RecordPropertyValue>;
 
 export namespace RecordOps {
   /**
    * Get the Properties of this GrouparooRecord
    */
-  export async function getProperties(record: GrouparooRecord) {
+  export async function getProperties(
+    record: GrouparooRecord
+  ): Promise<RecordPropertyType> {
     const recordProperties =
       record.recordProperties ||
       (await RecordProperty.scope(null).findAll({
@@ -76,6 +79,7 @@ export namespace RecordOps {
       if (!hash[key]) {
         hash[key] = {
           id: recordProperties[i].propertyId,
+          sourceId: property.sourceId,
           state: recordProperties[i].state,
           values: [],
           invalidValue: recordProperties[i].invalidValue,

@@ -33,7 +33,7 @@ export default function PropertyAddButton(props) {
     if (response?.property) {
       const property = response.property;
       router.push(
-        `/model/${source.modelId}/property/${property.id}/edit?nextPage=/model/${source.modelId}/source/${source.id}/overview`
+        `/model/${source.modelId}/source/${source.id}/property/${property.id}/edit?nextPage=/model/${source.modelId}/source/${source.id}/overview`
       );
     } else {
       setLoading(false);

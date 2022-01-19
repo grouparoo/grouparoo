@@ -1,28 +1,29 @@
-import { useState, useEffect, Fragment } from "react";
-import { UseApi } from "../../../../../hooks/useApi";
-import { Row, Col, Form, Table, Badge, Button } from "react-bootstrap";
-import { useRouter } from "next/router";
-import Link from "next/link";
-import Loader from "../../../../../components/Loader";
-import PageHeader from "../../../../../components/PageHeader";
-import StateBadge from "../../../../../components/badges/StateBadge";
-import LockedBadge from "../../../../../components/badges/LockedBadge";
-import { Typeahead } from "react-bootstrap-typeahead";
-import DatePicker from "../../../../../components/DatePicker";
-import LoadingButton from "../../../../../components/LoadingButton";
-import Head from "next/head";
-import PropertyTabs from "../../../../../components/tabs/Property";
-import { Models, Actions } from "../../../../../utils/apiData";
-import { filtersAreEqual } from "../../../../../utils/filtersAreEqual";
-import { makeLocal } from "../../../../../utils/makeLocal";
-import { ErrorHandler } from "../../../../../utils/errorHandler";
-import { SuccessHandler } from "../../../../../utils/successHandler";
-import { PropertiesHandler } from "../../../../../utils/propertiesHandler";
-import ModelBadge from "../../../../../components/badges/ModelBadge";
-import { NextPageContext } from "next";
-import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
-import PropertySampleRecord from "../../../../../components/property/PropertySampleRecord";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { NextPageContext } from "next";
+import Head from "next/head";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useState, useEffect, Fragment } from "react";
+import { Row, Col, Form, Table, Badge, Button } from "react-bootstrap";
+import { Typeahead } from "react-bootstrap-typeahead";
+
+import { UseApi } from "../../../../../../../hooks/useApi";
+import Loader from "../../../../../../../components/Loader";
+import PageHeader from "../../../../../../../components/PageHeader";
+import StateBadge from "../../../../../../../components/badges/StateBadge";
+import LockedBadge from "../../../../../../../components/badges/LockedBadge";
+import DatePicker from "../../../../../../../components/DatePicker";
+import LoadingButton from "../../../../../../../components/LoadingButton";
+import PropertyTabs from "../../../../../../../components/tabs/Property";
+import { Models, Actions } from "../../../../../../../utils/apiData";
+import { filtersAreEqual } from "../../../../../../../utils/filtersAreEqual";
+import { makeLocal } from "../../../../../../../utils/makeLocal";
+import { ErrorHandler } from "../../../../../../../utils/errorHandler";
+import { SuccessHandler } from "../../../../../../../utils/successHandler";
+import { PropertiesHandler } from "../../../../../../../utils/propertiesHandler";
+import ModelBadge from "../../../../../../../components/badges/ModelBadge";
+import { ensureMatchingModel } from "../../../../../../../utils/ensureMatchingModel";
+import PropertySampleRecord from "../../../../../../../components/property/PropertySampleRecord";
 
 export default function Page(props) {
   const {

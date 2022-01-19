@@ -25,7 +25,8 @@ export default function SourceTabs({ source, model }: Props) {
       name={source.name}
       draftType={source.type}
       tabs={tabs}
-      scopeName={model.name}
+      parentNames={[model.name]}
+      hideScopeBreadcrumb
     />
   );
 }

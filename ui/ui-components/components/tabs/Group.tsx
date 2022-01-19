@@ -30,7 +30,8 @@ export default function GroupTabs({
       name={group.name}
       tabs={tabs}
       defaultTab={defaultTab}
-      scopeName={model.name}
+      parentNames={[model.name]}
+      hideScopeBreadcrumb
     />
   );
 }

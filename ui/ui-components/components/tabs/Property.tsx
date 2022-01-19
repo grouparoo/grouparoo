@@ -2,15 +2,13 @@ import Tabs from "../Tabs";
 import { Models } from "../../utils/apiData";
 import { grouparooUiEdition } from "../../utils/uiEdition";
 
-export default function PropertyTabs({
-  model,
-  property,
-  source,
-}: {
+interface Props {
   model: Models.GrouparooModelType;
   property: Models.PropertyType;
   source: Models.SourceType;
-}) {
+}
+
+const PropertyTabs: React.FC<Props> = ({ model, property, source }) => {
   let tabs = ["edit"];
 
   if (grouparooUiEdition() === "enterprise") {
@@ -18,13 +16,13 @@ export default function PropertyTabs({
   }
 
   return (
-    <>
-      <Tabs
-        name={property.key}
-        draftType={source.name}
-        tabs={tabs}
-        scopeName={model.name}
-      />
-    </>
+    <Tabs
+      name={property.key}
+      tabs={tabs}
+      parentNames={[model.name, source.name]}
+      hideScopeBreadcrumb
+    />
   );
-}
+};
+
+export default PropertyTabs;

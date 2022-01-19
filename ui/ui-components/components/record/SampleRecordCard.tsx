@@ -392,7 +392,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
                         name
                       ) : (
                         <EnterpriseLink
-                          href={`/model/${modelId}/property/${property.id}/edit`}
+                          href={`/model/${modelId}/source/${property.sourceId}/property/${property.id}/edit`}
                         >
                           <a>{name}</a>
                         </EnterpriseLink>

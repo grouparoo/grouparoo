@@ -6,13 +6,14 @@ describe("<PropertyTab />", () => {
   const useRouter = jest.spyOn(require("next/router"), "useRouter");
 
   const property = { key: "Email" };
-  const source = { name: "User Table" };
+  const source = { name: "User Table", id: "user_table" };
   const model = { name: "Users", id: "users_123" };
+  const propertyId = "abc123";
 
   beforeEach(async () => {
     useRouter.mockImplementationOnce(() => ({
-      pathname: "/model/[modelId]/property/[propertyId]/edit",
-      asPath: `/model/${model.id}/property/abc123/edit`,
+      pathname: "/model/[modelId]/source/[sourceId]/property/[propertyId]/edit",
+      asPath: `/model/${model.id}/source/${source.id}/property/${propertyId}/edit`,
     }));
 
     render(<PropertyTab property={property} source={source} model={model} />);
@@ -27,7 +28,7 @@ describe("<PropertyTab />", () => {
     const link = screen.getByRole("link", { name: "Email" });
     expect(link).toHaveAttribute(
       "href",
-      `/model/${model.id}/property/abc123/edit`
+      `/model/${model.id}/source/${source.id}/property/${propertyId}/edit`
     );
   });
 });

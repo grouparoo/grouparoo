@@ -147,7 +147,7 @@ export default function Page({
                       <tr key={`rule-${rule.id}`}>
                         <td>
                           <Link
-                            href={`/model/${source.modelId}/property/${rule.id}/edit`}
+                            href={`/model/${source.modelId}/source/${source.id}/property/${rule.id}/edit`}
                           >
                             <a>
                               <strong>
