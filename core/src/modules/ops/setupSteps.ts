@@ -71,7 +71,7 @@ export const getSetupStepDescriptions = (modelId?: string) => {
       key: "add_a_model",
       title: "Add a Model",
       description:
-        "Models define the shape of your Records.  Grouparoo uses a Profile Model by default.  You can add new Models and customize them when you begin adding Sources and Properties.",
+        "Models define the shape of your Records.  You can add new Models and customize them when you begin adding Sources and Properties.",
       href: "/model/new",
       cta: "Add a Model",
       helpLink: `${configURL}/models`,
