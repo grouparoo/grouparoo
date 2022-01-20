@@ -201,12 +201,15 @@ const Page: NextPage<Props> = ({
 
       // this source can have a schedule, and we have no schedules yet
       if (scheduleCount === 0 && response.source.scheduleAvailable) {
-        await createSchedule({
+        const createdScheduleAndRedirected = await createSchedule({
           router,
           execApi,
           source: response.source,
           setLoading: () => {},
         });
+        if (createdScheduleAndRedirected) {
+          return;
+        }
       } else if (
         response.source.state === "ready" &&
         source.state === "draft"
