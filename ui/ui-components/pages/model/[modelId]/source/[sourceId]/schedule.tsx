@@ -46,37 +46,44 @@ export default function Page(props) {
   const [loading, setLoading] = useState(false);
   const [schedule, setSchedule] = useState<Models.ScheduleType>(props.schedule);
   const [localFilters, setLocalFilters] = useState<
-    Actions.ScheduleView["schedule"]["filters"]
-  >(makeLocal(props.schedule.filters));
+    Models.ScheduleType["filters"]
+  >(() => makeLocal(props.schedule.filters));
   const [recurringFrequencyMinutes, setRecurringFrequencyMinutes] = useState(
-    schedule.recurringFrequency / (60 * 1000)
+    () => schedule.recurringFrequency / (60 * 1000)
   );
 
   async function edit(event) {
     event.preventDefault();
     setLoading(true);
 
-    const _schedule = Object.assign({}, schedule, { state: "ready" });
-    if (recurringFrequencyMinutes) {
-      _schedule.recurringFrequency = recurringFrequencyMinutes * (60 * 1000);
-    }
+    const scheduleToSave: Models.ScheduleType = {
+      ...schedule,
+      state: "ready",
+      filters: localFilters,
+      recurringFrequency: schedule.recurring
+        ? recurringFrequencyMinutes * (60 * 1000)
+        : 0,
+    };
 
-    const response: Actions.ScheduleEdit = await execApi(
+    console.log(scheduleToSave);
+
+    const response = await execApi<Actions.ScheduleEdit>(
       "put",
       `/schedule/${schedule.id}`,
-      Object.assign({}, _schedule, { filters: localFilters, state: "ready" })
+      scheduleToSave
     );
+
     if (response?.schedule) {
-      setRecurringFrequencyMinutes(
-        response.schedule.recurringFrequency / (60 * 1000)
-      );
-      setSchedule(response.schedule);
       if (response.schedule.state === "ready" && schedule.state === "draft") {
         router.push(
           "/model/[modelId]/source/[sourceId]/overview",
           `/model/${source.modelId}/source/${source.id}/overview`
         );
       } else {
+        setRecurringFrequencyMinutes(
+          response.schedule.recurringFrequency / (60 * 1000)
+        );
+        setSchedule(response.schedule);
         setLoading(false);
         successHandler.set({ message: "Schedule Updated" });
       }
