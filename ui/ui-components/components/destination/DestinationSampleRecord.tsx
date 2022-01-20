@@ -102,7 +102,6 @@ const DestinationSampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
       warning={warning}
       propertyLinkDisabled
       importDisabled
-      allowFetchWithoutRecordId
     />
   );
 };
