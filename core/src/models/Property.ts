@@ -334,14 +334,14 @@ export class Property extends LoggedModel<Property> {
   static async findOneWithCache(
     value: string,
     modelId?: string,
-    key: keyof Property = "id"
+    lookupKey: keyof Property = "id"
   ) {
     const properties = await Property.findAllWithCache(modelId);
-    let property = properties.find((p) => p[key] === value);
+    let property = properties.find((p) => p[lookupKey] === value);
 
     if (!property) {
       property = await Property.findOne({
-        where: { [key]: value },
+        where: { [lookupKey]: value },
         include: [{ model: Source.unscoped(), required: false }],
       });
       if (!property) await Property.invalidateCache();
