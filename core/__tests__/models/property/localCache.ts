@@ -9,6 +9,7 @@ describe("models/property", () => {
   let originalPropertyCount: number;
 
   beforeEach(() => (CachedProperties.expires = new Date().getTime() + 5000));
+  beforeEach(() => (CachedProperties.TTL = 0));
   afterAll(() => (CachedProperties.expires = 0));
 
   beforeAll(async () => {

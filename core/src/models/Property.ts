@@ -85,11 +85,10 @@ const STATE_TRANSITIONS = [
 
 export interface PropertyFiltersWithKey extends FilterHelper.FiltersWithKey {}
 
-const CACHE_TTL = env === "test" ? -1 : 1000 * 30;
-
-export const CachedProperties: { expires: number; properties: Property[] } = {
+export const CachedProperties = {
   expires: 0,
-  properties: [],
+  TTL: env === "test" ? -1 : 1000 * 30,
+  properties: [] as Property[],
 };
 
 @DefaultScope(() => ({
@@ -323,7 +322,7 @@ export class Property extends LoggedModel<Property> {
     CachedProperties.properties = await Property.findAll({
       include: [{ model: Source.unscoped(), required: false }],
     });
-    CachedProperties.expires = now + CACHE_TTL;
+    CachedProperties.expires = now + CachedProperties.TTL;
     return modelId
       ? CachedProperties.properties.filter(
           (p) => p?.source?.modelId === modelId
