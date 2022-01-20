@@ -218,7 +218,7 @@ export class ScheduleEdit extends AuthenticatedAction {
 
     // these timing options are validated separately, and should be set first
     await schedule.update({
-      recurring: params.recurring,
+      recurring: !!params.recurring,
       recurringFrequency,
     });
 

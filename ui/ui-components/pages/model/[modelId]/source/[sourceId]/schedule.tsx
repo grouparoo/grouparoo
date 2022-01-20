@@ -65,8 +65,6 @@ export default function Page(props) {
         : 0,
     };
 
-    console.log(scheduleToSave);
-
     const response = await execApi<Actions.ScheduleEdit>(
       "put",
       `/schedule/${schedule.id}`,
