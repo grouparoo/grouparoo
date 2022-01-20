@@ -14,7 +14,7 @@ import { formatTimestamp } from "../utils/formatTimestamp";
 
 export default function Page(props) {
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [notifications, setNotifications] = useState<Models.NotificationType[]>(
     props.notifications
   );
@@ -32,7 +32,7 @@ export default function Page(props) {
   async function load() {
     updateURLParams(router, { offset });
     setLoading(true);
-    const response: Actions.NotificationsList = await execApi(
+    const response: Actions.NotificationsList = await client.request(
       "get",
       `/notifications`,
       {
@@ -111,11 +111,15 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
+  const { client } = useApi();
   const { limit, offset } = ctx.query;
-  const { notifications, total } = await execApi("get", `/notifications`, {
-    limit,
-    offset,
-  });
+  const { notifications, total } = await client.request(
+    "get",
+    `/notifications`,
+    {
+      limit,
+      offset,
+    }
+  );
   return { notifications, total };
 };

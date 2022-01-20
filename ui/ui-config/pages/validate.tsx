@@ -11,11 +11,11 @@ import { CLIStream } from "../components/cliStream";
 
 export default function ValidatePage(props) {
   const [loading, setLoading] = useState(false);
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
 
   async function validate() {
     setLoading(true);
-    const response: Actions.ConfigValidate = await execApi(
+    const response: Actions.ConfigValidate = await client.request(
       "post",
       `/config/validate`
     );

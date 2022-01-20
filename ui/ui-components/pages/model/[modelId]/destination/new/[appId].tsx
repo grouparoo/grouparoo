@@ -21,7 +21,7 @@ export default function Page(props) {
     model: Actions.ModelView["model"];
   } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
   const { appId } = router.query;
 
@@ -31,7 +31,7 @@ export default function Page(props) {
 
   const create = async (connection) => {
     setLoading(true);
-    const response: Actions.DestinationCreate = await execApi(
+    const response: Actions.DestinationCreate = await client.request(
       "post",
       `/destination`,
       {
@@ -99,12 +99,12 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { execApi } = UseApi(ctx);
+  const { client } = useApi();
   const { modelId } = ctx.query;
-  const { connectionApps } = await execApi(
+  const { connectionApps } = await client.request(
     "get",
     `/destinations/connectionApps`
   );
-  const { model } = await execApi("get", `/model/${modelId}`);
+  const { model } = await client.request("get", `/model/${modelId}`);
   return { connectionApps, model };
 };

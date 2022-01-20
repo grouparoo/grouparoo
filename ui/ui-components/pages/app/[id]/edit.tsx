@@ -32,7 +32,7 @@ export default function Page(props) {
     pluginOptions: Actions.AppOptions["pluginOptions"];
   } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [app, setApp] = useState<Models.AppType>(props.app);
   const { register, handleSubmit, setValue, getValues, reset, watch, control } =
     useForm<Models.AppType>({
@@ -78,10 +78,14 @@ export default function Page(props) {
   async function edit(appData: Models.AppType) {
     const state = app.state === "ready" ? undefined : "ready";
     setLoading(true);
-    const response: Actions.AppEdit = await execApi("put", `/app/${id}`, {
-      ...appData,
-      state,
-    });
+    const response: Actions.AppEdit = await client.request(
+      "put",
+      `/app/${id}`,
+      {
+        ...appData,
+        state,
+      }
+    );
     if (response?.app) {
       if (response.app.state === "ready" && app.state === "draft") {
         router.push("/apps");
@@ -100,7 +104,7 @@ export default function Page(props) {
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const response: Actions.AppDestroy = await execApi(
+      const response: Actions.AppDestroy = await client.request(
         "delete",
         `/app/${id}`
       );
@@ -118,9 +122,13 @@ export default function Page(props) {
     setRanTest(false);
     setTestResult({ success: null, message: null, error: null });
     const { options } = getValues();
-    const response: Actions.AppTest = await execApi("put", `/app/${id}/test`, {
-      options,
-    });
+    const response: Actions.AppTest = await client.request(
+      "put",
+      `/app/${id}/test`,
+      {
+        options,
+      }
+    );
     if (response?.test) {
       setRanTest(true);
       setTestResult(response.test);
@@ -132,7 +140,7 @@ export default function Page(props) {
     const providerName = app.pluginName.replace("@grouparoo/", "");
     setLoadingOAuth(true);
 
-    const response: Actions.OAuthClientStart = await execApi(
+    const response: Actions.OAuthClientStart = await client.request(
       "post",
       `/oauth/${providerName}/client/start`,
       { type: "app", appId: id, appOption: optionKey }
@@ -153,7 +161,7 @@ export default function Page(props) {
 
   const loadOAuthRequest = async (requestId: string) => {
     if (requestId) {
-      const response: Actions.OAuthClientView = await execApi(
+      const response: Actions.OAuthClientView = await client.request(
         "get",
         `/oauth/client/request/${requestId}/view`
       );
@@ -494,13 +502,13 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { app } = await execApi("get", `/app/${id}`);
+  const { client } = useApi();
+  const { app } = await client.request("get", `/app/${id}`);
   const {
     options,
     pluginOptions,
     environmentVariableOptions,
-  }: Actions.AppOptions = await execApi("get", `/app/${id}/options`);
+  }: Actions.AppOptions = await client.request("get", `/app/${id}/options`);
   return {
     app,
     options,

@@ -199,8 +199,8 @@ export default function Page({
 
 Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { export: _export } = await execApi("get", `/export/${id}`);
-  const { groups } = await execApi("get", `/groups`);
+  const { client } = useApi();
+  const { export: _export } = await client.request("get", `/export/${id}`);
+  const { groups } = await client.request("get", `/groups`);
   return { _export, groups };
 };

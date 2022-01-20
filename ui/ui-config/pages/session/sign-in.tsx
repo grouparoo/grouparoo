@@ -14,7 +14,7 @@ export default function SignInPage(props) {
   }: {
     clusterName: any;
   } = props;
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -22,7 +22,7 @@ export default function SignInPage(props) {
 
   const onSubmit = async (data) => {
     setLoading(true);
-    const response: Actions.ConfigUserCreate = await execApi(
+    const response: Actions.ConfigUserCreate = await client.request(
       "post",
       "/config/user",
       data
@@ -37,7 +37,7 @@ export default function SignInPage(props) {
         if (isSetupComplete) {
           const {
             models: [model],
-          } = await execApi<Actions.ModelsList>("get", "/models", {
+          } = await client.request<Actions.ModelsList>("get", "/models", {
             limit: 1,
             order: [["name", "asc"]],
           });
@@ -52,7 +52,7 @@ export default function SignInPage(props) {
   };
 
   async function getSetupSteps() {
-    const { setupSteps }: Actions.SetupStepsList = await execApi(
+    const { setupSteps }: Actions.SetupStepsList = await client.request(
       "get",
       `/setupSteps`
     );

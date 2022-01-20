@@ -21,12 +21,12 @@ export default function Page(props) {
     group: Models.GroupType;
   } = props;
 
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
 
   async function run() {
     setLoading(true);
-    const response: Actions.GroupRun = await execApi(
+    const response: Actions.GroupRun = await client.request(
       "put",
       `/group/${group.id}/run`
     );
@@ -82,9 +82,9 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { groupId, modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { group } = await execApi("get", `/group/${groupId}`);
-  const { model } = await execApi<Actions.ModelView>(
+  const { client } = useApi();
+  const { group } = await client.request("get", `/group/${groupId}`);
+  const { model } = await client.request<Actions.ModelView>(
     "get",
     `/model/${modelId}`
   );

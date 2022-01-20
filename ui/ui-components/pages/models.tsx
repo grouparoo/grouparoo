@@ -17,9 +17,9 @@ import { NextPageWithInferredProps } from "../utils/pageHelper";
 import { errorHandler } from "../eventHandlers";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const { execApi } = UseApi(ctx);
+  const { client } = useApi();
   const { limit, offset } = ctx.query;
-  const { models, total } = await execApi<Actions.ModelsList>(
+  const { models, total } = await client.request<Actions.ModelsList>(
     "get",
     `/models`,
     { limit, offset }
@@ -29,7 +29,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
 const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   const router = useRouter();
-  const { execApi } = UseApi(undefined, errorHandler);
+  const { client } = useApi();
   const [models, setModels] = useState<Models.GrouparooModelType[]>(
     props.models
   );
@@ -47,10 +47,14 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   async function load() {
     updateURLParams(router, { offset });
     setLoading(true);
-    const response: Actions.ModelsList = await execApi("get", `/models`, {
-      limit,
-      offset,
-    });
+    const response: Actions.ModelsList = await client.request(
+      "get",
+      `/models`,
+      {
+        limit,
+        offset,
+      }
+    );
     setLoading(false);
     if (response?.models) {
       setModels(response.models);

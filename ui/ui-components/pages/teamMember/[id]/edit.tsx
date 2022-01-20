@@ -17,7 +17,7 @@ export default function Page(props) {
     teams: Models.TeamType[];
   } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
   const [teamMember, setTeamMember] = useState<Models.TeamMemberType>(
     props.teamMember
@@ -26,7 +26,7 @@ export default function Page(props) {
   async function submit(event) {
     event.preventDefault();
     setLoading(true);
-    const response: Actions.TeamMemberEdit = await execApi(
+    const response: Actions.TeamMemberEdit = await client.request(
       "put",
       `/team/member/${teamMember.id}`,
       teamMember
@@ -41,7 +41,7 @@ export default function Page(props) {
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const { success }: Actions.TeamMemberDestroy = await execApi(
+      const { success }: Actions.TeamMemberDestroy = await client.request(
         "delete",
         `/team/member/${teamMember.id}`
       );
@@ -183,9 +183,9 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
+  const { client } = useApi();
   const { id } = ctx.query;
-  const { teams } = await execApi("get", `/teams`);
-  const { teamMember } = await execApi("get", `/team/member/${id}`);
+  const { teams } = await client.request("get", `/teams`);
+  const { teamMember } = await client.request("get", `/team/member/${id}`);
   return { teams, teamMember };
 };

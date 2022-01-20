@@ -52,13 +52,16 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { propertyId, modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { model } = await execApi<Actions.ModelView>(
+  const { client } = useApi();
+  const { model } = await client.request<Actions.ModelView>(
     "get",
     `/model/${modelId}`
   );
-  const { property } = await execApi("get", `/property/${propertyId}`);
-  const { source } = await execApi("get", `/source/${property.sourceId}`);
+  const { property } = await client.request("get", `/property/${propertyId}`);
+  const { source } = await client.request(
+    "get",
+    `/source/${property.sourceId}`
+  );
   const runsListInitialProps = await RunsList.hydrate(ctx, {
     topic: "property",
   });

@@ -43,12 +43,15 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { execApi } = UseApi(ctx);
+  const { client } = useApi();
   const { destinationId, modelId } = ctx.query;
-  const { destination } = await execApi("get", `/destination/${destinationId}`);
+  const { destination } = await client.request(
+    "get",
+    `/destination/${destinationId}`
+  );
   ensureMatchingModel("Destination", destination.modelId, modelId.toString());
 
-  const { model } = await execApi<Actions.ModelView>(
+  const { model } = await client.request<Actions.ModelView>(
     "get",
     `/model/${modelId}`
   );

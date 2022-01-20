@@ -8,11 +8,11 @@ import { grouparooUiEdition } from "../../utils/uiEdition";
 
 export default function OauthCallbackPage(props) {
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const requestId = String(router.query?.requestId ?? "");
 
   const updateOAuthRequest = async () => {
-    const response: Actions.OAuthClientEdit = await execApi(
+    const response: Actions.OAuthClientEdit = await client.request(
       "put",
       `/oauth/client/request/${requestId}/edit`
     );

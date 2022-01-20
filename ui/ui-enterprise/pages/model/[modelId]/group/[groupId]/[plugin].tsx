@@ -24,9 +24,9 @@ export default function PluginPage(props) {
 
 PluginPage.getInitialProps = async (ctx: NextPageContext) => {
   const { groupId, modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { group } = await execApi("get", `/group/${groupId}`);
-  const { model } = await execApi<Actions.ModelView>(
+  const { client } = useApi();
+  const { group } = await client.request("get", `/group/${groupId}`);
+  const { model } = await client.request<Actions.ModelView>(
     "get",
     `/model/${modelId}`
   );

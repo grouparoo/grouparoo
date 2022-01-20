@@ -135,8 +135,8 @@ export default function Page({
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
-  const { teams } = await execApi("get", `/teams`);
-  const { teamMembers } = await execApi("get", `/teamMembers`);
+  const { client } = useApi();
+  const { teams } = await client.request("get", `/teams`);
+  const { teamMembers } = await client.request("get", `/teamMembers`);
   return { teams, teamMembers };
 };

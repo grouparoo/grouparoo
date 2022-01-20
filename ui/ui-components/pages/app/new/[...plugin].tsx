@@ -16,14 +16,14 @@ export default function Page(props) {
   } = props;
   const router = useRouter();
   const pluginName = router.asPath.replace(`/app/new/`, "");
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
 
   const create = async (
     app: Actions.PluginsList["plugins"][number]["apps"][number]
   ) => {
     setLoading(true);
-    const response: Actions.AppCreate = await execApi("post", `/app`, {
+    const response: Actions.AppCreate = await client.request("post", `/app`, {
       type: app.name,
     });
     if (response?.app) {
@@ -108,11 +108,15 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
-  const { plugins }: Actions.PluginsList = await execApi("get", `/plugins`, {
-    includeInstalled: true,
-    includeAvailable: false,
-    includeVersions: false,
-  });
+  const { client } = useApi();
+  const { plugins }: Actions.PluginsList = await client.request(
+    "get",
+    `/plugins`,
+    {
+      includeInstalled: true,
+      includeAvailable: false,
+      includeVersions: false,
+    }
+  );
   return { plugins };
 };

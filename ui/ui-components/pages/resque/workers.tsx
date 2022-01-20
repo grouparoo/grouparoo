@@ -20,7 +20,7 @@ type DisplayedWorker = {
 };
 
 export default function ResqueWorkersList(props) {
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [workers, setWorkers] = useState<DisplayedWorker[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -30,14 +30,14 @@ export default function ResqueWorkersList(props) {
 
   async function load() {
     setLoading(true);
-    const { resqueDetails }: Actions.ResqueResqueDetails = await execApi(
+    const { resqueDetails }: Actions.ResqueResqueDetails = await client.request(
       "get",
       `/resque/resqueDetails`,
       {},
       false
     );
     const { workerQueues: workerQueues }: Actions.ResqueLoadWorkerQueues =
-      await execApi("get", `/resque/loadWorkerQueues`, {}, false);
+      await client.request("get", `/resque/loadWorkerQueues`, {}, false);
     setLoading(false);
 
     const _workers: DisplayedWorker[] = [];
@@ -73,7 +73,7 @@ export default function ResqueWorkersList(props) {
 
   async function forceCleanWorker(workerName) {
     if (window.confirm("Are you sure?")) {
-      await execApi("post", `/resque/forceCleanWorker`, {
+      await client.request("post", `/resque/forceCleanWorker`, {
         workerName: workerName,
       });
       successHandler.set({ message: "worker removed" });

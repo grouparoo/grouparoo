@@ -131,7 +131,10 @@ export default function Page({
 
 Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { exportProcessor } = await execApi("get", `/exportProcessor/${id}`);
+  const { client } = useApi();
+  const { exportProcessor } = await client.request(
+    "get",
+    `/exportProcessor/${id}`
+  );
   return { exportProcessor };
 };

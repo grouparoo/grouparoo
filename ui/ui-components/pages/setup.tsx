@@ -8,7 +8,7 @@ import Loader from "../components/Loader";
 import { errorHandler, setupStepHandler } from "../eventHandlers";
 
 export default function Page(props) {
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [setupSteps, setSetupSteps] = useState<Models.SetupStepType[]>([]);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function Page(props) {
   );
 
   async function load() {
-    const response = await execApi("get", `/setupSteps`, {}, false);
+    const response = await client.request("get", `/setupSteps`, {}, false);
     if (response.setupSteps) {
       setSetupSteps(response.setupSteps);
       setupStepHandler.set(response.setupSteps);
@@ -78,7 +78,7 @@ export default function Page(props) {
           {setupSteps.map((setupStep) => (
             <SetupStepCard
               key={`setupStep-${setupStep.key}`}
-              execApi={execApi}
+              client.request={client.request}
               setupStep={setupStep}
               reload={load}
             />

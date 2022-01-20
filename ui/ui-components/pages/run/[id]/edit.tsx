@@ -17,16 +17,20 @@ export default function Page(props) {
   }: {
     quantizedTimeline: any;
   } = props;
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [run, setRun] = useState<Models.RunType>(props.run);
   const { chartData, chartKeys } = buildChartData(quantizedTimeline);
   const [loading, setLoading] = useState(false);
 
   async function stopRun() {
     setLoading(true);
-    const response: Actions.RunEdit = await execApi("put", `/run/${run.id}`, {
-      state: "stopped",
-    });
+    const response: Actions.RunEdit = await client.request(
+      "put",
+      `/run/${run.id}`,
+      {
+        state: "stopped",
+      }
+    );
     setLoading(false);
     if (response?.run) {
       successHandler.set({ message: "Run stopped" });
@@ -149,8 +153,8 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { run, quantizedTimeline } = await execApi("get", `/run/${id}`);
+  const { client } = useApi();
+  const { run, quantizedTimeline } = await client.request("get", `/run/${id}`);
   return { run, quantizedTimeline };
 };
 

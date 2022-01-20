@@ -510,19 +510,19 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { groupId, modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { group } = await execApi("get", `/group/${groupId}`);
+  const { client } = useApi();
+  const { group } = await client.request("get", `/group/${groupId}`);
   ensureMatchingModel("Group", group.modelId, modelId.toString());
 
-  const { model } = await execApi<Actions.ModelView>(
+  const { model } = await client.request<Actions.ModelView>(
     "get",
     `/model/${modelId}`
   );
-  const { properties } = await execApi("get", `/properties`, {
+  const { properties } = await client.request("get", `/properties`, {
     state: "ready",
     modelId: group?.modelId,
   });
-  const { ruleLimit, ops, topLevelGroupRules } = await execApi(
+  const { ruleLimit, ops, topLevelGroupRules } = await client.request(
     "get",
     `/groups/ruleOptions`
   );

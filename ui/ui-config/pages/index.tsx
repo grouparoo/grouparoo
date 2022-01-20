@@ -27,8 +27,8 @@ export default function Page(props) {
     }
 
     async function checkSetupSteps(props) {
-      const { execApi } = UseApi(props);
-      const { setupSteps } = await execApi("get", `/setupSteps`);
+      const { client } = useApi();
+      const { setupSteps } = await client.request("get", `/setupSteps`);
       const currentStep = await setupSteps.find(
         (step) => !step.complete && !step.skipped
       );
@@ -42,7 +42,7 @@ export default function Page(props) {
       } else if (navigationMode === "config:authenticated" && !currentStep) {
         const {
           models: [model],
-        } = await execApi<Actions.ModelsList>("get", "/models", {
+        } = await client.request<Actions.ModelsList>("get", "/models", {
           limit: 1,
           order: [["name", "asc"]],
         });

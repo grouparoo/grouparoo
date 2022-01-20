@@ -23,7 +23,7 @@ export default function Page(props) {
     isPrimarySourceNotReady: boolean;
   } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
   const { appId } = router.query;
 
@@ -47,11 +47,15 @@ export default function Page(props) {
 
   const create = async (connection) => {
     setLoading(true);
-    const response: Actions.SourceCreate = await execApi("post", `/source`, {
-      appId,
-      modelId: model.id,
-      type: connection.name,
-    });
+    const response: Actions.SourceCreate = await client.request(
+      "post",
+      `/source`,
+      {
+        appId,
+        modelId: model.id,
+        type: connection.name,
+      }
+    );
     if (response?.source) {
       router.push(
         `/model/${response.source.modelId}/source/${response.source.id}/edit`
@@ -107,15 +111,18 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { execApi } = UseApi(ctx);
+  const { client } = useApi();
   const { modelId } = ctx.query;
-  const { connectionApps } = await execApi("get", `/sources/connectionApps`);
-  const { model } = await execApi("get", `/model/${modelId}`);
-  const { sources, total: totalSources } = await execApi<Actions.SourcesList>(
+  const { connectionApps } = await client.request(
     "get",
-    "/sources",
-    { modelId, limit: 1 }
+    `/sources/connectionApps`
   );
+  const { model } = await client.request("get", `/model/${modelId}`);
+  const { sources, total: totalSources } =
+    await client.request<Actions.SourcesList>("get", "/sources", {
+      modelId,
+      limit: 1,
+    });
   const isPrimarySourceNotReady =
     totalSources === 1 && sources[0].state !== "ready";
 

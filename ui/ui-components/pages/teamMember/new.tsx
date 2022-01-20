@@ -20,7 +20,7 @@ export default function Page(props) {
     teams: Models.TeamType[];
   } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
   const { id: teamId } = router.query;
@@ -30,7 +30,7 @@ export default function Page(props) {
     if (!data.teamId && teamId) data.teamId = teamId;
 
     setLoading(true);
-    const response: Actions.TeamMemberCreate = await execApi(
+    const response: Actions.TeamMemberCreate = await client.request(
       "post",
       `/team/member`,
       data
@@ -161,7 +161,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
-  const { teams } = await execApi("get", `/teams`);
+  const { client } = useApi();
+  const { teams } = await client.request("get", `/teams`);
   return { teams };
 };

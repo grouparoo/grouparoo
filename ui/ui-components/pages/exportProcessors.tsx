@@ -20,7 +20,7 @@ const states = ["all", "pending", "failed", "complete"];
 
 export default function Page(props) {
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
   const [exportProcessors, setExportProcessors] = useState<
     Models.ExportProcessorType[]
@@ -39,7 +39,7 @@ export default function Page(props) {
   async function load() {
     updateURLParams(router, { state, offset });
     setLoading(true);
-    const response: Actions.ExportProcessorsList = await execApi(
+    const response: Actions.ExportProcessorsList = await client.request(
       "get",
       `/exportProcessors`,
       {
@@ -201,10 +201,10 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
+  const { client } = useApi();
   const { limit, offset, state } = ctx.query;
 
-  const { exportProcessors, total } = await execApi(
+  const { exportProcessors, total } = await client.request(
     "get",
     `/exportProcessors`,
     {

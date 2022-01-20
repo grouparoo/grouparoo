@@ -10,13 +10,13 @@ import { Actions } from "@grouparoo/ui-components/utils/apiData";
 
 export default function Page(props) {
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(data) {
     setLoading(true);
-    const response: Actions.ApiKeyCreate = await execApi(
+    const response: Actions.ApiKeyCreate = await client.request(
       "post",
       `/apiKey`,
       data

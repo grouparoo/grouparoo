@@ -323,26 +323,26 @@ export default function Page({
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { sourceId, modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { source } = await execApi("get", `/source/${sourceId}`);
+  const { client } = useApi();
+  const { source } = await client.request("get", `/source/${sourceId}`);
   ensureMatchingModel("Source", source.modelId, modelId.toString());
 
-  const { model } = await execApi<Actions.ModelView>(
+  const { model } = await client.request<Actions.ModelView>(
     "get",
     `/model/${modelId}`
   );
 
-  const { total: totalSources } = await execApi("get", `/sources`, {
+  const { total: totalSources } = await client.request("get", `/sources`, {
     modelId,
     limit: 1,
   });
-  const { properties } = await execApi("get", `/properties`, {
+  const { properties } = await client.request("get", `/properties`, {
     sourceId,
   });
 
   let run;
   if (source?.schedule?.id) {
-    const { runs } = await execApi("get", `/runs`, {
+    const { runs } = await client.request("get", `/runs`, {
       id: source.schedule.id,
       limit: 1,
     });

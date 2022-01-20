@@ -15,13 +15,13 @@ export default function Page(props) {
     types: Actions.ModelOptions["types"];
   } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(data: Models.GrouparooModelType) {
     setLoading(true);
-    const response: Actions.ModelCreate = await execApi(
+    const response: Actions.ModelCreate = await client.request(
       "post",
       `/model`,
       Object.assign({}, data)
@@ -85,7 +85,10 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
-  const { types }: Actions.ModelOptions = await execApi("get", `/modelOptions`);
+  const { client } = useApi();
+  const { types }: Actions.ModelOptions = await client.request(
+    "get",
+    `/modelOptions`
+  );
   return { types };
 };

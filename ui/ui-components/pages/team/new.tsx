@@ -10,13 +10,17 @@ import { errorHandler } from "../../eventHandlers";
 
 export default function NewTeamPage(props) {
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(data) {
     setLoading(true);
-    const response: Actions.TeamCreate = await execApi("post", `/team`, data);
+    const response: Actions.TeamCreate = await client.request(
+      "post",
+      `/team`,
+      data
+    );
     if (response?.team) {
       router.push("/team/[id]/edit", `/team/${response.team.id}/edit`);
     } else {

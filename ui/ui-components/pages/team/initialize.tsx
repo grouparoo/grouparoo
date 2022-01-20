@@ -14,20 +14,20 @@ import {
 
 export default function TeamInitializePage(props) {
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
   const setting: Actions.SettingCoreClusterName["setting"] = props.setting;
 
   async function onSubmit(data) {
     setLoading(true);
-    const response: Actions.TeamInitialize = await execApi(
+    const response: Actions.TeamInitialize = await client.request(
       "post",
       `/team/initialize`,
       data
     );
     if (response?.team) {
-      const response: Actions.SessionCreate = await execApi(
+      const response: Actions.SessionCreate = await client.request(
         "post",
         `/session`,
         data
@@ -174,7 +174,7 @@ export default function TeamInitializePage(props) {
 }
 
 TeamInitializePage.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
-  const { setting } = await execApi("get", `/setting/core/cluster-name`);
+  const { client } = useApi();
+  const { setting } = await client.request("get", `/setting/core/cluster-name`);
   return { setting };
 };

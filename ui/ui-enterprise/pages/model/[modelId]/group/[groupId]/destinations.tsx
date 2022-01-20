@@ -24,7 +24,7 @@ export default function Page(props) {
     model: Models.GrouparooModelType;
     group: Models.GroupType;
   } = props;
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
   const [destinations, setDestinations] = useState<Models.DestinationType[]>(
     props.destinations
@@ -41,7 +41,7 @@ export default function Page(props) {
 
   async function load() {
     setLoading(true);
-    const response: Actions.GroupListDestinations = await execApi(
+    const response: Actions.GroupListDestinations = await client.request(
       "get",
       `/group/${group.id}/destinations`,
       {
@@ -124,13 +124,13 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { groupId, limit, offset, modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { group } = await execApi("get", `/group/${groupId}`);
-  const { model } = await execApi<Actions.ModelView>(
+  const { client } = useApi();
+  const { group } = await client.request("get", `/group/${groupId}`);
+  const { model } = await client.request<Actions.ModelView>(
     "get",
     `/model/${modelId}`
   );
-  const { destinations, total } = await execApi(
+  const { destinations, total } = await client.request(
     "get",
     `/group/${group.id}/destinations`,
     {

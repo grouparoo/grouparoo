@@ -10,7 +10,7 @@ import { Actions } from "@grouparoo/ui-components/utils/apiData";
 export default function Page(props) {
   const { plugins }: { plugins: Actions.PluginsList["plugins"] } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [plugin, setPlugin] = useState<
     Partial<Actions.PluginsList["plugins"][number]>
   >({ name: "" });
@@ -22,7 +22,7 @@ export default function Page(props) {
 
     if (plugin.apps?.length === 1) {
       setLoading(true);
-      const response: Actions.AppCreate = await execApi("post", `/app`, {
+      const response: Actions.AppCreate = await client.request("post", `/app`, {
         type: plugin.apps[0].name,
       });
       if (response?.app) {
@@ -57,12 +57,16 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
-  const { plugins }: Actions.PluginsList = await execApi("get", `/plugins`, {
-    includeInstalled: true,
-    includeAvailable: false,
-    includeVersions: false,
-  });
+  const { client } = useApi();
+  const { plugins }: Actions.PluginsList = await client.request(
+    "get",
+    `/plugins`,
+    {
+      includeInstalled: true,
+      includeAvailable: false,
+      includeVersions: false,
+    }
+  );
   return {
     plugins: plugins
       .filter((p) => p.apps?.length > 0)

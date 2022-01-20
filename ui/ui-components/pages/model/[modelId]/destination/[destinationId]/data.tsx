@@ -36,7 +36,7 @@ export default function Page(props) {
     destinationTypeConversions: Actions.DestinationMappingOptions["destinationTypeConversions"];
     exportArrayProperties: Actions.DestinationExportArrayProperties["exportArrayProperties"];
   } = props;
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [destination, setDestination] = useState<Models.DestinationType>(
@@ -73,7 +73,7 @@ export default function Page(props) {
       (dgm) => (destinationGroupMembershipsObject[dgm.groupId] = dgm.remoteKey)
     );
 
-    await execApi("put", `/destination/${destinationId}`, {
+    await client.request("put", `/destination/${destinationId}`, {
       mapping: filteredMapping,
       collection,
       groupId,
@@ -857,18 +857,21 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { execApi } = UseApi(ctx);
+  const { client } = useApi();
   const { destinationId, modelId } = ctx.query;
-  const { destination } = await execApi("get", `/destination/${destinationId}`);
+  const { destination } = await client.request(
+    "get",
+    `/destination/${destinationId}`
+  );
   ensureMatchingModel("Destination", destination.modelId, modelId.toString());
-  const { groups } = await execApi("get", `/groups`, {
+  const { groups } = await client.request("get", `/groups`, {
     modelId: destination?.modelId,
   });
-  const { properties } = await execApi("get", `/properties`, {
+  const { properties } = await client.request("get", `/properties`, {
     state: "ready",
     modelId: destination?.modelId,
   });
-  const { model } = await execApi<Actions.ModelView>(
+  const { model } = await client.request<Actions.ModelView>(
     "get",
     `/model/${modelId}`
   );
@@ -879,7 +882,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   let hydrationError: Error;
 
   try {
-    const mappingOptionsResponse = await execApi(
+    const mappingOptionsResponse = await client.request(
       "get",
       `/destination/${destinationId}/mappingOptions`
     );
@@ -887,7 +890,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     destinationTypeConversions =
       mappingOptionsResponse.destinationTypeConversions;
 
-    const exportArrayPropertiesResponse = await execApi(
+    const exportArrayPropertiesResponse = await client.request(
       "get",
       `/destination/${destinationId}/exportArrayProperties`
     );

@@ -42,7 +42,7 @@ export default function Page(props) {
     totalSources: number;
   } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
   const [schedule, setSchedule] = useState<Models.ScheduleType>(props.schedule);
   const [localFilters, setLocalFilters] = useState<
@@ -65,7 +65,7 @@ export default function Page(props) {
         : 0,
     };
 
-    const response = await execApi<Actions.ScheduleEdit>(
+    const response = await client.request<Actions.ScheduleEdit>(
       "put",
       `/schedule/${schedule.id}`,
       scheduleToSave
@@ -94,7 +94,7 @@ export default function Page(props) {
 
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
-      const { success }: Actions.ScheduleDestroy = await execApi(
+      const { success }: Actions.ScheduleDestroy = await client.request(
         "delete",
         `/schedule/${schedule.id}`
       );
@@ -613,43 +613,44 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { sourceId, modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { source } = await execApi("get", `/source/${sourceId}`);
+  const { client } = useApi();
+  const { source } = await client.request("get", `/source/${sourceId}`);
   let filterOptions = {};
   let filterOptionDescriptions = {};
   ensureMatchingModel("Source", source.modelId, modelId.toString());
 
-  const { model } = await execApi<Actions.ModelView>(
+  const { model } = await client.request<Actions.ModelView>(
     "get",
     `/model/${modelId}`
   );
 
-  const { schedule, pluginOptions } = await execApi(
+  const { schedule, pluginOptions } = await client.request(
     "get",
     `/schedule/${source.schedule.id}`
   );
-  const filterResponse = await execApi(
+  const filterResponse = await client.request(
     "get",
     `/schedule/${source.schedule.id}/filterOptions`
   );
   filterOptions = filterResponse.options;
   filterOptionDescriptions = filterResponse.optionDescriptions;
 
-  const { runs } = await execApi("get", `/runs`, {
+  const { runs } = await client.request("get", `/runs`, {
     id: source.schedule.id,
     limit: 1,
   });
 
-  const { total: totalSources } = await execApi<Actions.SourcesList>(
+  const { total: totalSources } = await client.request<Actions.SourcesList>(
     "get",
     "/sources",
     { modelId, limit: 1 }
   );
-  const { total: totalProperties } = await execApi<Actions.PropertiesList>(
-    "get",
-    `/properties`,
-    { sourceId, modelId, limit: 1 }
-  );
+  const { total: totalProperties } =
+    await client.request<Actions.PropertiesList>("get", `/properties`, {
+      sourceId,
+      modelId,
+      limit: 1,
+    });
 
   return {
     source,

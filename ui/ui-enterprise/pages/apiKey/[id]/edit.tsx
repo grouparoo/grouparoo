@@ -15,7 +15,7 @@ import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
 
 export default function Page(props) {
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
   const [apiKey, setApiKey] = useState<Models.ApiKeyType>(props.apiKey);
   const { id } = router.query;
@@ -33,7 +33,7 @@ export default function Page(props) {
     }
 
     setLoading(true);
-    const response: Actions.ApiKeyEdit = await execApi(
+    const response: Actions.ApiKeyEdit = await client.request(
       "put",
       `/apiKey/${id}`,
       _apiKey
@@ -47,7 +47,7 @@ export default function Page(props) {
 
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
-      const { success }: Actions.ApiKeyDestroy = await execApi(
+      const { success }: Actions.ApiKeyDestroy = await client.request(
         "delete",
         `/apiKey/${id}`
       );
@@ -159,8 +159,11 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
+  const { client } = useApi();
   const { id } = ctx.query;
-  const { apiKey }: Actions.ApiKeyView = await execApi("get", `/apiKey/${id}`);
+  const { apiKey }: Actions.ApiKeyView = await client.request(
+    "get",
+    `/apiKey/${id}`
+  );
   return { apiKey };
 };

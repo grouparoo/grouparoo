@@ -623,33 +623,33 @@ export default Page;
 
 export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   const { sourceId, modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { source } = await execApi("get", `/source/${sourceId}`);
+  const { client } = useApi();
+  const { source } = await client.request("get", `/source/${sourceId}`);
   ensureMatchingModel("Source", source.modelId, modelId.toString());
 
-  const { model } = await execApi<Actions.ModelView>(
+  const { model } = await client.request<Actions.ModelView>(
     "get",
     `/model/${modelId}`
   );
 
-  const { total: totalSources } = await execApi("get", `/sources`, {
+  const { total: totalSources } = await client.request("get", `/sources`, {
     modelId,
     limit: 1,
   });
 
-  const { environmentVariableOptions } = await execApi(
+  const { environmentVariableOptions } = await client.request(
     "get",
     `/sources/connectionApps`
   );
 
   const { properties, examples: propertyExamples } =
-    await execApi<Actions.PropertiesList>("get", `/properties`, {
+    await client.request<Actions.PropertiesList>("get", `/properties`, {
       includeExamples: true,
       state: "ready",
       modelId: source?.modelId,
     });
 
-  const { total: scheduleCount } = await execApi<Actions.SchedulesList>(
+  const { total: scheduleCount } = await client.request<Actions.SchedulesList>(
     "get",
     `/schedules`,
     {

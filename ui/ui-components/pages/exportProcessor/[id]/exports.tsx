@@ -26,9 +26,12 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
+  const { client } = useApi();
   const { id } = ctx.query;
-  const { exportProcessor } = await execApi("get", `/exportProcessor/${id}`);
+  const { exportProcessor } = await client.request(
+    "get",
+    `/exportProcessor/${id}`
+  );
   const exportListInitialProps = await ExportsList.hydrate(ctx);
   return { exportProcessor, ...exportListInitialProps };
 };

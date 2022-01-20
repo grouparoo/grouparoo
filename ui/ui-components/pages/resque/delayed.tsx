@@ -11,7 +11,7 @@ import { errorHandler, successHandler } from "../../eventHandlers";
 
 export default function ResqueDelayedList(props) {
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [timestamps, setTimestamps] = useState([]);
   const [delayedJobs, setDelayedJobs] = useState({});
   const [loading, setLoading] = useState(false);
@@ -28,7 +28,7 @@ export default function ResqueDelayedList(props) {
   async function load() {
     updateURLParams(router, { offset });
     setLoading(true);
-    const response = await execApi(
+    const response = await client.request(
       "get",
       "/resque/delayedjobs",
       {
@@ -58,7 +58,7 @@ export default function ResqueDelayedList(props) {
   async function delDelayed(timestamp, count) {
     if (window.confirm("Are you sure?")) {
       setLoading(true);
-      await execApi("post", "/resque/delDelayed", {
+      await client.request("post", "/resque/delDelayed", {
         timestamp: timestamp,
         count: count,
       });
@@ -70,7 +70,7 @@ export default function ResqueDelayedList(props) {
 
   async function runDelayed(timestamp, count) {
     setLoading(true);
-    await execApi("post", "/resque/runDelayed", {
+    await client.request("post", "/resque/runDelayed", {
       timestamp: timestamp,
       count: count,
     });

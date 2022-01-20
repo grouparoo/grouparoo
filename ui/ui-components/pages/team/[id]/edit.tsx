@@ -15,7 +15,7 @@ import {
 
 export default function Page(props) {
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
   const [team, setTeam] = useState<Models.TeamType>(props.team);
 
@@ -30,7 +30,7 @@ export default function Page(props) {
     }
 
     setLoading(true);
-    const response: Actions.TeamEdit = await execApi(
+    const response: Actions.TeamEdit = await client.request(
       "put",
       `/team/${team.id}`,
       _team
@@ -47,7 +47,7 @@ export default function Page(props) {
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const { success }: Actions.TeamDestroy = await execApi(
+      const { success }: Actions.TeamDestroy = await client.request(
         "delete",
         `/team/${team.id}`
       );
@@ -151,8 +151,8 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
+  const { client } = useApi();
   const { id } = ctx.query;
-  const { team } = await execApi("get", `/team/${id}`);
+  const { team } = await client.request("get", `/team/${id}`);
   return { team };
 };

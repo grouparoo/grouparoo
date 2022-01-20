@@ -17,17 +17,21 @@ export default function NewGroup(props) {
     model: Actions.ModelView["model"];
   } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(data) {
     setLoading(true);
-    const response: Actions.GroupCreate = await execApi("post", `/group`, {
-      ...data,
-      state: "draft",
-      modelId: model.id,
-    });
+    const response: Actions.GroupCreate = await client.request(
+      "post",
+      `/group`,
+      {
+        ...data,
+        state: "draft",
+        modelId: model.id,
+      }
+    );
     if (response?.group) {
       router.push(
         `/model/${response.group.modelId}/group/${response.group.id}/rules`
@@ -73,7 +77,7 @@ export default function NewGroup(props) {
 
 NewGroup.getInitialProps = async (ctx: NextPageContext) => {
   const { modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { model } = await execApi("get", `/model/${modelId}`);
+  const { client } = useApi();
+  const { model } = await client.request("get", `/model/${modelId}`);
   return { model };
 };

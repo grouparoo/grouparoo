@@ -37,7 +37,7 @@ export default function Page(props) {
     sources: Models.SourceType[];
   } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
   const [record, setRecord] = useState<Models.GrouparooRecordType>(
     props.record
@@ -60,7 +60,7 @@ export default function Page(props) {
 
   async function load() {
     setLoading(true);
-    const response: Actions.RecordView = await execApi(
+    const response: Actions.RecordView = await client.request(
       "get",
       `/record/${record.id}`
     );
@@ -70,7 +70,7 @@ export default function Page(props) {
   async function importRecord() {
     setLoading(true);
     successHandler.set({ message: "enqueued for import..." });
-    const response: Actions.RecordImport = await execApi(
+    const response: Actions.RecordImport = await client.request(
       "post",
       `/record/${record.id}/import`
     );
@@ -85,7 +85,7 @@ export default function Page(props) {
   async function exportRecord() {
     setLoading(true);
     successHandler.set({ message: "enqueued for export..." });
-    const response: Actions.RecordExport = await execApi(
+    const response: Actions.RecordExport = await client.request(
       "post",
       `/record/${record.id}/export`
     );
@@ -120,7 +120,7 @@ export default function Page(props) {
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const { success }: Actions.RecordDestroy = await execApi(
+      const { success }: Actions.RecordDestroy = await client.request(
         "delete",
         `/record/${record.id}`
       );
@@ -368,23 +368,23 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { recordId, modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { record, groups, destinations } = await execApi(
+  const { client } = useApi();
+  const { record, groups, destinations } = await client.request(
     "get",
     `/record/${recordId}`
   );
   ensureMatchingModel("Record", record?.modelId, modelId.toString());
 
-  const { model } = await execApi<Actions.ModelView>(
+  const { model } = await client.request<Actions.ModelView>(
     "get",
     `/model/${modelId}`
   );
-  const { properties } = await execApi("get", `/properties`, {
+  const { properties } = await client.request("get", `/properties`, {
     modelId: record?.modelId,
   });
-  const { groups: allGroups } = await execApi("get", `/groups`);
-  const { apps } = await execApi("get", `/apps`);
-  const { sources } = await execApi("get", `/sources`);
+  const { groups: allGroups } = await client.request("get", `/groups`);
+  const { apps } = await client.request("get", `/apps`);
+  const { sources } = await client.request("get", `/sources`);
 
   return {
     record,

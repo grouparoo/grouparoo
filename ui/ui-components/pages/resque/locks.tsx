@@ -11,7 +11,7 @@ import LoadingButton from "../../components/LoadingButton";
 
 export default function ResqueLocksList(props) {
   const router = useRouter();
-  const { execApi } = UseApi(props);
+  const { client } = useApi();
   const [locks, setLocks] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -27,7 +27,7 @@ export default function ResqueLocksList(props) {
   async function load() {
     updateURLParams(router, { offset });
     setLoading(true);
-    const response = await execApi("get", `/resque/locks`);
+    const response = await client.request("get", `/resque/locks`);
     const _locks = [];
     Object.keys(response.locks).forEach(function (l) {
       _locks.push({
@@ -41,7 +41,7 @@ export default function ResqueLocksList(props) {
 
   async function delLock(lock) {
     if (window.confirm("Are you sure?")) {
-      await execApi("post", `/resque/delLock`, {
+      await client.request("post", `/resque/delLock`, {
         lock: lock,
       });
       successHandler.set({ message: "lock deleted" });

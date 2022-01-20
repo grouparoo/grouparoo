@@ -7,11 +7,11 @@ import { grouparooUiEdition } from "../../utils/uiEdition";
 
 export default function SetupStepCard({
   setupStep: step,
-  execApi,
+  client.request,
   reload,
 }: {
   setupStep: Models.SetupStepType;
-  execApi: Function;
+  client.request: Function;
   reload: Function;
 }) {
   const [loading, setLoading] = useState(false);
@@ -21,7 +21,7 @@ export default function SetupStepCard({
 
   async function skip() {
     setLoading(true);
-    await execApi("put", `/setupStep/${step.id}`, {
+    await client.request("put", `/setupStep/${step.id}`, {
       skipped: !step.skipped,
     });
 

@@ -14,7 +14,7 @@ import LinkButton from "../components/LinkButton";
 
 export default function Page(props) {
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [apiKeys, setApiKeys] = useState<Models.ApiKeyType[]>(props.apiKeys);
   const [total, setTotal] = useState(props.total);
   const [loading, setLoading] = useState(false);
@@ -30,10 +30,14 @@ export default function Page(props) {
   async function load() {
     updateURLParams(router, { offset });
     setLoading(true);
-    const response: Actions.ApiKeysList = await execApi("get", `/apiKeys`, {
-      limit,
-      offset,
-    });
+    const response: Actions.ApiKeysList = await client.request(
+      "get",
+      `/apiKeys`,
+      {
+        limit,
+        offset,
+      }
+    );
     setLoading(false);
     if (response?.apiKeys) {
       setApiKeys(response.apiKeys);
@@ -106,9 +110,9 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
+  const { client } = useApi();
   const { limit, offset } = ctx.query;
-  const { apiKeys, total }: Actions.ApiKeysList = await execApi(
+  const { apiKeys, total }: Actions.ApiKeysList = await client.request(
     "get",
     `/apiKeys`,
     {

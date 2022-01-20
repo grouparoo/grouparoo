@@ -14,7 +14,7 @@ const maxSampleLength = 30;
 const DELAY = 1000 * 3;
 
 export default function ResqueOverview(props) {
-  const { execApi } = UseApi(props, props.errorHandler);
+  const { client } = useApi();
   const {
     resqueDetails,
     failedCount: _failedCount,
@@ -44,7 +44,7 @@ export default function ResqueOverview(props) {
   }, []);
 
   async function load() {
-    const response: Actions.ResqueResqueDetails = await execApi(
+    const response: Actions.ResqueResqueDetails = await client.request(
       "get",
       "/resque/resqueDetails",
       {},
@@ -253,9 +253,9 @@ export default function ResqueOverview(props) {
 }
 
 ResqueOverview.getInitialProps = async function (ctx) {
-  const { execApi } = UseApi(ctx);
+  const { client } = useApi();
   const { resqueDetails, failedCount }: Actions.ResqueResqueDetails =
-    await execApi("get", "/resque/resqueDetails");
+    await client.request("get", "/resque/resqueDetails");
 
   return { resqueDetails, failedCount };
 };

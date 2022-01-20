@@ -42,7 +42,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { notification } = await execApi("get", `/notification/${id}`);
+  const { client } = useApi();
+  const { notification } = await client.request("get", `/notification/${id}`);
   return { notification };
 };

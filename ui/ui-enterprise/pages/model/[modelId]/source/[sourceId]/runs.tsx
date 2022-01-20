@@ -25,13 +25,13 @@ export default function Page(props) {
     source: Models.SourceType;
     model: Models.GrouparooModelType;
   } = props;
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
 
   async function enqueueScheduleRun() {
     setLoading(true);
     try {
-      const response: Actions.ScheduleRun = await execApi(
+      const response: Actions.ScheduleRun = await client.request(
         "post",
         `/schedule/${source.schedule.id}/run`
       );
@@ -95,11 +95,11 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { sourceId, modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { source } = await execApi("get", `/source/${sourceId}`);
+  const { client } = useApi();
+  const { source } = await client.request("get", `/source/${sourceId}`);
   ensureMatchingModel("Source", source.modelId, modelId.toString());
 
-  const { model } = await execApi<Actions.ModelView>(
+  const { model } = await client.request<Actions.ModelView>(
     "get",
     `/model/${modelId}`
   );
