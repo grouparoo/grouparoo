@@ -389,7 +389,7 @@ export default function Navigation(props) {
                     marginLeft: 15,
                   }}
                 >
-                  <ul>
+                  <ul className="pl-0">
                     {navigation?.bottomMenuItems.map((nav, idx) => {
                       if (nav.type === "link") {
                         return (
@@ -397,19 +397,9 @@ export default function Navigation(props) {
                             <HighlightingNavLink
                               href={nav.href}
                               mainPathSectionIdx={nav.mainPathSectionIdx ?? 1}
-                              text={
-                                <>
-                                  {nav.title}
-                                  {nav.title === "Runs" ? (
-                                    <>
-                                      {" "}
-                                      <RunningRunsBadge />
-                                    </>
-                                  ) : null}
-                                </>
-                              }
+                              text={nav.title}
                               icon={nav.icon}
-                              small={nav.small}
+                              small={true}
                             />
                           </li>
                         );
