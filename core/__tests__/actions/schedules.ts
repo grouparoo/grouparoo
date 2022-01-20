@@ -174,6 +174,77 @@ describe("actions/schedules", () => {
         expect(configSpy).toBeCalledTimes(1);
       });
 
+      test("an administrator can edit recurring frequency", async () => {
+        connection.params = {
+          csrfToken,
+          id,
+          recurring: true,
+          recurringFrequency: 60000,
+        };
+
+        const { error: firstError } = await specHelper.runAction<ScheduleEdit>(
+          "schedule:edit",
+          connection
+        );
+        expect(firstError).toBeUndefined();
+
+        connection.params.recurringFrequency = 120000;
+
+        const { error, schedule } = await specHelper.runAction<ScheduleEdit>(
+          "schedule:edit",
+          connection
+        );
+
+        expect(error).toBeUndefined();
+        expect(schedule.recurring).toBe(true);
+        expect(schedule.recurringFrequency).toBe(120000);
+      });
+
+      test("an administrator cannot edit recurring frequency when schedule is not recurring", async () => {
+        connection.params = {
+          csrfToken,
+          id,
+          recurring: false,
+          recurringFrequency: 60000,
+        };
+
+        const { error, schedule } = await specHelper.runAction<ScheduleEdit>(
+          "schedule:edit",
+          connection
+        );
+
+        expect(error).toBeUndefined();
+        expect(schedule.recurring).toBe(false);
+        expect(schedule.recurringFrequency).toBe(0);
+      });
+
+      test("an administrator can update recurring to false", async () => {
+        connection.params = {
+          csrfToken,
+          id,
+          recurring: true,
+          recurringFrequency: 60000,
+        };
+
+        const { error: firstError } = await specHelper.runAction<ScheduleEdit>(
+          "schedule:edit",
+          connection
+        );
+        expect(firstError).toBeUndefined();
+
+        connection.params.recurring = false;
+        delete connection.params["recurringFrequency"];
+
+        const { error, schedule } = await specHelper.runAction<ScheduleEdit>(
+          "schedule:edit",
+          connection
+        );
+
+        expect(error).toBeUndefined();
+        expect(schedule.recurring).toBe(false);
+        expect(schedule.recurringFrequency).toBe(0);
+      });
+
       test("an administrator can view a schedule", async () => {
         connection.params = {
           csrfToken,
