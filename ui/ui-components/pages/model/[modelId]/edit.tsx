@@ -38,6 +38,8 @@ export default function Page(props) {
       setLoading(false);
       successHandler.set({ message: "Model Updated" });
       setModel(response.model);
+
+      router.replace(router.asPath);
     } else {
       setLoading(false);
     }
