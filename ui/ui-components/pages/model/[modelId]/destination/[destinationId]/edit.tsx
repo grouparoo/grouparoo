@@ -45,12 +45,12 @@ export default function Page(props) {
 
   useEffect(() => {
     loadOptions();
-    props.destinationHandler.subscribe("destination-edit", (_destination) => {
+    destinationHandler.subscribe("destination-edit", (_destination) => {
       setDestination(_destination);
     });
 
     return () => {
-      props.destinationHandler.unsubscribe("destination-edit");
+      destinationHandler.unsubscribe("destination-edit");
     };
   }, []);
 
