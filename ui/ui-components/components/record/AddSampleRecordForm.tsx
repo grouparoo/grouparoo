@@ -55,7 +55,7 @@ const AddSampleRecordForm: React.FC<Props> = ({
   const onSubmit: Parameters<typeof handleSubmit>[0] = useCallback(
     async (data) => {
       setSubmitting(true);
-      const response = await client.action<Actions.RecordCreate>(
+      const response = await client.request<Actions.RecordCreate>(
         "post",
         `/record`,
         {

@@ -3,15 +3,7 @@ import type { AppContext } from "next/app";
 import { createContext, useContext, useMemo } from "react";
 import { Client } from "../client/client";
 
-export const ApiContext =
-  createContext<ReturnType<typeof useApiInitialState>>(undefined);
-
-export const useApiInitialState = (serverClient?: Client) => {
-  const client = useMemo(() => serverClient ?? new Client(), [serverClient]);
-
-  return { client };
-};
-
+export const ApiContext = createContext<{ client: Client }>(undefined);
 export const useApi = () => useContext(ApiContext);
 
 function isAppContext(ctx: unknown): ctx is AppContext {

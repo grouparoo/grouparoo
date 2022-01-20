@@ -30,7 +30,7 @@ export function UseApi(
 
     let apiResponse: T;
     try {
-      apiResponse = await client.action(verb, path, data, { useCache });
+      apiResponse = await client.request(verb, path, data, { useCache });
 
       return apiResponse;
     } catch (error) {

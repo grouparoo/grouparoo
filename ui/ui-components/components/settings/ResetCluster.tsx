@@ -16,7 +16,7 @@ export default function ResetCluster(props) {
     }
 
     setLoading(true);
-    const response: Actions.ResetCluster = await client.action(
+    const response: Actions.ResetCluster = await client.request(
       "delete",
       `/reset/cluster`
     );

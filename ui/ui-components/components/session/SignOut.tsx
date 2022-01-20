@@ -18,7 +18,7 @@ export default function SignOutForm(props) {
     disconnectWebsocket();
 
     try {
-      await client.action("delete", `/session`);
+      await client.request("delete", `/session`);
       successHandler.set({ message: "Signed Out" });
       sessionHandler.set({ firstName: "" });
     } catch (error) {

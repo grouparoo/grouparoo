@@ -12,7 +12,7 @@ import { Client } from "../client/client";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const client = new Client(getRequestContext(ctx));
-  const { teamMember } = await client.action<Actions.AccountView>(
+  const { teamMember } = await client.request<Actions.AccountView>(
     "get",
     `/account`
   );
@@ -29,7 +29,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   async function submit(event: FormEvent) {
     event.preventDefault();
     setLoading(true);
-    const response: Actions.AccountView = await client.action(
+    const response: Actions.AccountView = await client.request(
       "put",
       `/account`,
       teamMember

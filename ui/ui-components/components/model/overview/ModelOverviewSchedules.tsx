@@ -24,7 +24,7 @@ const ScheduleInfo: React.FC<{
   async function enqueueScheduleRun() {
     setLoading(true);
     try {
-      const response: Actions.ScheduleRun = await client.action(
+      const response: Actions.ScheduleRun = await client.request(
         "post",
         `/schedule/${schedule.id}/run`
       );

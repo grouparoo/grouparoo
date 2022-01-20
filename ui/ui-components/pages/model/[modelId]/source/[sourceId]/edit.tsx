@@ -113,7 +113,7 @@ const Page: NextPage<Props> = ({
     }
 
     setPreviewLoading(true);
-    const response: Actions.SourcePreview = await client.action(
+    const response: Actions.SourcePreview = await client.request(
       "get",
       `/source/${sourceId}/preview`,
       {
@@ -141,7 +141,7 @@ const Page: NextPage<Props> = ({
     // Unique Property is being created and need to bootstrap?
     if (isBootstrappingUniqueProperty) {
       const bootstrapResponse: Actions.SourceBootstrapUniqueProperty =
-        await client.action(
+        await client.request(
           "post",
           `/source/${source.id}/bootstrapUniqueProperty`,
           {
@@ -181,7 +181,7 @@ const Page: NextPage<Props> = ({
         ? undefined
         : "ready";
 
-    const response = await client.action<Actions.SourceEdit>(
+    const response = await client.request<Actions.SourceEdit>(
       "put",
       `/source/${sourceId}`,
       { ...source, state, mapping }
@@ -196,7 +196,7 @@ const Page: NextPage<Props> = ({
         isBootstrappingUniqueProperty &&
         response.source.state === "ready"
       ) {
-        await client.action<Actions.SourceGenerateSampleRecords>(
+        await client.request<Actions.SourceGenerateSampleRecords>(
           "post",
           `/source/${sourceId}/generateSampleRecords`,
           { id: sourceId }
@@ -228,7 +228,7 @@ const Page: NextPage<Props> = ({
     }
 
     const { properties, examples } =
-      await client.action<Actions.PropertiesList>("get", `/properties`, {
+      await client.request<Actions.PropertiesList>("get", `/properties`, {
         unique: true,
         includeExamples: true,
         state: "ready",
@@ -245,7 +245,7 @@ const Page: NextPage<Props> = ({
 
   async function loadOptions() {
     setLoadingOptions(true);
-    const response: Actions.SourceConnectionOptions = await client.action(
+    const response: Actions.SourceConnectionOptions = await client.request(
       "get",
       `/source/${sourceId}/connectionOptions`,
       { options: source.options },
@@ -258,7 +258,7 @@ const Page: NextPage<Props> = ({
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const { success }: Actions.SourceDestroy = await client.action(
+      const { success }: Actions.SourceDestroy = await client.request(
         "delete",
         `/source/${sourceId}`
       );

@@ -56,7 +56,7 @@ export default function LogsList(props) {
     updateURLParams(router, { offset, topic });
     setLoading(true);
     setNewLogs(0);
-    const response: Actions.LogsList = await client.action("get", `/logs`, {
+    const response: Actions.LogsList = await client.request("get", `/logs`, {
       limit,
       offset,
       topic,
@@ -216,7 +216,7 @@ export default function LogsList(props) {
 LogsList.hydrate = async (ctx: NextPageContext) => {
   const client = new Client(getRequestContext(ctx));
   const { limit, offset, topic } = ctx.query;
-  const { logs, total } = await client.action("get", `/logs`, {
+  const { logs, total } = await client.request("get", `/logs`, {
     ownerId: getOwnerId(ctx.query),
     limit,
     offset,

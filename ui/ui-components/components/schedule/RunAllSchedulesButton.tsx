@@ -43,7 +43,7 @@ const RunAllSchedulesButton: React.FC<Props> = ({
     onStart?.();
     setLoading(true);
     try {
-      const { runs } = await client.action<Actions.SchedulesRun>(
+      const { runs } = await client.request<Actions.SchedulesRun>(
         "post",
         `/schedules/run`,
         { modelId }

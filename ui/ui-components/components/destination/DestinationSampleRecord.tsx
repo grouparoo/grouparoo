@@ -56,7 +56,7 @@ const DestinationSampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
           return acc;
         }, {} as Record<string, string>);
 
-      const response = await client.action<Actions.DestinationRecordPreview>(
+      const response = await client.request<Actions.DestinationRecordPreview>(
         "get",
         `/destination/${debouncedDestination.id}/recordPreview`,
         {

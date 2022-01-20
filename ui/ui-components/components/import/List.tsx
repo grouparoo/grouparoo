@@ -55,7 +55,7 @@ export default function ImportList(props) {
     updateURLParams(router, { offset, state });
     setLoading(true);
 
-    const response: Actions.ImportsList = await client.action(
+    const response: Actions.ImportsList = await client.request(
       "get",
       `/imports`,
       {
@@ -223,7 +223,7 @@ ImportList.hydrate = async (ctx: NextPageContext) => {
   const client = new Client(getRequestContext(ctx));
   const { creatorId, limit, offset, state, recordId } = ctx.query;
 
-  const { imports, total } = await client.action("get", `/imports`, {
+  const { imports, total } = await client.request("get", `/imports`, {
     limit,
     offset,
     creatorId,
@@ -231,7 +231,7 @@ ImportList.hydrate = async (ctx: NextPageContext) => {
     state: state === "all" ? undefined : state,
   });
 
-  const { groups } = await client.action("get", `/groups`);
+  const { groups } = await client.request("get", `/groups`);
   return { groups, imports, total };
 };
 

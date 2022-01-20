@@ -22,7 +22,8 @@ import { client, UseApi } from "../../../../../hooks/useApi";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 import { useDebouncedCallback } from "../../../../../hooks/useDebouncedCallback";
-import { useApi } from "../../../../../contexts/api";
+import { getRequestContext, useApi } from "../../../../../contexts/api";
+import { Client } from "../../../../../client/client";
 
 export default function Page(props) {
   const {
@@ -59,7 +60,7 @@ export default function Page(props) {
     event.preventDefault();
 
     setLoading(true);
-    const response: Actions.DestinationEdit = await client.action(
+    const response: Actions.DestinationEdit = await client.request(
       "put",
       `/destination/${destinationId}`,
       {
@@ -91,7 +92,7 @@ export default function Page(props) {
 
   const loadOptions = useDebouncedCallback(async () => {
     setLoadingOptions(true);
-    const response: Actions.DestinationConnectionOptions = await client.action(
+    const response: Actions.DestinationConnectionOptions = await client.request(
       "get",
       `/destination/${destinationId}/connectionOptions`,
       { options: destination.options },
@@ -104,7 +105,7 @@ export default function Page(props) {
   async function handleDelete(force = false) {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const { success }: Actions.DestinationDestroy = await client.action(
+      const { success }: Actions.DestinationDestroy = await client.request(
         "delete",
         `/destination/${destinationId}`,
         { force }
@@ -439,16 +440,19 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { execApi } = UseApi(ctx);
+  const client = new Client(getRequestContext(ctx));
   const { destinationId, modelId } = ctx.query;
-  const { destination } = await execApi("get", `/destination/${destinationId}`);
+  const { destination } = await client.request(
+    "get",
+    `/destination/${destinationId}`
+  );
   ensureMatchingModel("Destination", destination.modelId, modelId.toString());
 
-  const { model } = await execApi<Actions.ModelView>(
+  const { model } = await client.request<Actions.ModelView>(
     "get",
     `/model/${modelId}`
   );
-  const { environmentVariableOptions } = await execApi(
+  const { environmentVariableOptions } = await client.request(
     "get",
     "/destinations/connectionApps"
   );

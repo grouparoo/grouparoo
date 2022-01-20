@@ -30,7 +30,7 @@ export default function SignInForm(props) {
     arg: Record<string, any>,
     type: "password" | "requestId"
   ) => {
-    const response: Actions.SessionCreate = await client.action(
+    const response: Actions.SessionCreate = await client.request(
       "post",
       `/session`,
       {
@@ -48,7 +48,7 @@ export default function SignInForm(props) {
 
   const loadOauthOptions = async () => {
     setLoadingOauthProviders(true);
-    const response: Actions.OAuthListProviders = await client.action(
+    const response: Actions.OAuthListProviders = await client.request(
       "get",
       `/oauth/providers?type=user`
     );
@@ -60,7 +60,7 @@ export default function SignInForm(props) {
 
   const startOauthLogin = async (provider: string, type: string) => {
     setLoadingOAuth(true);
-    const response: Actions.OAuthClientStart = await client.action(
+    const response: Actions.OAuthClientStart = await client.request(
       "post",
       `/oauth/${provider}/client/start`,
       { type }
@@ -74,7 +74,7 @@ export default function SignInForm(props) {
 
   const loadOAuthRequest = async () => {
     if (requestId) {
-      const response: Actions.OAuthClientView = await client.action(
+      const response: Actions.OAuthClientView = await client.request(
         "get",
         `/oauth/client/request/${requestId}/view`
       );
@@ -129,7 +129,7 @@ export default function SignInForm(props) {
   };
 
   const getSetupSteps = async () => {
-    const { setupSteps }: Actions.SetupStepsList = await client.action(
+    const { setupSteps }: Actions.SetupStepsList = await client.request(
       "get",
       `/setupSteps`
     );

@@ -36,7 +36,7 @@ export default function Page(props) {
 
   async function updateSetting(setting: Models.SettingType) {
     setLoading(true);
-    const response: Actions.SettingEdit = await client.action(
+    const response: Actions.SettingEdit = await client.request(
       "put",
       `/setting/${setting.id}`,
       setting
@@ -120,7 +120,7 @@ export default function Page(props) {
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { tab } = ctx.query;
   const client = new Client(getRequestContext(ctx));
-  const { settings }: Actions.SettingsList = await client.action(
+  const { settings }: Actions.SettingsList = await client.request(
     "get",
     `/settings`
   );

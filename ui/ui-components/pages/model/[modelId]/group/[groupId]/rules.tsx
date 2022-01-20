@@ -55,7 +55,7 @@ export default function Page(props) {
   async function getCounts(useCache = true) {
     setLoading(true);
     const componentMembersResponse: Actions.GroupCountComponentMembers =
-      await client.action(
+      await client.request(
         "get",
         `/group/${group.id}/countComponentMembers`,
         { rules: localRules },
@@ -68,7 +68,7 @@ export default function Page(props) {
     }
 
     const potentialMembersResponse: Actions.GroupCountPotentialMembers =
-      await client.action(
+      await client.request(
         "get",
         `/group/${group.id}/countPotentialMembers`,
         { rules: localRules },
@@ -106,7 +106,7 @@ export default function Page(props) {
 
   async function updateRules() {
     setLoading(true);
-    const response: Actions.GroupEdit = await client.action(
+    const response: Actions.GroupEdit = await client.request(
       "put",
       `/group/${group.id}`,
       { id: group.id, rules: localRules }
@@ -127,7 +127,7 @@ export default function Page(props) {
 
     setLoading(true);
     const response: Actions.RecordAutocompleteRecordProperty =
-      await client.action("get", `/records/autocompleteRecordProperty`, {
+      await client.request("get", `/records/autocompleteRecordProperty`, {
         propertyId,
         match,
       });

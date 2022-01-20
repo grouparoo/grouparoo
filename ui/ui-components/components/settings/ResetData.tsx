@@ -13,7 +13,7 @@ export default function ResetData() {
     if (!window.confirm("Are you sure?")) return;
 
     setLoading(true);
-    const response: Actions.ResetData = await client.action(
+    const response: Actions.ResetData = await client.request(
       "delete",
       `/reset/data`
     );

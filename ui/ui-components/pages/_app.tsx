@@ -14,11 +14,7 @@ import "../eventHandlers";
 import { Actions } from "../utils/apiData";
 import { renderNestedContextProviders } from "../utils/contextHelper";
 import { Client } from "../client/client";
-import {
-  ApiContext,
-  getRequestContext,
-  useApiInitialState,
-} from "../contexts/api";
+import { ApiContext, getRequestContext } from "../contexts/api";
 
 export interface GrouparooNextAppProps {
   clusterName: Actions.NavigationList["clusterName"];
@@ -32,7 +28,7 @@ export interface GrouparooNextAppProps {
 export default function GrouparooNextApp(
   props: AppProps & GrouparooNextAppProps & { err: any }
 ) {
-  const { Component, pageProps, err, hydrationError, client } = props;
+  const { Component, pageProps, err, hydrationError } = props;
 
   const combinedProps = {
     ...pageProps,
@@ -51,13 +47,14 @@ export default function GrouparooNextApp(
     };
   }, [props]);
 
+  const client = typeof window === "undefined" ? props.client : new Client();
   return renderNestedContextProviders(
     [
       [WebAppContext, pageContext],
       [
         ApiContext,
         // The serialized object passed from the server is not an isntance of the Client class
-        useApiInitialState(typeof window === "undefined" ? client : undefined),
+        { client },
       ],
     ],
     <>
@@ -83,7 +80,7 @@ GrouparooNextApp.getInitialProps = async (appContext: AppContext) => {
   };
 
   try {
-    const navigationResponse: Actions.NavigationList = await client.action(
+    const navigationResponse: Actions.NavigationList = await client.request(
       "get",
       `/navigation`
     );

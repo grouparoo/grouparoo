@@ -55,7 +55,7 @@ export default function ExportsList(props) {
   async function load() {
     updateURLParams(router, { state, offset });
     setLoading(true);
-    const response: Actions.ExportsList = await client.action(
+    const response: Actions.ExportsList = await client.request(
       "get",
       `/exports`,
       {
@@ -280,14 +280,14 @@ ExportsList.hydrate = async (appContext: NextPageContext) => {
 
   const { id, limit, offset, state, recordId, destinationId } =
     appContext.query;
-  const { groups } = await client.action("get", `/groups`);
+  const { groups } = await client.request("get", `/groups`);
 
   let exportProcessorId: string;
   if (id && appContext.pathname.match("/exportProcessor/")) {
     exportProcessorId = String(id);
   }
 
-  const { exports: _exports, total } = await client.action("get", `/exports`, {
+  const { exports: _exports, total } = await client.request("get", `/exports`, {
     limit,
     offset,
     state: state === "all" ? undefined : state,

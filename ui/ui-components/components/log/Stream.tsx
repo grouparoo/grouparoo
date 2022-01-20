@@ -68,7 +68,7 @@ export default function LogsList(props) {
 LogsList.hydrate = async (ctx: NextPageContext) => {
   const client = new Client(getRequestContext(ctx));
 
-  const { logs } = await client.action("get", `/logs`, { limit });
+  const { logs } = await client.request("get", `/logs`, { limit });
   return { logs: logs.reverse() };
 };
 

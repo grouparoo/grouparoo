@@ -124,7 +124,7 @@ export class Client {
     uploadHandler,
   };
 
-  public action = async <Response = any>(
+  public request = async <Response = any>(
     verb: Method = "get",
     path: string,
     data: AxiosRequestConfig["data"] = {},

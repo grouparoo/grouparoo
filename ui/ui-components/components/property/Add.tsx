@@ -21,7 +21,7 @@ export default function PropertyAddButton(props) {
       type: "string",
     };
 
-    const response: Actions.PropertyCreate = await client.action(
+    const response: Actions.PropertyCreate = await client.request(
       "post",
       `/property`,
       data

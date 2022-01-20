@@ -11,7 +11,7 @@ const ModelOverviewSampleRecord: React.FC<
   const { client } = useApi();
   const fetchRecord = useCallback(
     (recordId: string) =>
-      client.action<Actions.RecordView>("get", `/record/${recordId}`),
+      client.request<Actions.RecordView>("get", `/record/${recordId}`),
     [client]
   );
 

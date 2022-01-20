@@ -12,7 +12,7 @@ export default function ImportAndUpdateRecord() {
   async function importAndUpdate() {
     if (window.confirm("Are you sure?")) {
       setLoading(true);
-      const response: Actions.RecordsImportAndUpdate = await client.action(
+      const response: Actions.RecordsImportAndUpdate = await client.request(
         "put",
         `/records/importAndUpdate`
       );

@@ -13,7 +13,7 @@ export default function ResetCache() {
     if (!window.confirm("Are you sure?")) return;
 
     setLoading(true);
-    const response: Actions.ResetCache = await client.action(
+    const response: Actions.ResetCache = await client.request(
       "delete",
       `/reset/cache`
     );

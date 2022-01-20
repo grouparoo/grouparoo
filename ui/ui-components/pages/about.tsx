@@ -110,7 +110,7 @@ export default function Page({
 
 Page.getInitialProps = async (ctx) => {
   const client = new Client(getRequestContext(ctx));
-  const { plugins }: Actions.PluginsList = await client.action(
+  const { plugins }: Actions.PluginsList = await client.request(
     "get",
     `/plugins`,
     {

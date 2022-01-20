@@ -2,6 +2,7 @@ import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useMemo } from "react";
 import { Col, ListGroup, ListGroupItem, Row } from "react-bootstrap";
+import { Client } from "../../../client/client";
 import ManagedCard from "../../../components/lib/ManagedCard";
 import ModelOverviewDestinations from "../../../components/model/overview/ModelOverviewDestinations";
 import ModelOverviewGroups from "../../../components/model/overview/ModelOverviewGroups";
@@ -11,6 +12,7 @@ import ModelOverviewSchedules from "../../../components/model/overview/ModelOver
 import ModelOverviewSecondarySources from "../../../components/model/overview/ModelOverviewSecondarySources";
 import PageHeader from "../../../components/PageHeader";
 import ModelTabs from "../../../components/tabs/Model";
+import { getRequestContext } from "../../../contexts/api";
 import { GrouparooModelContextProvider } from "../../../contexts/grouparooModel";
 import { UseApi } from "../../../hooks/useApi";
 import { Actions, Models } from "../../../utils/apiData";
@@ -127,7 +129,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   context
 ) => {
   const { modelId, limit, offset } = context.query;
-  const { execApi } = UseApi(context);
+  const client = new Client(getRequestContext(context));
 
   const params = {
     limit,
@@ -143,12 +145,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     { schedules },
     { model },
   ] = await Promise.all([
-    execApi<Actions.SourcesList>("get", `/sources`, params),
-    execApi<Actions.DestinationsList>("get", `/destinations`, params),
-    execApi<Actions.PropertiesList>("get", `/properties`, params),
-    execApi<Actions.GroupsList>("get", `/groups`, params),
-    execApi<Actions.SchedulesList>("get", `/schedules`, params),
-    execApi<Actions.ModelView>("get", `/model/${modelId}`),
+    client.request<Actions.SourcesList>("get", `/sources`, params),
+    client.request<Actions.DestinationsList>("get", `/destinations`, params),
+    client.request<Actions.PropertiesList>("get", `/properties`, params),
+    client.request<Actions.GroupsList>("get", `/groups`, params),
+    client.request<Actions.SchedulesList>("get", `/schedules`, params),
+    client.request<Actions.ModelView>("get", `/model/${modelId}`),
   ]);
 
   const primaryKeyProperty = properties.find((p) => p.isPrimaryKey);

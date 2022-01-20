@@ -35,7 +35,7 @@ export default function SetupStepsNavProgressBar() {
     if (newUrl && newUrl.match(/^\/session\//)) return;
     if (newUrl && newUrl === "/") return;
 
-    const response: Actions.SetupStepsList = await client.action(
+    const response: Actions.SetupStepsList = await client.request(
       "get",
       `/setupSteps`
     );

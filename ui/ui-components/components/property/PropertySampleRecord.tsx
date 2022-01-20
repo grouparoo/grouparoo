@@ -48,7 +48,7 @@ const PropertySampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
     async (recordId: string) => {
       setErrorMessage(undefined);
 
-      const response: Actions.PropertyRecordPreview = await client.action(
+      const response: Actions.PropertyRecordPreview = await client.request(
         "get",
         `/property/${debouncedProperty.id}/recordPreview`,
         {

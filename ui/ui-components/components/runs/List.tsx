@@ -54,7 +54,7 @@ export default function RunsList(props) {
 
     updateURLParams(router, { offset, stateFilter, errorFilter });
     setLoading(true);
-    const response: Actions.RunsList = await client.action(
+    const response: Actions.RunsList = await client.request(
       "get",
       `/runs`,
       params
@@ -307,7 +307,7 @@ RunsList.hydrate = async (
   const { sourceId, groupId, propertyId, limit, offset, stateFilter, error } =
     ctx.query;
   const client = new Client(getRequestContext(ctx));
-  const { runs, total } = await client.action("get", `/runs`, {
+  const { runs, total } = await client.request("get", `/runs`, {
     creatorId: sourceId ?? groupId ?? propertyId,
     topic: options.topic,
     limit,

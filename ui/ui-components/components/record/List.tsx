@@ -74,7 +74,7 @@ export default function RecordsList(props) {
     }
 
     setLoading(true);
-    const response: Actions.RecordsList = await client.action(
+    const response: Actions.RecordsList = await client.request(
       "get",
       `/records`,
       {
@@ -116,7 +116,7 @@ export default function RecordsList(props) {
 
     setSearchLoading(true);
     const response: Actions.RecordAutocompleteRecordProperty =
-      await client.action("get", `/records/autocompleteRecordProperty`, {
+      await client.request("get", `/records/autocompleteRecordProperty`, {
         propertyId,
         match,
       });
@@ -410,7 +410,7 @@ RecordsList.hydrate = async (
     caseSensitive,
   } = ctx.query;
 
-  const { records, total }: Actions.RecordsList = await client.action(
+  const { records, total }: Actions.RecordsList = await client.request(
     "get",
     `/records`,
     {
@@ -424,13 +424,15 @@ RecordsList.hydrate = async (
       caseSensitive,
     }
   );
-  const { properties } = await client.action("get", `/properties`, { modelId });
+  const { properties } = await client.request("get", `/properties`, {
+    modelId,
+  });
 
   let modelName: string;
   if (modelId) {
     modelName = records.length > 0 ? records[0].modelName : null;
     if (!modelName) {
-      const { model } = await client.action("get", `/model/${modelId}`);
+      const { model } = await client.request("get", `/model/${modelId}`);
       modelName = model.name;
     }
   }

@@ -121,7 +121,7 @@ export class StatusHandler extends EventDispatcher<
   }
 
   async getSamples(client: Client) {
-    const { metrics }: Actions.PrivateStatus = await client.action(
+    const { metrics }: Actions.PrivateStatus = await client.request(
       "get",
       `/status/private`
     );
