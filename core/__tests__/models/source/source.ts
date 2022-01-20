@@ -880,6 +880,37 @@ describe("models/source", () => {
       await property.destroy();
     });
 
+    test("bootstrapUniqueProperty will generate an available primary key if conflicting id exists", async () => {
+      // Create a conflicting property
+      const mappedColumn = "id";
+      const existingPropertyKey = `${model.name.toLowerCase()}_${mappedColumn}`;
+
+      await Property.create(
+        {
+          sourceId: source.id,
+          id: existingPropertyKey,
+          key: existingPropertyKey,
+          type: "string",
+          unique: false,
+          isArray: false,
+          state: "ready",
+        },
+        { hooks: false }
+      );
+
+      const property = await source.bootstrapUniqueProperty({
+        mappedColumn,
+        sourceOptions: await source.getOptions(),
+      });
+
+      expect(property.id).toMatch(/prp_/);
+      expect(property.key).toBe(
+        `${model.name.toLowerCase()}_${mappedColumn}_1`
+      );
+
+      await property.destroy();
+    });
+
     test("bootstrapUniqueProperty without with conflicting generated key will resolve with indexed key", async () => {
       const mappedColumn = "id";
       const key = `${model.name.toLowerCase()}_${mappedColumn}`;

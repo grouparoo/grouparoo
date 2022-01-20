@@ -130,7 +130,6 @@ export default function Page(props) {
         `/property`,
         {
           sourceId: source.id,
-          id: key, // reuse the key as ID
           key,
           type,
           unique,

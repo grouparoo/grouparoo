@@ -554,7 +554,7 @@ export namespace SourceOps {
       retry = false;
 
       const property = Property.build({
-        id: id ?? ConfigWriter.generateId(key),
+        id,
         key,
         type,
         state: "ready",
