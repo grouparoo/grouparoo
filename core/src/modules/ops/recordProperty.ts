@@ -167,7 +167,8 @@ export namespace RecordPropertyOps {
       await preparePropertyImports(
         pluginConnection,
         pendingRecordProperties,
-        propertyGroups[aggregationMethod]
+        propertyGroups[aggregationMethod],
+        limit
       );
       pendingRecordPropertyIds.push(
         ...propertyGroups[aggregationMethod].map((p) => p.id)
@@ -188,9 +189,12 @@ export namespace RecordPropertyOps {
         limit,
       });
 
-      await preparePropertyImports(pluginConnection, pendingRecordProperties, [
-        property,
-      ]);
+      await preparePropertyImports(
+        pluginConnection,
+        pendingRecordProperties,
+        [property],
+        limit
+      );
       pendingRecordPropertyIds.push(property.id);
     }
 
@@ -203,7 +207,8 @@ export namespace RecordPropertyOps {
 async function preparePropertyImports(
   pluginConnection: PluginConnection,
   pendingRecordProperties: RecordProperty[],
-  properties: Property[]
+  properties: Property[],
+  limit: number
 ) {
   if (pendingRecordProperties.length === 0) return;
   if (properties.length === 0) return;
@@ -228,10 +233,12 @@ async function preparePropertyImports(
   );
 
   if (method === "RecordProperties") {
-    await CLS.enqueueTask(`recordProperty:importRecordProperties`, {
-      propertyIds: properties.map((p) => p.id),
-      recordIds: uniqueRecordIds,
-    });
+    while (uniqueRecordIds.length > 0) {
+      await CLS.enqueueTask(`recordProperty:importRecordProperties`, {
+        propertyIds: properties.map((p) => p.id),
+        recordIds: uniqueRecordIds.splice(0, limit),
+      });
+    }
   } else if (method === "RecordProperty") {
     for (const property of properties) {
       for (const recordId of uniqueRecordIds) {
