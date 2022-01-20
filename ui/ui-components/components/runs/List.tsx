@@ -2,7 +2,6 @@ import { NextPageContext } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { errorHandler, runsHandler } from "../../eventHandlers";
-import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { Fragment, useEffect, useState } from "react";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
@@ -14,11 +13,13 @@ import RunDurationChart from "../visualizations/RunDurations";
 import { Models, Actions } from "../../utils/apiData";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 import { DurationTime } from "../DurationTime";
+import { getRequestContext, useApi } from "../../contexts/api";
+import { Client } from "../../client/client";
 
 export default function RunsList(props) {
   const { topic }: { topic: string } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState<number>(props.total);
   const [runs, setRuns] = useState<Models.RunType[]>(props.runs);
@@ -53,7 +54,11 @@ export default function RunsList(props) {
 
     updateURLParams(router, { offset, stateFilter, errorFilter });
     setLoading(true);
-    const response: Actions.RunsList = await execApi("get", `/runs`, params);
+    const response: Actions.RunsList = await client.action(
+      "get",
+      `/runs`,
+      params
+    );
     setLoading(false);
     if (response?.runs) {
       setRuns(response.runs);
@@ -301,8 +306,8 @@ RunsList.hydrate = async (
 ) => {
   const { sourceId, groupId, propertyId, limit, offset, stateFilter, error } =
     ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { runs, total } = await execApi("get", `/runs`, {
+  const client = new Client(getRequestContext(ctx));
+  const { runs, total } = await client.action("get", `/runs`, {
     creatorId: sourceId ?? groupId ?? propertyId,
     topic: options.topic,
     limit,

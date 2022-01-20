@@ -1,19 +1,22 @@
 import { useState } from "react";
 import { Card } from "react-bootstrap";
-import { errorHandler, successHandler } from "../../eventHandlers";
-import { UseApi } from "../../hooks/useApi";
+import { useApi } from "../../contexts/api";
+import { successHandler } from "../../eventHandlers";
 import { Actions } from "../../utils/apiData";
 import LoadingButton from "../LoadingButton";
 
-export default function ResetData(props) {
-  const { execApi } = UseApi(props, errorHandler);
+export default function ResetData() {
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
 
   async function reset() {
     if (!window.confirm("Are you sure?")) return;
 
     setLoading(true);
-    const response: Actions.ResetData = await execApi("delete", `/reset/data`);
+    const response: Actions.ResetData = await client.action(
+      "delete",
+      `/reset/data`
+    );
     if (response?.success) {
       successHandler.set({ message: `Data Reset!` });
     }

@@ -1,5 +1,6 @@
 import { EventDispatcher } from "../utils/eventDispatcher";
 import { Actions, Misc } from "../utils/apiData";
+import { Client } from "../client/client";
 
 export class StatusHandler extends EventDispatcher<
   Actions.PrivateStatus["metrics"]
@@ -119,8 +120,8 @@ export class StatusHandler extends EventDispatcher<
     }
   }
 
-  async getSamples(execApi) {
-    const { metrics }: Actions.PrivateStatus = await execApi(
+  async getSamples(client: Client) {
+    const { metrics }: Actions.PrivateStatus = await client.action(
       "get",
       `/status/private`
     );

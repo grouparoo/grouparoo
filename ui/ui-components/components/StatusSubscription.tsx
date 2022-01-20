@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { errorHandler, statusHandler } from "../eventHandlers";
+import { statusHandler } from "../eventHandlers";
 import { useRealtimeStream } from "../hooks/useRealtimeStream";
 import { useApi } from "../contexts/api";
 

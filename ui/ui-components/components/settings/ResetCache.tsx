@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { Card } from "react-bootstrap";
-import { errorHandler, successHandler } from "../../eventHandlers";
-import { UseApi } from "../../hooks/useApi";
+import { useApi } from "../../contexts/api";
+import { successHandler } from "../../eventHandlers";
 import { Actions } from "../../utils/apiData";
 import LoadingButton from "../LoadingButton";
 
-export default function ResetCache(props) {
-  const { execApi } = UseApi(props, errorHandler);
+export default function ResetCache() {
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
 
   async function reset() {
     if (!window.confirm("Are you sure?")) return;
 
     setLoading(true);
-    const response: Actions.ResetCache = await execApi(
+    const response: Actions.ResetCache = await client.action(
       "delete",
       `/reset/cache`
     );

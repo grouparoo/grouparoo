@@ -220,8 +220,7 @@ export default function ImportList(props) {
 }
 
 ImportList.hydrate = async (ctx: NextPageContext) => {
-  const getContext = getRequestContext(ctx);
-  const client = new Client(getContext);
+  const client = new Client(getRequestContext(ctx));
   const { creatorId, limit, offset, state, recordId } = ctx.query;
 
   const { imports, total } = await client.action("get", `/imports`, {

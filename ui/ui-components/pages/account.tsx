@@ -1,31 +1,35 @@
 import { GetServerSidePropsContext } from "next";
 import Head from "next/head";
-import { useState } from "react";
-import { UseApi } from "../hooks/useApi";
+import { FormEvent, useState } from "react";
 import { Form, Row, Col } from "react-bootstrap";
 import RecordImageFromEmail from "../components/visualizations/RecordImageFromEmail";
 import LoadingButton from "../components/LoadingButton";
 import { Models, Actions } from "../utils/apiData";
 import { NextPageWithInferredProps } from "../utils/pageHelper";
-import { errorHandler, sessionHandler, successHandler } from "../eventHandlers";
+import { sessionHandler, successHandler } from "../eventHandlers";
+import { getRequestContext, useApi } from "../contexts/api";
+import { Client } from "../client/client";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const { execApi } = UseApi(ctx);
-  const { teamMember } = await execApi<Actions.AccountView>("get", `/account`);
+  const client = new Client(getRequestContext(ctx));
+  const { teamMember } = await client.action<Actions.AccountView>(
+    "get",
+    `/account`
+  );
   return { props: { teamMember } };
 };
 
 const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
-  const { execApi } = UseApi(undefined, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
   const [teamMember, setTeamMember] = useState<Models.TeamMemberType>(
     props.teamMember
   );
 
-  async function submit(event) {
+  async function submit(event: FormEvent) {
     event.preventDefault();
     setLoading(true);
-    const response: Actions.AccountView = await execApi(
+    const response: Actions.AccountView = await client.action(
       "put",
       `/account`,
       teamMember
@@ -56,7 +60,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
           <RecordImageFromEmail loading={loading} email={teamMember.email} />
           <small>
             Image from{" "}
-            <a href="https://gravatar.com" target="_blank">
+            <a href="https://gravatar.com" target="_blank" rel="noreferrer">
               gravatar.com
             </a>
           </small>

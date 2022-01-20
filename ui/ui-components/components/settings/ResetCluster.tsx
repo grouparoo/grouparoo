@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Card } from "react-bootstrap";
+import { useApi } from "../../contexts/api";
 import { errorHandler, successHandler } from "../../eventHandlers";
-import { UseApi } from "../../hooks/useApi";
 import { Actions } from "../../utils/apiData";
 import LoadingButton from "../LoadingButton";
 
 export default function ResetCluster(props) {
   const [loading, setLoading] = useState(false);
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
 
   async function reset() {
     if (!window.confirm("Are you sure?")) return;
@@ -16,7 +16,7 @@ export default function ResetCluster(props) {
     }
 
     setLoading(true);
-    const response: Actions.ResetCluster = await execApi(
+    const response: Actions.ResetCluster = await client.action(
       "delete",
       `/reset/cluster`
     );

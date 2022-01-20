@@ -1,18 +1,18 @@
-import { UseApi } from "../../hooks/useApi";
 import { useState } from "react";
 import { Card } from "react-bootstrap";
 import LoadingButton from "../LoadingButton";
 import { Actions } from "../../utils/apiData";
-import { errorHandler, successHandler } from "../../eventHandlers";
+import { successHandler } from "../../eventHandlers";
+import { useApi } from "../../contexts/api";
 
-export default function ImportAndUpdateRecord(props) {
+export default function ImportAndUpdateRecord() {
   const [loading, setLoading] = useState(false);
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
 
   async function importAndUpdate() {
     if (window.confirm("Are you sure?")) {
       setLoading(true);
-      const response: Actions.RecordsImportAndUpdate = await execApi(
+      const response: Actions.RecordsImportAndUpdate = await client.action(
         "put",
         `/records/importAndUpdate`
       );

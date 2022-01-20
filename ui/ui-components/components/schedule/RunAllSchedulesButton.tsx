@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { Button, ButtonProps } from "react-bootstrap";
-import { ApiHook } from "../../hooks/useApi";
 import { Actions } from "../../utils/apiData";
 import { successHandler } from "../../eventHandlers";
 import { grouparooUiEdition } from "../../utils/uiEdition";
 import LoadingButton from "../LoadingButton";
+import { useApi } from "../../contexts/api";
 
 interface Props {
-  execApi: ApiHook["execApi"];
   modelId: string;
   disabled?: boolean;
   size?: ButtonProps["size"];
@@ -17,7 +16,6 @@ interface Props {
 }
 
 const RunAllSchedulesButton: React.FC<Props> = ({
-  execApi,
   modelId,
   disabled,
   size,
@@ -27,6 +25,7 @@ const RunAllSchedulesButton: React.FC<Props> = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const hide = grouparooUiEdition() === "config";
+  const { client } = useApi();
 
   if (hide) {
     return null;
@@ -44,7 +43,7 @@ const RunAllSchedulesButton: React.FC<Props> = ({
     onStart?.();
     setLoading(true);
     try {
-      const { runs } = await execApi<Actions.SchedulesRun>(
+      const { runs } = await client.action<Actions.SchedulesRun>(
         "post",
         `/schedules/run`,
         { modelId }

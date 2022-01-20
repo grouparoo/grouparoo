@@ -7,24 +7,24 @@ import SectionContainer from "../../lib/SectionContainer";
 import EntityInfoContainer from "../../lib/entity/EntityInfoContainer";
 import EntityInfoHeader from "../../lib/entity/EntityInfoHeader";
 import RunAllSchedulesButton from "../../schedule/RunAllSchedulesButton";
-import { ApiHook } from "../../../hooks/useApi";
 import { successHandler } from "../../../eventHandlers";
 import { useGrouparooModelContext } from "../../../contexts/grouparooModel";
 import EntityList from "../../lib/entity/EntityList";
 import LoadingButton from "../../LoadingButton";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
+import { useApi } from "../../../contexts/api";
 
 const ScheduleInfo: React.FC<{
   schedule: Models.ScheduleType;
   source?: Models.SourceType;
-  execApi: ApiHook["execApi"];
-}> = ({ schedule, source, execApi }) => {
+}> = ({ schedule, source }) => {
   const [loading, setLoading] = useState(false);
+  const { client } = useApi();
 
   async function enqueueScheduleRun() {
     setLoading(true);
     try {
-      const response: Actions.ScheduleRun = await execApi(
+      const response: Actions.ScheduleRun = await client.action(
         "post",
         `/schedule/${schedule.id}/run`
       );
@@ -65,14 +65,9 @@ const ScheduleInfo: React.FC<{
 interface Props {
   schedules: Models.ScheduleType[];
   sources?: Models.SourceType[];
-  execApi: ApiHook["execApi"];
 }
 
-const ModelOverviewSchedules: React.FC<Props> = ({
-  schedules,
-  sources,
-  execApi,
-}) => {
+const ModelOverviewSchedules: React.FC<Props> = ({ schedules, sources }) => {
   const model = useGrouparooModelContext();
 
   const sourcesById = useMemo<Record<string, Models.SourceType>>(() => {
@@ -98,7 +93,6 @@ const ModelOverviewSchedules: React.FC<Props> = ({
         <RunAllSchedulesButton
           size="sm"
           modelId={model.id}
-          execApi={execApi}
           disabled={disabled}
         />,
       ]}
@@ -110,7 +104,6 @@ const ModelOverviewSchedules: React.FC<Props> = ({
           <ScheduleInfo
             schedule={schedule}
             source={sourcesById[schedule.sourceId]}
-            execApi={execApi}
           />
         )}
       />

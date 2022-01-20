@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import { Form, Row, Col, Badge, Button, ButtonGroup } from "react-bootstrap";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import type { NextPageContext } from "next";
 import { errorHandler, recordsHandler } from "../../eventHandlers";
-import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import Pagination from "../Pagination";
@@ -15,6 +14,8 @@ import { Models, Actions } from "../../utils/apiData";
 import ArrayRecordPropertyList from "./ArrayRecordPropertyList";
 import StateBadge from "../badges/StateBadge";
 import { formatTimestamp } from "../../utils/formatTimestamp";
+import { getRequestContext, useApi } from "../../contexts/api";
+import { Client } from "../../client/client";
 
 export default function RecordsList(props) {
   const {
@@ -24,7 +25,7 @@ export default function RecordsList(props) {
     properties: Models.PropertyType[];
     modelName?: string;
   } = props;
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
@@ -56,29 +57,37 @@ export default function RecordsList(props) {
   }, [offset, limit, state, modelId, caseSensitive]);
 
   useEffect(() => {
-    recordsHandler.subscribe("records:list", () => {
-      load();
-    });
+    recordsHandler.subscribe("records:list", load);
 
     return () => {
       recordsHandler.unsubscribe("records:list");
     };
   }, []);
 
-  async function load(event?) {
-    if (event) event.preventDefault();
+  async function load(
+    event?:
+      | Parameters<Parameters<typeof recordsHandler.subscribe>[1]>[0]
+      | FormEvent
+  ) {
+    if (typeof (event as FormEvent)?.preventDefault == "function") {
+      (event as FormEvent).preventDefault();
+    }
 
     setLoading(true);
-    const response: Actions.RecordsList = await execApi("get", `/records`, {
-      searchKey,
-      searchValue,
-      limit,
-      offset,
-      state,
-      modelId,
-      groupId,
-      caseSensitive,
-    });
+    const response: Actions.RecordsList = await client.action(
+      "get",
+      `/records`,
+      {
+        searchKey,
+        searchValue,
+        limit,
+        offset,
+        state,
+        modelId,
+        groupId,
+        caseSensitive,
+      }
+    );
     setLoading(false);
     if (response?.records) {
       setRecords(response.records);
@@ -106,11 +115,11 @@ export default function RecordsList(props) {
     const propertyId = properties.filter((r) => r.key === _searchKey)[0].id;
 
     setSearchLoading(true);
-    const response: Actions.RecordAutocompleteRecordProperty = await execApi(
-      "get",
-      `/records/autocompleteRecordProperty`,
-      { propertyId, match }
-    );
+    const response: Actions.RecordAutocompleteRecordProperty =
+      await client.action("get", `/records/autocompleteRecordProperty`, {
+        propertyId,
+        match,
+      });
     if (response.recordProperties) {
       setAutoCompleteResults(
         response.recordProperties.map((e) => e.toString())
@@ -388,7 +397,8 @@ RecordsList.hydrate = async (
   _searchKey?: string,
   _searchValue?: string
 ) => {
-  const { execApi } = UseApi(ctx);
+  const client = new Client(getRequestContext(ctx));
+
   const {
     modelId,
     groupId,
@@ -400,7 +410,7 @@ RecordsList.hydrate = async (
     caseSensitive,
   } = ctx.query;
 
-  const { records, total }: Actions.RecordsList = await execApi(
+  const { records, total }: Actions.RecordsList = await client.action(
     "get",
     `/records`,
     {
@@ -414,13 +424,13 @@ RecordsList.hydrate = async (
       caseSensitive,
     }
   );
-  const { properties } = await execApi("get", `/properties`, { modelId });
+  const { properties } = await client.action("get", `/properties`, { modelId });
 
   let modelName: string;
   if (modelId) {
     modelName = records.length > 0 ? records[0].modelName : null;
     if (!modelName) {
-      const { model } = await execApi("get", `/model/${modelId}`);
+      const { model } = await client.action("get", `/model/${modelId}`);
       modelName = model.name;
     }
   }

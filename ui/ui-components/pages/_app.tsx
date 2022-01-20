@@ -40,7 +40,6 @@ export default function GrouparooNextApp(
     navigationMode: props.navigationMode,
     clusterName: props.clusterName,
     currentTeamMember: props.currentTeamMember,
-    client,
   };
 
   const pageContext = useMemo<WebAppContext>(() => {
@@ -72,8 +71,8 @@ export default function GrouparooNextApp(
 }
 
 GrouparooNextApp.getInitialProps = async (appContext: AppContext) => {
-  const getContext = getRequestContext(appContext);
-  const client = new Client(getContext);
+  const client = new Client(getRequestContext(appContext));
+
   let currentTeamMember: Partial<Actions.SessionView["teamMember"]> = {
     firstName: "",
     id: null,

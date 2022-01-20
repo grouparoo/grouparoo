@@ -3,15 +3,16 @@ import SampleRecordCard, {
   SampleRecordCardProps,
 } from "../../record/SampleRecordCard";
 import { Actions } from "../../../utils/apiData";
+import { useApi } from "../../../contexts/api";
 
 const ModelOverviewSampleRecord: React.FC<
   Omit<SampleRecordCardProps, "fetchRecord">
 > = (props) => {
-  const { execApi } = props;
+  const { client } = useApi();
   const fetchRecord = useCallback(
     (recordId: string) =>
-      execApi<Actions.RecordView>("get", `/record/${recordId}`),
-    [execApi]
+      client.action<Actions.RecordView>("get", `/record/${recordId}`),
+    [client]
   );
 
   return <SampleRecordCard {...props} fetchRecord={fetchRecord} />;

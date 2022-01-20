@@ -7,13 +7,13 @@ import {
   sessionHandler,
   successHandler,
 } from "../../eventHandlers";
-import { UseApi } from "../../hooks/useApi";
 import { Actions, OAuth, Models } from "../../utils/apiData";
 import LoadingButton from "../LoadingButton";
 import Loader from "../Loader";
+import { useApi } from "../../contexts/api";
 
 export default function SignInForm(props) {
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const { handleSubmit, register } = useForm();
   const router = useRouter();
   const [loadingEmail, setLoadingEmail] = useState(false);
@@ -30,11 +30,15 @@ export default function SignInForm(props) {
     arg: Record<string, any>,
     type: "password" | "requestId"
   ) => {
-    const response: Actions.SessionCreate = await execApi("post", `/session`, {
-      email: arg.email,
-      requestId: type === "requestId" ? requestId : undefined,
-      password: type === "password" ? arg.password : undefined,
-    });
+    const response: Actions.SessionCreate = await client.action(
+      "post",
+      `/session`,
+      {
+        email: arg.email,
+        requestId: type === "requestId" ? requestId : undefined,
+        password: type === "password" ? arg.password : undefined,
+      }
+    );
     if (response?.teamMember) {
       window.localStorage.setItem("session:csrfToken", response.csrfToken);
       sessionHandler.set(response.teamMember);
@@ -44,7 +48,7 @@ export default function SignInForm(props) {
 
   const loadOauthOptions = async () => {
     setLoadingOauthProviders(true);
-    const response: Actions.OAuthListProviders = await execApi(
+    const response: Actions.OAuthListProviders = await client.action(
       "get",
       `/oauth/providers?type=user`
     );
@@ -56,7 +60,7 @@ export default function SignInForm(props) {
 
   const startOauthLogin = async (provider: string, type: string) => {
     setLoadingOAuth(true);
-    const response: Actions.OAuthClientStart = await execApi(
+    const response: Actions.OAuthClientStart = await client.action(
       "post",
       `/oauth/${provider}/client/start`,
       { type }
@@ -70,7 +74,7 @@ export default function SignInForm(props) {
 
   const loadOAuthRequest = async () => {
     if (requestId) {
-      const response: Actions.OAuthClientView = await execApi(
+      const response: Actions.OAuthClientView = await client.action(
         "get",
         `/oauth/client/request/${requestId}/view`
       );
@@ -125,7 +129,7 @@ export default function SignInForm(props) {
   };
 
   const getSetupSteps = async () => {
-    const { setupSteps }: Actions.SetupStepsList = await execApi(
+    const { setupSteps }: Actions.SetupStepsList = await client.action(
       "get",
       `/setupSteps`
     );

@@ -1,16 +1,12 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import {
-  errorHandler,
-  sessionHandler,
-  successHandler,
-} from "../../eventHandlers";
-import { UseApi } from "../../hooks/useApi";
+import { sessionHandler, successHandler } from "../../eventHandlers";
 import { disconnectWebsocket } from "../../hooks/useRealtimeStream";
 import Loader from "../Loader";
+import { useApi } from "../../contexts/api";
 
 export default function SignOutForm(props) {
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const router = useRouter();
 
   useEffect(() => {
@@ -22,7 +18,7 @@ export default function SignOutForm(props) {
     disconnectWebsocket();
 
     try {
-      await execApi("delete", `/session`);
+      await client.action("delete", `/session`);
       successHandler.set({ message: "Signed Out" });
       sessionHandler.set({ firstName: "" });
     } catch (error) {

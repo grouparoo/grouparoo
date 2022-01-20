@@ -68,22 +68,18 @@ export class ClientCache {
 }
 
 export class Client {
-  private apiVersion: string;
-  private webUrl: string;
-  private serverToken: string;
-  private cache: ClientCache;
+  public apiVersion = process.env.API_VERSION || "v1";
+
+  private webUrl = process.env.WEB_URL || "";
+  private serverToken = process.env.SERVER_TOKEN;
+  private cache = new ClientCache();
 
   constructor(
     private getRequestContext: () => {
       req?: IncomingMessage;
       res?: ServerResponse;
     } = () => ({})
-  ) {
-    this.apiVersion = process.env.API_VERSION || "v1";
-    this.webUrl = process.env.WEB_URL || "";
-    this.serverToken = process.env.SERVER_TOKEN;
-    this.cache = new ClientCache();
-  }
+  ) {}
 
   private checkForLoggedIn = ({ code }) => {
     if (code === "AUTHENTICATION_ERROR") {

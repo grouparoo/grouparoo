@@ -1,6 +1,5 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
-import { UseApi } from "../../hooks/useApi";
 import { Tabs, Tab, Row, Col } from "react-bootstrap";
 import { capitalize } from "../../utils/languageHelper";
 import { useRouter } from "next/router";
@@ -11,6 +10,9 @@ import ResetCluster from "../../components/settings/ResetCluster";
 import ResetData from "../../components/settings/ResetData";
 import ResetCache from "../../components/settings/ResetCache";
 import { errorHandler, successHandler } from "../../eventHandlers";
+import { getRequestContext, useApi } from "../../contexts/api";
+import { NextPageContext } from "next";
+import { Client } from "../../client/client";
 
 const settingsWhichTriggerInterfaceReload = [["core", "cluster-name"]];
 
@@ -21,7 +23,7 @@ export default function Page(props) {
     tab: string;
   } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
   const [settings, setSettings] = useState<Models.SettingType[]>(
     props.settings
@@ -34,7 +36,7 @@ export default function Page(props) {
 
   async function updateSetting(setting: Models.SettingType) {
     setLoading(true);
-    const response: Actions.SettingEdit = await execApi(
+    const response: Actions.SettingEdit = await client.action(
       "put",
       `/setting/${setting.id}`,
       setting
@@ -115,10 +117,13 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
+Page.getInitialProps = async (ctx: NextPageContext) => {
   const { tab } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { settings }: Actions.SettingsList = await execApi("get", `/settings`);
+  const client = new Client(getRequestContext(ctx));
+  const { settings }: Actions.SettingsList = await client.action(
+    "get",
+    `/settings`
+  );
   return { settings, tab };
 };
 
@@ -128,28 +133,19 @@ function ActionsTab({ errorHandler, successHandler }) {
       <br />
       <h2>Cluster Actions</h2>
 
-      <ImportAndUpdateAllRecords
-        errorHandler={errorHandler}
-        successHandler={successHandler}
-      />
+      <ImportAndUpdateAllRecords />
       <br />
 
-      <ResetCache errorHandler={errorHandler} successHandler={successHandler} />
+      <ResetCache />
       <br />
 
       <Row>
         <Col md={6}>
-          <ResetData
-            errorHandler={errorHandler}
-            successHandler={successHandler}
-          />
+          <ResetData />
           <br />
         </Col>
         <Col md={6}>
-          <ResetCluster
-            errorHandler={errorHandler}
-            successHandler={successHandler}
-          />
+          <ResetCluster />
           <br />
         </Col>
       </Row>

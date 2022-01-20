@@ -1,16 +1,16 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { UseApi } from "../../hooks/useApi";
 import LoadingButton from "../LoadingButton";
 import { Actions, Models } from "../../utils/apiData";
 import { errorHandler } from "../../eventHandlers";
 import StateBadge from "../badges/StateBadge";
+import { useApi } from "../../contexts/api";
 
 export default function PropertyAddButton(props) {
   const { source }: { source: Models.SourceType } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
+  const { client } = useApi();
 
   async function create() {
     setLoading(true);
@@ -21,7 +21,7 @@ export default function PropertyAddButton(props) {
       type: "string",
     };
 
-    const response: Actions.PropertyCreate = await execApi(
+    const response: Actions.PropertyCreate = await client.action(
       "post",
       `/property`,
       data

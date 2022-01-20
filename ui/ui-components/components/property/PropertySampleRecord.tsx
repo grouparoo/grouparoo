@@ -1,4 +1,5 @@
 import { useState, useCallback, useMemo } from "react";
+import { useApi } from "../../contexts/api";
 import { useDebouncedValue } from "../../hooks/useDebouncedValue";
 import { Actions, Models } from "../../utils/apiData";
 import SampleRecordCard, {
@@ -24,9 +25,9 @@ const PropertySampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
   localFilters,
   ...props
 }) => {
-  const { execApi } = props;
   const debouncedProperty = useDebouncedValue(property, 1000);
   const [errorMessage, setErrorMessage] = useState<string>();
+  const { client } = useApi();
 
   const reloadKey = useMemo(
     () =>
@@ -47,7 +48,7 @@ const PropertySampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
     async (recordId: string) => {
       setErrorMessage(undefined);
 
-      const response: Actions.PropertyRecordPreview = await execApi(
+      const response: Actions.PropertyRecordPreview = await client.action(
         "get",
         `/property/${debouncedProperty.id}/recordPreview`,
         {
@@ -72,7 +73,7 @@ const PropertySampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
 
       return {};
     },
-    [debouncedProperty]
+    [client, debouncedProperty.id, debouncedProperty.options, localFilters]
   );
 
   return (
