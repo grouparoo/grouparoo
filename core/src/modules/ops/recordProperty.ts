@@ -10,7 +10,7 @@ import { Op } from "sequelize";
 import { Source } from "../../models/Source";
 import { AggregationMethod, PluginConnection } from "../../classes/plugin";
 import { Filter } from "../../models/Filter";
-import { log } from "actionhero";
+import { config, log } from "actionhero";
 
 export namespace RecordPropertyOps {
   const defaultRecordPropertyProcessingDelay = 1000 * 60 * 5;
@@ -199,6 +199,17 @@ export namespace RecordPropertyOps {
 }
 
 // utilities (private)
+async function updateIds(ids: string[], values: { [key: string]: any }) {
+  const max = config.batchSize.internalWrite;
+  const queue = ids; // this prevents it from changing the passed in one, right?
+  while (queue.length > 0) {
+    await RecordProperty.update(values, {
+      where: {
+        id: { [Op.in]: queue.splice(0, max) },
+      },
+    });
+  }
+}
 
 async function preparePropertyImports(
   pluginConnection: PluginConnection,
@@ -212,20 +223,17 @@ async function preparePropertyImports(
     .map((ppp) => ppp.recordId)
     .filter((val, idx, arr) => arr.indexOf(val) === idx);
 
+  const pendingRecordPropertyIds = pendingRecordProperties.map((i) => i.id);
+
   const method = pluginConnection.methods.recordProperties
     ? "RecordProperties"
     : pluginConnection.methods.recordProperty
     ? "RecordProperty"
     : null;
 
-  await RecordProperty.update(
-    { startedAt: new Date() },
-    {
-      where: {
-        id: { [Op.in]: pendingRecordProperties.map((i) => i.id) },
-      },
-    }
-  );
+  await updateIds(pendingRecordPropertyIds, {
+    startedAt: new Date(),
+  });
 
   if (method === "RecordProperties") {
     await CLS.enqueueTask(`recordProperty:importRecordProperties`, {
@@ -243,18 +251,11 @@ async function preparePropertyImports(
     }
   } else {
     // Schedule sources don't import properties on-demand, keep old value
-    await RecordProperty.update(
-      {
-        state: "ready",
-        stateChangedAt: new Date(),
-        confirmedAt: new Date(),
-      },
-      {
-        where: {
-          id: pendingRecordProperties.map((p) => p.id),
-        },
-      }
-    );
+    await updateIds(pendingRecordPropertyIds, {
+      state: "ready",
+      stateChangedAt: new Date(),
+      confirmedAt: new Date(),
+    });
   }
 }
 
