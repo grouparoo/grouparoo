@@ -74,13 +74,13 @@ describe("tasks/recordProperties:enqueue", () => {
       name: "test app",
     });
     await app.update({ state: "ready" });
-
     const source = await Source.create({
       type: "test-connection",
       name: "test connection",
       appId: app.id,
       modelId: model.id,
     });
+
     userId = await source.bootstrapUniqueProperty({ mappedColumn: "id" });
     await source.setMapping({ id: "profiles_id" });
     await source.update({ state: "ready" });
@@ -102,7 +102,6 @@ describe("tasks/recordProperties:enqueue", () => {
       const luigi = await helper.factories.record();
       const toad = await helper.factories.record();
       const peach = await helper.factories.record();
-
       await mario.markPending();
       await luigi.markPending();
       await toad.markPending();
@@ -115,15 +114,9 @@ describe("tasks/recordProperties:enqueue", () => {
           recordId: [mario, luigi, toad, peach].map((r) => r.id),
         },
       });
-      try {
-        await helper.changeTimestamps(recordProperties, false, "NOW()");
-      } catch (e) {
-        console.error(e);
-        throw e;
-      }
 
+      await helper.changeTimestamps(recordProperties, false, true);
       await specHelper.runTask("recordProperties:enqueue", {});
-
       const importRecordPropertiesTasks = await specHelper.findEnqueuedTasks(
         "recordProperty:importRecordProperties"
       );
