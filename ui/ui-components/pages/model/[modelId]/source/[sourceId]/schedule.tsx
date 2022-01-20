@@ -73,10 +73,17 @@ export default function Page(props) {
 
     if (response?.schedule) {
       if (response.schedule.state === "ready" && schedule.state === "draft") {
-        router.push(
-          "/model/[modelId]/source/[sourceId]/overview",
-          `/model/${source.modelId}/source/${source.id}/overview`
-        );
+        if (totalSources === 1 && totalProperties === 1) {
+          router.push(
+            "/model/[modelId]/source/[sourceId]/multipleProperties",
+            `/model/${source.modelId}/source/${source.id}/multipleProperties`
+          );
+        } else {
+          router.push(
+            "/model/[modelId]/source/[sourceId]/overview",
+            `/model/${source.modelId}/source/${source.id}/overview`
+          );
+        }
       } else {
         setRecurringFrequencyMinutes(
           response.schedule.recurringFrequency / (60 * 1000)
@@ -84,13 +91,6 @@ export default function Page(props) {
         setSchedule(response.schedule);
         setLoading(false);
         successHandler.set({ message: "Schedule Updated" });
-      }
-
-      if (totalSources === 1 && totalProperties === 1) {
-        router.push(
-          "/model/[modelId]/source/[sourceId]/multipleProperties",
-          `/model/${source.modelId}/source/${source.id}/multipleProperties`
-        );
       }
     } else {
       setLoading(false);
