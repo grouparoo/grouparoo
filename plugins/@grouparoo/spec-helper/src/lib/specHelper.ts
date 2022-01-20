@@ -677,8 +677,7 @@ export namespace helper {
     return api.sequelize.query(
       `UPDATE "${tableName}" SET "updatedAt"=${sqlDate} ${
         setCreated ? `, "createdAt"=${sqlDate} ` : ` `
-      }WHERE id IN (${instances.map((i) => `'${i.id}'`)})`,
-      { logging: true }
+      }WHERE id IN (${instances.map((i) => `'${i.id}'`)})`
     );
   }
 }
