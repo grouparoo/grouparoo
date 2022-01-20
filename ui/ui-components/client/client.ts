@@ -118,7 +118,7 @@ export class Client {
     }
   };
 
-  private optionDefaults = {
+  private static readonly optionDefaults = {
     useCache: true,
     errorHandler,
     uploadHandler,
@@ -128,9 +128,9 @@ export class Client {
     verb: Method = "get",
     path: string,
     data: AxiosRequestConfig["data"] = {},
-    options: Partial<typeof this.optionDefaults> = {}
+    options: Partial<typeof Client.optionDefaults> = {}
   ): Promise<Response> => {
-    options = { ...this.optionDefaults, ...options };
+    options = { ...Client.optionDefaults, ...options };
 
     const headers: AxiosRequestHeaders = {
       Accept: "application/json",
