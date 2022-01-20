@@ -1,15 +1,11 @@
+import { useApi } from "../../../contexts/api";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState, useEffect, Fragment } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
-import {
-  appHandler,
-  errorHandler,
-  successHandler,
-} from "../../../eventHandlers";
-import { UseApi } from "../../../hooks/useApi";
+import { appHandler, successHandler } from "../../../eventHandlers";
 import PageHeader from "../../../components/PageHeader";
 import StateBadge from "../../../components/badges/StateBadge";
 import SourceBadge from "../../../components/badges/SourceBadge";
@@ -20,6 +16,8 @@ import LoadingButton from "../../../components/LoadingButton";
 import LockedBadge from "../../../components/badges/LockedBadge";
 import { Actions, Models } from "../../../utils/apiData";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
+import { NextPageContext } from "next";
+import { generateClient } from "../../../client/client";
 
 export default function Page(props) {
   const {
@@ -500,9 +498,9 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
+Page.getInitialProps = async (ctx: NextPageContext) => {
   const { id } = ctx.query;
-  const { client } = useApi();
+  const client = generateClient(ctx);
   const { app } = await client.request("get", `/app/${id}`);
   const {
     options,

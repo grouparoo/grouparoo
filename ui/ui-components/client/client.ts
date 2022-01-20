@@ -9,6 +9,8 @@ import type { IncomingMessage, ServerResponse } from "http";
 import { isBrowser } from "../utils/isBrowser";
 import PackageJSON from "../package.json";
 import { errorHandler, uploadHandler } from "../eventHandlers";
+import type { AppContext } from "next/app";
+import type { GetServerSidePropsContext, NextPageContext } from "next";
 
 interface ClientCacheObject {
   locked: boolean;
@@ -235,3 +237,16 @@ export class Client {
     }
   };
 }
+
+export const generateClient = (
+  ctx: AppContext | NextPageContext | GetServerSidePropsContext
+) => new Client(getRequestContext(ctx));
+
+function isAppContext(ctx: unknown): ctx is AppContext {
+  return !!ctx.hasOwnProperty("ctx");
+}
+const getRequestContext =
+  (ctx: AppContext | NextPageContext | GetServerSidePropsContext) => () => ({
+    req: isAppContext(ctx) ? ctx.ctx.req : ctx.req,
+    res: isAppContext(ctx) ? ctx.ctx.res : ctx.res,
+  });

@@ -1,8 +1,8 @@
+import { useApi } from "../contexts/api";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { errorHandler } from "../eventHandlers";
-import { UseApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import GrouparooLink from "../components/GrouparooLink";
@@ -11,6 +11,7 @@ import LoadingTable from "../components/LoadingTable";
 import { Models, Actions } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
 import LinkButton from "../components/LinkButton";
+import { generateClient } from "../client/client";
 
 export default function Page(props) {
   const router = useRouter();
@@ -110,7 +111,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { client } = useApi();
+  const client = generateClient(ctx);
   const { limit, offset } = ctx.query;
   const { apiKeys, total }: Actions.ApiKeysList = await client.request(
     "get",

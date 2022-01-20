@@ -1,12 +1,14 @@
+import { useApi } from "../../../contexts/api";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 import { Alert, Badge, Card } from "react-bootstrap";
 import { errorHandler } from "../../../eventHandlers";
-import { UseApi } from "../../../hooks/useApi";
 import { Actions } from "../../../utils/apiData";
 import LoadingButton from "../../../components/LoadingButton";
 import PageHeader from "../../../components/PageHeader";
+import { generateClient } from "../../../client/client";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
@@ -107,8 +109,8 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { client } = useApi();
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
   const { plugins }: Actions.PluginsList = await client.request(
     "get",
     `/plugins`,

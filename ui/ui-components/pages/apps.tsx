@@ -1,5 +1,5 @@
+import { useApi } from "../contexts/api";
 import { useState } from "react";
-import { UseApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import { useCallback } from "react";
@@ -18,10 +18,11 @@ import LoadingButton from "../components/LoadingButton";
 import { grouparooUiEdition } from "../utils/uiEdition";
 import { formatName } from "../utils/formatName";
 import { NextPageWithInferredProps } from "../utils/pageHelper";
-import { errorHandler, successHandler } from "../eventHandlers";
+import { successHandler } from "../eventHandlers";
+import { generateClient } from "../client/client";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const { client } = useApi();
+  const client = generateClient(ctx);
   const { limit, offset } = ctx.query;
   const { apps, total } = await client.request<Actions.AppsList>(
     "get",
@@ -93,7 +94,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
         setLoading(false);
       }
     },
-    [client.request, successHandler]
+    [client]
   );
 
   return (

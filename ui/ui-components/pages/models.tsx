@@ -1,8 +1,8 @@
+import { useApi } from "../contexts/api";
 import { GetServerSidePropsContext } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { UseApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import Pagination from "../components/Pagination";
@@ -14,10 +14,10 @@ import GrouparooLink from "../components/GrouparooLink";
 import StateBadge from "../components/badges/StateBadge";
 import LinkButton from "../components/LinkButton";
 import { NextPageWithInferredProps } from "../utils/pageHelper";
-import { errorHandler } from "../eventHandlers";
+import { generateClient } from "../client/client";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const { client } = useApi();
+  const client = generateClient(ctx);
   const { limit, offset } = ctx.query;
   const { models, total } = await client.request<Actions.ModelsList>(
     "get",

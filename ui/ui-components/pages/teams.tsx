@@ -1,7 +1,6 @@
 import Head from "next/head";
 import { Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
-import { UseApi } from "../hooks/useApi";
 import Link from "next/link";
 import EnterpriseLink from "../components/GrouparooLink";
 import { Form } from "react-bootstrap";
@@ -11,6 +10,7 @@ import { Models } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
 import LinkButton from "../components/LinkButton";
 import { grouparooUiEdition } from "../utils/uiEdition";
+import { generateClient } from "../client/client";
 
 export default function Page({
   teams,
@@ -135,7 +135,7 @@ export default function Page({
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { client } = useApi();
+  const client = generateClient(ctx);
   const { teams } = await client.request("get", `/teams`);
   const { teamMembers } = await client.request("get", `/teamMembers`);
   return { teams, teamMembers };

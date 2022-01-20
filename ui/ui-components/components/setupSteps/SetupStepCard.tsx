@@ -1,3 +1,4 @@
+import { useApi } from "../../contexts/api";
 import { useState } from "react";
 import { Models } from "../../utils/apiData";
 import { Accordion, Card, Row, Col, Button, Badge } from "react-bootstrap";
@@ -7,13 +8,12 @@ import { grouparooUiEdition } from "../../utils/uiEdition";
 
 export default function SetupStepCard({
   setupStep: step,
-  client.request,
   reload,
 }: {
   setupStep: Models.SetupStepType;
-  client.request: Function;
   reload: Function;
 }) {
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
   const [activeKey, setActiveKey] = useState(
     step.skipped || step.complete ? null : "0"

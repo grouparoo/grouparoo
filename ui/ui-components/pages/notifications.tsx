@@ -1,3 +1,4 @@
+import { useApi } from "../contexts/api";
 import { useState } from "react";
 import { Badge } from "react-bootstrap";
 import Head from "next/head";
@@ -6,11 +7,12 @@ import Link from "next/link";
 import Pagination from "../components/Pagination";
 import LoadingTable from "../components/LoadingTable";
 import { errorHandler } from "../eventHandlers";
-import { UseApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import { Models, Actions } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
+import { generateClient } from "../client/client";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const router = useRouter();
@@ -110,8 +112,8 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { client } = useApi();
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
   const { limit, offset } = ctx.query;
   const { notifications, total } = await client.request(
     "get",

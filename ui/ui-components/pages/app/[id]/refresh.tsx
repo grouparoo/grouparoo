@@ -1,6 +1,6 @@
+import { useApi } from "../../../contexts/api";
 import Head from "next/head";
 import { useMemo, useState } from "react";
-import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Form, Alert, Button, Container } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { errorHandler, successHandler } from "../../../eventHandlers";
@@ -15,6 +15,8 @@ import AppRefreshQueryScheduleList from "../../../components/app/AppRefreshSched
 import AppRefreshQueryStats from "../../../components/app/AppRefreshQueryStats";
 import { Actions, Models } from "../../../utils/apiData";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
+import { NextPageContext } from "next";
+import { generateClient } from "../../../client/client";
 
 export default function Page(props) {
   const router = useRouter();
@@ -417,9 +419,9 @@ export default function Page(props) {
   }
 }
 
-Page.getInitialProps = async (ctx) => {
+Page.getInitialProps = async (ctx: NextPageContext) => {
   const { id } = ctx.query;
-  const { client } = useApi();
+  const client = generateClient(ctx);
   const { app } = await client.request("get", `/app/${id}`);
 
   let foundAppRefreshQuery;

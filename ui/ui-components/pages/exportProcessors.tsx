@@ -1,3 +1,4 @@
+import { useApi } from "../contexts/api";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -9,12 +10,13 @@ import LoadingTable from "../components/LoadingTable";
 import Pagination from "../components/Pagination";
 import EnterpriseLink from "../components/GrouparooLink";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
-import { UseApi } from "../hooks/useApi";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import { Models, Actions } from "../utils/apiData";
 import { capitalize } from "../utils/languageHelper";
 import { formatTimestamp } from "../utils/formatTimestamp";
 import { DurationTime } from "../components/DurationTime";
+import { generateClient } from "../client/client";
+import { NextPageContext } from "next";
 
 const states = ["all", "pending", "failed", "complete"];
 
@@ -200,8 +202,8 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { client } = useApi();
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
   const { limit, offset, state } = ctx.query;
 
   const { exportProcessors, total } = await client.request(
