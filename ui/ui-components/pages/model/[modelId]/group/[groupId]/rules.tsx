@@ -4,7 +4,7 @@ import { Fragment, useEffect, useState } from "react";
 import { Form, Table, Badge, Button } from "react-bootstrap";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import { errorHandler, successHandler } from "../../../../../eventHandlers";
-import { UseApi } from "../../../../../hooks/useApi";
+import { client, UseApi } from "../../../../../hooks/useApi";
 import StateBadge from "../../../../../components/badges/StateBadge";
 import LockedBadge from "../../../../../components/badges/LockedBadge";
 import GroupTabs from "../../../../../components/tabs/Group";
@@ -16,6 +16,7 @@ import PageHeader from "../../../../../components/PageHeader";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
+import { useApi } from "../../../../../contexts/api";
 
 export default function Page(props) {
   const {
@@ -32,7 +33,7 @@ export default function Page(props) {
     topLevelGroupRules: Actions.GroupsRuleOptions["topLevelGroupRules"];
   } = props;
   const [group, setGroup] = useState<Models.GroupType>(props.group);
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
   const [localRules, setLocalRules] = useState(makeLocal(props.group.rules));
   const [countPotentialMembers, setCountPotentialMembers] = useState(0);
@@ -54,11 +55,11 @@ export default function Page(props) {
   async function getCounts(useCache = true) {
     setLoading(true);
     const componentMembersResponse: Actions.GroupCountComponentMembers =
-      await execApi(
+      await client.action(
         "get",
         `/group/${group.id}/countComponentMembers`,
         { rules: localRules },
-        useCache
+        { useCache }
       );
 
     if (componentMembersResponse?.componentCounts) {
@@ -67,11 +68,11 @@ export default function Page(props) {
     }
 
     const potentialMembersResponse: Actions.GroupCountPotentialMembers =
-      await execApi(
+      await client.action(
         "get",
         `/group/${group.id}/countPotentialMembers`,
         { rules: localRules },
-        useCache
+        { useCache }
       );
     if (potentialMembersResponse) {
       setCountPotentialMembers(potentialMembersResponse.count);
@@ -105,7 +106,7 @@ export default function Page(props) {
 
   async function updateRules() {
     setLoading(true);
-    const response: Actions.GroupEdit = await execApi(
+    const response: Actions.GroupEdit = await client.action(
       "put",
       `/group/${group.id}`,
       { id: group.id, rules: localRules }
@@ -125,11 +126,11 @@ export default function Page(props) {
     if (!propertyId) return;
 
     setLoading(true);
-    const response: Actions.RecordAutocompleteRecordProperty = await execApi(
-      "get",
-      `/records/autocompleteRecordProperty`,
-      { propertyId, match }
-    );
+    const response: Actions.RecordAutocompleteRecordProperty =
+      await client.action("get", `/records/autocompleteRecordProperty`, {
+        propertyId,
+        match,
+      });
     if (response.recordProperties) {
       const _autocompleteResults = Object.assign({}, autocompleteResults);
       _autocompleteResults[localRule.key] = response.recordProperties;

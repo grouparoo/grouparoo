@@ -1,6 +1,5 @@
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 import { useMemo } from "react";
 import { Col, ListGroup, ListGroupItem, Row } from "react-bootstrap";
 import ManagedCard from "../../../components/lib/ManagedCard";
@@ -13,7 +12,6 @@ import ModelOverviewSecondarySources from "../../../components/model/overview/Mo
 import PageHeader from "../../../components/PageHeader";
 import ModelTabs from "../../../components/tabs/Model";
 import { GrouparooModelContextProvider } from "../../../contexts/grouparooModel";
-import { errorHandler } from "../../../eventHandlers";
 import { UseApi } from "../../../hooks/useApi";
 import { Actions, Models } from "../../../utils/apiData";
 
@@ -38,7 +36,6 @@ const Page: NextPage<Props> = ({
   schedules,
   destinations,
 }) => {
-  const { execApi } = UseApi(undefined, errorHandler);
   const sources = useMemo(() => {
     const result = [...secondarySources];
     if (primarySource) {
@@ -99,7 +96,6 @@ const Page: NextPage<Props> = ({
                 <ModelOverviewSchedules
                   schedules={schedules}
                   sources={sources}
-                  execApi={execApi}
                 />
               </ListGroupItem>
             </ListGroup>
@@ -111,7 +107,6 @@ const Page: NextPage<Props> = ({
           <ModelOverviewSampleRecord
             modelId={model.id}
             properties={properties}
-            execApi={execApi}
             disabled={!sources.length}
           />
         </Col>

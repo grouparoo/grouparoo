@@ -18,10 +18,11 @@ import {
 } from "../../../../../eventHandlers";
 import { Models, Actions } from "../../../../../utils/apiData";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
-import { UseApi } from "../../../../../hooks/useApi";
+import { client, UseApi } from "../../../../../hooks/useApi";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 import { useDebouncedCallback } from "../../../../../hooks/useDebouncedCallback";
+import { useApi } from "../../../../../contexts/api";
 
 export default function Page(props) {
   const {
@@ -32,7 +33,7 @@ export default function Page(props) {
     environmentVariableOptions: Actions.AppOptions["environmentVariableOptions"];
   } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [destination, setDestination] = useState<Models.DestinationType>(
     props.destination
   );
@@ -58,7 +59,7 @@ export default function Page(props) {
     event.preventDefault();
 
     setLoading(true);
-    const response: Actions.DestinationEdit = await execApi(
+    const response: Actions.DestinationEdit = await client.action(
       "put",
       `/destination/${destinationId}`,
       {
@@ -90,11 +91,11 @@ export default function Page(props) {
 
   const loadOptions = useDebouncedCallback(async () => {
     setLoadingOptions(true);
-    const response: Actions.DestinationConnectionOptions = await execApi(
+    const response: Actions.DestinationConnectionOptions = await client.action(
       "get",
       `/destination/${destinationId}/connectionOptions`,
       { options: destination.options },
-      false
+      { useCache: false }
     );
     if (response?.options) setConnectionOptions(response.options);
     setLoadingOptions(false);
@@ -103,7 +104,7 @@ export default function Page(props) {
   async function handleDelete(force = false) {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const { success }: Actions.DestinationDestroy = await execApi(
+      const { success }: Actions.DestinationDestroy = await client.action(
         "delete",
         `/destination/${destinationId}`,
         { force }

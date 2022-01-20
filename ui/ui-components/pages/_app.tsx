@@ -54,7 +54,11 @@ export default function GrouparooNextApp(
   return renderNestedContextProviders(
     [
       [WebAppContext, pageContext],
-      [ApiContext, useApiInitialState(client)],
+      [
+        ApiContext,
+        // The serialized object passed from the server is not an isntance of the Client class
+        useApiInitialState(typeof window === "undefined" ? client : undefined),
+      ],
     ],
     <>
       <PageTransition />

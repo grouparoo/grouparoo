@@ -772,7 +772,6 @@ export default function Page(props) {
         </Col>
         <Col xl={5}>
           <PropertySampleRecord
-            execApi={execApi}
             localFilters={localFilters}
             modelId={source.modelId}
             property={property}

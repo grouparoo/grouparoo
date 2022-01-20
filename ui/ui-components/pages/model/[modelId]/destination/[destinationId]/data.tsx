@@ -847,7 +847,6 @@ export default function Page(props) {
             collection={collection}
             mappingOptions={mappingOptions}
             destination={destination}
-            execApi={execApi}
             properties={properties}
             hideViewAllRecords
           />

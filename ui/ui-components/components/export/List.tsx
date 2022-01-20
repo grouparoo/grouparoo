@@ -5,7 +5,6 @@ import Link from "next/link";
 import EnterpriseLink from "../GrouparooLink";
 import { useRouter } from "next/router";
 import { Row, Col, Button, ButtonGroup, Badge, Alert } from "react-bootstrap";
-import { errorHandler } from "../../eventHandlers";
 import Pagination from "../Pagination";
 import LoadingTable from "../LoadingTable";
 import { Models, Actions } from "../../utils/apiData";
@@ -16,7 +15,6 @@ import StateBadge from "../badges/StateBadge";
 import { DurationTime } from "../DurationTime";
 import { getRequestContext, useApi } from "../../contexts/api";
 import { Client } from "../../client/client";
-import { AppContext } from "next/app";
 import { NextPageContext } from "next";
 
 const states = [
@@ -277,7 +275,6 @@ export default function ExportsList(props) {
 }
 
 ExportsList.hydrate = async (appContext: NextPageContext) => {
-  console.log(appContext);
   const getContext = getRequestContext(appContext);
   const client = new Client(getContext);
 
