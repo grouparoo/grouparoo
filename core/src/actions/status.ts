@@ -1,9 +1,10 @@
-import { api, id, actionheroVersion, Action } from "actionhero";
+import { api, id, actionheroVersion, Action, task } from "actionhero";
 import path from "path";
 import { Setting } from "../models/Setting";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Status } from "../modules/status";
 import { ActionPermission } from "../models/Permission";
+import { getGrouparooRunMode } from "../modules/runMode";
 
 const packageJSON = require(path.join(__dirname, "..", "..", "package.json"));
 
@@ -32,6 +33,14 @@ export class PrivateStatus extends AuthenticatedAction {
     ).value;
 
     const samples = await Status.get();
+    const { leader } = await task.details();
+    const runMode = getGrouparooRunMode();
+
+    if (!leader && runMode === "cli:start") {
+      throw new Error(
+        `no leader for this Grouparoo cluster "${clusterName}" (${runMode})`
+      );
+    }
 
     return {
       clusterName,
@@ -40,8 +49,10 @@ export class PrivateStatus extends AuthenticatedAction {
       packageName: packageJSON.name,
       description: packageJSON.description,
       version: packageJSON.version,
+      runMode,
       uptime: new Date().getTime() - api.bootTime,
       metrics: samples,
+      leader,
     };
   }
 }
