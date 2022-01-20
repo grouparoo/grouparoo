@@ -13,7 +13,7 @@ export default function StatusSubscription(props) {
   useEffect(() => {
     if (router.pathname.match(/^\/session/)) return;
     statusHandler.getSamples(client);
-  }, [client, router.pathname, statusHandler]);
+  }, [client, router.pathname]);
 
   useRealtimeStream("system:status", subscriptionKey, (data) => {
     statusHandler.publish(data);
