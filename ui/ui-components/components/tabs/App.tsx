@@ -1,7 +1,13 @@
 import Tabs from "../Tabs";
 import { Models } from "../../utils/apiData";
 
-export default function AppTabs({ app }: { app: Models.AppType }) {
+export default function AppTabs({
+  app,
+  name,
+}: {
+  app: Models.AppType;
+  name: string;
+}) {
   const tabs = ["edit"];
 
   if (app.refreshQueryAvailable === true) {
@@ -10,7 +16,7 @@ export default function AppTabs({ app }: { app: Models.AppType }) {
 
   return (
     <div>
-      <Tabs name={app.name} draftType={app.type} tabs={tabs} />
+      <Tabs name={name} draftType={app.type} tabs={tabs} />
     </div>
   );
 }
