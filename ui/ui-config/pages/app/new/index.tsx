@@ -149,8 +149,6 @@ export default function Page(props) {
       "get",
       "/status/public",
       undefined,
-      undefined,
-      undefined,
       false
     );
 

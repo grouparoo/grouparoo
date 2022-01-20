@@ -11,8 +11,6 @@ export interface ApiHook {
     verb: Method,
     path: string,
     data?: AxiosRequestConfig["data"],
-    setter?: (response: T) => void,
-    setterKey?: string,
     useCache?: boolean
   ) => Promise<T>;
 }
@@ -26,8 +24,6 @@ export function UseApi(
     verb: Method,
     path: string,
     data: AxiosRequestConfig["data"] = {},
-    setter?: (response: T) => void,
-    setterKey?: string,
     useCache = process.env.NODE_ENV === "test" ? false : true
   ): Promise<T> {
     if (data === null || data === undefined) data = {};
@@ -44,13 +40,13 @@ export function UseApi(
         ctx?.res
       );
 
-      if (setter) {
-        if (setterKey) {
-          setter(apiResponse[setterKey]);
-        } else {
-          setter(apiResponse);
-        }
-      }
+      // if (setter) {
+      //   if (setterKey) {
+      //     setter(apiResponse[setterKey]);
+      //   } else {
+      //     setter(apiResponse);
+      //   }
+      // }
 
       return apiResponse;
     } catch (error) {

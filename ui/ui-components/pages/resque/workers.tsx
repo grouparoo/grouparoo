@@ -34,12 +34,10 @@ export default function ResqueWorkersList(props) {
       "get",
       `/resque/resqueDetails`,
       {},
-      null,
-      null,
       false
     );
     const { workerQueues: workerQueues }: Actions.ResqueLoadWorkerQueues =
-      await execApi("get", `/resque/loadWorkerQueues`, {}, null, null, false);
+      await execApi("get", `/resque/loadWorkerQueues`, {}, false);
     setLoading(false);
 
     const _workers: DisplayedWorker[] = [];

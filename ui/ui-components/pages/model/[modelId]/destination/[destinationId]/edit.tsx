@@ -94,8 +94,6 @@ export default function Page(props) {
       "get",
       `/destination/${destinationId}/connectionOptions`,
       { options: destination.options },
-      null,
-      null,
       false
     );
     if (response?.options) setConnectionOptions(response.options);

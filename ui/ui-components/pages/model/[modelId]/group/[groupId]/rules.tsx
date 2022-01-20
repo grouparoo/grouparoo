@@ -58,8 +58,6 @@ export default function Page(props) {
         "get",
         `/group/${group.id}/countComponentMembers`,
         { rules: localRules },
-        null,
-        null,
         useCache
       );
 
@@ -73,8 +71,6 @@ export default function Page(props) {
         "get",
         `/group/${group.id}/countPotentialMembers`,
         { rules: localRules },
-        null,
-        null,
         useCache
       );
     if (potentialMembersResponse) {

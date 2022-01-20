@@ -35,8 +35,6 @@ export default function ResqueDelayedList(props) {
         limit,
         offset,
       },
-      null,
-      null,
       false
     );
 

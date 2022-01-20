@@ -2,9 +2,6 @@ import { AxiosError } from "axios";
 import App from "next/app";
 import type { AppContext, AppProps } from "next/app";
 import { useMemo } from "react";
-
-import { UseApi } from "../hooks/useApi";
-
 import Layout from "../components/layouts/Main";
 import PageTransition from "../components/PageTransition";
 import StatusSubscription from "../components/StatusSubscription";
@@ -16,6 +13,7 @@ import "../eventHandlers";
 
 import { Actions } from "../utils/apiData";
 import { renderNestedContextProviders } from "../utils/contextHelper";
+import { Client } from "../client/client";
 
 export interface GrouparooNextAppProps {
   clusterName: Actions.NavigationList["clusterName"];
@@ -64,14 +62,18 @@ export default function GrouparooNextApp(
 }
 
 GrouparooNextApp.getInitialProps = async (appContext: AppContext) => {
-  const { execApi } = UseApi(appContext.ctx);
+  const getContext = () => ({
+    req: appContext.ctx.req,
+    res: appContext.ctx.res,
+  });
+  const client = new Client(getContext);
   let currentTeamMember: Partial<Actions.SessionView["teamMember"]> = {
     firstName: "",
     id: null,
   };
 
   try {
-    const navigationResponse: Actions.NavigationList = await execApi(
+    const navigationResponse: Actions.NavigationList = await client.action(
       "get",
       `/navigation`
     );
@@ -108,10 +110,12 @@ GrouparooNextApp.getInitialProps = async (appContext: AppContext) => {
       navigation: navigationResponse.navigation,
       clusterName: navigationResponse.clusterName,
       hydrationError,
+      client,
     };
   } catch (_error) {
     const { formattedErrorMessage, formattedErrorObject } = renderError(_error);
     return {
+      client,
       hydrationError: JSON.stringify({
         message: formattedErrorMessage,
         data: formattedErrorObject,

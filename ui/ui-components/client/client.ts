@@ -73,20 +73,26 @@ export class Client {
   serverToken: string;
   cache: ClientCache;
 
-  constructor() {
+  constructor(
+    private getRequestContext: () => {
+      req?: IncomingMessage;
+      res?: ServerResponse;
+    } = () => ({})
+  ) {
     this.apiVersion = process.env.API_VERSION || "v1";
     this.webUrl = process.env.WEB_URL || "";
     this.serverToken = process.env.SERVER_TOKEN;
     this.cache = new ClientCache();
   }
 
-  checkForLoggedIn({ code }, req?, res?) {
+  private checkForLoggedIn = ({ code }) => {
     if (code === "AUTHENTICATION_ERROR") {
       if (isBrowser()) {
         if (window.location.pathname !== "/session/sign-in") {
           window.location.href = `/session/sign-in?nextPage=${window.location.pathname}`;
         }
       } else {
+        const { req, res } = this.getRequestContext();
         if (req && res) {
           const requestPath = req.url.match("^[^?]*")[0];
           res.writeHead(302, {
@@ -99,6 +105,7 @@ export class Client {
       if (isBrowser()) {
         window.location.href = `/`;
       } else {
+        const { req, res } = this.getRequestContext();
         if (req && res) {
           res.writeHead(302, { Location: `/` });
           res.end();
@@ -107,29 +114,30 @@ export class Client {
     } else if (code === "AUTHORIZATION_ERROR") {
       // ok, it will be rendered on the page
     }
-  }
+  };
 
-  csrfToken() {
+  csrfToken = () => {
     if (globalThis?.localStorage) {
       return window.localStorage.getItem("session:csrfToken");
     }
-  }
+  };
 
-  async action<Response = any>(
+  action = async <Response = any>(
     verb: Method = "get",
     path: string,
     data: AxiosRequestConfig["data"] = {},
     useCache = true,
     uploadHandler?: UploadHandler,
-    req?: IncomingMessage,
-    res?: ServerResponse
-  ): Promise<Response> {
+    _req?: IncomingMessage,
+    _res?: ServerResponse
+  ): Promise<Response> => {
     const headers: AxiosRequestHeaders = {
       Accept: "application/json",
       "Content-Type": "application/json",
       "X-Grouparoo-Client": `${PackageJSON.name}-v${PackageJSON.version}`,
     };
 
+    const { req } = this.getRequestContext();
     if (req?.headers?.cookie) {
       headers["X-GROUPAROO-SERVER-TOKEN"] = this.serverToken;
       headers["cookie"] = req?.headers?.cookie;
@@ -210,7 +218,8 @@ export class Client {
       }
 
       if (error.response && error.response.data && error.response.data.error) {
-        this.checkForLoggedIn(error.response.data.error, req, res);
+        const { req, res } = this.getRequestContext();
+        this.checkForLoggedIn(error.response.data.error);
 
         throw new Error(
           error.response.data.error.message
@@ -221,5 +230,5 @@ export class Client {
         throw error;
       }
     }
-  }
+  };
 }

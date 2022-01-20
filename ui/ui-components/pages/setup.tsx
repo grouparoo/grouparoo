@@ -27,7 +27,7 @@ export default function Page(props) {
   );
 
   async function load() {
-    const response = await execApi("get", `/setupSteps`, {}, null, null, false);
+    const response = await execApi("get", `/setupSteps`, {}, false);
     if (response.setupSteps) {
       setSetupSteps(response.setupSteps);
       setupStepHandler.set(response.setupSteps);

@@ -48,8 +48,6 @@ export default function ResqueOverview(props) {
       "get",
       "/resque/resqueDetails",
       {},
-      undefined,
-      undefined,
       false
     );
 

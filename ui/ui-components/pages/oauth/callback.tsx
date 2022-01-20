@@ -22,7 +22,10 @@ export default function OauthCallbackPage(props) {
         grouparooUiEdition() !== "config"
       ) {
         router.replace(`/session/sign-in?requestId=${requestId}`);
-      } else if (response.oAuthRequest.type === "app" && window.opener) {
+      } else if (
+        response.oAuthRequest.type === "app" &&
+        typeof window?.opener !== "undefined"
+      ) {
         window.opener?.postMessage({ requestId });
         window.close();
       } else {
