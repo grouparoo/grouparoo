@@ -6,7 +6,7 @@ export default function AppTabs({
   name,
 }: {
   app: Models.AppType;
-  name: string;
+  name?: string;
 }) {
   const tabs = ["edit"];
 
@@ -16,7 +16,7 @@ export default function AppTabs({
 
   return (
     <div>
-      <Tabs name={name} draftType={app.type} tabs={tabs} />
+      <Tabs name={name ?? app.name} draftType={app.type} tabs={tabs} />
     </div>
   );
 }
