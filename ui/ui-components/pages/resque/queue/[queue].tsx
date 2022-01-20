@@ -7,10 +7,9 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import ResqueTabs from "../../../components/tabs/Resque";
 import LoadingButton from "../../../components/LoadingButton";
-import { ErrorHandler } from "../../../utils/errorHandler";
+import { errorHandler } from "../../../eventHandlers";
 
 export default function ResqueQueue(props) {
-  const { errorHandler }: { errorHandler: ErrorHandler } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [queue, setQueue] = useState(router.query.queue || "");

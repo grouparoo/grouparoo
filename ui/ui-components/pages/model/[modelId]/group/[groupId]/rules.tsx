@@ -1,36 +1,31 @@
+import { NextPageContext } from "next";
+import Head from "next/head";
 import { Fragment, useEffect, useState } from "react";
 import { Form, Table, Badge, Button } from "react-bootstrap";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
+import { errorHandler, successHandler } from "../../../../../eventHandlers";
 import { UseApi } from "../../../../../hooks/useApi";
 import StateBadge from "../../../../../components/badges/StateBadge";
 import LockedBadge from "../../../../../components/badges/LockedBadge";
-import Head from "next/head";
 import GroupTabs from "../../../../../components/tabs/Group";
 import DatePicker from "../../../../../components/DatePicker";
 import LoadingButton from "../../../../../components/LoadingButton";
 import { Models, Actions } from "../../../../../utils/apiData";
-import { ErrorHandler } from "../../../../../utils/errorHandler";
-import { SuccessHandler } from "../../../../../utils/successHandler";
 import { makeLocal } from "../../../../../utils/makeLocal";
 import PageHeader from "../../../../../components/PageHeader";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
-import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 
 export default function Page(props) {
   const {
     model,
-    errorHandler,
-    successHandler,
     properties,
     ruleLimit,
     ops,
     topLevelGroupRules,
   }: {
     model: Models.GrouparooModelType;
-    errorHandler: ErrorHandler;
-    successHandler: SuccessHandler;
     properties: Models.PropertyType[];
     ruleLimit: Actions.GroupsRuleOptions["ruleLimit"];
     ops: Actions.GroupsRuleOptions["ops"];

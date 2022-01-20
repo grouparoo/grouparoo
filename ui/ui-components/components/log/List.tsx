@@ -1,16 +1,16 @@
+import { NextPageContext } from "next";
+import { useRouter } from "next/router";
 import { useState } from "react";
+import { ButtonGroup, Button, Alert } from "react-bootstrap";
+import { errorHandler } from "../../eventHandlers";
 import { UseApi } from "../../hooks/useApi";
 import { updateURLParams, useOffset } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import { useRealtimeStream } from "../../hooks/useRealtimeStream";
 import EnterpriseLink from "../GrouparooLink";
-import { useRouter } from "next/router";
-import { ButtonGroup, Button, Alert } from "react-bootstrap";
 import Pagination from "../Pagination";
 import LoadingTable from "../LoadingTable";
 import { Models, Actions } from "../../utils/apiData";
-import { ErrorHandler } from "../../utils/errorHandler";
-import { NextPageContext } from "next";
 import LoadingButton from "../LoadingButton";
 
 const getOwnerId = (query: { [key: string]: string | string[] }) => {
@@ -19,7 +19,6 @@ const getOwnerId = (query: { [key: string]: string | string[] }) => {
 };
 
 export default function LogsList(props) {
-  const { errorHandler }: { errorHandler: ErrorHandler } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);

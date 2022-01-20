@@ -12,7 +12,7 @@ import "../components/Icons";
 
 import { WebAppContext } from "../contexts/webApp";
 
-import * as eventHandlers from "../eventHandlers";
+import "../eventHandlers";
 
 import { Actions } from "../utils/apiData";
 import { renderNestedContextProviders } from "../utils/contextHelper";
@@ -32,7 +32,6 @@ export default function GrouparooNextApp(
 
   const combinedProps = {
     ...pageProps,
-    ...eventHandlers,
     navigation: props.navigation,
     navigationMode: props.navigationMode,
     clusterName: props.clusterName,

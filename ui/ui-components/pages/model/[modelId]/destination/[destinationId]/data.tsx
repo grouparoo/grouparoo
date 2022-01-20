@@ -1,29 +1,26 @@
-import { useState, useRef } from "react";
-import { UseApi } from "../../../../../hooks/useApi";
-import { Typeahead } from "react-bootstrap-typeahead";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { NextPageContext } from "next";
 import { Row, Col, Form, Badge, Button, Table, Alert } from "react-bootstrap";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useState, useRef } from "react";
+import { Typeahead } from "react-bootstrap-typeahead";
+import { errorHandler, successHandler } from "../../../../../eventHandlers";
 import DestinationTabs from "../../../../../components/tabs/Destination";
 import LoadingButton from "../../../../../components/LoadingButton";
 import StateBadge from "../../../../../components/badges/StateBadge";
 import LockedBadge from "../../../../../components/badges/LockedBadge";
 import PageHeader from "../../../../../components/PageHeader";
-import { Models, Actions } from "../../../../../utils/apiData";
-import { ErrorHandler } from "../../../../../utils/errorHandler";
-import { SuccessHandler } from "../../../../../utils/successHandler";
+import { UseApi } from "../../../../../hooks/useApi";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
-import { NextPageContext } from "next";
+import DestinationSampleRecord from "../../../../../components/destination/DestinationSampleRecord";
+import { Actions, Models } from "../../../../../utils/apiData";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
-import DestinationSampleRecord from "../../../../../components/destination/DestinationSampleRecord";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Page(props) {
   const {
     model,
-    errorHandler,
-    successHandler,
     properties,
     mappingOptions,
     destinationTypeConversions,
@@ -32,8 +29,6 @@ export default function Page(props) {
     hydrationError,
   }: {
     model: Models.GrouparooModelType;
-    errorHandler: ErrorHandler;
-    successHandler: SuccessHandler;
     hydrationError: Error;
     properties: Models.PropertyType[];
     groups: Models.GroupType[];

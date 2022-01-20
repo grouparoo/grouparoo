@@ -1,20 +1,11 @@
-import { useEffect } from "react";
-import { useRealtimeStream } from "../hooks/useRealtimeStream";
-import { StatusHandler } from "../utils/statusHandler";
-import { ErrorHandler } from "../utils/errorHandler";
-import { UseApi } from "../hooks/useApi";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { errorHandler, statusHandler } from "../eventHandlers";
+import { useRealtimeStream } from "../hooks/useRealtimeStream";
+import { UseApi } from "../hooks/useApi";
 
 export default function StatusSubscription(props) {
   const router = useRouter();
-
-  const {
-    statusHandler,
-    errorHandler,
-  }: {
-    statusHandler: StatusHandler;
-    errorHandler: ErrorHandler;
-  } = props;
   const { execApi } = UseApi(props, errorHandler);
   const subscriptionKey = "status-subscription";
 

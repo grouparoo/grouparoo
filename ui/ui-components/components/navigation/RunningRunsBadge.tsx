@@ -1,13 +1,9 @@
 import { Badge } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import { StatusHandler } from "../../utils/statusHandler";
 import { Misc } from "../../utils/apiData";
+import { statusHandler } from "../../eventHandlers";
 
-export default function RunningRunsBadge({
-  statusHandler,
-}: {
-  statusHandler: StatusHandler;
-}) {
+export default function RunningRunsBadge() {
   const [pendingRuns, setPendingRuns] = useState(0);
 
   useEffect(() => {

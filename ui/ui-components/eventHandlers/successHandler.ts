@@ -1,4 +1,4 @@
-import { EventDispatcher } from "./eventDispatcher";
+import { EventDispatcher } from "../utils/eventDispatcher";
 
 export class SuccessHandler extends EventDispatcher<{ message: string }> {
   message: { message: string };

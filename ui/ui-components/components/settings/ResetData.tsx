@@ -1,16 +1,11 @@
 import { useState } from "react";
-import { UseApi } from "../../hooks/useApi";
 import { Card } from "react-bootstrap";
-import LoadingButton from "../LoadingButton";
+import { errorHandler, successHandler } from "../../eventHandlers";
+import { UseApi } from "../../hooks/useApi";
 import { Actions } from "../../utils/apiData";
-import { ErrorHandler } from "../../utils/errorHandler";
-import { SuccessHandler } from "../../utils/successHandler";
+import LoadingButton from "../LoadingButton";
 
 export default function ResetData(props) {
-  const {
-    errorHandler,
-    successHandler,
-  }: { errorHandler: ErrorHandler; successHandler: SuccessHandler } = props;
   const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
 

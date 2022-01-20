@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Row, Col, Table, Badge, Alert, Button, Card } from "react-bootstrap";
+import { Row, Col, Table, Badge, Alert, Card } from "react-bootstrap";
 import { UseApi } from "../../../../../hooks/useApi";
 import PageHeader from "../../../../../components/PageHeader";
 import StateBadge from "../../../../../components/badges/StateBadge";
@@ -12,8 +12,6 @@ import PropertyAddMultipleButton from "../../../../../components/property/AddMul
 import SourceTabs from "../../../../../components/tabs/Source";
 import Head from "next/head";
 import { Actions, Models } from "../../../../../utils/apiData";
-import { ErrorHandler } from "../../../../../utils/errorHandler";
-import { SuccessHandler } from "../../../../../utils/successHandler";
 import { formatTimestamp } from "../../../../../utils/formatTimestamp";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { NextPageContext } from "next";
@@ -22,16 +20,12 @@ import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 import ManagedCard from "../../../../../components/lib/ManagedCard";
 
 export default function Page({
-  errorHandler,
-  successHandler,
   model,
   source,
   totalSources,
   run,
   properties,
 }: {
-  errorHandler: ErrorHandler;
-  successHandler: SuccessHandler;
   model: Models.GrouparooModelType;
   source: Models.SourceType;
   totalSources: number;
@@ -184,11 +178,7 @@ export default function Page({
                 </Table>
               )}
               <div>
-                <PropertyAddButton
-                  source={source}
-                  errorHandler={errorHandler}
-                  successHandler={successHandler}
-                />
+                <PropertyAddButton source={source} />
                 <PropertyAddMultipleButton source={source} />
               </div>
             </Card.Body>
@@ -314,11 +304,7 @@ export default function Page({
                     )}
                   </Row>
                 ) : (
-                  <ScheduleAddButton
-                    errorHandler={errorHandler}
-                    successHandler={successHandler}
-                    source={source}
-                  />
+                  <ScheduleAddButton source={source} />
                 )
               ) : (
                 <div>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 import { Alert, Button, ButtonGroup, Col, Row } from "react-bootstrap";
+import { errorHandler } from "../eventHandlers";
 import StateBadge from "../components/badges/StateBadge";
 import LoadingTable from "../components/LoadingTable";
 import Pagination from "../components/Pagination";
@@ -11,7 +12,6 @@ import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { UseApi } from "../hooks/useApi";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import { Models, Actions } from "../utils/apiData";
-import { ErrorHandler } from "../utils/errorHandler";
 import { capitalize } from "../utils/languageHelper";
 import { formatTimestamp } from "../utils/formatTimestamp";
 import { DurationTime } from "../components/DurationTime";
@@ -19,9 +19,6 @@ import { DurationTime } from "../components/DurationTime";
 const states = ["all", "pending", "failed", "complete"];
 
 export default function Page(props) {
-  const {
-    errorHandler,
-  }: { errorHandler: ErrorHandler; groups: Models.GroupType[] } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);

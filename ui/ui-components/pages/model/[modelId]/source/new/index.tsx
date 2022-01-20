@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useEffect, useMemo, useState } from "react";
 import { Form, Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
-import { ErrorHandler } from "../../../../../utils/errorHandler";
+import { errorHandler } from "../../../../../eventHandlers";
 import { UseApi } from "../../../../../hooks/useApi";
 import AppSelectorList from "../../../../../components/AppSelectorList";
 import { Actions, Models } from "../../../../../utils/apiData";
@@ -10,13 +10,11 @@ import LinkButton from "../../../../../components/LinkButton";
 
 export default function Page(props) {
   const {
-    errorHandler,
     connectionApps,
     model,
     isCreatingPrimarySource,
     isPrimarySourceNotReady,
   }: {
-    errorHandler: ErrorHandler;
     connectionApps: Actions.SourceConnectionApps["connectionApps"];
     model: Actions.ModelView["model"];
     primarySource: Models.SourceType;

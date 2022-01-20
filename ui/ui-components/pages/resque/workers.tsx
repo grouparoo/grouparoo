@@ -5,8 +5,7 @@ import Head from "next/head";
 import Link from "next/link";
 import ResqueTabs from "../../components/tabs/Resque";
 import LoadingButton from "../../components/LoadingButton";
-import { ErrorHandler } from "../../utils/errorHandler";
-import { SuccessHandler } from "../../utils/successHandler";
+import { errorHandler, successHandler } from "../../eventHandlers";
 import { Actions } from "../../utils/apiData";
 
 type DisplayedWorker = {
@@ -21,10 +20,6 @@ type DisplayedWorker = {
 };
 
 export default function ResqueWorkersList(props) {
-  const {
-    errorHandler,
-    successHandler,
-  }: { errorHandler: ErrorHandler; successHandler: SuccessHandler } = props;
   const { execApi } = UseApi(props, errorHandler);
   const [workers, setWorkers] = useState<DisplayedWorker[]>([]);
   const [loading, setLoading] = useState(false);

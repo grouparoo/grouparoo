@@ -1,6 +1,6 @@
-import { ErrorHandler } from "../../utils/errorHandler";
-import { SuccessHandler } from "../../utils/successHandler";
-import { SessionHandler } from "../../utils/sessionHandler";
+import { ErrorHandler } from "../../eventHandlers/errorHandler";
+import { SuccessHandler } from "../../eventHandlers/successHandler";
+import { SessionHandler } from "../../eventHandlers/sessionHandler";
 
 const commonProps = {
   errorHandler: new ErrorHandler(),

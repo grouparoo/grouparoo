@@ -1,4 +1,4 @@
-import { ErrorHandler } from "./errorHandler";
+import { ErrorHandler } from "../eventHandlers/errorHandler";
 
 export function ensureMatchingModel(
   objType: string,

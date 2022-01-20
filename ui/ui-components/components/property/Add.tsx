@@ -1,16 +1,13 @@
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { UseApi } from "../../hooks/useApi";
 import LoadingButton from "../LoadingButton";
-import { useRouter } from "next/router";
 import { Actions, Models } from "../../utils/apiData";
-import { ErrorHandler } from "../../utils/errorHandler";
+import { errorHandler } from "../../eventHandlers";
 import StateBadge from "../badges/StateBadge";
 
 export default function PropertyAddButton(props) {
-  const {
-    errorHandler,
-    source,
-  }: { errorHandler: ErrorHandler; source: Models.SourceType } = props;
+  const { source }: { source: Models.SourceType } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [loading, setLoading] = useState(false);

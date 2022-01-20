@@ -3,14 +3,9 @@ import { useState } from "react";
 import { Card } from "react-bootstrap";
 import LoadingButton from "../LoadingButton";
 import { Actions } from "../../utils/apiData";
-import { ErrorHandler } from "../../utils/errorHandler";
-import { SuccessHandler } from "../../utils/successHandler";
+import { errorHandler, successHandler } from "../../eventHandlers";
 
 export default function ImportAndUpdateRecord(props) {
-  const {
-    errorHandler,
-    successHandler,
-  }: { errorHandler: ErrorHandler; successHandler: SuccessHandler } = props;
   const [loading, setLoading] = useState(false);
   const { execApi } = UseApi(props, errorHandler);
 

@@ -1,21 +1,19 @@
+import { NextPageContext } from "next";
 import Head from "next/head";
-import { useState } from "react";
-import { UseApi } from "../../../../hooks/useApi";
-import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { Form } from "react-bootstrap";
 import LoadingButton from "../../../../components/LoadingButton";
+import { errorHandler } from "../../../../eventHandlers";
 import { Actions } from "../../../../utils/apiData";
-import { ErrorHandler } from "../../../../utils/errorHandler";
+import { UseApi } from "../../../../hooks/useApi";
 import ModelBadge from "../../../../components/badges/ModelBadge";
-import { NextPageContext } from "next";
 
 export default function NewGroup(props) {
   const {
-    errorHandler,
     model,
   }: {
-    errorHandler: ErrorHandler;
     model: Actions.ModelView["model"];
   } = props;
   const router = useRouter();

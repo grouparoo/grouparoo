@@ -5,11 +5,10 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { Form } from "react-bootstrap";
 import LoadingButton from "@grouparoo/ui-components/components/LoadingButton";
+import { errorHandler } from "@grouparoo/ui-components/eventHandlers";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
-import { ErrorHandler } from "../../../ui-components/utils/errorHandler";
 
 export default function Page(props) {
-  const { errorHandler }: { errorHandler: ErrorHandler } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const { handleSubmit, register } = useForm();

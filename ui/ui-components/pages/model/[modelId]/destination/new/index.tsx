@@ -1,20 +1,18 @@
 import Head from "next/head";
-import { useState } from "react";
-import { UseApi } from "../../../../../hooks/useApi";
-import { Form, Alert } from "react-bootstrap";
-import AppSelectorList from "../../../../../components/AppSelectorList";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import { Form, Alert } from "react-bootstrap";
+import { errorHandler } from "../../../../../eventHandlers";
+import { UseApi } from "../../../../../hooks/useApi";
+import AppSelectorList from "../../../../../components/AppSelectorList";
 import { Actions } from "../../../../../utils/apiData";
 import LinkButton from "../../../../../components/LinkButton";
-import { ErrorHandler } from "../../../../../utils/errorHandler";
 
 export default function Page(props) {
   const {
-    errorHandler,
     connectionApps,
     model,
   }: {
-    errorHandler: ErrorHandler;
     connectionApps: Actions.DestinationConnectionApps["connectionApps"];
     model: Actions.ModelView["model"];
   } = props;

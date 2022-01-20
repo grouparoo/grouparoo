@@ -1,25 +1,23 @@
+import { NextPageContext } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useState, Fragment, useEffect } from "react";
 import { UseApi } from "../../../../../hooks/useApi";
 import { Row, Col, Card } from "react-bootstrap";
 import LoadingButton from "../../../../../components/LoadingButton";
 import AppIcon from "../../../../../components/AppIcon";
-import { useRouter } from "next/router";
+import { errorHandler } from "../../../../../eventHandlers";
 import { humanizePluginName } from "../../../../../utils/languageHelper";
 import { Actions } from "../../../../../utils/apiData";
-import { ErrorHandler } from "../../../../../utils/errorHandler";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import AppBadge from "../../../../../components/badges/AppBadge";
-import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
-    errorHandler,
     connectionApps,
     model,
     isPrimarySourceNotReady,
   }: {
-    errorHandler: ErrorHandler;
     connectionApps: Actions.SourceConnectionApps["connectionApps"];
     model: Actions.ModelView["model"];
     isPrimarySourceNotReady: boolean;

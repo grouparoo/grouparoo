@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { UseApi } from "../../../../../hooks/useApi";
 import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { useRouter } from "next/router";
+import { NextPageContext } from "next";
 import Link from "next/link";
 import Head from "next/head";
 import PageHeader from "../../../../../components/PageHeader";
@@ -11,12 +11,14 @@ import LockedBadge from "../../../../../components/badges/LockedBadge";
 import DestinationTabs from "../../../../../components/tabs/Destination";
 import LoadingButton from "../../../../../components/LoadingButton";
 import Loader from "../../../../../components/Loader";
+import {
+  destinationHandler,
+  errorHandler,
+  successHandler,
+} from "../../../../../eventHandlers";
 import { Models, Actions } from "../../../../../utils/apiData";
-import { ErrorHandler } from "../../../../../utils/errorHandler";
-import { SuccessHandler } from "../../../../../utils/successHandler";
-import { DestinationHandler } from "../../../../../utils/destinationHandler";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
-import { NextPageContext } from "next";
+import { UseApi } from "../../../../../hooks/useApi";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 import { useDebouncedCallback } from "../../../../../hooks/useDebouncedCallback";
@@ -24,15 +26,9 @@ import { useDebouncedCallback } from "../../../../../hooks/useDebouncedCallback"
 export default function Page(props) {
   const {
     model,
-    errorHandler,
-    successHandler,
-    destinationHandler,
     environmentVariableOptions,
   }: {
     model: Models.GrouparooModelType;
-    errorHandler: ErrorHandler;
-    successHandler: SuccessHandler;
-    destinationHandler: DestinationHandler;
     environmentVariableOptions: Actions.AppOptions["environmentVariableOptions"];
   } = props;
   const router = useRouter();

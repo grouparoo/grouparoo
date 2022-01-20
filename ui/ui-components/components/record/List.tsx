@@ -4,6 +4,7 @@ import { Form, Row, Col, Badge, Button, ButtonGroup } from "react-bootstrap";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import type { NextPageContext } from "next";
+import { errorHandler, recordsHandler } from "../../eventHandlers";
 import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
@@ -14,18 +15,12 @@ import { Models, Actions } from "../../utils/apiData";
 import ArrayRecordPropertyList from "./ArrayRecordPropertyList";
 import StateBadge from "../badges/StateBadge";
 import { formatTimestamp } from "../../utils/formatTimestamp";
-import { ErrorHandler } from "../../utils/errorHandler";
-import { RecordsHandler } from "../../utils/recordsHandler";
 
 export default function RecordsList(props) {
   const {
-    errorHandler,
-    recordsHandler,
     properties,
     modelName,
   }: {
-    errorHandler: ErrorHandler;
-    recordsHandler: RecordsHandler;
     properties: Models.PropertyType[];
     modelName?: string;
   } = props;

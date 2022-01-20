@@ -16,12 +16,7 @@ import { truncate } from "../utils/truncate";
 import LinkButton from "./LinkButton";
 import { grouparooUiEdition } from "../utils/uiEdition";
 import { useWebAppContext } from "../contexts/webApp";
-import {
-  errorHandler,
-  sessionHandler,
-  setupStepHandler,
-  statusHandler,
-} from "../eventHandlers";
+import { errorHandler, sessionHandler } from "../eventHandlers";
 
 export const navLiStyle: React.CSSProperties = {
   marginTop: 16,
@@ -184,10 +179,7 @@ export default function Navigation(props) {
         </div>
 
         {!navigationMode.includes("unauthenticated") && (
-          <SetupStepsNavProgressBar
-            execApi={execApi}
-            setupStepHandler={setupStepHandler}
-          />
+          <SetupStepsNavProgressBar execApi={execApi} />
         )}
 
         <div
@@ -209,9 +201,7 @@ export default function Navigation(props) {
                             {nav.title === "Runs" ? (
                               <>
                                 {" "}
-                                <RunningRunsBadge
-                                  statusHandler={statusHandler}
-                                />
+                                <RunningRunsBadge />
                               </>
                             ) : null}
                           </>
@@ -267,13 +257,11 @@ export default function Navigation(props) {
                             {!expandPlatformMenu ? (
                               <ResqueFailedCountBadge
                                 navigationMode={navigationMode}
-                                statusHandler={statusHandler}
                               />
                             ) : null}
                             {!expandPlatformMenu ? (
                               <UnreadNotificationsBadge
                                 navigationMode={navigationMode}
-                                statusHandler={statusHandler}
                               />
                             ) : null}
                           </span>
@@ -302,14 +290,12 @@ export default function Navigation(props) {
                                       nav.title === "Notifications" ? (
                                         <UnreadNotificationsBadge
                                           navigationMode={navigationMode}
-                                          statusHandler={statusHandler}
                                         />
                                       ) : null}
                                       {expandPlatformMenu &&
                                       nav.title === "Resque" ? (
                                         <ResqueFailedCountBadge
                                           navigationMode={navigationMode}
-                                          statusHandler={statusHandler}
                                         />
                                       ) : null}
                                     </li>
@@ -417,9 +403,7 @@ export default function Navigation(props) {
                                   {nav.title === "Runs" ? (
                                     <>
                                       {" "}
-                                      <RunningRunsBadge
-                                        statusHandler={statusHandler}
-                                      />
+                                      <RunningRunsBadge />
                                     </>
                                   ) : null}
                                 </>

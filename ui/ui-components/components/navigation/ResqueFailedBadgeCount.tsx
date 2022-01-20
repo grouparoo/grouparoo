@@ -1,13 +1,11 @@
 import { Badge } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import { StatusHandler } from "../../utils/statusHandler";
+import { statusHandler } from "../../eventHandlers";
 import { Misc } from "../../utils/apiData";
 
 export default function ResqueFailedCountBadge({
-  statusHandler,
   navigationMode,
 }: {
-  statusHandler: StatusHandler;
   navigationMode: string;
 }) {
   const [resqueFailedCount, setResqueFailedCount] = useState(0);

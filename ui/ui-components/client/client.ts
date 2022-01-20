@@ -6,9 +6,9 @@ import Axios, {
 } from "axios";
 import type { IncomingMessage, ServerResponse } from "http";
 
+import { UploadHandler } from "../eventHandlers/uploadHandler";
 import { isBrowser } from "../utils/isBrowser";
 import PackageJSON from "../package.json";
-import { UploadHandler } from "../utils/uploadHandler";
 
 interface ClientCacheObject {
   locked: boolean;

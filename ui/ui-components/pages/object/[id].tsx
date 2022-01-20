@@ -1,23 +1,18 @@
-import Loader from "../../components/Loader";
-import { useEffect, useState } from "react";
-import Link from "../../components/GrouparooLink";
 import { useRouter } from "next/router";
+import { singular } from "pluralize";
+import { useEffect, useState } from "react";
+import { Card } from "react-bootstrap";
+import Loader from "../../components/Loader";
+import Link from "../../components/GrouparooLink";
+import { errorHandler } from "../../eventHandlers";
 import { UseApi } from "../../hooks/useApi";
 import { Actions } from "../../utils/apiData";
-import { Card } from "react-bootstrap";
-import { singular } from "pluralize";
-import { ErrorHandler } from "../../utils/errorHandler";
 import { grouparooUiEdition } from "../../utils/uiEdition";
 
 const editPagesForCommunityEdition: readonly string[] = ["records"];
 
 export default function FindObject(props) {
   const router = useRouter();
-  const {
-    errorHandler,
-  }: {
-    errorHandler: ErrorHandler;
-  } = props;
   const { execApi } = UseApi(props, errorHandler);
   const [error, setError] = useState<string>(null);
   const [results, setResults] = useState<{ name: string; href: string }[]>();

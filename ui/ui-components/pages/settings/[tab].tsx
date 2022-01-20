@@ -10,19 +10,14 @@ import ImportAndUpdateAllRecords from "../../components/settings/ImportAndUpdate
 import ResetCluster from "../../components/settings/ResetCluster";
 import ResetData from "../../components/settings/ResetData";
 import ResetCache from "../../components/settings/ResetCache";
-import { ErrorHandler } from "../../utils/errorHandler";
-import { SuccessHandler } from "../../utils/successHandler";
+import { errorHandler, successHandler } from "../../eventHandlers";
 
 const settingsWhichTriggerInterfaceReload = [["core", "cluster-name"]];
 
 export default function Page(props) {
   const {
-    errorHandler,
-    successHandler,
     tab,
   }: {
-    errorHandler: ErrorHandler;
-    successHandler: SuccessHandler;
     tab: string;
   } = props;
   const router = useRouter();

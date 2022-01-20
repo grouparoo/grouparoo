@@ -3,18 +3,16 @@ import { Row, Col, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { errorHandler } from "@grouparoo/ui-components/eventHandlers";
 import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
 import LoadingButton from "@grouparoo/ui-components/components/LoadingButton";
-import { ErrorHandler } from "../../../ui-components/utils/errorHandler";
 
 export default function SignInPage(props) {
   const {
     clusterName,
-    errorHandler,
   }: {
     clusterName: any;
-    errorHandler: ErrorHandler;
   } = props;
   const { execApi } = UseApi(props, errorHandler);
   const { handleSubmit, register } = useForm();

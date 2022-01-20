@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Toast } from "react-bootstrap";
-import { ErrorHandler } from "../../utils/errorHandler";
-import { SuccessHandler } from "../../utils/successHandler";
+import { ErrorHandler } from "../../eventHandlers/errorHandler";
+import { SuccessHandler } from "../../eventHandlers/successHandler";
 
 const secondsToShow = 1000 * 4; // show toasts for 4 seconds before hiding
 const subscriptionKey = "grouparoo-toast";

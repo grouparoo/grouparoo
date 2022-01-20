@@ -6,20 +6,13 @@ import { useRouter } from "next/router";
 import { Form, Card } from "react-bootstrap";
 import LoadingButton from "../../components/LoadingButton";
 import { Actions } from "../../utils/apiData";
-import { ErrorHandler } from "../../utils/errorHandler";
-import { SuccessHandler } from "../../utils/successHandler";
-import { SessionHandler } from "../../utils/sessionHandler";
+import {
+  errorHandler,
+  sessionHandler,
+  successHandler,
+} from "../../eventHandlers";
 
 export default function TeamInitializePage(props) {
-  const {
-    errorHandler,
-    successHandler,
-    sessionHandler,
-  }: {
-    errorHandler: ErrorHandler;
-    successHandler: SuccessHandler;
-    sessionHandler: SessionHandler;
-  } = props;
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const { handleSubmit, register } = useForm();

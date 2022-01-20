@@ -1,31 +1,27 @@
 import Head from "next/head";
+import { useState } from "react";
+import { Row, Col } from "react-bootstrap";
 import RunsList from "@grouparoo/ui-components/components/runs/List";
 import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
-import { useState } from "react";
 import SourceTabs from "@grouparoo/ui-components/components/tabs/Source";
 import PageHeader from "@grouparoo/ui-components/components/PageHeader";
 import StateBadge from "@grouparoo/ui-components/components/badges/StateBadge";
 import LockedBadge from "@grouparoo/ui-components/components/badges/LockedBadge";
 import ModelBadge from "@grouparoo/ui-components/components/badges/ModelBadge";
-import { Row, Col } from "react-bootstrap";
-import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
-import { SuccessHandler } from "@grouparoo/ui-components/utils/successHandler";
-import { RunsHandler } from "@grouparoo/ui-components/utils/runsHandler";
+import {
+  errorHandler,
+  runsHandler,
+  successHandler,
+} from "@grouparoo/ui-components/eventHandlers";
 import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
 import LoadingButton from "@grouparoo/ui-components/components/LoadingButton";
 import { ensureMatchingModel } from "@grouparoo/ui-components/utils/ensureMatchingModel";
 
 export default function Page(props) {
   const {
-    errorHandler,
-    successHandler,
-    runsHandler,
     source,
     model,
   }: {
-    errorHandler: ErrorHandler;
-    successHandler: SuccessHandler;
-    runsHandler: RunsHandler;
     source: Models.SourceType;
     model: Models.GrouparooModelType;
   } = props;

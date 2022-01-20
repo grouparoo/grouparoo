@@ -1,26 +1,22 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useState } from "react";
-import { UseApi } from "../../hooks/useApi";
 import { useForm } from "react-hook-form";
 import { Form } from "react-bootstrap";
 import LoadingButton from "../../components/LoadingButton";
-import { useRouter } from "next/router";
+import {
+  errorHandler,
+  successHandler,
+  teamMemberHandler,
+} from "../../eventHandlers";
+import { UseApi } from "../../hooks/useApi";
 import { Actions, Models } from "../../utils/apiData";
-import { ErrorHandler } from "../../utils/errorHandler";
-import { TeamMemberHandler } from "../../utils/teamMembersHandler";
-import { SuccessHandler } from "../../utils/successHandler";
 import { grouparooUiEdition } from "../../utils/uiEdition";
 
 export default function Page(props) {
   const {
-    errorHandler,
-    successHandler,
-    teamMemberHandler,
     teams,
   }: {
-    errorHandler: ErrorHandler;
-    successHandler: SuccessHandler;
-    teamMemberHandler: TeamMemberHandler;
     teams: Models.TeamType[];
   } = props;
   const router = useRouter();
