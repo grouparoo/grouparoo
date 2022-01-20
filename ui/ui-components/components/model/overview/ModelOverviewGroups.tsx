@@ -16,7 +16,9 @@ const GroupInfo: React.FC<{ group: Models.GroupType }> = ({ group }) => {
           grouparooUiEdition() === "community" ? "members" : "rules"
         }`}
       />
-      <div>Records: {group.recordsCount || 0}</div>
+      {grouparooUiEdition() !== "config" && (
+        <div>Records: {group.recordsCount || 0}</div>
+      )}
     </EntityInfoContainer>
   );
 };
