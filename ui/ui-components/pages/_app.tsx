@@ -14,6 +14,7 @@ import "../eventHandlers";
 import { Actions } from "../utils/apiData";
 import { renderNestedContextProviders } from "../utils/contextHelper";
 import { Client } from "../client/client";
+import { ApiContext, useApiInitialState } from "../contexts/api";
 
 export interface GrouparooNextAppProps {
   clusterName: Actions.NavigationList["clusterName"];
@@ -21,12 +22,13 @@ export interface GrouparooNextAppProps {
   hydrationError?: string;
   navigation: Actions.NavigationList["navigation"];
   navigationMode: Actions.NavigationList["navigationMode"];
+  client?: Client;
 }
 
 export default function GrouparooNextApp(
   props: AppProps & GrouparooNextAppProps & { err: any }
 ) {
-  const { Component, pageProps, err, hydrationError } = props;
+  const { Component, pageProps, err, hydrationError, client } = props;
 
   const combinedProps = {
     ...pageProps,
@@ -46,7 +48,10 @@ export default function GrouparooNextApp(
   }, [props]);
 
   return renderNestedContextProviders(
-    [[WebAppContext, pageContext]],
+    [
+      [WebAppContext, pageContext],
+      [ApiContext, useApiInitialState(client)],
+    ],
     <>
       <PageTransition />
 

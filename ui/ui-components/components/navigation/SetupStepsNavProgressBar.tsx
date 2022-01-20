@@ -1,12 +1,11 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Actions, Models } from "../../utils/apiData";
-import { useApi } from "../../hooks/useApi2";
-import { SetupStepHandler } from "../../eventHandlers/setupStepsHandler";
 import { useEffect, useState } from "react";
 import { Button, Col, ProgressBar, Row } from "react-bootstrap";
+import { useApi } from "../../contexts/api";
 import { setupStepHandler } from "../../eventHandlers";
+import { Actions, Models } from "../../utils/apiData";
 
 export default function SetupStepsNavProgressBar() {
   const { client } = useApi();
