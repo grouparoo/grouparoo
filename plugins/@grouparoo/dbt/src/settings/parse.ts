@@ -123,10 +123,10 @@ const parseProject: ParseProjectMethod = async (args) => {
   }
 
   const contents = fs.readFileSync(projectPath);
-  const document = yaml.load(contents);
+  const document = yaml.load(contents.toString());
   // console.log({ project: document });
 
-  profile = document.profile;
+  profile = (document as any).profile;
   if (!profile) {
     throw new Error(
       `Unknown profile value in project (${projectPath}) yaml. ${instructions}`
@@ -162,7 +162,7 @@ const parseProfile: ParseProfileMethod = async (
   }
 
   const contents = fs.readFileSync(profilePath);
-  const document = yaml.load(contents);
+  const document = yaml.load(contents.toString());
   // console.log({ profile: document });
 
   const settings = document[profile];
