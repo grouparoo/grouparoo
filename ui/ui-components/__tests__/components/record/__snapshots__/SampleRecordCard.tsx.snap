@@ -79,7 +79,9 @@ exports[`SampleRecordCard should render with 1 record 1`] = `
               class="btn btn-outline-primary btn-sm"
               type="button"
             >
-              View all Records
+              View All 
+              1
+               Records
             </button>
           </a>
           
@@ -219,17 +221,6 @@ exports[`SampleRecordCard should render with 1 record in config mode 1`] = `
               type="button"
             >
               View Record
-            </button>
-          </a>
-            
-          <a
-            href="/model/test-model/records"
-          >
-            <button
-              class="btn btn-outline-primary btn-sm"
-              type="button"
-            >
-              View all Records
             </button>
           </a>
           
