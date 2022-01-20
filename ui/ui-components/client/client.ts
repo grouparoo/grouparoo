@@ -6,9 +6,9 @@ import Axios, {
 } from "axios";
 import type { IncomingMessage, ServerResponse } from "http";
 
-import { UploadHandler } from "../eventHandlers/uploadHandler";
 import { isBrowser } from "../utils/isBrowser";
 import PackageJSON from "../package.json";
+import { errorHandler, uploadHandler } from "../eventHandlers";
 
 interface ClientCacheObject {
   locked: boolean;
@@ -68,10 +68,10 @@ export class ClientCache {
 }
 
 export class Client {
-  apiVersion: string;
-  webUrl: string;
-  serverToken: string;
-  cache: ClientCache;
+  private apiVersion: string;
+  private webUrl: string;
+  private serverToken: string;
+  private cache: ClientCache;
 
   constructor(
     private getRequestContext: () => {
@@ -116,21 +116,26 @@ export class Client {
     }
   };
 
-  csrfToken = () => {
+  private csrfToken = () => {
     if (globalThis?.localStorage) {
       return window.localStorage.getItem("session:csrfToken");
     }
   };
 
-  action = async <Response = any>(
+  private optionDefaults = {
+    useCache: true,
+    errorHandler,
+    uploadHandler,
+  };
+
+  public action = async <Response = any>(
     verb: Method = "get",
     path: string,
     data: AxiosRequestConfig["data"] = {},
-    useCache = true,
-    uploadHandler?: UploadHandler,
-    _req?: IncomingMessage,
-    _res?: ServerResponse
+    options: Partial<typeof this.optionDefaults> = {}
   ): Promise<Response> => {
+    options = { ...this.optionDefaults, ...options };
+
     const headers: AxiosRequestHeaders = {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -141,7 +146,7 @@ export class Client {
     if (req?.headers?.cookie) {
       headers["X-GROUPAROO-SERVER-TOKEN"] = this.serverToken;
       headers["cookie"] = req?.headers?.cookie;
-      useCache = false; // do not ever cache responses on the server
+      options.useCache = false; // do not ever cache responses on the server
     }
 
     const config: AxiosRequestConfig = {
@@ -155,7 +160,7 @@ export class Client {
         const uploadPercentage = Math.round(
           (progressEvent.loaded / progressEvent.total) * 100
         );
-        return uploadHandler ? uploadHandler.set({ uploadPercentage }) : null;
+        return options.uploadHandler.set({ uploadPercentage });
       },
     };
 
@@ -185,7 +190,7 @@ export class Client {
     }
 
     let unlock: Function;
-    if (config.method === "get" && useCache) {
+    if (config.method === "get" && options.useCache) {
       const { cacheData, unlock: _unlock } = await this.cache.get(
         config.url + JSON.stringify(data)
       );
@@ -218,15 +223,17 @@ export class Client {
       }
 
       if (error.response && error.response.data && error.response.data.error) {
-        const { req, res } = this.getRequestContext();
         this.checkForLoggedIn(error.response.data.error);
 
-        throw new Error(
-          error.response.data.error.message
-            ? error.response.data.error.message
-            : error.response.data.error
-        );
+        const err =
+          error.response?.data?.error?.message ??
+          error.response?.data?.error ??
+          error;
+
+        options.errorHandler.set({ message: err });
+        throw new Error(err);
       } else {
+        options.errorHandler.set({ message: error });
         throw error;
       }
     }

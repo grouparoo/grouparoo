@@ -13,6 +13,9 @@ import { formatTimestamp } from "../../utils/formatTimestamp";
 import { ImportRecordPropertiesDiff, ImportGroupsDiff } from "./Diff";
 import StateBadge from "../badges/StateBadge";
 import { capitalize } from "../../utils/languageHelper";
+import { NextPageContext } from "next";
+import { getRequestContext, useApi } from "../../contexts/api";
+import { Client } from "../../client/client";
 
 const states = [
   "all",
@@ -28,7 +31,7 @@ type ImportStateOption = typeof states[number];
 export default function ImportList(props) {
   const { groups }: { groups: Models.GroupType[] } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
   const [imports, setImports] = useState<Models.ImportType[]>(props.imports);
   const [total, setTotal] = useState(props.total);
@@ -54,13 +57,17 @@ export default function ImportList(props) {
     updateURLParams(router, { offset, state });
     setLoading(true);
 
-    const response: Actions.ImportsList = await execApi("get", `/imports`, {
-      limit,
-      offset,
-      creatorId,
-      recordId,
-      state: state === "all" ? undefined : state,
-    });
+    const response: Actions.ImportsList = await client.action(
+      "get",
+      `/imports`,
+      {
+        limit,
+        offset,
+        creatorId,
+        recordId,
+        state: state === "all" ? undefined : state,
+      }
+    );
     setLoading(false);
     if (response?.imports) {
       setImports(response.imports);
@@ -214,11 +221,12 @@ export default function ImportList(props) {
   );
 }
 
-ImportList.hydrate = async (ctx) => {
-  const { execApi } = UseApi(ctx);
+ImportList.hydrate = async (ctx: NextPageContext) => {
+  const getContext = getRequestContext(ctx);
+  const client = new Client(getContext);
   const { creatorId, limit, offset, state, recordId } = ctx.query;
 
-  const { imports, total } = await execApi("get", `/imports`, {
+  const { imports, total } = await client.action("get", `/imports`, {
     limit,
     offset,
     creatorId,
@@ -226,7 +234,7 @@ ImportList.hydrate = async (ctx) => {
     state: state === "all" ? undefined : state,
   });
 
-  const { groups } = await execApi("get", `/groups`);
+  const { groups } = await client.action("get", `/groups`);
   return { groups, imports, total };
 };
 

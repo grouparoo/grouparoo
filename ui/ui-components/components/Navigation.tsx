@@ -6,7 +6,6 @@ import {
   FontAwesomeIcon,
   FontAwesomeIconProps,
 } from "@fortawesome/react-fontawesome";
-import { UseApi } from "../hooks/useApi";
 import SetupStepsNavProgressBar from "./navigation/SetupStepsNavProgressBar";
 import RunningRunsBadge from "./navigation/RunningRunsBadge";
 import ResqueFailedCountBadge from "./navigation/ResqueFailedBadgeCount";

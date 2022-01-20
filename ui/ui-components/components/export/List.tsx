@@ -1,5 +1,4 @@
 import { Fragment, useState } from "react";
-import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import Link from "next/link";
@@ -15,6 +14,10 @@ import { capitalize } from "../../utils/languageHelper";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 import StateBadge from "../badges/StateBadge";
 import { DurationTime } from "../DurationTime";
+import { getRequestContext, useApi } from "../../contexts/api";
+import { Client } from "../../client/client";
+import { AppContext } from "next/app";
+import { NextPageContext } from "next";
 
 const states = [
   "all",
@@ -28,7 +31,7 @@ const states = [
 export default function ExportsList(props) {
   const { groups }: { groups: Models.GroupType[] } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
   const [_exports, setExports] = useState<Models.ExportType[]>(props._exports);
   const [total, setTotal] = useState<number>(props.total);
@@ -54,14 +57,18 @@ export default function ExportsList(props) {
   async function load() {
     updateURLParams(router, { state, offset });
     setLoading(true);
-    const response: Actions.ExportsList = await execApi("get", `/exports`, {
-      limit,
-      offset,
-      state: state === "all" ? undefined : state,
-      recordId,
-      destinationId,
-      exportProcessorId,
-    });
+    const response: Actions.ExportsList = await client.action(
+      "get",
+      `/exports`,
+      {
+        limit,
+        offset,
+        state: state === "all" ? undefined : state,
+        recordId,
+        destinationId,
+        exportProcessorId,
+      }
+    );
     setLoading(false);
     if (response?.exports) {
       setExports(response.exports);
@@ -269,17 +276,21 @@ export default function ExportsList(props) {
   );
 }
 
-ExportsList.hydrate = async (ctx) => {
-  const { execApi } = UseApi(ctx);
-  const { id, limit, offset, state, recordId, destinationId } = ctx.query;
-  const { groups } = await execApi("get", `/groups`);
+ExportsList.hydrate = async (appContext: NextPageContext) => {
+  console.log(appContext);
+  const getContext = getRequestContext(appContext);
+  const client = new Client(getContext);
+
+  const { id, limit, offset, state, recordId, destinationId } =
+    appContext.query;
+  const { groups } = await client.action("get", `/groups`);
 
   let exportProcessorId: string;
-  if (id && ctx.pathname.match("/exportProcessor/")) {
-    exportProcessorId = id;
+  if (id && appContext.pathname.match("/exportProcessor/")) {
+    exportProcessorId = String(id);
   }
 
-  const { exports: _exports, total } = await execApi("get", `/exports`, {
+  const { exports: _exports, total } = await client.action("get", `/exports`, {
     limit,
     offset,
     state: state === "all" ? undefined : state,

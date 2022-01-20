@@ -14,7 +14,11 @@ import "../eventHandlers";
 import { Actions } from "../utils/apiData";
 import { renderNestedContextProviders } from "../utils/contextHelper";
 import { Client } from "../client/client";
-import { ApiContext, useApiInitialState } from "../contexts/api";
+import {
+  ApiContext,
+  getRequestContext,
+  useApiInitialState,
+} from "../contexts/api";
 
 export interface GrouparooNextAppProps {
   clusterName: Actions.NavigationList["clusterName"];
@@ -36,6 +40,7 @@ export default function GrouparooNextApp(
     navigationMode: props.navigationMode,
     clusterName: props.clusterName,
     currentTeamMember: props.currentTeamMember,
+    client,
   };
 
   const pageContext = useMemo<WebAppContext>(() => {
@@ -67,10 +72,7 @@ export default function GrouparooNextApp(
 }
 
 GrouparooNextApp.getInitialProps = async (appContext: AppContext) => {
-  const getContext = () => ({
-    req: appContext.ctx.req,
-    res: appContext.ctx.res,
-  });
+  const getContext = getRequestContext(appContext);
   const client = new Client(getContext);
   let currentTeamMember: Partial<Actions.SessionView["teamMember"]> = {
     firstName: "",
