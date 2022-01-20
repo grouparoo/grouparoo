@@ -121,15 +121,18 @@ describe("tasks/recordProperties:enqueue", () => {
         "recordProperty:importRecordProperties"
       );
 
-      expect(importRecordPropertiesTasks.length).toEqual(2);
-      expect(importRecordPropertiesTasks[0].args[0]).toEqual({
-        propertyIds: ["profiles_id", "email"],
-        recordIds: [mario.id, luigi.id],
-      });
-      expect(importRecordPropertiesTasks[1].args[0]).toEqual({
-        propertyIds: ["profiles_id", "email"],
-        recordIds: [toad.id, peach.id],
-      });
+      expect(importRecordPropertiesTasks[0].args[0].propertyIds.sort()).toEqual(
+        ["profiles_id", "email"].sort()
+      );
+      expect(importRecordPropertiesTasks[0].args[0].recordIds.sort()).toEqual(
+        [mario.id, luigi.id].sort()
+      );
+      expect(importRecordPropertiesTasks[1].args[0].propertyIds.sort()).toEqual(
+        ["profiles_id", "email"].sort()
+      );
+      expect(importRecordPropertiesTasks[1].args[0].recordIds.sort()).toEqual(
+        [toad.id, peach.id].sort()
+      );
     });
   });
 });
