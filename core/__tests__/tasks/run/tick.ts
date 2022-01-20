@@ -16,7 +16,7 @@ describe("tasks/run:tick", () => {
 
   test("complete runs will not be run", async () => {
     const run = await helper.factories.run(null, { state: "complete" });
-    await helper.changeTimestamps(run); // will update only updatedAt, false means createdAt will not be touched
+    await helper.changeTimestamps([run]); // will update only updatedAt, false means createdAt will not be touched
 
     const enqueued = await specHelper.runTask("run:tick", {});
     expect(enqueued).toBe(0);
@@ -24,7 +24,7 @@ describe("tasks/run:tick", () => {
 
   test("stopped runs will not be run", async () => {
     const run = await helper.factories.run(null, { state: "stopped" });
-    await helper.changeTimestamps(run);
+    await helper.changeTimestamps([run]);
 
     const enqueued = await specHelper.runTask("run:tick", {});
     expect(enqueued).toBe(0);
@@ -38,7 +38,7 @@ describe("tasks/run:tick", () => {
 
   test("running runs which are being worked on will not be enqueued", async () => {
     const run = await helper.factories.run(null, { state: "running" });
-    await helper.changeTimestamps(run);
+    await helper.changeTimestamps([run]);
 
     await task.enqueue("schedule:run", { runId: run.id });
     const enqueued = await specHelper.runTask("run:tick", {});
@@ -47,7 +47,7 @@ describe("tasks/run:tick", () => {
 
   test("running group runs will be enqueued", async () => {
     const run = await helper.factories.run(group, { state: "running" });
-    await helper.changeTimestamps(run);
+    await helper.changeTimestamps([run]);
 
     const enqueued = await specHelper.runTask("run:tick", {});
     expect(enqueued).toBe(1);
@@ -60,7 +60,7 @@ describe("tasks/run:tick", () => {
   test("running schedule runs will be enqueued", async () => {
     const schedule = await helper.factories.schedule();
     const run = await helper.factories.run(schedule, { state: "running" });
-    await helper.changeTimestamps(run);
+    await helper.changeTimestamps([run]);
 
     const enqueued = await specHelper.runTask("run:tick", {});
     expect(enqueued).toBe(1);
@@ -72,7 +72,7 @@ describe("tasks/run:tick", () => {
 
   test("running internal runs will be enqueued", async () => {
     const run = await internalRun("test", "test");
-    await helper.changeTimestamps(run);
+    await helper.changeTimestamps([run]);
 
     const enqueued = await specHelper.runTask("run:tick", {});
     expect(enqueued).toBe(1);

@@ -6,6 +6,7 @@ import {
   plugin,
   AggregationMethod,
   App,
+  RecordProperty,
 } from "../../../../src";
 
 describe("tasks/recordProperties:enqueue", () => {
@@ -108,10 +109,17 @@ describe("tasks/recordProperties:enqueue", () => {
       await peach.markPending();
 
       // shuffle the order of things so all the updated properties will be found in the first group
-      for (const person of [mario, luigi, toad, peach]) {
-        await api.sequelize.query(
-          `UPDATE "recordProperties" SET "updatedAt"=NOW() WHERE "recordId"='${person.id}' and "propertyId"='${email.id}'`
-        );
+      const recordProperties = await RecordProperty.findAll({
+        where: {
+          propertyId: email.id,
+          recordId: [mario, luigi, toad, peach].map((r) => r.id),
+        },
+      });
+      try {
+        await helper.changeTimestamps(recordProperties, false, "NOW()");
+      } catch (e) {
+        console.error(e);
+        throw e;
       }
 
       await specHelper.runTask("recordProperties:enqueue", {});
