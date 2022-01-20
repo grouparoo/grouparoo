@@ -5,19 +5,14 @@ import { Form, Modal, Spinner, Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
 import AppSelectorList from "@grouparoo/ui-components/components/AppSelectorList";
 import { errorHandler } from "@grouparoo/ui-components/eventHandlers";
-import { ErrorHandler } from "@grouparoo/ui-components/eventHandlers/errorHandler";
 import { EventDispatcher } from "@grouparoo/ui-components/utils/eventDispatcher";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
 
 class CustomErrorHandler extends EventDispatcher<{ message: string }> {
-  message: Error | string | any;
-  parentErrorHandler: ErrorHandler;
+  message: Error | string | any = null;
 
-  constructor(parentErrorHandler: ErrorHandler) {
+  constructor() {
     super();
-
-    this.message = null;
-    this.parentErrorHandler = parentErrorHandler;
 
     this.subscribe("_internal", ({ message }) => {
       this.message = message;
@@ -25,7 +20,7 @@ class CustomErrorHandler extends EventDispatcher<{ message: string }> {
       if (this.message?.config?.url === "/api/v1/status/public") {
         console.info(`could not reach API: ${message}`);
       } else {
-        parentErrorHandler.set({ message: this.message });
+        errorHandler.set({ message: this.message });
       }
     });
   }
@@ -39,7 +34,7 @@ export default function Page(props) {
   } = props;
 
   const router = useRouter();
-  const { execApi } = UseApi(props, new CustomErrorHandler(errorHandler));
+  const { execApi } = UseApi(props, new CustomErrorHandler());
   const [plugin, setPlugin] = useState<
     Partial<Actions.PluginsList["plugins"][number]>
   >({ name: "" });
