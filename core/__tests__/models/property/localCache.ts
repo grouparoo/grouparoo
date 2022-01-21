@@ -113,7 +113,8 @@ describe("models/property", () => {
       firstNameProperty = await Property.findOne({
         where: { key: "firstName" },
       });
-      await firstNameProperty.update({ key: "FIRST NAME" }); // should reset the cache
+      await firstNameProperty.update({ key: "FIRST NAME" });
+      CachedProperties.expires = 0;
     });
 
     test("after a Property is updated, the local cache should be invalid", async () => {
