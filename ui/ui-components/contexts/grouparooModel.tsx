@@ -1,15 +1,35 @@
-import { createContext, useContext } from "react";
+import {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { Models } from "../utils/apiData";
 
-export const GrouparooModelContext =
-  createContext<Models.GrouparooModelType>(undefined);
+interface GrouparooModelContext {
+  model: Models.GrouparooModelType;
+  setModel: Dispatch<SetStateAction<Models.GrouparooModelType>>;
+}
 
-export const useGrouparooModelContext = () => useContext(GrouparooModelContext);
+export const GrouparooModelContext =
+  createContext<GrouparooModelContext>(undefined);
+
+export const useGrouparooModel = () => useContext(GrouparooModelContext);
 
 export const GrouparooModelContextProvider: React.FC<{
-  model: Models.GrouparooModelType;
-}> = ({ model, children }) => (
-  <GrouparooModelContext.Provider value={model}>
-    {children}
-  </GrouparooModelContext.Provider>
-);
+  value: Models.GrouparooModelType;
+}> = ({ value: modelProp, children }) => {
+  const [model, setModel] = useState(modelProp);
+
+  useEffect(() => {
+    setModel(modelProp);
+  }, [modelProp]);
+
+  return (
+    <GrouparooModelContext.Provider value={{ model, setModel }}>
+      {children}
+    </GrouparooModelContext.Provider>
+  );
+};

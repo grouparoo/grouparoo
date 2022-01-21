@@ -1,4 +1,4 @@
-import { useGrouparooModelContext } from "../../../contexts/grouparooModel";
+import { useGrouparooModel } from "../../../contexts/grouparooModel";
 import { Models } from "../../../utils/apiData";
 import LinkButton from "../../LinkButton";
 import EntityList from "../../lib/entity/EntityList";
@@ -8,7 +8,7 @@ import SourceInfo from "./SourceInfo";
 const ModelOverviewPrimarySource: React.FC<{ source?: Models.SourceType }> = ({
   source,
 }) => {
-  const model = useGrouparooModelContext();
+  const { model } = useGrouparooModel();
 
   return (
     <SectionContainer

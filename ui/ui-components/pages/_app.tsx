@@ -3,17 +3,20 @@ import type { AppContext, AppProps } from "next/app";
 import App from "next/app";
 import { useMemo } from "react";
 import { Client, generateClient } from "../client/client";
-import "../components/Icons";
 import Layout from "../components/layouts/Main";
 import PageTransition from "../components/PageTransition";
 import StatusSubscription from "../components/StatusSubscription";
 import { ApiContext } from "../contexts/api";
+import { GrouparooModelContextProvider } from "../contexts/grouparooModel";
 import { WebAppContext } from "../contexts/webApp";
-import "../eventHandlers";
-import { Actions } from "../utils/apiData";
+import { Actions, Models } from "../utils/apiData";
 import { renderNestedContextProviders } from "../utils/contextHelper";
 
+import "../components/Icons";
+import "../eventHandlers";
+
 export interface GrouparooNextAppProps {
+  model?: Models.GrouparooModelType;
   clusterName: Actions.NavigationList["clusterName"];
   currentTeamMember: Partial<Actions.NavigationList["teamMember"]>;
   hydrationError?: string;
@@ -25,7 +28,7 @@ export interface GrouparooNextAppProps {
 export default function GrouparooNextApp(
   props: AppProps & GrouparooNextAppProps & { err: any }
 ) {
-  const { Component, pageProps, err, hydrationError } = props;
+  const { Component, pageProps, err, hydrationError, model } = props;
 
   const combinedProps = {
     ...pageProps,
@@ -48,8 +51,9 @@ export default function GrouparooNextApp(
   const client = props.client instanceof Client ? props.client : new Client();
   return renderNestedContextProviders(
     [
-      [WebAppContext, pageContext],
-      [ApiContext, { client }],
+      [WebAppContext.Provider, pageContext],
+      [ApiContext.Provider, { client }],
+      [GrouparooModelContextProvider, model],
     ],
     <>
       <PageTransition />
@@ -66,6 +70,7 @@ export default function GrouparooNextApp(
 }
 
 GrouparooNextApp.getInitialProps = async (appContext: AppContext) => {
+  const { modelId } = appContext.ctx.query;
   const client = generateClient(appContext);
 
   let currentTeamMember: Partial<Actions.SessionView["teamMember"]> = {
@@ -74,13 +79,28 @@ GrouparooNextApp.getInitialProps = async (appContext: AppContext) => {
   };
 
   try {
-    const navigationResponse: Actions.NavigationList = await client.request(
-      "get",
-      `/navigation`
-    );
+    let model: Models.GrouparooModelType | null = null;
+    let modelResponse: Actions.ModelView;
+    let navigationResponse: Actions.NavigationList;
+
+    const promises: Promise<any>[] = [
+      client.request<Actions.NavigationList>("get", `/navigation`),
+    ];
+
+    if (modelId) {
+      promises.push(
+        client.request<Actions.ModelView>("get", `/model/${modelId}`)
+      );
+    }
+
+    [navigationResponse, modelResponse] = await Promise.all(promises);
 
     if (navigationResponse.teamMember) {
       currentTeamMember = navigationResponse.teamMember;
+    }
+
+    if (modelResponse) {
+      model = modelResponse.model;
     }
 
     // render page-specific getInitialProps
@@ -106,6 +126,7 @@ GrouparooNextApp.getInitialProps = async (appContext: AppContext) => {
 
     return {
       ...appProps,
+      model: model || null,
       currentTeamMember,
       navigationMode: navigationResponse.navigationMode,
       navigation: navigationResponse.navigation,
