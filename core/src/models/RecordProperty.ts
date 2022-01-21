@@ -8,7 +8,7 @@ import {
   BeforeSave,
   DataType,
 } from "sequelize-typescript";
-import { Op } from "Sequelize";
+import { Op } from "sequelize";
 import { GrouparooRecord } from "./GrouparooRecord";
 import { Property } from "./Property";
 import { RecordPropertyOps } from "../modules/ops/recordProperty";
