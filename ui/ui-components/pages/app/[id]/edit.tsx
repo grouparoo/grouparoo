@@ -34,10 +34,11 @@ export default function Page(props) {
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
   const [app, setApp] = useState<Models.AppType>(props.app);
-  const { register, handleSubmit, setValue, getValues, reset, control } =
+  const { register, handleSubmit, setValue, getValues, reset, watch, control } =
     useForm<Models.AppType>({
       defaultValues: props.app,
     });
+  const appName = watch("name");
   const [loading, setLoading] = useState(false);
   const [loadingOAuth, setLoadingOAuth] = useState(false);
   const [oAuthPopup, setOAuthPopup] = useState<Window>(null);
@@ -172,14 +173,14 @@ export default function Page(props) {
   return (
     <>
       <Head>
-        <title>Grouparoo: {app.name || `Draft`}</title>
+        <title>Grouparoo: {appName || `Draft`}</title>
       </Head>
 
-      <AppTabs app={app} />
+      <AppTabs app={app} name={appName} />
 
       <PageHeader
         icon={app.icon}
-        title={app.name}
+        title={appName}
         badges={[
           <SourceBadge object={app} />,
           <DestinationBadge object={app} />,
