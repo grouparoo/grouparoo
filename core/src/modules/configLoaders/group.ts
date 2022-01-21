@@ -7,9 +7,8 @@ import {
   validateConfigObjectKeys,
   IdsByClass,
 } from "../../classes/codeConfig";
-import { Group, GroupRuleWithKey } from "../../models/Group";
+import { Group, Property, GroupRuleWithKey } from "../.."; // configLoader imports need to be from root
 import { TopLevelGroupRules } from "../../modules/topLevelGroupRules";
-import { Property } from "../../models/Property";
 import { ConfigWriter } from "../configWriter";
 import { Deprecation } from "../deprecation";
 

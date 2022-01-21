@@ -5,7 +5,7 @@ import {
   validateConfigObjectKeys,
   IdsByClass,
 } from "../../classes/codeConfig";
-import { GrouparooModel } from "../../models/GrouparooModel";
+import { GrouparooModel } from "../.."; // configLoader imports need to be from root
 import { Op } from "sequelize";
 
 import { ConfigWriter } from "../configWriter";

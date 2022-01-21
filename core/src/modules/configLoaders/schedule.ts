@@ -9,8 +9,7 @@ import {
 } from "../../classes/codeConfig";
 import { FilterHelper } from "../filterHelper";
 import { Op } from "sequelize";
-import { Source } from "../../models/Source";
-import { Schedule } from "../../models/Schedule";
+import { Source, Schedule } from "../.."; // configLoader imports need to be from root
 import { Deprecation } from "../deprecation";
 import { ConfigWriter } from "../configWriter";
 
