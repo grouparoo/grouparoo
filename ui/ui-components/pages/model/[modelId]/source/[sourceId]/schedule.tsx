@@ -73,17 +73,11 @@ export default function Page(props) {
 
     if (response?.schedule) {
       if (response.schedule.state === "ready" && schedule.state === "draft") {
-        if (totalSources === 1 && totalProperties === 1) {
-          router.push(
-            "/model/[modelId]/source/[sourceId]/multipleProperties",
-            `/model/${source.modelId}/source/${source.id}/multipleProperties`
-          );
-        } else {
-          router.push(
-            "/model/[modelId]/source/[sourceId]/overview",
-            `/model/${source.modelId}/source/${source.id}/overview`
-          );
-        }
+        const nextPath =
+          totalSources === 1 && totalProperties === 1
+            ? `/model/${source.modelId}/source/${source.id}/multipleProperties`
+            : `/model/${source.modelId}/source/${source.id}/overview`;
+        router.push(nextPath);
       } else {
         setRecurringFrequencyMinutes(
           response.schedule.recurringFrequency / (60 * 1000)
