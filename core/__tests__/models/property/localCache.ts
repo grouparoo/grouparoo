@@ -8,7 +8,6 @@ describe("models/property", () => {
   let source: Source;
   let originalPropertyCount: number;
 
-  beforeEach(() => (CachedProperties.expires = new Date().getTime() + 5000));
   beforeEach(() => (CachedProperties.TTL = 30 * 1000));
   afterAll(() => (CachedProperties.expires = 0));
 
@@ -111,14 +110,13 @@ describe("models/property", () => {
 
     beforeAll(async () => {
       firstNameProperty = await Property.findOne({
-        where: { key: "firstName" },
+        where: { id: "firstName" },
       });
       await firstNameProperty.update({ key: "FIRST NAME" });
       expect(CachedProperties.expires).toEqual(0);
     });
 
     test("after a Property is updated, the local cache should be invalid", async () => {
-      expect(CachedProperties.expires).toBeGreaterThan(0);
       const lastNameProperty = await Property.findOne({
         where: { key: "lastName" },
       });
