@@ -201,7 +201,7 @@ export namespace RecordPropertyOps {
 // utilities (private)
 async function updateIds(ids: string[], values: { [key: string]: any }) {
   const max = config.batchSize.internalWrite;
-  const queue = ids; // this prevents it from changing the passed in one, right?
+  const queue: string[] = Array.from(ids);
   while (queue.length > 0) {
     await RecordProperty.update(values, {
       where: {

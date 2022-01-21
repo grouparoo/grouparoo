@@ -17,7 +17,7 @@ export const DEFAULT = {
       // How many Records should a Run try to send at once to Destinations which support batch exporting?
       exports: parseInt(process.env.GROUPAROO_EXPORTS_BATCH_SIZE ?? "100"),
       // How many rows can we update in the Grouparoo database at a time. Affects db performance.
-      internalWrite: parseInt(process.env.GROUPAROO_INTERNAL_BATCH_SIZE ?? "1000"),
+      internalWrite: parseInt(process.env.GROUPAROO_INTERNAL_BATCH_SIZE ?? "5000"),
     };
   },
 };
