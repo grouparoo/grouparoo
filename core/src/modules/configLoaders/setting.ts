@@ -5,7 +5,7 @@ import {
   validateConfigObjectKeys,
   IdsByClass,
 } from "../../classes/codeConfig";
-import { plugin } from "../..";
+import { plugin } from "../../modules/plugin";
 import { Setting } from "../../models/Setting";
 
 export async function loadSetting(

@@ -5,7 +5,8 @@ import {
   validateConfigObjectKeys,
   IdsByClass,
 } from "../../classes/codeConfig";
-import { Team, Permission } from "../..";
+import { Team } from "../../models/Team";
+import { Permission } from "../../models/Permission";
 import { Op } from "sequelize";
 
 export async function loadTeam(

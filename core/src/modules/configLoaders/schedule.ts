@@ -8,8 +8,9 @@ import {
   IdsByClass,
 } from "../../classes/codeConfig";
 import { FilterHelper } from "../filterHelper";
-import { Schedule, Source } from "../..";
 import { Op } from "sequelize";
+import { Source } from "../../models/Source";
+import { Schedule } from "../../models/Schedule";
 import { Deprecation } from "../deprecation";
 import { ConfigWriter } from "../configWriter";
 

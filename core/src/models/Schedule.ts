@@ -314,7 +314,7 @@ export class Schedule extends LoggedModel<Schedule> {
   @BeforeSave
   static async ensureSourceMapping(instance: Schedule) {
     const source = await Source.findById(instance.sourceId);
-    if (!source.scheduleAvailable()) {
+    if (!(await source.scheduleAvailable())) {
       throw new Error(`a ${source.type} source cannot have a schedule`);
     }
   }

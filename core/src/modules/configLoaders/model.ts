@@ -5,7 +5,7 @@ import {
   validateConfigObjectKeys,
   IdsByClass,
 } from "../../classes/codeConfig";
-import { GrouparooModel } from "../..";
+import { GrouparooModel } from "../../models/GrouparooModel";
 import { Op } from "sequelize";
 
 import { ConfigWriter } from "../configWriter";

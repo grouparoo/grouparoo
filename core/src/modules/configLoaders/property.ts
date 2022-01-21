@@ -7,7 +7,8 @@ import {
   validateConfigObjectKeys,
   IdsByClass,
 } from "../../classes/codeConfig";
-import { Property, Source } from "../..";
+import { Source } from "../../models/Source";
+import { Property } from "../../models/Property";
 import { FilterHelper } from "../filterHelper";
 import { Op } from "sequelize";
 import { Deprecation } from "../deprecation";

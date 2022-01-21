@@ -6,7 +6,7 @@ import {
   validateConfigObjectKeys,
   IdsByClass,
 } from "../../classes/codeConfig";
-import { App } from "../..";
+import { App } from "../../models/App";
 import { Op } from "sequelize";
 
 import { ConfigWriter } from "../configWriter";

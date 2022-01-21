@@ -9,9 +9,10 @@ import {
   getAutoBootstrappedProperty,
   AnyConfigurationObject,
 } from "../../classes/codeConfig";
-import { App, Source, Property, PropertyTypes } from "../..";
+import { App } from "../../models/App";
+import { Property, PropertyTypes } from "../../models/Property";
+import { Source } from "../../models/Source";
 import { Op } from "sequelize";
-import { log } from "actionhero";
 
 import { ConfigWriter } from "../configWriter";
 
