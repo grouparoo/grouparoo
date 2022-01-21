@@ -55,7 +55,7 @@ const GrouparooTabs: React.FC<Props> = ({
         `${scope}/${topic}/${id}/${tabName}`
       );
     };
-  }, [parts, pathnameParts]);
+  }, [parts, pathnameParts, router, verb]);
 
   const topics = useMemo<GrouparooTabTopic[]>(
     () =>
@@ -102,7 +102,15 @@ const GrouparooTabs: React.FC<Props> = ({
 
         return acc;
       }, [] as GrouparooTabTopic[]),
-    [numParts, draftType, defaultTab, parentNames]
+    [
+      parts,
+      numParts,
+      parentNames,
+      hideScopeBreadcrumb,
+      name,
+      draftType,
+      defaultTab,
+    ]
   );
 
   if (!router.pathname) return null;
