@@ -122,13 +122,13 @@ describe("tasks/recordProperties:enqueue", () => {
       );
 
       expect(importRecordPropertiesTasks[0].args[0].propertyIds.sort()).toEqual(
-        ["profiles_id", "email"].sort()
+        [userId.id, email.id].sort()
       );
       expect(importRecordPropertiesTasks[0].args[0].recordIds.sort()).toEqual(
         [mario.id, luigi.id].sort()
       );
       expect(importRecordPropertiesTasks[1].args[0].propertyIds.sort()).toEqual(
-        ["profiles_id", "email"].sort()
+        [userId.id, email.id].sort()
       );
       expect(importRecordPropertiesTasks[1].args[0].recordIds.sort()).toEqual(
         [toad.id, peach.id].sort()
