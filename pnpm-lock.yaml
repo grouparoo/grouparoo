@@ -674,6 +674,7 @@ importers:
       '@grouparoo/core': 0.8.0-alpha.9
       '@grouparoo/spec-helper': 0.8.0-alpha.9
       '@types/jest': '*'
+      '@types/js-yaml': 4.0.5
       '@types/node': 16.*.*
       actionhero: 28.1.4
       jest: 27.4.5
@@ -688,6 +689,7 @@ importers:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 27.0.1
+      '@types/js-yaml': 4.0.5
       '@types/node': 16.9.1
       actionhero: 28.1.4
       jest: 27.4.5
@@ -4414,6 +4416,10 @@ packages:
       pretty-format: 27.1.1
     dev: true
 
+  /@types/js-yaml/4.0.5:
+    resolution: {integrity: sha512-FhpRzf927MNQdRZP0J5DLIdTXhjLYzeUTmLAu69mnVksLH9CJY3IuSeEgbKUki7GQZm0WqDkGzyxju2EZGD2wA==}
+    dev: true
+
   /@types/json5/0.0.29:
     resolution: {integrity: sha1-7ihweulOEdK4J7y+UnC86n8+ce4=}
     dev: true
@@ -6955,6 +6961,7 @@ packages:
 
   /encoding/0.1.13:
     resolution: {integrity: sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==}
+    requiresBuild: true
     dependencies:
       iconv-lite: 0.6.3
 
@@ -14319,7 +14326,7 @@ packages:
     engines: {node: '>= 6'}
     dependencies:
       agent-base: 6.0.2
-      debug: 4.3.2
+      debug: 4.3.3
       socks: 2.6.1
     transitivePeerDependencies:
       - supports-color
@@ -15195,7 +15202,7 @@ packages:
       '@types/jest': 27.0.1
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
-      jest: 27.4.5_ts-node@10.4.0
+      jest: 27.4.5
       jest-util: 27.4.2
       json5: 2.2.0
       lodash.memoize: 4.1.2

@@ -1,4 +1,4 @@
-import { runCommand, CommandResponse } from "../utils/exec";
+import { runCommand } from "../utils/exec";
 
 export interface dbtConnectionResponse {
   options: { [key: string]: any };
@@ -39,7 +39,7 @@ const dbtConnection: dbtConnectionMethod = async ({
 };
 
 function parseCommandResponse(
-  output: CommandResponse,
+  output: Awaited<ReturnType<typeof runCommand>>,
   cmd: string
 ): dbtConnectionResponse {
   // if command not found
