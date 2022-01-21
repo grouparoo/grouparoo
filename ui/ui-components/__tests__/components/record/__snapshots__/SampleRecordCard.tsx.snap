@@ -79,7 +79,9 @@ exports[`SampleRecordCard should render with 1 record 1`] = `
               class="btn btn-outline-primary btn-sm"
               type="button"
             >
-              View all Records
+              View All 
+              1
+               Records
             </button>
           </a>
           
@@ -229,7 +231,9 @@ exports[`SampleRecordCard should render with 1 record in config mode 1`] = `
               class="btn btn-outline-primary btn-sm"
               type="button"
             >
-              View all Records
+              View All 
+              0
+               Records
             </button>
           </a>
           
@@ -372,7 +376,21 @@ exports[`SampleRecordCard should render with no records 1`] = `
         </div>
         <div
           class="text-right col-lg-6 col-md-7 col-sm-12"
-        />
+        >
+          <a
+            href="/model/test-model/records"
+          >
+            <button
+              class="btn btn-outline-primary btn-sm"
+              type="button"
+            >
+              View All 
+              0
+               Records
+            </button>
+          </a>
+          
+        </div>
       </div>
     </div>
     <div
@@ -426,7 +444,21 @@ exports[`SampleRecordCard should render with no records in 'config mode' 1`] = `
         </div>
         <div
           class="text-right col-lg-6 col-md-7 col-sm-12"
-        />
+        >
+          <a
+            href="/model/test-model/records"
+          >
+            <button
+              class="btn btn-outline-primary btn-sm"
+              type="button"
+            >
+              View All 
+              0
+               Records
+            </button>
+          </a>
+          
+        </div>
       </div>
     </div>
     <div

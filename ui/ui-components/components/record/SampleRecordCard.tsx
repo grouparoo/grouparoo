@@ -97,6 +97,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   const [importing, setImporting] = useState(false);
   const [addingRecord, setAddingRecord] = useState(false);
   const [hasRecords, setHasRecords] = useState(true);
+  const [totalRecords, setTotalRecords] = useState(0);
   const [record, setRecord] = useState<RecordType>();
   const [groups, setGroups] = useState<Models.GroupType[]>();
   const [destinations, setDestinations] = useState<Models.DestinationType[]>();
@@ -149,6 +150,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
           modelId,
         }
       ).then((response) => {
+        setTotalRecords(response.total);
         if (response.total === 0) {
           setHasRecords(false);
         } else {
@@ -266,7 +268,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
         </LinkButton>
       );
     }
-    if (!hideViewAllRecords && hasRecords) {
+    if (!hideViewAllRecords) {
       result.push(
         <LinkButton
           disabled={disabled}
@@ -274,12 +276,12 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
           size="sm"
           variant="outline-primary"
         >
-          View all Records
+          View All {totalRecords} Records
         </LinkButton>
       );
     }
     return result;
-  }, [record, hideViewAllRecords, hasRecords, modelId, disabled]);
+  }, [record, hideViewAllRecords, hasRecords, totalRecords, modelId, disabled]);
 
   if (!sortedPropertyKeys?.length && !properties.length) {
     return (
