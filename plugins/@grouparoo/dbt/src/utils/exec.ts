@@ -1,18 +1,13 @@
-const cp = require("child_process");
+import childProcess, { ExecException } from "child_process";
 
-export interface CommandResponse {
-  stdout: string;
-  stderr: string;
-  err: string;
-}
 export function runCommand(
-  command,
+  command: string,
   options = { log: false, cwd: process.cwd() }
-): Promise<CommandResponse> {
+): Promise<{ stdout: string; stderr: string; err: ExecException }> {
   if (options.log) console.log(command);
 
   return new Promise((done, failed) => {
-    cp.exec(command, { ...options }, (err, stdout, stderr) => {
+    childProcess.exec(command, { ...options }, (err, stdout, stderr) => {
       // if (err) {
       //   err.stdout = stdout;
       //   err.stderr = stderr;

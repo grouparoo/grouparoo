@@ -122,8 +122,8 @@ const parseProject: ParseProjectMethod = async (args) => {
     );
   }
 
-  const contents = fs.readFileSync(projectPath);
-  const document = yaml.load(contents);
+  const contents = String(fs.readFileSync(projectPath));
+  const document: Record<string, any> = yaml.load(contents);
   // console.log({ project: document });
 
   profile = document.profile;
@@ -161,8 +161,8 @@ const parseProfile: ParseProfileMethod = async (
     );
   }
 
-  const contents = fs.readFileSync(profilePath);
-  const document = yaml.load(contents);
+  const contents = String(fs.readFileSync(profilePath));
+  const document: Record<string, any> = yaml.load(contents);
   // console.log({ profile: document });
 
   const settings = document[profile];

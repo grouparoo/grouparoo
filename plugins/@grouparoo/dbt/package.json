@@ -36,6 +36,7 @@
     "@grouparoo/core": "0.8.0-alpha.9",
     "@grouparoo/spec-helper": "0.8.0-alpha.9",
     "@types/jest": "*",
+    "@types/js-yaml": "4.0.5",
     "@types/node": "16.*.*",
     "actionhero": "28.1.4",
     "jest": "27.4.5",
