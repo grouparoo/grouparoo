@@ -114,7 +114,7 @@ describe("models/property", () => {
         where: { key: "firstName" },
       });
       await firstNameProperty.update({ key: "FIRST NAME" });
-      CachedProperties.expires = 0;
+      expect(CachedProperties.expires).toEqual(0);
     });
 
     test("after a Property is updated, the local cache should be invalid", async () => {
@@ -143,6 +143,7 @@ describe("models/property", () => {
       expect(found.__isCached).toBe(true);
       expect(found.id).toBe("firstName");
       expect(found.key).toBe("FIRST NAME");
+      expect(CachedProperties.expires).toBeGreaterThan(0);
     });
 
     test("it can find by other keys", async () => {
