@@ -8,12 +8,14 @@ import {
   BeforeSave,
   DataType,
 } from "sequelize-typescript";
+import { Op } from "Sequelize";
 import { GrouparooRecord } from "./GrouparooRecord";
 import { Property } from "./Property";
 import { RecordPropertyOps } from "../modules/ops/recordProperty";
 import { StateMachine } from "../modules/stateMachine";
 import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
+import { config } from "actionhero";
 
 const STATES = ["draft", "pending", "ready"] as const;
 
@@ -137,6 +139,30 @@ export class RecordProperty extends CommonModel<RecordProperty> {
     const instance = await this.scope(null).findOne({ where: { id } });
     if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
+  }
+
+  // TODO: I want to figure out the types to move these to CommonModel
+  static async updateAllinBatches(
+    instances: RecordProperty[],
+    values: { [key: string]: any }
+  ) {
+    const ids = instances.map((i) => i.id);
+    return this.updateAllinBatchesById(ids, values);
+  }
+
+  static async updateAllinBatchesById(
+    ids: string[],
+    values: { [key: string]: any }
+  ) {
+    const max = config.batchSize.internalWrite;
+    const queue: string[] = Array.from(ids);
+    while (queue.length > 0) {
+      await RecordProperty.update(values, {
+        where: {
+          id: { [Op.in]: queue.splice(0, max) },
+        },
+      });
+    }
   }
 
   @BeforeSave

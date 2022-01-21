@@ -199,18 +199,6 @@ export namespace RecordPropertyOps {
 }
 
 // utilities (private)
-async function updateIds(ids: string[], values: { [key: string]: any }) {
-  const max = config.batchSize.internalWrite;
-  const queue: string[] = Array.from(ids);
-  while (queue.length > 0) {
-    await RecordProperty.update(values, {
-      where: {
-        id: { [Op.in]: queue.splice(0, max) },
-      },
-    });
-  }
-}
-
 async function preparePropertyImports(
   pluginConnection: PluginConnection,
   pendingRecordProperties: RecordProperty[],
@@ -223,15 +211,13 @@ async function preparePropertyImports(
     .map((ppp) => ppp.recordId)
     .filter((val, idx, arr) => arr.indexOf(val) === idx);
 
-  const pendingRecordPropertyIds = pendingRecordProperties.map((i) => i.id);
-
   const method = pluginConnection.methods.recordProperties
     ? "RecordProperties"
     : pluginConnection.methods.recordProperty
     ? "RecordProperty"
     : null;
 
-  await updateIds(pendingRecordPropertyIds, {
+  await RecordProperty.updateAllinBatches(pendingRecordProperties, {
     startedAt: new Date(),
   });
 
@@ -251,7 +237,7 @@ async function preparePropertyImports(
     }
   } else {
     // Schedule sources don't import properties on-demand, keep old value
-    await updateIds(pendingRecordPropertyIds, {
+    await RecordProperty.updateAllinBatches(pendingRecordProperties, {
       state: "ready",
       stateChangedAt: new Date(),
       confirmedAt: new Date(),
