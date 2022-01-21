@@ -850,12 +850,31 @@ describe("models/source", () => {
 
     test("bootstrapUniqueProperty will create a new unique property", async () => {
       const property = await source.bootstrapUniqueProperty({
-        key: "uniqueId",
+        key: "uniqueKey",
         type: "integer",
         mappedColumn: "id",
       });
 
-      expect(property.key).toBe("uniqueId");
+      expect(property.id).toMatch(/prp_/);
+      expect(property.key).toBe("uniqueKey");
+      expect(property.type).toBe("integer");
+      expect(property.isArray).toBe(false);
+      expect(property.state).toBe("ready");
+      expect(property.unique).toBe(true);
+
+      await property.destroy();
+    });
+
+    test("bootstrapUniqueProperty will create a new unique property with a given ID", async () => {
+      const property = await source.bootstrapUniqueProperty({
+        id: "uniqueId",
+        key: "uniqueKey",
+        type: "integer",
+        mappedColumn: "id",
+      });
+
+      expect(property.id).toBe("uniqueId");
+      expect(property.key).toBe("uniqueKey");
       expect(property.type).toBe("integer");
       expect(property.isArray).toBe(false);
       expect(property.state).toBe("ready");
