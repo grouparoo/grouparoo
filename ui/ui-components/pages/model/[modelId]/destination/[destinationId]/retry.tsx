@@ -14,6 +14,11 @@ import { Actions, Models } from "../../../../../utils/apiData";
 import { errorHandler, successHandler } from "../../../../../eventHandlers";
 import LoadingButton from "../../../../../components/LoadingButton";
 
+type RetryFormValues = {
+  fromDate: Date;
+  toDate: Date;
+};
+
 export default function Page(props) {
   const {
     destination,
@@ -26,15 +31,16 @@ export default function Page(props) {
   const [previewCount, setPreviewCount] = useState(0);
   const { execApi } = UseApi(props, errorHandler);
 
-  const { handleSubmit, register, getValues } = useForm();
+  const { handleSubmit, register, getValues } = useForm<RetryFormValues>();
 
-  const onSubmit = ({ fromDate, toDate }: { fromDate: Date; toDate: Date }) => {
-    console.log("submit", fromDate, toDate);
-  };
-
-  const updatePreview = async () => {
-    const { fromDate, toDate } = getValues();
+  const retryFailedExports = async (
+    fromDate: Date,
+    toDate: Date,
+    preview: boolean
+  ) => {
     if (!fromDate || !toDate) return;
+
+    if (!preview) setLoading(true);
     const response: Actions.ExportsRetryFailed = await execApi(
       "get",
       `/exports/retryFailed`,
@@ -42,7 +48,7 @@ export default function Page(props) {
         destinationId: destination.id,
         startTimestamp: fromDate.getTime(),
         endTimestamp: toDate.getTime(),
-        preview: true,
+        preview,
       },
       null,
       null,
@@ -50,8 +56,32 @@ export default function Page(props) {
     );
 
     if (response) {
-      setPreviewCount(response.count);
+      if (!preview) {
+        if (response.count) {
+          successHandler.set({
+            message: `Retrying ${response.count} failed exports`,
+          });
+        } else {
+          successHandler.set({
+            message: "No failed exports to retry were found in this time range",
+          });
+        }
+      } else {
+        setPreviewCount(response.count);
+      }
     }
+
+    setLoading(false);
+  };
+
+  const onSubmit = async ({ fromDate, toDate }: RetryFormValues) => {
+    await retryFailedExports(fromDate, toDate, false);
+    await updatePreview();
+  };
+
+  const updatePreview = async () => {
+    const { fromDate, toDate } = getValues();
+    return retryFailedExports(fromDate, toDate, true);
   };
 
   return (
