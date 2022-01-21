@@ -18,6 +18,7 @@ export default function Page(props) {
     link: "/session/sign-in",
     message: "Register",
   });
+  const { client } = useApi();
 
   useEffect(() => {
     if (navigationMode === "config:authenticated") {
@@ -27,7 +28,6 @@ export default function Page(props) {
     }
 
     async function checkSetupSteps(props) {
-      const { client } = useApi();
       const { setupSteps } = await client.request("get", `/setupSteps`);
       const currentStep = await setupSteps.find(
         (step) => !step.complete && !step.skipped
