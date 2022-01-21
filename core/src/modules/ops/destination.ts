@@ -29,6 +29,7 @@ import { MappingHelper } from "../mappingHelper";
 import { RecordPropertyOps } from "./recordProperty";
 import { Option } from "../../models/Option";
 import { RecordPropertyType } from "./record";
+import { getLock } from "../locks";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -913,40 +914,37 @@ export namespace DestinationOps {
     error: Error;
   }> {
     const _exports: Export[] = []; // only ones we are sending
+
+    let releaseLock;
     for (const _export of givenExports) {
-      /*  Notes from pairing with Brian: 
-    // assuming we update these to the newest as below...
-    // 1. Add lock as below to only do one per record at time
-    //    trouble: slow
-    // 2. when creating an export and there is a current "pending" with null startedAt,
-    //    don't create or immediately mark as "canceled" or "duplicate"
-    //    trouble: one does have a started at, so you make it, then you have two "pending"
-    //             they could still happen in parallel on different threads or even the same batch
-    //             especially, if it fails and tries again, but even normally
-    // 3. when enqueuing in processPendingExportsForDestination, cancel older ones
-    //    trouble: timing gaps possible
-    */
+      // 1. check if already locked
+      const { releaseLock, isLocked, lockedBy } = await getLock(
+        `${_export.recordId}:${_export.destinationId}`,
+        _export.id
+      );
 
-      // -- check if the record is locked already
-      // const isLocked: boolean = getLock(`grouparoo:lock:${_export.recordId}`)
-      // ---> downsides to locking the entire record (ie: now no destinations can use it)? speed mainly methinks
-      //
+      //TODO: keep thinking on how to unlock things
 
-      // if (isLocked) {
-      // try again later
-      // return;
-      // }
+      if (isLocked) {
+        // a. if it was, either:
+        const lockingExport = await Export.findById(lockedBy);
+        if (lockingExport.createdAt > _export.createdAt) {
+          // i. if _export is _older_ than the export that locked the tuple, cancel it
+          await _export.update({ state: "canceled" });
+          // *** TODO: From a user perspective, it may be confusing that an export was canceled but not by them... should a reason be noted somehow?
+        } else {
+          // ii. if _export is _newer_ than the export that locked the tuple, just return... the export pool will pick it back up later
+          return;
+        }
+      }
 
-      // -- now, lock this one to update it and send it
-      // await awaitLock(_export.recordId)
-      // -- update newProperties to the newest properties
-      //   --> maybe these shouldn't be set with a getter/setter on the model
-      //   --> that way we can update them more dynamically
+      //will only get this far if _export was not previously locked!
+      const updatedExport = await Export.findById(_export.id);
 
-      if (!_export.hasChanges) {
-        await _export.complete(); // do not include exports with hasChanges=false
+      if (!updatedExport.hasChanges) {
+        await updatedExport.complete(); // do not do send exports with hasChanges=false
       } else {
-        _exports.push(_export);
+        _exports.push(updatedExport);
       }
     }
 
@@ -1008,6 +1006,8 @@ export namespace DestinationOps {
     } finally {
       await app.checkAndUpdateParallelism("decr");
     }
+
+    releaseLock();
 
     // -- unlock the record
 
