@@ -11,22 +11,16 @@ import LockedBadge from "../../../../../components/badges/LockedBadge";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { Actions, Models } from "../../../../../utils/apiData";
-
+import { errorHandler, successHandler } from "../../../../../eventHandlers";
 import LoadingButton from "../../../../../components/LoadingButton";
-import { ErrorHandler } from "../../../../../utils/errorHandler";
-import { SuccessHandler } from "../../../../../utils/successHandler";
 
 export default function Page(props) {
   const {
     destination,
     model,
-    errorHandler,
-    successHandler,
   }: {
     model: Models.GrouparooModelType;
     destination: Models.DestinationType;
-    errorHandler: ErrorHandler;
-    successHandler: SuccessHandler;
   } = props;
   const [loading, setLoading] = useState(false);
   const [previewCount, setPreviewCount] = useState(0);
