@@ -1,4 +1,3 @@
-import { useApi } from "../../../../../contexts/api";
 import { NextPageContext } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -6,24 +5,25 @@ import { useState, Fragment, useEffect } from "react";
 import { Row, Col, Card } from "react-bootstrap";
 import LoadingButton from "../../../../../components/LoadingButton";
 import AppIcon from "../../../../../components/AppIcon";
-import { humanizePluginName } from "../../../../../utils/languageHelper";
-import { Actions } from "../../../../../utils/apiData";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import AppBadge from "../../../../../components/badges/AppBadge";
 import { generateClient } from "../../../../../client/client";
+import { useApi } from "../../../../../contexts/api";
+import { useGrouparooModel } from "../../../../../contexts/grouparooModel";
+import { humanizePluginName } from "../../../../../utils/languageHelper";
+import { Actions } from "../../../../../utils/apiData";
 
 export default function Page(props) {
   const {
     connectionApps,
-    model,
     isPrimarySourceNotReady,
   }: {
     connectionApps: Actions.SourceConnectionApps["connectionApps"];
-    model: Actions.ModelView["model"];
     isPrimarySourceNotReady: boolean;
   } = props;
   const router = useRouter();
   const { client } = useApi();
+  const { model } = useGrouparooModel();
   const [loading, setLoading] = useState(false);
   const { appId } = router.query;
 
@@ -117,7 +117,6 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     "get",
     `/sources/connectionApps`
   );
-  const { model } = await client.request("get", `/model/${modelId}`);
   const { sources, total: totalSources } =
     await client.request<Actions.SourcesList>("get", "/sources", {
       modelId,
@@ -126,5 +125,5 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   const isPrimarySourceNotReady =
     totalSources === 1 && sources[0].state !== "ready";
 
-  return { connectionApps, model, isPrimarySourceNotReady };
+  return { connectionApps, isPrimarySourceNotReady };
 };

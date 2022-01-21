@@ -1,15 +1,16 @@
 import { useApi } from "../../../contexts/api";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Row, Col, Form } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { successHandler } from "../../../eventHandlers";
 import PageHeader from "../../../components/PageHeader";
 import ModelTabs from "../../../components/tabs/Model";
 import LoadingButton from "../../../components/LoadingButton";
-import { Actions, Models } from "../../../utils/apiData";
+import { Actions } from "../../../utils/apiData";
 import { generateClient } from "../../../client/client";
 import { NextPageContext } from "next";
+import { useGrouparooModel } from "../../../contexts/grouparooModel";
 
 export default function Page(props) {
   const {
@@ -19,13 +20,9 @@ export default function Page(props) {
   } = props;
   const router = useRouter();
   const { client } = useApi();
-  const [model, setModel] = useState<Models.GrouparooModelType>(props.model);
+  const { model, setModel } = useGrouparooModel();
   const [loading, setLoading] = useState(false);
   const { modelId } = router.query;
-
-  useEffect(() => {
-    setModel(props.model);
-  }, [modelId]);
 
   async function edit(event) {
     event.preventDefault();
@@ -141,9 +138,8 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { modelId } = ctx.query;
   const client = generateClient(ctx);
-  const { model } = await client.request("get", `/model/${modelId}`);
   const { types } = await client.request("get", `/modelOptions`);
-  return { model, types };
+
+  return { types };
 };

@@ -1,5 +1,4 @@
 import { useApi } from "../../../../contexts/api";
-import { NextPageContext } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -8,16 +7,12 @@ import { Form } from "react-bootstrap";
 import LoadingButton from "../../../../components/LoadingButton";
 import { Actions } from "../../../../utils/apiData";
 import ModelBadge from "../../../../components/badges/ModelBadge";
-import { generateClient } from "../../../../client/client";
+import { useGrouparooModel } from "../../../../contexts/grouparooModel";
 
 export default function NewGroup(props) {
-  const {
-    model,
-  }: {
-    model: Actions.ModelView["model"];
-  } = props;
   const router = useRouter();
   const { client } = useApi();
+  const { model } = useGrouparooModel();
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
 
@@ -74,10 +69,3 @@ export default function NewGroup(props) {
     </>
   );
 }
-
-NewGroup.getInitialProps = async (ctx: NextPageContext) => {
-  const { modelId } = ctx.query;
-  const client = generateClient(ctx);
-  const { model } = await client.request("get", `/model/${modelId}`);
-  return { model };
-};
