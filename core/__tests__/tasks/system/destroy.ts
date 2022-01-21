@@ -226,7 +226,7 @@ describe("tasks/destroy", () => {
                 type: "integer",
                 mappedColumn: "id",
               });
-              await userIdProperty.update({ isPrimaryKey: true });
+              await source.setMapping({ id: "userId" });
             });
 
             test("it will enqueue destroy task by model for records when there is no primary key property", async () => {
