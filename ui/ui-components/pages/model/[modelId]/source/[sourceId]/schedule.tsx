@@ -73,11 +73,12 @@ export default function Page(props) {
 
     if (response?.schedule) {
       if (response.schedule.state === "ready" && schedule.state === "draft") {
-        const nextPath =
+        const nextPage =
           totalSources === 1 && totalProperties === 1
-            ? `/model/${source.modelId}/source/${source.id}/multipleProperties`
-            : `/model/${source.modelId}/source/${source.id}/overview`;
-        router.push(nextPath);
+            ? "multipleProperties"
+            : "overview";
+
+        router.push(`/model/${source.modelId}/source/${source.id}/${nextPage}`);
       } else {
         setRecurringFrequencyMinutes(
           response.schedule.recurringFrequency / (60 * 1000)
