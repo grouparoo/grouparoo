@@ -117,6 +117,7 @@ describe("models/property", () => {
     });
 
     test("after a Property is updated, the local cache should be invalid", async () => {
+      CachedProperties.expires = new Date().getTime() + 1000 * 30;
       const lastNameProperty = await Property.findOne({
         where: { key: "lastName" },
       });
@@ -131,11 +132,11 @@ describe("models/property", () => {
     });
 
     test("it will avoid using SQL when a cached property exists", async () => {
-      const cachedEmail = CachedProperties.properties.find(
+      const cachedFirstName = CachedProperties.properties.find(
         (p) => p.id === firstNameProperty.id
       );
       // @ts-ignore
-      cachedEmail.__isCached = true;
+      cachedFirstName.__isCached = true;
       const found = await Property.findOneWithCache(firstNameProperty.id);
       // @ts-ignore
       expect(found.__isCached).toBe(true);
