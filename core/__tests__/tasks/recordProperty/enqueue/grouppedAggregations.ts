@@ -95,7 +95,7 @@ describe("tasks/recordProperties:enqueue", () => {
 
   describe("recordProperties:enqueue", () => {
     test("large batches will be broken up", async () => {
-      process.env.GROUPAROO_INTERNAL_BATCH_SIZE = "2";
+      process.env.GROUPAROO_RECORDS_BATCH_SIZE = "2";
       rebuildConfig();
 
       const mario = await helper.factories.record();
