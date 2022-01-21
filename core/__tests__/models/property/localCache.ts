@@ -9,7 +9,7 @@ describe("models/property", () => {
   let originalPropertyCount: number;
 
   beforeEach(() => (CachedProperties.expires = new Date().getTime() + 5000));
-  beforeEach(() => (CachedProperties.TTL = 0));
+  beforeEach(() => (CachedProperties.TTL = 30 * 1000));
   afterAll(() => (CachedProperties.expires = 0));
 
   beforeAll(async () => {
@@ -113,7 +113,7 @@ describe("models/property", () => {
       firstNameProperty = await Property.findOne({
         where: { key: "firstName" },
       });
-      await firstNameProperty.update({ key: "FIRST NAME" });
+      await firstNameProperty.update({ key: "FIRST NAME" }); // should reset the cache
     });
 
     test("after a Property is updated, the local cache should be invalid", async () => {
@@ -138,10 +138,10 @@ describe("models/property", () => {
       // @ts-ignore
       cachedEmail.__isCached = true;
       const found = await Property.findOneWithCache(firstNameProperty.id);
-      expect(found.id).toBe("firstName");
-      expect(found.key).toBe("FIRST NAME");
       // @ts-ignore
       expect(found.__isCached).toBe(true);
+      expect(found.id).toBe("firstName");
+      expect(found.key).toBe("FIRST NAME");
     });
 
     test("it can find by other keys", async () => {
