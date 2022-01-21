@@ -1013,7 +1013,8 @@ export namespace DestinationOps {
         `${_export.recordId}:${_export.destinationId}`,
         _export.id
       );
-      releaseLock();
+
+      await releaseLock();
     }
 
     return updateExports(
