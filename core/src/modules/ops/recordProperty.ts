@@ -10,7 +10,7 @@ import { Op } from "sequelize";
 import { Source } from "../../models/Source";
 import { AggregationMethod, PluginConnection } from "../../classes/plugin";
 import { Filter } from "../../models/Filter";
-import { log } from "actionhero";
+import { config, log } from "actionhero";
 
 export namespace RecordPropertyOps {
   const defaultRecordPropertyProcessingDelay = 1000 * 60 * 5;
@@ -199,7 +199,6 @@ export namespace RecordPropertyOps {
 }
 
 // utilities (private)
-
 async function preparePropertyImports(
   pluginConnection: PluginConnection,
   pendingRecordProperties: RecordProperty[],
@@ -218,14 +217,9 @@ async function preparePropertyImports(
     ? "RecordProperty"
     : null;
 
-  await RecordProperty.update(
-    { startedAt: new Date() },
-    {
-      where: {
-        id: { [Op.in]: pendingRecordProperties.map((i) => i.id) },
-      },
-    }
-  );
+  await RecordProperty.updateAllinBatches(pendingRecordProperties, {
+    startedAt: new Date(),
+  });
 
   if (method === "RecordProperties") {
     await CLS.enqueueTask(`recordProperty:importRecordProperties`, {
@@ -243,18 +237,11 @@ async function preparePropertyImports(
     }
   } else {
     // Schedule sources don't import properties on-demand, keep old value
-    await RecordProperty.update(
-      {
-        state: "ready",
-        stateChangedAt: new Date(),
-        confirmedAt: new Date(),
-      },
-      {
-        where: {
-          id: pendingRecordProperties.map((p) => p.id),
-        },
-      }
-    );
+    await RecordProperty.updateAllinBatches(pendingRecordProperties, {
+      state: "ready",
+      stateChangedAt: new Date(),
+      confirmedAt: new Date(),
+    });
   }
 }
 

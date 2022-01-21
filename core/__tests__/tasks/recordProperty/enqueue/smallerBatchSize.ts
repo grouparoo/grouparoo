@@ -1,3 +1,4 @@
+process.env.GROUPAROO_RECORDS_BATCH_SIZE = "1";
 process.env.GROUPAROO_INTERNAL_BATCH_SIZE = "1";
 
 import { helper } from "@grouparoo/spec-helper";
