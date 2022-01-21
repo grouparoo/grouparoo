@@ -253,6 +253,7 @@ importers:
       '@grouparoo/spec-helper': 0.8.0
       '@types/bcryptjs': 2.4.2
       '@types/cls-hooked': 4.3.3
+      '@types/faker': 5.5.3
       '@types/fs-extra': '*'
       '@types/isomorphic-fetch': 0.0.35
       '@types/jest': '*'
@@ -351,6 +352,7 @@ importers:
       '@grouparoo/spec-helper': link:../plugins/@grouparoo/spec-helper
       '@types/bcryptjs': 2.4.2
       '@types/cls-hooked': 4.3.3
+      '@types/faker': 5.5.3
       '@types/isomorphic-fetch': 0.0.35
       '@types/jest': 27.4.0
       '@types/mustache': 4.1.2
@@ -4375,6 +4377,10 @@ packages:
     resolution: {integrity: sha512-9AonUzyTjXXhEOa0DnqpzZi6VHlqKMswga9EXjpXnnqxwLtdvPPtlO8evrI5D9S6asFRCQ6v+wpiUKbw+vKqyg==}
     dependencies:
       '@types/ms': 0.7.31
+    dev: true
+
+  /@types/faker/5.5.3:
+    resolution: {integrity: sha512-InxkM6sCFQTI6YQl29M/XGlO19ecv/EHH5X5zLEFdge2/qya8oIT0XkJUKTqheVYWJtGi+FBAfP7hbbunDiOmg==}
     dev: true
 
   /@types/faker/6.6.9:
