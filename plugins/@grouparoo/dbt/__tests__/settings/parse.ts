@@ -4,7 +4,7 @@ import os from "os";
 import { dbtProfile } from "../../src/settings/parse";
 import { dbtSettingsResponse } from "../../src/settings/types";
 
-let previousCwd = null;
+let previousCwd: string = null;
 const projectsPath = path.resolve(
   path.join(path.join(__dirname, "..", "projects"))
 );
@@ -57,7 +57,11 @@ function deleteProfile() {
   }
 }
 
-function replaceInFile(filePath, replaceValue, withValue) {
+function replaceInFile(
+  filePath: string,
+  replaceValue: string,
+  withValue: string
+) {
   const contents = fs.readFileSync(filePath).toString();
   const result = contents.replace(replaceValue, withValue);
   fs.writeFileSync(filePath, result);
