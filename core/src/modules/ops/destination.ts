@@ -915,10 +915,9 @@ export namespace DestinationOps {
   }> {
     const _exports: Export[] = []; // only ones we are sending
 
-    let releaseLock;
     for (const _export of givenExports) {
       // 1. check if already locked
-      const { releaseLock, isLocked, lockedBy } = await getLock(
+      const { isLocked, lockedBy } = await getLock(
         `${_export.recordId}:${_export.destinationId}`,
         _export.id
       );
@@ -1007,9 +1006,15 @@ export namespace DestinationOps {
       await app.checkAndUpdateParallelism("decr");
     }
 
-    releaseLock();
+    for (const _export of _exports) {
+      // -- release locks for all records regardless of outcome -- re-enqueues are handled elsewhere
 
-    // -- unlock the record
+      const { releaseLock } = await getLock(
+        `${_export.recordId}:${_export.destinationId}`,
+        _export.id
+      );
+      releaseLock();
+    }
 
     return updateExports(
       destination,

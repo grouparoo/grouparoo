@@ -52,12 +52,13 @@ export type getLockResponse = {
 
 export async function getLock(
   key: string,
-  requestId: string = uuid.v4() // for exports, this will be the export id, we may have use cases that don't pass a request id though, so we'll assign a default
+  requestId: string = uuid.v4(), // for exports, this will be the export id, we may have use cases that don't pass a request id though, so we'll assign a default
+  ttl = LOCK_DURATION_MS
 ): Promise<getLockResponse> {
   const client = api.redis.clients.client;
   const lockKey = `grouparoo:lock:${key}`;
 
-  //todo: add lock expiration
+  await client.expire(lockKey, Math.ceil(ttl / 1000));
 
   const set = await client.setnx(lockKey, requestId);
 
@@ -71,9 +72,11 @@ export async function getLock(
     return { releaseLock: null, isLocked, lockedBy: lockValue }; //
   } else {
     //if it could set it
+
     async function releaseLock() {
       await client.del(lockKey);
     }
+
     //return how to release it, the fact that it was set, and who it was set by
     return { releaseLock, isLocked, lockedBy: requestId };
   }
