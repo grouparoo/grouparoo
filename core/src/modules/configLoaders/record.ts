@@ -4,8 +4,7 @@ import {
   extractNonNullParts,
   logModel,
 } from "../../classes/codeConfig";
-import { GrouparooRecord } from "../../models/GrouparooRecord";
-import { Property } from "../../models/Property";
+import { GrouparooRecord, Property } from "../.."; // configLoader imports need to be from root
 import { getGrouparooRunMode } from "../runMode";
 
 export async function loadRecord(

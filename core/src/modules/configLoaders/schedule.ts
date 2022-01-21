@@ -8,8 +8,8 @@ import {
   IdsByClass,
 } from "../../classes/codeConfig";
 import { FilterHelper } from "../filterHelper";
-import { Schedule, Source } from "../..";
 import { Op } from "sequelize";
+import { Source, Schedule } from "../.."; // configLoader imports need to be from root
 import { Deprecation } from "../deprecation";
 import { ConfigWriter } from "../configWriter";
 

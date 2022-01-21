@@ -17,7 +17,7 @@ export {
 export { DestinationGroupMembership } from "./models/DestinationGroupMembership";
 export { Export } from "./models/Export";
 export { ExportProcessor } from "./models/ExportProcessor";
-export { Group } from "./models/Group";
+export { Group, GroupRuleWithKey } from "./models/Group";
 export { GroupMember } from "./models/GroupMember";
 export { GroupRule } from "./models/GroupRule";
 export { Import } from "./models/Import";

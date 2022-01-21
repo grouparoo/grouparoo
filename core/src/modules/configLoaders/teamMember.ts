@@ -6,7 +6,7 @@ import {
   logModel,
   validateConfigObjectKeys,
 } from "../../classes/codeConfig";
-import { Team, TeamMember } from "../..";
+import { Team, TeamMember } from "../.."; // configLoader imports need to be from root
 import { Op } from "sequelize";
 
 export async function loadTeamMember(

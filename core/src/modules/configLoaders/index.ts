@@ -219,8 +219,7 @@ export async function processConfigObjects(
   // Delete unseen config objects ahead of time
   const deletedIds = await deleteLockedObjects(getSeenIds(configObjects));
 
-  for (const i in configObjects) {
-    const configObject = configObjects[i];
+  for (const configObject of configObjects) {
     if (Object.keys(configObject).length === 0) continue;
     let klass = configObject?.class?.toLowerCase();
     let ids: IdsByClass;

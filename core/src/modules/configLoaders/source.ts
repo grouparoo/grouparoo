@@ -9,9 +9,8 @@ import {
   getAutoBootstrappedProperty,
   AnyConfigurationObject,
 } from "../../classes/codeConfig";
-import { App, Source, Property, PropertyTypes } from "../..";
+import { App, Property, PropertyTypes, Source } from "../.."; // configLoader imports need to be from root
 import { Op } from "sequelize";
-import { log } from "actionhero";
 
 import { ConfigWriter } from "../configWriter";
 

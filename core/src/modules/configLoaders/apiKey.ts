@@ -5,7 +5,7 @@ import {
   validateConfigObjectKeys,
   IdsByClass,
 } from "../../classes/codeConfig";
-import { ApiKey, Permission } from "../..";
+import { ApiKey, Permission } from "../.."; // configLoader imports need to be from root
 import { Op } from "sequelize";
 
 export async function loadApiKey(

@@ -5,8 +5,7 @@ import {
   validateConfigObjectKeys,
   IdsByClass,
 } from "../../classes/codeConfig";
-import { plugin } from "../..";
-import { Setting } from "../../models/Setting";
+import { plugin, Setting } from "../.."; // configLoader imports need to be from root
 
 export async function loadSetting(
   configObject: SettingConfigurationObject,

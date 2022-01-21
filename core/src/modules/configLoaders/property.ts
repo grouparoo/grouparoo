@@ -7,7 +7,7 @@ import {
   validateConfigObjectKeys,
   IdsByClass,
 } from "../../classes/codeConfig";
-import { Property, Source } from "../..";
+import { Source, Property } from "../.."; // configLoader imports need to be from root
 import { FilterHelper } from "../filterHelper";
 import { Op } from "sequelize";
 import { Deprecation } from "../deprecation";
