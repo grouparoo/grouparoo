@@ -1,8 +1,8 @@
+import { useApi } from "../../../../../../ui-components/contexts/api";
 import Head from "next/head";
 import { useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import RunsList from "@grouparoo/ui-components/components/runs/List";
-import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import SourceTabs from "@grouparoo/ui-components/components/tabs/Source";
 import PageHeader from "@grouparoo/ui-components/components/PageHeader";
 import StateBadge from "@grouparoo/ui-components/components/badges/StateBadge";
@@ -16,6 +16,8 @@ import {
 import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
 import LoadingButton from "@grouparoo/ui-components/components/LoadingButton";
 import { ensureMatchingModel } from "@grouparoo/ui-components/utils/ensureMatchingModel";
+import { NextPageContext } from "next";
+import { generateClient } from "@grouparoo/ui-components/client/client";
 
 export default function Page(props) {
   const {
@@ -93,9 +95,9 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
+Page.getInitialProps = async (ctx: NextPageContext) => {
   const { sourceId, modelId } = ctx.query;
-  const { client } = useApi();
+  const client = generateClient(ctx);
   const { source } = await client.request("get", `/source/${sourceId}`);
   ensureMatchingModel("Source", source.modelId, modelId.toString());
 

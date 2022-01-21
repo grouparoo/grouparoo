@@ -1,9 +1,8 @@
+import { useApi } from "../../contexts/api";
 import { useState, useEffect } from "react";
-import { UseApi } from "../../hooks/useApi";
 import { Table, Row, Col } from "react-bootstrap";
 import Head from "next/head";
 import ResqueTabs from "../../components/tabs/Resque";
-import { errorHandler } from "../../eventHandlers";
 
 export default function ResqueRedis(props) {
   const { client } = useApi();

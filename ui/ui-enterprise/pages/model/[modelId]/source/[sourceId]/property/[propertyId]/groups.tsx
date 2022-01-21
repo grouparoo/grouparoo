@@ -1,4 +1,3 @@
-import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import Head from "next/head";
 import Link from "next/link";
 import LoadingTable from "@grouparoo/ui-components/components/LoadingTable";
@@ -9,6 +8,7 @@ import PropertyTabs from "@grouparoo/ui-components/components/tabs/Property";
 import { Actions, Models } from "@grouparoo/ui-components/utils/apiData";
 import ModelBadge from "@grouparoo/ui-components/components/badges/ModelBadge";
 import { NextPageContext } from "next";
+import { generateClient } from "@grouparoo/ui-components/client/client";
 
 export default function Page({
   model,
@@ -87,7 +87,7 @@ export default function Page({
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { propertyId, modelId } = ctx.query;
-  const { client } = useApi();
+  const client = generateClient(ctx);
   const { model } = await client.request<Actions.ModelView>(
     "get",
     `/model/${modelId}`

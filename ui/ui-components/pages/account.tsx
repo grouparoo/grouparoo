@@ -1,17 +1,17 @@
 import { GetServerSidePropsContext } from "next";
 import Head from "next/head";
 import { FormEvent, useState } from "react";
-import { Form, Row, Col } from "react-bootstrap";
-import RecordImageFromEmail from "../components/visualizations/RecordImageFromEmail";
+import { Col, Form, Row } from "react-bootstrap";
+import { generateClient } from "../client/client";
 import LoadingButton from "../components/LoadingButton";
-import { Models, Actions } from "../utils/apiData";
-import { NextPageWithInferredProps } from "../utils/pageHelper";
+import RecordImageFromEmail from "../components/visualizations/RecordImageFromEmail";
+import { useApi } from "../contexts/api";
 import { sessionHandler, successHandler } from "../eventHandlers";
-import { getRequestContext, useApi } from "../contexts/api";
-import { Client } from "../client/client";
+import { Actions, Models } from "../utils/apiData";
+import { NextPageWithInferredProps } from "../utils/pageHelper";
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const client = new Client(getRequestContext(ctx));
+  const client = generateClient(ctx);
   const { teamMember } = await client.request<Actions.AccountView>(
     "get",
     `/account`

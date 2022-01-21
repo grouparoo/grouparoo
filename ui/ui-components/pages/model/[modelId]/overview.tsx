@@ -2,7 +2,7 @@ import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useMemo } from "react";
 import { Col, ListGroup, ListGroupItem, Row } from "react-bootstrap";
-import { Client } from "../../../client/client";
+import { generateClient } from "../../../client/client";
 import ManagedCard from "../../../components/lib/ManagedCard";
 import ModelOverviewDestinations from "../../../components/model/overview/ModelOverviewDestinations";
 import ModelOverviewGroups from "../../../components/model/overview/ModelOverviewGroups";
@@ -12,9 +12,7 @@ import ModelOverviewSchedules from "../../../components/model/overview/ModelOver
 import ModelOverviewSecondarySources from "../../../components/model/overview/ModelOverviewSecondarySources";
 import PageHeader from "../../../components/PageHeader";
 import ModelTabs from "../../../components/tabs/Model";
-import { getRequestContext } from "../../../contexts/api";
 import { GrouparooModelContextProvider } from "../../../contexts/grouparooModel";
-import { UseApi } from "../../../hooks/useApi";
 import { Actions, Models } from "../../../utils/apiData";
 
 interface Props {
@@ -129,7 +127,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   context
 ) => {
   const { modelId, limit, offset } = context.query;
-  const client = new Client(getRequestContext(context));
+  const client = generateClient(context);
 
   const params = {
     limit,

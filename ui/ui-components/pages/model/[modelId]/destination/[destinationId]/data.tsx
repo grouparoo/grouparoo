@@ -1,3 +1,4 @@
+import { useApi } from "../../../../../contexts/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NextPageContext } from "next";
 import { Row, Col, Form, Badge, Button, Table, Alert } from "react-bootstrap";
@@ -11,12 +12,12 @@ import LoadingButton from "../../../../../components/LoadingButton";
 import StateBadge from "../../../../../components/badges/StateBadge";
 import LockedBadge from "../../../../../components/badges/LockedBadge";
 import PageHeader from "../../../../../components/PageHeader";
-import { UseApi } from "../../../../../hooks/useApi";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import DestinationSampleRecord from "../../../../../components/destination/DestinationSampleRecord";
 import { Actions, Models } from "../../../../../utils/apiData";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
+import { generateClient } from "../../../../../client/client";
 
 export default function Page(props) {
   const {
@@ -857,7 +858,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { client } = useApi();
+  const client = generateClient(ctx);
   const { destinationId, modelId } = ctx.query;
   const { destination } = await client.request(
     "get",

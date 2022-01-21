@@ -5,7 +5,6 @@ import { useState, useEffect, useMemo } from "react";
 import { Row, Col, Form, Badge, Alert, Card } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { UseApi } from "../../../../../hooks/useApi";
 import SourceTabs from "../../../../../components/tabs/Source";
 import PageHeader from "../../../../../components/PageHeader";
 import StateBadge from "../../../../../components/badges/StateBadge";
@@ -27,6 +26,7 @@ import ManagedCard from "../../../../../components/lib/ManagedCard";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 import PrimaryKeyBadge from "../../../../../components/badges/PrimaryKeyBadge";
 import { useApi } from "../../../../../contexts/api";
+import { generateClient } from "../../../../../client/client";
 
 interface FormData {
   mapping?: {
@@ -623,7 +623,7 @@ export default Page;
 
 export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   const { sourceId, modelId } = ctx.query;
-  const { client } = useApi();
+  const client = generateClient(ctx);
   const { source } = await client.request("get", `/source/${sourceId}`);
   ensureMatchingModel("Source", source.modelId, modelId.toString());
 

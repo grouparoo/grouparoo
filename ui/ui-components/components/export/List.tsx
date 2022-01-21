@@ -13,8 +13,8 @@ import { capitalize } from "../../utils/languageHelper";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 import StateBadge from "../badges/StateBadge";
 import { DurationTime } from "../DurationTime";
-import { getRequestContext, useApi } from "../../contexts/api";
-import { Client } from "../../client/client";
+import { useApi } from "../../contexts/api";
+import { generateClient } from "../../client/client";
 import { NextPageContext } from "next";
 
 const states = [
@@ -275,8 +275,7 @@ export default function ExportsList(props) {
 }
 
 ExportsList.hydrate = async (appContext: NextPageContext) => {
-  const getContext = getRequestContext(appContext);
-  const client = new Client(getContext);
+  const client = generateClient(appContext);
 
   const { id, limit, offset, state, recordId, destinationId } =
     appContext.query;

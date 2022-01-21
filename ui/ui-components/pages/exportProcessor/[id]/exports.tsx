@@ -1,10 +1,11 @@
 import Head from "next/head";
-import { UseApi } from "../../../hooks/useApi";
 import ExportsList from "../../../components/export/List";
 import ExportProcessorTabs from "../../../components/tabs/ExportProcessor";
 import PageHeader from "../../../components/PageHeader";
 import StateBadge from "../../../components/badges/StateBadge";
 import LockedBadge from "../../../components/badges/LockedBadge";
+import { NextPageContext } from "next";
+import { generateClient } from "../../../client/client";
 
 export default function Page(props) {
   const { exportProcessor } = props;
@@ -25,8 +26,8 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { client } = useApi();
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
   const { id } = ctx.query;
   const { exportProcessor } = await client.request(
     "get",

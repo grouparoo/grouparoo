@@ -1,12 +1,14 @@
+import { useApi } from "../../../../../contexts/api";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Form, Alert } from "react-bootstrap";
 import { errorHandler } from "../../../../../eventHandlers";
-import { UseApi } from "../../../../../hooks/useApi";
 import AppSelectorList from "../../../../../components/AppSelectorList";
 import { Actions } from "../../../../../utils/apiData";
 import LinkButton from "../../../../../components/LinkButton";
+import { generateClient } from "../../../../../client/client";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
@@ -96,8 +98,8 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { client } = useApi();
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
   const { modelId } = ctx.query;
   const { model } = await client.request("get", `/model/${modelId}`);
   const { connectionApps } = await client.request(

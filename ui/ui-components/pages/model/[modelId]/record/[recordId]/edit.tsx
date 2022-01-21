@@ -1,10 +1,10 @@
+import { useApi } from "../../../../../contexts/api";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { Row, Col, ListGroup, Alert } from "react-bootstrap";
 import EnterpriseLink from "../../../../../components/GrouparooLink";
 import RecordTabs from "../../../../../components/tabs/Record";
-import { UseApi } from "../../../../../hooks/useApi";
 import LoadingButton from "../../../../../components/LoadingButton";
 import LoadingTable from "../../../../../components/LoadingTable";
 import { getRecordDisplayName } from "../../../../../components/record/GetRecordDisplayName";
@@ -23,6 +23,7 @@ import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import LinkButton from "../../../../../components/LinkButton";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
+import { generateClient } from "../../../../../client/client";
 
 export default function Page(props) {
   const {
@@ -368,7 +369,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { recordId, modelId } = ctx.query;
-  const { client } = useApi();
+  const client = generateClient(ctx);
   const { record, groups, destinations } = await client.request(
     "get",
     `/record/${recordId}`

@@ -1,29 +1,27 @@
-import { useEffect, useState } from "react";
-import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
-import { Typeahead } from "react-bootstrap-typeahead";
-import { useRouter } from "next/router";
 import { NextPageContext } from "next";
-import Link from "next/link";
 import Head from "next/head";
-import PageHeader from "../../../../../components/PageHeader";
-import StateBadge from "../../../../../components/badges/StateBadge";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { Alert, Badge, Col, Form, Row } from "react-bootstrap";
+import { Typeahead } from "react-bootstrap-typeahead";
+import { generateClient } from "../../../../../client/client";
 import LockedBadge from "../../../../../components/badges/LockedBadge";
-import DestinationTabs from "../../../../../components/tabs/Destination";
-import LoadingButton from "../../../../../components/LoadingButton";
+import ModelBadge from "../../../../../components/badges/ModelBadge";
+import StateBadge from "../../../../../components/badges/StateBadge";
 import Loader from "../../../../../components/Loader";
+import LoadingButton from "../../../../../components/LoadingButton";
+import PageHeader from "../../../../../components/PageHeader";
+import DestinationTabs from "../../../../../components/tabs/Destination";
+import { useApi } from "../../../../../contexts/api";
 import {
   destinationHandler,
-  errorHandler,
   successHandler,
 } from "../../../../../eventHandlers";
-import { Models, Actions } from "../../../../../utils/apiData";
-import ModelBadge from "../../../../../components/badges/ModelBadge";
-import { client, UseApi } from "../../../../../hooks/useApi";
+import { useDebouncedCallback } from "../../../../../hooks/useDebouncedCallback";
+import { Actions, Models } from "../../../../../utils/apiData";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
-import { useDebouncedCallback } from "../../../../../hooks/useDebouncedCallback";
-import { getRequestContext, useApi } from "../../../../../contexts/api";
-import { Client } from "../../../../../client/client";
 
 export default function Page(props) {
   const {
@@ -440,7 +438,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
-  const client = new Client(getRequestContext(ctx));
+  const client = generateClient(ctx);
   const { destinationId, modelId } = ctx.query;
   const { destination } = await client.request(
     "get",

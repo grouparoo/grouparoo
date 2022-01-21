@@ -1,4 +1,4 @@
-import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
+import { useApi } from "../../../../../../../../ui-components/contexts/api";
 import Head from "next/head";
 import PropertyTabs from "@grouparoo/ui-components/components/tabs/Property";
 import RecordsList from "@grouparoo/ui-components/components/record/List";
@@ -8,6 +8,7 @@ import LockedBadge from "@grouparoo/ui-components/components/badges/LockedBadge"
 import { Actions, Models } from "@grouparoo/ui-components/utils/apiData";
 import ModelBadge from "@grouparoo/ui-components/components/badges/ModelBadge";
 import { NextPageContext } from "next";
+import { generateClient } from "@grouparoo/ui-components/client/client";
 
 export default function Page(props) {
   const {
@@ -54,7 +55,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { propertyId, modelId } = ctx.query;
-  const { client } = useApi();
+  const client = generateClient(ctx);
   const { property } = await client.request("get", `/property/${propertyId}`);
   const { source } = await client.request(
     "get",

@@ -1,13 +1,15 @@
+import { useApi } from "../../../contexts/api";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { Row, Col, Form } from "react-bootstrap";
 import { useRouter } from "next/router";
-import { errorHandler, successHandler } from "../../../eventHandlers";
+import { successHandler } from "../../../eventHandlers";
 import PageHeader from "../../../components/PageHeader";
 import ModelTabs from "../../../components/tabs/Model";
 import LoadingButton from "../../../components/LoadingButton";
-import { UseApi } from "../../../hooks/useApi";
 import { Actions, Models } from "../../../utils/apiData";
+import { generateClient } from "../../../client/client";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
@@ -138,9 +140,9 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
+Page.getInitialProps = async (ctx: NextPageContext) => {
   const { modelId } = ctx.query;
-  const { client } = useApi();
+  const client = generateClient(ctx);
   const { model } = await client.request("get", `/model/${modelId}`);
   const { types } = await client.request("get", `/modelOptions`);
   return { model, types };

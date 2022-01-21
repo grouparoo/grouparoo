@@ -1,12 +1,13 @@
+import { useApi } from "../../../../../contexts/api";
 import Head from "next/head";
 import { useEffect, useMemo, useState } from "react";
 import { Form, Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { errorHandler } from "../../../../../eventHandlers";
-import { UseApi } from "../../../../../hooks/useApi";
 import AppSelectorList from "../../../../../components/AppSelectorList";
 import { Actions, Models } from "../../../../../utils/apiData";
 import LinkButton from "../../../../../components/LinkButton";
+import { generateClient } from "../../../../../client/client";
 
 export default function Page(props) {
   const {
@@ -146,7 +147,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { client } = useApi();
+  const client = generateClient(ctx);
   const { modelId } = ctx.query;
   const { sources, total: totalSources } =
     await client.request<Actions.SourcesList>("get", "/sources", {

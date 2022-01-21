@@ -1,11 +1,11 @@
+import { useApi } from "../../contexts/api";
 import { useState, useEffect, Fragment } from "react";
-import { UseApi } from "../../hooks/useApi";
 import { Table, Row, Col, Accordion, Button } from "react-bootstrap";
 import Head from "next/head";
 import Link from "next/link";
 import ResqueTabs from "../../components/tabs/Resque";
 import LoadingButton from "../../components/LoadingButton";
-import { errorHandler, successHandler } from "../../eventHandlers";
+import { successHandler } from "../../eventHandlers";
 import { Actions } from "../../utils/apiData";
 
 type DisplayedWorker = {
@@ -34,10 +34,15 @@ export default function ResqueWorkersList(props) {
       "get",
       `/resque/resqueDetails`,
       {},
-      false
+      { useCache: false }
     );
     const { workerQueues: workerQueues }: Actions.ResqueLoadWorkerQueues =
-      await client.request("get", `/resque/loadWorkerQueues`, {}, false);
+      await client.request(
+        "get",
+        `/resque/loadWorkerQueues`,
+        {},
+        { useCache: false }
+      );
     setLoading(false);
 
     const _workers: DisplayedWorker[] = [];

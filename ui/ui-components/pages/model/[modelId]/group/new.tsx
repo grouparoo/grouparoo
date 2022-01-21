@@ -1,3 +1,4 @@
+import { useApi } from "../../../../contexts/api";
 import { NextPageContext } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -7,7 +8,6 @@ import { Form } from "react-bootstrap";
 import LoadingButton from "../../../../components/LoadingButton";
 import { errorHandler } from "../../../../eventHandlers";
 import { Actions } from "../../../../utils/apiData";
-import { UseApi } from "../../../../hooks/useApi";
 import ModelBadge from "../../../../components/badges/ModelBadge";
 
 export default function NewGroup(props) {

@@ -1,3 +1,4 @@
+import { useApi } from "../../contexts/api";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -9,9 +10,10 @@ import {
   successHandler,
   teamMemberHandler,
 } from "../../eventHandlers";
-import { UseApi } from "../../hooks/useApi";
 import { Actions, Models } from "../../utils/apiData";
 import { grouparooUiEdition } from "../../utils/uiEdition";
+import { generateClient } from "../../client/client";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
@@ -160,8 +162,8 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { client } = useApi();
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
   const { teams } = await client.request("get", `/teams`);
   return { teams };
 };

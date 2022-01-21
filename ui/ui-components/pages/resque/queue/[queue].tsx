@@ -1,5 +1,5 @@
+import { useApi } from "../../../contexts/api";
 import { useState, useEffect } from "react";
-import { UseApi } from "../../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../../hooks/URLParams";
 import { Table, Row, Col } from "react-bootstrap";
 import Pagination from "../../../components/Pagination";

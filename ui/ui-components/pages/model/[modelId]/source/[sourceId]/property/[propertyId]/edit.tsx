@@ -1,3 +1,4 @@
+import { useApi } from "../../../../../../../contexts/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NextPageContext } from "next";
 import Head from "next/head";
@@ -7,7 +8,6 @@ import { useState, useEffect, Fragment } from "react";
 import { Row, Col, Form, Table, Badge, Button } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 
-import { UseApi } from "../../../../../../../hooks/useApi";
 import Loader from "../../../../../../../components/Loader";
 import PageHeader from "../../../../../../../components/PageHeader";
 import StateBadge from "../../../../../../../components/badges/StateBadge";
@@ -29,6 +29,7 @@ import {
 import PrimaryKeyBadge from "../../../../../../../components/badges/PrimaryKeyBadge";
 import EnterpriseLink from "../../../../../../../components/GrouparooLink";
 import { grouparooUiEdition } from "../../../../../../../utils/uiEdition";
+import { generateClient } from "../../../../../../../client/client";
 
 export default function Page(props) {
   const {
@@ -786,7 +787,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { propertyId, modelId } = ctx.query;
-  const { client } = useApi();
+  const client = generateClient(ctx);
 
   const { sources } = await client.request("get", "/sources");
   const { types } = await client.request("get", `/propertyOptions`);

@@ -3,8 +3,7 @@ import Head from "next/head";
 import { Fragment, useEffect, useState } from "react";
 import { Form, Table, Badge, Button } from "react-bootstrap";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
-import { errorHandler, successHandler } from "../../../../../eventHandlers";
-import { client, UseApi } from "../../../../../hooks/useApi";
+import { successHandler } from "../../../../../eventHandlers";
 import StateBadge from "../../../../../components/badges/StateBadge";
 import LockedBadge from "../../../../../components/badges/LockedBadge";
 import GroupTabs from "../../../../../components/tabs/Group";
@@ -17,6 +16,7 @@ import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 import { useApi } from "../../../../../contexts/api";
+import { generateClient } from "../../../../../client/client";
 
 export default function Page(props) {
   const {
@@ -510,7 +510,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { groupId, modelId } = ctx.query;
-  const { client } = useApi();
+  const client = generateClient(ctx);
   const { group } = await client.request("get", `/group/${groupId}`);
   ensureMatchingModel("Group", group.modelId, modelId.toString());
 

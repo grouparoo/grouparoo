@@ -1,11 +1,10 @@
+import { useApi } from "../../contexts/api";
 import { useRouter } from "next/router";
 import { singular } from "pluralize";
 import { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import Loader from "../../components/Loader";
 import Link from "../../components/GrouparooLink";
-import { errorHandler } from "../../eventHandlers";
-import { UseApi } from "../../hooks/useApi";
 import { Actions } from "../../utils/apiData";
 import { grouparooUiEdition } from "../../utils/uiEdition";
 
@@ -164,7 +163,7 @@ export default function FindObject(props) {
         <tbody>
           {results.map(({ name, href }) => {
             return (
-              <tr>
+              <tr key={name}>
                 <td>{id} in </td>
                 <td>
                   <Link href={href}>

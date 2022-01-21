@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { UseApi } from "../../../../../hooks/useApi";
 import LogsList from "../../../../../components/log/List";
 import RecordTabs from "../../../../../components/tabs/Record";
 import { getRecordDisplayName } from "../../../../../components/record/GetRecordDisplayName";
@@ -9,6 +8,7 @@ import StateBadge from "../../../../../components/badges/StateBadge";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
+import { generateClient } from "../../../../../client/client";
 
 export default function Page(props) {
   const {
@@ -64,7 +64,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { recordId, modelId } = ctx.query;
-  const { client } = useApi();
+  const client = generateClient(ctx);
   const { record } = await client.request("get", `/record/${recordId}`);
   ensureMatchingModel("Record", record?.modelId, modelId.toString());
   const { model } = await client.request<Actions.ModelView>(

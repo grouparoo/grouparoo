@@ -1,15 +1,12 @@
+import { useApi } from "../../ui-components/contexts/api";
 import Head from "next/head";
 import { useState } from "react";
 import { Row, Col, Button } from "react-bootstrap";
-import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
-import {
-  errorHandler,
-  successHandler,
-} from "@grouparoo/ui-components/eventHandlers";
+import { successHandler } from "@grouparoo/ui-components/eventHandlers";
 import { CLIStream } from "../components/cliStream";
 
-export default function ValidatePage(props) {
+export default function ValidatePage() {
   const [loading, setLoading] = useState(false);
   const { client } = useApi();
 

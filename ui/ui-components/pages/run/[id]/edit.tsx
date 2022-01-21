@@ -1,4 +1,4 @@
-import { UseApi } from "../../../hooks/useApi";
+import { useApi } from "../../../contexts/api";
 import { useState, Fragment } from "react";
 import { Row, Col, Badge, Alert, Card } from "react-bootstrap";
 import Link from "../../../components/GrouparooLink";
@@ -7,9 +7,11 @@ import RunTabs from "../../../components/tabs/Run";
 import Head from "next/head";
 import LoadingButton from "../../../components/LoadingButton";
 import { DurationTime } from "../../../components/DurationTime";
-import { errorHandler, successHandler } from "../../../eventHandlers";
+import { successHandler } from "../../../eventHandlers";
 import { Models, Actions } from "../../../utils/apiData";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
+import { generateClient } from "../../../client/client";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
@@ -151,9 +153,9 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
+Page.getInitialProps = async (ctx: NextPageContext) => {
   const { id } = ctx.query;
-  const { client } = useApi();
+  const client = generateClient(ctx);
   const { run, quantizedTimeline } = await client.request("get", `/run/${id}`);
   return { run, quantizedTimeline };
 };

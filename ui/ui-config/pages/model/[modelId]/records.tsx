@@ -1,14 +1,13 @@
+import { useApi } from "../../../../ui-components/contexts/api";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
 import {
-  errorHandler,
   recordsHandler,
   successHandler,
 } from "@grouparoo/ui-components/eventHandlers";
 import RecordsPage from "@grouparoo/ui-components/pages/model/[modelId]/records";
 import { Actions, Models } from "@grouparoo/ui-components/utils/apiData";
-import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import LoadingButton from "@grouparoo/ui-components/components/LoadingButton";
 import AddSampleRecordModal from "@grouparoo/ui-components/components/record/AddSampleRecordModal";
 import { useApi } from "@grouparoo/ui-components/contexts/api";

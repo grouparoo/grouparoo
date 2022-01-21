@@ -1,18 +1,18 @@
+import { NextPageContext } from "next";
 import Head from "next/head";
-import { useState, useEffect } from "react";
-import { Tabs, Tab, Row, Col } from "react-bootstrap";
-import { capitalize } from "../../utils/languageHelper";
 import { useRouter } from "next/router";
-import { Models, Actions } from "../../utils/apiData";
-import SettingCard from "../../components/settings/SettingCard";
+import { useEffect, useState } from "react";
+import { Col, Row, Tab, Tabs } from "react-bootstrap";
+import { generateClient } from "../../client/client";
 import ImportAndUpdateAllRecords from "../../components/settings/ImportAndUpdate";
+import ResetCache from "../../components/settings/ResetCache";
 import ResetCluster from "../../components/settings/ResetCluster";
 import ResetData from "../../components/settings/ResetData";
-import ResetCache from "../../components/settings/ResetCache";
+import SettingCard from "../../components/settings/SettingCard";
+import { useApi } from "../../contexts/api";
 import { errorHandler, successHandler } from "../../eventHandlers";
-import { getRequestContext, useApi } from "../../contexts/api";
-import { NextPageContext } from "next";
-import { Client } from "../../client/client";
+import { Actions, Models } from "../../utils/apiData";
+import { capitalize } from "../../utils/languageHelper";
 
 const settingsWhichTriggerInterfaceReload = [["core", "cluster-name"]];
 
@@ -119,7 +119,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { tab } = ctx.query;
-  const client = new Client(getRequestContext(ctx));
+  const client = generateClient(ctx);
   const { settings }: Actions.SettingsList = await client.request(
     "get",
     `/settings`

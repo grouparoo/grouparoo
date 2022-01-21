@@ -1,5 +1,5 @@
+import { useApi } from "../../../../../contexts/api";
 import { Fragment, useState } from "react";
-import { UseApi } from "../../../../../hooks/useApi";
 import { Alert, Row, Col, Table, Form } from "react-bootstrap";
 import PageHeader from "../../../../../components/PageHeader";
 import StateBadge from "../../../../../components/badges/StateBadge";
@@ -16,6 +16,7 @@ import PropertyAddButton from "../../../../../components/property/Add";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
+import { generateClient } from "../../../../../client/client";
 
 export default function Page(props) {
   const {
@@ -364,7 +365,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { sourceId, modelId } = ctx.query;
-  const { client } = useApi();
+  const client = generateClient(ctx);
 
   const { source } = await client.request<Actions.SourceView>(
     "get",

@@ -1,5 +1,5 @@
+import { useApi } from "../../contexts/api";
 import { useState, useEffect } from "react";
-import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { Table, Row, Col } from "react-bootstrap";
 import Pagination from "../../components/Pagination";
@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import ResqueTabs from "../../components/tabs/Resque";
 import LoadingButton from "../../components/LoadingButton";
-import { errorHandler, successHandler } from "../../eventHandlers";
+import { successHandler } from "../../eventHandlers";
 
 export default function ResqueDelayedList(props) {
   const router = useRouter();
@@ -35,7 +35,7 @@ export default function ResqueDelayedList(props) {
         limit,
         offset,
       },
-      false
+      { useCache: false }
     );
 
     const _timestamps = [];

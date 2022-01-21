@@ -1,7 +1,6 @@
 import { NextPageContext } from "next";
-import { useState, useEffect } from "react";
-import { Client } from "../../client/client";
-import { getRequestContext } from "../../contexts/api";
+import { useEffect, useState } from "react";
+import { generateClient } from "../../client/client";
 import { useRealtimeStream } from "../../hooks/useRealtimeStream";
 import { Models } from "../../utils/apiData";
 
@@ -66,7 +65,7 @@ export default function LogsList(props) {
 }
 
 LogsList.hydrate = async (ctx: NextPageContext) => {
-  const client = new Client(getRequestContext(ctx));
+  const client = generateClient(ctx);
 
   const { logs } = await client.request("get", `/logs`, { limit });
   return { logs: logs.reverse() };

@@ -1,16 +1,14 @@
+import { useApi } from "../../contexts/api";
 import Head from "next/head";
 import { useState } from "react";
-import { UseApi } from "../../hooks/useApi";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { Form, Card } from "react-bootstrap";
 import LoadingButton from "../../components/LoadingButton";
 import { Actions } from "../../utils/apiData";
-import {
-  errorHandler,
-  sessionHandler,
-  successHandler,
-} from "../../eventHandlers";
+import { sessionHandler, successHandler } from "../../eventHandlers";
+import { generateClient } from "../../client/client";
+import { NextPageContext } from "next";
 
 export default function TeamInitializePage(props) {
   const router = useRouter();
@@ -173,8 +171,8 @@ export default function TeamInitializePage(props) {
   );
 }
 
-TeamInitializePage.getInitialProps = async (ctx) => {
-  const { client } = useApi();
+TeamInitializePage.getInitialProps = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
   const { setting } = await client.request("get", `/setting/core/cluster-name`);
   return { setting };
 };

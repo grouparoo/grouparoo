@@ -1,6 +1,6 @@
+import { useApi } from "../../../contexts/api";
 import Head from "next/head";
 import { useState } from "react";
-import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Form } from "react-bootstrap";
 import LoadingButton from "../../../components/LoadingButton";
 import { useRouter } from "next/router";
@@ -8,7 +8,9 @@ import RecordImageFromEmail from "../../../components/visualizations/RecordImage
 import { Models, Actions } from "../../../utils/apiData";
 import TeamMemberTabs from "../../../components/tabs/TeamMember";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
-import { errorHandler, successHandler } from "../../../eventHandlers";
+import { successHandler } from "../../../eventHandlers";
+import { generateClient } from "../../../client/client";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
@@ -182,8 +184,8 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { client } = useApi();
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
   const { id } = ctx.query;
   const { teams } = await client.request("get", `/teams`);
   const { teamMember } = await client.request("get", `/team/member/${id}`);

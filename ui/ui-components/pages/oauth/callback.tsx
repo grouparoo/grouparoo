@@ -1,12 +1,11 @@
+import { useApi } from "../../contexts/api";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import Loader from "../../components/Loader";
-import { errorHandler } from "../../eventHandlers";
-import { UseApi } from "../../hooks/useApi";
 import { Actions } from "../../utils/apiData";
 import { grouparooUiEdition } from "../../utils/uiEdition";
 
-export default function OauthCallbackPage(props) {
+export default function OauthCallbackPage() {
   const router = useRouter();
   const { client } = useApi();
   const requestId = String(router.query?.requestId ?? "");

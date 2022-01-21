@@ -1,17 +1,17 @@
 import { NextPageContext } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { ButtonGroup, Button, Alert } from "react-bootstrap";
+import { Alert, Button, ButtonGroup } from "react-bootstrap";
+import { generateClient } from "../../client/client";
+import { useApi } from "../../contexts/api";
 import { updateURLParams, useOffset } from "../../hooks/URLParams";
-import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import { useRealtimeStream } from "../../hooks/useRealtimeStream";
+import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
+import { Actions, Models } from "../../utils/apiData";
 import EnterpriseLink from "../GrouparooLink";
-import Pagination from "../Pagination";
-import LoadingTable from "../LoadingTable";
-import { Models, Actions } from "../../utils/apiData";
 import LoadingButton from "../LoadingButton";
-import { getRequestContext, useApi } from "../../contexts/api";
-import { Client } from "../../client/client";
+import LoadingTable from "../LoadingTable";
+import Pagination from "../Pagination";
 
 const getOwnerId = (query: { [key: string]: string | string[] }) => {
   const { id, recordId, propertyId, sourceId, destinationId, groupId } = query;
@@ -214,7 +214,7 @@ export default function LogsList(props) {
 }
 
 LogsList.hydrate = async (ctx: NextPageContext) => {
-  const client = new Client(getRequestContext(ctx));
+  const client = generateClient(ctx);
   const { limit, offset, topic } = ctx.query;
   const { logs, total } = await client.request("get", `/logs`, {
     ownerId: getOwnerId(ctx.query),

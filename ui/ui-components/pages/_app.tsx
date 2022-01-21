@@ -1,20 +1,17 @@
 import { AxiosError } from "axios";
-import App from "next/app";
 import type { AppContext, AppProps } from "next/app";
+import App from "next/app";
 import { useMemo } from "react";
+import { Client, generateClient } from "../client/client";
+import "../components/Icons";
 import Layout from "../components/layouts/Main";
 import PageTransition from "../components/PageTransition";
 import StatusSubscription from "../components/StatusSubscription";
-import "../components/Icons";
-
+import { ApiContext } from "../contexts/api";
 import { WebAppContext } from "../contexts/webApp";
-
 import "../eventHandlers";
-
 import { Actions } from "../utils/apiData";
 import { renderNestedContextProviders } from "../utils/contextHelper";
-import { Client } from "../client/client";
-import { ApiContext, getRequestContext } from "../contexts/api";
 
 export interface GrouparooNextAppProps {
   clusterName: Actions.NavigationList["clusterName"];
@@ -72,7 +69,7 @@ export default function GrouparooNextApp(
 }
 
 GrouparooNextApp.getInitialProps = async (appContext: AppContext) => {
-  const client = new Client(getRequestContext(appContext));
+  const client = generateClient(appContext);
 
   let currentTeamMember: Partial<Actions.SessionView["teamMember"]> = {
     firstName: "",

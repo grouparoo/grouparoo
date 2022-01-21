@@ -1,4 +1,4 @@
-import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
+import { useApi } from "../../../../ui-components/contexts/api";
 import { useState } from "react";
 import { Form } from "react-bootstrap";
 import Head from "next/head";
@@ -7,11 +7,10 @@ import { useRouter } from "next/router";
 import ApiKeyTabs from "@grouparoo/ui-components/components/tabs/APIKey";
 import LoadingButton from "@grouparoo/ui-components/components/LoadingButton";
 import LockedBadge from "@grouparoo/ui-components/components/badges/LockedBadge";
-import {
-  errorHandler,
-  successHandler,
-} from "@grouparoo/ui-components/eventHandlers";
+import { successHandler } from "@grouparoo/ui-components/eventHandlers";
 import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
+import { generateClient } from "@grouparoo/ui-components/client/client";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const router = useRouter();
@@ -158,8 +157,8 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { client } = useApi();
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
   const { id } = ctx.query;
   const { apiKey }: Actions.ApiKeyView = await client.request(
     "get",

@@ -1,20 +1,20 @@
 import { NextPageContext } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { errorHandler, runsHandler } from "../../eventHandlers";
-import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { Fragment, useEffect, useState } from "react";
+import { Alert, Button, ButtonGroup, Card, Col, Row } from "react-bootstrap";
+import { generateClient } from "../../client/client";
+import { useApi } from "../../contexts/api";
+import { runsHandler } from "../../eventHandlers";
+import { updateURLParams, useOffset } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
-import { Row, Col, Button, ButtonGroup, Alert, Card } from "react-bootstrap";
-import EnterpriseLink from "../GrouparooLink";
-import Pagination from "../Pagination";
-import LoadingTable from "../LoadingTable";
-import RunDurationChart from "../visualizations/RunDurations";
-import { Models, Actions } from "../../utils/apiData";
+import { Actions, Models } from "../../utils/apiData";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 import { DurationTime } from "../DurationTime";
-import { getRequestContext, useApi } from "../../contexts/api";
-import { Client } from "../../client/client";
+import EnterpriseLink from "../GrouparooLink";
+import LoadingTable from "../LoadingTable";
+import Pagination from "../Pagination";
+import RunDurationChart from "../visualizations/RunDurations";
 
 export default function RunsList(props) {
   const { topic }: { topic: string } = props;
@@ -306,7 +306,7 @@ RunsList.hydrate = async (
 ) => {
   const { sourceId, groupId, propertyId, limit, offset, stateFilter, error } =
     ctx.query;
-  const client = new Client(getRequestContext(ctx));
+  const client = generateClient(ctx);
   const { runs, total } = await client.request("get", `/runs`, {
     creatorId: sourceId ?? groupId ?? propertyId,
     topic: options.topic,

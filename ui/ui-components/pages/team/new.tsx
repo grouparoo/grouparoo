@@ -1,12 +1,11 @@
+import { useApi } from "../../contexts/api";
 import Head from "next/head";
 import { useState } from "react";
-import { UseApi } from "../../hooks/useApi";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { Form } from "react-bootstrap";
 import LoadingButton from "../../components/LoadingButton";
 import { Actions } from "../../utils/apiData";
-import { errorHandler } from "../../eventHandlers";
 
 export default function NewTeamPage(props) {
   const router = useRouter();

@@ -1,11 +1,12 @@
+import { useApi } from "../../../../ui-components/contexts/api";
 import Head from "next/head";
-import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import { useState } from "react";
 import { Form } from "react-bootstrap";
 import { useRouter } from "next/router";
 import AppSelectorList from "@grouparoo/ui-components/components/AppSelectorList";
-import { errorHandler } from "@grouparoo/ui-components/eventHandlers";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
+import { generateClient } from "@grouparoo/ui-components/client/client";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const { plugins }: { plugins: Actions.PluginsList["plugins"] } = props;
@@ -56,8 +57,8 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { client } = useApi();
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
   const { plugins }: Actions.PluginsList = await client.request(
     "get",
     `/plugins`,

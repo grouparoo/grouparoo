@@ -1,21 +1,21 @@
-import { FormEvent, useEffect, useState } from "react";
-import { AsyncTypeahead } from "react-bootstrap-typeahead";
-import { Form, Row, Col, Badge, Button, ButtonGroup } from "react-bootstrap";
-import { useRouter } from "next/router";
-import Link from "next/link";
 import type { NextPageContext } from "next";
-import { errorHandler, recordsHandler } from "../../eventHandlers";
-import { useOffset, updateURLParams } from "../../hooks/URLParams";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { FormEvent, useEffect, useState } from "react";
+import { Badge, Button, ButtonGroup, Col, Form, Row } from "react-bootstrap";
+import { AsyncTypeahead } from "react-bootstrap-typeahead";
+import { generateClient } from "../../client/client";
+import { useApi } from "../../contexts/api";
+import { recordsHandler } from "../../eventHandlers";
+import { updateURLParams, useOffset } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
-import Pagination from "../Pagination";
-import LoadingTable from "../LoadingTable";
-import LoadingButton from "../LoadingButton";
-import { Models, Actions } from "../../utils/apiData";
-import ArrayRecordPropertyList from "./ArrayRecordPropertyList";
-import StateBadge from "../badges/StateBadge";
+import { Actions, Models } from "../../utils/apiData";
 import { formatTimestamp } from "../../utils/formatTimestamp";
-import { getRequestContext, useApi } from "../../contexts/api";
-import { Client } from "../../client/client";
+import StateBadge from "../badges/StateBadge";
+import LoadingButton from "../LoadingButton";
+import LoadingTable from "../LoadingTable";
+import Pagination from "../Pagination";
+import ArrayRecordPropertyList from "./ArrayRecordPropertyList";
 
 export default function RecordsList(props) {
   const {
@@ -397,7 +397,7 @@ RecordsList.hydrate = async (
   _searchKey?: string,
   _searchValue?: string
 ) => {
-  const client = new Client(getRequestContext(ctx));
+  const client = generateClient(ctx);
 
   const {
     modelId,

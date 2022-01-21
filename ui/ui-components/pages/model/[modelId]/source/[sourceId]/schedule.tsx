@@ -1,4 +1,4 @@
-import { UseApi } from "../../../../../hooks/useApi";
+import { useApi } from "../../../../../contexts/api";
 import SourceTabs from "../../../../../components/tabs/Source";
 import Head from "next/head";
 import { useState } from "react";
@@ -20,6 +20,7 @@ import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
+import { generateClient } from "../../../../../client/client";
 
 export default function Page(props) {
   const {
@@ -613,7 +614,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { sourceId, modelId } = ctx.query;
-  const { client } = useApi();
+  const client = generateClient(ctx);
   const { source } = await client.request("get", `/source/${sourceId}`);
   let filterOptions = {};
   let filterOptionDescriptions = {};

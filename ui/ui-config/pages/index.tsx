@@ -1,5 +1,5 @@
+import { useApi } from "../../ui-components/contexts/api";
 import { useRouter } from "next/router";
-import { UseApi } from "../../ui-components/hooks/useApi";
 import Head from "next/head";
 import { Row, Col, Image, Button } from "react-bootstrap";
 import { useState, useEffect } from "react";

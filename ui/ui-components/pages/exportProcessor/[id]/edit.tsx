@@ -1,4 +1,3 @@
-import { UseApi } from "../../../hooks/useApi";
 import { Table, Alert, Card } from "react-bootstrap";
 import EnterpriseLink from "../../../components/GrouparooLink";
 import Head from "next/head";
@@ -7,6 +6,8 @@ import { Models } from "../../../utils/apiData";
 import StateBadge from "../../../components/badges/StateBadge";
 import { DurationTime } from "../../../components/DurationTime";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
+import { NextPageContext } from "next";
+import { generateClient } from "../../../client/client";
 
 export default function Page({
   exportProcessor,
@@ -129,9 +130,9 @@ export default function Page({
   );
 }
 
-Page.getInitialProps = async (ctx) => {
+Page.getInitialProps = async (ctx: NextPageContext) => {
   const { id } = ctx.query;
-  const { client } = useApi();
+  const client = generateClient(ctx);
   const { exportProcessor } = await client.request(
     "get",
     `/exportProcessor/${id}`

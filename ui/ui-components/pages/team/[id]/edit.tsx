@@ -1,5 +1,5 @@
+import { useApi } from "../../../contexts/api";
 import { useState } from "react";
-import { UseApi } from "../../../hooks/useApi";
 import { Form } from "react-bootstrap";
 import LoadingButton from "../../../components/LoadingButton";
 import PermissionsList from "../../../components/Permissions";
@@ -7,11 +7,9 @@ import { useRouter } from "next/router";
 import { Models, Actions } from "../../../utils/apiData";
 import TeamTabs from "../../../components/tabs/Team";
 import LockedBadge from "../../../components/badges/LockedBadge";
-import {
-  errorHandler,
-  successHandler,
-  teamHandler,
-} from "../../../eventHandlers";
+import { successHandler, teamHandler } from "../../../eventHandlers";
+import { generateClient } from "../../../client/client";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const router = useRouter();
@@ -150,8 +148,8 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { client } = useApi();
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
   const { id } = ctx.query;
   const { team } = await client.request("get", `/team/${id}`);
   return { team };

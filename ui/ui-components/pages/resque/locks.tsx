@@ -1,9 +1,9 @@
+import { useApi } from "../../contexts/api";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import { Table, Row, Col } from "react-bootstrap";
 import { successHandler } from "../../eventHandlers";
-import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import Pagination from "../../components/Pagination";
 import ResqueTabs from "../../components/tabs/Resque";

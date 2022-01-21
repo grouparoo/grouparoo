@@ -1,9 +1,10 @@
+import { NextPageContext } from "next";
 import Head from "next/head";
-import { Table, Badge, Alert } from "react-bootstrap";
-import { Actions } from "../utils/apiData";
+import { Alert, Badge, Table } from "react-bootstrap";
+import { generateClient } from "../client/client";
 import LinkButton from "../components/LinkButton";
-import { getRequestContext, useApi } from "../contexts/api";
-import { Client } from "../client/client";
+import { useApi } from "../contexts/api";
+import { Actions } from "../utils/apiData";
 
 const upgradeHelpPage =
   "https://www.grouparoo.com/docs/support/upgrading-grouparoo";
@@ -108,8 +109,8 @@ export default function Page({
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const client = new Client(getRequestContext(ctx));
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
   const { plugins }: Actions.PluginsList = await client.request(
     "get",
     `/plugins`,

@@ -12,8 +12,8 @@ import { ImportRecordPropertiesDiff, ImportGroupsDiff } from "./Diff";
 import StateBadge from "../badges/StateBadge";
 import { capitalize } from "../../utils/languageHelper";
 import { NextPageContext } from "next";
-import { getRequestContext, useApi } from "../../contexts/api";
-import { Client } from "../../client/client";
+import { useApi } from "../../contexts/api";
+import { generateClient } from "../../client/client";
 
 const states = [
   "all",
@@ -220,7 +220,7 @@ export default function ImportList(props) {
 }
 
 ImportList.hydrate = async (ctx: NextPageContext) => {
-  const client = new Client(getRequestContext(ctx));
+  const client = generateClient(ctx);
   const { creatorId, limit, offset, state, recordId } = ctx.query;
 
   const { imports, total } = await client.request("get", `/imports`, {
