@@ -70,14 +70,13 @@ export async function getLock(
     const lockValue = await client.get(lockKey);
 
     return { releaseLock: null, isLocked, lockedBy: lockValue }; //
-  } else {
-    //if it could set it
-
-    async function releaseLock() {
-      await client.del(lockKey);
-    }
-
-    //return how to release it, the fact that it was set, and who it was set by
-    return { releaseLock, isLocked, lockedBy: requestId };
   }
+
+  //if it could set it
+  async function releaseLock() {
+    await client.del(lockKey);
+  }
+
+  //return how to release it, the fact that it was set, and who it was set by
+  return { releaseLock, isLocked, lockedBy: requestId };
 }
