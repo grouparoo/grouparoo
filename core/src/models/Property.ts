@@ -372,10 +372,14 @@ export class Property extends LoggedModel<Property> {
     const count = await Property.count({
       where: {
         id: { [Op.ne]: instance.id },
-        key: instance.key,
+        key: Sequelize.where(
+          Sequelize.fn("LOWER", Sequelize.col("key")),
+          instance.key.toLowerCase()
+        ),
         state: { [Op.notIn]: ["draft", "deleted"] },
       },
     });
+
     if (count > 0) {
       throw new Error(`key "${instance.key}" is already in use`);
     }

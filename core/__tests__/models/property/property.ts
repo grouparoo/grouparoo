@@ -90,6 +90,31 @@ describe("models/property", () => {
       await property.destroy();
     });
 
+    test("ready properties cannot share the same key regardless of key case", async () => {
+      const ruleOne = await Property.create({
+        sourceId: source.id,
+        key: "CASE",
+        type: "string",
+      });
+      const ruleTwo = await Property.create({
+        sourceId: source.id,
+        key: "case",
+        type: "string",
+      });
+
+      await ruleOne.setOptions({ column: "abc123" });
+      await ruleOne.update({ state: "ready" });
+
+      await ruleTwo.setOptions({ column: "abc123" });
+
+      await expect(ruleTwo.update({ state: "ready" })).rejects.toThrow(
+        /key "case" is already in use/
+      );
+
+      await ruleOne.destroy();
+      await ruleTwo.destroy();
+    });
+
     test("draft property can share the same key, but not with ready rule", async () => {
       const ruleOne = await Property.create({
         sourceId: source.id,
