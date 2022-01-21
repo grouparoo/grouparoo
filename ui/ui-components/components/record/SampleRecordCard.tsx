@@ -268,7 +268,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
         </LinkButton>
       );
     }
-    if (!hideViewAllRecords && hasRecords && totalRecords > 0) {
+    if (!hideViewAllRecords) {
       result.push(
         <LinkButton
           disabled={disabled}
