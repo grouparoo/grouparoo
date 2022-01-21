@@ -85,11 +85,10 @@ const STATE_TRANSITIONS = [
 
 export interface PropertyFiltersWithKey extends FilterHelper.FiltersWithKey {}
 
-const CACHE_TTL = env === "test" ? -1 : 1000 * 30;
-
-export const CachedProperties: { expires: number; properties: Property[] } = {
+export const CachedProperties = {
   expires: 0,
-  properties: [],
+  TTL: env === "test" ? -1 : 1000 * 30,
+  properties: [] as Property[],
 };
 
 @DefaultScope(() => ({
@@ -323,7 +322,7 @@ export class Property extends LoggedModel<Property> {
     CachedProperties.properties = await Property.findAll({
       include: [{ model: Source.unscoped(), required: false }],
     });
-    CachedProperties.expires = now + CACHE_TTL;
+    CachedProperties.expires = now + CachedProperties.TTL;
     return modelId
       ? CachedProperties.properties.filter(
           (p) => p?.source?.modelId === modelId
@@ -331,13 +330,17 @@ export class Property extends LoggedModel<Property> {
       : CachedProperties.properties;
   }
 
-  static async findOneWithCache(value: string, modelId?: string, key = "id") {
+  static async findOneWithCache(
+    value: string,
+    modelId?: string,
+    lookupKey: keyof Property = "id"
+  ) {
     const properties = await Property.findAllWithCache(modelId);
-    let property = properties.find((p) => p.key === value);
+    let property = properties.find((p) => p[lookupKey] === value);
 
     if (!property) {
       property = await Property.findOne({
-        where: { [key]: value },
+        where: { [lookupKey]: value },
         include: [{ model: Source.unscoped(), required: false }],
       });
       if (!property) await Property.invalidateCache();

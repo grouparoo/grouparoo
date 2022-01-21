@@ -659,16 +659,25 @@ export namespace helper {
   }
 
   export async function changeTimestamps(
-    instance: any, // could be any Model
+    instances: any[], // could be any Model
     setCreated: boolean = false,
-    timestamp = "1900-01-01 12:13:14"
+    timestamp: true | string | Date = "1900-01-01 12:13:14"
   ) {
-    const { api } = await import("actionhero");
-    const tableName = instance.constructor["tableName"];
+    const { api, config } = await import("actionhero");
+    const tableName = instances[0].constructor["tableName"];
+    const sqlDate =
+      timestamp === true
+        ? config.sequelize.dialect === "sqlite"
+          ? "strftime('%Y-%m-%d %H-%M-%S','now')"
+          : "NOW()"
+        : typeof timestamp === "string"
+        ? `'${timestamp}'`
+        : "'" + timestamp.toISOString().slice(0, 19).replace("T", " ") + "'";
+
     return api.sequelize.query(
-      `UPDATE ${tableName} SET "updatedAt" = '${timestamp}' ${
-        setCreated ? `, "createdAt" = '${timestamp}' ` : ` `
-      }WHERE id = '${instance.id}'`
+      `UPDATE "${tableName}" SET "updatedAt"=${sqlDate} ${
+        setCreated ? `, "createdAt"=${sqlDate} ` : ` `
+      }WHERE id IN (${instances.map((i) => `'${i.id}'`)})`
     );
   }
 }

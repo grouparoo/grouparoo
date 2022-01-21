@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Connection, specHelper } from "actionhero";
+import { Connection, specHelper, task } from "actionhero";
 import os from "os";
 import fs from "fs";
 import { ConfigUser } from "../../src/modules/configUser";
@@ -122,6 +122,25 @@ describe("actions/status", () => {
     });
 
     describe("status:private", () => {
+      let taskDetailMock: jest.SpyInstance;
+
+      afterEach(() => {
+        process.env.GROUPAROO_RUN_MODE = undefined;
+      });
+
+      beforeAll(() => {
+        taskDetailMock = jest
+          .spyOn(task, "details")
+          .mockImplementation(async () => {
+            return {
+              queues: {},
+              workers: {},
+              stats: {},
+              leader: "LEADER",
+            };
+          });
+      });
+
       test("can retrieve cluster name", async () => {
         const { clusterName } = await specHelper.runAction<PrivateStatus>(
           "status:private",
@@ -136,6 +155,20 @@ describe("actions/status", () => {
           connection
         );
         expect(uptime).toBeGreaterThan(0);
+      });
+
+      test("can retrieve runMode", async () => {
+        process.env.GROUPAROO_RUN_MODE = "cli:start";
+        const { error, runMode, leader } =
+          await specHelper.runAction<PrivateStatus>(
+            "status:private",
+            connection
+          );
+
+        expect(error).toBeUndefined();
+        expect(runMode).toEqual("cli:start");
+        expect(leader).toEqual("LEADER");
+        expect(taskDetailMock).toHaveBeenCalled();
       });
 
       test("can retrieve server metadata", async () => {
@@ -163,6 +196,35 @@ describe("actions/status", () => {
         expect(Object.keys(metrics).length).toBeGreaterThanOrEqual(1);
         const nodeEnvMetric = metrics["env"]["NODE_ENV"][0].metric;
         expect(nodeEnvMetric.value).toBe("test");
+      });
+
+      test("will throw with no leader in start mode", async () => {
+        process.env.GROUPAROO_RUN_MODE = "cli:start";
+        taskDetailMock.mockRestore();
+
+        const { error } = await specHelper.runAction<PrivateStatus>(
+          "status:private",
+          connection
+        );
+
+        expect(error.message).toBe(
+          'no leader for this Grouparoo cluster "My Grouparoo Cluster" (cli:start)'
+        );
+      });
+
+      test("will not throw with no leader in other modes", async () => {
+        process.env.GROUPAROO_RUN_MODE = "cli:run";
+        taskDetailMock.mockRestore();
+
+        const { error, runMode, leader } =
+          await specHelper.runAction<PrivateStatus>(
+            "status:private",
+            connection
+          );
+
+        expect(error).toBeUndefined();
+        expect(runMode).toEqual("cli:run");
+        expect(leader).toBeNull();
       });
     });
   });

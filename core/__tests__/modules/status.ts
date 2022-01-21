@@ -480,7 +480,7 @@ describe("modules/status", () => {
       await helper.truncate();
       await helper.factories.properties();
       oldProfile = await helper.factories.record();
-      await helper.changeTimestamps(oldProfile, true); // 'true' will set both updatedAt and createdAt
+      await helper.changeTimestamps([oldProfile], true); // 'true' will set both updatedAt and createdAt
 
       newProfile = await helper.factories.record();
     });
@@ -578,7 +578,7 @@ describe("modules/status", () => {
             destination,
             undefined
           );
-          await helper.changeTimestamps(_export3, true);
+          await helper.changeTimestamps([_export3], true);
 
           const now = new Date();
           await _export.update({
