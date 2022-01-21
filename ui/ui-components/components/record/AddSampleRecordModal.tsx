@@ -31,10 +31,8 @@ const AddSampleRecordModal: React.FC<Props> = ({
           properties={properties}
           execApi={execApi}
           onSubmitComplete={(record) => {
-            if (record) {
-              onRecordCreated(record);
-              onHide();
-            }
+            onRecordCreated(record);
+            onHide();
           }}
         />
       </Modal.Body>
