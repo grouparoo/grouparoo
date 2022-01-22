@@ -21,6 +21,8 @@ export const AuthenticatedActionMiddleware: action.ActionMiddleware = {
   global: false,
   priority: 1000,
   preProcessor: async (data: ActionProcessor<any>) => {
+    parseHeaders(data);
+
     if (data.params.apiKey) {
       return authenticateApiKey(data);
     } else {
@@ -35,6 +37,8 @@ export const OptionallyAuthenticatedActionMiddleware: action.ActionMiddleware =
     global: false,
     priority: 1000,
     preProcessor: async (data: ActionProcessor<any>) => {
+      parseHeaders(data);
+
       if (data.params.apiKey) {
         return authenticateApiKey(data);
       } else {
@@ -73,9 +77,7 @@ async function authenticateTeamMemberFromSession(
       } else if (
         (data.params.csrfToken && data.params.csrfToken !== session.id) ||
         (!data.params.csrfToken &&
-          data.connection.rawConnection?.req?.headers[
-            "x-grouparoo-server-token"
-          ] !== config.general.serverToken)
+          data.params.serverToken !== config.general.serverToken)
       ) {
         throw new Errors.AuthenticationError("CSRF error");
       } else {
@@ -217,4 +219,18 @@ async function authenticateTeamMemberInRoom(
       }
     }
   });
+}
+
+// check if the apiKey was sent via the header
+function parseHeaders(data: ActionProcessor<any>) {
+  if (data.connection.type !== "web") return;
+
+  if (data.connection.rawConnection.req.headers["x-grouparoo-api-key"]) {
+    data.params.apiKey =
+      data.connection.rawConnection.req.headers["x-grouparoo-api-key"];
+  }
+  if (data.connection.rawConnection.req.headers["x-grouparoo-server-token"]) {
+    data.params.serverToken =
+      data.connection.rawConnection.req.headers["x-grouparoo-server-token"];
+  }
 }
