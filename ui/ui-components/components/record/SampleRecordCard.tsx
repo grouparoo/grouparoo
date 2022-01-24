@@ -123,7 +123,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   useEffect(() => {
     if (modelId) {
       client
-        .action<Actions.RecordsList>("get", "/records", {
+        .request<Actions.RecordsList>("get", "/records", {
           limit: 1,
           offset: 0,
           modelId,
@@ -143,7 +143,9 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
     let destinations: Models.DestinationType[];
 
     if (recordId) {
-      ({ record, groups, destinations } = await fetchRecord(recordId));
+      ({ record, groups, destinations } = await fetchRecord(recordId).catch(
+        () => ({} as Awaited<ReturnType<typeof fetchRecord>>)
+      ));
 
       if (!record && !recordId) {
         setHasRecords(false);
