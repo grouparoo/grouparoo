@@ -232,7 +232,7 @@ exports[`SampleRecordCard should render with 1 record in config mode 1`] = `
               type="button"
             >
               View All 
-              0
+              1
                Records
             </button>
           </a>
