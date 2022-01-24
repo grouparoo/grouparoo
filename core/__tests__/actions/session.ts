@@ -784,7 +784,7 @@ describe("session", () => {
               credentials: "include",
               headers: {
                 "Content-Type": "application/json",
-                "X-GROUPAROO-API-KEY": apiKey.apiKey, // case doesn't matter
+                Authorization: apiKey.apiKey, // case doesn't matter
               },
             }).then((r) => r.json());
             expect(response.error).toBeUndefined();

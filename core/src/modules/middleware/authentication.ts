@@ -225,9 +225,9 @@ async function authenticateTeamMemberInRoom(
 function parseHeaders(data: ActionProcessor<any>) {
   if (data.connection.type !== "web") return;
 
-  if (data.connection.rawConnection.req.headers["x-grouparoo-api-key"]) {
+  if (data.connection.rawConnection.req.headers["authorization"]) {
     data.params.apiKey =
-      data.connection.rawConnection.req.headers["x-grouparoo-api-key"];
+      data.connection.rawConnection.req.headers["authorization"];
   }
   if (data.connection.rawConnection.req.headers["x-grouparoo-server-token"]) {
     data.params.serverToken =
