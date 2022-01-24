@@ -117,7 +117,11 @@ export class ExportsRetryFailed extends AuthenticatedAction {
     destinationId: { required: false },
     startTimestamp: { required: true, formatter: APIData.ensureNumber },
     endTimestamp: { required: true, formatter: APIData.ensureNumber },
-    preview: { required: false, formatter: APIData.ensureBoolean },
+    preview: {
+      required: false,
+      default: false,
+      formatter: APIData.ensureBoolean,
+    },
   };
 
   async runWithinTransaction({
