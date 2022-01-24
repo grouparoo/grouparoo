@@ -211,21 +211,25 @@ export class ScheduleEdit extends AuthenticatedAction {
   async runWithinTransaction({ params }: { params: ParamsFrom<ScheduleEdit> }) {
     const schedule = await Schedule.findById(params.id);
 
-    const recurringFrequency =
-      params.recurring && params.recurringFrequency
-        ? params.recurringFrequency
-        : 0;
+    if (typeof params.recurring === "boolean") {
+      const recurringFrequency =
+        params.recurring && params.recurringFrequency
+          ? params.recurringFrequency
+          : 0;
 
-    // these timing options are validated separately, and should be set first
-    await schedule.update({
-      recurring: !!params.recurring,
-      recurringFrequency,
-    });
+      // these timing options are validated separately, and should be set first
+      await schedule.update({
+        recurring: params.recurring,
+        recurringFrequency,
+      });
+    }
 
     if (params.options) await schedule.setOptions(params.options);
     if (params.filters) await schedule.setFilters(params.filters);
-    if (params.refreshEnabled)
+
+    if (typeof params.refreshEnabled === "boolean") {
       await schedule.update({ refreshEnabled: params.refreshEnabled });
+    }
 
     await schedule.update({
       state: params.state,
