@@ -216,7 +216,7 @@ describe("models/recordProperty", () => {
         ];
 
         for (const e of badEmails) {
-          recordProperty.setValue(e);
+          await recordProperty.setValue(e);
           const response = await recordProperty.getValue();
           expect(response).toBe(null);
           expect(recordProperty.invalidValue).toBe(e);
