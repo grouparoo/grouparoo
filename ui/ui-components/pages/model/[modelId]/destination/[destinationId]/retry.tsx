@@ -56,7 +56,9 @@ export default function Page(props) {
     );
 
     if (response) {
-      if (!preview) {
+      if (preview) {
+        setPreviewCount(response.count);
+      } else {
         if (response.count) {
           successHandler.set({
             message: `Retrying ${response.count} failed exports`,
@@ -66,8 +68,6 @@ export default function Page(props) {
             message: "No failed exports to retry were found in this time range",
           });
         }
-      } else {
-        setPreviewCount(response.count);
       }
     }
 
