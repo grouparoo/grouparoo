@@ -961,12 +961,14 @@ describe("models/destination - with custom exportRecord plugin", () => {
     });
 
     test("the app can be rate-limited with an error and the export will have a sendAt in the future", async () => {
+      //set a response ahead of time
       exportProfileResponse = {
         success: false,
         error: new Error("oh no!") as ErrorWithRecordId,
         retryDelay: 1000,
       };
 
+      //make a group and some destination group memberships
       const group = await helper.factories.group();
       const destinationGroupMemberships: Record<string, any> = {};
       destinationGroupMemberships[group.id] = group.name;
@@ -974,6 +976,7 @@ describe("models/destination - with custom exportRecord plugin", () => {
         destinationGroupMemberships
       );
 
+      //make a record and export it
       const record = await helper.factories.record();
       await destination.exportRecord(record);
       const _export = await Export.findOne({
@@ -982,11 +985,13 @@ describe("models/destination - with custom exportRecord plugin", () => {
 
       await specHelper.runTask("export:enqueue", {});
 
+      //it was sent!
       let foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
       expect(foundSendTasks.length).toBe(1);
 
       await specHelper.runTask("export:send", foundSendTasks[0].args[0]);
 
+      //now reload it after it was sent to check its columns... should have a "sendAt"
       await _export.reload();
       expect(_export.startedAt).toBeFalsy();
       expect(_export.sendAt.getTime()).toBeGreaterThan(new Date().getTime());
@@ -996,13 +1001,15 @@ describe("models/destination - with custom exportRecord plugin", () => {
       expect(_export.state).toBe("pending");
       expect(_export.retryCount).toBe(0);
 
-      // when the response is back to success
+      //then set the response back to success
       exportProfileResponse = {
         success: true,
         error: undefined,
         retryDelay: undefined,
       };
 
+      //and export it again, it should process now
+      foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
       await specHelper.runTask("export:send", foundSendTasks[0].args[0]);
       await _export.reload();
       expect(_export.completedAt).toBeTruthy();

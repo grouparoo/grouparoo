@@ -931,8 +931,9 @@ export namespace DestinationOps {
           // i. if _export is _older_ than the export that locked the tuple, cancel it
           await _export.update({ state: "canceled" });
           // *** TODO: From a user perspective, it may be confusing that an export was canceled but not by them... should a reason be noted somehow?
-        } else {
-          // ii. if _export is _newer_ than the export that locked the tuple, just return... the export pool will pick it back up later
+        } else if (lockingExport.id !== _export.id) {
+          // this export may be in the process of retrying... if so, let it through if it's the the one that locked this lockKey!... otherwise:
+          // ii. if _export is _newer_ than or equal to the export that locked the tuple, just return... the export pool will pick it back up later
           return;
         }
       }
