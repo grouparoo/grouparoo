@@ -18,22 +18,6 @@ describe("SampleRecordCard", () => {
     require("../../../components/record/SampleRecordCard").isConfigUI = false;
   });
 
-  it("should render loading", () => {
-    expect(
-      render(
-        <ApiContext.Provider
-          value={{
-            client: {
-              request: async () => ({}),
-            } as any,
-          }}
-        >
-          <SampleRecordCard {...cardProps} />
-        </ApiContext.Provider>
-      ).container
-    ).toMatchSnapshot();
-  });
-
   it("should render with no records", async () => {
     cardProps.properties = [{ id: "some-property", sourceId: "some-source" }];
 
