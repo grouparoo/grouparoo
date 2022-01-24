@@ -1,4 +1,3 @@
-import { generateClient, useApi } from "../../../../../contexts/api";
 import { useEffect, useState } from "react";
 import { Row, Col, Form } from "react-bootstrap";
 import { NextPage, NextPageContext } from "next";
@@ -15,6 +14,8 @@ import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { groupHandler, successHandler } from "../../../../../eventHandlers";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
+import { useApi } from "../../../../../contexts/api";
+import { generateClient } from "../../../../../client/client";
 
 interface Props {
   model: Models.GrouparooModelType;
