@@ -35,7 +35,6 @@ export interface SampleRecordCardProps {
     groups?: Models.GroupType[];
     destinations?: Models.DestinationType[];
   }>;
-  allowFetchWithoutRecordId?: boolean;
   properties: Models.PropertyType[];
   propertiesTitle?: string;
   groupsTitle?: string;
@@ -44,6 +43,7 @@ export interface SampleRecordCardProps {
   highlightProperty?: Models.PropertyType;
   highlightPropertyError?: string;
   propertyLinkDisabled?: boolean;
+  randomRecordDisabled?: boolean;
   importDisabled?: boolean;
   reloadKey?: string;
   warning?: string;
@@ -86,7 +86,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   highlightProperty,
   highlightPropertyError,
   propertyLinkDisabled = false,
-  allowFetchWithoutRecordId = false,
+  randomRecordDisabled = false,
   warning,
   reloadKey,
 }) => {
@@ -139,10 +139,10 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
     let groups: Models.GroupType[];
     let destinations: Models.DestinationType[];
 
-    if (recordId || allowFetchWithoutRecordId) {
+    if (recordId) {
       ({ record, groups, destinations } = await fetchRecord(recordId));
 
-      if (allowFetchWithoutRecordId && !record && !recordId) {
+      if (!record && !recordId) {
         setHasRecords(false);
         errorHandler.set({
           message:
@@ -194,14 +194,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
     }
 
     setLoading(false);
-  }, [
-    recordId,
-    allowFetchWithoutRecordId,
-    fetchRecord,
-    modelId,
-    execApi,
-    saveRecord,
-  ]);
+  }, [recordId, fetchRecord, modelId, execApi, saveRecord]);
 
   const sortedPropertyKeys = useMemo(() => {
     const id = highlightProperty?.id;
@@ -269,7 +262,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
       result.push(
         <LinkButton
           key={modelId + (record?.id || "")}
-          disabled={!record || disabled}
+          disabled={!record?.id || disabled}
           href={`/model/${modelId}/record${
             record ? `/${record.id}/edit` : "s"
           }`}
@@ -330,7 +323,9 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   const actions = [
     <LoadingButton
       key="clear-record-id"
-      disabled={disabled || !hasRecords || loading || importing}
+      disabled={
+        disabled || !hasRecords || loading || importing || randomRecordDisabled
+      }
       loading={loading && !recordId}
       size="sm"
       variant="outline-primary"

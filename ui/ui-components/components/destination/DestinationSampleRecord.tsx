@@ -85,8 +85,6 @@ const DestinationSampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
 
       setWarning(warning);
 
-      console.log(response);
-
       return response;
     },
     [execApi, debouncedDestination, modelId, groupId, collection]
@@ -102,7 +100,7 @@ const DestinationSampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
       warning={warning}
       propertyLinkDisabled
       importDisabled
-      allowFetchWithoutRecordId
+      randomRecordDisabled={collection === "none"}
     />
   );
 };
