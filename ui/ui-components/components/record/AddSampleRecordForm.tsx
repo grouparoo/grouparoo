@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import { errorHandler } from "../../eventHandlers";
 import { ApiHook } from "../../hooks/useApi";
 import { Actions, Models } from "../../utils/apiData";
 import LoadingButton from "../LoadingButton";
@@ -18,7 +19,7 @@ const getInputType = (type?: Models.PropertyType["type"]): string => {
 interface Props {
   modelId: string;
   properties: Models.PropertyType[];
-  onSubmitComplete: (record?: Models.GrouparooRecordType) => void;
+  onSubmitComplete: (record: Models.GrouparooRecordType) => void;
   execApi: ApiHook["execApi"];
 }
 
@@ -60,7 +61,15 @@ const AddSampleRecordForm: React.FC<Props> = ({
         properties: { [data.uniqueProperty]: data.value },
       });
       setSubmitting(false);
-      onSubmitComplete(response?.record);
+
+      if (response?.record) {
+        onSubmitComplete(response.record);
+      } else {
+        errorHandler.set({
+          message: `Could not add Sample Record.
+          Record with ${data.uniqueProperty} = ${data.value} may not exist or may be already added.`,
+        });
+      }
     },
     [modelId]
   );

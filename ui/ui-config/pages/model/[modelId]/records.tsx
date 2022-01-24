@@ -23,12 +23,13 @@ export default function Page(props) {
   const router = useRouter();
   const { execApi } = UseApi(props, errorHandler);
 
-  const [loading, setLoading] = useState(false);
+  const [importing, setImporting] = useState(false);
   const [addingRecord, setAddingRecord] = useState(false);
+  const [reloading, setReloading] = useState(false);
 
   async function importAllRecords() {
-    setLoading(true);
-    successHandler.set({ message: "enqueued for import..." });
+    setImporting(true);
+    successHandler.set({ message: "Importing Records..." });
     const response: Actions.RecordsImport = await execApi(
       "post",
       `/records/${modelId}/import`
@@ -39,16 +40,17 @@ export default function Page(props) {
           return { id: r.recordId };
         })
       );
-      successHandler.set({ message: "Import Complete!" });
+      successHandler.set({ message: "Import complete!" });
     }
-    setLoading(false);
+    setImporting(false);
   }
 
   return (
     <>
       <RecordsPage {...props} />
       <LoadingButton
-        disabled={addingRecord || loading}
+        disabled={addingRecord || importing}
+        loading={reloading}
         variant="primary"
         onClick={() => setAddingRecord(true)}
       >
@@ -58,7 +60,8 @@ export default function Page(props) {
       <LoadingButton
         variant="primary"
         onClick={() => importAllRecords()}
-        disabled={loading}
+        disabled={addingRecord || reloading}
+        loading={importing}
       >
         Import All Records
       </LoadingButton>
@@ -68,6 +71,7 @@ export default function Page(props) {
         execApi={execApi}
         show={addingRecord}
         onRecordCreated={() => {
+          setReloading(true);
           router.reload();
         }}
         onHide={() => {

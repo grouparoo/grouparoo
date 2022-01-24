@@ -116,7 +116,7 @@ export default function Main(props) {
               bottom: 0,
               right: 0,
               padding: 20,
-              zIndex: 99,
+              zIndex: 2000,
             }}
           >
             <Toast variant="success" handler={successHandler} />
