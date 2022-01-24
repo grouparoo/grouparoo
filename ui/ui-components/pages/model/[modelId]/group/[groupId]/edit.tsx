@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Row, Col, Form } from "react-bootstrap";
-import { NextPageContext } from "next";
+import { NextPage, NextPageContext } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import StateBadge from "../../../../../components/badges/StateBadge";
@@ -20,15 +20,15 @@ import { UseApi } from "../../../../../hooks/useApi";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 
-export default function Page(props) {
-  const {
-    model,
-  }: {
-    model: Models.GrouparooModelType;
-  } = props;
+interface Props {
+  model: Models.GrouparooModelType;
+  group: Models.GroupType;
+}
+
+const Page: NextPage<Props> = (props) => {
   const router = useRouter();
   const [group, setGroup] = useState<Models.GroupType>(props.group);
-  const { execApi } = UseApi(props, errorHandler);
+  const { execApi } = UseApi(undefined, errorHandler);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -92,7 +92,7 @@ export default function Page(props) {
         <title>Grouparoo: {group.name}</title>
       </Head>
 
-      <GroupTabs group={group} model={model} />
+      <GroupTabs group={group} model={props.model} />
 
       <PageHeader
         title={group.name}
@@ -203,7 +203,7 @@ export default function Page(props) {
       </Row>
     </>
   );
-}
+};
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { groupId, modelId } = ctx.query;
@@ -218,3 +218,5 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
 
   return { group, model };
 };
+
+export default Page;
