@@ -34,6 +34,14 @@ export class RunCLI extends CLI {
       letter: "w",
       flag: true,
     },
+    scheduleIds: {
+      description: "Only run specific Schedules by id",
+      required: false,
+      variadic: true,
+      letter: "s",
+      placeholder: "schedule ids",
+      formatter: (v: any) => v as boolean | string[],
+    },
   };
 
   constructor() {
@@ -69,7 +77,10 @@ export class RunCLI extends CLI {
     const { main } = await import("../grouparoo");
     await main();
 
-    await this.runTasks();
+    const scheduleIds = Array.isArray(params.scheduleIds)
+      ? params.scheduleIds
+      : undefined;
+    await this.runTasks(scheduleIds);
 
     return false;
   }
@@ -82,12 +93,13 @@ export class RunCLI extends CLI {
     }
   }
 
-  async runTasks() {
+  async runTasks(scheduleIds?: string[]) {
     const tasks = {
       "appRefreshQueries:check": {},
       "schedules:enqueueRuns": {
         ignoreDeltas: true,
         runIfNotRecurring: true,
+        scheduleIds,
       },
       "run:recurringInternalRun": {},
       "group:updateCalculatedGroups": {},
