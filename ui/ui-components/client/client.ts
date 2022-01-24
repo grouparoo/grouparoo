@@ -11,6 +11,7 @@ import PackageJSON from "../package.json";
 import { errorHandler, uploadHandler } from "../eventHandlers";
 import type { AppContext } from "next/app";
 import type { GetServerSidePropsContext, NextPageContext } from "next";
+import { getRequestContext } from "../utils/appContext";
 
 interface ClientCacheObject {
   locked: boolean;
@@ -76,6 +77,12 @@ export class Client {
   private serverToken = process.env.SERVER_TOKEN;
   private cache = new ClientCache();
 
+  private static readonly optionDefaults = {
+    useCache: true,
+    errorHandler,
+    uploadHandler,
+  };
+
   constructor(
     private getRequestContext: () => {
       req?: IncomingMessage;
@@ -120,12 +127,6 @@ export class Client {
     }
   };
 
-  private static readonly optionDefaults = {
-    useCache: true,
-    errorHandler,
-    uploadHandler,
-  };
-
   public request = async <Response = any>(
     verb: Method = "get",
     path: string,
@@ -154,12 +155,6 @@ export class Client {
       withCredentials: true,
       method: verb.toLowerCase() as Method,
       headers,
-      onUploadProgress: (progressEvent) => {
-        const uploadPercentage = Math.round(
-          (progressEvent.loaded / progressEvent.total) * 100
-        );
-        return options.uploadHandler.set({ uploadPercentage });
-      },
     };
 
     data.csrfToken = this.csrfToken();
@@ -241,12 +236,3 @@ export class Client {
 export const generateClient = (
   ctx: AppContext | NextPageContext | GetServerSidePropsContext
 ) => new Client(getRequestContext(ctx));
-
-function isAppContext(ctx: unknown): ctx is AppContext {
-  return !!ctx.hasOwnProperty("ctx");
-}
-const getRequestContext =
-  (ctx: AppContext | NextPageContext | GetServerSidePropsContext) => () => ({
-    req: isAppContext(ctx) ? ctx.ctx.req : ctx.req,
-    res: isAppContext(ctx) ? ctx.ctx.res : ctx.res,
-  });

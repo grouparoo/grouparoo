@@ -44,15 +44,12 @@ export default function GrouparooNextApp(
     };
   }, [props]);
 
-  const client = typeof window === "undefined" ? props.client : new Client();
+  // The serialized object passed from the server is not an instance of the Client class
+  const client = props.client instanceof Client ? props.client : new Client();
   return renderNestedContextProviders(
     [
       [WebAppContext, pageContext],
-      [
-        ApiContext,
-        // The serialized object passed from the server is not an isntance of the Client class
-        { client },
-      ],
+      [ApiContext, { client }],
     ],
     <>
       <PageTransition />
