@@ -4,7 +4,9 @@ import fs from "fs";
 import path from "path";
 import { SQLite } from "./sqlite";
 
-export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
+export const connect: ConnectPluginAppMethod<SQLite> = async ({
+  appOptions,
+}) => {
   const formattedOptions: any = Object.assign({}, appOptions);
 
   let dbPath = formattedOptions.file;

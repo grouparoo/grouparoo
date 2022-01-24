@@ -1,7 +1,8 @@
 import { Errors, ExportRecordPluginMethod } from "@grouparoo/core";
-import { validateQuery } from "../validateQuery";
+import SQLiteQueryBuilder from "../queryBuilder";
+import { SQLite } from "../sqlite";
 
-export const exportRecord: ExportRecordPluginMethod = async ({
+export const exportRecord: ExportRecordPluginMethod<SQLite> = async ({
   connection,
   destination,
   syncOperations,
@@ -37,13 +38,17 @@ export const exportRecord: ExportRecordPluginMethod = async ({
         );
       }
       // delete
-      const query = `DELETE FROM "${table}" WHERE ${primaryKey} = ${newRecordProperties[primaryKey]}`;
-      validateQuery(query);
-      await connection.asyncQuery(query);
+      const [query, params] = SQLiteQueryBuilder.build(
+        `DELETE FROM "${table}" WHERE ${primaryKey} = ?`,
+        [newRecordProperties[primaryKey]]
+      );
+      await connection.asyncQuery(query, params);
     } else if (newRecordProperties[primaryKey]) {
-      const query = `SELECT * FROM "${table}" WHERE ${primaryKey} = ${newRecordProperties[primaryKey]}`;
-      validateQuery(query);
-      const existingRecords = await connection.asyncQuery(query);
+      const [query, params] = SQLiteQueryBuilder.build(
+        `SELECT * FROM "${table}" WHERE ${primaryKey} = ?`,
+        [newRecordProperties[primaryKey]]
+      );
+      const existingRecords = await connection.asyncQuery(query, params);
       if (existingRecords.length === 1) {
         if (!syncOperations.update) {
           throw new Errors.InfoError(
@@ -51,15 +56,19 @@ export const exportRecord: ExportRecordPluginMethod = async ({
           );
         }
         // update
-        let updateStatement = `UPDATE "${table}" SET`;
+        const updateQueryBuilder = new SQLiteQueryBuilder(
+          `UPDATE "${table}" SET`
+        );
         const maxIdx = Object.keys(newRecordProperties).length - 1;
         Object.keys(newRecordProperties).map((key, idx) => {
-          updateStatement += ` ${key} = "${newRecordProperties[key]}"`;
-          if (idx < maxIdx) updateStatement += `,`;
+          const statement = `${key} = ?${idx < maxIdx ? "," : ""}`;
+          updateQueryBuilder.push(statement, [newRecordProperties[key]]);
         });
-        updateStatement += ` WHERE ${primaryKey} = ${newRecordProperties[primaryKey]}`;
-        validateQuery(updateStatement);
-        await connection.asyncQuery(updateStatement);
+
+        updateQueryBuilder.push(`WHERE ${primaryKey} = ?`, [
+          newRecordProperties[primaryKey],
+        ]);
+        await connection.asyncQuery(...updateQueryBuilder.build());
 
         // erase old columns
         const columnsToErase = Object.keys(existingRecords[0]).filter(
@@ -71,21 +80,21 @@ export const exportRecord: ExportRecordPluginMethod = async ({
         );
 
         if (columnsToErase.length > 0) {
-          let eraseStatement = `UPDATE "${table}" SET`;
-          const maxIdx = columnsToErase.length - 1;
-          columnsToErase.map((col, idx) => {
-            eraseStatement += ` ${col} = NULL`;
-            if (idx < maxIdx) eraseStatement += `,`;
-          });
-          eraseStatement += ` WHERE ${primaryKey} = ${newRecordProperties[primaryKey]}`;
-          validateQuery(eraseStatement);
-          await connection.asyncQuery(eraseStatement);
+          const eraseQueryBuilder = new SQLiteQueryBuilder(
+            `UPDATE "${table}" SET`
+          )
+            .push(columnsToErase.map((col) => `${col} = NULL`).join(", "))
+            .push(`WHERE ${primaryKey} = ?`, [newRecordProperties[primaryKey]]);
+          await connection.asyncQuery(...eraseQueryBuilder.build());
         }
       } else {
         // delete
-        const deleteQuery = `DELETE FROM "${table}" WHERE ${primaryKey} = ${newRecordProperties[primaryKey]}`;
-        validateQuery(deleteQuery);
-        await connection.asyncQuery(deleteQuery);
+        await connection.asyncQuery(
+          ...SQLiteQueryBuilder.build(
+            `DELETE FROM "${table}" WHERE ${primaryKey} = ?`,
+            [newRecordProperties[primaryKey]]
+          )
+        );
 
         // insert
         await insert(connection, table, syncOperations, newRecordProperties);
@@ -98,9 +107,12 @@ export const exportRecord: ExportRecordPluginMethod = async ({
     // --- Groups --- //
 
     // delete existing groups
-    const deleteGroupsQuery = `DELETE FROM "${groupsTable}" WHERE ${groupForeignKey} = ${newRecordProperties[primaryKey]}`;
-    validateQuery(deleteGroupsQuery);
-    await connection.asyncQuery(deleteGroupsQuery);
+    await connection.asyncQuery(
+      ...SQLiteQueryBuilder.build(
+        `DELETE FROM "${groupsTable}" WHERE ${groupForeignKey} = ?`,
+        [newRecordProperties[primaryKey]]
+      )
+    );
 
     // add groups
     if (!toDelete) {
@@ -109,11 +121,17 @@ export const exportRecord: ExportRecordPluginMethod = async ({
         data[groupForeignKey] = newRecordProperties[primaryKey];
         data[groupColumnName] = newGroups[i];
 
-        const groupInsertQuery = `INSERT INTO "${groupsTable}" (${buildKeyList(
-          data
-        )}) VALUES (${buildValueList(data)}) ON CONFLICT DO NOTHING`;
-        validateQuery(groupInsertQuery);
-        await connection.asyncQuery(groupInsertQuery);
+        const keys = buildKeyList(data);
+        const values = toValuesArray(data);
+
+        await connection.asyncQuery(
+          ...SQLiteQueryBuilder.build(
+            `INSERT INTO "${groupsTable}" (${keys}) VALUES (${values.map(
+              () => "?"
+            )}) ON CONFLICT DO NOTHING`,
+            values
+          )
+        );
       }
     }
   } catch (e) {
@@ -139,11 +157,15 @@ const insert = async (
     );
   }
   // insert
-  const query = `INSERT INTO "${table}" (${buildKeyList(
-    newRecordProperties
-  )}) VALUES (${buildValueList(newRecordProperties)})`;
-  validateQuery(query);
-  await connection.asyncQuery(query);
+  const keys = buildKeyList(newRecordProperties);
+  const values = toValuesArray(newRecordProperties);
+
+  await connection.asyncQuery(
+    ...SQLiteQueryBuilder.build(
+      `INSERT INTO "${table}" (${keys}) VALUES (${values.map(() => "?")})`,
+      values
+    )
+  );
 };
 
 const buildKeyList = (data: any[] | { [key: string]: any }) => {
@@ -154,6 +176,9 @@ const buildKeyList = (data: any[] | { [key: string]: any }) => {
 interface ValueListItem {
   [key: string]: any;
 }
+
+const toValuesArray = (data: any[] | ValueListItem) =>
+  Array.isArray(data) ? data : Object.values(data);
 
 export const buildValueList = (data: any[] | ValueListItem) => {
   const values = Array.isArray(data) ? data : Object.values(data);
