@@ -61,7 +61,7 @@ export default function Page(props) {
       } else {
         if (response.count) {
           successHandler.set({
-            message: `Retrying ${response.count} failed exports`,
+            message: `Retrying ${response.count} failed exports...`,
           });
         } else {
           successHandler.set({
