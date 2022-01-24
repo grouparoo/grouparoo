@@ -33,7 +33,7 @@ export class SQLite extends Database {
     query: string,
     params?: SQLiteQueryParamValue[] | Record<string, SQLiteQueryParamValue>
   ): Promise<Record<string, any>[]> {
-    log(`[ sqlite ] ${query}`, "debug");
+    log(`[ sqlite ] ${query} ${params}`, "debug");
     return new Promise((resolve, reject) => {
       this.connection.all(
         query,
