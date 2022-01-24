@@ -1,5 +1,4 @@
 import { api, utils } from "actionhero";
-import { stringify } from "json5";
 import * as uuid from "uuid";
 
 const RETRY_SLEEP = 100;
@@ -26,10 +25,9 @@ export async function waitForLock(
     );
   }
 
-  const set = await client.setnx(lockKey, requestId); // lock:grouparoo:export-locker:rec_abc:des_efg
+  const set = await client.setnx(lockKey, requestId);
   const checkValue = await client.get(lockKey);
 
-  //if it couldn't set, sleep and try again
   if (!set || checkValue !== requestId) {
     await utils.sleep(sleepTime);
     return waitForLock(key, requestId, ttl, attempts, sleepTime);
@@ -59,9 +57,9 @@ export async function getLock(
   const client = api.redis.clients.client;
   const lockKey = `grouparoo:lock:${lockType && `${lockType}:`}${key}`;
 
-  await client.expire(lockKey, Math.ceil(ttl / 1000));
-
   const set = await client.setnx(lockKey, requestId);
+
+  await client.expire(lockKey, Math.ceil(ttl / 1000));
 
   const isLocked = !set;
 
@@ -71,6 +69,5 @@ export async function getLock(
 
   const lockValue = await client.get(lockKey);
 
-  //return how to release it, the fact that it was set, and who it was set by
   return { releaseLock, isLocked, lockedBy: lockValue };
 }

@@ -1011,7 +1011,9 @@ export namespace DestinationOps {
 
       const { releaseLock } = await getLock(
         `${_export.recordId}:${_export.destinationId}`,
-        _export.id
+        _export.id,
+        null,
+        "export"
       );
 
       await releaseLock();
