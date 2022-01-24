@@ -33,10 +33,10 @@ export class ScheduleEnqueueRuns extends CLSTask {
     const runIfNotRecurring =
       params.runIfNotRecurring === undefined ? false : params.runIfNotRecurring;
 
-    const where: WhereOptions<Schedule> = { state: "ready" };
+    const where: WhereOptions<Schedule> = {};
     if (params.scheduleIds) where.id = params.scheduleIds;
 
-    const schedules = await Schedule.scope(null).findAll({ where });
+    const schedules = await Schedule.findAll({ where });
 
     for (const schedule of schedules) {
       const shouldRun = await schedule.shouldRun({
