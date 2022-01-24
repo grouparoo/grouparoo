@@ -8,10 +8,11 @@ import type { IncomingMessage, ServerResponse } from "http";
 
 import { isBrowser } from "../utils/isBrowser";
 import PackageJSON from "../package.json";
-import { errorHandler, uploadHandler } from "../eventHandlers";
+import { errorHandler } from "../eventHandlers";
 import type { AppContext } from "next/app";
 import type { GetServerSidePropsContext, NextPageContext } from "next";
 import { getRequestContext } from "../utils/appContext";
+import type { ErrorHandler } from "../eventHandlers/errorHandler";
 
 interface ClientCacheObject {
   locked: boolean;
@@ -70,6 +71,11 @@ export class ClientCache {
   }
 }
 
+interface ClientRequestOptions {
+  useCache: boolean;
+  errorHandler: ErrorHandler;
+}
+
 export class Client {
   public apiVersion = process.env.API_VERSION || "v1";
 
@@ -77,10 +83,9 @@ export class Client {
   private serverToken = process.env.SERVER_TOKEN;
   private cache = new ClientCache();
 
-  private static readonly optionDefaults = {
+  private static readonly optionDefaults: ClientRequestOptions = {
     useCache: true,
     errorHandler,
-    uploadHandler,
   };
 
   constructor(
@@ -131,7 +136,7 @@ export class Client {
     verb: Method = "get",
     path: string,
     data: AxiosRequestConfig["data"] = {},
-    options: Partial<typeof Client.optionDefaults> = {}
+    options: Partial<ClientRequestOptions> = {}
   ): Promise<Response> => {
     options = { ...Client.optionDefaults, ...options };
 
