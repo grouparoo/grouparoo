@@ -191,11 +191,11 @@ export default function Page(props) {
               onChange={(e) => setKey(e.target.value)}
               disabled={disabled}
             />
-            {!exactProperty && key !== column ? (
+            {!exactProperty && columnSpeculation[column].suggestedPropertyKey !== column ? (
               <Form.Text
                 id="suggestedKeyText"
                 muted
-              >{`Property with key "${column}" already exists, suggesting "${key}" instead.`}</Form.Text>
+              >{`Property with key "${column}" already exists, suggesting "${columnSpeculation[column].suggestedPropertyKey}" instead.`}</Form.Text>
             ) : null}
           </td>
           <td>
