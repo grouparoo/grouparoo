@@ -43,6 +43,7 @@ export interface SampleRecordCardProps {
   highlightProperty?: Models.PropertyType;
   highlightPropertyError?: string;
   propertyLinkDisabled?: boolean;
+  randomRecordDisabled?: boolean;
   importDisabled?: boolean;
   reloadKey?: string;
   warning?: string;
@@ -85,6 +86,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   highlightProperty,
   highlightPropertyError,
   propertyLinkDisabled = false,
+  randomRecordDisabled = false,
   warning,
   reloadKey,
 }) => {
@@ -248,7 +250,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
       result.push(
         <LinkButton
           key={modelId + (record?.id || "")}
-          disabled={!record || disabled}
+          disabled={!record?.id || disabled}
           href={`/model/${modelId}/record${
             record ? `/${record.id}/edit` : "s"
           }`}
@@ -272,7 +274,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
       );
     }
     return result;
-  }, [record, hideViewAllRecords, hasRecords, totalRecords, modelId, disabled]);
+  }, [record, hideViewAllRecords, totalRecords, modelId, disabled]);
 
   if (!sortedPropertyKeys?.length && !properties.length) {
     return (
@@ -309,7 +311,9 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   const actions = [
     <LoadingButton
       key="clear-record-id"
-      disabled={disabled || !hasRecords || loading || importing}
+      disabled={
+        disabled || !hasRecords || loading || importing || randomRecordDisabled
+      }
       loading={loading && !recordId}
       size="sm"
       variant="outline-primary"
