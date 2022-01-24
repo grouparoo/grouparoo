@@ -14,14 +14,14 @@ export default function DestinationTabs({
     case "enterprise":
       tabs.push("edit");
       if (destination.state !== "draft") tabs.push("data");
-      tabs.push("exports");
+      tabs.push("exports", "retry");
       break;
     case "config":
       tabs.push("edit");
       if (destination.state !== "draft") tabs.push("data");
       break;
     default:
-      tabs.push("exports");
+      tabs.push("exports", "retry");
       break;
   }
 

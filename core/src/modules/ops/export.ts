@@ -1,3 +1,4 @@
+import { Op, WhereOptions } from "sequelize";
 import {
   ExportRecordProperties,
   ExportRecordPropertiesWithType,
@@ -6,7 +7,6 @@ import { RecordPropertyOps } from "../../modules/ops/recordProperty";
 import { Export, ExportStates } from "../../models/Export";
 import { Destination } from "../../models/Destination";
 import { CLS } from "../../modules/cls";
-import { Op } from "sequelize";
 import { Option } from "../../models/Option";
 
 export namespace ExportOps {
@@ -136,5 +136,43 @@ export namespace ExportOps {
     }
 
     return _exports.length;
+  }
+
+  /**
+   * Finds failed exports within a time range and sets them back to pending
+   */
+  export async function retryFailedExports(
+    startDate: Date,
+    endDate: Date,
+    destination?: Destination,
+    saveExports = true
+  ) {
+    const where: WhereOptions<Export> = {
+      state: "failed",
+      createdAt: {
+        [Op.gte]: startDate,
+        [Op.lte]: endDate,
+      },
+    };
+
+    if (destination) where.destinationId = destination.id;
+
+    if (saveExports) {
+      const [count] = await Export.update(
+        {
+          state: "pending",
+          sendAt: new Date(),
+          startedAt: null,
+          errorMessage: null,
+          errorLevel: null,
+          retryCount: 0,
+        },
+        { where }
+      );
+
+      return count;
+    }
+
+    return Export.count({ where });
   }
 }

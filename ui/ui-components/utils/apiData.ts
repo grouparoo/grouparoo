@@ -164,6 +164,7 @@ import {
   ExportView,
   ExportsTotals,
   ExportsList,
+  ExportsRetryFailed,
 } from "@grouparoo/core/src/actions/exports";
 import {
   ExportProcessorView,
@@ -444,6 +445,9 @@ export namespace Actions {
   >;
   export type ExportsList = AsyncReturnType<
     typeof ExportsList.prototype.runWithinTransaction
+  >;
+  export type ExportsRetryFailed = AsyncReturnType<
+    typeof ExportsRetryFailed.prototype.runWithinTransaction
   >;
 
   export type ExportProcessorView = AsyncReturnType<

@@ -555,6 +555,269 @@ describe("models/export", () => {
     });
   });
 
+  describe("retryFailed", () => {
+    const startDate = new Date("2022-01-01T10:00:00Z");
+    const endDate = new Date("2022-01-01T12:00:00Z");
+
+    let oldFailedExport: Export;
+    let inRangeFailedExport: Export;
+    let foreignFailedExport: Export;
+    let completeExport: Export;
+    let retryingExport: Export;
+
+    beforeAll(async () => {
+      await Export.truncate();
+      const destination2 = await helper.factories.destination();
+
+      oldFailedExport = await Export.create({
+        recordId: record.id,
+        destinationId: destination.id,
+        oldRecordProperties: {},
+        newRecordProperties: {},
+        newGroups: [],
+        oldGroups: [],
+        sendAt: null,
+        startedAt: new Date(1),
+        errorMessage: "Oh No!",
+        errorLevel: "error",
+        state: "failed",
+        retryCount: 1,
+        createdAt: new Date(0),
+      });
+
+      inRangeFailedExport = await Export.create({
+        recordId: record.id,
+        destinationId: destination.id,
+        oldRecordProperties: {},
+        newRecordProperties: {},
+        newGroups: [],
+        oldGroups: [],
+        sendAt: null,
+        startedAt: new Date("2022-01-01T11:05:00Z"),
+        errorMessage: "Oh No!",
+        errorLevel: "error",
+        state: "failed",
+        retryCount: 1,
+        createdAt: new Date("2022-01-01T11:00:00Z"),
+      });
+
+      foreignFailedExport = await Export.create({
+        recordId: record.id,
+        destinationId: destination2.id,
+        oldRecordProperties: {},
+        newRecordProperties: {},
+        newGroups: [],
+        oldGroups: [],
+        sendAt: null,
+        startedAt: new Date("2022-01-01T11:05:00Z"),
+        errorMessage: "Oh No!",
+        errorLevel: "error",
+        state: "failed",
+        retryCount: 1,
+        createdAt: new Date("2022-01-01T11:00:00Z"),
+      });
+
+      completeExport = await Export.create({
+        recordId: record.id,
+        destinationId: destination.id,
+        oldRecordProperties: {},
+        newRecordProperties: {},
+        newGroups: [],
+        oldGroups: [],
+        sendAt: new Date("2022-01-01T11:02:00Z"),
+        startedAt: new Date("2022-01-01T11:05:00Z"),
+        completedAt: new Date("2022-01-01T11:10:00Z"),
+        state: "complete",
+        createdAt: new Date("2022-01-01T11:00:00Z"),
+      });
+
+      retryingExport = await Export.create({
+        recordId: record.id,
+        destinationId: destination.id,
+        oldRecordProperties: {},
+        newRecordProperties: {},
+        newGroups: [],
+        oldGroups: [],
+        sendAt: new Date(),
+        errorMessage: "Oh No!",
+        errorLevel: "error",
+        state: "pending",
+        retryCount: 1,
+        createdAt: new Date("2022-01-01T11:00:00Z"),
+      });
+    });
+
+    test("can preview the count of exports to be retried for all destinations", async () => {
+      const count = await Export.retryFailed(startDate, endDate, null, false);
+      expect(count).toBe(2); // 1 from each destination
+
+      // no changes on any export
+      await oldFailedExport.reload();
+      expect(oldFailedExport.state).toBe("failed");
+      expect(oldFailedExport.errorLevel).toBe("error");
+      expect(oldFailedExport.errorMessage).toBe("Oh No!");
+      expect(oldFailedExport.retryCount).toBe(1);
+      expect(oldFailedExport.sendAt).toBeNull();
+
+      await inRangeFailedExport.reload();
+      expect(inRangeFailedExport.state).toBe("failed");
+      expect(inRangeFailedExport.errorLevel).toBe("error");
+      expect(inRangeFailedExport.errorMessage).toBe("Oh No!");
+      expect(inRangeFailedExport.retryCount).toBe(1);
+      expect(inRangeFailedExport.sendAt).toBeNull();
+
+      await foreignFailedExport.reload();
+      expect(foreignFailedExport.state).toBe("failed");
+      expect(foreignFailedExport.errorLevel).toBe("error");
+      expect(foreignFailedExport.errorMessage).toBe("Oh No!");
+      expect(foreignFailedExport.retryCount).toBe(1);
+      expect(foreignFailedExport.sendAt).toBeNull();
+
+      await completeExport.reload();
+      expect(completeExport.state).toBe("complete");
+      expect(completeExport.sendAt).toBeTruthy();
+      expect(completeExport.startedAt).toBeTruthy();
+      expect(completeExport.completedAt).toBeTruthy();
+
+      await retryingExport.reload();
+      expect(retryingExport.state).toBe("pending");
+      expect(retryingExport.sendAt).toBeTruthy();
+      expect(retryingExport.errorLevel).toBe("error");
+      expect(retryingExport.errorMessage).toBe("Oh No!");
+      expect(retryingExport.retryCount).toBe(1);
+    });
+
+    test("can preview the count of exports to be retried for a destination", async () => {
+      const count = await Export.retryFailed(
+        startDate,
+        endDate,
+        destination,
+        false
+      );
+      expect(count).toBe(1); // only one in this destination to retry
+
+      // no changes on any export
+      await oldFailedExport.reload();
+      expect(oldFailedExport.state).toBe("failed");
+      expect(oldFailedExport.errorLevel).toBe("error");
+      expect(oldFailedExport.errorMessage).toBe("Oh No!");
+      expect(oldFailedExport.retryCount).toBe(1);
+      expect(oldFailedExport.sendAt).toBeNull();
+
+      await inRangeFailedExport.reload();
+      expect(inRangeFailedExport.state).toBe("failed");
+      expect(inRangeFailedExport.errorLevel).toBe("error");
+      expect(inRangeFailedExport.errorMessage).toBe("Oh No!");
+      expect(inRangeFailedExport.retryCount).toBe(1);
+      expect(inRangeFailedExport.sendAt).toBeNull();
+
+      await foreignFailedExport.reload();
+      expect(foreignFailedExport.state).toBe("failed");
+      expect(foreignFailedExport.errorLevel).toBe("error");
+      expect(foreignFailedExport.errorMessage).toBe("Oh No!");
+      expect(foreignFailedExport.retryCount).toBe(1);
+      expect(foreignFailedExport.sendAt).toBeNull();
+
+      await completeExport.reload();
+      expect(completeExport.state).toBe("complete");
+      expect(completeExport.sendAt).toBeTruthy();
+      expect(completeExport.startedAt).toBeTruthy();
+      expect(completeExport.completedAt).toBeTruthy();
+
+      await retryingExport.reload();
+      expect(retryingExport.state).toBe("pending");
+      expect(retryingExport.sendAt).toBeTruthy();
+      expect(retryingExport.errorLevel).toBe("error");
+      expect(retryingExport.errorMessage).toBe("Oh No!");
+      expect(retryingExport.retryCount).toBe(1);
+    });
+
+    test("can reset the exports to be retried for a destination", async () => {
+      const count = await Export.retryFailed(startDate, endDate, destination);
+      expect(count).toBe(1); // only one in this destination
+
+      // export to be reset
+      await inRangeFailedExport.reload();
+      expect(inRangeFailedExport.state).toBe("pending");
+      expect(inRangeFailedExport.errorLevel).toBeNull();
+      expect(inRangeFailedExport.errorMessage).toBeNull();
+      expect(inRangeFailedExport.retryCount).toBe(0);
+      expect(inRangeFailedExport.sendAt).toBeTruthy();
+      expect(inRangeFailedExport.startedAt).toBeNull();
+
+      // no changes on these exports
+      await oldFailedExport.reload();
+      expect(oldFailedExport.state).toBe("failed");
+      expect(oldFailedExport.errorLevel).toBe("error");
+      expect(oldFailedExport.errorMessage).toBe("Oh No!");
+      expect(oldFailedExport.retryCount).toBe(1);
+      expect(oldFailedExport.sendAt).toBeNull();
+
+      await foreignFailedExport.reload();
+      expect(foreignFailedExport.state).toBe("failed");
+      expect(foreignFailedExport.errorLevel).toBe("error");
+      expect(foreignFailedExport.errorMessage).toBe("Oh No!");
+      expect(foreignFailedExport.retryCount).toBe(1);
+      expect(foreignFailedExport.sendAt).toBeNull();
+
+      await completeExport.reload();
+      expect(completeExport.state).toBe("complete");
+      expect(completeExport.sendAt).toBeTruthy();
+      expect(completeExport.startedAt).toBeTruthy();
+      expect(completeExport.completedAt).toBeTruthy();
+
+      await retryingExport.reload();
+      expect(retryingExport.state).toBe("pending");
+      expect(retryingExport.sendAt).toBeTruthy();
+      expect(retryingExport.errorLevel).toBe("error");
+      expect(retryingExport.errorMessage).toBe("Oh No!");
+      expect(retryingExport.retryCount).toBe(1);
+    });
+
+    test("can reset the exports to be retried for all destinations", async () => {
+      const count = await Export.retryFailed(startDate, endDate);
+      expect(count).toBe(1); // only one left to retry
+
+      // export to be reset
+      await foreignFailedExport.reload();
+      expect(foreignFailedExport.state).toBe("pending");
+      expect(foreignFailedExport.errorLevel).toBeNull();
+      expect(foreignFailedExport.errorMessage).toBeNull();
+      expect(foreignFailedExport.retryCount).toBe(0);
+      expect(foreignFailedExport.sendAt).toBeTruthy();
+      expect(foreignFailedExport.startedAt).toBeNull();
+
+      // no changes on these exports
+      await oldFailedExport.reload();
+      expect(oldFailedExport.state).toBe("failed");
+      expect(oldFailedExport.errorLevel).toBe("error");
+      expect(oldFailedExport.errorMessage).toBe("Oh No!");
+      expect(oldFailedExport.retryCount).toBe(1);
+      expect(oldFailedExport.sendAt).toBeNull();
+
+      await inRangeFailedExport.reload();
+      expect(inRangeFailedExport.state).toBe("pending");
+      expect(inRangeFailedExport.errorLevel).toBeNull();
+      expect(inRangeFailedExport.errorMessage).toBeNull();
+      expect(inRangeFailedExport.retryCount).toBe(0);
+      expect(inRangeFailedExport.sendAt).toBeTruthy();
+      expect(inRangeFailedExport.startedAt).toBeNull();
+
+      await completeExport.reload();
+      expect(completeExport.state).toBe("complete");
+      expect(completeExport.sendAt).toBeTruthy();
+      expect(completeExport.startedAt).toBeTruthy();
+      expect(completeExport.completedAt).toBeTruthy();
+
+      await retryingExport.reload();
+      expect(retryingExport.state).toBe("pending");
+      expect(retryingExport.sendAt).toBeTruthy();
+      expect(retryingExport.errorLevel).toBe("error");
+      expect(retryingExport.errorMessage).toBe("Oh No!");
+      expect(retryingExport.retryCount).toBe(1);
+    });
+  });
+
   describe("logExports", () => {
     let oldLogPath = process.env.GROUPAROO_EXPORT_LOG;
     const workerId = process.env.JEST_WORKER_ID;

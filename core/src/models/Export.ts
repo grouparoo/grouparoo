@@ -328,6 +328,20 @@ export class Export extends CommonModel<Export> {
     }
   }
 
+  static async retryFailed(
+    startDate: Date,
+    endDate: Date,
+    destination?: Destination,
+    saveExports = true
+  ) {
+    return ExportOps.retryFailedExports(
+      startDate,
+      endDate,
+      destination,
+      saveExports
+    );
+  }
+
   static async sweep(limit: number) {
     const days = 90; // keep all exports for at least 90 days
     const whereDate = Moment()
