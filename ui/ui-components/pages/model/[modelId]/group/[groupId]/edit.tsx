@@ -32,12 +32,12 @@ export default function Page(props) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    props.groupHandler.subscribe("group-edit", (_group) => {
+    groupHandler.subscribe("group-edit", (_group) => {
       setGroup(_group);
     });
 
     return () => {
-      props.groupHandler.unsubscribe("group-edit");
+      groupHandler.unsubscribe("group-edit");
     };
   }, []);
 
