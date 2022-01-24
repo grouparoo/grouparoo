@@ -11,12 +11,10 @@ import { NextPageContext } from "next";
 import { generateClient } from "@grouparoo/ui-components/client/client";
 
 export default function Page({
-  model,
   property,
   groups,
   source,
 }: {
-  model: Models.GrouparooModelType;
   property: Models.PropertyType;
   groups: Models.GroupType[];
   source: Models.SourceType;
@@ -27,7 +25,7 @@ export default function Page({
         <title>Grouparoo: {property.key}</title>
       </Head>
 
-      <PropertyTabs property={property} source={source} model={model} />
+      <PropertyTabs property={property} source={source} />
 
       <PageHeader
         icon={source.app.icon}
@@ -86,21 +84,20 @@ export default function Page({
 }
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { propertyId, modelId } = ctx.query;
+  const { propertyId } = ctx.query;
   const client = generateClient(ctx);
-  const { model } = await client.request<Actions.ModelView>(
+  const { property } = await client.request<Actions.PropertyView>(
     "get",
-    `/model/${modelId}`
+    `/property/${propertyId}`
   );
-  const { property } = await client.request("get", `/property/${propertyId}`);
-  const { source } = await client.request(
+  const { source } = await client.request<Actions.SourceView>(
     "get",
     `/source/${property.sourceId}`
   );
-  const { groups } = await client.request(
+  const { groups } = await client.request<Actions.PropertyGroups>(
     "get",
     `/property/${propertyId}/groups`
   );
 
-  return { model, property, source, groups };
+  return { property, source, groups };
 };

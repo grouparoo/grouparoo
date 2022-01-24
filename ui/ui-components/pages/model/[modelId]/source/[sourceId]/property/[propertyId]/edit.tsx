@@ -33,7 +33,6 @@ import { generateClient } from "../../../../../../../client/client";
 
 export default function Page(props) {
   const {
-    model,
     sources,
     types,
     filterOptions,
@@ -41,7 +40,6 @@ export default function Page(props) {
     properties,
     hydrationError,
   }: {
-    model: Models.GrouparooModelType;
     sources: Models.SourceType[];
     types: Actions.PropertiesOptions["types"];
     filterOptions: Actions.PropertyFilterOptions["options"];
@@ -234,7 +232,7 @@ export default function Page(props) {
         <title>Grouparoo: {property.key}</title>
       </Head>
 
-      <PropertyTabs property={property} source={source} model={model} />
+      <PropertyTabs property={property} source={source} />
 
       <PageHeader icon={source.app.icon} title={property.key} badges={badges} />
       <Row>
@@ -795,10 +793,6 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
 
   const { sources } = await client.request("get", "/sources");
   const { types } = await client.request("get", `/propertyOptions`);
-  const { model } = await client.request<Actions.ModelView>(
-    "get",
-    `/model/${modelId}`
-  );
 
   let property: Models.PropertyType = {};
   let properties = [];
@@ -839,7 +833,6 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   }
 
   return {
-    model,
     property,
     properties,
     sources,

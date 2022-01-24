@@ -26,7 +26,7 @@ export default function Page(props) {
         <title>Grouparoo: {property.key} Runs</title>
       </Head>
 
-      <PropertyTabs property={property} source={source} model={model} />
+      <PropertyTabs property={property} source={source} />
 
       <RunsList
         header={
@@ -51,19 +51,18 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { propertyId, modelId } = ctx.query;
+  const { propertyId } = ctx.query;
   const client = generateClient(ctx);
-  const { model } = await client.request<Actions.ModelView>(
+  const { property } = await client.request<Actions.PropertyView>(
     "get",
-    `/model/${modelId}`
+    `/property/${propertyId}`
   );
-  const { property } = await client.request("get", `/property/${propertyId}`);
-  const { source } = await client.request(
+  const { source } = await client.request<Actions.SourceView>(
     "get",
     `/source/${property.sourceId}`
   );
   const runsListInitialProps = await RunsList.hydrate(ctx, {
     topic: "property",
   });
-  return { model, property, source, ...runsListInitialProps };
+  return { property, source, ...runsListInitialProps };
 };

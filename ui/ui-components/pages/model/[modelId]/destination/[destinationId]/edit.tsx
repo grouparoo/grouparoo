@@ -25,10 +25,8 @@ import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 
 export default function Page(props) {
   const {
-    model,
     environmentVariableOptions,
   }: {
-    model: Models.GrouparooModelType;
     environmentVariableOptions: Actions.AppOptions["environmentVariableOptions"];
   } = props;
   const router = useRouter();
@@ -142,7 +140,7 @@ export default function Page(props) {
         <title>Grouparoo: {destination.name}</title>
       </Head>
 
-      <DestinationTabs destination={destination} model={model} />
+      <DestinationTabs destination={destination} />
 
       <PageHeader
         icon={destination.app.icon}
@@ -446,10 +444,6 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   );
   ensureMatchingModel("Destination", destination.modelId, modelId.toString());
 
-  const { model } = await client.request<Actions.ModelView>(
-    "get",
-    `/model/${modelId}`
-  );
   const { environmentVariableOptions } = await client.request(
     "get",
     "/destinations/connectionApps"
@@ -458,6 +452,5 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   return {
     destination,
     environmentVariableOptions,
-    model,
   };
 };

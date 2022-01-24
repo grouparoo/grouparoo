@@ -11,7 +11,6 @@ import SourceTabs from "../../../../../components/tabs/Source";
 import Head from "next/head";
 import { errorHandler, successHandler } from "../../../../../eventHandlers";
 import { Models, Actions } from "../../../../../utils/apiData";
-import { generateId } from "../../../../../utils/generateId";
 import PropertyAddButton from "../../../../../components/property/Add";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { NextPageContext } from "next";
@@ -20,14 +19,12 @@ import { generateClient } from "../../../../../client/client";
 
 export default function Page(props) {
   const {
-    model,
     source,
     preview,
     columnSpeculation,
     types,
     defaultPropertyOptions,
   }: {
-    model: Models.GrouparooModelType;
     source: Models.SourceType;
     preview: Actions.SourcePreview["preview"];
     columnSpeculation: Actions.SourcePreview["columnSpeculation"];
@@ -274,7 +271,7 @@ export default function Page(props) {
           <title>Grouparoo: {source.name}</title>
         </Head>
 
-        <SourceTabs source={source} model={model} />
+        <SourceTabs source={source} />
 
         <PageHeader
           icon={source.app.icon}
@@ -304,7 +301,7 @@ export default function Page(props) {
         <title>Grouparoo: {source.name}</title>
       </Head>
 
-      <SourceTabs source={source} model={model} />
+      <SourceTabs source={source} />
 
       <PageHeader
         icon={source.app.icon}
@@ -373,10 +370,6 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   );
   ensureMatchingModel("Source", source.modelId, modelId.toString());
 
-  const { model } = await client.request<Actions.ModelView>(
-    "get",
-    `/model/${modelId}`
-  );
   const { preview, columnSpeculation } =
     await client.request<Actions.SourcePreview>(
       "get",
@@ -398,7 +391,6 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   );
 
   return {
-    model,
     source,
     properties,
     columnSpeculation,

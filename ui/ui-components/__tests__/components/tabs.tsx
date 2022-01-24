@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import PropertyTab from "../../components/tabs/Property";
 import AppTab from "../../components/tabs/App";
+import { GrouparooModelContextProvider } from "../../contexts/grouparooModel";
 
 describe("<PropertyTab />", () => {
   const useRouter = jest.spyOn(require("next/router"), "useRouter");
@@ -16,7 +17,11 @@ describe("<PropertyTab />", () => {
       asPath: `/model/${model.id}/source/${source.id}/property/${propertyId}/edit`,
     }));
 
-    render(<PropertyTab property={property} source={source} model={model} />);
+    render(
+      <GrouparooModelContextProvider value={model}>
+        <PropertyTab property={property} source={source} />
+      </GrouparooModelContextProvider>
+    );
   });
 
   it("renders the model link properly", async () => {

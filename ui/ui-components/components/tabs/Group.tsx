@@ -1,14 +1,11 @@
 import Tabs from "../Tabs";
 import { Models } from "../../utils/apiData";
 import { grouparooUiEdition } from "../../utils/uiEdition";
+import { useGrouparooModel } from "../../contexts/grouparooModel";
 
-export default function GroupTabs({
-  group,
-  model,
-}: {
-  group: Models.GroupType;
-  model: Models.GrouparooModelType;
-}) {
+export default function GroupTabs({ group }: { group: Models.GroupType }) {
+  const { model } = useGrouparooModel();
+
   let tabs = [];
   let defaultTab = "rules";
 

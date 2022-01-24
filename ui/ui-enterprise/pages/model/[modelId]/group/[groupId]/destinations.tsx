@@ -18,10 +18,8 @@ import { generateClient } from "@grouparoo/ui-components/client/client";
 
 export default function Page(props) {
   const {
-    model,
     group,
   }: {
-    model: Models.GrouparooModelType;
     group: Models.GroupType;
   } = props;
   const { client } = useApi();
@@ -63,7 +61,7 @@ export default function Page(props) {
         <title>Grouparoo: {group.name}</title>
       </Head>
 
-      <GroupTabs group={group} model={model} />
+      <GroupTabs group={group} />
 
       <PageHeader
         title={`${group.name} - Destinations`}
@@ -124,20 +122,18 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { groupId, limit, offset, modelId } = ctx.query;
+  const { groupId, limit, offset } = ctx.query;
   const client = generateClient(ctx);
   const { group } = await client.request("get", `/group/${groupId}`);
-  const { model } = await client.request<Actions.ModelView>(
-    "get",
-    `/model/${modelId}`
-  );
-  const { destinations, total } = await client.request(
-    "get",
-    `/group/${group.id}/destinations`,
-    {
-      limit,
-      offset,
-    }
-  );
-  return { model, group, destinations, total };
+  const { destinations, total } =
+    await client.request<Actions.GroupListDestinations>(
+      "get",
+      `/group/${group.id}/destinations`,
+      {
+        limit,
+        offset,
+      }
+    );
+
+  return { group, destinations, total };
 };

@@ -21,13 +21,11 @@ import PrimaryKeyBadge from "../../../../../components/badges/PrimaryKeyBadge";
 import { generateClient } from "../../../../../client/client";
 
 export default function Page({
-  model,
   source,
   totalSources,
   run,
   properties,
 }: {
-  model: Models.GrouparooModelType;
   source: Models.SourceType;
   totalSources: number;
   run: Models.RunType;
@@ -67,7 +65,7 @@ export default function Page({
         <title>Grouparoo: {source.name}</title>
       </Head>
 
-      <SourceTabs source={source} model={model} />
+      <SourceTabs source={source} />
 
       <PageHeader
         icon={source.app.icon}
@@ -327,11 +325,6 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   const { source } = await client.request("get", `/source/${sourceId}`);
   ensureMatchingModel("Source", source.modelId, modelId.toString());
 
-  const { model } = await client.request<Actions.ModelView>(
-    "get",
-    `/model/${modelId}`
-  );
-
   const { total: totalSources } = await client.request("get", `/sources`, {
     modelId,
     limit: 1,
@@ -349,5 +342,5 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     run = runs[0];
   }
 
-  return { model, source, totalSources, run, properties };
+  return { source, totalSources, run, properties };
 };

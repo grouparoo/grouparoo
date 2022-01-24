@@ -21,7 +21,6 @@ import { generateClient } from "../../../../../client/client";
 
 export default function Page(props) {
   const {
-    model,
     properties,
     mappingOptions,
     destinationTypeConversions,
@@ -29,7 +28,6 @@ export default function Page(props) {
     exportArrayProperties,
     hydrationError,
   }: {
-    model: Models.GrouparooModelType;
     hydrationError: Error;
     properties: Models.PropertyType[];
     groups: Models.GroupType[];
@@ -270,7 +268,7 @@ export default function Page(props) {
         <title>Grouparoo: {destination.name}</title>
       </Head>
 
-      <DestinationTabs destination={destination} model={model} />
+      <DestinationTabs destination={destination} />
 
       <PageHeader
         icon={destination.app.icon}
@@ -872,10 +870,6 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     state: "ready",
     modelId: destination?.modelId,
   });
-  const { model } = await client.request<Actions.ModelView>(
-    "get",
-    `/model/${modelId}`
-  );
 
   let mappingOptions = {};
   let destinationTypeConversions = {};
@@ -903,7 +897,6 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   return {
     destination,
     properties,
-    model,
     mappingOptions,
     destinationTypeConversions,
     exportArrayProperties,
