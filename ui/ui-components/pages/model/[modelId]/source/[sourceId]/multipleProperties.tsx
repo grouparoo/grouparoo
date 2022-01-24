@@ -191,7 +191,8 @@ export default function Page(props) {
               onChange={(e) => setKey(e.target.value)}
               disabled={disabled}
             />
-            {!exactProperty && columnSpeculation[column].suggestedPropertyKey !== column ? (
+            {!exactProperty &&
+            columnSpeculation[column].suggestedPropertyKey !== column ? (
               <Form.Text
                 id="suggestedKeyText"
                 muted
