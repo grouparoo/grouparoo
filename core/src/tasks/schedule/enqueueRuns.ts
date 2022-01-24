@@ -1,4 +1,5 @@
 import { ParamsFrom } from "actionhero";
+import { WhereOptions } from "sequelize/types";
 import { Schedule } from "../../models/Schedule";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { APIData } from "../../modules/apiData";
@@ -20,6 +21,10 @@ export class ScheduleEnqueueRuns extends CLSTask {
       default: false,
       formatter: APIData.ensureBoolean,
     },
+    scheduleIds: {
+      required: false,
+      formatter: APIData.ensureArray,
+    },
   };
 
   async runWithinTransaction(params: ParamsFrom<ScheduleEnqueueRuns>) {
@@ -28,9 +33,10 @@ export class ScheduleEnqueueRuns extends CLSTask {
     const runIfNotRecurring =
       params.runIfNotRecurring === undefined ? false : params.runIfNotRecurring;
 
-    const schedules = await Schedule.scope(null).findAll({
-      where: { state: "ready" },
-    });
+    const where: WhereOptions<Schedule> = {};
+    if (params.scheduleIds) where.id = params.scheduleIds;
+
+    const schedules = await Schedule.findAll({ where });
 
     for (const schedule of schedules) {
       const shouldRun = await schedule.shouldRun({

@@ -172,6 +172,37 @@ describe("tasks/schedules:enqueueRuns", () => {
         const runs = await Run.findAll({ where: { state: "running" } });
         expect(runs.length).toBe(1);
       });
+
+      test("it can enqueue runs for specific schedules", async () => {
+        const scheduleToRun = await helper.factories.schedule();
+        await scheduleToRun.update({
+          recurring: true,
+          recurringFrequency: 60 * 1000,
+        });
+
+        await scheduleToRun.update({ state: "ready" });
+        expect(scheduleToRun.state).toBe("ready");
+
+        const scheduleToIgnore = await helper.factories.schedule();
+        await scheduleToIgnore.update({
+          recurring: true,
+          recurringFrequency: 60 * 1000,
+        });
+
+        await scheduleToIgnore.update({ state: "ready" });
+        expect(scheduleToIgnore.state).toBe("ready");
+
+        await Run.truncate(); // clear initial runs
+
+        await specHelper.runTask("schedules:enqueueRuns", {
+          scheduleIds: [scheduleToRun.id],
+        });
+
+        const runs = await Run.findAll({ where: { state: "running" } });
+        expect(runs.length).toBe(1);
+        expect(runs[0].creatorType).toBe("schedule");
+        expect(runs[0].creatorId).toBe(scheduleToRun.id);
+      });
     });
   });
 });
