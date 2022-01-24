@@ -120,6 +120,18 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
     [modelId]
   );
 
+  useEffect(() => {
+    if (modelId) {
+      execApi<Actions.RecordsList>("get", "/records", {
+        limit: 1,
+        offset: 0,
+        modelId,
+      }).then(({ total }) => {
+        setTotalRecords(total);
+      });
+    }
+  }, [execApi, modelId]);
+
   const loadRecord = useCallback(async () => {
     setLoading(true);
 
@@ -281,7 +293,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
       );
     }
     return result;
-  }, [record, hideViewAllRecords, hasRecords, totalRecords, modelId, disabled]);
+  }, [record, hideViewAllRecords, totalRecords, modelId, disabled]);
 
   if (!sortedPropertyKeys?.length && !properties.length) {
     return (
