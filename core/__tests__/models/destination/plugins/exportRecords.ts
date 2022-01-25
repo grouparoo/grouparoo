@@ -732,7 +732,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       await record.destroy();
     });
 
-    test.skip("exportRecords can handle parallelsims export:sendBatch and the export can be retried", async () => {
+    test("exportRecords can handle parallelsims export:sendBatch and the export can be retried", async () => {
       parallelismResponse = 0;
 
       const group = await helper.factories.group();
