@@ -44,7 +44,6 @@ export async function loadSchedule(
       id: configObject.id,
       locked: ConfigWriter.getLockKey(configObject),
       sourceId: source.id,
-      refreshEnabled: configObject.refreshEnabled,
     });
   }
 
@@ -54,6 +53,7 @@ export async function loadSchedule(
     incremental: configObject.incremental,
     recurringFrequency: configObject.recurringFrequency,
     confirmRecords: configObject.confirmRecords,
+    refreshEnabled: configObject.refreshEnabled,
   });
 
   const options = extractNonNullParts(configObject, "options");
