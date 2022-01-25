@@ -112,7 +112,7 @@ describe("models/schedule", () => {
           type: "test-plugin-import",
           sourceId: source.id,
         })
-      ).rejects.toThrow(/source is not ready/);
+      ).rejects.toThrow(/table is required/);
     });
 
     test("creating 2 schedules for the same source will throw an error", async () => {
