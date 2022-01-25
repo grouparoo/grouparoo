@@ -3,7 +3,7 @@ import { validateQuery } from "./validateQuery";
 
 export default class SQLiteQueryBuilder {
   private statements: string[] = [];
-  private params: SQLiteQueryParamValue[];
+  private params: SQLiteQueryParamValue[] = [];
 
   constructor(statement?: string, params?: SQLiteQueryParamValue[]) {
     if (statement) {
@@ -13,21 +13,27 @@ export default class SQLiteQueryBuilder {
 
   push(
     statement: string,
-    params?: SQLiteQueryParamValue[]
+    params?: SQLiteQueryParamValue[],
+    options?: {
+      prependComma?: boolean;
+    }
   ): SQLiteQueryBuilder {
+    if (options?.prependComma && this.statements.length > 0) {
+      this.statements[this.statements.length - 1] += ",";
+    }
+
     this.statements.push(statement);
+
     if (params) {
       this.pushParams(params);
     }
+
     return this;
   }
 
   pushParams(params: SQLiteQueryParamValue[]): SQLiteQueryBuilder {
-    if (!this.params) {
-      this.params = [];
-    }
-
     this.params.push(...params);
+
     return this;
   }
 

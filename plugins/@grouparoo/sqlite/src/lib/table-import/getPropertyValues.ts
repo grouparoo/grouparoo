@@ -6,8 +6,12 @@ import {
   AggregationMethod,
   FilterOperation,
 } from "@grouparoo/app-templates/dist/source/table";
+import SQLiteQueryBuilder from "../queryBuilder";
+import { SQLiteConnection } from "../sqlite";
 
-export const getPropertyValues: GetPropertyValuesMethod = async ({
+export const getPropertyValues: GetPropertyValuesMethod<
+  SQLiteConnection
+> = async ({
   connection,
   tableName,
   columnNames,
@@ -61,47 +65,57 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   }
 
   let ranked = false;
-  let query = `SELECT "${tablePrimaryKeyCol}" as __pk`;
+  const queryBuilder = new SQLiteQueryBuilder(
+    `SELECT "${tablePrimaryKeyCol}" as __pk`
+  );
 
   if (aggFunc) {
-    query += `, ${aggFunc}`;
+    queryBuilder.push(aggFunc, undefined, { prependComma: true });
     groupByColumns.push(tablePrimaryKeyCol);
   } else {
-    query += `, ${columnList}`;
+    queryBuilder.push(`, ${columnList}`);
     if (!isArray && orderBys.length > 0) {
       // Note: windowing (ROW_NUMBER) only in SQLite >= 3.25.0 released 2018-09-15
       const order = `ORDER BY ${orderBys.join(", ")}`;
-      query += `, ROW_NUMBER() OVER (PARTITION BY "${tablePrimaryKeyCol}" ${order}) AS __rownum`;
+      queryBuilder.push(
+        `ROW_NUMBER() OVER (PARTITION BY "${tablePrimaryKeyCol}" ${order}) AS __rownum`,
+        undefined,
+        { prependComma: true }
+      );
       ranked = true;
     }
   }
 
-  query += ` FROM "${tableName}" WHERE`;
+  queryBuilder.push(`FROM "${tableName}" WHERE`);
 
   let addAnd = false;
-
   for (const condition of matchConditions) {
-    const filterClause = makeWhereClause(condition);
-    if (addAnd) query += ` AND`;
-    query += ` ${filterClause}`;
+    if (addAnd) queryBuilder.push("AND");
+    makeWhereClause(condition, queryBuilder);
     addAnd = true;
   }
 
-  const inClause = makeWhereClause({
-    columnName: tablePrimaryKeyCol,
-    filterOperation: FilterOperation.In,
-    values: primaryKeys,
-  });
-  if (addAnd) query += ` AND`;
-  query += ` ${inClause}`;
+  if (addAnd) queryBuilder.push("AND");
+
+  makeWhereClause(
+    {
+      columnName: tablePrimaryKeyCol,
+      filterOperation: FilterOperation.In,
+      values: primaryKeys,
+    },
+    queryBuilder
+  );
+
   addAnd = true;
 
   if (groupByColumns.length > 0) {
-    query += ` GROUP BY ${groupByColumns}`;
+    queryBuilder.push(`GROUP BY ${groupByColumns}`);
   }
   if (!ranked && orderBys.length > 0) {
-    query += ` ORDER BY ${orderBys.join(", ")}`;
+    queryBuilder.push(`ORDER BY ${orderBys.join(", ")}`);
   }
+
+  let [query, params] = queryBuilder.build();
 
   if (ranked) {
     // -- Ranked example
@@ -120,7 +134,7 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
 
   try {
     const rows: { [column: string]: DataResponse }[] =
-      await connection.asyncQuery(query);
+      await connection.asyncQuery(query, params);
 
     for (const row of rows) {
       const pk = row.__pk.toString();
@@ -134,7 +148,7 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
     }
   } catch (error) {
     throw new Error(
-      `Error with SQLite SQL Statement: Query - \`${query}\`, Error - ${error}`
+      `Error with SQLite SQL Statement: Query - \`${query}\` [${params}], Error - ${error}`
     );
   }
 

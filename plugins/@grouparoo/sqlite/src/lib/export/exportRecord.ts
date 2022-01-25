@@ -1,8 +1,10 @@
 import { Errors, ExportRecordPluginMethod } from "@grouparoo/core";
+import { DestinationSyncOperations } from "@grouparoo/core/src/models/Destination";
 import SQLiteQueryBuilder from "../queryBuilder";
-import { SQLite } from "../sqlite";
+import { SQLiteConnection } from "../sqlite";
+import { buildKeyList, toValuePlaceholders, toValuesArray } from "../util";
 
-export const exportRecord: ExportRecordPluginMethod<SQLite> = async ({
+export const exportRecord: ExportRecordPluginMethod<SQLiteConnection> = async ({
   connection,
   destination,
   syncOperations,
@@ -146,10 +148,10 @@ export const exportRecord: ExportRecordPluginMethod<SQLite> = async ({
 };
 
 const insert = async (
-  connection,
-  table,
-  syncOperations,
-  newRecordProperties
+  connection: SQLiteConnection,
+  table: string,
+  syncOperations: DestinationSyncOperations,
+  newRecordProperties: Record<string, any>
 ) => {
   if (!syncOperations.create) {
     throw new Errors.InfoError(
@@ -162,35 +164,8 @@ const insert = async (
 
   await connection.asyncQuery(
     ...SQLiteQueryBuilder.build(
-      `INSERT INTO "${table}" (${keys}) VALUES (${values.map(() => "?")})`,
+      `INSERT INTO "${table}" (${keys}) VALUES ${toValuePlaceholders(values)}`,
       values
     )
   );
-};
-
-const buildKeyList = (data: any[] | { [key: string]: any }) => {
-  const keys = Array.isArray(data) ? data : Object.keys(data);
-  return keys.map((v) => `"${v}"`);
-};
-
-interface ValueListItem {
-  [key: string]: any;
-}
-
-const toValuesArray = (data: any[] | ValueListItem) =>
-  Array.isArray(data) ? data : Object.values(data);
-
-export const buildValueList = (data: any[] | ValueListItem) => {
-  const values = Array.isArray(data) ? data : Object.values(data);
-  return values.map((v) => {
-    switch (typeof v) {
-      case "string":
-        return `"${v}"`;
-      case "number":
-        return v;
-      // Protect against syntax errors if the value can't be resolved.
-      default:
-        return `''`;
-    }
-  });
 };

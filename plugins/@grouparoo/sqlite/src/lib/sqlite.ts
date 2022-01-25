@@ -1,9 +1,9 @@
 import { log } from "actionhero";
 import { Database } from "sqlite3";
 
-export type SQLiteQueryParamValue = string | number | boolean | null;
+export type SQLiteQueryParamValue = string | number | boolean | null | Date;
 
-export class SQLite extends Database {
+export class SQLiteConnection extends Database {
   private database: string;
   private connection: Database;
 
@@ -33,7 +33,7 @@ export class SQLite extends Database {
     query: string,
     params?: SQLiteQueryParamValue[] | Record<string, SQLiteQueryParamValue>
   ): Promise<Record<string, any>[]> {
-    log(`[ sqlite ] ${query} ${params}`, "debug");
+    log(`[ sqlite ] ${query}${params ? `[${params}]` : ""}`, "debug");
     return new Promise((resolve, reject) => {
       this.connection.all(
         query,
