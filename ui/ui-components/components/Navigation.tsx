@@ -191,7 +191,7 @@ export default function Navigation(props) {
               {navigation?.navigationItems.map((nav, idx) => {
                 if (nav.type === "link") {
                   return (
-                    <li key={nav.href}>
+                    <li key={nav.href} style={navLiStyle}>
                       <HighlightingNavLink
                         href={nav.href}
                         mainPathSectionIdx={nav.mainPathSectionIdx ?? 1}

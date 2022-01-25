@@ -36,7 +36,7 @@ export default function HighlightingNavLink({
   }, [globalThis?.location?.href, router, href]);
 
   return (
-    <div>
+    <>
       <Link href={href}>
         <a role="tab" aria-selected={active} style={navIconStyle}>
           {icon && (
@@ -67,6 +67,6 @@ export default function HighlightingNavLink({
           </span>
         </a>
       </Link>
-    </div>
+    </>
   );
 }
