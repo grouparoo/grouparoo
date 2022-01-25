@@ -18,6 +18,7 @@ import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 import ManagedCard from "../../../../../components/lib/ManagedCard";
+import PrimaryKeyBadge from "../../../../../components/badges/PrimaryKeyBadge";
 
 export default function Page({
   model,
@@ -50,7 +51,7 @@ export default function Page({
       <ModelBadge modelName={source.modelName} modelId={source.modelId} />,
     ];
     if (isPrimarySource) {
-      badges.unshift(<Badge variant="info">primary source</Badge>);
+      badges.unshift(<PrimaryKeyBadge isSource />);
     }
     return badges;
   }, [source, isPrimarySource]);
@@ -157,7 +158,7 @@ export default function Page({
                           {rule.isPrimaryKey && (
                             <>
                               {" "}
-                              <Badge variant="info">primary</Badge>
+                              <PrimaryKeyBadge />
                             </>
                           )}
                         </td>

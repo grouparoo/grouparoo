@@ -25,6 +25,7 @@ import FormMappingSelector from "../../../../../components/source/FormMappingSel
 import { createSchedule } from "../../../../../components/schedule/Add";
 import ManagedCard from "../../../../../components/lib/ManagedCard";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
+import PrimaryKeyBadge from "../../../../../components/badges/PrimaryKeyBadge";
 
 interface FormData {
   mapping?: {
@@ -93,7 +94,7 @@ const Page: NextPage<Props> = ({
       <ModelBadge modelName={source.modelName} modelId={source.modelId} />,
     ];
     if (isPrimarySource) {
-      badges.unshift(<Badge variant="info">primary source</Badge>);
+      badges.unshift(<PrimaryKeyBadge isSource />);
     }
     return badges;
   }, [source, isPrimarySource]);
