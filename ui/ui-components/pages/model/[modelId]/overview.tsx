@@ -107,18 +107,18 @@ const Page: NextPage<Props> = ({
       </Row>
       <Row className="mb-4">
         <Col>
-          <ModelOverviewSampleRecord
-            modelId={model.id}
-            properties={properties}
-            disabled={!sources.length}
+          <ModelOverviewDestinations
+            destinations={destinations}
+            disabled={!canCreateSecondarySource}
           />
         </Col>
       </Row>
       <Row>
         <Col>
-          <ModelOverviewDestinations
-            destinations={destinations}
-            disabled={!canCreateSecondarySource}
+          <ModelOverviewSampleRecord
+            modelId={model.id}
+            properties={properties}
+            disabled={!sources.length}
           />
         </Col>
       </Row>
