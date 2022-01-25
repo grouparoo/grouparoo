@@ -778,18 +778,33 @@ describe("session", () => {
             expect(response.id).toMatch(/test-server/);
           });
 
-          test("apiKey can be sent via header", async () => {
+          test("apiKey can be sent via header with bearer scheme", async () => {
             const response = await fetch(`${url}/api/v1/status/private`, {
               method: "GET",
               credentials: "include",
               headers: {
                 "Content-Type": "application/json",
-                Authorization: apiKey.apiKey, // case doesn't matter
+                Authorization: `Bearer ${apiKey.apiKey}`,
               },
             }).then((r) => r.json());
             expect(response.error).toBeUndefined();
             expect(response.id).toMatch(/test-server/);
           });
+        });
+
+        test("apiKey will be rejected with a non-bearer scheme", async () => {
+          const response = await fetch(`${url}/api/v1/status/private`, {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Secrets ${apiKey.apiKey}`,
+            },
+          }).then((r) => r.json());
+          expect(response.error.message).toBe(
+            "APIKeys should be sent with the `Authorization: Bearer <token>` scheme"
+          );
+          expect(response.id).toBeUndefined();
         });
       });
     });

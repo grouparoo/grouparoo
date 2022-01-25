@@ -226,9 +226,16 @@ function parseHeaders(data: ActionProcessor<any>) {
   if (data.connection.type !== "web") return;
 
   if (data.connection.rawConnection.req.headers["authorization"]) {
-    data.params.apiKey =
-      data.connection.rawConnection.req.headers["authorization"];
+    const [scheme, token]: string[] =
+      data.connection.rawConnection.req.headers["authorization"].split(" "); // should resemble `Bearer: abc123`
+    if (scheme.toLowerCase() !== "bearer") {
+      throw new Error(
+        `APIKeys should be sent with the \`Authorization: Bearer <token>\` scheme`
+      );
+    }
+    data.params.apiKey = token;
   }
+
   if (data.connection.rawConnection.req.headers["x-grouparoo-server-token"]) {
     data.params.serverToken =
       data.connection.rawConnection.req.headers["x-grouparoo-server-token"];
