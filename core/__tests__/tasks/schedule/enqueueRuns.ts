@@ -1,4 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
+import * as actionhero from "actionhero";
 import { api, task, specHelper } from "actionhero";
 import { Schedule, Run } from "../../../src";
 import { Op } from "sequelize";
@@ -202,6 +203,40 @@ describe("tasks/schedules:enqueueRuns", () => {
         expect(runs.length).toBe(1);
         expect(runs[0].creatorType).toBe("schedule");
         expect(runs[0].creatorId).toBe(scheduleToRun.id);
+
+        await scheduleToRun.destroy();
+        await scheduleToIgnore.destroy();
+      });
+    });
+
+    describe("in cli:run mode", () => {
+      let logMsgs: string[] = [];
+      let logSpy: jest.SpyInstance;
+
+      beforeAll(async () => {
+        process.env.GROUPAROO_RUN_MODE = "cli:run";
+      });
+
+      afterAll(() => {
+        delete process.env.GROUPAROO_RUN_MODE;
+      });
+
+      beforeEach(() => {
+        logMsgs = [];
+        logSpy = jest
+          .spyOn(actionhero, "log")
+          .mockImplementation((message) => logMsgs.push(message));
+      });
+
+      afterEach(async () => {
+        logSpy.mockRestore();
+      });
+
+      test("it will log the enqueued schedules", async () => {
+        await specHelper.runTask("schedules:enqueueRuns", {});
+        expect(logMsgs.join(" ")).toContain(
+          `Enqueued runs for Schedules: ${schedule.name} (${schedule.id})`
+        );
       });
     });
   });
