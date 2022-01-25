@@ -1,9 +1,10 @@
-import { GrouparooCLI } from "../modules/cli";
-import { CLI, Task, api, config, ParamsFrom } from "actionhero";
-import { Reset } from "../modules/reset";
+import { CLI, Task, api, config, ParamsFrom, log } from "actionhero";
 import { Worker } from "node-resque";
+import { GrouparooCLI } from "../modules/cli";
+import { Reset } from "../modules/reset";
 import { getGrouparooRunMode } from "../modules/runMode";
 import { Schedule } from "../models/Schedule";
+import { Run } from "../models/Run";
 
 export class RunCLI extends CLI {
   name = "run";
@@ -68,7 +69,6 @@ export class RunCLI extends CLI {
     GrouparooCLI.logCLI(this.name, false);
 
     this.checkWorkers();
-    await this.checkSchedules(params.scheduleIds);
 
     if (!params.web) GrouparooCLI.disableWebServer();
     if (params.reset) await Reset.data(getGrouparooRunMode());
@@ -79,6 +79,9 @@ export class RunCLI extends CLI {
 
     const { main } = await import("../grouparoo");
     await main();
+
+    await this.checkSchedules(params.scheduleIds);
+    await this.stopScheduleRuns();
 
     const scheduleIds = Array.isArray(params.scheduleIds)
       ? params.scheduleIds
@@ -112,6 +115,26 @@ export class RunCLI extends CLI {
           `Schedule with id "${id}" was not found`
         );
     });
+  }
+
+  async stopScheduleRuns() {
+    const runningRuns = await Run.findAll({
+      where: {
+        state: "running",
+        creatorType: "schedule",
+      },
+    });
+
+    for (const run of runningRuns) {
+      await run.stop();
+    }
+
+    if (runningRuns.length) {
+      log(
+        `Stopped ${runningRuns.length} previously running Schedules`,
+        "notice"
+      );
+    }
   }
 
   async runTasks(scheduleIds?: string[]) {
