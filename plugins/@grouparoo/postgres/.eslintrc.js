@@ -8,6 +8,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 12,
     sourceType: "module",
+    project: __dirname + "/tsconfig.json",
   },
   plugins: ["@typescript-eslint"],
   rules: {
@@ -18,6 +19,7 @@ module.exports = {
     "prefer-arrow-callback": "error",
     "prefer-object-spread": "error",
     "no-useless-computed-key": "error",
+    "@typescript-eslint/no-floating-promises": "error",
     "@typescript-eslint/no-explicit-any": "off", // Remove this in some Ivory Tower future.
     "@typescript-eslint/ban-ts-comment": "off", // Remove this in some Ivory Tower future.
   },
