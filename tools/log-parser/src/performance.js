@@ -36,6 +36,7 @@ async function processFile(filePath) {
       { id: "line", title: "line" },
       { id: "milliseconds", title: "milliseconds" },
       { id: "task", title: "task" },
+      { id: "queue", title: "queue" },
       { id: "content", title: "contents" },
     ],
   });
@@ -43,9 +44,22 @@ async function processFile(filePath) {
   while ((stream = liner.next())) {
     const content = stream.toString();
     console.log(content);
-    let milliseconds = null;
-    let task = null;
-    await csvWriter.writeRecords([{ line, milliseconds, task, content }]);
+    const milliseconds = parseToken("duration=", content);
+    const task = parseToken("class=", content);
+    const queue = parseToken("queue=", content);
+    if (milliseconds) {
+      await csvWriter.writeRecords([
+        { line, milliseconds, task, queue, content },
+      ]);
+    }
     line++;
   }
+}
+
+function parseToken(token, content) {
+  const index = content.indexOf(token);
+  if (index < 0) return null;
+  const sub = content.substring(index + token.length);
+  const pieces = sub.split(" ");
+  return pieces[0];
 }
