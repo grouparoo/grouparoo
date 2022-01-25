@@ -391,14 +391,6 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   @BeforeSave
-  static async ensureSourceMapping(instance: Schedule) {
-    const source = await Source.findById(instance.sourceId);
-    if (!source.scheduleAvailable()) {
-      throw new Error(`a ${source.type} source cannot have a schedule`);
-    }
-  }
-
-  @BeforeSave
   static async ensureUniqueName(instance: Schedule) {
     const count = await Schedule.scope(null).count({
       where: {
