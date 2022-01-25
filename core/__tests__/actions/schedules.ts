@@ -245,6 +245,53 @@ describe("actions/schedules", () => {
         expect(schedule.recurringFrequency).toBe(0);
       });
 
+      test("an administrator can edit refresh enabled", async () => {
+        connection.params = {
+          csrfToken,
+          id,
+          refreshEnabled: true,
+        };
+
+        const { schedule: firstSchedule, error: firstError } =
+          await specHelper.runAction<ScheduleEdit>("schedule:edit", connection);
+        expect(firstError).toBeUndefined();
+        expect(firstSchedule.refreshEnabled).toBe(true);
+
+        connection.params.refreshEnabled = false;
+
+        const { error, schedule } = await specHelper.runAction<ScheduleEdit>(
+          "schedule:edit",
+          connection
+        );
+
+        expect(error).toBeUndefined();
+        expect(schedule.refreshEnabled).toBe(false);
+      });
+
+      test("an administrator can skip editing refresh enabled", async () => {
+        connection.params = {
+          csrfToken,
+          id,
+          refreshEnabled: true,
+        };
+
+        const { error: firstError } = await specHelper.runAction<ScheduleEdit>(
+          "schedule:edit",
+          connection
+        );
+        expect(firstError).toBeUndefined();
+
+        delete connection.params["refreshEnabled"];
+
+        const { error, schedule } = await specHelper.runAction<ScheduleEdit>(
+          "schedule:edit",
+          connection
+        );
+
+        expect(error).toBeUndefined();
+        expect(schedule.refreshEnabled).toBe(true);
+      });
+
       test("an administrator can view a schedule", async () => {
         connection.params = {
           csrfToken,
