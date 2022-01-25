@@ -1,0 +1,19 @@
+#!/usr/bin/env node
+const argv = require("yargs")
+  .help("h")
+  .alias("h", "help")
+  .example("$0 ~/logs/file.log", "parse log to get performance csv")
+  .demandCommand(1)
+  .usage("Usage: performance <filepath>").argv;
+
+require("./src/performance")
+  .cmd(argv)
+  .then(
+    () => {
+      process.exit(0);
+    },
+    (error) => {
+      console.error(`ERROR! ${error}`);
+      process.exit(1);
+    }
+  );
