@@ -3,6 +3,7 @@ import { CLI, Task, api, config, ParamsFrom } from "actionhero";
 import { Reset } from "../modules/reset";
 import { Worker } from "node-resque";
 import { getGrouparooRunMode } from "../modules/runMode";
+import { Schedule } from "../models/Schedule";
 
 export class RunCLI extends CLI {
   name = "run";
@@ -65,7 +66,9 @@ export class RunCLI extends CLI {
     >;
   }) {
     GrouparooCLI.logCLI(this.name, false);
+
     this.checkWorkers();
+    await this.checkSchedules(params.scheduleIds);
 
     if (!params.web) GrouparooCLI.disableWebServer();
     if (params.reset) await Reset.data(getGrouparooRunMode());
@@ -91,6 +94,24 @@ export class RunCLI extends CLI {
         `No Task Workers are enabled. Modify your environment to add Workers`
       );
     }
+  }
+
+  async checkSchedules(scheduleIds?: boolean | string[]) {
+    if (typeof scheduleIds === "undefined") return;
+    if (typeof scheduleIds === "boolean") {
+      return GrouparooCLI.logger.fatal(
+        `Please specify which schedule ids to run`
+      );
+    }
+
+    const schedules = await Schedule.findAll({ where: { id: scheduleIds } });
+    const foundScheduleIds = schedules.map((s) => s.id);
+    scheduleIds.forEach((id) => {
+      if (!foundScheduleIds.includes(id))
+        return GrouparooCLI.logger.fatal(
+          `Schedule with id "${id}" was not found`
+        );
+    });
   }
 
   async runTasks(scheduleIds?: string[]) {
