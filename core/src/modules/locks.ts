@@ -50,7 +50,7 @@ export type getLockResponse = {
 
 export async function getLock(
   key: string,
-  requestId: string = uuid.v4(), // for exports, this will be the export id, we may have use cases that don't pass a request id though, so we'll assign a default
+  requestId: string = uuid.v4(),
   ttl = LOCK_DURATION_MS,
   lockType?: string
 ): Promise<getLockResponse> {

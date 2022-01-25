@@ -913,10 +913,9 @@ export namespace DestinationOps {
     success: boolean;
     error: Error;
   }> {
-    const _exports: Export[] = []; // only ones we are sending
+    const _exports: Export[] = [];
 
     for (const _export of givenExports) {
-      // 1. check if already locked
       const { isLocked, lockedBy } = await getLock(
         `${_export.recordId}:${_export.destinationId}`,
         _export.id,
@@ -924,13 +923,10 @@ export namespace DestinationOps {
         "export"
       );
 
-      //TODO: keep thinking on how to unlock things
-
       if (isLocked) {
-        // a. if it was, either:
         const lockingExport = await Export.findById(lockedBy);
+        //if the export we're looking at is older than the one that locked this pair, cancel it
         if (lockingExport.createdAt > _export.createdAt) {
-          // i. if _export is _older_ than the export that locked the tuple, cancel it
           await _export.update({
             state: "canceled",
             sendAt: null,
@@ -939,15 +935,13 @@ export namespace DestinationOps {
             completedAt: new Date(),
           });
           return;
-          // *** TODO: From a user perspective, it may be confusing that an export was canceled but not by them... should a reason be noted somehow?
         } else if (lockingExport.id !== _export.id) {
-          // this export may be in the process of retrying... if so, let it through if it's the the one that locked this lockKey!... otherwise:
-          // ii. if _export is _newer_ than or equal to the export that locked the tuple, just return... the export pool will pick it back up later
+          //if the export we're looking at didn't create this lock, keep it pending for now
           return;
         }
       }
 
-      //will only get this far if _export was not previously locked!
+      //things are locked, make sure we're using the absolute most recent data.
       const updatedExport = await Export.findById(_export.id);
 
       if (!updatedExport.hasChanges) {
@@ -1017,8 +1011,7 @@ export namespace DestinationOps {
     }
 
     for (const _export of _exports) {
-      // -- release locks for all records regardless of outcome -- re-enqueues are handled elsewhere
-
+      // release locks for all of the exports that were processed regardless of outcome - re-enqueues are handled elsewhere
       const { releaseLock } = await getLock(
         `${_export.recordId}:${_export.destinationId}`,
         _export.id,
