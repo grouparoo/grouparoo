@@ -55,7 +55,6 @@ const ModelOverviewDestinations: React.FC<Props> = ({
       disabled={disabled}
       actions={[
         <LinkButton
-          id="destinations"
           variant="outline-primary"
           size="sm"
           href={`/model/${model.id}/destination/new`}
