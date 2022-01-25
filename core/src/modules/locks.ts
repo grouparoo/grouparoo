@@ -3,7 +3,7 @@ import * as uuid from "uuid";
 
 const RETRY_SLEEP = 100;
 const MAX_ATTEMPTS = 300;
-const LOCK_DURATION_MS = RETRY_SLEEP * MAX_ATTEMPTS + 1;
+const LOCK_DURATION_MS = RETRY_SLEEP * MAX_ATTEMPTS + 1; //30 seconds
 
 export async function waitForLock(
   key: string,
@@ -55,7 +55,9 @@ export async function getLock(
   lockType?: string
 ): Promise<getLockResponse> {
   const client = api.redis.clients.client;
-  const lockKey = `grouparoo:lock:${lockType && `${lockType}:`}${key}`;
+  const lockKey = `grouparoo:lock:${
+    lockType.length > 1 && `${lockType}:`
+  }${key}`;
 
   const set = await client.setnx(lockKey, requestId);
 

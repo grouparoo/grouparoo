@@ -919,7 +919,9 @@ export namespace DestinationOps {
       // 1. check if already locked
       const { isLocked, lockedBy } = await getLock(
         `${_export.recordId}:${_export.destinationId}`,
-        _export.id
+        _export.id,
+        null,
+        "export"
       );
 
       //TODO: keep thinking on how to unlock things
@@ -929,7 +931,14 @@ export namespace DestinationOps {
         const lockingExport = await Export.findById(lockedBy);
         if (lockingExport.createdAt > _export.createdAt) {
           // i. if _export is _older_ than the export that locked the tuple, cancel it
-          await _export.update({ state: "canceled" });
+          await _export.update({
+            state: "canceled",
+            sendAt: null,
+            errorMessage: `Outdated duplicate of export ${lockingExport.id}`,
+            errorLevel: null,
+            completedAt: new Date(),
+          });
+          return;
           // *** TODO: From a user perspective, it may be confusing that an export was canceled but not by them... should a reason be noted somehow?
         } else if (lockingExport.id !== _export.id) {
           // this export may be in the process of retrying... if so, let it through if it's the the one that locked this lockKey!... otherwise:
