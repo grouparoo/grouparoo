@@ -128,9 +128,9 @@ export const exportRecord: ExportRecordPluginMethod<SQLiteConnection> = async ({
 
         await connection.asyncQuery(
           ...SQLiteQueryBuilder.build(
-            `INSERT INTO "${groupsTable}" (${keys}) VALUES (${values.map(
-              () => "?"
-            )}) ON CONFLICT DO NOTHING`,
+            `INSERT INTO "${groupsTable}" (${keys}) VALUES ${toValuePlaceholders(
+              values
+            )} ON CONFLICT DO NOTHING`,
             values
           )
         );

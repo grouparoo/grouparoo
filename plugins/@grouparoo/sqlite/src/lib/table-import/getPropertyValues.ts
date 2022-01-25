@@ -73,7 +73,7 @@ export const getPropertyValues: GetPropertyValuesMethod<
     queryBuilder.push(aggFunc, undefined, { prependComma: true });
     groupByColumns.push(tablePrimaryKeyCol);
   } else {
-    queryBuilder.push(`, ${columnList}`);
+    queryBuilder.push(`${columnList}`, undefined, { prependComma: true });
     if (!isArray && orderBys.length > 0) {
       // Note: windowing (ROW_NUMBER) only in SQLite >= 3.25.0 released 2018-09-15
       const order = `ORDER BY ${orderBys.join(", ")}`;
