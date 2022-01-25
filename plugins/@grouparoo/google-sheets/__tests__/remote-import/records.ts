@@ -93,7 +93,6 @@ describe("google-sheets/table/records", () => {
 
   test("imports all records when no sourceOffset", async () => {
     let limit = 100;
-    let highWaterMark = {};
     let sourceOffset = 0;
     const { imports, importsCount } = await runIt({
       limit,
