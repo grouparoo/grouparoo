@@ -13,7 +13,12 @@ import { PrivateStatus } from "../../src/actions/status";
 process.env.WEB_SERVER = "true";
 
 describe("session", () => {
+  let url: string;
   helper.grouparooTestServer({ truncate: true });
+
+  beforeAll(() => {
+    url = `http://localhost:${config.web.port}`;
+  });
 
   describe("without team", () => {
     test("authenticated methods called without valid session before a team exists throw a specific error", async () => {
@@ -561,13 +566,8 @@ describe("session", () => {
       });
 
       describe("header, cookie, and csrf authentication", () => {
-        let url: string;
         let csrfToken: string;
         let cookie: string;
-
-        beforeAll(() => {
-          url = `http://localhost:${config.web.port}`;
-        });
 
         async function buildSessionAndCookie() {
           let response = await fetch(`${url}/api/v1/session`, {
@@ -755,6 +755,56 @@ describe("session", () => {
           });
           expect(response.error.code).toBe("AUTHORIZATION_ERROR");
           expect(response["success"]).toBeFalsy();
+        });
+
+        describe("real apiKey requests", () => {
+          beforeAll(async () => {
+            const permissions = await apiKey.$get("permissions");
+            for (const i in permissions) {
+              await permissions[i].update({ read: true, write: false });
+            }
+          });
+
+          test("apiKey can be sent via query param", async () => {
+            const response = await fetch(
+              `${url}/api/v1/status/private?apiKey=${apiKey.apiKey}`,
+              {
+                method: "GET",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+              }
+            ).then((r) => r.json());
+            expect(response.error).toBeUndefined();
+            expect(response.id).toMatch(/test-server/);
+          });
+
+          test("apiKey can be sent via header with bearer scheme", async () => {
+            const response = await fetch(`${url}/api/v1/status/private`, {
+              method: "GET",
+              credentials: "include",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${apiKey.apiKey}`,
+              },
+            }).then((r) => r.json());
+            expect(response.error).toBeUndefined();
+            expect(response.id).toMatch(/test-server/);
+          });
+        });
+
+        test("apiKey will be rejected with a non-bearer scheme", async () => {
+          const response = await fetch(`${url}/api/v1/status/private`, {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Secrets ${apiKey.apiKey}`,
+            },
+          }).then((r) => r.json());
+          expect(response.error.message).toBe(
+            "APIKeys should be sent with the `Authorization: Bearer <token>` scheme"
+          );
+          expect(response.id).toBeUndefined();
         });
       });
     });
