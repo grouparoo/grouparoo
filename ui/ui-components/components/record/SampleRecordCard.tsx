@@ -516,10 +516,11 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
 
   return (
     <ManagedCard
-      title={<>Sample Record {loading && <Loader size="sm" />}</>}
+      title="Sample Record"
       disabled={disabled}
       actions={cardActions}
       border={warning ? "warning" : undefined}
+      loading={loading}
     >
       <Card.Body>
         {content}
