@@ -47,6 +47,7 @@ export interface SampleRecordCardProps {
   importDisabled?: boolean;
   reloadKey?: string;
   warning?: string;
+  groupId?: string;
 }
 
 // This is exported so we can manipulate it in tests, but is unused elsewhere.
@@ -89,6 +90,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   randomRecordDisabled = false,
   warning,
   reloadKey,
+  groupId,
 }) => {
   const prevModelId = usePrevious(modelId);
   const prevReloadKey = usePrevious(reloadKey);
@@ -126,11 +128,12 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
         limit: 1,
         offset: 0,
         modelId,
+        groupId,
       }).then(({ total }) => {
         setTotalRecords(total);
       });
     }
-  }, [execApi, modelId]);
+  }, [execApi, groupId, modelId]);
 
   const loadRecord = useCallback(async () => {
     setLoading(true);
@@ -160,6 +163,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
           limit: 25,
           offset: 0,
           modelId,
+          groupId,
         }
       ).then((response) => {
         setTotalRecords(response.total);
@@ -194,7 +198,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
     }
 
     setLoading(false);
-  }, [recordId, fetchRecord, modelId, execApi, saveRecord]);
+  }, [recordId, fetchRecord, modelId, execApi, groupId, saveRecord]);
 
   const sortedPropertyKeys = useMemo(() => {
     const id = highlightProperty?.id;
