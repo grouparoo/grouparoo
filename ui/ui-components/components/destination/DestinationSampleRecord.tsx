@@ -101,6 +101,7 @@ const DestinationSampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
       propertyLinkDisabled
       importDisabled
       randomRecordDisabled={collection === "none"}
+      groupId={groupId}
     />
   );
 };
