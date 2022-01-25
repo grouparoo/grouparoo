@@ -148,134 +148,157 @@ describe("models/group", () => {
       ).toBe(false);
     });
 
-    test("group#runAddGroupMembers will create an import for new members, and touch the updatedAt for existing members", async () => {
-      await group.setRules([
-        { key: "firstName", match: "Mario", operation: { op: "eq" } },
-      ]);
-      const response = await group.runAddGroupMembers(run);
-      expect(response).toEqual(
-        expect.objectContaining({
-          groupMembersCount: 1,
-          nextOffset: 0,
-        })
-      );
+    describe.each(["any", "all"] as const)(
+      'with match type "%s"',
+      (matchType) => {
+        beforeEach(async () => {
+          await group.update({ matchType });
+        });
 
-      // first time
-      const _import = await Import.findOne({
-        where: { creatorId: run.id },
-      });
-      expect(_import.recordId).toBe(mario.id);
+        test("group#runAddGroupMembers will create an import for new members, and touch the updatedAt for existing members", async () => {
+          await group.setRules([
+            { key: "firstName", match: "Mario", operation: { op: "eq" } },
+          ]);
+          const response = await group.runAddGroupMembers(run);
+          expect(response).toEqual(
+            expect.objectContaining({
+              groupMembersCount: 1,
+              nextOffset: 0,
+            })
+          );
 
-      // create the groupMember
-      await mario.updateGroupMembership();
-      const groupMember = await GroupMember.findOne({
-        where: { groupId: group.id, recordId: mario.id },
-      });
-      const firstTime = groupMember.updatedAt.getTime();
+          // first time
+          const imports = await Import.findAll({
+            where: { creatorId: run.id },
+          });
+          expect(imports.length).toBe(1);
+          expect(imports[0].recordId).toBe(mario.id);
 
-      await helper.sleep(1001);
+          // create the groupMember
+          await mario.updateGroupMembership();
+          const groupMember = await GroupMember.findOne({
+            where: { groupId: group.id, recordId: mario.id },
+          });
+          const firstTime = groupMember.updatedAt.getTime();
 
-      // second time
-      await mario.reload();
-      await mario.update({ state: "ready" }); // the import would have made the state 'pending'
-      await group.runAddGroupMembers(run);
-      await groupMember.reload();
-      expect(groupMember.updatedAt.getTime()).toBeGreaterThan(
-        groupMember.createdAt.getTime()
-      );
-      expect(groupMember.updatedAt.getTime()).toBeGreaterThan(firstTime);
-    });
+          await helper.sleep(1001);
 
-    test("group#runAddGroupMembers will include ready records", async () => {
-      await group.setRules([
-        { key: "firstName", match: "Mario", operation: { op: "eq" } },
-      ]);
+          // second time
+          await mario.reload();
+          await mario.update({ state: "ready" }); // the import would have made the state 'pending'
+          await group.runAddGroupMembers(run);
+          await groupMember.reload();
+          expect(groupMember.updatedAt.getTime()).toBeGreaterThan(
+            groupMember.createdAt.getTime()
+          );
+          expect(groupMember.updatedAt.getTime()).toBeGreaterThan(firstTime);
+        });
 
-      await group.runAddGroupMembers(run);
+        test("group#runAddGroupMembers will include ready records", async () => {
+          await group.setRules([
+            { key: "firstName", match: "Mario", operation: { op: "eq" } },
+          ]);
 
-      const _import = await Import.findOne({
-        where: { creatorId: run.id },
-      });
-      expect(_import.recordId).toBe(mario.id);
-    });
+          await group.runAddGroupMembers(run);
 
-    test("group#runAddGroupMembers will ignore not-ready records", async () => {
-      await group.setRules([
-        { key: "firstName", match: "Mario", operation: { op: "eq" } },
-      ]);
+          const imports = await Import.findAll({
+            where: { creatorId: run.id },
+          });
+          expect(imports.length).toBe(1);
+          expect(imports[0].recordId).toBe(mario.id);
+        });
 
-      await mario.update({ state: "pending" });
-      await group.runAddGroupMembers(run);
+        test("group#runAddGroupMembers will ignore not-ready records", async () => {
+          await group.setRules([
+            { key: "firstName", match: "Mario", operation: { op: "eq" } },
+          ]);
 
-      const _import = await Import.findOne({
-        where: { creatorId: run.id },
-      });
-      expect(_import).toBe(null);
-    });
+          await mario.update({ state: "pending" });
+          await group.runAddGroupMembers(run);
 
-    test("group#runRemoveGroupMembers will create imports for records which should no longer be part of the group and mark removedAt on the group member", async () => {
-      await group.setRules([
-        { key: "lastName", match: "Mario", operation: { op: "eq" } }, // mario and luigi
-      ]);
-      const firstAddResponse = await group.runAddGroupMembers(run);
-      const firstRemoveResponse = await group.runRemoveGroupMembers(run);
-      expect(firstAddResponse).toEqual(
-        expect.objectContaining({
-          groupMembersCount: 2,
-          nextOffset: 0,
-        })
-      );
-      expect(firstRemoveResponse).toEqual(0);
+          const imports = await Import.findAll({
+            where: { creatorId: run.id },
+          });
+          expect(imports.length).toBe(0);
+        });
 
-      // create the groupMembers
-      await mario.updateGroupMembership();
-      await luigi.updateGroupMembership();
-      const firstGroupMembers = await GroupMember.findAll({
-        where: { groupId: group.id },
-      });
-      expect(firstGroupMembers.length).toBe(2);
+        test("group#runRemoveGroupMembers will create imports for records which should no longer be part of the group and mark removedAt on the group member", async () => {
+          await group.setRules([
+            { key: "lastName", match: "Mario", operation: { op: "eq" } }, // mario and luigi
+          ]);
+          const firstAddResponse = await group.runAddGroupMembers(run);
+          const firstRemoveResponse = await group.runRemoveGroupMembers(run);
+          expect(firstAddResponse).toEqual(
+            expect.objectContaining({
+              groupMembersCount: 2,
+              nextOffset: 0,
+            })
+          );
+          expect(firstRemoveResponse).toEqual(0);
 
-      await mario.reload();
-      await luigi.reload();
-      await mario.update({ state: "ready" });
-      await luigi.update({ state: "ready" });
+          // create the groupMembers
+          await mario.updateGroupMembership();
+          await luigi.updateGroupMembership();
+          const firstGroupMembers = await GroupMember.findAll({
+            where: { groupId: group.id },
+          });
+          expect(firstGroupMembers.length).toBe(2);
 
-      // next run
-      await group.setRules([
-        { key: "firstName", match: "Mario", operation: { op: "eq" } }, // just mario
-      ]);
-      const nextRun = await helper.factories.run();
-      const secondAddResponse = await group.runAddGroupMembers(nextRun);
-      const secondRemoveResponse = await group.runRemoveGroupMembers(nextRun);
-      expect(secondAddResponse).toEqual(
-        expect.objectContaining({
-          groupMembersCount: 1,
-          nextOffset: 0,
-        })
-      );
-      expect(secondRemoveResponse).toEqual(1);
+          await mario.reload();
+          await luigi.reload();
+          await mario.update({ state: "ready" });
+          await luigi.update({ state: "ready" });
 
-      const imports = await Import.findAll({
-        where: { creatorId: nextRun.id },
-      });
-      expect(imports.length).toBe(1);
-      expect(imports[0].recordId).toBe(luigi.id);
+          // next run
+          await group.setRules([
+            { key: "firstName", match: "Mario", operation: { op: "eq" } }, // just mario
+          ]);
+          const nextRun = await helper.factories.run();
+          const secondAddResponse = await group.runAddGroupMembers(nextRun);
+          const secondRemoveResponse = await group.runRemoveGroupMembers(
+            nextRun
+          );
+          expect(secondAddResponse).toEqual(
+            expect.objectContaining({
+              groupMembersCount: 1,
+              nextOffset: 0,
+            })
+          );
+          expect(secondRemoveResponse).toEqual(1);
 
-      const luigiGroupMember = await GroupMember.findOne({
-        where: { recordId: luigi.id, groupId: group.id },
-      });
-      expect(luigiGroupMember.removedAt).toBeTruthy();
+          const imports = await Import.findAll({
+            where: { creatorId: nextRun.id },
+          });
+          expect(imports.length).toBe(1);
+          expect(imports[0].recordId).toBe(luigi.id);
 
-      await mario.updateGroupMembership();
-      await luigi.updateGroupMembership();
+          const luigiGroupMember = await GroupMember.findOne({
+            where: { recordId: luigi.id, groupId: group.id },
+          });
+          expect(luigiGroupMember.removedAt).toBeTruthy();
 
-      const secondGroupMembers = await GroupMember.findAll({
-        where: { groupId: group.id },
-      });
-      expect(secondGroupMembers.length).toBe(1);
+          await mario.updateGroupMembership();
+          await luigi.updateGroupMembership();
 
-      await nextRun.destroy();
-    });
+          const secondGroupMembers = await GroupMember.findAll({
+            where: { groupId: group.id },
+          });
+          expect(secondGroupMembers.length).toBe(1);
+
+          await mario.reload();
+          await luigi.reload();
+
+          await nextRun.destroy();
+        });
+
+        describe("group rules", () => {
+          test("it returns 0 members when no rules exist on the group", async () => {
+            await group.setRules([]);
+            expect(await group.countPotentialMembers()).toBe(0);
+          });
+        });
+      }
+    );
 
     test("runAddGroupMembers updates calculatedAt", async () => {
       expect(group.calculatedAt).toBeFalsy();
@@ -449,14 +472,6 @@ describe("models/group", () => {
           { key: "ltv", match: "5", operation: { op: "eq" } },
         ])
       ).rejects.toThrow(/too many group rules/);
-    });
-
-    describe("group rules", () => {
-      test("it returns 0 members when no rules exist on the group", async () => {
-        await group.update({ matchType: "all" });
-        await group.setRules([]);
-        expect(await group.countPotentialMembers()).toBe(0);
-      });
     });
 
     describe("convenientRules", () => {
