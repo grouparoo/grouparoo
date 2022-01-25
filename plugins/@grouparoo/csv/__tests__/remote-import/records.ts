@@ -17,7 +17,7 @@ let run;
 let schedule;
 let sourceMapping;
 
-async function runIt({ highWaterMark, sourceOffset, limit }) {
+async function runIt({ sourceOffset, limit }) {
   const imports = [];
   plugin.createImports = jest.fn(async function (
     mapping: { [remoteKey: string]: string },
@@ -36,7 +36,7 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
     sourceMapping,
     source,
     limit,
-    highWaterMark,
+    highWaterMark: {},
     sourceOffset,
     schedule,
     sourceOptions,
@@ -86,13 +86,11 @@ describe("csv/table/records", () => {
     run = await helper.factories.run(schedule, { state: "running" });
   });
 
-  test("imports all records when no highWaterMark", async () => {
+  test("imports all records when no sourceOffset", async () => {
     let limit = 100;
-    let highWaterMark = {};
     let sourceOffset = 0;
     const { imports, importsCount } = await runIt({
       limit,
-      highWaterMark,
       sourceOffset,
     });
     expect(importsCount).toBe(10);
@@ -111,13 +109,11 @@ describe("csv/table/records", () => {
     ]);
   });
 
-  test("imports all records when there is a highWaterMark", async () => {
+  test("imports some records when there is a sourceOffset", async () => {
     let limit = 100;
-    let highWaterMark = { row: "6" };
-    let sourceOffset = 0;
+    let sourceOffset = 6;
     const { imports, importsCount } = await runIt({
       limit,
-      highWaterMark,
       sourceOffset,
     });
     expect(importsCount).toBe(4);
@@ -127,11 +123,9 @@ describe("csv/table/records", () => {
 
   test("handles getting no results", async () => {
     let limit = 100;
-    let sourceOffset = 0;
-    let highWaterMark = { row: "999" }; // past the last one
+    let sourceOffset = 999; // past the last one
     const { imports, importsCount } = await runIt({
       limit,
-      highWaterMark,
       sourceOffset,
     });
     expect(importsCount).toBe(0);
@@ -143,41 +137,34 @@ describe("csv/table/records", () => {
     "imports a page at a time",
     async () => {
       let limit = 4;
-      let highWaterMark = {};
       let importedIds;
 
       const page1 = await runIt({
         limit,
         sourceOffset: 0,
-        highWaterMark,
       });
       expect(page1.importsCount).toBe(4);
-      expect(page1.sourceOffset).toBe(0);
-      expect(Object.values(page1.highWaterMark)[0]).toMatch("4");
+      expect(page1.sourceOffset).toBe(4);
       importedIds = page1.imports.map((r) => r.id);
       expect(importedIds).toEqual(["1", "2", "3", "4"]);
 
       // do the next page
       const page2 = await runIt({
         limit,
-        highWaterMark: page1.highWaterMark,
         sourceOffset: page1.sourceOffset,
       });
       expect(page2.importsCount).toBe(4);
-      expect(page2.sourceOffset).toBe(0);
-      expect(Object.values(page2.highWaterMark)[0]).toMatch("8");
+      expect(page2.sourceOffset).toBe(8);
       importedIds = page2.imports.map((r) => r.id);
       expect(importedIds).toEqual(["5", "6", "7", "8"]);
 
       // do the next page
       const page3 = await runIt({
         limit,
-        highWaterMark: page2.highWaterMark,
         sourceOffset: page2.sourceOffset,
       });
       expect(page3.importsCount).toBe(2);
-      expect(page3.sourceOffset).toBe(0);
-      expect(Object.values(page3.highWaterMark)[0]).toMatch("10");
+      expect(page3.sourceOffset).toBe(10);
       importedIds = page3.imports.map((r) => r.id);
       expect(importedIds).toEqual(["9", "10"]);
     },

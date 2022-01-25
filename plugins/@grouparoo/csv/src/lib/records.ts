@@ -7,9 +7,9 @@ export const records: RecordsPluginMethod = async ({
   sourceId,
   sourceOptions,
   sourceMapping,
+  sourceOffset,
   run,
   limit,
-  highWaterMark,
 }) => {
   const localPath = await downloadAndRefreshFile(sourceId, sourceOptions);
   return parseProfiles({
@@ -18,6 +18,6 @@ export const records: RecordsPluginMethod = async ({
     sourceMapping,
     run,
     limit,
-    highWaterMark,
+    sourceOffset: parseInt(String(sourceOffset)),
   });
 };

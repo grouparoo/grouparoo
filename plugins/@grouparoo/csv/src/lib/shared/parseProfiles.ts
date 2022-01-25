@@ -1,12 +1,6 @@
 import fs from "fs-extra";
 import csvParser from "csv-parser";
-import {
-  plugin,
-  Source,
-  SourceMapping,
-  Run,
-  HighWaterMark,
-} from "@grouparoo/core";
+import { plugin, Source, SourceMapping, Run } from "@grouparoo/core";
 
 export async function parseProfiles({
   localPath,
@@ -14,17 +8,17 @@ export async function parseProfiles({
   sourceMapping,
   run,
   limit,
-  highWaterMark,
+  sourceOffset,
 }: {
   localPath: string;
   source: Source;
   sourceMapping: SourceMapping;
   run: Run;
   limit: number;
-  highWaterMark: HighWaterMark;
+  sourceOffset: number;
 }) {
   // unlike a normal source in which we could fetch Record Properties as needed, we need to be sure we get them all in one go
-  let combinedMapping = Object.assign({}, sourceMapping);
+  let combinedMapping = { ...sourceMapping };
   const properties = await source.$get("properties");
   for (const i in properties) {
     const property = properties[i];
@@ -43,9 +37,7 @@ export async function parseProfiles({
   //       Scanning the whole file each time seems silly.
   let rowId = -1;
   const validRows: Record<string, any>[] = [];
-  const offset = highWaterMark?.row
-    ? parseInt(highWaterMark?.row.toString())
-    : 0;
+  const offset = sourceOffset ?? 0;
 
   await new Promise((resolve, reject) => {
     parser.on("data", (row) => {
@@ -65,9 +57,10 @@ export async function parseProfiles({
 
   await plugin.createImports(combinedMapping, run, validRows);
 
+  const nextSourceOffset = offset + validRows.length;
   return {
     importsCount: validRows.length,
-    highWaterMark: { row: (offset + validRows.length).toString() },
-    sourceOffset: 0,
+    highWaterMark: { row: nextSourceOffset },
+    sourceOffset: nextSourceOffset,
   };
 }

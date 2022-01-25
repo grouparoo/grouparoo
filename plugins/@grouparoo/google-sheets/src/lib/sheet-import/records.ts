@@ -10,7 +10,7 @@ export const records: RecordsPluginMethod = async ({
   sourceMapping,
   run,
   limit,
-  highWaterMark,
+  sourceOffset,
 }) => {
   const localPath = await downloadAndRefreshFile(
     sourceId,
@@ -23,6 +23,6 @@ export const records: RecordsPluginMethod = async ({
     sourceMapping,
     run,
     limit,
-    highWaterMark,
+    sourceOffset: parseInt(String(sourceOffset)),
   });
 };
