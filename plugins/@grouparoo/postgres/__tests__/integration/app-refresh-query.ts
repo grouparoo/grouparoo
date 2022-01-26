@@ -34,11 +34,13 @@ describe("integration/refreshQuery/postgres", () => {
 
   it("can query using the appRefreshQuery query method", async () => {
     const app = await App.findOne();
-    const appRefreshQuery = await AppRefreshQuery.create({
-      appId: app.id,
-      refreshQuery: "SELECT 'HI' as name",
-      state: "ready",
-    }); //does not throw
+    expect(
+      AppRefreshQuery.create({
+        appId: app.id,
+        refreshQuery: "SELECT 'HI' as name",
+        state: "ready",
+      })
+    ).resolves.toBeTruthy();
   });
 
   it("shows a good error with a missing query", async () => {

@@ -7,7 +7,9 @@
     "target": "es2019",
     "esModuleInterop": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "resolveJsonModule": true,
+    "noImplicitAny": true
   },
   "include": ["./src/**/*"],
   "exclude": ["./../node_modules"]

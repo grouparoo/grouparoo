@@ -8,7 +8,9 @@ import {
   AggregationMethod,
   GrouparooRecord,
   Property,
+  RecordPropertiesPluginMethodResponse,
   SimplePropertyOptions,
+  SimpleSourceOptions,
   SourceMapping,
 } from "@grouparoo/core";
 
@@ -20,6 +22,7 @@ import {
 } from "../utils/data";
 
 import { getConnection } from "../../src/lib/table-import/connection";
+import { PostgresPoolClient } from "../../src/lib/connect";
 const recordProperties = getConnection().methods.recordProperties;
 
 // these used and set by test
@@ -31,9 +34,9 @@ let fourthRecord: GrouparooRecord;
 let emailProperty: Property;
 let firstNameProperty: Property;
 let lastNameProperty: Property;
-let client;
+let client: PostgresPoolClient;
 
-let sourceOptions;
+let sourceOptions: SimpleSourceOptions;
 async function getPropertyValues(
   {
     columns,
@@ -46,7 +49,7 @@ async function getPropertyValues(
     aggregationMethod: string;
     sortColumn?: string;
   },
-  usePropertyFilters?
+  usePropertyFilters?: any // TODO: Correct type here
 ) {
   const arrays = await getPropertyArrays(
     { columns, sourceMapping, aggregationMethod, sortColumn },
@@ -66,8 +69,9 @@ async function getPropertyArrays(
     aggregationMethod: string;
     sortColumn?: string;
   },
-  usePropertyFilters?
-) {
+  usePropertyFilters?: any // TODO: Correct type here
+): Promise<[any, any]> {
+  // TODO: Correct type above
   const properties = [
     emailProperty,
     firstNameProperty,
@@ -75,7 +79,7 @@ async function getPropertyArrays(
   ].filter((p, idx) => columns.length > idx);
 
   let counter = 0;
-  const propertyOptions: { [key: string]: SimplePropertyOptions } = {};
+  const propertyOptions: Record<string, SimplePropertyOptions> = {};
   for (const property of properties) {
     propertyOptions[property.id] = {
       column: columns[counter],
@@ -84,8 +88,8 @@ async function getPropertyArrays(
     };
     counter++;
   }
-
-  const propertyFilters = usePropertyFilters
+  // TODO: This type
+  const propertyFilters: any = usePropertyFilters
     ? { [properties[0].id]: usePropertyFilters }
     : { [properties[0].id]: [] };
 
@@ -158,7 +162,7 @@ describe("postgres/table/recordProperties", () => {
   afterAll(async () => await afterData());
 
   describe("exact primary tables", () => {
-    let aggregationMethod = "exact";
+    const aggregationMethod = "exact";
 
     beforeAll(() => {
       sourceOptions = { table: usersTableName };
@@ -397,10 +401,14 @@ describe("postgres/table/recordProperties", () => {
           aggregationMethod: "average",
         });
         expect(
-          fixedLengthFloat(values[record.id][properties[0].id][0])
+          helper.fixedLengthFloat<
+            Property[] | RecordPropertiesPluginMethodResponse
+          >(values[record.id][properties[0].id][0])
         ).toEqual(1.63);
         expect(
-          fixedLengthFloat(values[otherRecord.id][properties[0].id][0])
+          helper.fixedLengthFloat<
+            Property[] | RecordPropertiesPluginMethodResponse
+          >(values[otherRecord.id][properties[0].id][0])
         ).toEqual(1.88);
         expect(values[thirdRecord.id]).toBeUndefined();
       });
@@ -421,13 +429,19 @@ describe("postgres/table/recordProperties", () => {
           aggregationMethod: "sum",
         });
         expect(
-          fixedLengthFloat(values[record.id][properties[0].id][0])
+          helper.fixedLengthFloat<
+            Property[] | RecordPropertiesPluginMethodResponse
+          >(values[record.id][properties[0].id][0])
         ).toEqual(11.38);
         expect(
-          fixedLengthFloat(values[otherRecord.id][properties[0].id][0])
+          helper.fixedLengthFloat<
+            Property[] | RecordPropertiesPluginMethodResponse
+          >(values[otherRecord.id][properties[0].id][0])
         ).toEqual(9.38);
         expect(
-          fixedLengthFloat(values[thirdRecord.id][properties[0].id][0])
+          helper.fixedLengthFloat<
+            Property[] | RecordPropertiesPluginMethodResponse
+          >(values[thirdRecord.id][properties[0].id][0])
         ).toEqual(0);
       });
       test("min", async () => {
@@ -495,7 +509,6 @@ describe("postgres/table/recordProperties", () => {
         });
 
         test("to get a timestamp - decimals or not", async () => {
-          const column = "stamp";
           const [values, properties] = await getPropertyValues({
             columns,
             sourceMapping,
@@ -1115,7 +1128,7 @@ describe("postgres/table/recordProperties", () => {
     });
 
     test("it will not import if the dependency is not ready", async () => {
-      const [values, properties] = await getPropertyValues({
+      const [values] = await getPropertyValues({
         columns: ["name"],
         sourceMapping: { id: "accountId" },
         aggregationMethod: "exact",
@@ -1144,7 +1157,7 @@ describe("postgres/table/recordProperties", () => {
       sourceOptions = { table: usersTableName };
     });
     test("unknown record property", async () => {
-      const [values, properties] = await getPropertyValues({
+      const [values] = await getPropertyValues({
         columns: ["first_name"],
         sourceMapping: { id: "badName" },
         aggregationMethod: "exact",
@@ -1154,7 +1167,7 @@ describe("postgres/table/recordProperties", () => {
       expect(values[thirdRecord.id]).toBeUndefined();
     });
     test("null record property", async () => {
-      const [values, properties] = await getPropertyValues({
+      const [values] = await getPropertyValues({
         columns: ["first_name"],
         sourceMapping: { id: "lastName" }, // set to NULL
         aggregationMethod: "exact",
@@ -1165,7 +1178,3 @@ describe("postgres/table/recordProperties", () => {
     });
   });
 });
-
-function fixedLengthFloat(value: any, decimalDigits = 2) {
-  return parseFloat(parseFloat(value.toString()).toFixed(decimalDigits));
-}

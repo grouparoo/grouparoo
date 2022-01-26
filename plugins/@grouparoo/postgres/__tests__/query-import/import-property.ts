@@ -8,13 +8,14 @@ import { beforeData, afterData, getConfig } from "../utils/data";
 import { GrouparooRecord, Property } from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/query-import/connection";
+import { PostgresPoolClient } from "../../src/lib/connect";
 const recordProperty = getConnection().methods.recordProperty;
 
 // these used and set by test
 const { appOptions, usersTableName } = getConfig();
 let record: GrouparooRecord;
 
-let client;
+let client: PostgresPoolClient;
 
 async function getPropertyValue(query: string) {
   const propertyOptions = { query };

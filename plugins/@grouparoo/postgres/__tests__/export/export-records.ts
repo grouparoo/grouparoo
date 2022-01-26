@@ -10,12 +10,12 @@ import {
 } from "@grouparoo/core/dist/models/Destination";
 import { afterData, beforeData, getConfig } from "../utils/data";
 import { helper } from "@grouparoo/spec-helper";
-import { App } from "@grouparoo/core";
+import { App, DestinationSyncOperations } from "@grouparoo/core";
+import { PostgresPoolClient } from "../../src/lib/connect";
 
 let app: App;
 let destination: Destination;
-let client: any;
-let user: any;
+let client: PostgresPoolClient;
 const ipAddress = "127.0.0.1";
 const newIpAddress = "127.0.0.2";
 const email = "caio.silveira@mailinator.com";
@@ -47,7 +47,7 @@ const ltv = 3039;
 
 const { appOptions, usersTableName, groupsDestinationTableName } = getConfig();
 
-async function getUser(userId) {
+async function getUser(userId: number) {
   const result = await client.query(
     `SELECT * FROM ${usersTableName} WHERE "id" = ${userId}`
   );
@@ -57,8 +57,8 @@ async function getUser(userId) {
   return null;
 }
 
-async function getUserGroups(userId) {
-  let { groupsTable, groupForeignKey, groupColumnName } =
+async function getUserGroups(userId: number) {
+  const { groupsTable, groupForeignKey, groupColumnName } =
     await destination.parameterizedOptions();
   const result = await client.query(
     `SELECT "${groupColumnName}" FROM ${groupsTable} WHERE "${groupForeignKey}" = ${userId}`
@@ -73,12 +73,19 @@ async function runExport({
   oldGroups,
   newGroups,
   toDelete,
+}: {
+  syncOperations?: DestinationSyncOperations;
+  oldRecordProperties: Record<string, string | number>;
+  newRecordProperties: Record<string, string | number>;
+  oldGroups: string[];
+  newGroups: string[];
+  toDelete: boolean;
 }) {
   return exportRecord({
     appOptions,
     appId: app.id,
     connection: client,
-    app: app,
+    app,
     destination,
     destinationId: null,
     destinationOptions: null,
@@ -123,7 +130,7 @@ describe("postgres/exportRecord", () => {
   afterAll(async () => await afterData());
 
   test("cannot create record on postgres if sync mode does not allow it", async () => {
-    user = await getUser(id);
+    const user = await getUser(id);
     expect(user).toBe(null);
 
     await expect(
@@ -139,7 +146,7 @@ describe("postgres/exportRecord", () => {
   });
 
   test("can create record on postgres", async () => {
-    user = await getUser(id);
+    let user = await getUser(id);
     expect(user).toBe(null);
 
     await runExport({
@@ -223,7 +230,7 @@ describe("postgres/exportRecord", () => {
         first_name: alternativeName,
         last_name: alternativeLastName,
         ip_address: newIpAddress,
-        ltv: ltv,
+        ltv,
         date: dateField,
       },
       oldGroups: [],
@@ -247,7 +254,7 @@ describe("postgres/exportRecord", () => {
         first_name: alternativeName,
         last_name: alternativeLastName,
         ip_address: newIpAddress,
-        ltv: ltv,
+        ltv,
         date: dateField,
       },
       newRecordProperties: {
@@ -506,7 +513,7 @@ describe("postgres/exportRecord", () => {
   });
 
   test("can add a user and add this user to a list at the same time.", async () => {
-    let user = await getUser(newId);
+    const user = await getUser(newId);
     expect(user).toBe(null);
 
     await runExport({

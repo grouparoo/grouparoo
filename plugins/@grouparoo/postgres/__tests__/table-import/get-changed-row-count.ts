@@ -7,10 +7,11 @@ import { App, Source, Schedule } from "@grouparoo/core";
 import { helper } from "@grouparoo/spec-helper";
 import { FilterOperation } from "@grouparoo/app-templates/dist/source/table";
 import { getChangedRowCount } from "../../src/lib/table-import/getChangedRowCount";
-import { beforeData, afterData, getConfig } from "../utils/data";
+import { beforeData, getConfig } from "../utils/data";
+import { PostgresPoolClient } from "../../src/lib/connect";
 const { appOptions, usersTableName } = getConfig();
 
-let client;
+let client: PostgresPoolClient;
 
 describe("postgres/table/scheduleOptions", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

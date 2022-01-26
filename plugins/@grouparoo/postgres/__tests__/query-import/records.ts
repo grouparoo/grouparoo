@@ -4,29 +4,49 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 });
 import { helper } from "@grouparoo/spec-helper";
 import { beforeData, afterData, getConfig } from "../utils/data";
-import { Import, Property, plugin, Run } from "@grouparoo/core";
+import {
+  Import,
+  Property,
+  plugin,
+  Run,
+  Source,
+  Schedule,
+  SourceMapping,
+  HighWaterMark,
+} from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/query-import/connection";
+import { PostgresPoolClient } from "../../src/lib/connect";
 const records = getConnection().methods.records;
 
 const { appOptions, usersTableName } = getConfig();
-let client;
+let client: PostgresPoolClient;
 
-let source;
-let run;
-let schedule;
-let sourceMapping;
+let source: Source;
+let run: Run;
+let schedule: Schedule;
+let sourceMapping: SourceMapping;
 
-async function runIt({ highWaterMark, sourceOffset, limit }) {
-  const imports = [];
-  plugin.createImports = jest.fn(async function (
-    mapping: { [remoteKey: string]: string },
-    run: Run,
-    rows: { [remoteKey: string]: any }[]
-  ): Promise<Import[]> {
-    rows.forEach((r) => imports.push(r));
-    return null;
-  });
+async function runIt({
+  highWaterMark,
+  sourceOffset,
+  limit,
+}: {
+  highWaterMark: HighWaterMark;
+  sourceOffset: number;
+  limit: number;
+}) {
+  const imports: Record<string, unknown>[] = [];
+  plugin.createImports = jest.fn(
+    async (
+      _: Record<string, string>,
+      __: Run,
+      rows: Record<string, unknown>[]
+    ): Promise<Import[]> => {
+      rows.forEach((r) => imports.push(r));
+      return null;
+    }
+  );
   const {
     highWaterMark: nextHighWaterMark,
     importsCount,
@@ -95,9 +115,9 @@ describe("postgres/query/records", () => {
   });
 
   test("imports all records when no highWaterMark", async () => {
-    let limit = 100;
-    let highWaterMark = {};
-    let sourceOffset = 0;
+    const limit = 100;
+    const highWaterMark = {};
+    const sourceOffset = 0;
     const { imports, importsCount } = await runIt({
       limit,
       highWaterMark,
@@ -109,9 +129,9 @@ describe("postgres/query/records", () => {
   });
 
   test("handles getting no results", async () => {
-    let limit = 100;
-    let sourceOffset = 0;
-    let highWaterMark = { limit: 100, offset: 9999 }; // past the last one
+    const limit = 100;
+    const sourceOffset = 0;
+    const highWaterMark = { limit: 100, offset: 9999 }; // past the last one
     const { imports, importsCount } = await runIt({
       limit,
       highWaterMark,
@@ -125,8 +145,8 @@ describe("postgres/query/records", () => {
   test(
     "imports a page at a time",
     async () => {
-      let limit = 4;
-      let highWaterMark = { limit, offset: 0 };
+      const limit = 4;
+      const highWaterMark = { limit, offset: 0 };
       let importedIds;
 
       const page1 = await runIt({

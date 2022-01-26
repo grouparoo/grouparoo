@@ -12,6 +12,7 @@ import { SourceCreate } from "@grouparoo/core/src/actions/sources";
 import { PropertyCreate } from "@grouparoo/core/src/actions/properties";
 
 import { beforeData, afterData, getConfig } from "../utils/data";
+import { SpecHelperConnection } from "actionhero/dist/modules/specHelper";
 
 const { appOptions, usersTableName } = getConfig();
 
@@ -21,10 +22,10 @@ describe("integration/runs/postgres", () => {
   beforeAll(async () => await helper.factories.properties());
   beforeAll(async () => await api.resque.queue.connection.redis.flushdb());
 
-  let session;
-  let csrfToken;
-  let app;
-  let source;
+  let session: SpecHelperConnection;
+  let csrfToken: string;
+  let app: Awaited<ReturnType<AppCreate["run"]>>["app"];
+  let source: Awaited<ReturnType<SourceCreate["run"]>>["source"];
 
   beforeAll(async () => await beforeData());
   afterAll(async () => await afterData());

@@ -1,6 +1,7 @@
 import { GrouparooRecord, Property } from "@grouparoo/core";
 import { helper } from "@grouparoo/spec-helper";
 import path from "path";
+import { PostgresPoolClient } from "../../src/lib/connect";
 import { getConnection } from "../../src/lib/query-import/connection";
 import { afterData, beforeData, getConfig } from "../utils/data";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
@@ -13,7 +14,7 @@ const recordProperty = getConnection().methods.recordProperty;
 const { appOptions, usersTableName } = getConfig();
 let record: GrouparooRecord;
 
-let client;
+let client: PostgresPoolClient;
 
 async function getPropertyValue(query: string) {
   const propertyOptions = { query };
@@ -39,6 +40,7 @@ async function getPropertyValue(query: string) {
 
 describe("postgres/integration/log-checking", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const actionhero = require("actionhero");
   const logMock = jest.fn();
   Object.defineProperty(actionhero, "log", { value: logMock, writable: false });

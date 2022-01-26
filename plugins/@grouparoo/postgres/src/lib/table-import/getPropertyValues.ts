@@ -14,16 +14,15 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   columnNames,
   sortColumn,
   tablePrimaryKeyCol,
-  tableMappingCol,
   matchConditions,
   isArray,
   aggregationMethod,
   primaryKeys,
 }) => {
-  let responses: { [key: string]: { [column: string]: DataResponse[] } } = {};
+  const responses: Record<string, Record<string, DataResponse[]>> = {};
   const columnList = columnNames.map((col) => `"${col}"`).join(", ");
   const orderBys = [];
-  const groupByColumns = [];
+  const groupByColumns: string[] = [];
   let aggFunc = null;
 
   if (primaryKeys.length === 0) return responses;
@@ -61,7 +60,7 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
       throw new Error(`${aggregationMethod} is not a known aggregation method`);
   }
 
-  const params: any[] = [];
+  const params: (string | string[])[] = [];
   let ranked = false;
   let query = `SELECT "${tablePrimaryKeyCol}" as __pk`;
 
@@ -128,7 +127,7 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
     const {
       rows,
     }: {
-      rows: { [column: string]: DataResponse }[];
+      rows: Record<string, DataResponse>[];
     } = await connection.query(format(query, ...params));
     for (const row of rows) {
       const pk = row.__pk.toString();

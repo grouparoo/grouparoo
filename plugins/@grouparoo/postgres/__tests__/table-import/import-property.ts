@@ -4,23 +4,36 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 });
 
 import { helper } from "@grouparoo/spec-helper";
-import { plugin, GrouparooRecord, Property } from "@grouparoo/core";
+import {
+  GrouparooRecord,
+  Property,
+  PropertyFiltersWithKey,
+} from "@grouparoo/core";
 
 import { beforeData, afterData, getConfig } from "../utils/data";
 
 import { getConnection } from "../../src/lib/table-import/connection";
+import { PostgresPoolClient } from "../../src/lib/connect";
 const recordProperty = getConnection().methods.recordProperty;
 
 // these used and set by test
 const { appOptions, usersTableName, purchasesTableName } = getConfig();
 let record: GrouparooRecord;
 
-let actionhero, client;
+let client: PostgresPoolClient;
 
-let sourceOptions;
+let sourceOptions: { table: string };
 async function getPropertyValue(
-  { column, sourceMapping, aggregationMethod },
-  usePropertyFilters?,
+  {
+    column,
+    sourceMapping,
+    aggregationMethod,
+  }: {
+    column: string;
+    sourceMapping: Record<string, string>;
+    aggregationMethod: string;
+  },
+  usePropertyFilters?: PropertyFiltersWithKey[],
   useRecord?: GrouparooRecord
 ) {
   const array = await getPropertyArray(
@@ -31,13 +44,21 @@ async function getPropertyValue(
   return array ? array[0] : array;
 }
 async function getPropertyArray(
-  { column, sourceMapping, aggregationMethod },
-  usePropertyFilters?,
+  {
+    column,
+    sourceMapping,
+    aggregationMethod,
+  }: {
+    column: string;
+    sourceMapping: Record<string, string>;
+    aggregationMethod: string;
+  },
+  usePropertyFilters?: PropertyFiltersWithKey[],
   useRecord?: GrouparooRecord
 ) {
   const propertyOptions = {
     column,
-    aggregationMethod: aggregationMethod,
+    aggregationMethod,
   };
 
   if (!useRecord) {
@@ -90,7 +111,7 @@ describe("postgres/table/recordProperty", () => {
   afterAll(async () => await afterData());
 
   describe("exact primary tables", () => {
-    let aggregationMethod = "exact";
+    const aggregationMethod = "exact";
     beforeAll(() => {
       sourceOptions = { table: usersTableName };
     });
@@ -207,7 +228,11 @@ describe("postgres/table/recordProperty", () => {
           sourceMapping,
           aggregationMethod: "average",
         });
-        expect(fixedLengthFloat(value)).toEqual(1.63);
+        expect(
+          helper.fixedLengthFloat<Awaited<ReturnType<typeof getPropertyValue>>>(
+            value
+          )
+        ).toEqual(1.63);
       });
       test("count", async () => {
         const value = await getPropertyValue({
@@ -223,7 +248,11 @@ describe("postgres/table/recordProperty", () => {
           sourceMapping,
           aggregationMethod: "sum",
         });
-        expect(fixedLengthFloat(value)).toEqual(11.38);
+        expect(
+          helper.fixedLengthFloat<Awaited<ReturnType<typeof getPropertyValue>>>(
+            value
+          )
+        ).toEqual(11.38);
       });
       test("min", async () => {
         const value = await getPropertyValue({
@@ -759,7 +788,3 @@ describe("postgres/table/recordProperty", () => {
     });
   });
 });
-
-function fixedLengthFloat(value: any, decimalDigits = 2) {
-  return parseFloat(parseFloat(value.toString()).toFixed(decimalDigits));
-}
