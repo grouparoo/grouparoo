@@ -102,7 +102,7 @@ export class RetryExportsCLI extends CLI {
       startDate,
       endDate,
       destination,
-      params.preview
+      !params.preview
     );
 
     GrouparooCLI.logger.log("");
