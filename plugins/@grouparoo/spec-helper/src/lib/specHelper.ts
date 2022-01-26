@@ -391,7 +391,7 @@ export namespace helper {
                 },
               ];
             },
-            records: async () => {
+            importRecords: async () => {
               return {
                 importsCount: 0,
                 highWaterMark: { col: 0 },

@@ -8,7 +8,7 @@ import {
 import { config } from "actionhero";
 import { DataResponseRow } from "../shared/types";
 
-export interface GetChangedRowsMethod<ConnectionType = any> {
+export interface GetRowsMethod<ConnectionType = any> {
   (argument: {
     connection: ConnectionType;
     appOptions: SimpleAppOptions;
@@ -21,7 +21,7 @@ export interface GetChangedRowsMethod<ConnectionType = any> {
   }): Promise<DataResponseRow[]>;
 }
 
-export const getRecordsMethod = (getChangedRows: GetChangedRowsMethod) => {
+export const getRecordsMethod = (getRows: GetRowsMethod) => {
   const records: RecordsPluginMethod = async ({
     scheduleOptions,
     connection,
@@ -40,7 +40,7 @@ export const getRecordsMethod = (getChangedRows: GetChangedRowsMethod) => {
       ? parseInt(highWaterMark.limit.toString())
       : config.batchSize.imports;
 
-    const rows = await getChangedRows({
+    const rows = await getRows({
       appId,
       appOptions,
       sourceOptions,

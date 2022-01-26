@@ -2,7 +2,7 @@ import {
   columnNameKey,
   tableNameKey,
   MatchCondition,
-  GetChangedRowsMethod,
+  GetRowsMethod,
 } from "./pluginMethods";
 import { getFilterOperation } from "./getFilterOperation";
 import {
@@ -15,10 +15,10 @@ import {
 } from "@grouparoo/core";
 
 export interface GetRecordsMethod {
-  (argument: { getChangedRows: GetChangedRowsMethod }): RecordsPluginMethod;
+  (argument: { getRows: GetRowsMethod }): RecordsPluginMethod;
 }
 
-export const getRecords: GetRecordsMethod = ({ getChangedRows }) => {
+export const getRecords: GetRecordsMethod = ({ getRows }) => {
   const records: RecordsPluginMethod = async ({
     connection,
     appOptions,
@@ -55,7 +55,7 @@ export const getRecords: GetRecordsMethod = ({ getChangedRows }) => {
       });
     }
 
-    const results = await getChangedRows({
+    const results = await getRows({
       connection,
       appOptions,
       appId,
@@ -111,7 +111,7 @@ export interface ChangeVariablesMin {
   highWaterMarkCondition: MatchCondition;
 }
 export interface Get {
-  (argument: { getChangedRows: GetChangedRowsMethod }): RecordsPluginMethod;
+  (argument: { getRows: GetRowsMethod }): RecordsPluginMethod;
 }
 export interface GetChangeVariablesMethod {
   (argument: {

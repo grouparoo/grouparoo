@@ -419,7 +419,7 @@ describe("models/app", () => {
             direction: "import" as "import",
             options: [],
             methods: {
-              records: async () => {
+              importRecords: async () => {
                 return {
                   importsCount: 0,
                   highWaterMark: { col: "0" },

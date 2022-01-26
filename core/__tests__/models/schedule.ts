@@ -696,7 +696,7 @@ describe("models/schedule", () => {
               sourceRunPercentComplete: async () => {
                 return 33;
               },
-              records: async ({ highWaterMark }) => {
+              importRecords: async ({ highWaterMark }) => {
                 return {
                   highWaterMark: {
                     updated_at:
@@ -865,8 +865,8 @@ describe("models/schedule", () => {
       const plugin = api.plugins.plugins.filter(
         (p) => p.name === "test-plugin"
       )[0];
-      const originalMethod = plugin.connections[0].methods.records;
-      plugin.connections[0].methods.records = undefined;
+      const originalMethod = plugin.connections[0].methods.importRecords;
+      plugin.connections[0].methods.importRecords = undefined;
       expect(await source.scheduleAvailable()).toBe(false);
 
       await expect(
@@ -877,7 +877,7 @@ describe("models/schedule", () => {
       ).rejects.toThrow(/cannot have a schedule/);
 
       // replace method
-      plugin.connections[0].methods.records = originalMethod;
+      plugin.connections[0].methods.importRecords = originalMethod;
     });
 
     describe("filters", () => {

@@ -18,7 +18,7 @@ import {
   getUniquePropertyBootstrapOptions,
   RecordsPluginMethod,
   getRecords,
-  GetChangedRowsMethod,
+  GetRowsMethod,
   RecordPropertyPluginMethod,
   RecordPropertiesPluginMethod,
   getRecordProperty,
@@ -27,7 +27,7 @@ import {
   GetPropertyValuesMethod,
   SourceRunPercentCompleteMethod,
   getSourceRunPercentComplete,
-  GetChangedRowCountMethod,
+  GetRowCountMethod,
   SourceOptionsExtra,
   AggregationMethod,
 } from "./options";
@@ -44,10 +44,10 @@ export interface BuildConnectionMethod {
     getSampleRows: GetSampleRowsMethod;
     getColumns: GetColumnDefinitionsMethod;
     getTables: GetTablesMethod;
-    getChangedRows: GetChangedRowsMethod;
+    getRows: GetRowsMethod;
     getPropertyValue: GetPropertyValueMethod;
     getPropertyValues?: GetPropertyValuesMethod;
-    getChangedRowCount: GetChangedRowCountMethod;
+    getRowCount: GetRowCountMethod;
   }): PluginConnection;
 }
 
@@ -62,10 +62,10 @@ export const buildConnection: BuildConnectionMethod = ({
   getSampleRows,
   getColumns,
   getTables,
-  getChangedRows,
+  getRows,
   getPropertyValue,
   getPropertyValues,
-  getChangedRowCount,
+  getRowCount,
 }) => {
   const propertyOptions: PropertyOptionsMethod = async (args) =>
     getPropertyOptions(args, {
@@ -90,8 +90,8 @@ export const buildConnection: BuildConnectionMethod = ({
   });
   const uniquePropertyBootstrapOptions: UniquePropertyBootstrapOptions =
     getUniquePropertyBootstrapOptions();
-  const records: RecordsPluginMethod = getRecords({
-    getChangedRows,
+  const importRecords: RecordsPluginMethod = getRecords({
+    getRows,
   });
   const recordProperty: RecordPropertyPluginMethod = getPropertyValue
     ? getRecordProperty({
@@ -105,7 +105,7 @@ export const buildConnection: BuildConnectionMethod = ({
     : null;
   const sourceRunPercentComplete: SourceRunPercentCompleteMethod =
     getSourceRunPercentComplete({
-      getChangedRowCount,
+      getRowCount,
     });
 
   const options = (additionalOptions?.options || []).concat({
@@ -131,7 +131,7 @@ export const buildConnection: BuildConnectionMethod = ({
       propertyOptions,
       scheduleOptions,
       uniquePropertyBootstrapOptions,
-      records,
+      importRecords,
       recordProperty,
       recordProperties,
       sourceRunPercentComplete,

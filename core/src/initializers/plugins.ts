@@ -189,7 +189,7 @@ export class Plugins extends Initializer {
         }
         if (
           connection.direction === "import" &&
-          !connection.methods.records &&
+          !connection.methods.importRecords &&
           !connection.methods.recordProperty &&
           !connection.methods.recordProperties
         ) {
@@ -199,7 +199,7 @@ export class Plugins extends Initializer {
         }
         if (
           connection.direction === "import" &&
-          connection.methods.records &&
+          connection.methods.importRecords &&
           connection.supportIncrementalSchedule === undefined
         ) {
           errors.push(

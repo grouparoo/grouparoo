@@ -537,7 +537,7 @@ describe("actions/properties", () => {
 
                   return response;
                 },
-                records: async () => {
+                importRecords: async () => {
                   return {
                     importsCount: 0,
                     sourceOffset: 0,

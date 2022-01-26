@@ -109,7 +109,7 @@ export interface GetTablesMethod<AppConnection = any> {
     appId: string;
   }): Promise<TableDefinitionMap>;
 }
-export interface GetChangedRowsMethod<AppConnection = any> {
+export interface GetRowsMethod<AppConnection = any> {
   (argument: {
     connection: AppConnection;
     appOptions: SimpleAppOptions;
@@ -127,7 +127,7 @@ export interface GetChangedRowsMethod<AppConnection = any> {
   }): Promise<DataResponseRow[]>;
 }
 
-export interface GetChangedRowCountMethod<AppConnection = any> {
+export interface GetRowCountMethod<AppConnection = any> {
   (argument: {
     connection: AppConnection;
     appOptions: SimpleAppOptions;

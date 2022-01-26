@@ -109,7 +109,7 @@ describe("tasks/schedule:run", () => {
                   },
                 },
               ],
-              records: async () => {
+              importRecords: async () => {
                 return {
                   highWaterMark: { updated_at: 200 },
                   sourceOffset: 100,

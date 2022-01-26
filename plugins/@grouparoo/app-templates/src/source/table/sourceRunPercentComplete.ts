@@ -1,16 +1,16 @@
 import { SourceRunPercentCompleteMethod } from "@grouparoo/core";
 import { getFilterOperation } from "./getFilterOperation";
-import { GetChangedRowCountMethod, MatchCondition } from "./pluginMethods";
+import { GetRowCountMethod, MatchCondition } from "./pluginMethods";
 import { getChangeVariables } from "./records";
 
 export interface GetSourceRunPercentCompleteMethod {
   (argument: {
-    getChangedRowCount: GetChangedRowCountMethod;
+    getRowCount: GetRowCountMethod;
   }): SourceRunPercentCompleteMethod;
 }
 
 export const getSourceRunPercentComplete: GetSourceRunPercentCompleteMethod = ({
-  getChangedRowCount,
+  getRowCount,
 }) => {
   const sourceRunPercentComplete: SourceRunPercentCompleteMethod = async ({
     connection,
@@ -39,7 +39,7 @@ export const getSourceRunPercentComplete: GetSourceRunPercentCompleteMethod = ({
       });
     }
 
-    const count = await getChangedRowCount({
+    const count = await getRowCount({
       connection,
       appOptions,
       appId,

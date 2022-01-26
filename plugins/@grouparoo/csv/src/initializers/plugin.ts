@@ -5,7 +5,7 @@ import { test } from "../lib/test";
 
 import { sourceOptions } from "../lib/sourceOptions";
 import { sourcePreview } from "../lib/sourcePreview";
-import { records } from "../lib/records";
+import { importRecords } from "../lib/importRecords";
 import { propertyOptions } from "../lib/propertyOptions";
 import { sourceRunPercentComplete } from "../lib/sourceRunPercentComplete";
 import { uniquePropertyBootstrapOptions } from "../lib/uniquePropertyBootstrapOptions";
@@ -68,7 +68,7 @@ export class Plugins extends Initializer {
             sourceOptions,
             sourcePreview,
             propertyOptions,
-            records,
+            importRecords,
             sourceRunPercentComplete,
             uniquePropertyBootstrapOptions,
             recordProperty,

@@ -2,10 +2,10 @@ import { buildConnection } from "@grouparoo/app-templates/dist/source/table";
 import { getSampleRows } from "@grouparoo/postgres/dist/lib/table-import/getSampleRows";
 import { getColumns } from "@grouparoo/postgres/dist/lib/table-import/getColumns";
 import { getTables } from "@grouparoo/postgres/dist/lib/table-import/getTables";
-import { getChangedRows } from "@grouparoo/postgres/dist/lib/table-import/getChangedRows";
+import { getRows } from "@grouparoo/postgres/dist/lib/table-import/getRows";
 import { getPropertyValue } from "@grouparoo/postgres/dist/lib/table-import/getPropertyValue";
 import { getPropertyValues } from "@grouparoo/postgres/dist/lib/table-import/getPropertyValues";
-import { getChangedRowCount } from "@grouparoo/postgres/dist/lib/table-import/getChangedRowCount";
+import { getRowCount } from "@grouparoo/postgres/dist/lib/table-import/getRowCount";
 
 export function getConnection() {
   return buildConnection({
@@ -17,9 +17,9 @@ export function getConnection() {
     getSampleRows,
     getColumns,
     getTables,
-    getChangedRows,
+    getRows,
     getPropertyValue,
     getPropertyValues,
-    getChangedRowCount,
+    getRowCount,
   });
 }

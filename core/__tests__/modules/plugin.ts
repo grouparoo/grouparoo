@@ -55,7 +55,7 @@ describe("modules/plugin", () => {
               sourceFilters: async () => {
                 return [];
               },
-              records: async () => {
+              importRecords: async () => {
                 return {
                   importsCount: 0,
                   highWaterMark: { col: 0 },

@@ -89,7 +89,7 @@ export interface PluginConnection {
     uniquePropertyBootstrapOptions?: UniquePropertyBootstrapOptions;
     scheduleOptions?: ScheduleOptionsMethod;
     propertyOptions?: PropertyOptionsMethod;
-    records?: RecordsPluginMethod;
+    importRecords?: RecordsPluginMethod;
     recordProperty?: RecordPropertyPluginMethod;
     recordProperties?: RecordPropertiesPluginMethod;
     destinationOptions?: DestinationOptionsMethod;
