@@ -1,7 +1,7 @@
 import { plugin, RecordsPluginMethod } from "@grouparoo/core";
 import { getChangedMembers } from "./members";
 
-export const records: RecordsPluginMethod = async ({
+export const importRecords: RecordsPluginMethod = async ({
   run,
   appOptions,
   source,

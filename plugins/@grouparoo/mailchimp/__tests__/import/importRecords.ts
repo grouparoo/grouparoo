@@ -18,7 +18,7 @@ import {
   SimpleDestinationOptions,
 } from "@grouparoo/core";
 
-import { records } from "../../src/lib/import/records";
+import { importRecords } from "../../src/lib/import/importRecords";
 
 const { newNock } = helper.useNock(__filename, updater);
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
@@ -44,7 +44,7 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
     highWaterMark: nextHighWaterMark,
     importsCount,
     sourceOffset: nextSourceOffset,
-  } = await records({
+  } = await importRecords({
     connection,
     run,
     appOptions,

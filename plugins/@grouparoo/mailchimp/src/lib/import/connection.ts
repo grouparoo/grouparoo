@@ -1,7 +1,7 @@
 import { PluginConnection } from "@grouparoo/core";
 import { propertyOptions } from "./propertyOptions";
 import { sourcePreview } from "./sourcePreview";
-import { records } from "./records";
+import { importRecords } from "./importRecords";
 import { sourceRunPercentComplete } from "./sourceRunPercentComplete";
 import { getSourceOptions } from "../shared/connectionOptions";
 
@@ -23,7 +23,7 @@ const connection: PluginConnection = {
     sourceOptions: getSourceOptions(["listId"]),
     sourcePreview,
     propertyOptions,
-    records,
+    importRecords,
     sourceRunPercentComplete,
   },
 };
