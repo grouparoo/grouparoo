@@ -132,7 +132,7 @@ describe("actions/sources", () => {
         "scheduleOptions",
         "uniquePropertyBootstrapOptions",
         "sourceFilters",
-        "records",
+        "importRecords",
         "recordProperty",
         "recordProperties",
       ]);
