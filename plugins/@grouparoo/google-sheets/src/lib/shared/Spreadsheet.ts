@@ -7,6 +7,7 @@ import {
 const { GoogleSpreadsheet } = require("google-spreadsheet");
 
 const GOOGLE_SHEETS_ROWS_LIMIT = 10000;
+const MINUTE_IN_MILLIS = 60 * 1000;
 
 function parseUrl(sheetUrl: string): Record<string, string> {
   // e.g. https://docs.google.com/spreadsheets/d/1-QDnY0N4obyqnyDpncfr6dooyC2mWw2hn1RY8XlZLWM/edit
@@ -39,6 +40,7 @@ export default class Spreadsheet {
 
   connected: boolean;
   loaded: boolean;
+  bypassSleep: boolean;
   docId: string;
   sheetId: string;
 
@@ -55,6 +57,7 @@ export default class Spreadsheet {
 
     this.doc = new GoogleSpreadsheet(docId);
     this.sheet = null;
+    this.bypassSleep = false;
   }
 
   async connect() {
@@ -71,55 +74,74 @@ export default class Spreadsheet {
 
   async load() {
     if (this.sheet) {
-      await this.loadHeaders();
       return this.sheet;
     }
     await this.connect();
-    const doc = this.doc;
-    await doc.loadInfo(); // loads document properties and worksheets
+    await this.loadDocInfo();
 
     if (this.sheetId) {
-      this.sheet = doc.sheetsById[this.sheetId];
+      this.sheet = this.doc.sheetsById[this.sheetId];
     }
     if (!this.sheet) {
       // didn't have that id, use the first one
-      this.sheet = doc.sheetsByIndex[0];
+      this.sheet = this.doc.sheetsByIndex[0];
     }
     await this.loadHeaders();
     return this.sheet;
   }
 
+  async loadDocInfo() {
+    try {
+      await this.doc.loadInfo(); // loads document properties and worksheets
+    } catch (error) {
+      if (error?.response?.status === 429) {
+        await this.sleep(MINUTE_IN_MILLIS);
+        await this.loadDocInfo();
+      }
+    }
+  }
+
   async loadHeaders() {
     try {
       await this.sheet.loadHeaderRow();
-    } catch (e) {}
+      return this.sheet.headerValues;
+    } catch (error) {
+      if (error?.response?.status === 429) {
+        await this.sleep(MINUTE_IN_MILLIS);
+        return await this.loadHeaders();
+      }
+    }
   }
 
   async read({ limit, offset }) {
-    const sheet = await this.load();
-    const results = [];
-    if (offset < sheet.rowCount) {
-      const rows = await sheet.getRows({ limit, offset });
-      for (const row of rows) {
-        const result: any = {};
-        result["_rowNumber"] = row.rowNumber;
-        for (const header of sheet.headerValues) {
-          result[header] = row[header];
+    try {
+      const results = [];
+      const sheet = await this.load();
+      if (offset < sheet.rowCount) {
+        const rows = await sheet.getRows({ limit, offset });
+        for (const row of rows) {
+          const result: any = {};
+          result["_rowNumber"] = row.rowNumber;
+          for (const header of sheet.headerValues) {
+            result[header] = row[header];
+          }
+          results.push(result);
         }
-        results.push(result);
+      }
+      return results;
+    } catch (error) {
+      if (error?.response?.status === 429) {
+        await this.sleep(MINUTE_IN_MILLIS);
+        return this.read({ limit, offset });
+      } else {
+        throw error;
       }
     }
-    return results;
   }
 
   async getHeaders() {
     await this.load();
-    return this.sheet.headerValues;
-  }
-
-  async _invalidateCache(): Promise<void> {
-    const contentId = `${this.docId}-${this.sheetId}`;
-    await objectCacheInvalidate({ objectId: contentId });
+    return this.loadHeaders();
   }
 
   async getAllRows() {
@@ -138,22 +160,10 @@ export default class Spreadsheet {
     return allRows;
   }
 
-  async getSheetRows() {
-    const cacheDurationMs = 1000 * 60 * 3; // 3 minutes
-    const contentId = `${this.docId}-${this.sheetId}`;
-    const cacheKey = ["sheetContent", contentId];
-    return objectCache(
-      { objectId: contentId, cacheKey, cacheDurationMs },
-      async () => {
-        return await this.getAllRows();
-      }
-    );
-  }
-
   async getRowByPrimaryKey(column, value) {
     await this.load();
     if (column && value) {
-      const rows = await this.getSheetRows();
+      const rows = await this.getAllRows();
       return rows.filter((row) => row[column] === value)[0] || null;
     }
     return null;
@@ -170,11 +180,21 @@ export default class Spreadsheet {
 
   async getRowObjectByRowNumber(rowNumber) {
     await this.load();
-    if (rowNumber) {
-      const offset = rowNumber - 2; // offSet - 1 is the current line and lines starts with 1
-      const rows = await this.sheet.getRows({ limit: 1, offset });
-      return rows[0];
+    try {
+      if (rowNumber) {
+        const offset = rowNumber - 2; // offSet - 1 is the current line and lines starts with 1
+        const rows = await this.sheet.getRows({ limit: 1, offset });
+        return rows[0];
+      }
+    } catch (error) {
+      if (error?.response?.status === 429) {
+        await this.sleep(MINUTE_IN_MILLIS);
+        return this.getRowObjectByRowNumber(rowNumber);
+      } else {
+        throw error;
+      }
     }
+
     return null;
   }
 
@@ -190,12 +210,20 @@ export default class Spreadsheet {
 
   async _cleanRow(row) {
     const headers = await this.getHeaders();
-    if (row && headers) {
-      for (const header of headers) {
-        row[header] = null;
+    try {
+      if (row && headers) {
+        for (const header of headers) {
+          row[header] = "-";
+        }
+        await row.save();
       }
-      await row.save();
-      await this._invalidateCache();
+    } catch (error) {
+      if (error?.response?.status === 429) {
+        await this.sleep(MINUTE_IN_MILLIS);
+        return this._cleanRow(row);
+      } else {
+        throw error;
+      }
     }
   }
 
@@ -213,24 +241,40 @@ export default class Spreadsheet {
 
   async _updateRow(row, payload) {
     if (row) {
-      const payloadKeys = Object.keys(payload);
-      for (const key of payloadKeys) {
-        row[key] = payload[key];
+      try {
+        const payloadKeys = Object.keys(payload);
+        for (const key of payloadKeys) {
+          row[key] = payload[key];
+        }
+        await row.save();
+      } catch (error) {
+        if (error?.response?.status === 429) {
+          await this.sleep(MINUTE_IN_MILLIS);
+          return this._updateRow(row, payload);
+        } else {
+          throw error;
+        }
       }
-      await row.save();
-      await this._invalidateCache();
     }
   }
 
-  async addRow(payload) {
+  async addRowAtTheEnd(payload) {
     await this.load();
     await this.ensureHeaders(payload);
-    const addedRow = await this.sheet.addRow(payload);
-    await this._invalidateCache();
-    if (addedRow) {
-      return addedRow._rowNumber;
+    try {
+      const addedRow = await this.sheet.addRow(payload);
+      if (addedRow) {
+        return addedRow._rowNumber;
+      }
+      return null;
+    } catch (error) {
+      if (error?.response?.status === 429) {
+        await this.sleep(MINUTE_IN_MILLIS);
+        return this.addRowAtTheEnd(payload);
+      } else {
+        throw error;
+      }
     }
-    return null;
   }
 
   async ensureHeaders(payload) {
@@ -238,15 +282,34 @@ export default class Spreadsheet {
     if (!headers) {
       headers = [];
     }
-    const missingHeaders = [];
-    const payloadKeys = Object.keys(payload);
-    for (const key of payloadKeys) {
-      if (!headers.includes(key)) {
-        missingHeaders.push(key);
+    try {
+      const missingHeaders = [];
+      const payloadKeys = Object.keys(payload);
+      for (const key of payloadKeys) {
+        if (!headers.includes(key)) {
+          missingHeaders.push(key);
+        }
+      }
+      if (missingHeaders.length > 0) {
+        await this.sheet.setHeaderRow([...headers, ...missingHeaders]);
+      }
+    } catch (error) {
+      if (error?.response?.status === 429) {
+        await this.sleep(MINUTE_IN_MILLIS);
+        return this.ensureHeaders(payload);
+      } else {
+        throw error;
       }
     }
-    if (missingHeaders.length > 0) {
-      await this.sheet.setHeaderRow([...headers, ...missingHeaders]);
-    }
+  }
+
+  sleep(ms) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, this.bypassSleep ? 0 : ms);
+    });
+  }
+
+  setBypassSleep(bypass) {
+    this.bypassSleep = bypass;
   }
 }

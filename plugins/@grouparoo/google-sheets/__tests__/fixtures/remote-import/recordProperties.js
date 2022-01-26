@@ -1,5 +1,5 @@
 const nock = require("nock");
-process.env.GOOGLE_SHEETS_JEST_TIMESTAMP = "1643140878061";
+process.env.GOOGLE_SHEETS_JEST_TIMESTAMP = "1643214594898";
 
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
   .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
@@ -15,7 +15,14 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "02ffedd44b7282300000d0bb642d0e22b1d21d6aa0e810ad58086c32888104b0443e16e9f4ee75baed15788778df204e12d634b4ad0af6095ec123d68c69323dab26b9abc3698f64497d4bc9354bbe38418ba27cb0c96e8783b210b2df9e8e6e45a07ae4874ee0a447b3c0df669979b87f798784dee4c6dfd697f69d77f965d8703177094a236839907facd9c04bcc89ececf4baf08e05a76f9575d7839ea11bf6367ba21a433abfae4c33dc6999abe8d031e8322f94b3a3a712795a166a3ac4d183d3cae7b2c3b3052c695c864e7d83bdd004590f0b89025be149d4d0fa82dddeb6b26e69b0a2998e46a37fc004b05e8a9a35543c3f9843c39880bf1c68fb90ec39c48ac535abc1cf2f3108cc8c3b040000",
+      "02",
+      "ff",
+      "ed",
+      "d4",
+      "4b",
+      "72",
+      "82",
+      "300000d0bb646d1d48a442775aa36951a80251d964128c4a4125f2b149a777afd36dafe03bc4fb063ccb645db3e652c83378019a43af9ff58535da7496894371a0e47536406d8a1c9f86e2982986caf170ea6d5c6ce031b6f98d97ed901911b8117487f860fb3a8673c5d5b2b253b18339cbab158a93967147cce0ca3d77d3c20fb7936641bb2021db1bf3d8cebc0b9a6adf5ad3f9e2b368113d5b8e4b96ed0dcb949c92e7ce842b3f716b4e4e6f54e90f1b5ec4ba51dc6f4c19119ec87d680e6abc082728a25666c8932a3fd0acd0d15ce14b437510d86a8429deec07c6e0fec3c3c33fa007e457955f65cdf2fb07c8f1bc1ef8cb8135ba92f721c6925fe515fcfc02378f3add3b040000",
     ],
     [
       "Content-Type",
@@ -29,7 +36,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 25 Jan 2022 20:01:20 GMT",
+      "Wed, 26 Jan 2022 16:29:59 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -208,7 +215,7 @@ nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
       "Vary",
       "Referer",
       "Date",
-      "Tue, 25 Jan 2022 20:01:20 GMT",
+      "Wed, 26 Jan 2022 16:30:00 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -264,7 +271,63 @@ nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
       "Vary",
       "Referer",
       "Date",
-      "Tue, 25 Jan 2022 20:01:21 GMT",
+      "Wed, 26 Jan 2022 16:30:01 GMT",
+      "Server",
+      "ESF",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Accept-Ranges",
+      "none",
+      "Vary",
+      "Origin,Accept-Encoding",
+      "Connection",
+      "close",
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
+  .get(
+    "/v4/spreadsheets/11zccS101c27B9mYLMJiaAPfDgoj2chOq39n3MZrcKTk/values/%27profiles-10.csv%27!A1:Z1"
+  )
+  .once()
+  .reply(
+    200,
+    {
+      range: "'profiles-10.csv'!A1:Z1",
+      majorDimension: "ROWS",
+      values: [
+        [
+          "id",
+          "first_name",
+          "last_name",
+          "email",
+          "gender",
+          "ip_address",
+          "ios_app",
+          "android_app",
+          "vip",
+          "ltv",
+        ],
+      ],
+    },
+    [
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Date",
+      "Wed, 26 Jan 2022 16:30:01 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -428,7 +491,7 @@ nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
       "Vary",
       "Referer",
       "Date",
-      "Tue, 25 Jan 2022 20:01:21 GMT",
+      "Wed, 26 Jan 2022 16:30:02 GMT",
       "Server",
       "ESF",
       "Cache-Control",

@@ -17,6 +17,8 @@ import {
 import { ExportRecordsPluginMethod } from "@grouparoo/core";
 import Spreadsheet from "../shared/Spreadsheet";
 
+const GOOGLE_SHEETS_ROWS_LIMIT = 10000;
+
 // return an object that you can connect with
 const getClient: BatchMethodGetClient = async ({ config }) => {
   return new Spreadsheet(
@@ -33,19 +35,27 @@ const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = async ({
   getByForeignKey,
   config,
 }) => {
-  for (const foreignKey of foreignKeys) {
-    const user = getByForeignKey(foreignKey);
-    try {
-      const row = await client.getRowByPrimaryKey(
-        config.foreignKey,
-        foreignKey
-      );
-      if (row) {
-        user.destinationId = row._rowNumber;
-        user.result = row;
+  const headers = await client.getHeaders();
+  const primaryKey = config?.destinationOptions?.primaryKey?.toString();
+  const toFind = foreignKeys.length;
+  let count = 0;
+  if (headers && primaryKey) {
+    let offset = 0;
+    let rows = await client.read({ limit: GOOGLE_SHEETS_ROWS_LIMIT, offset });
+    while (rows.length > 0) {
+      for (const row of rows) {
+        const found = getByForeignKey(row[primaryKey]);
+        if (found) {
+          found.destinationId = row._rowNumber;
+          found.result = row;
+          count++;
+          if (count >= toFind) {
+            return; // found them all!
+          }
+        }
       }
-    } catch (error) {
-      user.error = error;
+      offset += GOOGLE_SHEETS_ROWS_LIMIT;
+      rows = await client.read({ limit: GOOGLE_SHEETS_ROWS_LIMIT, offset });
     }
   }
 };
@@ -99,7 +109,7 @@ const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSe
     for (const user of users) {
       try {
         const payload = buildPayload(config, user);
-        const destinationId = await client.addRow(payload);
+        const destinationId = await client.addRowAtTheEnd(payload);
         if (destinationId) {
           user.destinationId = destinationId;
         }
