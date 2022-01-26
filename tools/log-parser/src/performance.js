@@ -35,24 +35,40 @@ async function processFile(filePath) {
     header: [
       { id: "line", title: "line" },
       { id: "milliseconds", title: "milliseconds" },
-      { id: "task", title: "task" },
-      { id: "queue", title: "queue" },
+      { id: "type", title: "type" },
+      { id: "name", title: "name" },
       { id: "content", title: "contents" },
     ],
   });
 
   while ((stream = liner.next())) {
+    line++;
+
     const content = stream.toString();
     console.log(content);
     const milliseconds = parseToken("duration=", content);
+    const action = parseToken("action=", content);
     const task = parseToken("class=", content);
-    const queue = parseToken("queue=", content);
+    const file = parseToken("file=", content);
+
+    let type = "unknown";
+    let name = "unknown";
+    if (action) {
+      name = action;
+      type = "web";
+    } else if (task) {
+      name = task;
+      type = "task";
+    } else if (file) {
+      name = file;
+      type = "file";
+    }
+
     if (milliseconds) {
       await csvWriter.writeRecords([
-        { line, milliseconds, task, queue, content },
+        { line, milliseconds, name, type, content },
       ]);
     }
-    line++;
   }
 }
 
