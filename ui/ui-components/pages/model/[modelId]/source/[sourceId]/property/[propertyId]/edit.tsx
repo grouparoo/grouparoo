@@ -26,6 +26,9 @@ import {
   propertiesHandler,
   successHandler,
 } from "../../../../../../../eventHandlers";
+import PrimaryKeyBadge from "../../../../../../../components/badges/PrimaryKeyBadge";
+import EnterpriseLink from "../../../../../../../components/GrouparooLink";
+import { grouparooUiEdition } from "../../../../../../../utils/uiEdition";
 
 export default function Page(props) {
   const {
@@ -213,6 +216,16 @@ export default function Page(props) {
     return <Loader />;
   }
 
+  const badges = [
+    <LockedBadge object={property} />,
+    <StateBadge state={property.state} />,
+    <ModelBadge modelName={source.modelName} modelId={source.modelId} />,
+  ];
+
+  if (property.isPrimaryKey) {
+    badges.push(<PrimaryKeyBadge />);
+  }
+
   let rowChanges = false;
   return (
     <>
@@ -222,15 +235,7 @@ export default function Page(props) {
 
       <PropertyTabs property={property} source={source} model={model} />
 
-      <PageHeader
-        icon={source.app.icon}
-        title={property.key}
-        badges={[
-          <LockedBadge object={property} />,
-          <StateBadge state={property.state} />,
-          <ModelBadge modelName={source.modelName} modelId={source.modelId} />,
-        ]}
-      />
+      <PageHeader icon={source.app.icon} title={property.key} badges={badges} />
       <Row>
         <Col>
           <Form id="form" onSubmit={onSubmit} autoComplete="off">
@@ -281,11 +286,24 @@ export default function Page(props) {
                   <Form.Group controlId="unique">
                     <Form.Check
                       type="checkbox"
-                      label="Unique"
+                      label={"Unique"}
                       checked={property.unique}
                       onChange={(e) => update(e)}
-                      disabled={loading}
+                      disabled={property.unique || loading}
                     />
+                    {property.isPrimaryKey && (
+                      <Form.Text className="text-muted">
+                        <code>Unique</code> cannot be updated while this
+                        Property is the Primary Key for the Model.{" "}
+                        {grouparooUiEdition() !== "community" && (
+                          <EnterpriseLink
+                            href={`/model/${source.modelId}/source/${source.id}/edit`}
+                          >
+                            <a>Edit mapping</a>
+                          </EnterpriseLink>
+                        )}
+                      </Form.Text>
+                    )}
                   </Form.Group>
                   <Form.Group controlId="isArray">
                     <Form.Check

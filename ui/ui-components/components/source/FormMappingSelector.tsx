@@ -90,11 +90,11 @@ const FormMappingSelector: React.FC<Props> = ({
       ).length > 0;
 
     // Properties rules:
-    // Include properties in own source if it has the primary key or the primary key has not been defined
-    // Otherwise, show properties from other sources
+    // Include unique properties in own source if it has the primary key or the primary key has not been defined
+    // Otherwise, it's not the primary source and show all properties from other sources
     return properties.filter((property) =>
       isPrimaryKeyInSource || !hasPrimaryKeyProperty
-        ? property.sourceId === source.id
+        ? property.sourceId === source.id && property.unique
         : property.sourceId !== source.id
     );
   }, [source, properties, hasPrimaryKeyProperty]);
