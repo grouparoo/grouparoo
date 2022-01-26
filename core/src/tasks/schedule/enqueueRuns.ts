@@ -51,12 +51,12 @@ export class ScheduleEnqueueRuns extends CLSTask {
       }
     }
 
-    if (getGrouparooRunMode() === "cli:run" && enqueuedSchedules.length > 0) {
+    if (enqueuedSchedules.length) {
       log(
         `Enqueued runs for Schedules: ${enqueuedSchedules
           .map((s) => `${s.name} (${s.id})`)
           .join(", ")}`,
-        "notice"
+        getGrouparooRunMode() === "cli:run" ? "notice" : "info"
       );
     }
   }

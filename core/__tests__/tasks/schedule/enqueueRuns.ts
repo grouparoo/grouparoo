@@ -209,17 +209,9 @@ describe("tasks/schedules:enqueueRuns", () => {
       });
     });
 
-    describe("in cli:run mode", () => {
+    describe("logging", () => {
       let logMsgs: string[] = [];
       let logSpy: jest.SpyInstance;
-
-      beforeAll(async () => {
-        process.env.GROUPAROO_RUN_MODE = "cli:run";
-      });
-
-      afterAll(() => {
-        delete process.env.GROUPAROO_RUN_MODE;
-      });
 
       beforeEach(() => {
         logMsgs = [];
@@ -235,7 +227,7 @@ describe("tasks/schedules:enqueueRuns", () => {
       test("it will log the enqueued schedules", async () => {
         await specHelper.runTask("schedules:enqueueRuns", {});
         expect(logMsgs.join(" ")).toContain(
-          `Enqueued runs for Schedules: ${schedule.name} (${schedule.id})`
+          `Enqueued Runs for Schedules: ${schedule.name} (${schedule.id})`
         );
       });
     });
