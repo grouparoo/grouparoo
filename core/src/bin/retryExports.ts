@@ -14,18 +14,18 @@ export class RetryExportsCLI extends CLI {
       required: false,
       formatter: APIData.formatDate,
       description:
-        "Search for failed Exports created on or after this timestamp. Used in combination with `--end` to specify a time range.",
+        "Search for failed Exports created on or after this timestamp.",
     },
     startAgoSeconds: {
       required: false,
       description:
-        "Search for failed Exports created on or after this timestamp. Used in combination with `--end` to specify a time range.",
+        "Search for failed Exports created on or after a certain number of seconds ago.",
     },
     end: {
       required: false,
       formatter: APIData.formatDate,
       description:
-        "Search for failed Exports created on or before this timestamp. Used in combination with `--start` to specify a time range. Defaults to now.",
+        "Search for failed Exports created on or before this timestamp. Defaults to the current time.",
     },
     preview: {
       default: false,
@@ -35,11 +35,13 @@ export class RetryExportsCLI extends CLI {
       flag: true,
       letter: "p",
     },
-    destinationId: {
-      description:
-        "Only retry Exports for a specific Destination. Defaults to all Destinations.",
-      letter: "d",
+    destinationIds: {
       required: false,
+      formatter: (val: any) => val as boolean | string[],
+      description:
+        "Only retry Exports for specific Destinations. Defaults to all Destinations.",
+      letter: "d",
+      variadic: true,
     },
   };
 
@@ -52,8 +54,6 @@ export class RetryExportsCLI extends CLI {
     GrouparooCLI.setGrouparooRunMode(this);
     GrouparooCLI.setNextDevelopmentMode();
   };
-
-  parseDate() {}
 
   async run({ params }: { params: ParamsFrom<RetryExportsCLI> }) {
     GrouparooCLI.logCLI(this.name, false);
@@ -79,9 +79,10 @@ export class RetryExportsCLI extends CLI {
     if (hasRelativeStart && Number.isNaN(startAgoSeconds))
       return GrouparooCLI.logger.fatal(`--startAgoSeconds must be a number`);
 
-    let destination: Destination;
-    if (params.destinationId) {
-      destination = await Destination.findById(params.destinationId);
+    if (typeof params.destinationIds === "boolean") {
+      return GrouparooCLI.logger.fatal(
+        `Please specify which destination ids to check or remove the --destinationIds param to check all Destinations.`
+      );
     }
 
     const startDate = hasAbsoluteStart
@@ -92,35 +93,61 @@ export class RetryExportsCLI extends CLI {
     GrouparooCLI.logger.log(`Searching for failed Exports:\n`);
     GrouparooCLI.logger.log(`Start: ${startDate.toLocaleString()}`);
     GrouparooCLI.logger.log(`End: ${endDate.toLocaleString()}`);
-    if (destination) {
-      GrouparooCLI.logger.log(
-        `Destination: ${destination.name} (${destination.id})`
+
+    const summaryItems: GrouparooCLI.LogStatusArray = [];
+
+    const destinations = await this.getDestinations(params.destinationIds);
+    let totalCount = 0;
+    for (const destination of destinations) {
+      const count = await Export.retryFailed(
+        startDate,
+        endDate,
+        destination,
+        !params.preview
       );
+
+      summaryItems.push({
+        header: `${destination.name} (${destination.id})`,
+        status: { "Failed Exports": [count] },
+      });
+
+      totalCount += count;
     }
 
-    const count = await Export.retryFailed(
-      startDate,
-      endDate,
-      destination,
-      !params.preview
-    );
-
-    GrouparooCLI.logger.log("");
+    GrouparooCLI.logger.status("Summary", summaryItems);
 
     if (params.preview) {
       GrouparooCLI.logger.log(
-        `ℹ️  (Preview) Found ${count} failed Exports to retry.`
+        `ℹ️  (Preview) Found ${totalCount} failed Exports to retry.`
       );
     } else {
-      if (count) {
+      if (totalCount) {
         GrouparooCLI.logger.log(
-          `✅ ${count} failed Exports marked to be retried.`
+          `✅ ${totalCount} failed Exports marked to be retried.`
         );
       } else {
-        GrouparooCLI.logger.log(`✅ No failed Exports found.`);
+        GrouparooCLI.logger.log(`✨ No failed Exports found to retry.`);
       }
     }
 
     return true;
+  }
+
+  async getDestinations(destinationIds?: string[]) {
+    const destinations = await Destination.findAll({
+      where: destinationIds ? { id: destinationIds } : {},
+    });
+
+    if (destinationIds) {
+      const foundDestinationIds = destinations.map((d) => d.id);
+      destinationIds.forEach((id) => {
+        if (!foundDestinationIds.includes(id))
+          return GrouparooCLI.logger.fatal(
+            `Destination with id "${id}" was not found`
+          );
+      });
+    }
+
+    return destinations;
   }
 }
