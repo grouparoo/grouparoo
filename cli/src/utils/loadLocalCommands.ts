@@ -29,6 +29,8 @@ type ActionheroCLIInputStub = {
   flag?: string;
   placeholder?: string;
   variadic?: boolean;
+  formatter?: Function;
+  validator?: Function;
 };
 
 export async function loadLocalCommands(program: Command): Promise<boolean> {
@@ -228,6 +230,16 @@ async function runCommand(
   clearRequireCache();
 
   params["_arguments"] = _arguments;
+
+  for (const [key, inputOpts] of Object.entries(instance.inputs)) {
+    if (typeof inputOpts.formatter === "function") {
+      params[key] = await inputOpts.formatter(params[key]);
+    }
+
+    if (typeof inputOpts.validator === "function") {
+      await inputOpts.validator(params[key]);
+    }
+  }
 
   if (instance.initialize === false && instance.start === false) {
     toStop = await instance.run({ params });
