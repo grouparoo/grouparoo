@@ -601,7 +601,8 @@ export namespace FinalSummaryReporters {
       });
       const allRecords = await GrouparooRecord.count();
 
-      const recordData = {
+      const recordData: RecordData = {
+        name: null,
         recordsUpdated,
         recordsCreated,
         allRecords,
@@ -622,6 +623,7 @@ export namespace FinalSummaryReporters {
     export async function getData() {
       const out: DestinationData[] = [];
 
+      // TODO FIXME
       const exports = await Export.findAll({
         attributes: [
           "destinationId",
