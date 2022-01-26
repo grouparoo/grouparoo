@@ -55,11 +55,13 @@ export class RetryExportsCLI extends CLI {
     GrouparooCLI.setNextDevelopmentMode();
   };
 
-  async run({ params }: { params: ParamsFrom<RetryExportsCLI> }) {
+  async run({ params }: { params: Partial<ParamsFrom<RetryExportsCLI>> }) {
     GrouparooCLI.logCLI(this.name, false);
 
-    const hasRelativeStart = params.startAgoSeconds !== undefined;
-    const hasAbsoluteStart = params.start !== null;
+    const hasRelativeStart =
+      params.startAgoSeconds !== undefined && params.startAgoSeconds !== null;
+    const hasAbsoluteStart =
+      params.start !== undefined && params.start !== null;
 
     if (
       (hasRelativeStart && hasAbsoluteStart) ||
@@ -123,10 +125,12 @@ export class RetryExportsCLI extends CLI {
     } else {
       if (totalCount) {
         GrouparooCLI.logger.log(
-          `✅ ${totalCount} failed Exports marked to be retried.`
+          `✅ Success! ${totalCount} failed Exports marked to be retried.`
         );
       } else {
-        GrouparooCLI.logger.log(`✨ No failed Exports found to retry.`);
+        GrouparooCLI.logger.log(
+          `✨ Success! No failed Exports found to retry.`
+        );
       }
     }
 
