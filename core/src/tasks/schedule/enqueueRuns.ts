@@ -53,7 +53,7 @@ export class ScheduleEnqueueRuns extends CLSTask {
 
     if (enqueuedSchedules.length) {
       log(
-        `Enqueued runs for Schedules: ${enqueuedSchedules
+        `Enqueued Runs for Schedules: ${enqueuedSchedules
           .map((s) => `${s.name} (${s.id})`)
           .join(", ")}`,
         getGrouparooRunMode() === "cli:run" ? "notice" : "info"
