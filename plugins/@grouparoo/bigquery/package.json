@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/bigquery",
   "description": "The Grouparoo BigQuery Plugin",
-  "version": "0.8.0-alpha.10",
+  "version": "0.8.0",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -29,11 +29,11 @@
   },
   "dependencies": {
     "@google-cloud/bigquery": "5.8.0",
-    "@grouparoo/app-templates": "0.8.0-alpha.10"
+    "@grouparoo/app-templates": "0.8.0"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.8.0-alpha.10",
-    "@grouparoo/spec-helper": "0.8.0-alpha.10",
+    "@grouparoo/core": "0.8.0",
+    "@grouparoo/spec-helper": "0.8.0",
     "@types/jest": "*",
     "@types/node": "16.*.*",
     "actionhero": "28.1.4",
