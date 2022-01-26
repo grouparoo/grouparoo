@@ -83,13 +83,13 @@ export default async function Initialize(
   logger.succeed("Grouparoo project created!");
 
   console.info(
-    " * Now that your Grouparoo project is ready, run `grouparoo --help` to see new available commands"
+    " * Now that your Grouparoo project is ready, run `grouparoo --help` to see new available commands."
   );
   console.info(
-    " * You can add plugins to to this project to connect to new Sources and Destinations and add additional commands with the `grouparoo install` command."
+    " * Ensure that Postgres and Redis are running if you have enabled them in .env or your environment."
   );
   console.info(
-    " * Ensure that Postgres and Redis are running if you have enabled them in .env or your environment"
+    " * You can now configure your Sources and Destinations via our local UI by running the `grouparoo config` command."
   );
   console.info(
     " * Visit www.grouparoo.com/docs to learn about configuring your Grouparoo application."
