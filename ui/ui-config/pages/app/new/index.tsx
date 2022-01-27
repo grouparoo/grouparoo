@@ -1,14 +1,18 @@
-import { useApi } from "../../../../ui-components/contexts/api";
+import { GetServerSidePropsContext } from "next";
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import { Form, Modal, Spinner, Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
 import AppSelectorList from "@grouparoo/ui-components/components/AppSelectorList";
+import { useApi } from "@grouparoo/ui-components/contexts/api";
 import { errorHandler } from "@grouparoo/ui-components/eventHandlers";
 import { EventDispatcher } from "@grouparoo/ui-components/utils/eventDispatcher";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
 import { generateClient } from "@grouparoo/ui-components/client/client";
-import { NextPageContext } from "next";
+import { NextPageWithInferredProps } from "@grouparoo/ui-components/utils/pageHelper";
+import React from "react";
+
+type PluginWithVersion = Actions.PluginsList["plugins"][number];
 
 class CustomErrorHandler extends EventDispatcher<{ message: string }> {
   message: Error | string | any = null;
@@ -20,7 +24,7 @@ class CustomErrorHandler extends EventDispatcher<{ message: string }> {
       this.message = message;
 
       if (this.message?.config?.url === "/api/v1/status/public") {
-        console.info(`could not reach API: ${message}`);
+        console.info(`Could not reach API: ${message}`);
       } else {
         errorHandler.set({ message: this.message });
       }
@@ -28,79 +32,88 @@ class CustomErrorHandler extends EventDispatcher<{ message: string }> {
   }
 }
 
-export default function Page(props) {
-  const {
-    plugins,
-  }: {
-    plugins: Actions.PluginsList["plugins"];
-  } = props;
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const client = generateClient(ctx);
+  const { plugins } = await client.request<Actions.PluginsList>(
+    "get",
+    `/plugins`,
+    {
+      includeInstalled: true,
+      includeAvailable: true,
+      includeVersions: false,
+    }
+  );
+  return { props: { plugins } };
+};
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  plugins,
+}) => {
   const router = useRouter();
   const { client } = useApi();
-  const [plugin, setPlugin] = useState<
-    Partial<Actions.PluginsList["plugins"][number]>
-  >({ name: "" });
-  const [cards, setCards] = useState([]);
+  const [plugin, setPlugin] = useState<Partial<PluginWithVersion>>(() => ({
+    name: "",
+  }));
+  const [cards, setCards] = useState<PluginWithVersion[]>([]);
   const [loading, setLoading] = useState(false);
   const [showSpinner, setShowSpinner] = useState(true);
-  const [installingMessage, setInstallingMessage]: [
-    string | boolean,
-    Function
-  ] = useState(false);
+  const [installingMessage, setInstallingMessage] = useState<React.ReactNode>();
 
   async function resetPluginsAndApps() {
     const { plugins: _plugins }: Actions.PluginsList = await client.request(
       "get",
       `/plugins`
     );
-    prepareCards(_plugins);
+    return prepareCards(_plugins);
   }
 
   function prepareCards(_plugins: Actions.PluginsList["plugins"]) {
-    setCards(
-      _plugins
-        .filter((p) => p.source || p.destination)
-        .sort((a, b) => (a.name > b.name ? 1 : -1))
-        .sort((a, b) => {
-          if (a.installed === b.installed) return 0;
-          if (a.installed) return -1;
-          return 1;
-        })
-    );
+    const nextCards = _plugins
+      .filter((p) => p.source || p.destination)
+      .sort((a, b) => (a.name > b.name ? 1 : -1))
+      .sort((a, b) => {
+        if (a.installed === b.installed) return 0;
+        if (a.installed) return -1;
+        return 1;
+      });
+    setCards(nextCards);
+
+    return nextCards;
   }
 
   useEffect(() => {
     prepareCards(plugins);
   }, [plugins]);
 
-  async function handleClick(plugin: Actions.PluginsList["plugins"][number]) {
-    if (loading) return;
-    // @ts-ignore
-    if (!plugin.installed) return installPlugin(plugin);
-
+  const newAppFromPlugin = async (plugin: PluginWithVersion) => {
     setPlugin(plugin);
-    if (plugin.apps?.length === 1) {
-      setLoading(true);
-      const response: Actions.AppCreate = await client.request("post", `/app`, {
-        type: plugin.apps[0].name,
-      });
-      if (response?.app) {
-        return router.push("/app/[id]/edit", `/app/${response.app.id}/edit`);
-      } else {
-        setLoading(false);
-      }
-    } else {
-      router.push(`/app/new/${plugin.name}`);
+
+    if (plugin.apps.length > 1) {
+      return router.push(`/app/new/${plugin.name}`);
     }
-  }
 
-  function sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
-  async function installPlugin(plugin: Actions.PluginsList["plugins"][number]) {
     setLoading(true);
-    setInstallingMessage(`Installing plugin ${plugin.name} ...`);
+    const response = await client.request<Actions.AppCreate>("post", `/app`, {
+      type: plugin.apps[0].name,
+    });
+    if (response?.app) {
+      return router.push("/app/[id]/edit", `/app/${response.app.id}/edit`);
+    }
+    setLoading(false);
+  };
+
+  async function handleClick(plugin: PluginWithVersion) {
+    if (loading) return;
+    if (!plugin.installed) return installPlugin(plugin);
+    await newAppFromPlugin(plugin);
+  }
+
+  async function installPlugin(plugin: PluginWithVersion) {
+    setLoading(true);
+    setInstallingMessage(`Installing plugin ${plugin.name}...`);
+
     const response: Actions.PluginInstall = await client.request(
       "post",
       `/plugin/install`,
@@ -109,28 +122,30 @@ export default function Page(props) {
         restart: true,
       }
     );
+
     if (response?.checkIn) {
-      setInstallingMessage("Restarting application ...");
+      setInstallingMessage("Restarting Grouparoo config app...");
 
       const failTime = new Date().getTime() + response.checkIn * 38; // ~15 seconds
       await sleep(response.checkIn);
       await waitForServer(failTime);
+      const updatedPlugins = await resetPluginsAndApps();
 
-      //we only want the plugin type, not the '@grouparoo/'
-      const pluginName = plugin.name.substring(11);
-      const newApp: Actions.AppCreate = await client.request("post", `/app`, {
-        type: pluginName,
+      setInstallingMessage(undefined);
+      setLoading(false);
+
+      const updatedPlugin = updatedPlugins.find(
+        ({ name }) => name === plugin.name
+      );
+      await newAppFromPlugin(updatedPlugin);
+    } else if (!response?.success) {
+      errorHandler.set({
+        message: `Could not install plugin ${plugin.name}!`,
       });
-      if (newApp?.app) {
-        return router.push("/app/[id]/edit", `/app/${newApp.app.id}/edit`);
-      }
-      await resetPluginsAndApps();
-      setLoading(false);
-      setInstallingMessage(false);
-    } else {
-      setLoading(false);
-      setInstallingMessage(false);
     }
+
+    setInstallingMessage(undefined);
+    setLoading(false);
   }
 
   async function waitForServer(failTime: number) {
@@ -139,28 +154,40 @@ export default function Page(props) {
       setShowSpinner(false);
       setInstallingMessage(
         <Alert variant="warning">
-          There was a problem restarting Grouparoo. <br />
+          There was a problem restarting the Grouparoo config app.
           <br />
-          Please restart the application via the command line.
+          <br />
+          Please restart config app via the command line.
         </Alert>
       );
       return;
     }
 
-    let response: Actions.PublicStatus = await client.request(
-      "get",
-      "/status/public",
-      undefined,
-      { useCache: false }
-    );
+    const retry = async () => {
+      console.log("Server down. Trying again in 1s...");
+      await sleep(1000);
+      return await waitForServer(failTime);
+    };
 
-    if (response["status"] !== "ok") {
-      console.log("Server down. Trying again in 0.25 seconds ...");
-      await sleep(250);
-      response = await waitForServer(failTime);
+    try {
+      const response: Actions.PublicStatus = await client.request(
+        "get",
+        "/status/public",
+        undefined,
+        { useCache: false, errorHandler: new CustomErrorHandler() }
+      );
+
+      if (response["status"] !== "ok") {
+        return await retry();
+      }
+
+      return response;
+    } catch (e) {
+      if (e?.message?.match(/Network Error/)) {
+        return await retry();
+      }
+      throw e;
     }
-
-    return response;
   }
 
   return (
@@ -204,18 +231,6 @@ export default function Page(props) {
       </Form>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const client = generateClient(ctx);
-  const { plugins }: Actions.PluginsList = await client.request(
-    "get",
-    `/plugins`,
-    {
-      includeInstalled: true,
-      includeAvailable: true,
-      includeVersions: false,
-    }
-  );
-  return { plugins };
 };
+
+export default Page;
