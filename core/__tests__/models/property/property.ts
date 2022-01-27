@@ -944,7 +944,7 @@ describe("models/property", () => {
         await source.setMapping({ id: "userId" });
         await loadUserIdProperty();
         await expect(userIdProperty.update({ unique: false })).rejects.toThrow(
-          /must be unique because it‘s a Primary Key/
+          /must be unique because it‘s the model‘s Primary Key/
         );
       });
     });

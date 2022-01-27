@@ -392,7 +392,7 @@ export class Property extends LoggedModel<Property> {
   static async ensureUniquePrimaryKey(instance: Property) {
     if (instance.isPrimaryKey && !instance.unique) {
       throw new Error(
-        `Property "${instance.key}" must be unique because it‘s a Primary Key.`
+        `Property "${instance.key}" must be unique because it‘s the model‘s Primary Key.`
       );
     }
   }
