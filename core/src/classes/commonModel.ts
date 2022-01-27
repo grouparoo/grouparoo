@@ -9,8 +9,16 @@ import {
 } from "sequelize-typescript";
 import validator from "validator";
 import * as uuid from "uuid";
+import { config } from "actionhero";
+import { Op } from "sequelize/types";
 
-export abstract class CommonModel<T> extends Model {
+declare type NonAbstract<T> = {
+  [P in keyof T]: T[P];
+};
+declare type CommonModelStatic<M> = (new () => M) &
+  NonAbstract<typeof CommonModel>;
+
+export abstract class CommonModel extends Model {
   /**
    * return the prefix for this type of class' id
    */
@@ -21,17 +29,17 @@ export abstract class CommonModel<T> extends Model {
   id: string;
 
   @BeforeCreate
-  static generateId(instance: CommonModel<any>) {
+  static generateId(instance: CommonModel) {
     if (!instance.id) instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
   }
 
   @BeforeBulkCreate
-  static generateIds(instances: CommonModel<any>[]) {
+  static generateIds(instances: CommonModel[]) {
     instances.forEach((instance) => this.generateId(instance));
   }
 
   @BeforeCreate
-  static validateId(instance: CommonModel<any>) {
+  static validateId(instance: CommonModel) {
     const id: string = instance.id;
     let failing = false;
     if (id.length > 191) failing = true;
@@ -45,7 +53,7 @@ export abstract class CommonModel<T> extends Model {
   }
 
   @BeforeBulkCreate
-  static validateIds(instances: CommonModel<any>[]) {
+  static validateIds(instances: CommonModel[]) {
     instances.forEach((instance) => this.validateId(instance));
   }
 
@@ -69,23 +77,37 @@ export abstract class CommonModel<T> extends Model {
 
   // --- Class Methods --- //
 
-  /**
-   * Find an instance of this class, regardless of scope
-   */
-  static async findById(id: string): Promise<any> {
-    // static class definitions or type defining are not yet available in TS.  See:
-    // * https://github.com/microsoft/TypeScript/issues/14600
-    // * https://github.com/microsoft/TypeScript/issues/34516
-    // * https://github.com/microsoft/TypeScript/issues/33892
+  public static async findById<T extends Model>(
+    this: CommonModelStatic<T>,
+    id: string
+  ): Promise<T> {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
+    return instance;
+  }
 
-    // So, each model will implement this method
+  static async updateAllinBatches<T extends Model>(
+    this: CommonModelStatic<T>,
+    instances: T[],
+    values: Record<keyof T["_attributes"], any>
+  ) {
+    const ids = instances.map((i) => i.id);
+    return this.updateAllinBatchesById(ids, values);
+  }
 
-    throw new Error("not implemented");
-
-    // const instance: T = await this.scope(null).findOne({ where: { id } });
-    // if (!instance) {
-    //   throw new Error(`cannot find ${this.name} ${id}`);
-    // }
-    // return instance;
+  static async updateAllinBatchesById<T extends Model>(
+    this: CommonModelStatic<T>,
+    ids: string[],
+    values: Record<keyof T["_attributes"], any>
+  ) {
+    const max = config.batchSize.internalWrite;
+    const queue: string[] = Array.from(ids);
+    while (queue.length > 0) {
+      await this.update(values, {
+        where: {
+          id: { [Op.in]: queue.splice(0, max) },
+        },
+      });
+    }
   }
 }

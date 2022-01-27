@@ -265,12 +265,6 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
 
   // --- Class Methods --- //
 
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
-
   static async findOrCreateByUniqueRecordProperties(
     hash: {
       [key: string]: (string | number | boolean | Date)[];

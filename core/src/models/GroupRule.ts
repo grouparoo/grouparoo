@@ -18,7 +18,7 @@ import {
 } from "../modules/ruleOpsDictionary";
 
 @Table({ tableName: "groupRules", paranoid: false })
-export class GroupRule extends CommonModel<GroupRule> {
+export class GroupRule extends CommonModel {
   idPrefix() {
     return "grr";
   }
@@ -79,12 +79,6 @@ export class GroupRule extends CommonModel<GroupRule> {
   }
 
   // --- Class Methods --- //
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
 
   @BeforeSave
   static async ensureEitherPropertyOrRecordColumn(instance: GroupRule) {

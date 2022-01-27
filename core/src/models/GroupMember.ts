@@ -20,7 +20,7 @@ import { CommonModel } from "../classes/commonModel";
 import { uniqueArrayValues } from "../modules/arrayUtils";
 
 @Table({ tableName: "groupMembers", paranoid: false })
-export class GroupMember extends CommonModel<GroupMember> {
+export class GroupMember extends CommonModel {
   idPrefix() {
     return "mem";
   }
@@ -55,12 +55,6 @@ export class GroupMember extends CommonModel<GroupMember> {
   }
 
   // --- Class Methods --- //
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
 
   @BeforeSave
   static async ensureOneRecordPerGroup(instance: GroupMember) {

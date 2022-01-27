@@ -704,12 +704,6 @@ export class Group extends LoggedModel<Group> {
 
   // --- Class Methods --- //
 
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
-
   @BeforeCreate
   @BeforeSave
   static async ensureModel(instance: Group) {

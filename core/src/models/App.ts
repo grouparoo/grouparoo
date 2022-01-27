@@ -283,12 +283,6 @@ export class App extends LoggedModel<App> {
 
   // --- Class Methods --- //
 
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
-
   // Disconnect all Apps from their persistent connections
   static async disconnect(id?: string) {
     const apps = id

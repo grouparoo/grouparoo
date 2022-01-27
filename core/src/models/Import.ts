@@ -51,7 +51,7 @@ const STATE_TRANSITIONS: StateMachine.StateTransition[] = [
 ];
 
 @Table({ tableName: "imports", paranoid: false })
-export class Import extends CommonModel<Import> {
+export class Import extends CommonModel {
   idPrefix() {
     return "imp";
   }
@@ -235,12 +235,6 @@ export class Import extends CommonModel<Import> {
 
   // --- Class Methods --- //
   static defaultState: typeof STATES[number] = "associating";
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
 
   @BeforeSave
   static async updateState(instance: Import) {

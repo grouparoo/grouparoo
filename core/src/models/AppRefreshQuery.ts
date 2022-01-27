@@ -99,11 +99,6 @@ export class AppRefreshQuery extends LoggedModel<AppRefreshQuery> {
 
   // --- Class Methods --- //
 
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find AppRefreshQuery ${id}`);
-    return instance;
-  }
   @BeforeCreate
   static async ensureOnePerApp(instance: AppRefreshQuery) {
     const existingCount = await AppRefreshQuery.scope(null).count({

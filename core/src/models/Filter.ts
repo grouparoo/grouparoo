@@ -12,7 +12,7 @@ import { CommonModel } from "../classes/commonModel";
 import { FilterOpsDescriptions } from "../modules/filterOpsDictionary";
 
 @Table({ tableName: "filters", paranoid: false })
-export class Filter extends CommonModel<Filter> {
+export class Filter extends CommonModel {
   idPrefix() {
     return "flt";
   }

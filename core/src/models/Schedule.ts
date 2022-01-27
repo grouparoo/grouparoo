@@ -298,12 +298,6 @@ export class Schedule extends LoggedModel<Schedule> {
 
   // --- Class Methods --- //
 
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
-
   @BeforeSave
   static async ensureSourceOptions(instance: Schedule) {
     const source = await Source.findById(instance.sourceId);

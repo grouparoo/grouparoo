@@ -16,7 +16,7 @@ import { CommonModel } from "../classes/commonModel";
 import { Op } from "sequelize";
 
 @Table({ tableName: "oAuthRequests", paranoid: false })
-export class OAuthRequest extends CommonModel<OAuthRequest> {
+export class OAuthRequest extends CommonModel {
   idPrefix() {
     return "req";
   }
@@ -78,12 +78,6 @@ export class OAuthRequest extends CommonModel<OAuthRequest> {
     if (!instance.id) {
       instance.id = `${instance.idPrefix()}_${UUID.v4()}`;
     }
-  }
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
   }
 
   static async sweep(limit: number) {

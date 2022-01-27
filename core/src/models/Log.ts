@@ -14,7 +14,7 @@ import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
 
 @Table({ tableName: "logs", paranoid: false })
-export class Log extends CommonModel<Log> {
+export class Log extends CommonModel {
   idPrefix() {
     return "log";
   }
@@ -68,12 +68,6 @@ export class Log extends CommonModel<Log> {
   }
 
   // --- Class Methods --- //
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
 
   @BeforeCreate
   static async determineownerId(instance: Log) {
