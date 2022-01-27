@@ -1,10 +1,9 @@
 import { useApi } from "../contexts/api";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Actions } from "../utils/apiData";
 import { Row, Col, ProgressBar, Alert } from "react-bootstrap";
 import SetupStepCard from "../components/setupSteps/SetupStepCard";
-import Loader from "../components/Loader";
 import { setupStepsHandler } from "../eventHandlers";
 import { GetServerSidePropsContext } from "next";
 import { NextPageWithInferredProps } from "../utils/pageHelper";
@@ -26,10 +25,6 @@ export const getServerSideProps = withServerErrorHandler(
 const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   const { client } = useApi();
   const [setupSteps, setSetupSteps] = useState(props.setupSteps);
-
-  useEffect(() => {
-    load();
-  }, []);
 
   const completeStepsCount = setupSteps.filter(
     (step) => step.complete || step.skipped
@@ -53,10 +48,6 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
       setSetupSteps(response.setupSteps);
       setupStepsHandler.set(response.setupSteps);
     }
-  }
-
-  if (setupSteps.length === 0) {
-    return <Loader />;
   }
 
   return (
