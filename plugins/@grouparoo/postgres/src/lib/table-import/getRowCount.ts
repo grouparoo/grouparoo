@@ -15,6 +15,7 @@ export const getRowCount: GetRowCountMethod = async ({
   matchConditions,
   highWaterMarkCondition,
 }: {
+  incremental: boolean;
   highWaterMarkCondition: MatchCondition;
   connection: PostgresPoolClient;
   tableName: string;

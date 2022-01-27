@@ -16,6 +16,7 @@ describe("getRows", () => {
     } as PostgresPoolClient,
     appOptions: {},
     appId: "test-app",
+    incremental: true,
   };
 
   beforeEach(() => {

@@ -246,7 +246,7 @@ describe("postgres/table/importRecords", () => {
       });
       expect(page1.importsCount).toBe(4);
       expect(page1.sourceOffset).toBe(4);
-      importedIds = page1.imports.map((r) => r.id);
+      importedIds = page1.imports.map((r) => r.id as number);
       expect(importedIds).toEqual([1, 2, 3, 4]);
 
       // do the next page
@@ -258,7 +258,7 @@ describe("postgres/table/importRecords", () => {
       });
       expect(page2.importsCount).toBe(4);
       expect(page2.sourceOffset).toBe(8);
-      importedIds = page2.imports.map((r) => r.id);
+      importedIds = page2.imports.map((r) => r.id as number);
       expect(importedIds).toEqual([5, 6, 7, 8]);
 
       // do the next page
@@ -270,15 +270,15 @@ describe("postgres/table/importRecords", () => {
       });
       expect(page3.importsCount).toBe(2);
       expect(page3.sourceOffset).toBe(12);
-      importedIds = page3.imports.map((r) => r.id);
+      importedIds = page3.imports.map((r) => r.id as number);
       expect(importedIds).toEqual([9, 10]);
     });
 
     test("can be filtered", async () => {
-      let limit = 100;
-      let highWaterMark = {};
-      let sourceOffset = 0;
-      let scheduleFilters = [
+      const limit = 100;
+      const highWaterMark = {};
+      const sourceOffset = 0;
+      const scheduleFilters: ScheduleFiltersWithKey[] = [
         { key: "id", op: "gt", match: 4 },
         { key: "id", op: "lt", match: 7 },
       ];
@@ -289,7 +289,7 @@ describe("postgres/table/importRecords", () => {
         scheduleFilters,
       });
       expect(importsCount).toBe(2);
-      const importedIds = imports.map((r) => r.id);
+      const importedIds = imports.map((r) => r.id as number);
       expect(importedIds).toEqual([5, 6]);
     });
   });
