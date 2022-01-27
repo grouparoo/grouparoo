@@ -154,10 +154,10 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
       setShowSpinner(false);
       setInstallingMessage(
         <Alert variant="warning">
-          There was a problem restarting the Grouparoo config app.
+          There was a problem restarting.
           <br />
           <br />
-          Please restart config app via the command line.
+          Please restart the Grouparoo config app via the CLI.
         </Alert>
       );
       return;
