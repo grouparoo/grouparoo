@@ -1,15 +1,27 @@
 import { useApi } from "../contexts/api";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { Models } from "../utils/apiData";
 import { Row, Col, ProgressBar, Alert } from "react-bootstrap";
 import SetupStepCard from "../components/setupSteps/SetupStepCard";
 import Loader from "../components/Loader";
-import { setupStepHandler } from "../eventHandlers";
+import { Actions } from "../utils/apiData";
+import { setupStepsHandler } from "../eventHandlers";
+import { GetServerSidePropsContext } from "next";
+import { NextPageWithInferredProps } from "../utils/pageHelper";
+import { generateClient } from "../client/client";
 
-export default function Page(props) {
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const client = generateClient(ctx);
+  const { setupSteps } = await client.request<Actions.SetupStepsList>(
+    "get",
+    `/setupSteps`
+  );
+  return { props: { setupSteps } };
+};
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   const { client } = useApi();
-  const [setupSteps, setSetupSteps] = useState<Models.SetupStepType[]>([]);
+  const [setupSteps, setSetupSteps] = useState(props.setupSteps);
 
   useEffect(() => {
     load();
@@ -27,7 +39,7 @@ export default function Page(props) {
   );
 
   async function load() {
-    const response = await client.request(
+    const response = await client.request<Actions.SetupStepsList>(
       "get",
       `/setupSteps`,
       {},
@@ -35,7 +47,7 @@ export default function Page(props) {
     );
     if (response.setupSteps) {
       setSetupSteps(response.setupSteps);
-      setupStepHandler.set(response.setupSteps);
+      setupStepsHandler.set(response.setupSteps);
     }
   }
 
@@ -92,4 +104,6 @@ export default function Page(props) {
       <br />
     </>
   );
-}
+};
+
+export default Page;

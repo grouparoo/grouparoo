@@ -1,3 +1,4 @@
+import { GetServerSidePropsContext } from "next";
 import Head from "next/head";
 import { Row, Col } from "react-bootstrap";
 import {
@@ -9,8 +10,9 @@ import {
   PendingImports,
   PendingExports,
 } from "../components/visualizations/HomepageWidgets";
+import { UseApi } from "../hooks/useApi";
 
-export default function Page(props) {
+export default function Page() {
   return (
     <>
       <Head>
@@ -52,3 +54,10 @@ export default function Page(props) {
     </>
   );
 }
+
+// this getServerSideProps doesn't actually return anything, but we to want to make a request to see if the user is signed in
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const { execApi } = UseApi(ctx);
+  await execApi("get", `/session`);
+  return { props: {} };
+};

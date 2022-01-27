@@ -95,37 +95,6 @@ export class Client {
     } = () => ({})
   ) {}
 
-  private checkForLoggedIn = ({ code }) => {
-    if (code === "AUTHENTICATION_ERROR") {
-      if (isBrowser()) {
-        if (window.location.pathname !== "/session/sign-in") {
-          window.location.href = `/session/sign-in?nextPage=${window.location.pathname}`;
-        }
-      } else {
-        const { req, res } = this.getRequestContext();
-        if (req && res) {
-          const requestPath = req.url.match("^[^?]*")[0];
-          res.writeHead(302, {
-            Location: `/session/sign-in?nextPage=${requestPath}`,
-          });
-          res.end();
-        }
-      }
-    } else if (code === "NO_TEAMS_ERROR") {
-      if (isBrowser()) {
-        window.location.href = `/`;
-      } else {
-        const { req, res } = this.getRequestContext();
-        if (req && res) {
-          res.writeHead(302, { Location: `/` });
-          res.end();
-        }
-      }
-    } else if (code === "AUTHORIZATION_ERROR") {
-      // ok, it will be rendered on the page
-    }
-  };
-
   private csrfToken = () => {
     if (globalThis?.localStorage) {
       return window.localStorage.getItem("session:csrfToken");
@@ -221,15 +190,15 @@ export class Client {
       }
 
       if (error.response && error.response.data && error.response.data.error) {
-        this.checkForLoggedIn(error.response.data.error);
-
         const err =
           error.response?.data?.error?.message ??
           error.response?.data?.error ??
           error;
 
         options.errorHandler.set({ message: err });
-        throw new Error(err);
+        const newError = Error(err);
+        newError["code"] = error.response?.data?.error?.code;
+        throw newError;
       } else {
         options.errorHandler.set({ message: error });
         throw error;

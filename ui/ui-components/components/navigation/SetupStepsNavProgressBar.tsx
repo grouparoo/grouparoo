@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Button, Col, ProgressBar, Row } from "react-bootstrap";
 import { useApi } from "../../contexts/api";
-import { setupStepHandler } from "../../eventHandlers";
+import { setupStepsHandler } from "../../eventHandlers";
 import { Actions, Models } from "../../utils/apiData";
 
 export default function SetupStepsNavProgressBar() {
@@ -20,13 +20,13 @@ export default function SetupStepsNavProgressBar() {
     getSetupSteps();
     router?.events?.on("routeChangeStart", getSetupSteps);
 
-    setupStepHandler.subscribe("setup-steps-nav-progress-bar", () =>
+    setupStepsHandler.subscribe("setup-steps-nav-progress-bar", () =>
       getSetupSteps()
     );
 
     return () => {
       router?.events?.off("routeChangeStart", getSetupSteps);
-      setupStepHandler.unsubscribe("setup-steps-nav-progress-bar");
+      setupStepsHandler.unsubscribe("setup-steps-nav-progress-bar");
     };
   }, []);
 
