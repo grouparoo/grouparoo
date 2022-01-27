@@ -21,14 +21,16 @@ export const useGrouparooModel = () => useContext(GrouparooModelContext);
 export const GrouparooModelContextProvider: React.FC<{
   value: Models.GrouparooModelType;
 }> = ({ value: modelProp, children }) => {
-  const [model, setModel] = useState(modelProp);
+  const [updatedModel, setModel] = useState(modelProp);
 
   useEffect(() => {
     setModel(modelProp);
   }, [modelProp]);
 
   return (
-    <GrouparooModelContext.Provider value={{ model, setModel }}>
+    <GrouparooModelContext.Provider
+      value={{ model: updatedModel || modelProp, setModel }}
+    >
       {children}
     </GrouparooModelContext.Provider>
   );
