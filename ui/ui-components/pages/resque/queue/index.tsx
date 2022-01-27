@@ -1,13 +1,12 @@
+import { useApi } from "../../../contexts/api";
 import { useState, useEffect } from "react";
-import { UseApi } from "../../../hooks/useApi";
 import { Table } from "react-bootstrap";
 import Head from "next/head";
 import Link from "next/link";
 import ResqueTabs from "../../../components/tabs/Resque";
-import { errorHandler } from "../../../eventHandlers";
 
 export default function ResqueQueue(props) {
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [queues, setQueues] = useState({});
 
   useEffect(() => {
@@ -15,7 +14,7 @@ export default function ResqueQueue(props) {
   }, []);
 
   async function load() {
-    let response = await execApi("get", `/resque/resqueDetails`);
+    let response = await client.request("get", `/resque/resqueDetails`);
     if (response?.resqueDetails?.queues) {
       setQueues(response.resqueDetails.queues);
     }

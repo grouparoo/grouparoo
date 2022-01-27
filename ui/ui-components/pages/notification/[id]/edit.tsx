@@ -1,10 +1,12 @@
+import { useApi } from "../../../contexts/api";
 import NotificationTabs from "../../../components/tabs/Notification";
 import Head from "next/head";
-import { UseApi } from "../../../hooks/useApi";
 import { Button } from "react-bootstrap";
 import { Models } from "../../../utils/apiData";
 import Markdown from "react-markdown";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
+import { generateClient } from "../../../client/client";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const { notification }: { notification: Models.NotificationType } = props;
@@ -40,9 +42,9 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
+Page.getInitialProps = async (ctx: NextPageContext) => {
   const { id } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { notification } = await execApi("get", `/notification/${id}`);
+  const client = generateClient(ctx);
+  const { notification } = await client.request("get", `/notification/${id}`);
   return { notification };
 };

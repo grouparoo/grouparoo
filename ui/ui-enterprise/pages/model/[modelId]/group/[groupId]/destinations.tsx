@@ -1,4 +1,4 @@
-import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
+import { useApi } from "../../../../../../ui-components/contexts/api";
 import { useOffset } from "@grouparoo/ui-components/hooks/URLParams";
 import { useSecondaryEffect } from "@grouparoo/ui-components/hooks/useSecondaryEffect";
 import Head from "next/head";
@@ -8,13 +8,13 @@ import Link from "next/link";
 import LoadingTable from "@grouparoo/ui-components/components/LoadingTable";
 import AppIcon from "@grouparoo/ui-components/components/AppIcon";
 import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
-import { errorHandler } from "@grouparoo/ui-components/eventHandlers";
 import { formatTimestamp } from "@grouparoo/ui-components/utils/formatTimestamp";
 import PageHeader from "@grouparoo/ui-components/components/PageHeader";
 import LockedBadge from "@grouparoo/ui-components/components/badges/LockedBadge";
 import StateBadge from "@grouparoo/ui-components/components/badges/StateBadge";
 import ModelBadge from "@grouparoo/ui-components/components/badges/ModelBadge";
 import { NextPageContext } from "next";
+import { generateClient } from "@grouparoo/ui-components/client/client";
 
 export default function Page(props) {
   const {
@@ -24,7 +24,7 @@ export default function Page(props) {
     model: Models.GrouparooModelType;
     group: Models.GroupType;
   } = props;
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
   const [destinations, setDestinations] = useState<Models.DestinationType[]>(
     props.destinations
@@ -33,6 +33,7 @@ export default function Page(props) {
   // pagination
   const limit = 100;
   const { offset, setOffset } = useOffset();
+  // Note: total is unused
   const [total, setTotal] = useState(props.total);
 
   useSecondaryEffect(() => {
@@ -41,7 +42,7 @@ export default function Page(props) {
 
   async function load() {
     setLoading(true);
-    const response: Actions.GroupListDestinations = await execApi(
+    const response: Actions.GroupListDestinations = await client.request(
       "get",
       `/group/${group.id}/destinations`,
       {
@@ -124,13 +125,13 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { groupId, limit, offset, modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { group } = await execApi("get", `/group/${groupId}`);
-  const { model } = await execApi<Actions.ModelView>(
+  const client = generateClient(ctx);
+  const { group } = await client.request("get", `/group/${groupId}`);
+  const { model } = await client.request<Actions.ModelView>(
     "get",
     `/model/${modelId}`
   );
-  const { destinations, total } = await execApi(
+  const { destinations, total } = await client.request(
     "get",
     `/group/${group.id}/destinations`,
     {

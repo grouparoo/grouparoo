@@ -1,5 +1,5 @@
+import { useApi } from "../../../../../contexts/api";
 import { Fragment, useState } from "react";
-import { UseApi } from "../../../../../hooks/useApi";
 import { Alert, Row, Col, Table, Form } from "react-bootstrap";
 import PageHeader from "../../../../../components/PageHeader";
 import StateBadge from "../../../../../components/badges/StateBadge";
@@ -16,6 +16,7 @@ import PropertyAddButton from "../../../../../components/property/Add";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
+import { generateClient } from "../../../../../client/client";
 
 export default function Page(props) {
   const {
@@ -34,7 +35,7 @@ export default function Page(props) {
     defaultPropertyOptions: Actions.SourceDefaultPropertyOptions["defaultPropertyOptions"];
   } = props;
 
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [properties, setProperties] = useState<Models.PropertyType[]>(
     props.properties
   );
@@ -50,7 +51,7 @@ export default function Page(props) {
   });
 
   async function loadProperties() {
-    const response: Actions.PropertiesList = await execApi(
+    const response: Actions.PropertiesList = await client.request(
       "get",
       `/properties`
     );
@@ -127,7 +128,7 @@ export default function Page(props) {
 
     async function createProperty() {
       setLoading(true);
-      const response: Actions.PropertyCreate = await execApi(
+      const response: Actions.PropertyCreate = await client.request(
         "post",
         `/property`,
         {
@@ -364,33 +365,34 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { sourceId, modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
+  const client = generateClient(ctx);
 
-  const { source } = await execApi<Actions.SourceView>(
+  const { source } = await client.request<Actions.SourceView>(
     "get",
     `/source/${sourceId}`
   );
   ensureMatchingModel("Source", source.modelId, modelId.toString());
 
-  const { model } = await execApi<Actions.ModelView>(
+  const { model } = await client.request<Actions.ModelView>(
     "get",
     `/model/${modelId}`
   );
-  const { preview, columnSpeculation } = await execApi<Actions.SourcePreview>(
-    "get",
-    `/source/${sourceId}/preview`
-  );
+  const { preview, columnSpeculation } =
+    await client.request<Actions.SourcePreview>(
+      "get",
+      `/source/${sourceId}/preview`
+    );
   const { defaultPropertyOptions } =
-    await execApi<Actions.SourceDefaultPropertyOptions>(
+    await client.request<Actions.SourceDefaultPropertyOptions>(
       "get",
       `/source/${sourceId}/defaultPropertyOptions`
     );
-  const { properties } = await execApi<Actions.PropertiesList>(
+  const { properties } = await client.request<Actions.PropertiesList>(
     "get",
     `/properties`,
     { modelId }
   );
-  const { types } = await execApi<Actions.PropertiesOptions>(
+  const { types } = await client.request<Actions.PropertiesOptions>(
     "get",
     `/propertyOptions`
   );

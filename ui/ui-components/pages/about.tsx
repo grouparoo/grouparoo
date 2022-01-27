@@ -1,9 +1,10 @@
+import { NextPageContext } from "next";
 import Head from "next/head";
-import { client } from "../hooks/useApi";
-import { Table, Badge, Alert } from "react-bootstrap";
-import { UseApi } from "../hooks/useApi";
-import { Actions } from "../utils/apiData";
+import { Alert, Badge, Table } from "react-bootstrap";
+import { generateClient } from "../client/client";
 import LinkButton from "../components/LinkButton";
+import { useApi } from "../contexts/api";
+import { Actions } from "../utils/apiData";
 
 const upgradeHelpPage =
   "https://www.grouparoo.com/docs/support/upgrading-grouparoo";
@@ -12,7 +13,7 @@ function formatUrl(s = "unknown", label: string) {
   const url = s.replace(/\.git$/, "");
 
   return (
-    <a target="_blank" href={url === "unknown" ? "#" : url}>
+    <a target="_blank" href={url === "unknown" ? "#" : url} rel="noreferrer">
       {label}
     </a>
   );
@@ -23,6 +24,7 @@ export default function Page({
 }: {
   plugins: Actions.PluginsList["plugins"];
 }) {
+  const { client } = useApi();
   const hasOutOfDatePlugin = plugins.find((p) => !p.upToDate) ? true : false;
 
   return (
@@ -36,7 +38,7 @@ export default function Page({
 
       <p>
         You can learn more and get help by visiting{" "}
-        <a target="_blank" href="https://www.grouparoo.com">
+        <a target="_blank" href="https://www.grouparoo.com" rel="noreferrer">
           www.grouparoo.com
         </a>
         .
@@ -107,11 +109,15 @@ export default function Page({
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
-  const { plugins }: Actions.PluginsList = await execApi("get", `/plugins`, {
-    includeInstalled: true,
-    includeAvailable: false,
-  });
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
+  const { plugins }: Actions.PluginsList = await client.request(
+    "get",
+    `/plugins`,
+    {
+      includeInstalled: true,
+      includeAvailable: false,
+    }
+  );
   return { plugins };
 };

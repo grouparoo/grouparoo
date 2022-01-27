@@ -1,5 +1,5 @@
+import { useApi } from "../../../contexts/api";
 import { useState } from "react";
-import { UseApi } from "../../../hooks/useApi";
 import { Form } from "react-bootstrap";
 import LoadingButton from "../../../components/LoadingButton";
 import PermissionsList from "../../../components/Permissions";
@@ -7,15 +7,13 @@ import { useRouter } from "next/router";
 import { Models, Actions } from "../../../utils/apiData";
 import TeamTabs from "../../../components/tabs/Team";
 import LockedBadge from "../../../components/badges/LockedBadge";
-import {
-  errorHandler,
-  successHandler,
-  teamHandler,
-} from "../../../eventHandlers";
+import { successHandler, teamHandler } from "../../../eventHandlers";
+import { generateClient } from "../../../client/client";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
   const [team, setTeam] = useState<Models.TeamType>(props.team);
 
@@ -30,7 +28,7 @@ export default function Page(props) {
     }
 
     setLoading(true);
-    const response: Actions.TeamEdit = await execApi(
+    const response: Actions.TeamEdit = await client.request(
       "put",
       `/team/${team.id}`,
       _team
@@ -47,7 +45,7 @@ export default function Page(props) {
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const { success }: Actions.TeamDestroy = await execApi(
+      const { success }: Actions.TeamDestroy = await client.request(
         "delete",
         `/team/${team.id}`
       );
@@ -150,9 +148,9 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
   const { id } = ctx.query;
-  const { team } = await execApi("get", `/team/${id}`);
+  const { team } = await client.request("get", `/team/${id}`);
   return { team };
 };

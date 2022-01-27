@@ -1,4 +1,3 @@
-import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import Head from "next/head";
 import Link from "next/link";
 import LoadingTable from "@grouparoo/ui-components/components/LoadingTable";
@@ -9,6 +8,7 @@ import PropertyTabs from "@grouparoo/ui-components/components/tabs/Property";
 import { Actions, Models } from "@grouparoo/ui-components/utils/apiData";
 import ModelBadge from "@grouparoo/ui-components/components/badges/ModelBadge";
 import { NextPageContext } from "next";
+import { generateClient } from "@grouparoo/ui-components/client/client";
 
 export default function Page({
   model,
@@ -87,14 +87,20 @@ export default function Page({
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { propertyId, modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { model } = await execApi<Actions.ModelView>(
+  const client = generateClient(ctx);
+  const { model } = await client.request<Actions.ModelView>(
     "get",
     `/model/${modelId}`
   );
-  const { property } = await execApi("get", `/property/${propertyId}`);
-  const { source } = await execApi("get", `/source/${property.sourceId}`);
-  const { groups } = await execApi("get", `/property/${propertyId}/groups`);
+  const { property } = await client.request("get", `/property/${propertyId}`);
+  const { source } = await client.request(
+    "get",
+    `/source/${property.sourceId}`
+  );
+  const { groups } = await client.request(
+    "get",
+    `/property/${propertyId}/groups`
+  );
 
   return { model, property, source, groups };
 };

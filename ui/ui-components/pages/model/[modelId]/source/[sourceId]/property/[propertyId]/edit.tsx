@@ -1,3 +1,4 @@
+import { useApi } from "../../../../../../../contexts/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NextPageContext } from "next";
 import Head from "next/head";
@@ -7,7 +8,6 @@ import { useState, useEffect, Fragment } from "react";
 import { Row, Col, Form, Table, Badge, Button } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 
-import { UseApi } from "../../../../../../../hooks/useApi";
 import Loader from "../../../../../../../components/Loader";
 import PageHeader from "../../../../../../../components/PageHeader";
 import StateBadge from "../../../../../../../components/badges/StateBadge";
@@ -29,6 +29,7 @@ import {
 import PrimaryKeyBadge from "../../../../../../../components/badges/PrimaryKeyBadge";
 import EnterpriseLink from "../../../../../../../components/GrouparooLink";
 import { grouparooUiEdition } from "../../../../../../../utils/uiEdition";
+import { generateClient } from "../../../../../../../client/client";
 
 export default function Page(props) {
   const {
@@ -49,7 +50,7 @@ export default function Page(props) {
     hydrationError: Error;
   } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [property, setProperty] = useState<Models.PropertyType>(props.property);
   const [pluginOptions, setPluginOptions] = useState<
     Actions.PropertyPluginOptions["pluginOptions"]
@@ -87,7 +88,7 @@ export default function Page(props) {
   async function onSubmit(event) {
     event.preventDefault();
     setLoading(true);
-    const response: Actions.PropertyEdit = await execApi(
+    const response: Actions.PropertyEdit = await client.request(
       "put",
       `/property/${propertyId}`,
       Object.assign({}, property, { filters: localFilters, state: "ready" })
@@ -117,7 +118,7 @@ export default function Page(props) {
       )
     ) {
       setLoading(true);
-      const { success }: Actions.PropertyDestroy = await execApi(
+      const { success }: Actions.PropertyDestroy = await client.request(
         "delete",
         `/property/${propertyId}`
       );
@@ -138,7 +139,7 @@ export default function Page(props) {
 
     timer = setTimeout(async () => {
       const pluginOptionsResponse: Actions.PropertyPluginOptions =
-        await execApi("get", `/property/${propertyId}/pluginOptions`, {
+        await client.request("get", `/property/${propertyId}/pluginOptions`, {
           options: property.options,
         });
       // setLoading(false);
@@ -772,7 +773,6 @@ export default function Page(props) {
         </Col>
         <Col xl={5}>
           <PropertySampleRecord
-            execApi={execApi}
             localFilters={localFilters}
             modelId={source.modelId}
             property={property}
@@ -787,11 +787,11 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { propertyId, modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
+  const client = generateClient(ctx);
 
-  const { sources } = await execApi("get", "/sources");
-  const { types } = await execApi("get", `/propertyOptions`);
-  const { model } = await execApi<Actions.ModelView>(
+  const { sources } = await client.request("get", "/sources");
+  const { types } = await client.request("get", `/propertyOptions`);
+  const { model } = await client.request<Actions.ModelView>(
     "get",
     `/model/${modelId}`
   );
@@ -804,7 +804,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   let filterOptionDescriptions = {};
 
   try {
-    const getResponse = await execApi("get", `/property/${propertyId}`);
+    const getResponse = await client.request("get", `/property/${propertyId}`);
     property = getResponse.property;
 
     const source = sources.find(
@@ -812,19 +812,19 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     );
     ensureMatchingModel("Property", source.modelId, modelId.toString());
 
-    const propertiesResponse = await execApi("get", `/properties`, {
+    const propertiesResponse = await client.request("get", `/properties`, {
       state: "ready",
       modelId: source.modelId,
     });
     properties = propertiesResponse.properties;
 
-    const pluginOptionsResponse = await execApi(
+    const pluginOptionsResponse = await client.request(
       "get",
       `/property/${propertyId}/pluginOptions`
     );
     pluginOptions = pluginOptionsResponse.pluginOptions;
 
-    const filterResponse = await execApi(
+    const filterResponse = await client.request(
       "get",
       `/property/${propertyId}/filterOptions`
     );

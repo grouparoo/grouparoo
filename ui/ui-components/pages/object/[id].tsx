@@ -1,11 +1,10 @@
+import { useApi } from "../../contexts/api";
 import { useRouter } from "next/router";
 import { singular } from "pluralize";
 import { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import Loader from "../../components/Loader";
 import Link from "../../components/GrouparooLink";
-import { errorHandler } from "../../eventHandlers";
-import { UseApi } from "../../hooks/useApi";
 import { Actions } from "../../utils/apiData";
 import { grouparooUiEdition } from "../../utils/uiEdition";
 
@@ -13,7 +12,7 @@ const editPagesForCommunityEdition: readonly string[] = ["records"];
 
 export default function FindObject(props) {
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [error, setError] = useState<string>(null);
   const [results, setResults] = useState<{ name: string; href: string }[]>();
 
@@ -33,7 +32,10 @@ export default function FindObject(props) {
   }, []);
 
   async function load() {
-    const response: Actions.ObjectFind = await execApi("get", `/object/${id}`);
+    const response: Actions.ObjectFind = await client.request(
+      "get",
+      `/object/${id}`
+    );
     const table: string = response?.records[0]?.tableName?.toLowerCase();
     const itemsFound: number = response?.records?.length ?? 0;
     const uiEdition = grouparooUiEdition();
@@ -73,7 +75,7 @@ export default function FindObject(props) {
   }
 
   async function redirectSchedule(id: string) {
-    const response: Actions.ScheduleView = await execApi(
+    const response: Actions.ScheduleView = await client.request(
       "get",
       `/schedule/${id}`
     );
@@ -83,7 +85,7 @@ export default function FindObject(props) {
       return;
     }
 
-    const { source }: Actions.SourceView = await execApi(
+    const { source }: Actions.SourceView = await client.request(
       "get",
       `/source/${response.schedule.sourceId}`
     );
@@ -95,7 +97,7 @@ export default function FindObject(props) {
   }
 
   async function redirectProperty(id: string) {
-    const response: Actions.PropertyView = await execApi(
+    const response: Actions.PropertyView = await client.request(
       "get",
       `/property/${id}`
     );
@@ -105,7 +107,7 @@ export default function FindObject(props) {
       return;
     }
 
-    const { source }: Actions.SourceView = await execApi(
+    const { source }: Actions.SourceView = await client.request(
       "get",
       `/source/${response.property.sourceId}`
     );
@@ -118,7 +120,7 @@ export default function FindObject(props) {
 
   function redirectTopicWithModel(topic: string, page: string = "edit") {
     return async function (id: string) {
-      const response = await execApi("get", `/${topic}/${id}`);
+      const response = await client.request("get", `/${topic}/${id}`);
 
       if (!response || !response[topic]) {
         setError(`Cannot find object "${id}"`);
@@ -134,7 +136,7 @@ export default function FindObject(props) {
 
   async function getListPage(topic: string) {
     const singularTopic = singular(topic);
-    const response = await execApi("get", `/${singularTopic}/${id}`);
+    const response = await client.request("get", `/${singularTopic}/${id}`);
 
     if (!response || !response[singularTopic]) {
       setError(`Cannot find object "${id}"`);
@@ -161,7 +163,7 @@ export default function FindObject(props) {
         <tbody>
           {results.map(({ name, href }) => {
             return (
-              <tr>
+              <tr key={name}>
                 <td>{id} in </td>
                 <td>
                   <Link href={href}>

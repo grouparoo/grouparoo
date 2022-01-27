@@ -1,4 +1,3 @@
-import Link from "next/link";
 import React, {
   Fragment,
   useCallback,
@@ -8,7 +7,6 @@ import React, {
 } from "react";
 import { Card, Col, Row, Table } from "react-bootstrap";
 import EnterpriseLink from "../../components/GrouparooLink";
-import { ApiHook } from "../../hooks/useApi";
 import { usePrevious } from "../../hooks/usePrevious";
 import { Actions, Models } from "../../utils/apiData";
 import { errorHandler, successHandler } from "../../eventHandlers";
@@ -22,6 +20,7 @@ import LoadingButton from "../LoadingButton";
 import RecordImageFromEmail from "../visualizations/RecordImageFromEmail";
 import AddSampleRecordModal from "./AddSampleRecordModal";
 import ArrayRecordPropertyList from "./ArrayRecordPropertyList";
+import { useApi } from "../../contexts/api";
 
 export type RecordType =
   | Models.GrouparooRecordType
@@ -29,7 +28,6 @@ export type RecordType =
 
 export interface SampleRecordCardProps {
   modelId: string;
-  execApi: ApiHook["execApi"];
   fetchRecord: (recordId?: string) => Promise<{
     record?: RecordType;
     groups?: Models.GroupType[];
@@ -78,7 +76,6 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   modelId,
   properties,
   propertiesTitle,
-  execApi,
   fetchRecord,
   groupsTitle = "Groups",
   disabled = false,
@@ -94,6 +91,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
 }) => {
   const prevModelId = usePrevious(modelId);
   const prevReloadKey = usePrevious(reloadKey);
+  const { client } = useApi();
 
   const [loading, setLoading] = useState(false);
   const [importing, setImporting] = useState(false);
@@ -124,16 +122,18 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
 
   useEffect(() => {
     if (modelId) {
-      execApi<Actions.RecordsList>("get", "/records", {
-        limit: 1,
-        offset: 0,
-        modelId,
-        groupId,
-      }).then(({ total }) => {
-        setTotalRecords(total);
-      });
+      client
+        .request<Actions.RecordsList>("get", "/records", {
+          limit: 1,
+          offset: 0,
+          modelId,
+          groupId,
+        })
+        .then(({ total }) => {
+          setTotalRecords(total);
+        });
     }
-  }, [execApi, groupId, modelId]);
+  }, [client, groupId, modelId]);
 
   const loadRecord = useCallback(async () => {
     setLoading(true);
@@ -143,7 +143,9 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
     let destinations: Models.DestinationType[];
 
     if (recordId) {
-      ({ record, groups, destinations } = await fetchRecord(recordId));
+      ({ record, groups, destinations } = await fetchRecord(recordId).catch(
+        () => ({} as Awaited<ReturnType<typeof fetchRecord>>)
+      ));
 
       if (!record && !recordId) {
         setHasRecords(false);
@@ -156,37 +158,35 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
         return;
       }
     } else {
-      ({ record, groups, destinations } = await execApi<Actions.RecordsList>(
-        "get",
-        "/records",
-        {
+      ({ record, groups, destinations } = await client
+        .request<Actions.RecordsList>("get", "/records", {
           limit: 25,
           offset: 0,
           modelId,
           groupId,
-        }
-      ).then((response) => {
-        setTotalRecords(response.total);
-        if (response.total === 0) {
-          setHasRecords(false);
-        } else {
-          const randomRecord = response?.records?.length
-            ? response.records[
-                Math.floor(Math.random() * response.records.length)
-              ]
-            : undefined;
+        })
+        .then((response) => {
+          setTotalRecords(response.total);
+          if (response.total === 0) {
+            setHasRecords(false);
+          } else {
+            const randomRecord = response?.records?.length
+              ? response.records[
+                  Math.floor(Math.random() * response.records.length)
+                ]
+              : undefined;
 
-          if (randomRecord?.id) {
-            return fetchRecord(randomRecord?.id);
+            if (randomRecord?.id) {
+              return fetchRecord(randomRecord?.id);
+            }
           }
-        }
 
-        return {
-          record: undefined,
-          groups: undefined,
-          destinations: undefined,
-        };
-      }));
+          return {
+            record: undefined,
+            groups: undefined,
+            destinations: undefined,
+          };
+        }));
     }
 
     if (record?.id) {
@@ -198,7 +198,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
     }
 
     setLoading(false);
-  }, [recordId, fetchRecord, modelId, execApi, groupId, saveRecord]);
+  }, [recordId, fetchRecord, modelId, client, groupId, saveRecord]);
 
   const sortedPropertyKeys = useMemo(() => {
     const id = highlightProperty?.id;
@@ -310,7 +310,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
 
   const importRecord = async () => {
     setImporting(true);
-    const response = await execApi<Actions.RecordImport>(
+    const response = await client.request<Actions.RecordImport>(
       "post",
       `/record/${record.id}/import`
     );
@@ -533,7 +533,6 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
         <AddSampleRecordModal
           modelId={modelId}
           properties={properties}
-          execApi={execApi}
           show={addingRecord}
           onRecordCreated={saveRecord}
           onHide={() => {

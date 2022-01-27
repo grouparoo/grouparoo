@@ -5,7 +5,6 @@ import { useState, useEffect, useMemo } from "react";
 import { Row, Col, Form, Badge, Alert, Card } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { UseApi } from "../../../../../hooks/useApi";
 import SourceTabs from "../../../../../components/tabs/Source";
 import PageHeader from "../../../../../components/PageHeader";
 import StateBadge from "../../../../../components/badges/StateBadge";
@@ -26,6 +25,8 @@ import { createSchedule } from "../../../../../components/schedule/Add";
 import ManagedCard from "../../../../../components/lib/ManagedCard";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 import PrimaryKeyBadge from "../../../../../components/badges/PrimaryKeyBadge";
+import { useApi } from "../../../../../contexts/api";
+import { generateClient } from "../../../../../client/client";
 
 interface FormData {
   mapping?: {
@@ -53,7 +54,7 @@ const Page: NextPage<Props> = ({
   ...props
 }) => {
   const router = useRouter();
-  const { execApi } = UseApi(undefined, errorHandler);
+  const { client } = useApi();
   const { handleSubmit, register } = useForm();
   const [preview, setPreview] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -112,15 +113,13 @@ const Page: NextPage<Props> = ({
     }
 
     setPreviewLoading(true);
-    const response: Actions.SourcePreview = await execApi(
+    const response: Actions.SourcePreview = await client.request(
       "get",
       `/source/${sourceId}/preview`,
       {
         options: Object.keys(source.options).length > 0 ? source.options : null,
       },
-      null,
-      null,
-      false
+      { useCache: false }
     );
     setPreviewLoading(false);
     if (response?.preview) {
@@ -142,10 +141,14 @@ const Page: NextPage<Props> = ({
     // Unique Property is being created and need to bootstrap?
     if (isBootstrappingUniqueProperty) {
       const bootstrapResponse: Actions.SourceBootstrapUniqueProperty =
-        await execApi("post", `/source/${source.id}/bootstrapUniqueProperty`, {
-          mappedColumn: data.mapping.sourceColumn,
-          sourceOptions: source.options,
-        });
+        await client.request(
+          "post",
+          `/source/${source.id}/bootstrapUniqueProperty`,
+          {
+            mappedColumn: data.mapping.sourceColumn,
+            sourceOptions: source.options,
+          }
+        );
 
       if (bootstrapResponse?.property) {
         bootstrapSuccess = true;
@@ -178,7 +181,7 @@ const Page: NextPage<Props> = ({
         ? undefined
         : "ready";
 
-    const response = await execApi<Actions.SourceEdit>(
+    const response = await client.request<Actions.SourceEdit>(
       "put",
       `/source/${sourceId}`,
       { ...source, state, mapping }
@@ -193,7 +196,7 @@ const Page: NextPage<Props> = ({
         isBootstrappingUniqueProperty &&
         response.source.state === "ready"
       ) {
-        await execApi<Actions.SourceGenerateSampleRecords>(
+        await client.request<Actions.SourceGenerateSampleRecords>(
           "post",
           `/source/${sourceId}/generateSampleRecords`,
           { id: sourceId }
@@ -204,7 +207,7 @@ const Page: NextPage<Props> = ({
       if (scheduleCount === 0 && response.source.scheduleAvailable) {
         const createdScheduleAndRedirected = await createSchedule({
           router,
-          execApi,
+          client,
           source: response.source,
           setLoading: () => {},
         });
@@ -224,16 +227,13 @@ const Page: NextPage<Props> = ({
       }
     }
 
-    const { properties, examples } = await execApi<Actions.PropertiesList>(
-      "get",
-      `/properties`,
-      {
+    const { properties, examples } =
+      await client.request<Actions.PropertiesList>("get", `/properties`, {
         unique: true,
         includeExamples: true,
         state: "ready",
         modelId: source?.modelId,
-      }
-    );
+      });
 
     setProperties(properties);
     setPropertyExamples(examples);
@@ -245,13 +245,11 @@ const Page: NextPage<Props> = ({
 
   async function loadOptions() {
     setLoadingOptions(true);
-    const response: Actions.SourceConnectionOptions = await execApi(
+    const response: Actions.SourceConnectionOptions = await client.request(
       "get",
       `/source/${sourceId}/connectionOptions`,
       { options: source.options },
-      null,
-      null,
-      false
+      { useCache: false }
     );
     if (response?.options) setConnectionOptions(response.options);
     setLoadingOptions(false);
@@ -260,7 +258,7 @@ const Page: NextPage<Props> = ({
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const { success }: Actions.SourceDestroy = await execApi(
+      const { success }: Actions.SourceDestroy = await client.request(
         "delete",
         `/source/${sourceId}`
       );
@@ -625,33 +623,33 @@ export default Page;
 
 export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   const { sourceId, modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { source } = await execApi("get", `/source/${sourceId}`);
+  const client = generateClient(ctx);
+  const { source } = await client.request("get", `/source/${sourceId}`);
   ensureMatchingModel("Source", source.modelId, modelId.toString());
 
-  const { model } = await execApi<Actions.ModelView>(
+  const { model } = await client.request<Actions.ModelView>(
     "get",
     `/model/${modelId}`
   );
 
-  const { total: totalSources } = await execApi("get", `/sources`, {
+  const { total: totalSources } = await client.request("get", `/sources`, {
     modelId,
     limit: 1,
   });
 
-  const { environmentVariableOptions } = await execApi(
+  const { environmentVariableOptions } = await client.request(
     "get",
     `/sources/connectionApps`
   );
 
   const { properties, examples: propertyExamples } =
-    await execApi<Actions.PropertiesList>("get", `/properties`, {
+    await client.request<Actions.PropertiesList>("get", `/properties`, {
       includeExamples: true,
       state: "ready",
       modelId: source?.modelId,
     });
 
-  const { total: scheduleCount } = await execApi<Actions.SchedulesList>(
+  const { total: scheduleCount } = await client.request<Actions.SchedulesList>(
     "get",
     `/schedules`,
     {

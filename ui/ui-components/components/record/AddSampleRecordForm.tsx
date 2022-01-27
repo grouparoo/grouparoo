@@ -1,8 +1,8 @@
 import { useCallback, useMemo, useState } from "react";
 import { Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import { useApi } from "../../contexts/api";
 import { errorHandler } from "../../eventHandlers";
-import { ApiHook } from "../../hooks/useApi";
 import { Actions, Models } from "../../utils/apiData";
 import LoadingButton from "../LoadingButton";
 
@@ -19,18 +19,17 @@ const getInputType = (type?: Models.PropertyType["type"]): string => {
 interface Props {
   modelId: string;
   properties: Models.PropertyType[];
-  onSubmitComplete: (record: Models.GrouparooRecordType) => void;
-  execApi: ApiHook["execApi"];
+  onSubmitComplete: (record?: Models.GrouparooRecordType) => void;
 }
 
 const AddSampleRecordForm: React.FC<Props> = ({
   modelId,
-  execApi,
   onSubmitComplete,
   properties,
 }) => {
   const { handleSubmit, register } = useForm();
   const [submitting, setSubmitting] = useState(false);
+  const { client } = useApi();
 
   const propertiesWithPrimaryKey = useMemo(
     () =>
@@ -45,7 +44,7 @@ const AddSampleRecordForm: React.FC<Props> = ({
     return propertiesWithPrimaryKey?.find(
       ({ key }) => key === selectedUniquePropertyValue
     );
-  }, [selectedUniquePropertyValue]);
+  }, [propertiesWithPrimaryKey, selectedUniquePropertyValue]);
 
   const onSelectUniqueProperty: React.ChangeEventHandler<HTMLInputElement> = (
     event
@@ -56,10 +55,14 @@ const AddSampleRecordForm: React.FC<Props> = ({
   const onSubmit: Parameters<typeof handleSubmit>[0] = useCallback(
     async (data) => {
       setSubmitting(true);
-      const response = await execApi<Actions.RecordCreate>("post", `/record`, {
-        modelId,
-        properties: { [data.uniqueProperty]: data.value },
-      });
+      const response = await client.request<Actions.RecordCreate>(
+        "post",
+        `/record`,
+        {
+          modelId,
+          properties: { [data.uniqueProperty]: data.value },
+        }
+      );
       setSubmitting(false);
 
       if (response?.record) {
@@ -71,7 +74,7 @@ const AddSampleRecordForm: React.FC<Props> = ({
         });
       }
     },
-    [modelId]
+    [client, modelId, onSubmitComplete]
   );
 
   return (

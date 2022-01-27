@@ -1,8 +1,8 @@
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 import { useMemo } from "react";
 import { Col, ListGroup, ListGroupItem, Row } from "react-bootstrap";
+import { generateClient } from "../../../client/client";
 import ManagedCard from "../../../components/lib/ManagedCard";
 import ModelOverviewDestinations from "../../../components/model/overview/ModelOverviewDestinations";
 import ModelOverviewGroups from "../../../components/model/overview/ModelOverviewGroups";
@@ -13,8 +13,6 @@ import ModelOverviewSecondarySources from "../../../components/model/overview/Mo
 import PageHeader from "../../../components/PageHeader";
 import ModelTabs from "../../../components/tabs/Model";
 import { GrouparooModelContextProvider } from "../../../contexts/grouparooModel";
-import { errorHandler } from "../../../eventHandlers";
-import { UseApi } from "../../../hooks/useApi";
 import { Actions, Models } from "../../../utils/apiData";
 
 interface Props {
@@ -38,7 +36,6 @@ const Page: NextPage<Props> = ({
   schedules,
   destinations,
 }) => {
-  const { execApi } = UseApi(undefined, errorHandler);
   const sources = useMemo(() => {
     const result = [...secondarySources];
     if (primarySource) {
@@ -99,7 +96,6 @@ const Page: NextPage<Props> = ({
                 <ModelOverviewSchedules
                   schedules={schedules}
                   sources={sources}
-                  execApi={execApi}
                 />
               </ListGroupItem>
             </ListGroup>
@@ -111,7 +107,6 @@ const Page: NextPage<Props> = ({
           <ModelOverviewSampleRecord
             modelId={model.id}
             properties={properties}
-            execApi={execApi}
             disabled={!sources.length}
           />
         </Col>
@@ -132,7 +127,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   context
 ) => {
   const { modelId, limit, offset } = context.query;
-  const { execApi } = UseApi(context);
+  const client = generateClient(context);
 
   const params = {
     limit,
@@ -148,12 +143,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     { schedules },
     { model },
   ] = await Promise.all([
-    execApi<Actions.SourcesList>("get", `/sources`, params),
-    execApi<Actions.DestinationsList>("get", `/destinations`, params),
-    execApi<Actions.PropertiesList>("get", `/properties`, params),
-    execApi<Actions.GroupsList>("get", `/groups`, params),
-    execApi<Actions.SchedulesList>("get", `/schedules`, params),
-    execApi<Actions.ModelView>("get", `/model/${modelId}`),
+    client.request<Actions.SourcesList>("get", `/sources`, params),
+    client.request<Actions.DestinationsList>("get", `/destinations`, params),
+    client.request<Actions.PropertiesList>("get", `/properties`, params),
+    client.request<Actions.GroupsList>("get", `/groups`, params),
+    client.request<Actions.SchedulesList>("get", `/schedules`, params),
+    client.request<Actions.ModelView>("get", `/model/${modelId}`),
   ]);
 
   const primaryKeyProperty = properties.find((p) => p.isPrimaryKey);

@@ -1,14 +1,14 @@
+import { useApi } from "../contexts/api";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { UseApi } from "../hooks/useApi";
-import { Actions, Models } from "../utils/apiData";
+import { Models } from "../utils/apiData";
 import { Row, Col, ProgressBar, Alert } from "react-bootstrap";
 import SetupStepCard from "../components/setupSteps/SetupStepCard";
 import Loader from "../components/Loader";
-import { errorHandler, setupStepHandler } from "../eventHandlers";
+import { setupStepHandler } from "../eventHandlers";
 
 export default function Page(props) {
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [setupSteps, setSetupSteps] = useState<Models.SetupStepType[]>([]);
 
   useEffect(() => {
@@ -27,7 +27,12 @@ export default function Page(props) {
   );
 
   async function load() {
-    const response = await execApi("get", `/setupSteps`, {}, null, null, false);
+    const response = await client.request(
+      "get",
+      `/setupSteps`,
+      {},
+      { useCache: false }
+    );
     if (response.setupSteps) {
       setSetupSteps(response.setupSteps);
       setupStepHandler.set(response.setupSteps);
@@ -78,7 +83,6 @@ export default function Page(props) {
           {setupSteps.map((setupStep) => (
             <SetupStepCard
               key={`setupStep-${setupStep.key}`}
-              execApi={execApi}
               setupStep={setupStep}
               reload={load}
             />

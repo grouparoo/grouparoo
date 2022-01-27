@@ -6,9 +6,13 @@ import Axios, {
 } from "axios";
 import type { IncomingMessage, ServerResponse } from "http";
 
-import { UploadHandler } from "../eventHandlers/uploadHandler";
 import { isBrowser } from "../utils/isBrowser";
 import PackageJSON from "../package.json";
+import { errorHandler } from "../eventHandlers";
+import type { AppContext } from "next/app";
+import type { GetServerSidePropsContext, NextPageContext } from "next";
+import { getRequestContext } from "../utils/appContext";
+import type { ErrorHandler } from "../eventHandlers/errorHandler";
 
 interface ClientCacheObject {
   locked: boolean;
@@ -67,26 +71,38 @@ export class ClientCache {
   }
 }
 
+interface ClientRequestOptions {
+  useCache: boolean;
+  errorHandler: ErrorHandler;
+}
+
 export class Client {
-  apiVersion: string;
-  webUrl: string;
-  serverToken: string;
-  cache: ClientCache;
+  public apiVersion = process.env.API_VERSION || "v1";
 
-  constructor() {
-    this.apiVersion = process.env.API_VERSION || "v1";
-    this.webUrl = process.env.WEB_URL || "";
-    this.serverToken = process.env.SERVER_TOKEN;
-    this.cache = new ClientCache();
-  }
+  private webUrl = process.env.WEB_URL || "";
+  private serverToken = process.env.SERVER_TOKEN;
+  private cache = new ClientCache();
 
-  checkForLoggedIn({ code }, req?, res?) {
+  private static readonly optionDefaults: ClientRequestOptions = {
+    useCache: true,
+    errorHandler,
+  };
+
+  constructor(
+    private getRequestContext: () => {
+      req?: IncomingMessage;
+      res?: ServerResponse;
+    } = () => ({})
+  ) {}
+
+  private checkForLoggedIn = ({ code }) => {
     if (code === "AUTHENTICATION_ERROR") {
       if (isBrowser()) {
         if (window.location.pathname !== "/session/sign-in") {
           window.location.href = `/session/sign-in?nextPage=${window.location.pathname}`;
         }
       } else {
+        const { req, res } = this.getRequestContext();
         if (req && res) {
           const requestPath = req.url.match("^[^?]*")[0];
           res.writeHead(302, {
@@ -99,6 +115,7 @@ export class Client {
       if (isBrowser()) {
         window.location.href = `/`;
       } else {
+        const { req, res } = this.getRequestContext();
         if (req && res) {
           res.writeHead(302, { Location: `/` });
           res.end();
@@ -107,33 +124,33 @@ export class Client {
     } else if (code === "AUTHORIZATION_ERROR") {
       // ok, it will be rendered on the page
     }
-  }
+  };
 
-  csrfToken() {
+  private csrfToken = () => {
     if (globalThis?.localStorage) {
       return window.localStorage.getItem("session:csrfToken");
     }
-  }
+  };
 
-  async action<Response = any>(
+  public request = async <Response = any>(
     verb: Method = "get",
     path: string,
     data: AxiosRequestConfig["data"] = {},
-    useCache = true,
-    uploadHandler?: UploadHandler,
-    req?: IncomingMessage,
-    res?: ServerResponse
-  ): Promise<Response> {
+    options: Partial<ClientRequestOptions> = {}
+  ): Promise<Response> => {
+    options = { ...Client.optionDefaults, ...options };
+
     const headers: AxiosRequestHeaders = {
       Accept: "application/json",
       "Content-Type": "application/json",
       "X-Grouparoo-Client": `${PackageJSON.name}-v${PackageJSON.version}`,
     };
 
+    const { req } = this.getRequestContext();
     if (req?.headers?.cookie) {
       headers["X-GROUPAROO-SERVER-TOKEN"] = this.serverToken;
       headers["cookie"] = req?.headers?.cookie;
-      useCache = false; // do not ever cache responses on the server
+      options.useCache = false; // do not ever cache responses on the server
     }
 
     const config: AxiosRequestConfig = {
@@ -143,12 +160,6 @@ export class Client {
       withCredentials: true,
       method: verb.toLowerCase() as Method,
       headers,
-      onUploadProgress: (progressEvent) => {
-        const uploadPercentage = Math.round(
-          (progressEvent.loaded / progressEvent.total) * 100
-        );
-        return uploadHandler ? uploadHandler.set({ uploadPercentage }) : null;
-      },
     };
 
     data.csrfToken = this.csrfToken();
@@ -177,7 +188,7 @@ export class Client {
     }
 
     let unlock: Function;
-    if (config.method === "get" && useCache) {
+    if (config.method === "get" && options.useCache) {
       const { cacheData, unlock: _unlock } = await this.cache.get(
         config.url + JSON.stringify(data)
       );
@@ -210,16 +221,23 @@ export class Client {
       }
 
       if (error.response && error.response.data && error.response.data.error) {
-        this.checkForLoggedIn(error.response.data.error, req, res);
+        this.checkForLoggedIn(error.response.data.error);
 
-        throw new Error(
-          error.response.data.error.message
-            ? error.response.data.error.message
-            : error.response.data.error
-        );
+        const err =
+          error.response?.data?.error?.message ??
+          error.response?.data?.error ??
+          error;
+
+        options.errorHandler.set({ message: err });
+        throw new Error(err);
       } else {
+        options.errorHandler.set({ message: error });
         throw error;
       }
     }
-  }
+  };
 }
+
+export const generateClient = (
+  ctx: AppContext | NextPageContext | GetServerSidePropsContext
+) => new Client(getRequestContext(ctx));

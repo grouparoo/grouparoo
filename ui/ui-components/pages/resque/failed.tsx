@@ -1,5 +1,5 @@
+import { useApi } from "../../contexts/api";
 import { useState, useEffect } from "react";
-import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { ButtonToolbar, Button, Table, Modal, Row, Col } from "react-bootstrap";
 import Pagination from "../../components/Pagination";
@@ -7,11 +7,11 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import ResqueTabs from "../../components/tabs/Resque";
 import LoadingButton from "../../components/LoadingButton";
-import { errorHandler, successHandler } from "../../eventHandlers";
+import { successHandler } from "../../eventHandlers";
 
 export default function ResqueFailedList(props) {
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
   const [failed, setFailed] = useState([]);
   const [focusedException, setFocusedException] = useState({
@@ -36,7 +36,7 @@ export default function ResqueFailedList(props) {
   async function load() {
     updateURLParams(router, { offset });
     setLoading(true);
-    const response = await execApi("get", "/resque/resqueFailed", {
+    const response = await client.request("get", "/resque/resqueFailed", {
       offset,
       limit,
     });
@@ -48,7 +48,7 @@ export default function ResqueFailedList(props) {
 
   async function removeFailedJob(index) {
     setLoading(true);
-    await execApi("post", "/resque/removeFailed", { id: index });
+    await client.request("post", "/resque/removeFailed", { id: index });
     successHandler.set({ message: "removed" });
     await load();
     setLoading(false);
@@ -56,7 +56,7 @@ export default function ResqueFailedList(props) {
 
   async function retryFailedJob(index) {
     setLoading(true);
-    await execApi("post", "/resque/retryAndRemoveFailed", {
+    await client.request("post", "/resque/retryAndRemoveFailed", {
       id: index,
     });
     successHandler.set({ message: "retried" });
@@ -67,7 +67,7 @@ export default function ResqueFailedList(props) {
   async function removeAllFailedJobs() {
     if (window.confirm("Are you sure?")) {
       setLoading(true);
-      await execApi("post", "/resque/removeAllFailed");
+      await client.request("post", "/resque/removeAllFailed");
       successHandler.set({ message: "removed all" });
       await load();
       setLoading(false);
@@ -77,7 +77,7 @@ export default function ResqueFailedList(props) {
   async function retryAllFailedJobs() {
     if (window.confirm("Are you sure?")) {
       setLoading(true);
-      await execApi("post", "/resque/retryAndRemoveAllFailed");
+      await client.request("post", "/resque/retryAndRemoveAllFailed");
       successHandler.set({ message: "retried all" });
       await load();
       setLoading(false);

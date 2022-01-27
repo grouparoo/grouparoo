@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { UseApi } from "../../hooks/useApi";
 import { useState } from "react";
 import { Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
@@ -7,6 +6,9 @@ import { useRouter } from "next/router";
 import { errorHandler } from "../../eventHandlers";
 import { Actions, Models } from "../../utils/apiData";
 import LoadingButton from "../../components/LoadingButton";
+import { generateClient } from "../../client/client";
+import { NextPageContext } from "next";
+import { useApi } from "../../contexts/api";
 
 export default function Page(props) {
   const {
@@ -15,13 +17,13 @@ export default function Page(props) {
     types: Actions.ModelOptions["types"];
   } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(data: Models.GrouparooModelType) {
     setLoading(true);
-    const response: Actions.ModelCreate = await execApi(
+    const response: Actions.ModelCreate = await client.request(
       "post",
       `/model`,
       Object.assign({}, data)
@@ -84,8 +86,11 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
-  const { types }: Actions.ModelOptions = await execApi("get", `/modelOptions`);
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
+  const { types }: Actions.ModelOptions = await client.request(
+    "get",
+    `/modelOptions`
+  );
   return { types };
 };

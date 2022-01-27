@@ -3,7 +3,6 @@ import { NextPageContext } from "next";
 import { useForm } from "react-hook-form";
 import { Badge, Form } from "react-bootstrap";
 import { useState } from "react";
-import { UseApi } from "../../../../../hooks/useApi";
 import DestinationTabs from "../../../../../components/tabs/Destination";
 import PageHeader from "../../../../../components/PageHeader";
 import StateBadge from "../../../../../components/badges/StateBadge";
@@ -11,8 +10,10 @@ import LockedBadge from "../../../../../components/badges/LockedBadge";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { Actions, Models } from "../../../../../utils/apiData";
-import { errorHandler, successHandler } from "../../../../../eventHandlers";
+import { successHandler } from "../../../../../eventHandlers";
 import LoadingButton from "../../../../../components/LoadingButton";
+import { useApi } from "../../../../../contexts/api";
+import { generateClient } from "../../../../../client/client";
 
 type RetryFormValues = {
   fromDate: Date;
@@ -29,7 +30,7 @@ export default function Page(props) {
   } = props;
   const [loading, setLoading] = useState(false);
   const [previewCount, setPreviewCount] = useState(0);
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
 
   const { handleSubmit, register, getValues } = useForm<RetryFormValues>();
 
@@ -41,7 +42,7 @@ export default function Page(props) {
     if (!fromDate || !toDate) return;
 
     if (!preview) setLoading(true);
-    const response: Actions.ExportsRetryFailed = await execApi(
+    const response: Actions.ExportsRetryFailed = await client.request(
       "get",
       `/exports/retryFailed`,
       {
@@ -50,9 +51,7 @@ export default function Page(props) {
         endTimestamp: toDate.getTime(),
         preview,
       },
-      null,
-      null,
-      false
+      { useCache: false }
     );
 
     if (response) {
@@ -154,12 +153,15 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { execApi } = UseApi(ctx);
+  const client = generateClient(ctx);
   const { destinationId, modelId } = ctx.query;
-  const { destination } = await execApi("get", `/destination/${destinationId}`);
+  const { destination } = await client.request(
+    "get",
+    `/destination/${destinationId}`
+  );
   ensureMatchingModel("Destination", destination.modelId, modelId.toString());
 
-  const { model } = await execApi<Actions.ModelView>(
+  const { model } = await client.request<Actions.ModelView>(
     "get",
     `/model/${modelId}`
   );

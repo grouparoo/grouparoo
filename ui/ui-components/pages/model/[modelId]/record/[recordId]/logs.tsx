@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { UseApi } from "../../../../../hooks/useApi";
 import LogsList from "../../../../../components/log/List";
 import RecordTabs from "../../../../../components/tabs/Record";
 import { getRecordDisplayName } from "../../../../../components/record/GetRecordDisplayName";
@@ -9,6 +8,7 @@ import StateBadge from "../../../../../components/badges/StateBadge";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
+import { generateClient } from "../../../../../client/client";
 
 export default function Page(props) {
   const {
@@ -64,14 +64,16 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { recordId, modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { record } = await execApi("get", `/record/${recordId}`);
+  const client = generateClient(ctx);
+  const { record } = await client.request("get", `/record/${recordId}`);
   ensureMatchingModel("Record", record?.modelId, modelId.toString());
-  const { model } = await execApi<Actions.ModelView>(
+  const { model } = await client.request<Actions.ModelView>(
     "get",
     `/model/${modelId}`
   );
-  const { properties } = await execApi("get", `/properties`, { modelId });
+  const { properties } = await client.request("get", `/properties`, {
+    modelId,
+  });
   const logListInitialProps = await LogsList.hydrate(ctx);
   return { record, model, properties, ...logListInitialProps };
 };

@@ -1,5 +1,5 @@
+import { useApi } from "../../../contexts/api";
 import { useState, useEffect } from "react";
-import { UseApi } from "../../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../../hooks/URLParams";
 import { Table, Row, Col } from "react-bootstrap";
 import Pagination from "../../../components/Pagination";
@@ -11,7 +11,7 @@ import { errorHandler } from "../../../eventHandlers";
 
 export default function ResqueQueue(props) {
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [queue, setQueue] = useState(router.query.queue || "");
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -28,7 +28,7 @@ export default function ResqueQueue(props) {
   async function load() {
     updateURLParams(router, { offset });
     setLoading(true);
-    const response = await execApi("get", `/resque/queued`, {
+    const response = await client.request("get", `/resque/queued`, {
       queue: queue,
       limit,
       offset,
@@ -41,7 +41,7 @@ export default function ResqueQueue(props) {
 
   async function delQueue() {
     if (window.confirm("Are you sure?")) {
-      await execApi("post", `/resque/delQueue`, { queue });
+      await client.request("post", `/resque/delQueue`, { queue });
       window.location.href = "/resque";
     }
   }

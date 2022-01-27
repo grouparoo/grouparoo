@@ -1,12 +1,13 @@
+import { useApi } from "../../../../../contexts/api";
 import Head from "next/head";
 import { useEffect, useMemo, useState } from "react";
 import { Form, Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { errorHandler } from "../../../../../eventHandlers";
-import { UseApi } from "../../../../../hooks/useApi";
 import AppSelectorList from "../../../../../components/AppSelectorList";
 import { Actions, Models } from "../../../../../utils/apiData";
 import LinkButton from "../../../../../components/LinkButton";
+import { generateClient } from "../../../../../client/client";
 
 export default function Page(props) {
   const {
@@ -22,7 +23,7 @@ export default function Page(props) {
     isPrimarySourceNotReady: boolean;
   } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
   const [app, setApp] = useState({ id: null });
 
@@ -75,11 +76,15 @@ export default function Page(props) {
       if (loading) return;
 
       setLoading(true);
-      const response: Actions.SourceCreate = await execApi("post", `/source`, {
-        appId: app.id,
-        modelId: model.id,
-        type: matchingApps[0].connection.name,
-      });
+      const response: Actions.SourceCreate = await client.request(
+        "post",
+        `/source`,
+        {
+          appId: app.id,
+          modelId: model.id,
+          type: matchingApps[0].connection.name,
+        }
+      );
       if (response?.source) {
         router.push(
           `/model/${response.source.modelId}/source/${response.source.id}/edit`
@@ -142,21 +147,21 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
+  const client = generateClient(ctx);
   const { modelId } = ctx.query;
-  const { sources, total: totalSources } = await execApi<Actions.SourcesList>(
-    "get",
-    "/sources",
-    { modelId, limit: 1 }
-  );
+  const { sources, total: totalSources } =
+    await client.request<Actions.SourcesList>("get", "/sources", {
+      modelId,
+      limit: 1,
+    });
   const isCreatingPrimarySource = totalSources === 0;
   const isPrimarySourceNotReady =
     totalSources === 1 && sources[0].state !== "ready";
-  const { connectionApps } = await execApi<Actions.SourceConnectionApps>(
+  const { connectionApps } = await client.request<Actions.SourceConnectionApps>(
     "get",
     `/sources/connectionApps`
   );
-  const { model } = await execApi<Actions.ModelView>(
+  const { model } = await client.request<Actions.ModelView>(
     "get",
     `/model/${modelId}`
   );

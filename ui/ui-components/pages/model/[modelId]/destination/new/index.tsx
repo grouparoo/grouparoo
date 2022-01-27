@@ -1,12 +1,14 @@
+import { useApi } from "../../../../../contexts/api";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Form, Alert } from "react-bootstrap";
 import { errorHandler } from "../../../../../eventHandlers";
-import { UseApi } from "../../../../../hooks/useApi";
 import AppSelectorList from "../../../../../components/AppSelectorList";
 import { Actions } from "../../../../../utils/apiData";
 import LinkButton from "../../../../../components/LinkButton";
+import { generateClient } from "../../../../../client/client";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
@@ -17,7 +19,7 @@ export default function Page(props) {
     model: Actions.ModelView["model"];
   } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
   const [app, setApp] = useState({ id: null });
 
@@ -42,7 +44,7 @@ export default function Page(props) {
       if (loading) return;
 
       setLoading(true);
-      const response: Actions.DestinationCreate = await execApi(
+      const response: Actions.DestinationCreate = await client.request(
         "post",
         `/destination`,
         {
@@ -96,11 +98,11 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
   const { modelId } = ctx.query;
-  const { model } = await execApi("get", `/model/${modelId}`);
-  const { connectionApps } = await execApi(
+  const { model } = await client.request("get", `/model/${modelId}`);
+  const { connectionApps } = await client.request(
     "get",
     `/destinations/connectionApps`
   );

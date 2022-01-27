@@ -1,8 +1,9 @@
+import { useApi } from "../../../../../../ui-components/contexts/api";
 import { NextPageContext } from "next";
 import Head from "next/head";
 import GroupTabs from "@grouparoo/ui-components/components/tabs/Group";
-import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
+import { generateClient } from "@grouparoo/ui-components/client/client";
 
 export default function PluginPage(props) {
   const { group, query, model } = props;
@@ -24,9 +25,9 @@ export default function PluginPage(props) {
 
 PluginPage.getInitialProps = async (ctx: NextPageContext) => {
   const { groupId, modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { group } = await execApi("get", `/group/${groupId}`);
-  const { model } = await execApi<Actions.ModelView>(
+  const client = generateClient(ctx);
+  const { group } = await client.request("get", `/group/${groupId}`);
+  const { model } = await client.request<Actions.ModelView>(
     "get",
     `/model/${modelId}`
   );

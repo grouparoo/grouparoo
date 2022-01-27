@@ -1,11 +1,11 @@
+import { useApi } from "../../contexts/api";
 import { useState, useEffect, Fragment } from "react";
-import { UseApi } from "../../hooks/useApi";
 import { Table, Row, Col, Accordion, Button } from "react-bootstrap";
 import Head from "next/head";
 import Link from "next/link";
 import ResqueTabs from "../../components/tabs/Resque";
 import LoadingButton from "../../components/LoadingButton";
-import { errorHandler, successHandler } from "../../eventHandlers";
+import { successHandler } from "../../eventHandlers";
 import { Actions } from "../../utils/apiData";
 
 type DisplayedWorker = {
@@ -20,7 +20,7 @@ type DisplayedWorker = {
 };
 
 export default function ResqueWorkersList(props) {
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [workers, setWorkers] = useState<DisplayedWorker[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -30,16 +30,19 @@ export default function ResqueWorkersList(props) {
 
   async function load() {
     setLoading(true);
-    const { resqueDetails }: Actions.ResqueResqueDetails = await execApi(
+    const { resqueDetails }: Actions.ResqueResqueDetails = await client.request(
       "get",
       `/resque/resqueDetails`,
       {},
-      null,
-      null,
-      false
+      { useCache: false }
     );
     const { workerQueues: workerQueues }: Actions.ResqueLoadWorkerQueues =
-      await execApi("get", `/resque/loadWorkerQueues`, {}, null, null, false);
+      await client.request(
+        "get",
+        `/resque/loadWorkerQueues`,
+        {},
+        { useCache: false }
+      );
     setLoading(false);
 
     const _workers: DisplayedWorker[] = [];
@@ -75,7 +78,7 @@ export default function ResqueWorkersList(props) {
 
   async function forceCleanWorker(workerName) {
     if (window.confirm("Are you sure?")) {
-      await execApi("post", `/resque/forceCleanWorker`, {
+      await client.request("post", `/resque/forceCleanWorker`, {
         workerName: workerName,
       });
       successHandler.set({ message: "worker removed" });

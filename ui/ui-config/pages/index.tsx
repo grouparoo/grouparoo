@@ -1,5 +1,5 @@
+import { useApi } from "../../ui-components/contexts/api";
 import { useRouter } from "next/router";
-import { UseApi } from "../../ui-components/hooks/useApi";
 import Head from "next/head";
 import { Row, Col, Image, Button } from "react-bootstrap";
 import { useState, useEffect } from "react";
@@ -18,6 +18,7 @@ export default function Page(props) {
     link: "/session/sign-in",
     message: "Register",
   });
+  const { client } = useApi();
 
   useEffect(() => {
     if (navigationMode === "config:authenticated") {
@@ -27,8 +28,7 @@ export default function Page(props) {
     }
 
     async function checkSetupSteps(props) {
-      const { execApi } = UseApi(props);
-      const { setupSteps } = await execApi("get", `/setupSteps`);
+      const { setupSteps } = await client.request("get", `/setupSteps`);
       const currentStep = await setupSteps.find(
         (step) => !step.complete && !step.skipped
       );
@@ -42,7 +42,7 @@ export default function Page(props) {
       } else if (navigationMode === "config:authenticated" && !currentStep) {
         const {
           models: [model],
-        } = await execApi<Actions.ModelsList>("get", "/models", {
+        } = await client.request<Actions.ModelsList>("get", "/models", {
           limit: 1,
           order: [["name", "asc"]],
         });
@@ -55,7 +55,7 @@ export default function Page(props) {
       }
       setShouldRender(true);
     }
-  }, [navigationMode, props]);
+  }, [client, navigationMode, props, router]);
 
   if (shouldRender === false) {
     return <Loader />;

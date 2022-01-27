@@ -4,6 +4,7 @@ import SampleRecordCard, {
 } from "../record/SampleRecordCard";
 import { Actions, Models } from "../../utils/apiData";
 import { useDebouncedValue } from "../../hooks/useDebouncedValue";
+import { useApi } from "../../contexts/api";
 
 interface Props {
   destination: Models.DestinationType;
@@ -29,7 +30,8 @@ const DestinationSampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
   collection,
   ...props
 }) => {
-  const { execApi, modelId } = props;
+  const { modelId } = props;
+  const { client } = useApi();
   const debouncedDestination = useDebouncedValue(destination, 1000);
   const [warning, setWarning] = useState<string>();
 
@@ -54,7 +56,7 @@ const DestinationSampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
           return acc;
         }, {} as Record<string, string>);
 
-      const response = await execApi<Actions.DestinationRecordPreview>(
+      const response = await client.request<Actions.DestinationRecordPreview>(
         "get",
         `/destination/${debouncedDestination.id}/recordPreview`,
         {
@@ -87,7 +89,15 @@ const DestinationSampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
 
       return response;
     },
-    [execApi, debouncedDestination, modelId, groupId, collection]
+    [
+      debouncedDestination.destinationGroupMemberships,
+      debouncedDestination.id,
+      debouncedDestination.mapping,
+      client,
+      groupId,
+      modelId,
+      collection,
+    ]
   );
 
   return (

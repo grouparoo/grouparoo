@@ -1,6 +1,6 @@
+import { useApi } from "../../contexts/api";
 import { useState, useEffect } from "react";
 import { Actions } from "../../utils/apiData";
-import { UseApi } from "../../hooks/useApi";
 import Link from "next/link";
 import { Row, Col, Card, Table, Alert } from "react-bootstrap";
 import {
@@ -9,12 +9,14 @@ import {
 } from "../../components/visualizations/GrouparooChart";
 import Head from "next/head";
 import ResqueTabs from "../../components/tabs/Resque";
+import { generateClient } from "../../client/client";
+import { NextPageContext } from "next";
 
 const maxSampleLength = 30;
 const DELAY = 1000 * 3;
 
 export default function ResqueOverview(props) {
-  const { execApi } = UseApi(props, props.errorHandler);
+  const { client } = useApi();
   const {
     resqueDetails,
     failedCount: _failedCount,
@@ -44,13 +46,11 @@ export default function ResqueOverview(props) {
   }, []);
 
   async function load() {
-    const response: Actions.ResqueResqueDetails = await execApi(
+    const response: Actions.ResqueResqueDetails = await client.request(
       "get",
       "/resque/resqueDetails",
       {},
-      undefined,
-      undefined,
-      false
+      { useCache: false }
     );
 
     if (response?.resqueDetails) {
@@ -254,10 +254,10 @@ export default function ResqueOverview(props) {
   );
 }
 
-ResqueOverview.getInitialProps = async function (ctx) {
-  const { execApi } = UseApi(ctx);
+ResqueOverview.getInitialProps = async function (ctx: NextPageContext) {
+  const client = generateClient(ctx);
   const { resqueDetails, failedCount }: Actions.ResqueResqueDetails =
-    await execApi("get", "/resque/resqueDetails");
+    await client.request("get", "/resque/resqueDetails");
 
   return { resqueDetails, failedCount };
 };

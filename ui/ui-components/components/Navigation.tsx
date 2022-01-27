@@ -6,7 +6,6 @@ import {
   FontAwesomeIcon,
   FontAwesomeIconProps,
 } from "@fortawesome/react-fontawesome";
-import { UseApi } from "../hooks/useApi";
 import SetupStepsNavProgressBar from "./navigation/SetupStepsNavProgressBar";
 import RunningRunsBadge from "./navigation/RunningRunsBadge";
 import ResqueFailedCountBadge from "./navigation/ResqueFailedBadgeCount";
@@ -45,7 +44,6 @@ export default function Navigation(props) {
   const { navigationMode, navigation, clusterName, currentTeamMember } =
     useWebAppContext();
   const uiEdition = grouparooUiEdition();
-  const { execApi } = UseApi(undefined, errorHandler);
   const router = useRouter();
   const [teamMember, setTeamMember] = useState(currentTeamMember);
   const [hasBeenCollapsed, setHasBeenCollapsed] = useState(!navExpanded);
@@ -153,6 +151,7 @@ export default function Navigation(props) {
                     marginBottom: 16,
                   }}
                   src="/public/images/logo/logo.svg"
+                  alt="Grouparoo Logo"
                 />
               </a>
             </Link>
@@ -179,7 +178,7 @@ export default function Navigation(props) {
         </div>
 
         {!navigationMode.includes("unauthenticated") && (
-          <SetupStepsNavProgressBar execApi={execApi} />
+          <SetupStepsNavProgressBar />
         )}
 
         <div

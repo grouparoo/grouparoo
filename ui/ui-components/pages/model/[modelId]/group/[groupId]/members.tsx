@@ -1,9 +1,9 @@
+import { useApi } from "../../../../../contexts/api";
 import Head from "next/head";
 import { NextPageContext } from "next";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
-import { errorHandler, successHandler } from "../../../../../eventHandlers";
-import { UseApi } from "../../../../../hooks/useApi";
+import { successHandler } from "../../../../../eventHandlers";
 import StateBadge from "../../../../../components/badges/StateBadge";
 import GroupTabs from "../../../../../components/tabs/Group";
 import RecordsList from "../../../../../components/record/List";
@@ -11,6 +11,7 @@ import { Models, Actions } from "../../../../../utils/apiData";
 import PageHeader from "../../../../../components/PageHeader";
 import LockedBadge from "../../../../../components/badges/LockedBadge";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
+import { generateClient } from "../../../../../client/client";
 
 export default function Page(props) {
   const {
@@ -21,12 +22,12 @@ export default function Page(props) {
     group: Models.GroupType;
   } = props;
 
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
 
   async function run() {
     setLoading(true);
-    const response: Actions.GroupRun = await execApi(
+    const response: Actions.GroupRun = await client.request(
       "put",
       `/group/${group.id}/run`
     );
@@ -82,9 +83,9 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { groupId, modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { group } = await execApi("get", `/group/${groupId}`);
-  const { model } = await execApi<Actions.ModelView>(
+  const client = generateClient(ctx);
+  const { group } = await client.request("get", `/group/${groupId}`);
+  const { model } = await client.request<Actions.ModelView>(
     "get",
     `/model/${modelId}`
   );

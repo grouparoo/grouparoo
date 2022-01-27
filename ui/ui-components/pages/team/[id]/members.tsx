@@ -1,5 +1,5 @@
+import { useApi } from "../../../contexts/api";
 import { useState } from "react";
-import { UseApi } from "../../../hooks/useApi";
 import LoadingButton from "../../../components/LoadingButton";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -7,8 +7,10 @@ import LoadingTable from "../../../components/LoadingTable";
 import RecordImageFromEmail from "../../../components/visualizations/RecordImageFromEmail";
 import { Models, Actions } from "../../../utils/apiData";
 import TeamTabs from "../../../components/tabs/Team";
-import { errorHandler, successHandler } from "../../../eventHandlers";
+import { successHandler } from "../../../eventHandlers";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
+import { generateClient } from "../../../client/client";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
@@ -17,7 +19,7 @@ export default function Page(props) {
     team: Models.TeamType;
   } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
   const [teamMembers, setTeamMembers] = useState<Models.TeamMemberType[]>(
     props.teamMembers
@@ -26,13 +28,13 @@ export default function Page(props) {
   async function handleDelete(teamMember) {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const { success }: Actions.TeamMemberDestroy = await execApi(
+      const { success }: Actions.TeamMemberDestroy = await client.request(
         "delete",
         `/team/member/${teamMember.id}`
       );
       if (success) {
         successHandler.set({ message: "Team Member Deleted" });
-        const { teamMembers: _teamMembers } = await execApi(
+        const { teamMembers: _teamMembers } = await client.request(
           "get",
           `/team/${team.id}/members`
         );
@@ -114,10 +116,10 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
   const { id } = ctx.query;
-  const { team } = await execApi("get", `/team/${id}`);
-  const { teamMembers } = await execApi("get", `/team/${id}/members`);
+  const { team } = await client.request("get", `/team/${id}`);
+  const { teamMembers } = await client.request("get", `/team/${id}/members`);
   return { team, teamMembers };
 };

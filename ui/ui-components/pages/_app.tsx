@@ -1,19 +1,15 @@
 import { AxiosError } from "axios";
-import App from "next/app";
 import type { AppContext, AppProps } from "next/app";
+import App from "next/app";
 import { useMemo } from "react";
-
-import { UseApi } from "../hooks/useApi";
-
+import { Client, generateClient } from "../client/client";
+import "../components/Icons";
 import Layout from "../components/layouts/Main";
 import PageTransition from "../components/PageTransition";
 import StatusSubscription from "../components/StatusSubscription";
-import "../components/Icons";
-
+import { ApiContext } from "../contexts/api";
 import { WebAppContext } from "../contexts/webApp";
-
 import "../eventHandlers";
-
 import { Actions } from "../utils/apiData";
 import { renderNestedContextProviders } from "../utils/contextHelper";
 
@@ -23,6 +19,7 @@ export interface GrouparooNextAppProps {
   hydrationError?: string;
   navigation: Actions.NavigationList["navigation"];
   navigationMode: Actions.NavigationList["navigationMode"];
+  client?: Client;
 }
 
 export default function GrouparooNextApp(
@@ -47,8 +44,13 @@ export default function GrouparooNextApp(
     };
   }, [props]);
 
+  // The serialized object passed from the server is not an instance of the Client class
+  const client = props.client instanceof Client ? props.client : new Client();
   return renderNestedContextProviders(
-    [[WebAppContext, pageContext]],
+    [
+      [WebAppContext, pageContext],
+      [ApiContext, { client }],
+    ],
     <>
       <PageTransition />
 
@@ -64,14 +66,15 @@ export default function GrouparooNextApp(
 }
 
 GrouparooNextApp.getInitialProps = async (appContext: AppContext) => {
-  const { execApi } = UseApi(appContext.ctx);
+  const client = generateClient(appContext);
+
   let currentTeamMember: Partial<Actions.SessionView["teamMember"]> = {
     firstName: "",
     id: null,
   };
 
   try {
-    const navigationResponse: Actions.NavigationList = await execApi(
+    const navigationResponse: Actions.NavigationList = await client.request(
       "get",
       `/navigation`
     );
@@ -108,10 +111,12 @@ GrouparooNextApp.getInitialProps = async (appContext: AppContext) => {
       navigation: navigationResponse.navigation,
       clusterName: navigationResponse.clusterName,
       hydrationError,
+      client,
     };
   } catch (_error) {
     const { formattedErrorMessage, formattedErrorObject } = renderError(_error);
     return {
+      client,
       hydrationError: JSON.stringify({
         message: formattedErrorMessage,
         data: formattedErrorObject,

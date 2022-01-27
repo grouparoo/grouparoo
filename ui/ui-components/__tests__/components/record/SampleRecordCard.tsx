@@ -1,9 +1,9 @@
-import { render, act } from "@testing-library/react";
+import { act, render } from "@testing-library/react";
 import SampleRecordCard, {
   RecordType,
   SampleRecordCardProps,
 } from "../../../components/record/SampleRecordCard";
-import { UseApi } from "../../../hooks/useApi";
+import { ApiContext } from "../../../contexts/api";
 import { Models } from "../../../utils/apiData";
 
 describe("SampleRecordCard", () => {
@@ -11,7 +11,6 @@ describe("SampleRecordCard", () => {
 
   beforeEach(() => {
     cardProps = {
-      execApi: UseApi(undefined).execApi,
       modelId: "test-model",
       fetchRecord: async () => ({}),
       properties: [],
@@ -19,31 +18,49 @@ describe("SampleRecordCard", () => {
     require("../../../components/record/SampleRecordCard").isConfigUI = false;
   });
 
-  it("should render loading", () => {
-    expect(
-      render(<SampleRecordCard {...cardProps} />).container
-    ).toMatchSnapshot();
-  });
-
   it("should render with no records", async () => {
-    cardProps.execApi = async () => ({ records: [], total: 0 } as any);
     cardProps.properties = [{ id: "some-property", sourceId: "some-source" }];
 
     let card: ReturnType<typeof render>;
     await act(async () => {
-      card = render(<SampleRecordCard {...cardProps} />);
+      card = render(
+        <ApiContext.Provider
+          value={{
+            client: {
+              request: async () => ({
+                records: [],
+                total: 0,
+              }),
+            } as any,
+          }}
+        >
+          <SampleRecordCard {...cardProps} />
+        </ApiContext.Provider>
+      );
     });
     expect(card.container).toMatchSnapshot();
   });
 
   it("should render with no records in 'config mode'", async () => {
     require("../../../components/record/SampleRecordCard").isConfigUI = true;
-    cardProps.execApi = async () => ({ records: [], total: 0 } as any);
     cardProps.properties = [{ id: "some-property", sourceId: "some-source" }];
 
     let card: ReturnType<typeof render>;
     await act(async () => {
-      card = render(<SampleRecordCard {...cardProps} />);
+      card = render(
+        <ApiContext.Provider
+          value={{
+            client: {
+              request: async () => ({
+                records: [],
+                total: 0,
+              }),
+            } as any,
+          }}
+        >
+          <SampleRecordCard {...cardProps} />
+        </ApiContext.Provider>
+      );
     });
     expect(card.container).toMatchSnapshot();
   });
@@ -74,11 +91,6 @@ describe("SampleRecordCard", () => {
         },
       },
     };
-    cardProps.execApi = async () =>
-      ({
-        records: [record] as RecordType[],
-        total: 1,
-      } as any);
     const fetchRecord: (recordId?: string) => Promise<{
       record?: RecordType;
       groups?: Models.GroupType[];
@@ -94,7 +106,20 @@ describe("SampleRecordCard", () => {
 
     let card: ReturnType<typeof render>;
     await act(async () => {
-      card = render(<SampleRecordCard {...cardProps} />);
+      card = render(
+        <ApiContext.Provider
+          value={{
+            client: {
+              request: async () => ({
+                records: [record],
+                total: 1,
+              }),
+            } as any,
+          }}
+        >
+          <SampleRecordCard {...cardProps} />
+        </ApiContext.Provider>
+      );
     });
     expect(card.container).toMatchSnapshot();
   });
@@ -126,11 +151,6 @@ describe("SampleRecordCard", () => {
         },
       },
     };
-    cardProps.execApi = async () =>
-      ({
-        records: [record] as RecordType[],
-        total: 1,
-      } as any);
     const fetchRecord: (recordId?: string) => Promise<{
       record?: RecordType;
       groups?: Models.GroupType[];
@@ -146,7 +166,20 @@ describe("SampleRecordCard", () => {
 
     let card: ReturnType<typeof render>;
     await act(async () => {
-      card = render(<SampleRecordCard {...cardProps} />);
+      card = render(
+        <ApiContext.Provider
+          value={{
+            client: {
+              request: async () => ({
+                records: [record],
+                total: 1,
+              }),
+            } as any,
+          }}
+        >
+          <SampleRecordCard {...cardProps} />
+        </ApiContext.Provider>
+      );
     });
     expect(card.container).toMatchSnapshot();
   });

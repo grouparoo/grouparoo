@@ -1,4 +1,3 @@
-import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Table, Alert, Card, Badge } from "react-bootstrap";
 import Link from "next/link";
 import EnterpriseLink from "../../../components/GrouparooLink";
@@ -12,6 +11,8 @@ import {
 import StateBadge from "../../../components/badges/StateBadge";
 import { DurationTime } from "../../../components/DurationTime";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
+import { generateClient } from "../../../client/client";
+import { NextPageContext } from "next";
 
 export default function Page({
   _export,
@@ -197,10 +198,10 @@ export default function Page({
   );
 }
 
-Page.getInitialProps = async (ctx) => {
+Page.getInitialProps = async (ctx: NextPageContext) => {
   const { id } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { export: _export } = await execApi("get", `/export/${id}`);
-  const { groups } = await execApi("get", `/groups`);
+  const client = generateClient(ctx);
+  const { export: _export } = await client.request("get", `/export/${id}`);
+  const { groups } = await client.request("get", `/groups`);
   return { _export, groups };
 };

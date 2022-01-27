@@ -1,12 +1,11 @@
+import { useApi } from "../../contexts/api";
 import { useState, useEffect } from "react";
-import { UseApi } from "../../hooks/useApi";
 import { Table, Row, Col } from "react-bootstrap";
 import Head from "next/head";
 import ResqueTabs from "../../components/tabs/Resque";
-import { errorHandler } from "../../eventHandlers";
 
 export default function ResqueRedis(props) {
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [redisInfo, setRedisInfo] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -16,7 +15,7 @@ export default function ResqueRedis(props) {
 
   async function load() {
     setLoading(true);
-    const response = await execApi("get", `/resque/redisInfo`);
+    const response = await client.request("get", `/resque/redisInfo`);
     setLoading(false);
     if (response?.redisInfo) {
       setRedisInfo(response.redisInfo);

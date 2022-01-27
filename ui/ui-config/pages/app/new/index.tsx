@@ -1,5 +1,5 @@
+import { useApi } from "../../../../ui-components/contexts/api";
 import Head from "next/head";
-import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import { useState, useEffect } from "react";
 import { Form, Modal, Spinner, Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
@@ -7,6 +7,8 @@ import AppSelectorList from "@grouparoo/ui-components/components/AppSelectorList
 import { errorHandler } from "@grouparoo/ui-components/eventHandlers";
 import { EventDispatcher } from "@grouparoo/ui-components/utils/eventDispatcher";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
+import { generateClient } from "@grouparoo/ui-components/client/client";
+import { NextPageContext } from "next";
 
 class CustomErrorHandler extends EventDispatcher<{ message: string }> {
   message: Error | string | any = null;
@@ -34,7 +36,7 @@ export default function Page(props) {
   } = props;
 
   const router = useRouter();
-  const { execApi } = UseApi(props, new CustomErrorHandler());
+  const { client } = useApi();
   const [plugin, setPlugin] = useState<
     Partial<Actions.PluginsList["plugins"][number]>
   >({ name: "" });
@@ -47,7 +49,7 @@ export default function Page(props) {
   ] = useState(false);
 
   async function resetPluginsAndApps() {
-    const { plugins: _plugins }: Actions.PluginsList = await execApi(
+    const { plugins: _plugins }: Actions.PluginsList = await client.request(
       "get",
       `/plugins`
     );
@@ -79,7 +81,7 @@ export default function Page(props) {
     setPlugin(plugin);
     if (plugin.apps?.length === 1) {
       setLoading(true);
-      const response: Actions.AppCreate = await execApi("post", `/app`, {
+      const response: Actions.AppCreate = await client.request("post", `/app`, {
         type: plugin.apps[0].name,
       });
       if (response?.app) {
@@ -99,7 +101,7 @@ export default function Page(props) {
   async function installPlugin(plugin: Actions.PluginsList["plugins"][number]) {
     setLoading(true);
     setInstallingMessage(`Installing plugin ${plugin.name} ...`);
-    const response: Actions.PluginInstall = await execApi(
+    const response: Actions.PluginInstall = await client.request(
       "post",
       `/plugin/install`,
       {
@@ -116,7 +118,7 @@ export default function Page(props) {
 
       //we only want the plugin type, not the '@grouparoo/'
       const pluginName = plugin.name.substring(11);
-      const newApp: Actions.AppCreate = await execApi("post", `/app`, {
+      const newApp: Actions.AppCreate = await client.request("post", `/app`, {
         type: pluginName,
       });
       if (newApp?.app) {
@@ -145,13 +147,11 @@ export default function Page(props) {
       return;
     }
 
-    let response: Actions.PublicStatus = await execApi(
+    let response: Actions.PublicStatus = await client.request(
       "get",
       "/status/public",
       undefined,
-      undefined,
-      undefined,
-      false
+      { useCache: false }
     );
 
     if (response["status"] !== "ok") {
@@ -206,12 +206,16 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
-  const { plugins }: Actions.PluginsList = await execApi("get", `/plugins`, {
-    includeInstalled: true,
-    includeAvailable: true,
-    includeVersions: false,
-  });
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
+  const { plugins }: Actions.PluginsList = await client.request(
+    "get",
+    `/plugins`,
+    {
+      includeInstalled: true,
+      includeAvailable: true,
+      includeVersions: false,
+    }
+  );
   return { plugins };
 };

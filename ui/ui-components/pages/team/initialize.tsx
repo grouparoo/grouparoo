@@ -1,33 +1,31 @@
+import { useApi } from "../../contexts/api";
 import Head from "next/head";
 import { useState } from "react";
-import { UseApi } from "../../hooks/useApi";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { Form, Card } from "react-bootstrap";
 import LoadingButton from "../../components/LoadingButton";
 import { Actions } from "../../utils/apiData";
-import {
-  errorHandler,
-  sessionHandler,
-  successHandler,
-} from "../../eventHandlers";
+import { sessionHandler, successHandler } from "../../eventHandlers";
+import { generateClient } from "../../client/client";
+import { NextPageContext } from "next";
 
 export default function TeamInitializePage(props) {
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
   const setting: Actions.SettingCoreClusterName["setting"] = props.setting;
 
   async function onSubmit(data) {
     setLoading(true);
-    const response: Actions.TeamInitialize = await execApi(
+    const response: Actions.TeamInitialize = await client.request(
       "post",
       `/team/initialize`,
       data
     );
     if (response?.team) {
-      const response: Actions.SessionCreate = await execApi(
+      const response: Actions.SessionCreate = await client.request(
         "post",
         `/session`,
         data
@@ -173,8 +171,8 @@ export default function TeamInitializePage(props) {
   );
 }
 
-TeamInitializePage.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
-  const { setting } = await execApi("get", `/setting/core/cluster-name`);
+TeamInitializePage.getInitialProps = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
+  const { setting } = await client.request("get", `/setting/core/cluster-name`);
   return { setting };
 };

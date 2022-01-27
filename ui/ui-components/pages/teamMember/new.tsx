@@ -1,3 +1,4 @@
+import { useApi } from "../../contexts/api";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -9,9 +10,10 @@ import {
   successHandler,
   teamMemberHandler,
 } from "../../eventHandlers";
-import { UseApi } from "../../hooks/useApi";
 import { Actions, Models } from "../../utils/apiData";
 import { grouparooUiEdition } from "../../utils/uiEdition";
+import { generateClient } from "../../client/client";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
@@ -20,7 +22,7 @@ export default function Page(props) {
     teams: Models.TeamType[];
   } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
   const { id: teamId } = router.query;
@@ -30,7 +32,7 @@ export default function Page(props) {
     if (!data.teamId && teamId) data.teamId = teamId;
 
     setLoading(true);
-    const response: Actions.TeamMemberCreate = await execApi(
+    const response: Actions.TeamMemberCreate = await client.request(
       "post",
       `/team/member`,
       data
@@ -160,8 +162,8 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
-  const { teams } = await execApi("get", `/teams`);
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
+  const { teams } = await client.request("get", `/teams`);
   return { teams };
 };

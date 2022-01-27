@@ -2,10 +2,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 import { Alert, Button, ButtonGroup, Col, Row } from "react-bootstrap";
-import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
-import { errorHandler } from "../../eventHandlers";
 import Pagination from "../Pagination";
 import LoadingTable from "../LoadingTable";
 import { Models, Actions } from "../../utils/apiData";
@@ -13,6 +11,9 @@ import { formatTimestamp } from "../../utils/formatTimestamp";
 import { ImportRecordPropertiesDiff, ImportGroupsDiff } from "./Diff";
 import StateBadge from "../badges/StateBadge";
 import { capitalize } from "../../utils/languageHelper";
+import { NextPageContext } from "next";
+import { useApi } from "../../contexts/api";
+import { generateClient } from "../../client/client";
 
 const states = [
   "all",
@@ -28,7 +29,7 @@ type ImportStateOption = typeof states[number];
 export default function ImportList(props) {
   const { groups }: { groups: Models.GroupType[] } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
   const [imports, setImports] = useState<Models.ImportType[]>(props.imports);
   const [total, setTotal] = useState(props.total);
@@ -54,13 +55,17 @@ export default function ImportList(props) {
     updateURLParams(router, { offset, state });
     setLoading(true);
 
-    const response: Actions.ImportsList = await execApi("get", `/imports`, {
-      limit,
-      offset,
-      creatorId,
-      recordId,
-      state: state === "all" ? undefined : state,
-    });
+    const response: Actions.ImportsList = await client.request(
+      "get",
+      `/imports`,
+      {
+        limit,
+        offset,
+        creatorId,
+        recordId,
+        state: state === "all" ? undefined : state,
+      }
+    );
     setLoading(false);
     if (response?.imports) {
       setImports(response.imports);
@@ -214,11 +219,11 @@ export default function ImportList(props) {
   );
 }
 
-ImportList.hydrate = async (ctx) => {
-  const { execApi } = UseApi(ctx);
+ImportList.hydrate = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
   const { creatorId, limit, offset, state, recordId } = ctx.query;
 
-  const { imports, total } = await execApi("get", `/imports`, {
+  const { imports, total } = await client.request("get", `/imports`, {
     limit,
     offset,
     creatorId,
@@ -226,7 +231,7 @@ ImportList.hydrate = async (ctx) => {
     state: state === "all" ? undefined : state,
   });
 
-  const { groups } = await execApi("get", `/groups`);
+  const { groups } = await client.request("get", `/groups`);
   return { groups, imports, total };
 };
 

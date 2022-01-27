@@ -1,5 +1,4 @@
 import { Modal } from "react-bootstrap";
-import { ApiHook } from "../../hooks/useApi";
 import { Models } from "../../utils/apiData";
 import AddSampleRecordForm from "./AddSampleRecordForm";
 
@@ -8,7 +7,6 @@ interface Props {
   show: boolean;
   onRecordCreated: (record: Models.GrouparooRecordType) => void;
   onHide: () => void;
-  execApi: ApiHook["execApi"];
   properties: Models.PropertyType[];
 }
 
@@ -18,7 +16,6 @@ const AddSampleRecordModal: React.FC<Props> = ({
   show,
   onHide,
   onRecordCreated,
-  execApi,
 }) => {
   return (
     <Modal show={show} onHide={onHide} centered>
@@ -29,7 +26,6 @@ const AddSampleRecordModal: React.FC<Props> = ({
         <AddSampleRecordForm
           modelId={modelId}
           properties={properties}
-          execApi={execApi}
           onSubmitComplete={(record) => {
             onRecordCreated(record);
             onHide();

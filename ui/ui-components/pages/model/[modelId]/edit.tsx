@@ -1,13 +1,15 @@
+import { useApi } from "../../../contexts/api";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { Row, Col, Form } from "react-bootstrap";
 import { useRouter } from "next/router";
-import { errorHandler, successHandler } from "../../../eventHandlers";
+import { successHandler } from "../../../eventHandlers";
 import PageHeader from "../../../components/PageHeader";
 import ModelTabs from "../../../components/tabs/Model";
 import LoadingButton from "../../../components/LoadingButton";
-import { UseApi } from "../../../hooks/useApi";
 import { Actions, Models } from "../../../utils/apiData";
+import { generateClient } from "../../../client/client";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
@@ -16,7 +18,7 @@ export default function Page(props) {
     types: Actions.ModelOptions["types"];
   } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [model, setModel] = useState<Models.GrouparooModelType>(props.model);
   const [loading, setLoading] = useState(false);
   const { modelId } = router.query;
@@ -29,7 +31,7 @@ export default function Page(props) {
     event.preventDefault();
     setLoading(true);
 
-    const response: Actions.ModelEdit = await execApi(
+    const response: Actions.ModelEdit = await client.request(
       "put",
       `/model/${modelId}`,
       Object.assign({}, model)
@@ -48,7 +50,7 @@ export default function Page(props) {
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const response: Actions.ModelDestroy = await execApi(
+      const response: Actions.ModelDestroy = await client.request(
         "delete",
         `/model/${modelId}`
       );
@@ -138,10 +140,10 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
+Page.getInitialProps = async (ctx: NextPageContext) => {
   const { modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { model } = await execApi("get", `/model/${modelId}`);
-  const { types } = await execApi("get", `/modelOptions`);
+  const client = generateClient(ctx);
+  const { model } = await client.request("get", `/model/${modelId}`);
+  const { types } = await client.request("get", `/modelOptions`);
   return { model, types };
 };
