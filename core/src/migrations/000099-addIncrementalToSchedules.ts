@@ -8,17 +8,17 @@ export default {
     await queryInterface.addColumn("schedules", "incremental", {
       type: DataTypes.BOOLEAN,
       allowNull: true,
-      defaultValue: true,
+      defaultValue: false,
     });
 
-    const [nonIncrementalSources]: [Record<string, any>[], unknown] =
+    const [incrementalSources]: [Record<string, any>[], unknown] =
       await queryInterface.sequelize.query(
-        `SELECT * FROM "sources" WHERE type = 'csv-import-table' OR type = 'google-sheet-import' OR type = 'calculated-property-import' OR type LIKE '%-import-query'`
+        `SELECT * FROM "sources" WHERE type LIKE '%-import-table'`
       );
 
-    if (nonIncrementalSources.length > 0) {
+    if (incrementalSources.length > 0) {
       await queryInterface.sequelize.query(
-        `UPDATE schedules SET incremental=false WHERE id IN (${nonIncrementalSources
+        `UPDATE schedules SET incremental=true WHERE id IN (${incrementalSources
           .map((s) => s.id)
           .join(", ")})`
       );
