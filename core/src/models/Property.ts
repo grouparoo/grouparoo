@@ -389,6 +389,15 @@ export class Property extends LoggedModel<Property> {
   }
 
   @BeforeSave
+  static async ensureUniquePrimaryKey(instance: Property) {
+    if (instance.isPrimaryKey && !instance.unique) {
+      throw new Error(
+        `Property "${instance.key}" must be unique because it‘s the model‘s Primary Key.`
+      );
+    }
+  }
+
+  @BeforeSave
   static async ensureOptions(instance: Property) {
     const source = await Source.findById(instance.sourceId);
     await source.validateOptions(null);
