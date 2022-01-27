@@ -13,7 +13,7 @@ export default {
 
     const [nonIncrementalSources]: [Record<string, any>[], unknown] =
       await queryInterface.sequelize.query(
-        `SELECT * FROM "sources" WHERE type IN ('csv-import-table', 'google-sheet-import')`
+        `SELECT * FROM "sources" WHERE type = 'csv-import-table' OR type = 'google-sheet-import' OR type = 'calculated-property-import' OR type LIKE '%-import-query'`
       );
 
     if (nonIncrementalSources.length > 0) {
