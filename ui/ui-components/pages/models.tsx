@@ -15,17 +15,20 @@ import StateBadge from "../components/badges/StateBadge";
 import LinkButton from "../components/LinkButton";
 import { NextPageWithInferredProps } from "../utils/pageHelper";
 import { generateClient } from "../client/client";
+import { withServerErrorHandler } from "../utils/withServerErrorHandler";
 
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const client = generateClient(ctx);
-  const { limit, offset } = ctx.query;
-  const { models, total } = await client.request<Actions.ModelsList>(
-    "get",
-    `/models`,
-    { limit, offset }
-  );
-  return { props: { models, total } };
-};
+export const getServerSideProps = withServerErrorHandler(
+  async (ctx: GetServerSidePropsContext) => {
+    const client = generateClient(ctx);
+    const { limit, offset } = ctx.query;
+    const { models, total } = await client.request<Actions.ModelsList>(
+      "get",
+      `/models`,
+      { limit, offset }
+    );
+    return { props: { models, total } };
+  }
+);
 
 const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   const router = useRouter();

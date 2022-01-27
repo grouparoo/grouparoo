@@ -27,6 +27,7 @@ import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 import PrimaryKeyBadge from "../../../../../components/badges/PrimaryKeyBadge";
 import { useApi } from "../../../../../contexts/api";
 import { generateClient } from "../../../../../client/client";
+import { withServerErrorHandler } from "../../../../../utils/withServerErrorHandler";
 
 interface FormData {
   mapping?: {
@@ -621,51 +622,49 @@ const Page: NextPage<Props> = ({
 
 export default Page;
 
-export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
-  const { sourceId, modelId } = ctx.query;
-  const client = generateClient(ctx);
-  const { source } = await client.request("get", `/source/${sourceId}`);
-  ensureMatchingModel("Source", source.modelId, modelId.toString());
+export const getServerSideProps: GetServerSideProps<Props> =
+  withServerErrorHandler(async (ctx) => {
+    const { sourceId, modelId } = ctx.query;
+    const client = generateClient(ctx);
+    const { source } = await client.request("get", `/source/${sourceId}`);
+    ensureMatchingModel("Source", source.modelId, modelId.toString());
 
-  const { model } = await client.request<Actions.ModelView>(
-    "get",
-    `/model/${modelId}`
-  );
+    const { model } = await client.request<Actions.ModelView>(
+      "get",
+      `/model/${modelId}`
+    );
 
-  const { total: totalSources } = await client.request("get", `/sources`, {
-    modelId,
-    limit: 1,
-  });
-
-  const { environmentVariableOptions } = await client.request(
-    "get",
-    `/sources/connectionApps`
-  );
-
-  const { properties, examples: propertyExamples } =
-    await client.request<Actions.PropertiesList>("get", `/properties`, {
-      includeExamples: true,
-      state: "ready",
-      modelId: source?.modelId,
+    const { total: totalSources } = await client.request("get", `/sources`, {
+      modelId,
+      limit: 1,
     });
 
-  const { total: scheduleCount } = await client.request<Actions.SchedulesList>(
-    "get",
-    `/schedules`,
-    {
-      modelId: source?.modelId,
-    }
-  );
+    const { environmentVariableOptions } = await client.request(
+      "get",
+      `/sources/connectionApps`
+    );
 
-  return {
-    props: {
-      environmentVariableOptions,
-      model,
-      properties,
-      propertyExamples,
-      source,
-      scheduleCount,
-      totalSources,
-    },
-  };
-};
+    const { properties, examples: propertyExamples } =
+      await client.request<Actions.PropertiesList>("get", `/properties`, {
+        includeExamples: true,
+        state: "ready",
+        modelId: source?.modelId,
+      });
+
+    const { total: scheduleCount } =
+      await client.request<Actions.SchedulesList>("get", `/schedules`, {
+        modelId: source?.modelId,
+      });
+
+    return {
+      props: {
+        environmentVariableOptions,
+        model,
+        properties,
+        propertyExamples,
+        source,
+        scheduleCount,
+        totalSources,
+      },
+    };
+  });

@@ -14,6 +14,7 @@ import PageHeader from "../../../components/PageHeader";
 import ModelTabs from "../../../components/tabs/Model";
 import { GrouparooModelContextProvider } from "../../../contexts/grouparooModel";
 import { Actions, Models } from "../../../utils/apiData";
+import { withServerErrorHandler } from "../../../utils/withServerErrorHandler";
 
 interface Props {
   model: Models.GrouparooModelType;
@@ -123,57 +124,56 @@ const Page: NextPage<Props> = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps<Props> = async (
-  context
-) => {
-  const { modelId, limit, offset } = context.query;
-  const client = generateClient(context);
+export const getServerSideProps: GetServerSideProps<Props> =
+  withServerErrorHandler(async (context) => {
+    const { modelId, limit, offset } = context.query;
+    const client = generateClient(context);
 
-  const params = {
-    limit,
-    offset,
-    modelId,
-  };
+    const params = {
+      limit,
+      offset,
+      modelId,
+    };
 
-  const [
-    { sources, total: totalSources },
-    { destinations },
-    { properties },
-    { groups },
-    { schedules },
-    { model },
-  ] = await Promise.all([
-    client.request<Actions.SourcesList>("get", `/sources`, params),
-    client.request<Actions.DestinationsList>("get", `/destinations`, params),
-    client.request<Actions.PropertiesList>("get", `/properties`, params),
-    client.request<Actions.GroupsList>("get", `/groups`, params),
-    client.request<Actions.SchedulesList>("get", `/schedules`, params),
-    client.request<Actions.ModelView>("get", `/model/${modelId}`),
-  ]);
+    const [
+      { sources, total: totalSources },
+      { destinations },
+      { properties },
+      { groups },
+      { schedules },
+      { model },
+    ] = await Promise.all([
+      client.request<Actions.SourcesList>("get", `/sources`, params),
+      client.request<Actions.DestinationsList>("get", `/destinations`, params),
+      client.request<Actions.PropertiesList>("get", `/properties`, params),
+      client.request<Actions.GroupsList>("get", `/groups`, params),
+      client.request<Actions.SchedulesList>("get", `/schedules`, params),
+      client.request<Actions.ModelView>("get", `/model/${modelId}`),
+    ]);
 
-  const primaryKeyProperty = properties.find((p) => p.isPrimaryKey);
-  const primarySource =
-    sources.length === 1
-      ? sources[0] // If there is only one source this will be the primary source
-      : primaryKeyProperty
-      ? sources.find(({ id }) => id === primaryKeyProperty.sourceId)
-      : null;
-  const secondarySources = primarySource
-    ? sources.filter(({ id }) => id !== primarySource.id)
-    : sources;
+    const primaryKeyProperty = properties.find((p) => p.isPrimaryKey);
+    const primarySource =
+      sources.length === 1
+        ? sources[0] // If there is only one source this will be the primary source
+        : primaryKeyProperty
+        ? sources.find(({ id }) => id === primaryKeyProperty.sourceId)
+        : null;
+    const secondarySources = primarySource
+      ? sources.filter(({ id }) => id !== primarySource.id)
+      : sources;
 
-  return {
-    props: {
-      model,
-      primarySource,
-      secondarySources,
-      totalSources,
-      properties,
-      groups,
-      schedules,
-      destinations,
-    },
-  };
-};
+    return {
+      props: {
+        model,
+        primarySource,
+        secondarySources,
+        totalSources,
+        properties,
+        groups,
+        schedules,
+        destinations,
+      },
+    };
+  });
 
 export default Page;

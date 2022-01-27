@@ -7,24 +7,25 @@ import LoadingButton from "../components/LoadingButton";
 import RecordImageFromEmail from "../components/visualizations/RecordImageFromEmail";
 import { useApi } from "../contexts/api";
 import { sessionHandler, successHandler } from "../eventHandlers";
-import { Actions, Models } from "../utils/apiData";
 import { NextPageWithInferredProps } from "../utils/pageHelper";
+import { Actions } from "../utils/apiData";
+import { withServerErrorHandler } from "../utils/withServerErrorHandler";
 
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const client = generateClient(ctx);
-  const { teamMember } = await client.request<Actions.AccountView>(
-    "get",
-    `/account`
-  );
-  return { props: { teamMember } };
-};
+export const getServerSideProps = withServerErrorHandler(
+  async (ctx: GetServerSidePropsContext) => {
+    const client = generateClient(ctx);
+    const { teamMember } = await client.request<Actions.AccountView>(
+      "get",
+      `/account`
+    );
+    return { props: { teamMember } };
+  }
+);
 
 const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   const { client } = useApi();
   const [loading, setLoading] = useState(false);
-  const [teamMember, setTeamMember] = useState<Models.TeamMemberType>(
-    props.teamMember
-  );
+  const [teamMember, setTeamMember] = useState(props.teamMember);
 
   async function submit(event: FormEvent) {
     event.preventDefault();

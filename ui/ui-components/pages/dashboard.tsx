@@ -11,6 +11,7 @@ import {
   PendingExports,
 } from "../components/visualizations/HomepageWidgets";
 import { UseApi } from "../hooks/useApi";
+import { withServerErrorHandler } from "../utils/withServerErrorHandler";
 
 export default function Page() {
   return (
@@ -56,8 +57,10 @@ export default function Page() {
 }
 
 // this getServerSideProps doesn't actually return anything, but we to want to make a request to see if the user is signed in
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const { execApi } = UseApi(ctx);
-  await execApi("get", `/session`);
-  return { props: {} };
-};
+export const getServerSideProps = withServerErrorHandler(
+  async (ctx: GetServerSidePropsContext) => {
+    const { execApi } = UseApi(ctx);
+    await execApi("get", `/session`);
+    return { props: {} };
+  }
+);

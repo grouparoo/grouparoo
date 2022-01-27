@@ -1,22 +1,17 @@
 import { Alert } from "react-bootstrap";
 import { Fragment, useState, useEffect } from "react";
 import StackTrace from "stacktrace-js";
-import { useRouter } from "next/router";
 
-export default function ErrorPage({ err, statusCode, errorCode }) {
-  const router = useRouter();
+export default function ErrorPage({ err, statusCode }) {
   const [stringifiedStack, setStringifiedStack] = useState(
     "Loading source map..."
   );
 
   useEffect(() => {
-    redirect();
     parseError();
   }, []);
 
   function parseError() {
-    if (errorCode) return;
-
     StackTrace.fromError(err)
       .then((stackFrames) => {
         const _stringifiedStack = stackFrames
@@ -26,20 +21,6 @@ export default function ErrorPage({ err, statusCode, errorCode }) {
       })
       .catch(console.error);
   }
-
-  function redirect() {
-    if (errorCode === "NO_TEAMS_ERROR") {
-      router.push("/");
-    }
-    if (
-      errorCode === "AUTHENTICATION_ERROR" &&
-      window.location.pathname !== "/session/sign-in"
-    ) {
-      router.push(`/session/sign-in?nextPage=${window.location.pathname}`);
-    }
-  }
-
-  if (errorCode) return null;
 
   return (
     <>
@@ -82,6 +63,5 @@ export default function ErrorPage({ err, statusCode, errorCode }) {
 
 ErrorPage.getInitialProps = ({ res, err }) => {
   const statusCode = res ? res.statusCode : err ? err.statusCode : 404;
-  const errorCode: string = err["code"];
-  return { statusCode, errorCode };
+  return { statusCode };
 };
