@@ -29,7 +29,7 @@ import { MappingHelper } from "../mappingHelper";
 import { RecordPropertyOps } from "./recordProperty";
 import { Option } from "../../models/Option";
 import { RecordPropertyType } from "./record";
-import { getLock } from "../locks";
+import { getOrSetLock, Lock } from "../locks";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -914,35 +914,39 @@ export namespace DestinationOps {
     error: Error;
   }> {
     const _exports: Export[] = [];
+    const locks: Lock[] = [];
 
-    for (const _export of givenExports) {
-      const { isLocked, lockedBy } = await getLock(
-        `${_export.recordId}:${_export.destinationId}`,
-        _export.id,
-        null,
-        "export"
-      );
+    for (const givenExport of givenExports) {
+      const lock = await getOrSetLock({
+        key: `${givenExport.recordId}:${givenExport.destinationId}`,
+      });
+      locks.push(lock);
 
-      if (isLocked) {
-        const lockingExport = await Export.findById(lockedBy);
+      if (lock.isLocked) {
+        // is _export the newest export for this pair?  if not, cancel it.
+        const mostRecentExport = await Export.findOne({
+          where: {
+            recordId: givenExport.recordId,
+            destinationId: givenExport.destinationId,
+            state: "pending",
+          },
+          order: ["createdAt", "ASC"],
+        });
         //if the export we're looking at is older than the one that locked this pair, cancel it
-        if (lockingExport.createdAt > _export.createdAt) {
-          await _export.update({
+        if (mostRecentExport.createdAt > givenExport.createdAt) {
+          await givenExport.update({
             state: "canceled",
             sendAt: null,
-            errorMessage: `Outdated duplicate of export ${lockingExport.id}`,
+            errorMessage: `Replaced by more recent export ${mostRecentExport.id}`,
             errorLevel: null,
             completedAt: new Date(),
           });
-          return;
-        } else if (lockingExport.id !== _export.id) {
-          //if the export we're looking at didn't create this lock, keep it pending for now
-          return;
+          continue;
         }
       }
 
       //things are locked, make sure we're using the absolute most recent data.
-      const updatedExport = await Export.findById(_export.id);
+      const updatedExport = await Export.findById(givenExport.id);
 
       if (!updatedExport.hasChanges) {
         await updatedExport.complete(); // do not do send exports with hasChanges=false
@@ -1010,16 +1014,8 @@ export namespace DestinationOps {
       await app.checkAndUpdateParallelism("decr");
     }
 
-    for (const _export of _exports) {
-      // release locks for all of the exports that were processed regardless of outcome - re-enqueues are handled elsewhere
-      const { releaseLock } = await getLock(
-        `${_export.recordId}:${_export.destinationId}`,
-        _export.id,
-        null,
-        "export"
-      );
-
-      await releaseLock();
+    for (const lock of locks) {
+      await lock.releaseLock();
     }
 
     return updateExports(
