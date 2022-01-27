@@ -278,7 +278,7 @@ export default function Page(props) {
                                   <Controller
                                     control={control}
                                     name={`options.${opt.key}`}
-                                    render={({ onChange }) => {
+                                    render={({ field: { onChange } }) => {
                                       return (
                                         <Typeahead
                                           id="typeahead"

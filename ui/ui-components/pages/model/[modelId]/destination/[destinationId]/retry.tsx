@@ -123,7 +123,7 @@ export default function Page(props) {
             required
             type="datetime-local"
             name="fromDate"
-            ref={register({ setValueAs: (v) => v && new Date(v) })}
+            {...register("fromDate", { setValueAs: (v) => v && new Date(v) })}
             onChange={() => {
               updatePreview();
             }}
@@ -136,7 +136,7 @@ export default function Page(props) {
             required
             type="datetime-local"
             name="toDate"
-            ref={register({ setValueAs: (v) => v && new Date(v) })}
+            {...register("toDate", { setValueAs: (v) => v && new Date(v) })}
             onChange={() => {
               updatePreview();
             }}
