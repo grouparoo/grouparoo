@@ -487,6 +487,7 @@ describe("modules/status", () => {
 
     test("it gathers records", async () => {
       const records = await FinalSummaryReporters.GrouparooRecords.getData();
+      expect(records[0].name).toBeNull();
       expect(records[0].recordsCreated).toEqual(1);
       expect(records[0].recordsUpdated).toEqual(1);
       expect(records[0].allRecords).toEqual(2);
