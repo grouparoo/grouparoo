@@ -914,6 +914,7 @@ export namespace DestinationOps {
   }> {
     const _exports: Export[] = [];
     const locks: Awaited<ReturnType<typeof getLock>>[] = [];
+
     try {
       for (const givenExport of givenExports) {
         const lock = await getLock({
@@ -943,7 +944,6 @@ export namespace DestinationOps {
               errorLevel: null,
               completedAt: new Date(),
             });
-            continue;
           }
           //no matter what -- if we weren't able to lock this pair, it is already being processed, so do not let this export move forward yet.
           continue;
