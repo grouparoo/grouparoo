@@ -24,6 +24,7 @@ if (
 // normal pathway
 import fs from "fs-extra";
 import path from "path";
+import { ChildProcessWithoutNullStreams, spawn } from "child_process";
 import nock from "nock";
 import prettier from "prettier";
 
@@ -226,6 +227,68 @@ export namespace helper {
     }, helper.setupTime);
 
     return actionhero;
+  };
+
+  /**
+   * Run a Grouparoo server "for real" in a sub-process
+   */
+  export const grouparooTestServerDetached = ({
+    port,
+  }: {
+    port: number | string;
+  }) => {
+    let serverProcess: ChildProcessWithoutNullStreams;
+
+    beforeAll(async () => {
+      await new Promise((resolve) => {
+        let resolved = false;
+        serverProcess = spawn("./bin/start", [], {
+          cwd: corePath,
+          env: {
+            ...process.env,
+            PORT: `${port}`,
+            WEB_URL: `http://localhost:${port}`,
+            REDIS_URL: "redis://mock",
+            DATABASE_URL: `sqlite://grouparoo_test-${port}.sqlite`,
+            JEST_WORKER_ID: undefined,
+          },
+        });
+
+        serverProcess.stdout.on("data", (data) => {
+          // console.log(String(data));
+          if (!resolved && String(data).match(/@grouparoo\/core Started/)) {
+            resolve(null);
+          }
+        });
+
+        serverProcess.stderr.on("data", (data) => console.log(String(data)));
+
+        serverProcess.on("close", (code) => {
+          // console.log(`child process exited with code ${code}`);
+        });
+      });
+    });
+
+    afterAll(async () => {
+      const timeout = 60 * 1000;
+      await new Promise((resolve, reject) => {
+        let count = 0;
+        const interval = setInterval(() => {
+          try {
+            process.kill(serverProcess.pid);
+          } catch (e) {
+            clearInterval(interval);
+            resolve(null);
+          }
+          if ((count += 100) > timeout) {
+            clearInterval(interval);
+            reject(new Error("Timeout process kill"));
+          }
+        }, 100);
+      });
+    });
+
+    return serverProcess;
   };
 
   /**

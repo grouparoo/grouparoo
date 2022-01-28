@@ -4,19 +4,19 @@
 
 import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/ui-enterprise": { path: path.join(__dirname, "..", "..") },
+  "@grouparoo/ui-community": { path: path.join(__dirname, "..", "..") },
 });
 import { helper } from "@grouparoo/spec-helper";
-import { config } from "actionhero";
 
+const port = 12345;
 declare var browser: any;
 declare var by: any;
 declare var until: any;
 let url: string;
 
 describe("integration", () => {
-  helper.grouparooTestServer({ truncate: true });
-  beforeAll(() => (url = `http://localhost:${config.web.port}`));
+  helper.grouparooTestServerDetached({ port });
+  beforeAll(() => (url = `http://localhost:${port}`));
 
   test(
     "it renders the home page",
@@ -44,6 +44,16 @@ describe("integration", () => {
 
       const button = await browser.findElement(by.id("bottomNavigationMenu"));
       await button.click();
+    },
+    helper.mediumTime
+  );
+
+  test(
+    "can render a page with a form",
+    async () => {
+      await browser.get(url + "/session/sign-in");
+      const header = await browser.findElement(by.tagName("h1")).getText();
+      expect(header).toContain("Sign In");
     },
     helper.mediumTime
   );
