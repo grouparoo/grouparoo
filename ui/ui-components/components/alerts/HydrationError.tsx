@@ -1,15 +1,17 @@
 import { Fragment } from "react";
 import { Card } from "react-bootstrap";
 import Link from "next/link";
-import { isBrowser } from "../../utils/isBrowser";
+import { useRouter } from "next/router";
 
 export default function HydrationError({
   hydrationError,
 }: {
   hydrationError: string;
 }) {
+  const router = useRouter();
   let error: Error;
   let errorData: { [key: string]: any };
+
   try {
     const parsed = JSON.parse(hydrationError);
     error = new Error(parsed.message);
@@ -25,12 +27,10 @@ export default function HydrationError({
         <Card.Header>There was an error loading this Page</Card.Header>
         <Card.Body>
           <blockquote className="blockquote mb-0">
-            {error?.message.match(/sign in to continue/) && isBrowser() ? (
+            {error?.message.match(/sign in to continue/) ? (
               <p>
                 Please{" "}
-                <Link
-                  href={`/session/sign-in?nextPage=${window.location.pathname}`}
-                >
+                <Link href={`/session/sign-in?nextPage=${router.asPath}`}>
                   <a>sign in</a>
                 </Link>{" "}
                 to continue
