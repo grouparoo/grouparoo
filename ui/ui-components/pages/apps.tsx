@@ -11,7 +11,7 @@ import Pagination from "../components/Pagination";
 import LoadingTable from "../components/LoadingTable";
 import AppIcon from "../components/AppIcon";
 import StateBadge from "../components/badges/StateBadge";
-import { Models, Actions } from "../utils/apiData";
+import { Actions } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
 import LinkButton from "../components/LinkButton";
 import LoadingButton from "../components/LoadingButton";
@@ -20,28 +20,26 @@ import { formatName } from "../utils/formatName";
 import { NextPageWithInferredProps } from "../utils/pageHelper";
 import { successHandler } from "../eventHandlers";
 import { generateClient } from "../client/client";
+import { withServerErrorHandler } from "../utils/withServerErrorHandler";
 
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const client = generateClient(ctx);
-  const { limit, offset } = ctx.query;
-  const { apps, total } = await client.request<Actions.AppsList>(
-    "get",
-    `/apps`,
-    {
-      limit,
-      offset,
-    }
-  );
-  return { props: { apps, total } };
-};
+export const getServerSideProps = withServerErrorHandler(
+  async (ctx: GetServerSidePropsContext) => {
+    const client = generateClient(ctx);
+    const { limit, offset } = ctx.query;
+    const { apps, total } = await client.request<Actions.AppsList>(
+      "get",
+      `/apps`,
+      { limit, offset }
+    );
+    return { props: { apps, total } };
+  }
+);
 
-const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
-  ...props
-}) => {
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   const router = useRouter();
   const { client } = useApi();
-  const [apps, setApps] = useState<Models.AppType[]>(props.apps);
-  const [total, setTotal] = useState<number>(props.total);
+  const [apps, setApps] = useState(props.apps);
+  const [total, setTotal] = useState(props.total);
   const [loading, setLoading] = useState(false);
 
   // pagination

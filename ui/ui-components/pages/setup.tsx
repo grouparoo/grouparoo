@@ -1,19 +1,30 @@
 import { useApi } from "../contexts/api";
 import Head from "next/head";
-import { useEffect, useState } from "react";
-import { Models } from "../utils/apiData";
+import { useState } from "react";
+import { Actions } from "../utils/apiData";
 import { Row, Col, ProgressBar, Alert } from "react-bootstrap";
 import SetupStepCard from "../components/setupSteps/SetupStepCard";
-import Loader from "../components/Loader";
-import { setupStepHandler } from "../eventHandlers";
+import { setupStepsHandler } from "../eventHandlers";
+import { GetServerSidePropsContext } from "next";
+import { NextPageWithInferredProps } from "../utils/pageHelper";
+import { generateClient } from "../client/client";
 
-export default function Page(props) {
+import { withServerErrorHandler } from "../utils/withServerErrorHandler";
+
+export const getServerSideProps = withServerErrorHandler(
+  async (ctx: GetServerSidePropsContext) => {
+    const client = generateClient(ctx);
+    const { setupSteps } = await client.request<Actions.SetupStepsList>(
+      "get",
+      `/setupSteps`
+    );
+    return { props: { setupSteps } };
+  }
+);
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   const { client } = useApi();
-  const [setupSteps, setSetupSteps] = useState<Models.SetupStepType[]>([]);
-
-  useEffect(() => {
-    load();
-  }, []);
+  const [setupSteps, setSetupSteps] = useState(props.setupSteps);
 
   const completeStepsCount = setupSteps.filter(
     (step) => step.complete || step.skipped
@@ -27,7 +38,7 @@ export default function Page(props) {
   );
 
   async function load() {
-    const response = await client.request(
+    const response = await client.request<Actions.SetupStepsList>(
       "get",
       `/setupSteps`,
       {},
@@ -35,12 +46,8 @@ export default function Page(props) {
     );
     if (response.setupSteps) {
       setSetupSteps(response.setupSteps);
-      setupStepHandler.set(response.setupSteps);
+      setupStepsHandler.set(response.setupSteps);
     }
-  }
-
-  if (setupSteps.length === 0) {
-    return <Loader />;
   }
 
   return (
@@ -92,4 +99,6 @@ export default function Page(props) {
       <br />
     </>
   );
-}
+};
+
+export default Page;

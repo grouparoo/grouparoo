@@ -1,5 +1,7 @@
+import { GetServerSidePropsContext } from "next";
 import Head from "next/head";
 import { Row, Col } from "react-bootstrap";
+import { generateClient } from "../client/client";
 import {
   BigTotalNumber,
   RecordsExported,
@@ -9,8 +11,9 @@ import {
   PendingImports,
   PendingExports,
 } from "../components/visualizations/HomepageWidgets";
+import { withServerErrorHandler } from "../utils/withServerErrorHandler";
 
-export default function Page(props) {
+export default function Page() {
   return (
     <>
       <Head>
@@ -52,3 +55,12 @@ export default function Page(props) {
     </>
   );
 }
+
+// this getServerSideProps doesn't actually return anything, but we to want to make a request to see if the user is signed in
+export const getServerSideProps = withServerErrorHandler(
+  async (ctx: GetServerSidePropsContext) => {
+    const client = generateClient(ctx);
+    await client.request("get", `/session`);
+    return { props: {} };
+  }
+);
