@@ -47,7 +47,7 @@ export class RetryExportsCLI extends CLI {
     },
     preview: {
       default: false,
-      formatter: APIData.ensureBoolean,
+      formatter: (val: any) => val as boolean,
       description:
         "When set, will not make any changes and only outputs the number of Exports that would be retried.",
       flag: true,
