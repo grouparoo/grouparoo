@@ -9,8 +9,11 @@ import {
 } from "sequelize-typescript";
 import validator from "validator";
 import * as uuid from "uuid";
+import { NonAbstract } from "sequelize-typescript/dist/shared/types";
 
-export abstract class CommonModel<T> extends Model {
+type Columns<T> = Exclude<T, Function>;
+
+export abstract class CommonModel<T> extends Model<T, NonAbstract<Columns<T>>> {
   /**
    * return the prefix for this type of class' id
    */

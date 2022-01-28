@@ -137,16 +137,16 @@ export class Run extends CommonModel<Run> {
     return percentComplete;
   }
 
-  async afterBatch(newSate?: string) {
+  async afterBatch(newState?: typeof this.state) {
     await this.reload();
 
     if (
-      newSate &&
-      this.state !== newSate &&
+      newState &&
+      this.state !== newState &&
       !["complete", "stopped"].includes(this.state)
     ) {
       await this.determinePercentComplete();
-      await this.update({ state: newSate });
+      await this.update({ state: newState });
     }
 
     if (this.state === "complete" && !this.completedAt) {

@@ -29,7 +29,7 @@ export class ScheduleRun extends RetryableTask {
 
     await run.update({
       highWaterMark: response.highWaterMark,
-      sourceOffset: response.sourceOffset,
+      sourceOffset: String(response.sourceOffset),
     });
 
     if (response.importsCount === 0) {

@@ -70,7 +70,7 @@ export class RunInternalRun extends CLSTask {
 
       // create imports to track the lineage of the record property values
       const now = new Date();
-      const bulkImports = [];
+      const bulkImports: Import[] = [];
 
       for (const record of records) {
         const oldRecordProperties = await record.simplifiedProperties();
@@ -84,7 +84,7 @@ export class RunInternalRun extends CLSTask {
           oldGroupIds,
           creatorType: "run",
           creatorId: run.id,
-        });
+        } as Import);
       }
 
       await Import.bulkCreate(bulkImports);
