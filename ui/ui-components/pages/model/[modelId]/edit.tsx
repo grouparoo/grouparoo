@@ -20,9 +20,9 @@ export default function Page(props) {
   } = props;
   const router = useRouter();
   const { client } = useApi();
-  const { model, setModel } = useGrouparooModel();
+  const { model } = useGrouparooModel();
+  const [modelToUpdate, setModelToUpdate] = useState(model);
   const [loading, setLoading] = useState(false);
-  const { modelId } = router.query;
 
   async function edit(event) {
     event.preventDefault();
@@ -30,14 +30,12 @@ export default function Page(props) {
 
     const response: Actions.ModelEdit = await client.request(
       "put",
-      `/model/${modelId}`,
-      Object.assign({}, model)
+      `/model/${modelToUpdate.id}`,
+      Object.assign({}, modelToUpdate)
     );
     if (response?.model) {
       setLoading(false);
       successHandler.set({ message: "Model Updated" });
-      setModel(response.model);
-
       router.replace(router.asPath);
     } else {
       setLoading(false);
@@ -49,7 +47,7 @@ export default function Page(props) {
       setLoading(true);
       const response: Actions.ModelDestroy = await client.request(
         "delete",
-        `/model/${modelId}`
+        `/model/${model.id}`
       );
       if (response?.success) {
         successHandler.set({ message: "Model Deleted" });
@@ -63,7 +61,7 @@ export default function Page(props) {
   const update = async (event) => {
     const _model = Object.assign({}, model);
     _model[event.target.id] = event.target.value;
-    setModel(_model);
+    setModelToUpdate(_model);
   };
 
   return (
@@ -90,7 +88,7 @@ export default function Page(props) {
                   required
                   type="text"
                   placeholder="Name"
-                  value={model.name}
+                  value={modelToUpdate.name}
                   disabled={loading}
                   onChange={(e) => update(e)}
                 />

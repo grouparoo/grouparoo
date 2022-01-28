@@ -7,7 +7,7 @@ import Layout from "../components/layouts/Main";
 import PageTransition from "../components/PageTransition";
 import StatusSubscription from "../components/StatusSubscription";
 import { ApiContext } from "../contexts/api";
-import { GrouparooModelContextProvider } from "../contexts/grouparooModel";
+import { GrouparooModelContext } from "../contexts/grouparooModel";
 import { WebAppContext } from "../contexts/webApp";
 import { Actions, Models } from "../utils/apiData";
 import { renderNestedContextProviders } from "../utils/contextHelper";
@@ -53,7 +53,7 @@ export default function GrouparooNextApp(
     [
       [WebAppContext.Provider, pageContext],
       [ApiContext.Provider, { client }],
-      [GrouparooModelContextProvider, model],
+      [GrouparooModelContext.Provider, { model }],
     ],
     <>
       <PageTransition />
