@@ -12,18 +12,19 @@ export class RetryExportsCLI extends CLI {
   inputs = {
     start: {
       required: false,
-      formatter: APIData.formatDate,
+      formatter: APIData.ensureDate,
       description:
         "Search for failed Exports created on or after this timestamp.",
     },
     startAgoSeconds: {
       required: false,
+      formatter: APIData.ensureNumber,
       description:
         "Search for failed Exports created on or after a certain number of seconds ago.",
     },
     end: {
       required: false,
-      formatter: APIData.formatDate,
+      formatter: APIData.ensureDate,
       description:
         "Search for failed Exports created on or before this timestamp. Defaults to the current time.",
     },
@@ -58,10 +59,8 @@ export class RetryExportsCLI extends CLI {
   async run({ params }: { params: Partial<ParamsFrom<RetryExportsCLI>> }) {
     GrouparooCLI.logCLI(this.name, false);
 
-    const hasRelativeStart =
-      params.startAgoSeconds !== undefined && params.startAgoSeconds !== null;
-    const hasAbsoluteStart =
-      params.start !== undefined && params.start !== null;
+    const hasRelativeStart = params.startAgoSeconds !== undefined;
+    const hasAbsoluteStart = params.start !== undefined;
 
     if (
       (hasRelativeStart && hasAbsoluteStart) ||
@@ -72,25 +71,16 @@ export class RetryExportsCLI extends CLI {
       );
     }
 
-    const startAgoSeconds = Number(params.startAgoSeconds);
-
-    if (hasAbsoluteStart && Number.isNaN(params.start))
-      return GrouparooCLI.logger.fatal(`Invalid start date specified`);
-    if (Number.isNaN(params.end))
-      return GrouparooCLI.logger.fatal(`Invalid end date specified`);
-    if (hasRelativeStart && Number.isNaN(startAgoSeconds))
-      return GrouparooCLI.logger.fatal(`--startAgoSeconds must be a number`);
-
     if (typeof params.destinationIds === "boolean") {
       return GrouparooCLI.logger.fatal(
         `Please specify which destination ids to check or remove the --destinationIds param to check all Destinations.`
       );
     }
 
-    const startDate = hasAbsoluteStart
-      ? new Date(params.start)
-      : Moment().subtract(startAgoSeconds, "seconds").toDate();
-    const endDate = params.end ? new Date(params.end) : new Date();
+    const startDate =
+      params.start ??
+      Moment().subtract(params.startAgoSeconds, "seconds").toDate();
+    const endDate = params.end ?? new Date();
 
     GrouparooCLI.logger.log(`Searching for failed Exports:\n`);
     GrouparooCLI.logger.log(`Start: ${startDate.toLocaleString()}`);
