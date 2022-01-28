@@ -919,10 +919,9 @@ export namespace DestinationOps {
         const lock = await getLock({
           key: `${givenExport.recordId}:${givenExport.destinationId}`,
         });
-
-        if (lock === null) {
+        if (lock !== null) {
           locks.push(lock);
-
+        } else {
           // is _export the newest export for this pair?  if not, cancel it.
           const moreRecentExport = await Export.findOne({
             where: {
