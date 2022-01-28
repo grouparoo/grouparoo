@@ -86,13 +86,13 @@ describe("google-sheets/exportRecords", () => {
   }, helper.longTime);
 
   afterAll(async () => {
-    await cleanUp(true);
+    await client._cleanSheet();
   }, helper.longTime);
 
   test(
     "will not create record if sync mode does not allow it",
     async () => {
-      user1 = await client.getRowObjectByPrimaryKey(
+      user1 = await client.getRowByPrimaryKey(
         destinationOptions["primaryKey"],
         userId1
       );
@@ -126,7 +126,7 @@ describe("google-sheets/exportRecords", () => {
       expect(error.message).toContain("not creating");
       expect(error.errorLevel).toEqual("info");
 
-      user1 = await client.getRowObjectByPrimaryKey(
+      user1 = await client.getRowByPrimaryKey(
         destinationOptions["primaryKey"],
         userId1
       );
@@ -976,9 +976,6 @@ describe("google-sheets/exportRecords", () => {
         expect(user["first_name"]).toBe(record["first_name"]);
         expect(user["last_name"]).toBe(record["last_name"]);
       }
-
-      // cleanup
-      await deleteUsers(primaryKeys, false);
     },
     hugeTime * 2
   );

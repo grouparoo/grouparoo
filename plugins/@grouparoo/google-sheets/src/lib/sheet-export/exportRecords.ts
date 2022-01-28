@@ -86,13 +86,13 @@ const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async ({
       const { newRecordProperties, oldRecordProperties } = user;
       const id = newRecordProperties[config.foreignKey];
       const oldId = oldRecordProperties[config.foreignKey];
-      if (oldId && oldId !== id && config.syncOperations) {
+      if (oldId && oldId !== id) {
         await deleteOrCleanGroups(
           client,
           config.foreignKey,
           oldId,
           config.destinationOptions?.groupsColumn?.toString(),
-          config.syncOperations.delete
+          config.syncOperations?.delete
         );
       }
       const payload = buildPayload(config, user);
@@ -134,32 +134,9 @@ function buildPayload(config: BatchConfig, user) {
   }
   const groupsColumn = config?.destinationOptions?.groupsColumn?.toString();
   if (groupsColumn) {
-    formattedDataFields[groupsColumn] = getGroupsListToExport(
-      user,
-      groupsColumn,
-      oldGroups,
-      newGroups
-    );
+    formattedDataFields[groupsColumn] = newGroups.join(",");
   }
   return formattedDataFields;
-}
-
-function getGroupsListToExport(record, groupsColumn, oldGroups, newGroups) {
-  const groups = newGroups;
-  if (record.destinationId && record.result && record.result[groupsColumn]) {
-    const removedGroups = [];
-    for (const group of oldGroups) {
-      if (!groups.includes(group)) {
-        removedGroups.push(group);
-      }
-    }
-    for (const group of record.result[groupsColumn].split(",")) {
-      if (!groups.includes(group) && !removedGroups.includes(group)) {
-        groups.push(group);
-      }
-    }
-  }
-  return groups.join(",");
 }
 
 async function deleteOrCleanGroups(

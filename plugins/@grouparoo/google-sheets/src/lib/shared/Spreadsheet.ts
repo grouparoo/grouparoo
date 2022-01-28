@@ -7,7 +7,7 @@ import {
 const { GoogleSpreadsheet } = require("google-spreadsheet");
 
 const GOOGLE_SHEETS_ROWS_LIMIT = 10000;
-const MINUTE_IN_MILLIS = 60 * 1000;
+const WAIT_TIME = 20 * 1000;
 
 function parseUrl(sheetUrl: string): Record<string, string> {
   // e.g. https://docs.google.com/spreadsheets/d/1-QDnY0N4obyqnyDpncfr6dooyC2mWw2hn1RY8XlZLWM/edit
@@ -95,7 +95,7 @@ export default class Spreadsheet {
       await this.doc.loadInfo(); // loads document properties and worksheets
     } catch (error) {
       if (error?.response?.status === 429) {
-        await this.sleep(MINUTE_IN_MILLIS);
+        await this.sleep(WAIT_TIME);
         await this.loadDocInfo();
       }
     }
@@ -107,7 +107,7 @@ export default class Spreadsheet {
       return this.sheet.headerValues;
     } catch (error) {
       if (error?.response?.status === 429) {
-        await this.sleep(MINUTE_IN_MILLIS);
+        await this.sleep(WAIT_TIME);
         return await this.loadHeaders();
       }
     }
@@ -121,6 +121,7 @@ export default class Spreadsheet {
         const rows = await sheet.getRows({ limit, offset });
         for (const row of rows) {
           const result: any = {};
+          result["_rowObject"] = row;
           result["_rowNumber"] = row.rowNumber;
           for (const header of sheet.headerValues) {
             result[header] = row[header];
@@ -131,7 +132,7 @@ export default class Spreadsheet {
       return results;
     } catch (error) {
       if (error?.response?.status === 429) {
-        await this.sleep(MINUTE_IN_MILLIS);
+        await this.sleep(WAIT_TIME);
         return this.read({ limit, offset });
       } else {
         throw error;
@@ -169,16 +170,7 @@ export default class Spreadsheet {
     return null;
   }
 
-  async getRowObjectByPrimaryKey(column, value) {
-    await this.load();
-    const row = await this.getRowByPrimaryKey(column, value);
-    if (row?._rowNumber) {
-      return await this.getRowObjectByRowNumber(row?._rowNumber);
-    }
-    return null;
-  }
-
-  async getRowObjectByRowNumber(rowNumber) {
+  async getRowByRowNumber(rowNumber) {
     await this.load();
     try {
       if (rowNumber) {
@@ -188,8 +180,8 @@ export default class Spreadsheet {
       }
     } catch (error) {
       if (error?.response?.status === 429) {
-        await this.sleep(MINUTE_IN_MILLIS);
-        return this.getRowObjectByRowNumber(rowNumber);
+        await this.sleep(WAIT_TIME);
+        return this.getRowByRowNumber(rowNumber);
       } else {
         throw error;
       }
@@ -199,13 +191,13 @@ export default class Spreadsheet {
   }
 
   async cleanRowByRowNumber(rowNumber) {
-    const row = await this.getRowObjectByRowNumber(rowNumber);
+    const row = await this.getRowByRowNumber(rowNumber);
     await this._cleanRow(row);
   }
 
   async cleanRowByPrimaryKey(column, value) {
-    const row = await this.getRowObjectByPrimaryKey(column, value);
-    await this._cleanRow(row);
+    const row = await this.getRowByPrimaryKey(column, value);
+    await this._cleanRow(row?._rowObject);
   }
 
   async _cleanRow(row) {
@@ -219,7 +211,7 @@ export default class Spreadsheet {
       }
     } catch (error) {
       if (error?.response?.status === 429) {
-        await this.sleep(MINUTE_IN_MILLIS);
+        await this.sleep(WAIT_TIME);
         return this._cleanRow(row);
       } else {
         throw error;
@@ -229,14 +221,14 @@ export default class Spreadsheet {
 
   async updateRowByRowNumber(rowNumber, payload) {
     await this.ensureHeaders(payload);
-    const row = await this.getRowObjectByRowNumber(rowNumber);
+    const row = await this.getRowByRowNumber(rowNumber);
     await this._updateRow(row, payload);
   }
 
   async updateRowByPrimaryKey(column, value, payload) {
     await this.ensureHeaders(payload);
-    const row = await this.getRowObjectByPrimaryKey(column, value);
-    await this._updateRow(row, payload);
+    const row = await this.getRowByPrimaryKey(column, value);
+    await this._updateRow(row?._rowObject, payload);
   }
 
   async _updateRow(row, payload) {
@@ -249,7 +241,7 @@ export default class Spreadsheet {
         await row.save();
       } catch (error) {
         if (error?.response?.status === 429) {
-          await this.sleep(MINUTE_IN_MILLIS);
+          await this.sleep(WAIT_TIME);
           return this._updateRow(row, payload);
         } else {
           throw error;
@@ -269,7 +261,7 @@ export default class Spreadsheet {
       return null;
     } catch (error) {
       if (error?.response?.status === 429) {
-        await this.sleep(MINUTE_IN_MILLIS);
+        await this.sleep(WAIT_TIME);
         return this.addRowAtTheEnd(payload);
       } else {
         throw error;
@@ -295,7 +287,7 @@ export default class Spreadsheet {
       }
     } catch (error) {
       if (error?.response?.status === 429) {
-        await this.sleep(MINUTE_IN_MILLIS);
+        await this.sleep(WAIT_TIME);
         return this.ensureHeaders(payload);
       } else {
         throw error;
@@ -311,5 +303,23 @@ export default class Spreadsheet {
 
   setBypassSleep(bypass) {
     this.bypassSleep = bypass;
+  }
+
+  async _cleanSheet() {
+    try {
+      const rows = await this.getAllRows();
+      for (const row of rows) {
+        if (row?._rowObject) {
+          await row._rowObject.delete();
+        }
+      }
+    } catch (error) {
+      if (error?.response?.status === 429) {
+        await this.sleep(WAIT_TIME);
+        return this._cleanSheet();
+      } else {
+        throw error;
+      }
+    }
   }
 }
