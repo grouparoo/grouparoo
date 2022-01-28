@@ -7,7 +7,6 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
 import {
-  plugin,
   GrouparooRecord,
   RecordProperty,
   Property,
@@ -118,6 +117,7 @@ describe("integration/runs/mailchimp-import", () => {
           type: "mailchimp-import",
           sourceId: source.id,
           recurring: false,
+          incremental: true,
           mappings: {
             "merge_fields.USERID": "userId",
             email_address: "email",
@@ -274,7 +274,7 @@ describe("integration/runs/mailchimp-import", () => {
         const foundAssociateTasks = await specHelper.findEnqueuedTasks(
           "import:associateRecord"
         );
-        expect(foundAssociateTasks.length).toEqual(20); // 2x because all timestamps are the same
+        expect(foundAssociateTasks.length).toEqual(15); // 2x because all timestamps are the same
 
         await Promise.all(
           foundAssociateTasks.map((t) =>
@@ -317,7 +317,7 @@ describe("integration/runs/mailchimp-import", () => {
 
         await run.updateTotals();
         expect(run.state).toBe("complete");
-        expect(run.importsCreated).toBe(20);
+        expect(run.importsCreated).toBe(15);
         expect(run.recordsCreated).toBe(10);
         expect(run.recordsImported).toBe(10);
         expect(run.percentComplete).toBe(100);
@@ -374,7 +374,7 @@ describe("integration/runs/mailchimp-import", () => {
         const foundAssociateTasks = await specHelper.findEnqueuedTasks(
           "import:associateRecord"
         );
-        expect(foundAssociateTasks.length).toEqual(20); // 2x because all timestamps are the same
+        expect(foundAssociateTasks.length).toEqual(10);
 
         await Promise.all(
           foundAssociateTasks.map((t) =>
@@ -389,7 +389,7 @@ describe("integration/runs/mailchimp-import", () => {
           "record:export"
         );
         // this count is de-duped from the previous run
-        expect(foundExportTasks.length).toEqual(10);
+        expect(foundExportTasks.length).toEqual(5);
 
         await Promise.all(
           foundExportTasks.map((t) =>
@@ -417,9 +417,9 @@ describe("integration/runs/mailchimp-import", () => {
 
         await run.updateTotals();
         expect(run.state).toBe("complete");
-        expect(run.importsCreated).toBe(20);
+        expect(run.importsCreated).toBe(10);
         expect(run.recordsCreated).toBe(0);
-        expect(run.recordsImported).toBe(10);
+        expect(run.recordsImported).toBe(5);
         expect(run.percentComplete).toBe(100);
       },
       helper.longTime
