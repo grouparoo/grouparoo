@@ -80,8 +80,6 @@ GrouparooNextApp.getInitialProps = async (appContext: AppContext) => {
 
   try {
     let model: Models.GrouparooModelType | null = null;
-    let modelResponse: Actions.ModelView;
-    let navigationResponse: Actions.NavigationList;
 
     const promises: Promise<any>[] = [
       client.request<Actions.NavigationList>("get", `/navigation`),
@@ -93,7 +91,12 @@ GrouparooNextApp.getInitialProps = async (appContext: AppContext) => {
       );
     }
 
-    [navigationResponse, modelResponse] = await Promise.all(promises);
+    const [navigationResponse, modelResponse] = await Promise.all([
+      client.request<Actions.NavigationList>("get", `/navigation`),
+      modelId
+        ? client.request<Actions.ModelView>("get", `/model/${modelId}`)
+        : Promise.resolve(),
+    ]);
 
     if (navigationResponse.teamMember) {
       currentTeamMember = navigationResponse.teamMember;
