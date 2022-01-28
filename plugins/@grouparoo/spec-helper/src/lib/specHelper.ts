@@ -251,6 +251,7 @@ export namespace helper {
             REDIS_URL: "redis://mock",
             DATABASE_URL: `sqlite://grouparoo_test-${port}.sqlite`,
             JEST_WORKER_ID: undefined,
+            GROUPAROO_LOG_LEVEL: "info", // relying on the log messages to know when the server is up
           },
         });
 
@@ -267,7 +268,7 @@ export namespace helper {
           // console.log(`child process exited with code ${code}`);
         });
       });
-    });
+    }, helper.setupTime * 2);
 
     afterAll(async () => {
       const timeout = 60 * 1000;
@@ -286,7 +287,7 @@ export namespace helper {
           }
         }, 100);
       });
-    });
+    }, helper.setupTime);
 
     return serverProcess;
   };
