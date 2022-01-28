@@ -73,6 +73,20 @@ export namespace APIData {
     }
   }
 
+  export function ensureDate(param: Date | string | number) {
+    if (param instanceof Date) return param;
+
+    if (typeof param === "string" || typeof param === "number") {
+      const asNumber = Number(param);
+      if (!isNaN(asNumber)) param = asNumber;
+
+      const date = new Date(param);
+      if (!isNaN(date.getTime())) return date;
+    }
+
+    throw new Error(`${param} cannot be converted to a date`);
+  }
+
   export function formatDate(date: Date | string) {
     if (!date || date === "") return null;
     else if (date instanceof Date) return date.getTime();
