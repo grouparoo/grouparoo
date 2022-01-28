@@ -379,13 +379,9 @@ export class Schedule extends LoggedModel<Schedule> {
   static async checkIncremental(instance: Schedule) {
     const { pluginConnection } = await instance.getPlugin();
     if (instance.incremental && !pluginConnection.supportIncrementalSchedule) {
-      if (instance.isNewRecord) {
-        instance.incremental = false;
-      } else {
-        throw new Error(
-          `${pluginConnection.name} does not support incremental schedules`
-        );
-      }
+      throw new Error(
+        `${pluginConnection.name} does not support incremental schedules`
+      );
     }
   }
 
