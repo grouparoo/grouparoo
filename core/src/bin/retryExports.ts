@@ -27,7 +27,7 @@ export class RetryExportsCLI extends CLI {
     startAgoUnit: {
       required: false,
       requiredValue: true,
-      default: "seconds",
+      default: "second",
       description:
         "Unit for --startAgo (e.g. seconds, minutes, hours, days...)",
       formatter: (val: string) => {
