@@ -2,7 +2,7 @@ import fs from "fs-extra";
 import csvParser from "csv-parser";
 import { plugin, Source, SourceMapping, Run } from "@grouparoo/core";
 
-export async function parseProfiles({
+export async function getRows({
   localPath,
   source,
   sourceMapping,

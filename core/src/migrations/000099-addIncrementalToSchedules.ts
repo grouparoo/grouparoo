@@ -18,8 +18,8 @@ export default {
 
     if (incrementalSources.length > 0) {
       await queryInterface.sequelize.query(
-        `UPDATE schedules SET incremental=true WHERE id IN (${incrementalSources
-          .map((s) => s.id)
+        `UPDATE schedules SET incremental=true WHERE "scheduleId" IN (${incrementalSources
+          .map((s) => `'${s.id}'`)
           .join(", ")})`
       );
     }

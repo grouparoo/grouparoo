@@ -297,8 +297,8 @@ export class Schedule extends LoggedModel<Schedule> {
       id: this.getConfigId(),
       name,
       sourceId,
-      recurring,
       incremental,
+      recurring,
       recurringFrequency,
       confirmRecords,
       options,
@@ -375,8 +375,7 @@ export class Schedule extends LoggedModel<Schedule> {
     }
   }
 
-  @BeforeCreate
-  @BeforeUpdate
+  @BeforeSave
   static async checkIncremental(instance: Schedule) {
     const { pluginConnection } = await instance.getPlugin();
     if (instance.incremental && !pluginConnection.supportIncrementalSchedule) {

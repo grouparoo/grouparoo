@@ -1,6 +1,6 @@
 import { RecordsPluginMethod } from "@grouparoo/core";
 import { downloadAndRefreshFile } from "./downloadAndRefreshFile";
-import { parseProfiles } from "./shared/parseProfiles";
+import { getRows } from "./shared/getRows";
 
 export const importRecords: RecordsPluginMethod = async ({
   source,
@@ -12,7 +12,7 @@ export const importRecords: RecordsPluginMethod = async ({
   limit,
 }) => {
   const localPath = await downloadAndRefreshFile(sourceId, sourceOptions);
-  return parseProfiles({
+  return getRows({
     localPath,
     source,
     sourceMapping,
