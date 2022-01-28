@@ -290,18 +290,22 @@ export default function Page(props) {
                       label={"Unique"}
                       checked={property.unique}
                       onChange={(e) => update(e)}
-                      disabled={property.unique || loading}
+                      disabled={property.isPrimaryKey || loading}
                     />
                     {property.isPrimaryKey && (
                       <Form.Text className="text-muted">
                         <code>Unique</code> cannot be updated while this
-                        Property is the Primary Key for the Model.{" "}
+                        Property is the Primary Key for the Model.
                         {grouparooUiEdition() !== "community" && (
-                          <EnterpriseLink
-                            href={`/model/${source.modelId}/source/${source.id}/edit`}
-                          >
-                            <a>Edit mapping</a>
-                          </EnterpriseLink>
+                          <>
+                            {" "}
+                            <EnterpriseLink
+                              href={`/model/${source.modelId}/source/${source.id}/edit`}
+                            >
+                              <a>Edit mapping</a>
+                            </EnterpriseLink>{" "}
+                            first.
+                          </>
                         )}
                       </Form.Text>
                     )}
