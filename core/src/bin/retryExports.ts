@@ -106,7 +106,11 @@ export class RetryExportsCLI extends CLI {
       totalCount += count;
     }
 
-    GrouparooCLI.logger.status("Summary", summaryItems);
+    if (summaryItems.length) {
+      GrouparooCLI.logger.status("Summary", summaryItems);
+    } else {
+      GrouparooCLI.logger.log("\nNo Destinations\n");
+    }
 
     if (params.preview) {
       GrouparooCLI.logger.log(
@@ -115,7 +119,7 @@ export class RetryExportsCLI extends CLI {
     } else {
       if (totalCount) {
         GrouparooCLI.logger.log(
-          `✅ Success! ${totalCount} failed Exports marked to be retried.`
+          `✅ Success! ${totalCount} failed Exports marked to be retried. Run \`grouparoo run\` or \`grouparoo start\` to retry them.`
         );
       } else {
         GrouparooCLI.logger.log(

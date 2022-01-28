@@ -167,7 +167,7 @@ describe("bin/retryExports", () => {
       });
       const output = messages.join(" ");
       expect(output).toContain(
-        "✅ Success! 1 failed Exports marked to be retried."
+        "✅ Success! 1 failed Exports marked to be retried. Run `grouparoo run` or `grouparoo start` to retry them."
       );
 
       await failedExport.reload();
