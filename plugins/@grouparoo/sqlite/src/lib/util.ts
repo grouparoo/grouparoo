@@ -16,5 +16,5 @@ export const toValuePlaceholders = (
   values: SQLiteQueryParamValue[]
 ): string => {
   const placeholders = values.map(() => "?");
-  return placeholders.length > 1 ? `(${placeholders})` : placeholders.join(",");
+  return placeholders.length > 0 ? `(${placeholders})` : "";
 };
