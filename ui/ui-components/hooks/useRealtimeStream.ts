@@ -88,7 +88,7 @@ export const useRealtimeStream = (
       return;
     } else if (
       error.error &&
-      error.error.message.includes("Please log in to continue")
+      error.error.message.includes("Please sign in to continue")
     ) {
       return;
     }
