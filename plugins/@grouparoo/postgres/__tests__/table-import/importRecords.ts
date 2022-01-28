@@ -252,7 +252,7 @@ describe("postgres/table/importRecords", () => {
       // do the next page
       const page2 = await runIt({
         limit,
-        highWaterMark: page1.highWaterMark,
+        highWaterMark: {},
         sourceOffset: page1.sourceOffset,
         scheduleFilters: [],
       });
@@ -264,7 +264,7 @@ describe("postgres/table/importRecords", () => {
       // do the next page
       const page3 = await runIt({
         limit,
-        highWaterMark: page2.highWaterMark,
+        highWaterMark: {},
         sourceOffset: page2.sourceOffset,
         scheduleFilters: [],
       });
