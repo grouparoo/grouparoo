@@ -17,12 +17,26 @@ export class RetryExportsCLI extends CLI {
       description:
         "Search for failed Exports created on or after this timestamp.",
     },
-    startAgoSeconds: {
+    startAgo: {
       required: false,
       requiredValue: true,
       formatter: APIData.ensureNumber,
       description:
-        "Search for failed Exports created on or after a certain number of seconds ago.",
+        "Search for failed Exports created on or after a certain number of seconds ago. See --startAgoUnit to choose a different time unit.",
+    },
+    startAgoUnit: {
+      required: false,
+      requiredValue: true,
+      default: "seconds",
+      description:
+        "Unit for --startAgo (e.g. seconds, minutes, hours, days...)",
+      formatter: (val: string) => {
+        const normalized = Moment.normalizeUnits(val as Moment.unitOfTime.Base);
+        return normalized as Moment.unitOfTime.Base;
+      },
+      validator: (val: string) => {
+        if (!val) throw new Error(`invalid unit of time`);
+      },
     },
     end: {
       required: false,
@@ -63,7 +77,7 @@ export class RetryExportsCLI extends CLI {
   async run({ params }: { params: Partial<ParamsFrom<RetryExportsCLI>> }) {
     GrouparooCLI.logCLI(this.name, false);
 
-    const hasRelativeStart = params.startAgoSeconds !== undefined;
+    const hasRelativeStart = params.startAgo !== undefined;
     const hasAbsoluteStart = params.start !== undefined;
 
     if (
@@ -71,17 +85,23 @@ export class RetryExportsCLI extends CLI {
       (!hasRelativeStart && !hasAbsoluteStart)
     ) {
       return GrouparooCLI.logger.fatal(
-        "One of --start or --startAgoSeconds must be specified"
+        "One of --start or --startAgo must be specified"
       );
     }
 
     const startDate =
       params.start ??
-      Moment().subtract(params.startAgoSeconds, "seconds").toDate();
+      Moment().subtract(params.startAgo, params.startAgoUnit).toDate();
     const endDate = params.end ?? new Date();
 
     GrouparooCLI.logger.log(`Searching for failed Exports:\n`);
-    GrouparooCLI.logger.log(`Start: ${startDate.toLocaleString()}`);
+    GrouparooCLI.logger.log(
+      `Start: ${startDate.toLocaleString()} ${
+        params.startAgo
+          ? `(${params.startAgo} ${params.startAgoUnit}s ago)`
+          : ""
+      }`
+    );
     GrouparooCLI.logger.log(`End: ${endDate.toLocaleString()}`);
 
     const summaryItems: GrouparooCLI.LogStatusArray = [];

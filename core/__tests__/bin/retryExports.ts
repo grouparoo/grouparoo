@@ -33,26 +33,26 @@ describe("bin/retryExports", () => {
   });
 
   describe("input validation", () => {
-    test("it requires one of --start or --startAgoSeconds", async () => {
+    test("it requires one of --start or --startAgo", async () => {
       const command = new RetryExportsCLI();
       await command.run({ params: {} });
       const output = messages.join(" ");
 
       expect(output).toContain(
-        "One of --start or --startAgoSeconds must be specified"
+        "One of --start or --startAgo must be specified"
       );
       expect(output).not.toContain("Success!");
     });
 
-    test("cannot set both --start and --startAgoSeconds", async () => {
+    test("cannot set both --start and --startAgo", async () => {
       const command = new RetryExportsCLI();
       await command.run({
-        params: { start: new Date(), startAgoSeconds: 1000 },
+        params: { start: new Date(), startAgo: 1000 },
       });
       const output = messages.join(" ");
 
       expect(output).toContain(
-        "One of --start or --startAgoSeconds must be specified"
+        "One of --start or --startAgo must be specified"
       );
       expect(output).not.toContain("Success!");
     });
@@ -61,7 +61,7 @@ describe("bin/retryExports", () => {
       const command = new RetryExportsCLI();
       await command.run({
         params: {
-          startAgoSeconds: 1000,
+          startAgo: 1000,
           destinationIds: [destination.id, "foo"],
         },
       });
@@ -93,7 +93,7 @@ describe("bin/retryExports", () => {
 
     test("can preview exports to retry", async () => {
       await instance.run({
-        params: { startAgoSeconds: 3600, preview: true },
+        params: { startAgo: 3600, preview: true },
       });
       const output = messages.join(" ");
       expect(output).toContain(
@@ -110,7 +110,7 @@ describe("bin/retryExports", () => {
     test("can preview exports to retry for a destination", async () => {
       await instance.run({
         params: {
-          startAgoSeconds: 3600,
+          startAgo: 3600,
           preview: true,
           destinationIds: [destination.id],
         },
@@ -130,7 +130,7 @@ describe("bin/retryExports", () => {
     test("can retry exports", async () => {
       await instance.run({
         params: {
-          startAgoSeconds: 3600,
+          startAgo: 3600,
         },
       });
       const output = messages.join(" ");
@@ -148,7 +148,7 @@ describe("bin/retryExports", () => {
     test("can retry exports for a destination", async () => {
       await instance.run({
         params: {
-          startAgoSeconds: 3600,
+          startAgo: 3600,
           destinationIds: [destination.id],
         },
       });
@@ -169,7 +169,7 @@ describe("bin/retryExports", () => {
 
       await instance.run({
         params: {
-          startAgoSeconds: 3600,
+          startAgo: 3600,
           destinationIds: [destination2.id],
         },
       });
