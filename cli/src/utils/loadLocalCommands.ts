@@ -25,6 +25,7 @@ type ActionheroCLIInputStub = {
   description?: string;
   default?: boolean;
   required?: boolean;
+  requiredValue?: boolean;
   letter?: string;
   flag?: string;
   placeholder?: string;
@@ -191,7 +192,8 @@ async function convertCLIToCommanderAction(
 
   for (const key in instance.inputs) {
     const input = instance.inputs[key];
-    const separators = input.required ? ["<", ">"] : ["[", "]"];
+    const separators =
+      input.required || input.requiredValue ? ["<", ">"] : ["[", "]"];
     const methodName = input.required ? "requiredOption" : "option";
     const argString = `${input.letter ? `-${input.letter}, ` : ""}--${key} ${
       input.flag
