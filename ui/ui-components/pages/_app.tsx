@@ -129,7 +129,7 @@ GrouparooNextApp.getInitialProps = async (appContext: AppContext) => {
 
     return {
       ...appProps,
-      model: model || null,
+      model,
       currentTeamMember,
       navigationMode: navigationResponse.navigationMode,
       navigation: navigationResponse.navigation,
