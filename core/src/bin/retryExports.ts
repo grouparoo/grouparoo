@@ -12,18 +12,21 @@ export class RetryExportsCLI extends CLI {
   inputs = {
     start: {
       required: false,
+      requiredValue: true,
       formatter: APIData.ensureDate,
       description:
         "Search for failed Exports created on or after this timestamp.",
     },
     startAgoSeconds: {
       required: false,
+      requiredValue: true,
       formatter: APIData.ensureNumber,
       description:
         "Search for failed Exports created on or after a certain number of seconds ago.",
     },
     end: {
       required: false,
+      requiredValue: true,
       formatter: APIData.ensureDate,
       description:
         "Search for failed Exports created on or before this timestamp. Defaults to the current time.",
@@ -38,7 +41,8 @@ export class RetryExportsCLI extends CLI {
     },
     destinationIds: {
       required: false,
-      formatter: (val: any) => val as boolean | string[],
+      requiredValue: true,
+      formatter: (val: any) => val as string[],
       description:
         "Only retry Exports for specific Destinations. Defaults to all Destinations.",
       letter: "d",
@@ -68,12 +72,6 @@ export class RetryExportsCLI extends CLI {
     ) {
       return GrouparooCLI.logger.fatal(
         "One of --start or --startAgoSeconds must be specified"
-      );
-    }
-
-    if (typeof params.destinationIds === "boolean") {
-      return GrouparooCLI.logger.fatal(
-        `Please specify which destination ids to check or remove the --destinationIds param to check all Destinations.`
       );
     }
 

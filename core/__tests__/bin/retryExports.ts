@@ -57,19 +57,6 @@ describe("bin/retryExports", () => {
       expect(output).not.toContain("Success!");
     });
 
-    test("it requires ids to be passed if --destinationIds is set", async () => {
-      const command = new RetryExportsCLI();
-      await command.run({
-        params: { startAgoSeconds: 1000, destinationIds: true },
-      });
-      const output = messages.join(" ");
-
-      expect(output).toContain(
-        "Please specify which destination ids to check or remove the --destinationIds param to check all Destinations."
-      );
-      expect(output).not.toContain("Success!");
-    });
-
     test("it errors if passed destinations do not exist", async () => {
       const command = new RetryExportsCLI();
       await command.run({
