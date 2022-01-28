@@ -1,5 +1,7 @@
 import { Fragment } from "react";
 import { Card } from "react-bootstrap";
+import Link from "next/link";
+import { isBrowser } from "../../utils/isBrowser";
 
 export default function HydrationError({
   hydrationError,
@@ -23,7 +25,19 @@ export default function HydrationError({
         <Card.Header>There was an error loading this Page</Card.Header>
         <Card.Body>
           <blockquote className="blockquote mb-0">
-            <p>{error.message}</p>
+            {error?.message.match(/sign in to continue/) && isBrowser() ? (
+              <p>
+                Please{" "}
+                <Link
+                  href={`/session/sign-in?nextPage=${window.location.pathname}`}
+                >
+                  <a>sign in</a>
+                </Link>{" "}
+                to continue
+              </p>
+            ) : (
+              <p>{error.message}</p>
+            )}
           </blockquote>
           {errorData ? (
             <>
