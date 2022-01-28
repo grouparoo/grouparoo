@@ -42,12 +42,7 @@ export async function waitForLock(
   return { releaseLock, attempts };
 }
 
-export interface Lock {
-  releaseLock: () => void;
-  isLocked: boolean;
-}
-
-export async function getOrSetLock({
+export async function getLock({
   key,
   requestId = uuid.v4(),
   ttl = LOCK_DURATION_MS,
@@ -55,19 +50,19 @@ export async function getOrSetLock({
   key: string;
   requestId?: string;
   ttl?: number;
-}): Promise<Lock> {
+}): Promise<() => void> {
   const client = api.redis.clients.client;
   const lockKey = `grouparoo:lock:${key}`; // grouparoo:lock:export:record123:dest456
+  let releaseLock: () => void = null;
 
   const set = await client.setnx(lockKey, requestId);
 
-  if (set) await client.expire(lockKey, Math.ceil(ttl / 1000));
-
-  const isLocked = !set;
-
-  async function releaseLock() {
-    await client.del(lockKey);
+  if (set) {
+    await client.expire(lockKey, Math.ceil(ttl / 1000));
+    releaseLock = async () => {
+      await client.del(lockKey);
+    };
   }
 
-  return { releaseLock, isLocked };
+  return releaseLock;
 }
