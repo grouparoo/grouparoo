@@ -4,7 +4,7 @@ import Ora from "ora";
 import * as glob from "glob";
 import { readPackageJSON } from "./readPackageJSON";
 import { ensureNoTsHeaderFiles } from "./ensureNoTsHeaderFiles";
-import { Command } from "commander";
+import { Command, InvalidArgumentError } from "commander";
 
 // We don't want to require actionhero in the project (so we can rely on core's version), so we need to stub this type
 type ActionheroCLIStub = {
@@ -193,15 +193,40 @@ async function convertCLIToCommanderAction(
     const input = instance.inputs[key];
     const separators = input.required ? ["<", ">"] : ["[", "]"];
     const methodName = input.required ? "requiredOption" : "option";
+    const argString = `${input.letter ? `-${input.letter}, ` : ""}--${key} ${
+      input.flag
+        ? ""
+        : `${separators[0]}${input.placeholder || key}${
+            input.variadic ? "..." : ""
+          }${separators[1]}`
+    }`;
+
+    const argProcessor = (value: string, accumulator?: unknown[]): unknown => {
+      try {
+        if (typeof input.formatter === "function") {
+          value = input.formatter(value);
+        }
+
+        if (typeof input.validator === "function") {
+          input.validator(value);
+        }
+
+        if (input.variadic) {
+          if (!Array.isArray(accumulator)) accumulator = [];
+          accumulator.push(value);
+          return accumulator;
+        }
+
+        return value;
+      } catch (error) {
+        throw new InvalidArgumentError(error?.message ?? error);
+      }
+    };
+
     command[methodName](
-      `${input.letter ? `-${input.letter}, ` : ""}--${key} ${
-        input.flag
-          ? ""
-          : `${separators[0]}${input.placeholder || key}${
-              input.variadic ? "..." : ""
-            }${separators[1]}`
-      }`,
+      argString,
       input.description,
+      argProcessor,
       input.default
     );
   }
@@ -230,16 +255,6 @@ async function runCommand(
   clearRequireCache();
 
   params["_arguments"] = _arguments;
-
-  for (const [key, inputOpts] of Object.entries(instance.inputs)) {
-    if (typeof inputOpts.formatter === "function") {
-      params[key] = await inputOpts.formatter(params[key]);
-    }
-
-    if (typeof inputOpts.validator === "function") {
-      await inputOpts.validator(params[key]);
-    }
-  }
 
   if (instance.initialize === false && instance.start === false) {
     toStop = await instance.run({ params });
