@@ -5,7 +5,6 @@ import {
   RecordsPluginMethod,
   SimpleSourceOptions,
 } from "@grouparoo/core";
-import { config } from "actionhero";
 import { DataResponseRow } from "../shared/types";
 
 export interface GetRowsMethod<ConnectionType = any> {
@@ -25,21 +24,16 @@ export const getRecordsMethod = (getRows: GetRowsMethod) => {
   const records: RecordsPluginMethod = async ({
     scheduleOptions,
     connection,
-    highWaterMark,
     run,
     appId,
     appOptions,
     properties,
     sourceOptions,
     schedule,
+    sourceOffset,
+    limit,
   }) => {
-    let offset = highWaterMark.offset
-      ? parseInt(highWaterMark.offset.toString())
-      : 0;
-    const limit = highWaterMark.limit
-      ? parseInt(highWaterMark.limit.toString())
-      : config.batchSize.imports;
-
+    const offset = parseInt(String(sourceOffset ?? 0));
     const rows = await getRows({
       appId,
       appOptions,
@@ -63,14 +57,13 @@ export const getRecordsMethod = (getRows: GetRowsMethod) => {
       const queryCol = Object.keys(rows[0])[0];
       const propertyMapping = { [queryCol]: property.key };
       await plugin.createImports(propertyMapping, run, rows);
-    } else {
-      offset = 0;
     }
 
+    const nextOffset = rows.length > 0 ? offset + rows.length : 0;
     return {
       importsCount: rows.length,
-      highWaterMark: { offset: offset + rows.length, limit },
-      sourceOffset: null,
+      highWaterMark: { offset: nextOffset, limit },
+      sourceOffset: nextOffset,
     };
   };
 

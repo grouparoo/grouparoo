@@ -5,7 +5,15 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 import { helper } from "@grouparoo/spec-helper";
 
 import { beforeData, afterData, getConfig } from "../utils/data";
-import { Import, plugin, Run, Property } from "@grouparoo/core";
+import {
+  Import,
+  plugin,
+  Run,
+  Property,
+  Source,
+  SourceMapping,
+  Schedule,
+} from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/query-import/connection";
 const importRecords = getConnection().methods.importRecords;
@@ -13,12 +21,12 @@ const importRecords = getConnection().methods.importRecords;
 const { appOptions, usersTableName } = getConfig();
 let client;
 
-let source;
-let run;
-let schedule;
-let sourceMapping;
+let source: Source;
+let run: Run;
+let schedule: Schedule;
+let sourceMapping: SourceMapping;
 
-async function runIt({ highWaterMark, sourceOffset, limit }) {
+async function runIt({ sourceOffset, limit }) {
   const imports = [];
   plugin.createImports = jest.fn(async function (
     mapping: { [remoteKey: string]: string },
@@ -28,18 +36,14 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
     rows.forEach((r) => imports.push(r));
     return null;
   });
-  const {
-    highWaterMark: nextHighWaterMark,
-    importsCount,
-    sourceOffset: nextSourceOffset,
-  } = await importRecords({
+  const { importsCount, sourceOffset: nextSourceOffset } = await importRecords({
     connection: client,
     run,
     appOptions,
     sourceMapping,
     source,
     limit,
-    highWaterMark,
+    highWaterMark: {},
     sourceOffset,
     schedule,
     scheduleOptions: await schedule.getOptions(),
@@ -54,7 +58,6 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
   });
   return {
     imports,
-    highWaterMark: nextHighWaterMark,
     importsCount,
     sourceOffset: nextSourceOffset,
   };
@@ -93,11 +96,9 @@ describe("mysql/query/importRecords", () => {
 
   test("imports all records when no highWaterMark", async () => {
     let limit = 100;
-    let highWaterMark = {};
     let sourceOffset = 0;
     const { imports, importsCount } = await runIt({
       limit,
-      highWaterMark,
       sourceOffset,
     });
     expect(importsCount).toBe(10);
@@ -107,11 +108,9 @@ describe("mysql/query/importRecords", () => {
 
   test("handles getting no results", async () => {
     let limit = 100;
-    let sourceOffset = 0;
-    let highWaterMark = { limit: 100, offset: 9999 }; // past the last one
+    let sourceOffset = 999;
     const { imports, importsCount } = await runIt({
       limit,
-      highWaterMark,
       sourceOffset,
     });
     expect(importsCount).toBe(0);
@@ -123,38 +122,34 @@ describe("mysql/query/importRecords", () => {
     "imports a page at a time",
     async () => {
       let limit = 4;
-      let highWaterMark = { limit, offset: 0 };
       let importedIds;
 
       const page1 = await runIt({
         limit,
-        highWaterMark,
         sourceOffset: null,
       });
       expect(page1.importsCount).toBe(4);
-      expect(page1.highWaterMark).toEqual({ limit, offset: 4 });
+      expect(page1.sourceOffset).toEqual(4);
       importedIds = page1.imports.map((r) => r.id);
       expect(importedIds).toEqual([1, 2, 3, 4]);
 
       // do the next page
       const page2 = await runIt({
         limit,
-        highWaterMark: page1.highWaterMark,
-        sourceOffset: null,
+        sourceOffset: page1.sourceOffset,
       });
       expect(page2.importsCount).toBe(4);
-      expect(page2.highWaterMark).toEqual({ limit, offset: 8 });
+      expect(page2.sourceOffset).toEqual(8);
       importedIds = page2.imports.map((r) => r.id);
       expect(importedIds).toEqual([5, 6, 7, 8]);
 
       // do the next page
       const page3 = await runIt({
         limit,
-        highWaterMark: page2.highWaterMark,
-        sourceOffset: null,
+        sourceOffset: page2.sourceOffset,
       });
       expect(page3.importsCount).toBe(2);
-      expect(page3.highWaterMark).toEqual({ limit, offset: 10 });
+      expect(page3.sourceOffset).toEqual(10);
       importedIds = page3.imports.map((r) => r.id);
       expect(importedIds).toEqual([9, 10]);
     },
