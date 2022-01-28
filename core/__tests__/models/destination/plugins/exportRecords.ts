@@ -688,6 +688,121 @@ describe("models/destination - with custom exportRecords plugin", () => {
       expect(newExport.completedAt).toBeTruthy();
     });
 
+    test("if two exports are pending for the same record/destination pair and are processed in order, the newer one remains pending after the first export loop", async () => {
+      const record = await helper.factories.record();
+      const group = await helper.factories.group();
+      await GroupMember.create({ recordId: record.id, groupId: group.id });
+      await destination.updateTracking("group", group.id);
+
+      const oldExport = await destination.exportRecord(record, false, true);
+      const newExport = await destination.exportRecord(record, false, true);
+
+      expect(oldExport.toDelete).toBe(false);
+      expect(oldExport.hasChanges).toBe(true);
+      expect(oldExport.force).toBe(true);
+      expect(newExport.toDelete).toBe(false);
+      expect(newExport.hasChanges).toBe(true);
+      expect(newExport.force).toBe(true);
+
+      await specHelper.runTask("export:enqueue", {});
+
+      const foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
+      expect(foundTasks.length).toBe(1);
+
+      await specHelper.runTask("export:sendBatch", foundTasks[0].args[0]);
+
+      expect(exportArgs.exports.length).toBe(1); // plugin#exportRecord was called
+      await oldExport.reload();
+      await newExport.reload();
+
+      expect(oldExport.createdAt.valueOf()).toBeLessThan(
+        newExport.createdAt.valueOf()
+      );
+      expect(oldExport.state).toEqual("complete");
+      expect(newExport.state).toEqual("pending"); //nothing should have happened, it is left pending to be processed during the next enqueue/loop through
+
+      await specHelper.runTask("export:sendBatch", foundTasks[0].args[0]);
+      expect(exportArgs.exports.length).toBe(1);
+
+      await newExport.reload();
+      expect(newExport.state).toEqual("complete");
+    });
+
+    test("if two exports are pending for the same record/destination pair and are processed out of order, the older one is canceled", async () => {
+      const record = await helper.factories.record();
+      const group = await helper.factories.group();
+      await GroupMember.create({ recordId: record.id, groupId: group.id });
+      await destination.updateTracking("group", group.id);
+
+      const exportOne = await Export.create({
+        retryCount: 0,
+        destinationId: destination.id,
+        recordId: record.id,
+        startedAt: null,
+        oldRecordProperties: "{}",
+        newRecordProperties: "{}",
+        oldGroups: "[]",
+        newGroups: "[]",
+        state: "pending",
+        sendAt: new Date(),
+        hasChanges: true,
+        toDelete: false,
+        force: true,
+        updatedAt: new Date(),
+        createdAt: new Date(),
+        exportProcessorId: null,
+        completedAt: null,
+        errorMessage: null,
+        errorLevel: null,
+      });
+
+      const exportTwo = await Export.create({
+        retryCount: 0,
+        destinationId: destination.id,
+        recordId: record.id,
+        startedAt: null,
+        oldRecordProperties: "{}",
+        newRecordProperties: "{}",
+        oldGroups: "[]",
+        newGroups: "[]",
+        state: "pending",
+        sendAt: new Date(),
+        hasChanges: true,
+        toDelete: false,
+        force: true,
+        updatedAt: new Date(new Date().valueOf() - 100000),
+        createdAt: new Date(new Date().valueOf() - 100000), //will be second in the queue, but will have timestamps before exportOne
+        exportProcessorId: null,
+        completedAt: null,
+        errorMessage: null,
+        errorLevel: null,
+      });
+
+      expect(exportOne.toDelete).toBe(false);
+      expect(exportOne.hasChanges).toBe(true);
+      expect(exportOne.force).toBe(true);
+      expect(exportTwo.toDelete).toBe(false);
+      expect(exportTwo.hasChanges).toBe(true);
+      expect(exportTwo.force).toBe(true);
+
+      await specHelper.runTask("export:enqueue", {});
+
+      const foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
+      expect(foundTasks.length).toBe(1);
+
+      await specHelper.runTask("export:sendBatch", foundTasks[0].args[0]);
+
+      expect(exportArgs.exports.length).toBe(1); // plugin#exportRecord was called
+      await exportOne.reload();
+      await exportTwo.reload();
+
+      expect(exportOne.createdAt.valueOf()).toBeGreaterThan(
+        exportTwo.createdAt.valueOf()
+      );
+      expect(exportOne.state).toEqual("complete");
+      expect(exportTwo.state).toEqual("canceled");
+    });
+
     test("if there is no previous export, it will be sent to the destination and all data will be new", async () => {
       const record = await helper.factories.record();
       await record.addOrUpdateProperties({
@@ -732,7 +847,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       await record.destroy();
     });
 
-    test("exportRecords can handle parallelsims export:sendBatch and the export can be retried", async () => {
+    test("exportRecords can handle parallelisms export:sendBatch and the export can be retried", async () => {
       parallelismResponse = 0;
 
       const group = await helper.factories.group();

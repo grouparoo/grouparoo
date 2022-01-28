@@ -928,13 +928,14 @@ export namespace DestinationOps {
               recordId: givenExport.recordId,
               destinationId: givenExport.destinationId,
               state: "pending",
-              id: { [Op.ne]: givenExport.id },
             },
-            order: [["createdAt", "ASC"]],
+            order: [["createdAt", "DESC"]],
           });
 
-          if (moreRecentExport !== null) {
-            console.info(`NEWER!!!! ${moreRecentExport.id}`);
+          if (
+            moreRecentExport !== null &&
+            moreRecentExport.id !== givenExport.id
+          ) {
             await givenExport.update({
               state: "canceled",
               sendAt: null,
