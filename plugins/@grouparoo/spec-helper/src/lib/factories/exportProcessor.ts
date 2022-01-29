@@ -1,6 +1,6 @@
 import { loadPath } from "../loadPath";
 import DestinationFactory from "./destination";
-import { ExportProcessor } from "@grouparoo/core";
+import { Destination, ExportProcessor } from "@grouparoo/core";
 
 const data = async (props = {}) => {
   const defaultProps = {
@@ -10,10 +10,13 @@ const data = async (props = {}) => {
     updatedAt: new Date(),
   };
 
-  return Object.assign({}, defaultProps, props);
+  return { ...defaultProps, ...props };
 };
 
-export default async (destination?, props: { [key: string]: any } = {}) => {
+export default async (
+  destination?: Destination,
+  props: { [key: string]: any } = {}
+) => {
   const { ExportProcessor } = await import(`@grouparoo/core/${loadPath}`);
   if (!destination) destination = await DestinationFactory();
 

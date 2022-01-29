@@ -90,7 +90,10 @@ describe("clickhouse/query/importRecords", () => {
       query: `SELECT id FROM ${usersTableName}`,
       propertyId: userIdProperty.id,
     };
-    schedule = await helper.factories.schedule(source, { options });
+    schedule = await helper.factories.schedule(source, {
+      incremental: false,
+      options,
+    });
     run = await helper.factories.run(schedule, { state: "running" });
   });
 

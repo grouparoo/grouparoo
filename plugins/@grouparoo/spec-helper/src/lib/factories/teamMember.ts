@@ -1,7 +1,7 @@
 import { loadPath } from "../loadPath";
 import faker from "faker";
 import TeamFactory from "./team";
-import { TeamMember } from "@grouparoo/core";
+import { Team, TeamMember } from "@grouparoo/core";
 
 const data = async (props = {}) => {
   const defaultProps = {
@@ -15,10 +15,10 @@ const data = async (props = {}) => {
     updatedAt: new Date(),
   };
 
-  return Object.assign({}, defaultProps, props);
+  return { ...defaultProps, ...props };
 };
 
-export default async (team, props: { [key: string]: any } = {}) => {
+export default async (team: Team, props: { [key: string]: any } = {}) => {
   const { TeamMember } = await import(`@grouparoo/core/${loadPath}`);
   if (!team) team = await TeamFactory();
 

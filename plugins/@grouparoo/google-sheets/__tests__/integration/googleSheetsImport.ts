@@ -126,6 +126,7 @@ describe("integration/runs/google-sheets", () => {
         type: "google-sheet-import",
         sourceId: source.id,
         recurring: false,
+        incremental: false,
         mappings: {
           id: "userId",
           email: "email",

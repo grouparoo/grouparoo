@@ -106,6 +106,7 @@ describe("integration/runs/csv/remote", () => {
         type: "csv-import-table",
         sourceId: source.id,
         recurring: false,
+        incremental: false,
         state: "ready",
       };
       const scheduleResponse = await specHelper.runAction<ScheduleCreate>(

@@ -96,7 +96,10 @@ describe("snowflake/query/importRecords", () => {
       query: `SELECT id FROM PROFILES`,
       propertyId: userIdProperty.id,
     };
-    schedule = await helper.factories.schedule(source, { options });
+    schedule = await helper.factories.schedule(source, {
+      incremental: false,
+      options,
+    });
     run = await helper.factories.run(schedule, { state: "running" });
   });
 

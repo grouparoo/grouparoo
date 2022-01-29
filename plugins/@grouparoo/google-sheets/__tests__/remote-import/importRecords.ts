@@ -87,7 +87,10 @@ describe("google-sheets/table/importRecords", () => {
     await source.setMapping(sourceMapping);
     await source.update({ state: "ready" });
 
-    schedule = await helper.factories.schedule(source, { options: {} });
+    schedule = await helper.factories.schedule(source, {
+      incremental: false,
+      options: {},
+    });
     run = await helper.factories.run(schedule, { state: "running" });
   });
 

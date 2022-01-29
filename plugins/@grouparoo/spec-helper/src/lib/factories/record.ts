@@ -16,7 +16,7 @@ const data = async (props: { modelId?: string } = {}) => {
     modelId: model.id,
   };
 
-  return Object.assign({}, defaultProps, props);
+  return { ...defaultProps, ...props };
 };
 
 export default async (props?: { [key: string]: any }, properties = {}) => {
