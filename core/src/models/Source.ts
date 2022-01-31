@@ -397,6 +397,20 @@ export class Source extends LoggedModel<Source> {
     if (app.state !== "ready") throw new Error(`app ${app.id} is not ready`);
   }
 
+  @BeforeCreate
+  static async ensureSupportedAppType(instance: Source) {
+    const app = await App.findById(instance.appId);
+    const { pluginConnection } = await instance.getPlugin();
+    if (!pluginConnection.apps.includes(app.type))
+      throw new Error(
+        `Source of type "${instance.type}" does not support the App \`${
+          app.name
+        }\` (${app.id}) of type "${
+          app.type
+        }". Supported App types: ${pluginConnection.apps.join(", ")}.`
+      );
+  }
+
   @BeforeSave
   static async ensureUniqueName(instance: Source) {
     const count = await Source.count({
