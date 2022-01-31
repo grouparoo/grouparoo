@@ -244,8 +244,12 @@ export namespace helper {
     let serverProcess: ChildProcessWithoutNullStreams;
 
     beforeAll(async () => {
-      if (truncate || resetSettings)
-        fs.unlinkSync(`grouparoo_test-${port}.sqlite`);
+      if (truncate || resetSettings) {
+        const dbName = `grouparoo_test-${port}.sqlite`;
+        if (fs.existsSync(dbName)) {
+          fs.unlinkSync(dbName);
+        }
+      }
 
       await new Promise((resolve) => {
         let resolved = false;

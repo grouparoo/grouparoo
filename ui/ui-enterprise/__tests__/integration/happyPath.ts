@@ -83,16 +83,6 @@ describe("integration", () => {
     helper.mediumTime
   );
 
-  test("The new user was saved to the database and session created", async () => {
-    const teamMembers = await TeamMember.findAll();
-    expect(teamMembers.length).toBe(1);
-    expect(teamMembers[0].email).toBe(email);
-
-    const sessions = await Session.findAll();
-    expect(sessions.length).toBe(1);
-    expect(sessions[0].teamMemberId).toBe(teamMembers[0].id);
-  });
-
   test(
     "I can sign out",
     async () => {
