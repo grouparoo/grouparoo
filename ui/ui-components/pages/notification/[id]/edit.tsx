@@ -1,4 +1,3 @@
-import { useApi } from "../../../contexts/api";
 import NotificationTabs from "../../../components/tabs/Notification";
 import Head from "next/head";
 import { Button } from "react-bootstrap";

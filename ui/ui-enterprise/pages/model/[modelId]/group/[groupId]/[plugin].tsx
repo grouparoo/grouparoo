@@ -1,4 +1,3 @@
-import { useApi } from "../../../../../../ui-components/contexts/api";
 import { NextPageContext } from "next";
 import Head from "next/head";
 import GroupTabs from "@grouparoo/ui-components/components/tabs/Group";

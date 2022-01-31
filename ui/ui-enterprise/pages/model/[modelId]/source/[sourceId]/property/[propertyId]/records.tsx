@@ -1,4 +1,3 @@
-import { useApi } from "../../../../../../../../ui-components/contexts/api";
 import Head from "next/head";
 import PropertyTabs from "@grouparoo/ui-components/components/tabs/Property";
 import RecordsList from "@grouparoo/ui-components/components/record/List";
