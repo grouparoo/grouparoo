@@ -20,8 +20,8 @@ export default function Page(props) {
   } = props;
   const router = useRouter();
   const { client } = useApi();
-  const { model } = useGrouparooModel();
-  const [modelToUpdate, setModelToUpdate] = useState(model);
+  const { model: currentModel } = useGrouparooModel();
+  const [model, setModel] = useState(currentModel);
   const [loading, setLoading] = useState(false);
 
   async function edit(event) {
@@ -30,8 +30,8 @@ export default function Page(props) {
 
     const response: Actions.ModelEdit = await client.request(
       "put",
-      `/model/${modelToUpdate.id}`,
-      Object.assign({}, modelToUpdate)
+      `/model/${model.id}`,
+      Object.assign({}, model)
     );
     if (response?.model) {
       setLoading(false);
@@ -61,7 +61,7 @@ export default function Page(props) {
   const update = async (event) => {
     const _model = Object.assign({}, model);
     _model[event.target.id] = event.target.value;
-    setModelToUpdate(_model);
+    setModel(_model);
   };
 
   return (
@@ -88,7 +88,7 @@ export default function Page(props) {
                   required
                   type="text"
                   placeholder="Name"
-                  value={modelToUpdate.name}
+                  value={model.name}
                   disabled={loading}
                   onChange={(e) => update(e)}
                 />
