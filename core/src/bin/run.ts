@@ -43,9 +43,8 @@ export class RunCLI extends CLI {
       variadic: true,
       letter: "s",
       placeholder: "schedule ids",
-      formatter: (v: any) => v as string[],
     },
-  };
+  } as const;
 
   constructor() {
     super();

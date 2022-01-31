@@ -56,13 +56,12 @@ export class RetryExportsCLI extends CLI {
     destinationIds: {
       required: false,
       requiredValue: true,
-      formatter: (val: any) => val as string[],
       description:
         "Only retry Exports for specific Destinations. Defaults to all Destinations.",
       letter: "d",
       variadic: true,
     },
-  };
+  } as const;
 
   constructor() {
     super();
