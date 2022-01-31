@@ -1051,7 +1051,6 @@ jobs:
           command: cd ui/ui-components && ./node_modules/.bin/jest --ci --maxWorkers 2 --passWithNoTests
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
-            NODE_OPTIONS: --experimental-vm-modules
   test-ui-community:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
@@ -1113,7 +1112,6 @@ jobs:
           command: cd ui/ui-community && ./node_modules/.bin/jest --ci --maxWorkers 2 --passWithNoTests
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
-            NODE_OPTIONS: --experimental-vm-modules
   test-ui-enterprise:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
@@ -1175,7 +1173,6 @@ jobs:
           command: cd ui/ui-enterprise && ./node_modules/.bin/jest --ci --maxWorkers 2 --passWithNoTests
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
-            NODE_OPTIONS: --experimental-vm-modules
   test-ui-config:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
@@ -1237,7 +1234,6 @@ jobs:
           command: cd ui/ui-config && ./node_modules/.bin/jest --ci --maxWorkers 2 --passWithNoTests
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
-            NODE_OPTIONS: --experimental-vm-modules
   test-staging-community:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
