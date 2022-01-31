@@ -152,6 +152,7 @@ const FormMappingSelector: React.FC<Props> = ({
                 as="select"
                 required
                 disabled={disabled}
+                defaultValue={""}
                 value={selectedProperty?.key}
                 onChange={(e) => {
                   setSelectedProperty(
