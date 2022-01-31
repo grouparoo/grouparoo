@@ -193,11 +193,10 @@ export namespace helper {
       resetSettings?: boolean;
       disableTestPluginImport?: boolean;
     } = {
-      truncate: process.env.TEST_SERVER_TRUNCATE === "true",
-      enableTestPlugin: process.env.TEST_SERVER_ENABLE_TEST_PLUGIN === "true",
-      resetSettings: process.env.TEST_SERVER_RESET_SETTINGS === "true",
-      disableTestPluginImport:
-        process.env.TEST_SERVER_DISABLE_TEST_PLUGIN_IMPORT === "true",
+      truncate: false,
+      enableTestPlugin: false,
+      resetSettings: false,
+      disableTestPluginImport: false,
     }
   ) => {
     let actionhero;
@@ -236,19 +235,18 @@ export namespace helper {
   export const grouparooTestServerDetached = ({
     port,
     truncate = false,
-    enableTestPlugin = false,
     resetSettings = false,
-    disableTestPluginImport = false,
   }: {
     port: number | string;
     truncate?: boolean;
-    enableTestPlugin?: boolean;
     resetSettings?: boolean;
-    disableTestPluginImport?: boolean;
   }) => {
     let serverProcess: ChildProcessWithoutNullStreams;
 
     beforeAll(async () => {
+      if (truncate || resetSettings)
+        fs.unlinkSync(`grouparoo_test-${port}.sqlite`);
+
       await new Promise((resolve) => {
         let resolved = false;
         serverProcess = spawn("./bin/start", [], {
@@ -261,12 +259,6 @@ export namespace helper {
             DATABASE_URL: `sqlite://grouparoo_test-${port}.sqlite`,
             JEST_WORKER_ID: undefined,
             GROUPAROO_LOG_LEVEL: "info", // relying on the log messages to know when the server is up
-            TEST_SERVER_TRUNCATE: String(truncate),
-            TEST_SERVER_ENABLE_TEST_PLUGIN: String(enableTestPlugin),
-            TEST_SERVER_RESET_SETTINGS: String(resetSettings),
-            TEST_SERVER_DISABLE_TEST_PLUGIN_IMPORT: String(
-              disableTestPluginImport
-            ),
           },
         });
 
