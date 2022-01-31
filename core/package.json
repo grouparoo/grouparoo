@@ -36,7 +36,7 @@
     "@types/fs-extra": "*",
     "@types/node": "16.*.*",
     "@types/validator": "*",
-    "actionhero": "28.1.6",
+    "actionhero": "28.1.7",
     "ah-sequelize-plugin": "5.1.1",
     "bcryptjs": "2.4.3",
     "cls-hooked": "4.2.2",

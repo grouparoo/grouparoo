@@ -37,7 +37,7 @@
     "@types/jest": "*",
     "@types/node": "16.*.*",
     "@types/pg": "*",
-    "actionhero": "28.1.6",
+    "actionhero": "28.1.7",
     "dotenv": "10.0.0",
     "jest": "27.4.5",
     "prettier": "2.5.1",

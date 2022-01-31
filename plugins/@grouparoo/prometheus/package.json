@@ -23,7 +23,7 @@
     "@grouparoo/spec-helper": "0.8.1-alpha.0",
     "@types/jest": "*",
     "@types/node": "16.*.*",
-    "actionhero": "28.1.6",
+    "actionhero": "28.1.7",
     "axios": "0.24.0",
     "jest": "27.4.5",
     "ts-jest": "27.1.2",
