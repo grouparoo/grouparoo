@@ -646,7 +646,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       expect(newExport.completedAt).toBeTruthy();
     });
 
-    test("if an export has the same data as the previous export, and force=true, it will be sent to the destination", async () => {
+    test.only("if an export has the same data as the previous export, and force=true, it will be sent to the destination", async () => {
       const record = await helper.factories.record();
       const group = await helper.factories.group();
       await GroupMember.create({ recordId: record.id, groupId: group.id });
@@ -688,7 +688,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       expect(newExport.completedAt).toBeTruthy();
     });
 
-    test("if two exports are pending for the same record/destination pair and are processed in order, the newer one remains pending after the first export loop", async () => {
+    test.only("if two exports are pending for the same record/destination pair and are processed in order, the newer one remains pending after the first export loop", async () => {
       const record = await helper.factories.record();
       const group = await helper.factories.group();
       await GroupMember.create({ recordId: record.id, groupId: group.id });
@@ -718,9 +718,6 @@ describe("models/destination - with custom exportRecords plugin", () => {
       expect(oldExport.createdAt.valueOf()).toBeLessThan(
         newExport.createdAt.valueOf()
       );
-
-      console.info(oldExport);
-      console.info(newExport);
 
       // expect(oldExport.state).toEqual("complete");
       // expect(newExport.state).toEqual("pending"); //nothing should have happened, it is left pending to be processed during the next enqueue/loop through
@@ -803,7 +800,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       expect(exportOne.createdAt.valueOf()).toBeGreaterThan(
         exportTwo.createdAt.valueOf()
       );
-      expect(exportOne.state).toEqual("complete");
+      expect(exportOne.state).toEqual("pending");
       expect(exportTwo.state).toEqual("canceled");
     });
 

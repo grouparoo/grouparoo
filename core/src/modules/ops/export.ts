@@ -106,6 +106,8 @@ export namespace ExportOps {
         }
       );
 
+      console.info(_exports);
+
       // For postgres only: we can update our result set with the rows that were updated, filtering out those which are no longer startedAt=null
       // in SQLite this isn't possible, but contention is far less likely
       if (updateResponse[1]) _exports = updateResponse[1];
