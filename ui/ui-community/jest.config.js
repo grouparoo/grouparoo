@@ -4,9 +4,7 @@ module.exports = {
   testTimeout: helper.defaultTime,
   maxWorkers: "50%",
   setupFiles: ["<rootDir>/jest.setup.ts"],
-  transform: {
-    "^.+\\.ts?$": "ts-jest",
-  },
+  preset: "ts-jest",
   testPathIgnorePatterns: [
     "<rootDir>/.next/",
     "<rootDir>/__tests__/utils",

@@ -5,8 +5,6 @@ module.exports = {
   testTimeout: helper.defaultTime,
   maxWorkers: "50%",
   setupFiles: ["<rootDir>/jest.setup.js"],
-  transform: {
-    "^.+\\.ts?$": "ts-jest",
-  },
+  preset: "ts-jest",
   testPathIgnorePatterns: ["<rootDir>/src", "<rootDir>/dist"],
 };
