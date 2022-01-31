@@ -19,7 +19,7 @@
     "@grouparoo/spec-helper": "0.8.1-alpha.0",
     "@grouparoo/ui-config": "0.8.1-alpha.0",
     "grouparoo": "0.8.1-alpha.0",
-    "jest": "27.4.5"
+    "jest": "27.4.7"
   },
   "scripts": {
     "dev": "cd node_modules/@grouparoo/core && NEXT_DEVELOPMENT_MODE=true GROUPAROO_RUN_MODE=\"cli:config\" WORKERS=0 ./bin/dev",

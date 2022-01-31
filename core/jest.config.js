@@ -5,9 +5,7 @@ module.exports = {
   testTimeout: helper.defaultTime,
   maxWorkers: "50%",
   setupFiles: ["<rootDir>/jest.setup.js"],
-  transform: {
-    "^.+\\.ts?$": "ts-jest",
-  },
+  preset: "ts-jest",
   testPathIgnorePatterns: [
     "<rootDir>/__tests__/utils",
     "<rootDir>/__tests__/fixtures",
@@ -15,4 +13,10 @@ module.exports = {
     "<rootDir>/dist/.*/*.ts",
     "<rootDir>/dist/.*/*.js",
   ],
+  globals: {
+    "ts-jest": {
+      transpileOnly: true,
+      isolatedModules: true,
+    },
+  },
 };
