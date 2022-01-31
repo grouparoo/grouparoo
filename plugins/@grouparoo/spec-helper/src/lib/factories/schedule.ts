@@ -1,7 +1,7 @@
 import { loadPath } from "../loadPath";
 import faker from "faker";
 import SourceFactory from "./source";
-import { Schedule } from "@grouparoo/core";
+import { Schedule, Source } from "@grouparoo/core";
 
 const data = async (props = {}) => {
   const defaultProps = {
@@ -9,16 +9,17 @@ const data = async (props = {}) => {
     options: { maxColumn: "updated_at" },
     mapping: {},
     recurring: false,
+    incremental: true,
     recurringFrequency: null,
 
     createdAt: new Date(),
     updatedAt: new Date(),
   };
 
-  return Object.assign({}, defaultProps, props);
+  return { ...defaultProps, ...props };
 };
 
-export default async (source?, props: { [key: string]: any } = {}) => {
+export default async (source?: Source, props: { [key: string]: any } = {}) => {
   const { Schedule } = await import(`@grouparoo/core/${loadPath}`);
 
   if (!source) {

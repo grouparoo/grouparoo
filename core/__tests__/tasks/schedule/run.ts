@@ -89,6 +89,7 @@ describe("tasks/schedule:run", () => {
           {
             name: "import-from-test-template-app",
             displayName: "import-from-test-template-app",
+            supportIncrementalSchedule: true,
             description: "a test app connection",
             apps: ["test-template-app"],
             direction: "import" as "import",
@@ -108,7 +109,7 @@ describe("tasks/schedule:run", () => {
                   },
                 },
               ],
-              records: async () => {
+              importRecords: async () => {
                 return {
                   highWaterMark: { updated_at: 200 },
                   sourceOffset: 100,

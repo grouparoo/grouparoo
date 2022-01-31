@@ -489,6 +489,7 @@ describe("actions/properties", () => {
               name: "dynamic-property-options-source",
               displayName: "dynamic-property-options-source",
               description: "a test app connection",
+              supportIncrementalSchedule: true,
               apps: ["test-dynamic-app"],
               direction: "import",
               options: [],
@@ -536,7 +537,7 @@ describe("actions/properties", () => {
 
                   return response;
                 },
-                records: async () => {
+                importRecords: async () => {
                   return {
                     importsCount: 0,
                     sourceOffset: 0,

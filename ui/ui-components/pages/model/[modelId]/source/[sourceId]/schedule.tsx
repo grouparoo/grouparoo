@@ -22,6 +22,15 @@ import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 import { generateClient } from "../../../../../client/client";
 
+const renderCheckboxLabel = (
+  label: string,
+  description: string
+): React.ReactNode => (
+  <>
+    <code>{label}</code>: <small>{description}</small>
+  </>
+);
+
 export default function Page(props) {
   const {
     source,
@@ -173,10 +182,27 @@ export default function Page(props) {
         <fieldset disabled={Boolean(schedule.locked)}>
           <Row>
             <Col>
+              <Form.Group controlId="incremental">
+                <Form.Check
+                  type="checkbox"
+                  label={renderCheckboxLabel(
+                    "Incremental",
+                    schedule.supportIncrementalSchedule
+                      ? "Only update records that have changed since last schedule run"
+                      : "Not supported"
+                  )}
+                  disabled={!schedule.supportIncrementalSchedule || loading}
+                  checked={schedule.incremental}
+                  onChange={(e) => update(e)}
+                />
+              </Form.Group>
               <Form.Group controlId="confirmRecords">
                 <Form.Check
                   type="checkbox"
-                  label="Confirm that records exist when running schedule?"
+                  label={renderCheckboxLabel(
+                    "Confirm Records",
+                    "Confirm that records exist when running schedule"
+                  )}
                   disabled={loading}
                   checked={schedule.confirmRecords}
                   onChange={(e) => update(e)}
@@ -185,7 +211,10 @@ export default function Page(props) {
               <Form.Group controlId="recurring">
                 <Form.Check
                   type="checkbox"
-                  label="Recurring"
+                  label={renderCheckboxLabel(
+                    "Recurring",
+                    "Automatically run this Schedule at a regular interval"
+                  )}
                   disabled={loading}
                   checked={schedule.recurring}
                   onChange={(e) => update(e)}
@@ -194,7 +223,10 @@ export default function Page(props) {
               <Form.Group controlId="refreshEnabled">
                 <Form.Check
                   type="checkbox"
-                  label="Refresh Enabled?"
+                  label={renderCheckboxLabel(
+                    "Refresh",
+                    "Trigger this Schedule when the parent App’s Refresh Query finds new data"
+                  )}
                   disabled={loading}
                   checked={schedule.refreshEnabled}
                   onChange={(e) => update(e)}
@@ -346,9 +378,6 @@ export default function Page(props) {
                             </option>
                           ))}
                         </Form.Control>
-                        <Form.Text className="text-muted">
-                          {opt.description}
-                        </Form.Text>
                       </>
                     ) : null}
 
@@ -587,7 +616,7 @@ export default function Page(props) {
                 <Alert variant="info">
                   Note that changing the options or filters for a Schedule will
                   reset the high water mark and stop all running Runs. A new Run
-                  will be enqueued.
+                  will be enqueued and the full table will be scanned again.
                 </Alert>
               ) : null}
 

@@ -2,10 +2,10 @@ import { buildConnection } from "@grouparoo/app-templates/dist/source/table";
 import { getSampleRows } from "./getSampleRows";
 import { getColumns } from "./getColumns";
 import { getTables } from "./getTables";
-import { getChangedRows } from "./getChangedRows";
+import { getRows } from "./getRows";
 import { getPropertyValue } from "./getPropertyValue";
 import { getPropertyValues } from "./getPropertyValues";
-import { getChangedRowCount } from "./getChangedRowCount";
+import { getRowCount } from "./getRowCount";
 
 export function getConnection() {
   return buildConnection({
@@ -17,9 +17,9 @@ export function getConnection() {
     getSampleRows,
     getColumns,
     getTables,
-    getChangedRows,
+    getRows,
     getPropertyValue,
     getPropertyValues,
-    getChangedRowCount,
+    getRowCount,
   });
 }

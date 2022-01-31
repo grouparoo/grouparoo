@@ -137,10 +137,7 @@ export const getSortableColumnExamples: GetColumnExamplesMethod = async ({
   // only handle columns that support >=
   const choices = [];
   Object.keys(columns).map((colName) => {
-    const { filterOperations } = columns[colName];
-    if (filterOperations.includes(FilterOperation.GreaterThanOrEqual)) {
-      choices.push(colName);
-    }
+    choices.push(colName);
   });
 
   return choices.map((col) => {

@@ -1,6 +1,6 @@
 import { buildConnection } from "@grouparoo/app-templates/dist/source/query";
 import { executeQuery } from "@grouparoo/mysql/dist/lib/query-import/executeQuery";
-import { getChangedRows } from "@grouparoo/mysql/dist/lib/query-import/getChangedRows";
+import { getRows } from "@grouparoo/mysql/dist/lib/query-import/getRows";
 
 export function getConnection() {
   return buildConnection({
@@ -9,6 +9,6 @@ export function getConnection() {
     displayName: "ClickHouse Query Import",
     description: "Import or update Records via a custom ClickHouse query.",
     executeQuery,
-    getChangedRows,
+    getRows,
   });
 }

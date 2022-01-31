@@ -109,7 +109,7 @@ export interface GetTablesMethod<AppConnection = any> {
     appId: string;
   }): Promise<TableDefinitionMap>;
 }
-export interface GetChangedRowsMethod<AppConnection = any> {
+export interface GetRowsMethod<AppConnection = any> {
   (argument: {
     connection: AppConnection;
     appOptions: SimpleAppOptions;
@@ -122,16 +122,18 @@ export interface GetChangedRowsMethod<AppConnection = any> {
     highWaterMarkAndSortColumnASC: string;
     secondarySortColumnASC: string;
     matchConditions: MatchCondition[];
+    incremental: boolean;
     highWaterMarkKey: string; // for the result in the returned row
   }): Promise<DataResponseRow[]>;
 }
 
-export interface GetChangedRowCountMethod<AppConnection = any> {
+export interface GetRowCountMethod<AppConnection = any> {
   (argument: {
     connection: AppConnection;
     appOptions: SimpleAppOptions;
     sourceOptions?: SimpleSourceOptions;
     appId: string;
+    incremental: boolean;
     tableName: string;
     highWaterMarkCondition: MatchCondition;
     matchConditions: MatchCondition[];

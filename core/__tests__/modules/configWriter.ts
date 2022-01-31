@@ -720,6 +720,7 @@ describe("modules/configWriter", () => {
         name,
         sourceId: source.getConfigId(),
         recurring,
+        incremental: true,
         recurringFrequency,
         confirmRecords,
         options: Object.fromEntries(options.map((o) => [o.key, o.value])),

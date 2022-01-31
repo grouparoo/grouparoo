@@ -18,7 +18,7 @@ const data = async (props: { modelId?: string } = {}) => {
     updatedAt: new Date(),
   };
 
-  return Object.assign({}, defaultProps, props);
+  return { ...defaultProps, ...props };
 };
 
 export default async (props: { [key: string]: any } = {}) => {

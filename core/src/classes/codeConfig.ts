@@ -104,6 +104,7 @@ export interface ScheduleConfigurationObject extends ConfigurationObject {
   name: string;
   sourceId: string;
   recurring?: boolean;
+  incremental?: boolean;
   recurringFrequency?: number;
   confirmRecords?: boolean;
   options?: { [key: string]: any };

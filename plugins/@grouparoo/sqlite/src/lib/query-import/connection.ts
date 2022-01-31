@@ -1,6 +1,6 @@
 import { buildConnection } from "@grouparoo/app-templates/dist/source/query";
 import { executeQuery } from "./executeQuery";
-import { getChangedRows } from "./getChangedRows";
+import { getRows } from "./getRows";
 
 export function getConnection() {
   return buildConnection({
@@ -9,6 +9,6 @@ export function getConnection() {
     displayName: "SQLite Query Import",
     description: "Import or update Records via a custom SQLite query.",
     executeQuery,
-    getChangedRows,
+    getRows,
   });
 }

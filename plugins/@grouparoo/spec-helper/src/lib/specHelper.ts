@@ -309,6 +309,7 @@ export namespace helper {
           displayName: "test-plugin-import",
           direction: "import",
           description: "import or update records from a table",
+          supportIncrementalSchedule: true,
           apps: ["test-plugin-app"],
           options: [
             { key: "table", required: true },
@@ -390,7 +391,7 @@ export namespace helper {
                 },
               ];
             },
-            records: async () => {
+            importRecords: async () => {
               return {
                 importsCount: 0,
                 highWaterMark: { col: 0 },

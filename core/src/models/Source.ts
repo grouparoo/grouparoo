@@ -237,7 +237,7 @@ export class Source extends LoggedModel<Source> {
 
   async scheduleAvailable() {
     const { pluginConnection } = await this.getPlugin();
-    if (typeof pluginConnection?.methods?.records !== "function") {
+    if (typeof pluginConnection?.methods?.importRecords !== "function") {
       return false;
     }
 

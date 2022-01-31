@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { api } from "actionhero";
+import { api, specHelper } from "actionhero";
 import {
   plugin,
   App,
@@ -17,12 +17,13 @@ describe("models/schedule", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   let model: GrouparooModel;
 
+  beforeAll(async () => ({ model } = await helper.factories.properties()));
+
   describe("with source", () => {
     let app: App;
     let source: Source;
 
     beforeAll(async () => {
-      ({ model } = await helper.factories.properties());
       app = await helper.factories.app();
 
       source = await Source.create({
@@ -672,6 +673,7 @@ describe("models/schedule", () => {
           {
             name: "import-from-test-template-app",
             displayName: "import-from-test-template-app",
+            supportIncrementalSchedule: true,
             description: "a test app connection",
             apps: ["test-template-app"],
             direction: "import" as "import",
@@ -694,9 +696,16 @@ describe("models/schedule", () => {
               sourceRunPercentComplete: async () => {
                 return 33;
               },
-              records: async () => {
+              importRecords: async ({ highWaterMark }) => {
                 return {
-                  highWaterMark: { updated_at: 200 },
+                  highWaterMark: {
+                    updated_at:
+                      parseInt(
+                        highWaterMark?.updated_at
+                          ? String(highWaterMark.updated_at)
+                          : "0"
+                      ) + 100,
+                  },
                   sourceOffset: 100,
                   importsCount: 100,
                 };
@@ -782,6 +791,52 @@ describe("models/schedule", () => {
       await schedule.destroy();
     });
 
+    test("runs from incremental schedules will use the previous highwatermark", async () => {
+      const schedule = await Schedule.create({
+        name: "test incremental schedule",
+        sourceId: source.id,
+        incremental: true,
+      });
+      await schedule.setOptions({ maxColumn: "col" });
+      await schedule.update({ state: "ready" });
+
+      const firstRun = await schedule.enqueueRun();
+      await specHelper.runTask("schedule:run", { runId: firstRun.id });
+      await firstRun.reload();
+      expect(firstRun.highWaterMark).toEqual({ updated_at: 100 });
+      await firstRun.update({ state: "complete", importsCreated: 100 });
+
+      const secondRun = await schedule.enqueueRun();
+      await specHelper.runTask("schedule:run", { runId: secondRun.id });
+      await secondRun.reload();
+      expect(secondRun.highWaterMark).toEqual({ updated_at: 200 }); // starts at 100 increments one batch
+
+      await schedule.destroy();
+    });
+
+    test("runs from non-incremental schedules will start from the beginning", async () => {
+      const schedule = await Schedule.create({
+        name: "test incremental schedule",
+        sourceId: source.id,
+        incremental: false,
+      });
+      await schedule.setOptions({ maxColumn: "col" });
+      await schedule.update({ state: "ready" });
+
+      const firstRun = await schedule.enqueueRun();
+      await specHelper.runTask("schedule:run", { runId: firstRun.id });
+      await firstRun.reload();
+      expect(firstRun.highWaterMark).toEqual({ updated_at: 100 });
+      await firstRun.update({ state: "complete", importsCreated: 100 });
+
+      const secondRun = await schedule.enqueueRun();
+      await specHelper.runTask("schedule:run", { runId: secondRun.id });
+      await secondRun.reload();
+      expect(secondRun.highWaterMark).toEqual({ updated_at: 100 }); // starts over
+
+      await schedule.destroy();
+    });
+
     test("the source can provide the percentComplete via sourceRunPercentComplete", async () => {
       const schedule = await Schedule.create({
         name: "test plugin schedule",
@@ -810,8 +865,8 @@ describe("models/schedule", () => {
       const plugin = api.plugins.plugins.filter(
         (p) => p.name === "test-plugin"
       )[0];
-      const originalMethod = plugin.connections[0].methods.records;
-      plugin.connections[0].methods.records = undefined;
+      const originalMethod = plugin.connections[0].methods.importRecords;
+      plugin.connections[0].methods.importRecords = undefined;
       expect(await source.scheduleAvailable()).toBe(false);
 
       await expect(
@@ -822,7 +877,7 @@ describe("models/schedule", () => {
       ).rejects.toThrow(/cannot have a schedule/);
 
       // replace method
-      plugin.connections[0].methods.records = originalMethod;
+      plugin.connections[0].methods.importRecords = originalMethod;
     });
 
     describe("filters", () => {
