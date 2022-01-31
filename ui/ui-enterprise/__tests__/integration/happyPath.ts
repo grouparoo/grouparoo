@@ -7,13 +7,12 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/ui-enterprise": { path: path.join(__dirname, "..", "..") },
 });
 import { helper } from "@grouparoo/spec-helper";
-import { TeamMember, Session } from "@grouparoo/core";
 
-const port = 12345;
+const port = 12345 + (parseInt(process.env.JEST_WORKER_ID) ?? 0);
 declare var browser: any;
 declare var by: any;
 declare var until: any;
-let url: string;
+const url = `http://localhost:${port}`;
 
 const firstName = "mario";
 const lastName = "mario";
@@ -23,7 +22,6 @@ const companyName = "Mario Bros. Plumbing";
 
 describe("integration", () => {
   helper.grouparooTestServerDetached({ port, truncate: true });
-  beforeAll(() => (url = `http://localhost:${port}`));
 
   test(
     "it renders the home page",

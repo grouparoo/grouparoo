@@ -8,15 +8,14 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 });
 import { helper } from "@grouparoo/spec-helper";
 
-const port = 12345;
+const port = 12345 + (parseInt(process.env.JEST_WORKER_ID) ?? 0);
 declare var browser: any;
 declare var by: any;
 declare var until: any;
-let url: string;
+const url = `http://localhost:${port}`;
 
 describe("integration", () => {
   helper.grouparooTestServerDetached({ port });
-  beforeAll(() => (url = `http://localhost:${port}`));
 
   test(
     "it renders the home page",

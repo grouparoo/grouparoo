@@ -53,6 +53,7 @@ import {
   DestinationOptionsMethodResponse,
   AggregationMethod,
 } from "@grouparoo/core";
+import type { GrouparooRunMode } from "@grouparoo/core/src/modules/runMode";
 
 const {
   // modules
@@ -236,10 +237,12 @@ export namespace helper {
     port,
     truncate = false,
     resetSettings = false,
+    runMode = "cli:start",
   }: {
-    port: number | string;
+    port: number;
     truncate?: boolean;
     resetSettings?: boolean;
+    runMode?: GrouparooRunMode;
   }) => {
     let serverProcess: ChildProcessWithoutNullStreams;
 
@@ -262,7 +265,8 @@ export namespace helper {
             REDIS_URL: "redis://mock",
             DATABASE_URL: `sqlite://grouparoo_test-${port}.sqlite`,
             JEST_WORKER_ID: undefined,
-            GROUPAROO_LOG_LEVEL: "info", // relying on the log messages to know when the server is up
+            GROUPAROO_LOG_LEVEL: "info", // relying on the log messages to know when the server is up,
+            GROUPAROO_RUN_MODE: runMode,
           },
         });
 
