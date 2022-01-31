@@ -42,5 +42,4 @@
           command: cd {{{relative_path}}}/{{{test_section}}} && ./node_modules/.bin/jest --ci --maxWorkers 2 --passWithNoTests
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
-            NODE_OPTIONS: --experimental-vm-modules
 {{{custom_test}}}

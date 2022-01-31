@@ -184,7 +184,7 @@ export namespace helper {
 
   /**
    * I am used by clients who want to start and stop their server for record snapshot testing.
-   * As an Arrow function, 'll be in the Jest namespace when used
+   * As an Arrow function, I'll be in the Jest namespace when used
    */
   export const grouparooTestServer = (
     options: {
@@ -193,10 +193,11 @@ export namespace helper {
       resetSettings?: boolean;
       disableTestPluginImport?: boolean;
     } = {
-      truncate: false,
-      enableTestPlugin: false,
-      resetSettings: false,
-      disableTestPluginImport: false,
+      truncate: process.env.TEST_SERVER_TRUNCATE === "true",
+      enableTestPlugin: process.env.TEST_SERVER_ENABLE_TEST_PLUGIN === "true",
+      resetSettings: process.env.TEST_SERVER_RESET_SETTINGS === "true",
+      disableTestPluginImport:
+        process.env.TEST_SERVER_DISABLE_TEST_PLUGIN_IMPORT === "true",
     }
   ) => {
     let actionhero;
@@ -234,8 +235,16 @@ export namespace helper {
    */
   export const grouparooTestServerDetached = ({
     port,
+    truncate = false,
+    enableTestPlugin = false,
+    resetSettings = false,
+    disableTestPluginImport = false,
   }: {
     port: number | string;
+    truncate?: boolean;
+    enableTestPlugin?: boolean;
+    resetSettings?: boolean;
+    disableTestPluginImport?: boolean;
   }) => {
     let serverProcess: ChildProcessWithoutNullStreams;
 
@@ -246,12 +255,18 @@ export namespace helper {
           cwd: corePath,
           env: {
             ...process.env,
-            PORT: `${port}`,
+            PORT: String(port),
             WEB_URL: `http://localhost:${port}`,
             REDIS_URL: "redis://mock",
             DATABASE_URL: `sqlite://grouparoo_test-${port}.sqlite`,
             JEST_WORKER_ID: undefined,
             GROUPAROO_LOG_LEVEL: "info", // relying on the log messages to know when the server is up
+            TEST_SERVER_TRUNCATE: String(truncate),
+            TEST_SERVER_ENABLE_TEST_PLUGIN: String(enableTestPlugin),
+            TEST_SERVER_RESET_SETTINGS: String(resetSettings),
+            TEST_SERVER_DISABLE_TEST_PLUGIN_IMPORT: String(
+              disableTestPluginImport
+            ),
           },
         });
 

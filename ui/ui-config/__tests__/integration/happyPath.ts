@@ -16,9 +16,9 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/ui-config": { path: path.join(__dirname, "..", "..") },
 });
 import { helper } from "@grouparoo/spec-helper";
-import { config } from "actionhero";
 import { SetupStep } from "@grouparoo/core";
 
+const port = 12345;
 declare var browser: any;
 declare var by: any;
 declare var until: any;
@@ -29,8 +29,12 @@ describe("integration", () => {
     fs.rmSync(projectDir, { recursive: true, force: true });
   });
 
-  helper.grouparooTestServer({ truncate: true, resetSettings: true });
-  beforeAll(() => (url = `http://localhost:${config.web.port}`));
+  helper.grouparooTestServerDetached({
+    port,
+    truncate: true,
+    resetSettings: true,
+  });
+  beforeAll(() => (url = `http://localhost:${port}`));
   beforeAll(async () => {
     const setupSteps = await SetupStep.findAll();
     for (const step of setupSteps) {
