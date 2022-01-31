@@ -6,9 +6,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Form } from "react-bootstrap";
 import LoadingButton from "../../../../components/LoadingButton";
-import { errorHandler } from "../../../../eventHandlers";
 import { Actions } from "../../../../utils/apiData";
 import ModelBadge from "../../../../components/badges/ModelBadge";
+import { generateClient } from "../../../../client/client";
 
 export default function NewGroup(props) {
   const {
@@ -77,7 +77,7 @@ export default function NewGroup(props) {
 
 NewGroup.getInitialProps = async (ctx: NextPageContext) => {
   const { modelId } = ctx.query;
-  const { client } = useApi();
+  const client = generateClient(ctx);
   const { model } = await client.request("get", `/model/${modelId}`);
   return { model };
 };
