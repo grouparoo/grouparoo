@@ -37,7 +37,7 @@
     "@grouparoo/spec-helper": "0.8.1-alpha.0",
     "@types/jest": "*",
     "@types/node": "16.*.*",
-    "actionhero": "28.1.4",
+    "actionhero": "28.1.7",
     "jest": "27.4.5",
     "prettier": "2.5.1",
     "sequelize": "6.11.0",

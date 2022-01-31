@@ -38,7 +38,7 @@
     "@types/jest": "*",
     "@types/js-yaml": "4.0.5",
     "@types/node": "16.*.*",
-    "actionhero": "28.1.4",
+    "actionhero": "28.1.7",
     "jest": "27.4.5",
     "nock": "13.2.1",
     "prettier": "2.5.1",
