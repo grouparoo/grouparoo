@@ -601,7 +601,8 @@ export namespace FinalSummaryReporters {
       });
       const allRecords = await GrouparooRecord.count();
 
-      const recordData = {
+      const recordData: RecordData = {
+        name: null,
         recordsUpdated,
         recordsCreated,
         allRecords,
@@ -622,16 +623,14 @@ export namespace FinalSummaryReporters {
     export async function getData() {
       const out: DestinationData[] = [];
 
-      const exports = await Export.findAll({
-        attributes: [
-          "destinationId",
-          [Sequelize.fn("count", Sequelize.col("id")), "exportsCreated"],
-        ],
-        where: { createdAt: { [Op.gte]: lastRunStart } },
-        group: ["destinationId"],
-      });
-      for (const exp of exports) {
-        const destination = await Destination.findById(exp.destinationId);
+      const destinations = await Destination.scope(null).findAll();
+      for (const destination of destinations) {
+        const exportsCreated = await Export.count({
+          where: {
+            createdAt: { [Op.gte]: lastRunStart },
+            destinationId: destination.id,
+          },
+        });
 
         const exportsFailed = await Export.count({
           where: {
@@ -644,20 +643,21 @@ export namespace FinalSummaryReporters {
         const exportsComplete = await Export.count({
           where: {
             state: "complete",
-            updatedAt: { [Op.gte]: lastRunStart },
+            completedAt: { [Op.gte]: lastRunStart },
             destinationId: destination.id,
           },
         });
 
-        const currentDestination = {
-          name: destination.name,
-          exportsCreated: exp.getDataValue("exportsCreated"),
-          exportsFailed,
-          exportsComplete,
-        };
-
-        out.push(currentDestination);
+        if (exportsCreated > 0 || exportsFailed > 0 || exportsComplete > 0) {
+          out.push({
+            name: destination.name,
+            exportsCreated,
+            exportsFailed,
+            exportsComplete,
+          });
+        }
       }
+
       return out;
     }
   }

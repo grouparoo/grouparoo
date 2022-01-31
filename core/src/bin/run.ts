@@ -39,12 +39,12 @@ export class RunCLI extends CLI {
     scheduleIds: {
       description: "Only run specific Schedules by id",
       required: false,
+      requiredValue: true,
       variadic: true,
       letter: "s",
       placeholder: "schedule ids",
-      formatter: (v: any) => v as boolean | string[],
     },
-  };
+  } as const;
 
   constructor() {
     super();
@@ -99,13 +99,8 @@ export class RunCLI extends CLI {
     }
   }
 
-  async checkSchedules(scheduleIds?: boolean | string[]) {
+  async checkSchedules(scheduleIds?: string[]) {
     if (typeof scheduleIds === "undefined") return;
-    if (typeof scheduleIds === "boolean") {
-      return GrouparooCLI.logger.fatal(
-        `Please specify which schedule ids to run`
-      );
-    }
 
     const schedules = await Schedule.findAll({ where: { id: scheduleIds } });
     const foundScheduleIds = schedules.map((s) => s.id);

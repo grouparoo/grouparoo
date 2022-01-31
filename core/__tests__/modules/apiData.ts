@@ -12,8 +12,42 @@ describe("apiDAta", () => {
       expect(APIData.formatDate(time)).toEqual(1577836801000);
     });
 
+    test("it works for numbers as strings", () => {
+      const time = "1577836801000";
+      expect(APIData.formatDate(time)).toEqual(1577836801000);
+    });
+
     test("it works for nulls", () => {
       expect(APIData.formatDate(null)).toEqual(null);
+    });
+  });
+
+  describe("#ensureDate", () => {
+    test("it works for dates", () => {
+      const time = new Date(1577836801000);
+      expect(APIData.ensureDate(time).getTime()).toEqual(1577836801000);
+    });
+
+    test("it works for strings", () => {
+      const time = "2020-01-01T00:00:01Z";
+      expect(APIData.ensureDate(time).getTime()).toEqual(1577836801000);
+    });
+
+    test("it works for numbers as strings", () => {
+      const time = "1577836801000";
+      expect(APIData.ensureDate(time).getTime()).toEqual(1577836801000);
+    });
+
+    test("it works for numbers", () => {
+      const time = 1577836801000;
+      expect(APIData.ensureDate(time).getTime()).toEqual(1577836801000);
+    });
+
+    test("it throws for everything else", () => {
+      const param = "foo";
+      expect(() => APIData.ensureDate(param)).toThrow(
+        /foo cannot be converted to a date/
+      );
     });
   });
 

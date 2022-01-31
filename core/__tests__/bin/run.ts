@@ -58,13 +58,6 @@ describe("bin/run", () => {
     });
 
     describe("with scheduleIds", () => {
-      test("will error if param is specified with no schedules", async () => {
-        await instance.checkSchedules(true);
-        expect(messages.join(" ")).toContain(
-          "❌ Please specify which schedule ids to run"
-        );
-      });
-
       test("will error if non-existent schedule ids are passed", async () => {
         await instance.checkSchedules(["foo"]);
         expect(messages.join(" ")).toContain(
