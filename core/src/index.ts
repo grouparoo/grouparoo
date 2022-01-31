@@ -63,6 +63,8 @@ export * from "./modules/tableSpeculation";
 
 export * from "./modules/oAuth";
 
+export type { GrouparooRunMode } from "./modules/runMode";
+
 // ensure config types are loaded
 import "./config/api";
 import "./config/batchSize";

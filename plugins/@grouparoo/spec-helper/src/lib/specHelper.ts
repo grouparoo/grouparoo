@@ -52,8 +52,8 @@ import {
   SourceOptionsMethodResponse,
   DestinationOptionsMethodResponse,
   AggregationMethod,
+  GrouparooRunMode,
 } from "@grouparoo/core";
-import type { GrouparooRunMode } from "@grouparoo/core/src/modules/runMode";
 
 const {
   // modules
