@@ -1,4 +1,4 @@
-import { createContext, Dispatch, SetStateAction, useContext } from "react";
+import { createContext, useContext } from "react";
 import { Models } from "../utils/apiData";
 
 interface GrouparooModelContext {
