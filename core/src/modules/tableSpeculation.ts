@@ -71,7 +71,7 @@ export namespace TableSpeculation {
       (p) => ConfigWriter.generateId(p.key) === proposedKey
     );
     return matchingProperty
-      ? `${ConfigWriter.generateId(model.name)}_${key}`
-      : key;
+      ? `${ConfigWriter.generateId(model.name)}_${proposedKey}`
+      : proposedKey;
   }
 }
