@@ -722,6 +722,7 @@ describe("modules/configWriter", () => {
         recurring,
         incremental: true,
         recurringFrequency,
+        refreshEnabled: true,
         confirmRecords,
         options: Object.fromEntries(options.map((o) => [o.key, o.value])),
         filters: [

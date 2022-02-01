@@ -145,9 +145,11 @@ describe("modules/codeConfig", () => {
       expect(schedules[0].sourceId).toBe("users_table");
       expect(schedules[0].name).toBe("Users Table Schedule");
       expect(schedules[0].state).toBe("ready");
+      expect(schedules[0].incremental).toBe(false);
       expect(schedules[0].recurring).toBe(true);
       expect(schedules[0].confirmRecords).toBe(true);
       expect(schedules[0].recurringFrequency).toBe(900000);
+      expect(schedules[0].refreshEnabled).toBe(false);
       expect(schedules[0].locked).toBe("config:code");
     });
 
