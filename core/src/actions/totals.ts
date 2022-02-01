@@ -79,15 +79,14 @@ export class TotalsAction extends AuthenticatedAction {
         where: { createdAt: { [Op.gte]: new Date(dates[0]) } },
         group: [groupStatement],
       })
-    )
-      // @ts-ignore We use a custom group-by clause which returns more than one row as a result
-      .map((row) => {
-        const dateKey = Object.keys(row).find((r) => r !== "count");
-        return {
-          date: dateString(row[dateKey]),
-          count: row.count,
-        };
-      });
+    ).map((row) => {
+      const dateKey = Object.keys(row).find((r) => r !== "count");
+      return {
+        // @ts-ignore
+        date: dateString(row[dateKey]),
+        count: row.count,
+      };
+    });
 
     const returnedDates = rolling.map((r) => r.date);
     dates.forEach((date) => {
