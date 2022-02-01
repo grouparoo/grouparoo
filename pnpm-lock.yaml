@@ -229,7 +229,7 @@ importers:
       prettier: 2.5.1
       semver: 7.3.5
       ts-node: 10.4.0
-      type-fest: 2.8.0
+      type-fest: 2.11.1
       typescript: 4.5.4
     dependencies:
       chalk: 4.1.2
@@ -245,7 +245,7 @@ importers:
       '@types/node': 16.11.21
       prettier: 2.5.1
       ts-node: 10.4.0_6c639fe72b7dff7b66d483307814106a
-      type-fest: 2.8.0
+      type-fest: 2.11.1
       typescript: 4.5.4
 
   core:
@@ -301,7 +301,7 @@ importers:
       tar: 6.1.11
       ts-jest: 27.1.2
       ts-node: 10.4.0
-      type-fest: 2.8.0
+      type-fest: 2.11.1
       typedoc: 0.22.11
       typescript: 4.5.4
       uuid: 8.3.2
@@ -365,7 +365,7 @@ importers:
       jest-fetch-mock: 3.0.3
       nock: 13.2.1
       ts-jest: 27.1.2_334772dd386c536d54092d15fe05a291
-      type-fest: 2.8.0
+      type-fest: 2.11.1
       typedoc: 0.22.11_typescript@4.5.4
       typescript: 4.5.4
 
@@ -387,7 +387,7 @@ importers:
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2
-      type-fest: 2.8.0
+      type-fest: 2.11.1
       typescript: 4.5.4
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
@@ -407,7 +407,7 @@ importers:
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_334772dd386c536d54092d15fe05a291
-      type-fest: 2.8.0
+      type-fest: 2.11.1
       typescript: 4.5.4
 
   plugins/@grouparoo/app-templates:
@@ -489,7 +489,7 @@ importers:
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2
-      type-fest: 2.8.0
+      type-fest: 2.11.1
       typescript: 4.5.4
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
@@ -507,7 +507,7 @@ importers:
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_334772dd386c536d54092d15fe05a291
-      type-fest: 2.8.0
+      type-fest: 2.11.1
       typescript: 4.5.4
 
   plugins/@grouparoo/calculated-property:
@@ -581,7 +581,7 @@ importers:
       jest: 27.4.5
       prettier: 2.5.1
       ts-jest: 27.1.2
-      type-fest: 2.8.0
+      type-fest: 2.11.1
       typescript: 4.5.4
       winston: 3.3.3
       winston-cloudwatch: 3.1.1
@@ -598,7 +598,7 @@ importers:
       jest: 27.4.5
       prettier: 2.5.1
       ts-jest: 27.1.2_334772dd386c536d54092d15fe05a291
-      type-fest: 2.8.0
+      type-fest: 2.11.1
       typescript: 4.5.4
 
   plugins/@grouparoo/csv:
@@ -615,7 +615,7 @@ importers:
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2
-      type-fest: 2.8.0
+      type-fest: 2.11.1
       typescript: 4.5.4
     dependencies:
       axios: 0.24.0
@@ -631,7 +631,7 @@ importers:
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_334772dd386c536d54092d15fe05a291
-      type-fest: 2.8.0
+      type-fest: 2.11.1
       typescript: 4.5.4
 
   plugins/@grouparoo/customerio:
@@ -842,7 +842,7 @@ importers:
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2
-      type-fest: 2.8.0
+      type-fest: 2.11.1
       typescript: 4.5.4
       uuid: 8.3.2
     dependencies:
@@ -862,7 +862,7 @@ importers:
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_334772dd386c536d54092d15fe05a291
-      type-fest: 2.8.0
+      type-fest: 2.11.1
       typescript: 4.5.4
       uuid: 8.3.2
 
@@ -883,7 +883,7 @@ importers:
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2
-      type-fest: 2.8.0
+      type-fest: 2.11.1
       typescript: 4.5.4
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
@@ -902,7 +902,7 @@ importers:
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_334772dd386c536d54092d15fe05a291
-      type-fest: 2.8.0
+      type-fest: 2.11.1
       typescript: 4.5.4
 
   plugins/@grouparoo/intercom:
@@ -1056,7 +1056,7 @@ importers:
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2
-      type-fest: 2.8.0
+      type-fest: 2.11.1
       typescript: 4.5.4
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
@@ -1075,7 +1075,7 @@ importers:
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_334772dd386c536d54092d15fe05a291
-      type-fest: 2.8.0
+      type-fest: 2.11.1
       typescript: 4.5.4
 
   plugins/@grouparoo/mailjet:
@@ -1095,7 +1095,7 @@ importers:
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2
-      type-fest: 2.8.0
+      type-fest: 2.11.1
       typescript: 4.5.4
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
@@ -1114,7 +1114,7 @@ importers:
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_334772dd386c536d54092d15fe05a291
-      type-fest: 2.8.0
+      type-fest: 2.11.1
       typescript: 4.5.4
 
   plugins/@grouparoo/marketo:
@@ -1740,7 +1740,7 @@ importers:
       sequelize: 6.11.0
       sqlite3: 5.0.2
       ts-jest: 27.1.2
-      type-fest: 2.8.0
+      type-fest: 2.11.1
       typescript: 4.5.4
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
@@ -1759,7 +1759,7 @@ importers:
       prettier: 2.5.1
       sequelize: 6.11.0_sqlite3@5.0.2
       ts-jest: 27.1.2_334772dd386c536d54092d15fe05a291
-      type-fest: 2.8.0
+      type-fest: 2.11.1
       typescript: 4.5.4
 
   plugins/@grouparoo/vero:
@@ -1917,7 +1917,7 @@ importers:
       stacktrace-js: 2.0.2
       swagger-ui-dist: 4.1.3
       ts-jest: 27.1.2
-      type-fest: 2.8.0
+      type-fest: 2.11.1
       typescript: 4.5.4
       universal-cookie: 4.0.4
     dependencies:
@@ -1957,7 +1957,7 @@ importers:
       stacktrace-js: 2.0.2
       swagger-ui-dist: 4.1.3
       ts-jest: 27.1.2_334772dd386c536d54092d15fe05a291
-      type-fest: 2.8.0
+      type-fest: 2.11.1
       typescript: 4.5.4
 
   ui/ui-config:
@@ -15495,8 +15495,8 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /type-fest/2.8.0:
-    resolution: {integrity: sha512-O+V9pAshf9C6loGaH0idwsmugI2LxVNR7DtS40gVo2EXZVYFgz9OuNtOhgHLdHdapOEWNdvz9Ob/eeuaWwwlxA==}
+  /type-fest/2.11.1:
+    resolution: {integrity: sha512-fPcV5KLAqFfmhHobtAUwEpbpfYhVF7wSLVgbG/7mIGe/Pete7ky/bPAPRkzbWdrj0/EkswFAAR2feJCgigkUKg==}
     engines: {node: '>=12.20'}
 
   /typed-styles/0.0.7:
@@ -15560,7 +15560,7 @@ packages:
       emittery: 0.10.0
       fs-jetpack: 4.3.1
       glob: 7.2.0
-      type-fest: 2.8.0
+      type-fest: 2.11.1
       verror: 1.10.1
     dev: false
 
