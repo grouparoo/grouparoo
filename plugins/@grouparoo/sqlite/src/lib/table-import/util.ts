@@ -2,13 +2,17 @@ import {
   FilterOperation,
   MatchCondition,
 } from "@grouparoo/app-templates/dist/source/table";
-import { buildValueList } from "../export/exportRecord";
+import SQLiteQueryBuilder from "../queryBuilder";
+import { toValuePlaceholders, toValuesArray } from "../util";
 
-export function makeWhereClause(matchCondition: MatchCondition) {
+export function makeWhereClause(
+  matchCondition: MatchCondition,
+  queryBuilder: SQLiteQueryBuilder
+) {
   const { columnName, filterOperation, value, values } = matchCondition;
-  let op;
+  let op: string;
   let match = values || value;
-  let transform = null;
+  let transform: string;
 
   switch (filterOperation) {
     case FilterOperation.Exists:
@@ -57,9 +61,15 @@ export function makeWhereClause(matchCondition: MatchCondition) {
   const key = transform
     ? `${transform}(CAST("${columnName}" as TEXT))`
     : `"${columnName}"`;
-  if (match !== null) {
-    match = Array.isArray(match) ? `(${buildValueList(match)})` : `"${match}"`;
-  }
 
-  return ` ${key} ${op} ${match !== null ? match : ""}`;
+  queryBuilder.push(`${key} ${op}`);
+
+  if (match) {
+    if (Array.isArray(match)) {
+      const values = toValuesArray(match);
+      queryBuilder.push(toValuePlaceholders(values), values);
+    } else {
+      queryBuilder.push(`?`, [match]);
+    }
+  }
 }

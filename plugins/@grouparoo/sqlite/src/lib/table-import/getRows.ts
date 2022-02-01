@@ -1,12 +1,9 @@
 import { makeWhereClause } from "./util";
-import { validateQuery } from "../validateQuery";
-import {
-  GetRowsMethod,
-  DataResponseRow,
-  MatchCondition,
-} from "@grouparoo/app-templates/dist/source/table";
+import { GetRowsMethod } from "@grouparoo/app-templates/dist/source/table";
+import SQLiteQueryBuilder from "../queryBuilder";
+import { SQLiteConnection } from "../sqlite";
 
-export const getRows: GetRowsMethod = async ({
+export const getRows: GetRowsMethod<SQLiteConnection> = async ({
   connection,
   tableName,
   highWaterMarkCondition,
@@ -17,33 +14,29 @@ export const getRows: GetRowsMethod = async ({
   matchConditions,
   highWaterMarkKey,
   incremental,
-}: {
-  highWaterMarkCondition: MatchCondition;
-  [key: string]: any;
 }) => {
   // Begin with SELECT statement.
-  let query = `SELECT *, ${highWaterMarkAndSortColumnASC} AS ${highWaterMarkKey} FROM "${tableName}"`;
+  const queryBuilder = new SQLiteQueryBuilder(
+    `SELECT *, "${highWaterMarkAndSortColumnASC}" AS "${highWaterMarkKey}" FROM "${tableName}"`
+  );
 
   // Add WHERE clause, if there is a condition for the HWM.
   if (incremental && highWaterMarkCondition) {
-    query += ` WHERE ${makeWhereClause(highWaterMarkCondition)}`;
+    queryBuilder.push(`WHERE`);
+    makeWhereClause(highWaterMarkCondition, queryBuilder);
   }
 
   // Add additional WHERE clauses for Filters on the schedule
   for (const [idx, condition] of matchConditions.entries()) {
-    const filterClause = makeWhereClause(condition);
-    query += ` ${
-      highWaterMarkCondition || idx > 0 ? "AND" : "WHERE"
-    } ${filterClause}`;
+    queryBuilder.push(highWaterMarkCondition || idx > 0 ? "AND" : "WHERE");
+    makeWhereClause(condition, queryBuilder);
   }
 
   // Add ORDER, LIMIT, and OFFSET clauses.
-  query += ` ORDER BY ${highWaterMarkAndSortColumnASC} ASC, ${secondarySortColumnASC} ASC LIMIT ${limit} OFFSET ${sourceOffset}`;
-
-  // Ensure we don't have any extraneous characters, multiple queries, etc.
-  validateQuery(query);
+  queryBuilder.push(
+    `ORDER BY "${highWaterMarkAndSortColumnASC}" ASC, "${secondarySortColumnASC}" ASC LIMIT ${limit} OFFSET ${sourceOffset}`
+  );
 
   // Run the query and return the result.
-  const out: DataResponseRow[] = await connection.asyncQuery(query);
-  return out;
+  return await connection.asyncQuery(...queryBuilder.build());
 };

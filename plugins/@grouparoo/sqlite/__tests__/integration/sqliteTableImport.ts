@@ -493,7 +493,7 @@ describe("integration/runs/sqlite", () => {
         `SELECT * FROM "${recordsDestinationTableName}" ORDER BY id ASC`
       );
       expect(userRows.length).toBe(10);
-      expect(userRows[0].customer_email).toBe("ejervois0@example.com");
+      expect(userRows[0].customer_email).toBe("eohara0@example.com");
 
       const groupRows = await client.asyncQuery(
         `SELECT * FROM "${groupsDestinationTableName}"`
@@ -513,7 +513,7 @@ describe("integration/runs/sqlite", () => {
     const record = await GrouparooRecord.findOne({ where: { id: recordId } });
     const properties = await record.getProperties();
     expect(properties.userId.values).toEqual([1]);
-    expect(properties.email.values).toEqual(["ejervois0@example.com"]);
+    expect(properties.email.values).toEqual(["eohara0@example.com"]);
   });
 
   test(
@@ -615,7 +615,7 @@ describe("integration/runs/sqlite", () => {
         `SELECT * FROM "${recordsDestinationTableName}" ORDER BY id ASC`
       );
       expect(userRows.length).toBe(10);
-      expect(userRows[0].customer_email).toBe("ejervois0@example.com");
+      expect(userRows[0].customer_email).toBe("eohara0@example.com");
 
       const groupRows = await client.asyncQuery(
         `SELECT * FROM "${groupsDestinationTableName}"`
