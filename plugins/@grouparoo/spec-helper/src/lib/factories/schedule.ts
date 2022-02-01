@@ -1,5 +1,5 @@
 import { loadPath } from "../loadPath";
-import faker from "faker";
+import faker from "@faker-js/faker";
 import SourceFactory from "./source";
 import { Schedule, Source } from "@grouparoo/core";
 

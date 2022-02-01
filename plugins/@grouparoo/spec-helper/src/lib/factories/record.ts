@@ -1,5 +1,5 @@
 import { GrouparooModel, GrouparooRecord } from "@grouparoo/core";
-import faker from "faker";
+import faker from "@faker-js/faker";
 import { loadPath } from "../loadPath";
 import ModelFactory from "./model";
 

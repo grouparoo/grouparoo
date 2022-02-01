@@ -2,7 +2,7 @@ import fs from "fs";
 import glob from "glob";
 import path from "path";
 import os from "os";
-import faker from "faker";
+import faker from "@faker-js/faker";
 import * as uuid from "uuid";
 import { helper } from "@grouparoo/spec-helper";
 

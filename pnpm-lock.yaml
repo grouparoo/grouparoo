@@ -250,10 +250,10 @@ importers:
 
   core:
     specifiers:
+      '@faker-js/faker': 6.0.0-alpha.5
       '@grouparoo/spec-helper': 0.8.1-alpha.0
       '@types/bcryptjs': 2.4.2
       '@types/cls-hooked': 4.3.3
-      '@types/faker': 5.5.3
       '@types/fs-extra': '*'
       '@types/isomorphic-fetch': 0.0.35
       '@types/jest': '*'
@@ -349,10 +349,10 @@ importers:
       winston: 3.5.1
       ws: 8.4.2
     devDependencies:
+      '@faker-js/faker': 6.0.0-alpha.5
       '@grouparoo/spec-helper': link:../plugins/@grouparoo/spec-helper
       '@types/bcryptjs': 2.4.2
       '@types/cls-hooked': 4.3.3
-      '@types/faker': 5.5.3
       '@types/isomorphic-fetch': 0.0.35
       '@types/jest': 27.4.0
       '@types/mustache': 4.1.2
@@ -1690,13 +1690,12 @@ importers:
 
   plugins/@grouparoo/spec-helper:
     specifiers:
+      '@faker-js/faker': 6.0.0-alpha.5
       '@grouparoo/core': 0.8.1-alpha.0
-      '@types/faker': 5.5.3
       '@types/jest': '*'
       '@types/node': 16.*.*
       actionhero: 28.1.7
       axios: 0.24.0
-      faker: 5.5.3
       fs-extra: 10.0.0
       jest: 27.4.5
       nock: 13.2.2
@@ -1706,8 +1705,8 @@ importers:
       typescript: 4.5.5
       uuid: 8.3.2
     dependencies:
+      '@faker-js/faker': 6.0.0-alpha.5
       axios: 0.24.0
-      faker: 5.5.3
       fs-extra: 10.0.0
       nock: 13.2.2
       prettier: 2.5.1
@@ -1715,7 +1714,6 @@ importers:
       uuid: 8.3.2
     devDependencies:
       '@grouparoo/core': link:../../../core
-      '@types/faker': 5.5.3
       '@types/jest': 27.4.0
       '@types/node': 16.11.21
       actionhero: 28.1.7
@@ -2531,6 +2529,10 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@faker-js/faker/6.0.0-alpha.5:
+    resolution: {integrity: sha512-8Is/xFxNgricqmhQR/AJ4Vi0cKzSR7FcpE0ImG9dWciuSxUkyCiK+B5/hTQP8jrVbtgTjpFC1AaTCnALJOBDmw==}
+    engines: {node: '>=12.0.0', npm: '>=7.0.0'}
 
   /@fortawesome/fontawesome-common-types/0.2.36:
     resolution: {integrity: sha512-a/7BiSgobHAgBWeN7N0w+lAhInrGxksn13uK7231n2m8EDPE3BMCl9NZLTGrj9ZXfCmC6LM0QLqXidIizVQ6yg==}
@@ -4376,10 +4378,6 @@ packages:
     resolution: {integrity: sha512-9AonUzyTjXXhEOa0DnqpzZi6VHlqKMswga9EXjpXnnqxwLtdvPPtlO8evrI5D9S6asFRCQ6v+wpiUKbw+vKqyg==}
     dependencies:
       '@types/ms': 0.7.31
-    dev: true
-
-  /@types/faker/5.5.3:
-    resolution: {integrity: sha512-InxkM6sCFQTI6YQl29M/XGlO19ecv/EHH5X5zLEFdge2/qya8oIT0XkJUKTqheVYWJtGi+FBAfP7hbbunDiOmg==}
     dev: true
 
   /@types/fs-extra/9.0.13:
@@ -7067,6 +7065,7 @@ packages:
 
   /encoding/0.1.13:
     resolution: {integrity: sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==}
+    requiresBuild: true
     dependencies:
       iconv-lite: 0.6.3
 
@@ -7601,10 +7600,6 @@ packages:
       mixwith: 0.1.1
       request: 2.88.2
       request-promise: 4.1.1_request@2.88.2
-    dev: false
-
-  /faker/5.5.3:
-    resolution: {integrity: sha512-wLTv2a28wjUyWkbnX7u/ABZBkUkIF2fCd73V6P2oFqEGEktDfzWx4UxrSqtPRw0xPRAcjeAOIiJWqZm3pP4u3g==}
     dev: false
 
   /fast-deep-equal/3.1.3:
