@@ -827,6 +827,7 @@ importers:
 
   plugins/@grouparoo/google-sheets:
     specifiers:
+      '@grouparoo/app-templates': 0.8.1-alpha.0
       '@grouparoo/core': 0.8.1-alpha.0
       '@grouparoo/csv': 0.8.1-alpha.0
       '@grouparoo/spec-helper': 0.8.1-alpha.0
@@ -846,6 +847,7 @@ importers:
       typescript: 4.5.4
       uuid: 8.3.2
     dependencies:
+      '@grouparoo/app-templates': link:../app-templates
       '@grouparoo/csv': link:../csv
       csv-write-stream: 2.0.0
       google-spreadsheet: 3.2.0
@@ -3755,6 +3757,7 @@ packages:
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [android]
+    requiresBuild: true
     optional: true
 
   /@next/swc-darwin-arm64/12.0.7:
@@ -3762,6 +3765,7 @@ packages:
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [darwin]
+    requiresBuild: true
     optional: true
 
   /@next/swc-darwin-x64/12.0.7:
@@ -3769,6 +3773,7 @@ packages:
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [darwin]
+    requiresBuild: true
     optional: true
 
   /@next/swc-linux-arm-gnueabihf/12.0.7:
@@ -3776,6 +3781,7 @@ packages:
     engines: {node: '>= 10'}
     cpu: [arm]
     os: [linux]
+    requiresBuild: true
     optional: true
 
   /@next/swc-linux-arm64-gnu/12.0.7:
@@ -3783,6 +3789,7 @@ packages:
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
+    requiresBuild: true
     optional: true
 
   /@next/swc-linux-arm64-musl/12.0.7:
@@ -3790,6 +3797,7 @@ packages:
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
+    requiresBuild: true
     optional: true
 
   /@next/swc-linux-x64-gnu/12.0.7:
@@ -3797,6 +3805,7 @@ packages:
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
+    requiresBuild: true
     optional: true
 
   /@next/swc-linux-x64-musl/12.0.7:
@@ -3804,6 +3813,7 @@ packages:
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
+    requiresBuild: true
     optional: true
 
   /@next/swc-win32-arm64-msvc/12.0.7:
@@ -3811,6 +3821,7 @@ packages:
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [win32]
+    requiresBuild: true
     optional: true
 
   /@next/swc-win32-ia32-msvc/12.0.7:
@@ -3818,6 +3829,7 @@ packages:
     engines: {node: '>= 10'}
     cpu: [ia32]
     os: [win32]
+    requiresBuild: true
     optional: true
 
   /@next/swc-win32-x64-msvc/12.0.7:
@@ -3825,6 +3837,7 @@ packages:
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
+    requiresBuild: true
     optional: true
 
   /@nodelib/fs.scandir/2.1.5:
@@ -6040,6 +6053,7 @@ packages:
       tsv: 0.2.0
       uuid: 3.4.0
     dev: false
+    bundledDependencies: []
 
   /cliui/7.0.4:
     resolution: {integrity: sha512-OcRE68cOsVMXp1Yvonl/fzkQOyjLSu/8bhPDfQt0e0/Eb283TKP20Fs2MqoPsr9SwA595rRCA+QMzYc9nBP+JQ==}
@@ -6691,6 +6705,7 @@ packages:
 
   /decache/3.1.0:
     resolution: {integrity: sha1-T1A2+9ZYH8yXI3rDlUokS5U2wto=}
+    requiresBuild: true
     dependencies:
       find: 0.2.9
     dev: false
@@ -7991,6 +8006,7 @@ packages:
     resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
+    requiresBuild: true
     optional: true
 
   /fstream/1.0.12:
@@ -11249,6 +11265,7 @@ packages:
   /mv/2.1.1:
     resolution: {integrity: sha1-rmzg1vbV4KT32JN5jQPB6pVZtqI=}
     engines: {node: '>=0.8.0'}
+    requiresBuild: true
     dependencies:
       mkdirp: 0.5.5
       ncp: 2.0.0
@@ -11587,6 +11604,7 @@ packages:
     resolution: {integrity: sha512-3g8lYefrRRzvGeSowdJKAKyks8oUpLEd/DyPV4eMhVlhJ0aNaZqIrNUIPuEWWTAoPqyFkfGrM67MC69baqn6vA==}
     engines: {node: '>= 0.8.0'}
     hasBin: true
+    requiresBuild: true
     dependencies:
       fstream: 1.0.12
       glob: 7.2.0
@@ -14007,6 +14025,7 @@ packages:
   /saslprep/1.0.3:
     resolution: {integrity: sha512-/MY/PEMbk2SuY5sScONwhUDsV2p77Znkb/q3nSVstq/yQzYJOH/Azh29p9oJLsl3LnQwSvZDKagDGBsBwSooag==}
     engines: {node: '>=6'}
+    requiresBuild: true
     dependencies:
       sparse-bitfield: 3.0.3
     dev: false
@@ -15539,6 +15558,7 @@ packages:
     resolution: {integrity: sha512-x+xdeDWq7FiORDvyIJ0q/waWd4PhjBNOm5dQUOq2AKC0IEjxOS66Ha9tctiVDGcRQuh69K7fgU5oRuTK4cysSg==}
     engines: {node: '>=0.8.0'}
     hasBin: true
+    requiresBuild: true
     dev: true
     optional: true
 

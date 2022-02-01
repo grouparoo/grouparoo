@@ -1,7 +1,7 @@
 import { AggregationMethod, PluginConnection } from "@grouparoo/core";
 import { sourcePreview } from "./sourcePreview";
 import { propertyOptions } from "./propertyOptions";
-import { records } from "./records";
+import { importRecords } from "./importRecords";
 import { sourceRunPercentComplete } from "./sourceRunPercentComplete";
 import { uniquePropertyBootstrapOptions } from "@grouparoo/csv/dist/lib/shared/uniquePropertyBootstrapOptions";
 import { recordProperty } from "./recordProperty";
@@ -12,6 +12,7 @@ export const sourceConnection: PluginConnection = {
   displayName: "Google Sheets Import",
   direction: "import",
   description: "Import or update Records from a Google Sheet.",
+  supportIncrementalSchedule: true,
   apps: ["google-sheets"],
   groupAggregations: [AggregationMethod.Exact],
   options: [
@@ -25,7 +26,7 @@ export const sourceConnection: PluginConnection = {
   methods: {
     sourcePreview,
     propertyOptions,
-    records,
+    importRecords,
     sourceRunPercentComplete,
     uniquePropertyBootstrapOptions,
     recordProperty,
