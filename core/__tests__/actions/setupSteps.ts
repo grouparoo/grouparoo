@@ -173,7 +173,7 @@ describe("actions/setupSteps", () => {
       destinationStep = setupStepsWithModelId.find(
         (s) => s.key === `create_a_destination`
       );
-      expect(destinationStep.href).toEqual(`/model/${sharedModelId}/overview`);
+      expect(destinationStep.href).toEqual(`/model/${sharedModelId}/overview#destinations`);
     });
   });
 });
