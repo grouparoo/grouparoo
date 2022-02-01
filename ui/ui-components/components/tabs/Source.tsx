@@ -2,13 +2,15 @@ import { useMemo } from "react";
 import Tabs from "../Tabs";
 import { Models } from "../../utils/apiData";
 import { grouparooUiEdition } from "../../utils/uiEdition";
+import { useGrouparooModel } from "../../contexts/grouparooModel";
 
 interface Props {
   source: Models.SourceType;
-  model: Models.GrouparooModelType;
 }
 
-export default function SourceTabs({ source, model }: Props) {
+export default function SourceTabs({ source }: Props) {
+  const { model } = useGrouparooModel();
+
   const tabs = useMemo<string[]>(() => {
     const tabs = ["overview", "edit"];
 

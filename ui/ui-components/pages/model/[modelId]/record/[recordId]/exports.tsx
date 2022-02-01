@@ -13,11 +13,9 @@ import { generateClient } from "../../../../../client/client";
 export default function Page(props) {
   const {
     record,
-    model,
     properties,
   }: {
     record: Models.GrouparooRecordType;
-    model: Models.GrouparooModelType;
     properties: Models.PropertyType[];
   } = props;
 
@@ -39,7 +37,7 @@ export default function Page(props) {
         <title>Grouparoo: {getRecordDisplayName(record)}</title>
       </Head>
 
-      <RecordTabs record={record} model={model} />
+      <RecordTabs record={record} />
 
       <ExportsList
         header={
@@ -67,13 +65,9 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   const { recordId, modelId } = ctx.query;
   const { record } = await client.request("get", `/record/${recordId}`);
   ensureMatchingModel("Record", record?.modelId, modelId.toString());
-  const { model } = await client.request<Actions.ModelView>(
-    "get",
-    `/model/${modelId}`
-  );
   const { properties } = await client.request("get", `/properties`, {
     modelId,
   });
   const exportListInitialProps = await ExportsList.hydrate(ctx);
-  return { record, model, properties, ...exportListInitialProps };
+  return { record, properties, ...exportListInitialProps };
 };

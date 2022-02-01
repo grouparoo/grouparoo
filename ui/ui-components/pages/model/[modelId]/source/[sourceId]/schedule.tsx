@@ -11,7 +11,7 @@ import PageHeader from "../../../../../components/PageHeader";
 import StateBadge from "../../../../../components/badges/StateBadge";
 import LockedBadge from "../../../../../components/badges/LockedBadge";
 import DatePicker from "../../../../../components/DatePicker";
-import { errorHandler, successHandler } from "../../../../../eventHandlers";
+import { successHandler } from "../../../../../eventHandlers";
 import { Models, Actions } from "../../../../../utils/apiData";
 import { formatTimestamp } from "../../../../../utils/formatTimestamp";
 import { filtersAreEqual } from "../../../../../utils/filtersAreEqual";
@@ -34,7 +34,6 @@ const renderCheckboxLabel = (
 export default function Page(props) {
   const {
     source,
-    model,
     run,
     pluginOptions,
     filterOptions,
@@ -43,7 +42,6 @@ export default function Page(props) {
     totalSources,
   }: {
     source: Models.SourceType;
-    model: Models.GrouparooModelType;
     run: Models.RunType;
     pluginOptions: Actions.ScheduleView["pluginOptions"];
     filterOptions: Actions.ScheduleFilterOptions["options"];
@@ -162,7 +160,7 @@ export default function Page(props) {
       <Head>
         <title>Grouparoo: {source.name}</title>
       </Head>
-      <SourceTabs source={source} model={model} />
+      <SourceTabs source={source} />
       <PageHeader
         icon={source.app.icon}
         title={`${source.name} - Schedule`}
@@ -649,11 +647,6 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   let filterOptionDescriptions = {};
   ensureMatchingModel("Source", source.modelId, modelId.toString());
 
-  const { model } = await client.request<Actions.ModelView>(
-    "get",
-    `/model/${modelId}`
-  );
-
   const { schedule, pluginOptions } = await client.request(
     "get",
     `/schedule/${source.schedule.id}`
@@ -684,7 +677,6 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
 
   return {
     source,
-    model,
     schedule,
     pluginOptions,
     filterOptions,

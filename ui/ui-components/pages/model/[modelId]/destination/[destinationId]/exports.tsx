@@ -11,7 +11,7 @@ import { Actions } from "../../../../../utils/apiData";
 import { generateClient } from "../../../../../client/client";
 
 export default function Page(props) {
-  const { destination, model } = props;
+  const { destination } = props;
 
   return (
     <>
@@ -19,7 +19,7 @@ export default function Page(props) {
         <title>Grouparoo: {destination.name}</title>
       </Head>
 
-      <DestinationTabs destination={destination} model={model} />
+      <DestinationTabs destination={destination} />
 
       <ExportsList
         header={
@@ -51,11 +51,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   );
   ensureMatchingModel("Destination", destination.modelId, modelId.toString());
 
-  const { model } = await client.request<Actions.ModelView>(
-    "get",
-    `/model/${modelId}`
-  );
   const exportListInitialProps = await ExportsList.hydrate(ctx);
 
-  return { destination, model, ...exportListInitialProps };
+  return { destination, ...exportListInitialProps };
 };

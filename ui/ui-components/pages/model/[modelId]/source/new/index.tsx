@@ -3,27 +3,26 @@ import Head from "next/head";
 import { useEffect, useMemo, useState } from "react";
 import { Form, Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
-import { errorHandler } from "../../../../../eventHandlers";
 import AppSelectorList from "../../../../../components/AppSelectorList";
 import { Actions, Models } from "../../../../../utils/apiData";
 import LinkButton from "../../../../../components/LinkButton";
 import { generateClient } from "../../../../../client/client";
+import { useGrouparooModel } from "../../../../../contexts/grouparooModel";
 
 export default function Page(props) {
   const {
     connectionApps,
-    model,
     isCreatingPrimarySource,
     isPrimarySourceNotReady,
   }: {
     connectionApps: Actions.SourceConnectionApps["connectionApps"];
-    model: Actions.ModelView["model"];
     primarySource: Models.SourceType;
     isCreatingPrimarySource: boolean;
     isPrimarySourceNotReady: boolean;
   } = props;
   const router = useRouter();
   const { client } = useApi();
+  const { model } = useGrouparooModel();
   const [loading, setLoading] = useState(false);
   const [app, setApp] = useState({ id: null });
 
@@ -161,14 +160,9 @@ Page.getInitialProps = async (ctx) => {
     "get",
     `/sources/connectionApps`
   );
-  const { model } = await client.request<Actions.ModelView>(
-    "get",
-    `/model/${modelId}`
-  );
 
   return {
     connectionApps,
-    model,
     isCreatingPrimarySource,
     isPrimarySourceNotReady,
   };

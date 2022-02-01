@@ -20,13 +20,11 @@ import { generateClient } from "../../../../../client/client";
 
 export default function Page(props) {
   const {
-    model,
     properties,
     ruleLimit,
     ops,
     topLevelGroupRules,
   }: {
-    model: Models.GrouparooModelType;
     properties: Models.PropertyType[];
     ruleLimit: Actions.GroupsRuleOptions["ruleLimit"];
     ops: Actions.GroupsRuleOptions["ops"];
@@ -151,7 +149,7 @@ export default function Page(props) {
       <Head>
         <title>Grouparoo: {group.name}</title>
       </Head>
-      <GroupTabs group={group} model={model} />
+      <GroupTabs group={group} />
 
       <PageHeader
         title={`${group.name} - Rules`}
@@ -514,10 +512,6 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   const { group } = await client.request("get", `/group/${groupId}`);
   ensureMatchingModel("Group", group.modelId, modelId.toString());
 
-  const { model } = await client.request<Actions.ModelView>(
-    "get",
-    `/model/${modelId}`
-  );
   const { properties } = await client.request("get", `/properties`, {
     state: "ready",
     modelId: group?.modelId,
@@ -526,7 +520,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     "get",
     `/groups/ruleOptions`
   );
-  return { group, model, properties, ruleLimit, ops, topLevelGroupRules };
+  return { group, properties, ruleLimit, ops, topLevelGroupRules };
 };
 
 function rulesAreEqual(a, b) {

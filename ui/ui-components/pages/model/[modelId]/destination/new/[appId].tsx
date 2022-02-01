@@ -11,15 +11,15 @@ import { Actions } from "../../../../../utils/apiData";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import AppBadge from "../../../../../components/badges/AppBadge";
 import { generateClient } from "../../../../../client/client";
+import { useGrouparooModel } from "../../../../../contexts/grouparooModel";
 
 export default function Page(props) {
   const {
     connectionApps,
-    model,
   }: {
     connectionApps: Actions.SourceConnectionApps["connectionApps"];
-    model: Actions.ModelView["model"];
   } = props;
+  const { model } = useGrouparooModel();
   const router = useRouter();
   const { client } = useApi();
   const [loading, setLoading] = useState(false);
@@ -100,11 +100,10 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const client = generateClient(ctx);
-  const { modelId } = ctx.query;
   const { connectionApps } = await client.request(
     "get",
     `/destinations/connectionApps`
   );
-  const { model } = await client.request("get", `/model/${modelId}`);
-  return { connectionApps, model };
+
+  return { connectionApps };
 };

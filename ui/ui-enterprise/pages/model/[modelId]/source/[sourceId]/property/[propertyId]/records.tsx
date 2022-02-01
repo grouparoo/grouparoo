@@ -11,7 +11,6 @@ import { generateClient } from "@grouparoo/ui-components/client/client";
 
 export default function Page(props) {
   const {
-    model,
     property,
     source,
   }: {
@@ -26,7 +25,7 @@ export default function Page(props) {
         <title>Grouparoo: {property.key} Records</title>
       </Head>
 
-      <PropertyTabs property={property} source={source} model={model} />
+      <PropertyTabs property={property} source={source} />
 
       <RecordsList
         {...props}
@@ -53,16 +52,15 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { propertyId, modelId } = ctx.query;
+  const { propertyId } = ctx.query;
   const client = generateClient(ctx);
-  const { property } = await client.request("get", `/property/${propertyId}`);
-  const { source } = await client.request(
+  const { property } = await client.request<Actions.PropertyView>(
+    "get",
+    `/property/${propertyId}`
+  );
+  const { source } = await client.request<Actions.SourceView>(
     "get",
     `/source/${property.sourceId}`
-  );
-  const { model } = await client.request<Actions.ModelView>(
-    "get",
-    `/model/${modelId}`
   );
   const recordListInitialProps = await RecordsList.hydrate(
     ctx,
@@ -70,5 +68,5 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     "%"
   );
 
-  return { model, property, source, ...recordListInitialProps };
+  return { property, source, ...recordListInitialProps };
 };

@@ -38,7 +38,6 @@ interface FormData {
 }
 
 interface Props {
-  model: Models.GrouparooModelType;
   environmentVariableOptions: Actions.AppOptions["environmentVariableOptions"];
   properties: Models.PropertyType[];
   propertyExamples: Record<string, string[]>;
@@ -48,7 +47,6 @@ interface Props {
 }
 
 const Page: NextPage<Props> = ({
-  model,
   environmentVariableOptions,
   scheduleCount,
   totalSources,
@@ -311,7 +309,7 @@ const Page: NextPage<Props> = ({
         <title>Grouparoo: {source.name}</title>
       </Head>
 
-      <SourceTabs source={source} model={model} />
+      <SourceTabs source={source} />
 
       <PageHeader
         icon={source.app.icon}
@@ -635,11 +633,6 @@ export const getServerSideProps: GetServerSideProps<Props> =
     const { source } = await client.request("get", `/source/${sourceId}`);
     ensureMatchingModel("Source", source.modelId, modelId.toString());
 
-    const { model } = await client.request<Actions.ModelView>(
-      "get",
-      `/model/${modelId}`
-    );
-
     const { total: totalSources } = await client.request("get", `/sources`, {
       modelId,
       limit: 1,
@@ -665,7 +658,6 @@ export const getServerSideProps: GetServerSideProps<Props> =
     return {
       props: {
         environmentVariableOptions,
-        model,
         properties,
         propertyExamples,
         source,

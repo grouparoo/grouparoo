@@ -18,7 +18,6 @@ import { useApi } from "../../../../../contexts/api";
 import { generateClient } from "../../../../../client/client";
 
 interface Props {
-  model: Models.GrouparooModelType;
   group: Models.GroupType;
 }
 
@@ -89,7 +88,7 @@ const Page: NextPage<Props> = (props) => {
         <title>Grouparoo: {group.name}</title>
       </Head>
 
-      <GroupTabs group={group} model={props.model} />
+      <GroupTabs group={group} />
 
       <PageHeader
         title={group.name}
@@ -208,12 +207,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   const { group } = await client.request("get", `/group/${groupId}`);
   ensureMatchingModel("Group", group.modelId, modelId.toString());
 
-  const { model } = await client.request<Actions.ModelView>(
-    "get",
-    `/model/${modelId}`
-  );
-
-  return { group, model };
+  return { group };
 };
 
 export default Page;

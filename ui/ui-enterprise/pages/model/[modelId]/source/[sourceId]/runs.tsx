@@ -9,7 +9,6 @@ import StateBadge from "@grouparoo/ui-components/components/badges/StateBadge";
 import LockedBadge from "@grouparoo/ui-components/components/badges/LockedBadge";
 import ModelBadge from "@grouparoo/ui-components/components/badges/ModelBadge";
 import {
-  errorHandler,
   runsHandler,
   successHandler,
 } from "@grouparoo/ui-components/eventHandlers";
@@ -22,10 +21,8 @@ import { generateClient } from "@grouparoo/ui-components/client/client";
 export default function Page(props) {
   const {
     source,
-    model,
   }: {
     source: Models.SourceType;
-    model: Models.GrouparooModelType;
   } = props;
   const { client } = useApi();
   const [loading, setLoading] = useState(false);
@@ -52,7 +49,7 @@ export default function Page(props) {
         <title>Grouparoo: {source.name}</title>
       </Head>
 
-      <SourceTabs source={source} model={model} />
+      <SourceTabs source={source} />
 
       <RunsList
         header={
@@ -101,11 +98,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   const { source } = await client.request("get", `/source/${sourceId}`);
   ensureMatchingModel("Source", source.modelId, modelId.toString());
 
-  const { model } = await client.request<Actions.ModelView>(
-    "get",
-    `/model/${modelId}`
-  );
   const runsListInitialProps = await RunsList.hydrate(ctx, { topic: "source" });
 
-  return { source, model, ...runsListInitialProps };
+  return { source, ...runsListInitialProps };
 };

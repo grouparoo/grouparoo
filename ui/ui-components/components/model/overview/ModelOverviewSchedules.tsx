@@ -8,7 +8,7 @@ import EntityInfoContainer from "../../lib/entity/EntityInfoContainer";
 import EntityInfoHeader from "../../lib/entity/EntityInfoHeader";
 import RunAllSchedulesButton from "../../schedule/RunAllSchedulesButton";
 import { successHandler } from "../../../eventHandlers";
-import { useGrouparooModelContext } from "../../../contexts/grouparooModel";
+import { useGrouparooModel } from "../../../contexts/grouparooModel";
 import EntityList from "../../lib/entity/EntityList";
 import LoadingButton from "../../LoadingButton";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
@@ -68,7 +68,7 @@ interface Props {
 }
 
 const ModelOverviewSchedules: React.FC<Props> = ({ schedules, sources }) => {
-  const model = useGrouparooModelContext();
+  const { model } = useGrouparooModel();
 
   const sourcesById = useMemo<Record<string, Models.SourceType>>(() => {
     const result: Record<string, Models.SourceType> = {};

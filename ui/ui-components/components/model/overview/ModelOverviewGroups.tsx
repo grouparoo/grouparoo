@@ -3,7 +3,7 @@ import SectionContainer from "../../lib/SectionContainer";
 import EntityInfoContainer from "../../lib/entity/EntityInfoContainer";
 import EntityInfoHeader from "../../lib/entity/EntityInfoHeader";
 import LinkButton from "../../LinkButton";
-import { useGrouparooModelContext } from "../../../contexts/grouparooModel";
+import { useGrouparooModel } from "../../../contexts/grouparooModel";
 import EntityList from "../../lib/entity/EntityList";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
 
@@ -29,7 +29,7 @@ interface Props {
 }
 
 const ModelOverviewGroups: React.FC<Props> = ({ groups, disabled }) => {
-  const model = useGrouparooModelContext();
+  const { model } = useGrouparooModel();
 
   return (
     <SectionContainer

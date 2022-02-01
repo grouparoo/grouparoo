@@ -89,7 +89,7 @@ export default function Page(props) {
         <title>Grouparoo: {destination.name}</title>
       </Head>
 
-      <DestinationTabs destination={destination} model={model} />
+      <DestinationTabs destination={destination} />
 
       <PageHeader
         icon={destination.app.icon}

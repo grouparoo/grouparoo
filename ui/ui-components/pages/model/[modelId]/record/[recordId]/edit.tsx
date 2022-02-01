@@ -27,11 +27,9 @@ import { generateClient } from "../../../../../client/client";
 
 export default function Page(props) {
   const {
-    model,
     properties,
     allGroups,
   }: {
-    model: Models.GrouparooModelType;
     properties: Models.PropertyType[];
     allGroups: Models.GroupType[];
     apps: Models.AppType[];
@@ -171,7 +169,7 @@ export default function Page(props) {
         <title>Grouparoo: {getRecordDisplayName(record)}</title>
       </Head>
 
-      <RecordTabs record={record} model={model} />
+      <RecordTabs record={record} />
 
       <PageHeader
         title={uniqueRecordProperties
@@ -376,10 +374,6 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   );
   ensureMatchingModel("Record", record?.modelId, modelId.toString());
 
-  const { model } = await client.request<Actions.ModelView>(
-    "get",
-    `/model/${modelId}`
-  );
   const { properties } = await client.request("get", `/properties`, {
     modelId: record?.modelId,
   });
@@ -390,7 +384,6 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   return {
     record,
     properties,
-    model,
     groups,
     allGroups,
     destinations,

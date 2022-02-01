@@ -16,16 +16,18 @@ import LoadingButton from "../LoadingButton";
 import LoadingTable from "../LoadingTable";
 import Pagination from "../Pagination";
 import ArrayRecordPropertyList from "./ArrayRecordPropertyList";
+import { useGrouparooModel } from "../../contexts/grouparooModel";
 
 export default function RecordsList(props) {
   const {
     properties,
-    modelName,
   }: {
     properties: Models.PropertyType[];
-    modelName?: string;
   } = props;
   const { client } = useApi();
+  const {
+    model: { name: modelName },
+  } = useGrouparooModel();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
@@ -428,14 +430,5 @@ RecordsList.hydrate = async (
     modelId,
   });
 
-  let modelName: string;
-  if (modelId) {
-    modelName = records.length > 0 ? records[0].modelName : null;
-    if (!modelName) {
-      const { model } = await client.request("get", `/model/${modelId}`);
-      modelName = model.name;
-    }
-  }
-
-  return { records, total, properties, modelName, modelId };
+  return { records, total, properties };
 };

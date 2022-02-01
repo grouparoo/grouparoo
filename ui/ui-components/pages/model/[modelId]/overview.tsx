@@ -12,12 +12,11 @@ import ModelOverviewSchedules from "../../../components/model/overview/ModelOver
 import ModelOverviewSecondarySources from "../../../components/model/overview/ModelOverviewSecondarySources";
 import PageHeader from "../../../components/PageHeader";
 import ModelTabs from "../../../components/tabs/Model";
-import { GrouparooModelContextProvider } from "../../../contexts/grouparooModel";
+import { useGrouparooModel } from "../../../contexts/grouparooModel";
 import { Actions, Models } from "../../../utils/apiData";
 import { withServerErrorHandler } from "../../../utils/withServerErrorHandler";
 
 interface Props {
-  model: Models.GrouparooModelType;
   primarySource?: Models.SourceType;
   secondarySources: Models.SourceType[];
   totalSources: number;
@@ -28,7 +27,6 @@ interface Props {
 }
 
 const Page: NextPage<Props> = ({
-  model,
   primarySource,
   secondarySources,
   totalSources,
@@ -37,7 +35,7 @@ const Page: NextPage<Props> = ({
   schedules,
   destinations,
 }) => {
-  if (!model) return <Alert variant="warning">Model not found</Alert>;
+  const { model } = useGrouparooModel();
 
   const sources = useMemo(() => {
     const result = [...secondarySources];
@@ -52,11 +50,13 @@ const Page: NextPage<Props> = ({
     [properties]
   );
 
+  if (!model) return <Alert variant="warning">Model not found</Alert>;
+
   const canCreateSecondarySource =
     !!totalSources && sources[0].state === "ready";
 
   return (
-    <GrouparooModelContextProvider model={model}>
+    <>
       <Head>
         <title>Grouparoo: {model.name}</title>
       </Head>
@@ -122,7 +122,7 @@ const Page: NextPage<Props> = ({
           />
         </Col>
       </Row>
-    </GrouparooModelContextProvider>
+    </>
   );
 };
 
@@ -143,14 +143,12 @@ export const getServerSideProps: GetServerSideProps<Props> =
       { properties },
       { groups },
       { schedules },
-      { model },
     ] = await Promise.all([
       client.request<Actions.SourcesList>("get", `/sources`, params),
       client.request<Actions.DestinationsList>("get", `/destinations`, params),
       client.request<Actions.PropertiesList>("get", `/properties`, params),
       client.request<Actions.GroupsList>("get", `/groups`, params),
       client.request<Actions.SchedulesList>("get", `/schedules`, params),
-      client.request<Actions.ModelView>("get", `/model/${modelId}`),
     ]);
 
     const primaryKeyProperty = properties.find((p) => p.isPrimaryKey);
@@ -166,7 +164,6 @@ export const getServerSideProps: GetServerSideProps<Props> =
 
     return {
       props: {
-        model,
         primarySource,
         secondarySources,
         totalSources,
