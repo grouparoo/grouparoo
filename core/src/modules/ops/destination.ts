@@ -927,6 +927,8 @@ export namespace DestinationOps {
 
     try {
       for (const givenExport of givenExports) {
+        if (!givenExport.hasChanges) await givenExport.complete();
+
         const lock = await getLock(
           `${givenExport.recordId}:${givenExport.destinationId}`
         );
@@ -935,7 +937,6 @@ export namespace DestinationOps {
           where: {
             recordId: givenExport.recordId,
             destinationId: destination.id,
-            state: "pending",
           },
           order: [["createdAt", "DESC"]],
         });
@@ -945,7 +946,8 @@ export namespace DestinationOps {
 
         if (gotLock) locks.push(lock);
         if (!isNewest) await cancelOldExport(givenExport, mostRecentExport);
-        if (gotLock && isNewest) _exports.push(givenExport);
+        if (gotLock && isNewest && givenExport.hasChanges)
+          _exports.push(givenExport);
       }
 
       const exportRecords: ExportRecordsPluginMethod = await getBatchFunction(

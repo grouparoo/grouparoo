@@ -8,7 +8,7 @@ import {
   GrouparooModel,
   GroupMember,
 } from "../../../../src";
-import { api, specHelper } from "actionhero";
+import { api, redis, specHelper } from "actionhero";
 import { Op } from "sequelize";
 
 describe("models/destination - with custom exportRecords plugin", () => {
@@ -125,6 +125,10 @@ describe("models/destination - with custom exportRecords plugin", () => {
     });
     await app.setOptions({ test_key: "abc" });
     await app.update({ state: "ready" });
+  });
+
+  afterEach(async () => {
+    await api.resque.queue.connection.redis.flushdb();
   });
 
   describe.each(["ready", "deleted"])("with app in %p state", (appState) => {
@@ -688,48 +692,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       expect(newExport.completedAt).toBeTruthy();
     });
 
-    test("if two exports are pending for the same record/destination pair, only one is sent at a time", async () => {
-      const record = await helper.factories.record();
-      const group = await helper.factories.group();
-      await GroupMember.create({ recordId: record.id, groupId: group.id });
-      await destination.updateTracking("group", group.id);
-
-      const oldExport = await destination.exportRecord(record, false, true);
-      const newExport = await destination.exportRecord(record, false, true);
-
-      expect(oldExport.toDelete).toBe(false);
-      expect(oldExport.hasChanges).toBe(true);
-      expect(oldExport.force).toBe(true);
-      expect(newExport.toDelete).toBe(false);
-      expect(newExport.hasChanges).toBe(true);
-      expect(newExport.force).toBe(true);
-
-      await specHelper.runTask("export:enqueue", {});
-
-      const foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
-      expect(foundTasks.length).toBe(1);
-
-      await specHelper.runTask("export:sendBatch", foundTasks[0].args[0]);
-
-      expect(exportArgs.exports.length).toBe(1); // plugin#exportRecord was called
-      await oldExport.reload();
-      await newExport.reload();
-
-      expect(oldExport.createdAt.valueOf()).toBeLessThan(
-        newExport.createdAt.valueOf()
-      );
-
-      expect(oldExport.state).toEqual("complete");
-      expect(newExport.state).toEqual("pending"); //nothing should have happened, it is left pending to be processed during the next enqueue/loop through
-
-      await specHelper.runTask("export:sendBatch", foundTasks[0].args[0]);
-      expect(exportArgs.exports.length).toBe(1);
-
-      await newExport.reload();
-      expect(newExport.state).toEqual("complete");
-    });
-
-    test("if two exports are pending for the same record/destination pair and are processed out of order, the older one is canceled", async () => {
+    test("if two exports are pending for the same record/destination pair, the older one is canceled", async () => {
       const record = await helper.factories.record();
       const group = await helper.factories.group();
       await GroupMember.create({ recordId: record.id, groupId: group.id });
@@ -803,7 +766,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       expect(exportOne.createdAt.valueOf()).toBeGreaterThan(
         exportTwo.createdAt.valueOf()
       );
-      expect(exportOne.state).toEqual("pending");
+      expect(exportOne.state).toEqual("complete");
       expect(exportTwo.state).toEqual("canceled");
     });
 
