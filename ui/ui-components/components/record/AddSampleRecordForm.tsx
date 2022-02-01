@@ -86,8 +86,9 @@ const AddSampleRecordForm: React.FC<Props> = ({
           as="select"
           disabled={submitting}
           value={selectedUniquePropertyValue}
-          onChange={onSelectUniqueProperty}
-          {...register("uniqueProperty")}
+          {...register("uniqueProperty", {
+            onChange: onSelectUniqueProperty,
+          })}
         >
           {propertiesWithPrimaryKey.map((rule) => (
             <option key={`rule-${rule.key}`} value={rule.key}>

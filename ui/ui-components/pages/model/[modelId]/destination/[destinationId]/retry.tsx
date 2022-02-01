@@ -123,10 +123,12 @@ export default function Page(props) {
             required
             type="datetime-local"
             name="fromDate"
-            {...register("fromDate", { setValueAs: (v) => v && new Date(v) })}
-            onChange={() => {
-              updatePreview();
-            }}
+            {...register("fromDate", {
+              setValueAs: (v) => v && new Date(v),
+              onChange: () => {
+                updatePreview();
+              },
+            })}
             disabled={loading}
           />
         </Form.Group>
@@ -136,10 +138,10 @@ export default function Page(props) {
             required
             type="datetime-local"
             name="toDate"
-            {...register("toDate", { setValueAs: (v) => v && new Date(v) })}
-            onChange={() => {
-              updatePreview();
-            }}
+            {...register("toDate", {
+              setValueAs: (v) => v && new Date(v),
+              onChange: () => updatePreview(),
+            })}
             disabled={loading}
           />
         </Form.Group>
