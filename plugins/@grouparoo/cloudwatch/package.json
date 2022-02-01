@@ -42,7 +42,7 @@
     "prettier": "2.5.1",
     "ts-jest": "27.1.2",
     "type-fest": "2.11.1",
-    "typescript": "4.5.4"
+    "typescript": "4.5.5"
   },
   "grouparoo": {
     "env": {
