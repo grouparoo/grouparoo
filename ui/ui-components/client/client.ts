@@ -25,7 +25,7 @@ interface ClientCacheGetObject<T = unknown> {
 }
 
 export class ClientCache {
-  cache: { [key: string]: ClientCacheObject } = {};
+  cache: Record<string, ClientCacheObject> = {};
 
   constructor(private ttl = 5000) {}
 
