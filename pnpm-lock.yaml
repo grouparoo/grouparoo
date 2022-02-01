@@ -1915,7 +1915,7 @@ importers:
       recharts: 2.1.8
       sass: 1.49.4
       stacktrace-js: 2.0.2
-      swagger-ui-dist: 4.1.3
+      swagger-ui-dist: 4.4.1
       ts-jest: 27.1.2
       type-fest: 2.11.1
       typescript: 4.5.5
@@ -1955,7 +1955,7 @@ importers:
       recharts: 2.1.8_75cb922c19ee1b7939faae9b4d1f4cf7
       sass: 1.49.4
       stacktrace-js: 2.0.2
-      swagger-ui-dist: 4.1.3
+      swagger-ui-dist: 4.4.1
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
       type-fest: 2.11.1
       typescript: 4.5.5
@@ -15054,8 +15054,8 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  /swagger-ui-dist/4.1.3:
-    resolution: {integrity: sha512-WvfPSfAAMlE/sKS6YkW47nX/hA7StmhYnAHc6wWCXNL0oclwLj6UXv0hQCkLnDgvebi0MEV40SJJpVjKUgH1IQ==}
+  /swagger-ui-dist/4.4.1:
+    resolution: {integrity: sha512-eYe4Utyem3GJC1gLZvKyzMEKEk5dMikbhVxuFKpPJA8l+hzAo6S0HGHLJA6cZKboqVnyCZrQfx6bl716y7T4dA==}
     dev: true
 
   /symbol-tree/3.2.4:
