@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@types/fs-extra": "*",
-    "@types/node": "16.*.*",
+    "@types/node": "17.*.*",
     "prettier": "2.5.1",
     "ts-node": "10.4.0",
     "type-fest": "2.11.1",
