@@ -1,7 +1,7 @@
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { Row, Col, Form, Badge, Alert, Card } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -74,11 +74,11 @@ const Page: NextPage<Props> = ({
   const { sourceId } = router.query;
   const mappingColumn = useMemo(
     () => Object.keys(props.source.mapping)[0] as string,
-    [source]
+    [props.source.mapping]
   );
   const mappingPropertyKey = useMemo(
     () => Object.values(props.source.mapping)[0] as string,
-    [source]
+    [props.source.mapping]
   );
   const isPrimarySource = useMemo(
     () =>
@@ -86,14 +86,42 @@ const Page: NextPage<Props> = ({
       properties.filter(
         ({ isPrimaryKey, sourceId }) => isPrimaryKey && sourceId === source.id
       ).length > 0,
-    [properties, source]
+    [properties, source.id, totalSources]
+  );
+
+  const loadPreview = useCallback(
+    async (previewAvailable: boolean = source.previewAvailable) => {
+      if (!previewAvailable) {
+        return;
+      }
+
+      setPreviewLoading(true);
+      const response: Actions.SourcePreview = await client.request(
+        "get",
+        `/source/${sourceId}/preview`,
+        {
+          options:
+            Object.keys(source.options).length > 0 ? source.options : null,
+        },
+        { useCache: false }
+      );
+      setPreviewLoading(false);
+      if (response?.preview) {
+        setPreview(response.preview);
+      }
+    },
+    [client, source.options, source.previewAvailable, sourceId]
   );
 
   const sourceBadges = useMemo(() => {
     const badges = [
-      <LockedBadge object={source} />,
-      <StateBadge state={source.state} />,
-      <ModelBadge modelName={source.modelName} modelId={source.modelId} />,
+      <LockedBadge object={source} key={source.id} />,
+      <StateBadge state={source.state} key={source.state} />,
+      <ModelBadge
+        modelName={source.modelName}
+        modelId={source.modelId}
+        key={source.modelId}
+      />,
     ];
     if (isPrimarySource) {
       badges.unshift(<PrimaryKeyBadge isSource />);
@@ -101,32 +129,22 @@ const Page: NextPage<Props> = ({
     return badges;
   }, [source, isPrimarySource]);
 
+  const loadOptions = useCallback(async () => {
+    setLoadingOptions(true);
+    const response: Actions.SourceConnectionOptions = await client.request(
+      "get",
+      `/source/${sourceId}/connectionOptions`,
+      { options: source.options },
+      { useCache: false }
+    );
+    if (response?.options) setConnectionOptions(response.options);
+    setLoadingOptions(false);
+  }, [client, source.options, sourceId]);
+
   useEffect(() => {
     loadPreview(source.previewAvailable);
     loadOptions();
-  }, []);
-
-  async function loadPreview(
-    previewAvailable: boolean = source.previewAvailable
-  ) {
-    if (!previewAvailable) {
-      return;
-    }
-
-    setPreviewLoading(true);
-    const response: Actions.SourcePreview = await client.request(
-      "get",
-      `/source/${sourceId}/preview`,
-      {
-        options: Object.keys(source.options).length > 0 ? source.options : null,
-      },
-      { useCache: false }
-    );
-    setPreviewLoading(false);
-    if (response?.preview) {
-      setPreview(response.preview);
-    }
-  }
+  }, [loadOptions, loadPreview, source.previewAvailable]);
 
   const onSubmit: SubmitHandler<FormData> = async (data, event) => {
     event.preventDefault();
@@ -244,18 +262,6 @@ const Page: NextPage<Props> = ({
     setLoading(false);
   };
 
-  async function loadOptions() {
-    setLoadingOptions(true);
-    const response: Actions.SourceConnectionOptions = await client.request(
-      "get",
-      `/source/${sourceId}/connectionOptions`,
-      { options: source.options },
-      { useCache: false }
-    );
-    if (response?.options) setConnectionOptions(response.options);
-    setLoadingOptions(false);
-  }
-
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
@@ -327,7 +333,7 @@ const Page: NextPage<Props> = ({
                   defaultValue={source.name}
                   onChange={(e) => update(e)}
                   name="source.name"
-                  ref={register}
+                  {...register("source.name")}
                 />
                 <Form.Control.Feedback type="invalid">
                   Name is required
@@ -437,7 +443,7 @@ const Page: NextPage<Props> = ({
                                 )
                               }
                               name={`source.options.${opt.key}`}
-                              ref={register}
+                              {...register(`source.options.${opt.key}`)}
                             >
                               <option value={""} disabled>
                                 Select an option
@@ -497,7 +503,7 @@ const Page: NextPage<Props> = ({
                                 )
                               }
                               name={`source.options.${opt.key}`}
-                              ref={register}
+                              {...register(`source.options.${opt.key}`)}
                             />
                             <Form.Text className="text-muted">
                               {opt.description}

@@ -43,7 +43,7 @@ export default function SettingCard({
                     type="text"
                     name="value"
                     disabled={loading}
-                    ref={register}
+                    {...register("value")}
                     defaultValue={setting.value}
                   />
                 ) : null}
@@ -55,7 +55,7 @@ export default function SettingCard({
                     min="0"
                     name="value"
                     disabled={loading}
-                    ref={register}
+                    {...register("value")}
                     defaultValue={setting.value}
                   />
                 ) : null}
@@ -65,7 +65,7 @@ export default function SettingCard({
                     name="value"
                     disabled={loading}
                     label={setting.description}
-                    ref={register}
+                    {...register("value")}
                     defaultChecked={setting.value === "true"}
                   />
                 ) : null}

@@ -104,7 +104,7 @@ const FormMappingSelector: React.FC<Props> = ({
       selectedProperty
         ? propertyExamples[selectedProperty.id].slice(0, 3).join(", ")
         : undefined,
-    [properties, selectedProperty]
+    [propertyExamples, selectedProperty]
   );
 
   const hasAvailableProperties = !!availableProperties.length;
@@ -126,7 +126,7 @@ const FormMappingSelector: React.FC<Props> = ({
               setSelectedColumn(e.target.value);
             }}
             name="mapping.sourceColumn"
-            ref={register}
+            {...register("mapping_source_column")}
           >
             <option value={""} disabled>
               Select an option
@@ -162,7 +162,7 @@ const FormMappingSelector: React.FC<Props> = ({
                   );
                 }}
                 name="mapping.propertyKey"
-                ref={register}
+                {...register("mapping_property")}
               >
                 <option value={""} disabled>
                   Select an option

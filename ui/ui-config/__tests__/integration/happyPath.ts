@@ -16,26 +16,22 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/ui-config": { path: path.join(__dirname, "..", "..") },
 });
 import { helper } from "@grouparoo/spec-helper";
-import { config } from "actionhero";
-import { SetupStep } from "@grouparoo/core";
 
+const port = 12345 + (parseInt(process.env.JEST_WORKER_ID) ?? 0);
 declare var browser: any;
 declare var by: any;
 declare var until: any;
-let url: string;
+const url = `http://localhost:${port}`;
 
 describe("integration", () => {
   beforeAll(async () => {
     fs.rmSync(projectDir, { recursive: true, force: true });
   });
 
-  helper.grouparooTestServer({ truncate: true, resetSettings: true });
-  beforeAll(() => (url = `http://localhost:${config.web.port}`));
-  beforeAll(async () => {
-    const setupSteps = await SetupStep.findAll();
-    for (const step of setupSteps) {
-      await step.update({ complete: false });
-    }
+  helper.grouparooTestServerDetached({
+    port,
+    truncate: true,
+    runMode: "cli:config",
   });
 
   test(
@@ -113,21 +109,4 @@ describe("integration", () => {
     },
     helper.mediumTime
   );
-
-  test("if all the setup steps are complete, visiting / redirects to model", async () => {
-    await helper.factories.model({ name: "User", id: "user", type: "profile" });
-
-    const setupSteps = await SetupStep.findAll();
-    for (const step of setupSteps) {
-      await step.update({ complete: true });
-    }
-
-    await browser.get(`${url}/`);
-
-    await helper.sleep(1000);
-
-    const currentUrl = await browser.getCurrentUrl();
-    expect(currentUrl).toMatch(/\/model\/user\/overview/);
-    await browser.get(currentUrl);
-  });
 });

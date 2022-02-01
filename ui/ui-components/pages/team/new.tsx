@@ -43,7 +43,7 @@ export default function NewTeamPage(props) {
             required
             type="text"
             name="name"
-            ref={register}
+            {...register("name")}
             placeholder="Team Name"
             disabled={loading}
           />

@@ -54,9 +54,9 @@ export default function Page(props) {
             required
             type="text"
             name="name"
-            ref={register}
             disabled={loading}
             placeholder="Model Name"
+            {...register("name")}
           />
           <Form.Control.Feedback type="invalid">
             Name is required
@@ -68,8 +68,8 @@ export default function Page(props) {
           <Form.Control
             as="select"
             name="type"
-            ref={register}
             disabled={loading}
+            {...register("type")}
           >
             <option disabled>choose type</option>
             {types.map((type) => (

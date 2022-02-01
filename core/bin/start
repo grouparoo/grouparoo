@@ -4,6 +4,6 @@ cd "$(dirname "$0")"
 cd ..
 
 export NEXT_DEVELOPMENT_MODE=false
-export GROUPAROO_RUN_MODE="cli:start"
+export GROUPAROO_RUN_MODE="${GROUPAROO_RUN_MODE:=cli:start}"
 
 exec node dist/grouparoo.js
