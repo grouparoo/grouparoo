@@ -50,7 +50,7 @@ export default function RecordsList(props) {
   const [caseSensitive, setCaseSensitive] = useState(
     router.query.caseSensitive ? router.query.caseSensitive === "true" : true
   );
-  const states = ["pending", "ready", "invalid"];
+  const states = ["pending", "ready", "exporting", "invalid"];
 
   const { modelId, groupId } = router.query;
 

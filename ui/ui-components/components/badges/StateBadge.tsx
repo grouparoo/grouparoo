@@ -35,6 +35,9 @@ const StateBadge: React.FC<Props> = ({ state, marginBottom, style }) => {
     case "updating":
       variant = "warning";
       break;
+    case "exporting":
+      variant = "warning";
+      break;
     case "canceled":
       variant = "warning";
       break;

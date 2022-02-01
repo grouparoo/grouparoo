@@ -59,6 +59,14 @@ const STATE_TRANSITIONS = [
         await instance.validateRecordPropertiesAreReady(),
     ],
   },
+  {
+    from: "exporting",
+    to: "ready",
+    checks: [
+      async (instance: GrouparooRecord) =>
+        await instance.validateRecordPropertiesAreReady(),
+    ],
+  },
   { from: "exporting", to: "draft", checks: [] },
   { from: "draft", to: "deleted", checks: [] },
   { from: "exporting", to: "deleted", checks: [] },
