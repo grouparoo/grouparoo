@@ -925,44 +925,27 @@ export namespace DestinationOps {
     const _exports: Export[] = [];
     const locks: Awaited<ReturnType<typeof getLock>>[] = [];
 
-    // for every export
-    // send the newest one if it is not locked?
-
-    // try to get the lock
-    // and send if newest
-
     try {
       for (const givenExport of givenExports) {
         const lock = await getLock(
           `${givenExport.recordId}:${givenExport.destinationId}`
         );
 
-        // TODO: do one query
         const mostRecentExport = await Export.findOne({
           where: {
             recordId: givenExport.recordId,
-            destinationId: givenExport.destinationId,
+            destinationId: destination.id,
             state: "pending",
           },
           order: [["createdAt", "DESC"]],
         });
 
         const isNewest = mostRecentExport.id === givenExport.id;
+        const gotLock = typeof lock === "function";
 
-        if (typeof lock === "function") {
-          locks.push(lock);
-          if (!isNewest) {
-            await cancelOldExport(givenExport, mostRecentExport);
-          } else {
-            _exports.push(givenExport);
-          }
-        } else {
-          if (!isNewest) {
-            await cancelOldExport(givenExport, mostRecentExport);
-          } else {
-            // otherwise, this export will be tried again later when the lock is available
-          }
-        }
+        if (gotLock) locks.push(lock);
+        if (!isNewest) await cancelOldExport(givenExport, mostRecentExport);
+        if (gotLock && isNewest) _exports.push(givenExport);
       }
 
       const exportRecords: ExportRecordsPluginMethod = await getBatchFunction(
