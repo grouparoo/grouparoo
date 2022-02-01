@@ -903,6 +903,15 @@ export namespace DestinationOps {
     return { success, error, retryexportIds, retryDelay };
   }
 
+  async function cancelOldExport(oldExport: Export, newExport: Export) {
+    await oldExport.update({
+      state: "canceled",
+      sendAt: null,
+      errorMessage: `Replaced by more recent export ${newExport.id}`,
+      errorLevel: null,
+      completedAt: new Date(),
+    });
+  }
   export async function sendExports(
     destination: Destination,
     givenExports: Export[],
@@ -916,41 +925,44 @@ export namespace DestinationOps {
     const _exports: Export[] = [];
     const locks: Awaited<ReturnType<typeof getLock>>[] = [];
 
+    // for every export
+    // send the newest one if it is not locked?
+
+    // try to get the lock
+    // and send if newest
+
     try {
       for (const givenExport of givenExports) {
-        const lock = await getLock({
-          key: `${givenExport.recordId}:${givenExport.destinationId}`,
+        const lock = await getLock(
+          `${givenExport.recordId}:${givenExport.destinationId}`
+        );
+
+        // TODO: do one query
+        const mostRecentExport = await Export.findOne({
+          where: {
+            recordId: givenExport.recordId,
+            destinationId: givenExport.destinationId,
+            state: "pending",
+          },
+          order: [["createdAt", "DESC"]],
         });
-        if (lock !== null) {
+
+        const isNewest = mostRecentExport.id === givenExport.id;
+
+        if (typeof lock === "function") {
           locks.push(lock);
-        } else {
-          // is _export the newest export for this pair?  if not, cancel it.
-          const moreRecentExport = await Export.findOne({
-            where: {
-              recordId: givenExport.recordId,
-              destinationId: givenExport.destinationId,
-              state: "pending",
-            },
-            order: [["createdAt", "DESC"]],
-          });
-
-          if (
-            moreRecentExport !== null &&
-            moreRecentExport.id !== givenExport.id
-          ) {
-            await givenExport.update({
-              state: "canceled",
-              sendAt: null,
-              errorMessage: `Replaced by more recent export ${moreRecentExport.id}`,
-              errorLevel: null,
-              completedAt: new Date(),
-            });
+          if (!isNewest) {
+            await cancelOldExport(givenExport, mostRecentExport);
+          } else {
+            _exports.push(givenExport);
           }
-          //no matter what -- if we weren't able to lock this pair, it is already being processed, so do not let this export move forward yet.
-          continue;
+        } else {
+          if (!isNewest) {
+            await cancelOldExport(givenExport, mostRecentExport);
+          } else {
+            // otherwise, this export will be tried again later when the lock is available
+          }
         }
-
-        _exports.push(givenExport);
       }
 
       const exportRecords: ExportRecordsPluginMethod = await getBatchFunction(
