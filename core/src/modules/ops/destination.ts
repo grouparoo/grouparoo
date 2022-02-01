@@ -946,7 +946,10 @@ export namespace DestinationOps {
         const gotLock = typeof lock === "function";
 
         if (gotLock) locks.push(lock);
-        if (!isNewest) await cancelOldExport(givenExport, mostRecentExport);
+        if (!isNewest) {
+          await cancelOldExport(givenExport, mostRecentExport);
+          continue;
+        }
         if (gotLock && isNewest && givenExport.hasChanges)
           _exports.push(givenExport);
       }
