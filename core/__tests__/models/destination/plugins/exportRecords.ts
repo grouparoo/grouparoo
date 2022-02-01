@@ -646,7 +646,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       expect(newExport.completedAt).toBeTruthy();
     });
 
-    test.only("if an export has the same data as the previous export, and force=true, it will be sent to the destination", async () => {
+    test("if an export has the same data as the previous export, and force=true, it will be sent to the destination", async () => {
       const record = await helper.factories.record();
       const group = await helper.factories.group();
       await GroupMember.create({ recordId: record.id, groupId: group.id });
@@ -688,7 +688,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       expect(newExport.completedAt).toBeTruthy();
     });
 
-    test.only("if two exports are pending for the same record/destination pair and are processed in order, the newer one remains pending after the first export loop", async () => {
+    test("if two exports are pending for the same record/destination pair, only one is sent at a time", async () => {
       const record = await helper.factories.record();
       const group = await helper.factories.group();
       await GroupMember.create({ recordId: record.id, groupId: group.id });
@@ -719,8 +719,8 @@ describe("models/destination - with custom exportRecords plugin", () => {
         newExport.createdAt.valueOf()
       );
 
-      // expect(oldExport.state).toEqual("complete");
-      // expect(newExport.state).toEqual("pending"); //nothing should have happened, it is left pending to be processed during the next enqueue/loop through
+      expect(oldExport.state).toEqual("complete");
+      expect(newExport.state).toEqual("pending"); //nothing should have happened, it is left pending to be processed during the next enqueue/loop through
 
       await specHelper.runTask("export:sendBatch", foundTasks[0].args[0]);
       expect(exportArgs.exports.length).toBe(1);
@@ -749,8 +749,6 @@ describe("models/destination - with custom exportRecords plugin", () => {
         hasChanges: true,
         toDelete: false,
         force: true,
-        updatedAt: new Date(),
-        createdAt: new Date(),
         exportProcessorId: null,
         completedAt: null,
         errorMessage: null,
@@ -771,13 +769,18 @@ describe("models/destination - with custom exportRecords plugin", () => {
         hasChanges: true,
         toDelete: false,
         force: true,
-        updatedAt: new Date(new Date().valueOf() - 100000),
-        createdAt: new Date(new Date().valueOf() - 100000), //will be second in the queue, but will have timestamps before exportOne
         exportProcessorId: null,
         completedAt: null,
         errorMessage: null,
         errorLevel: null,
       });
+
+      helper.changeTimestamps([exportOne], true, new Date());
+      helper.changeTimestamps(
+        [exportTwo],
+        true,
+        new Date(new Date().valueOf() - 100000)
+      );
 
       expect(exportOne.toDelete).toBe(false);
       expect(exportOne.hasChanges).toBe(true);
