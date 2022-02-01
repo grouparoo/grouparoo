@@ -943,6 +943,7 @@ export namespace DestinationOps {
         });
 
         const isNewest = mostRecentExport.id === givenExport.id;
+        if (!isNewest) console.info(mostRecentExport);
         const gotLock = typeof lock === "function";
 
         if (gotLock) locks.push(lock);
