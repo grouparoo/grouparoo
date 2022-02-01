@@ -29,6 +29,7 @@ import { MappingHelper } from "../mappingHelper";
 import { RecordPropertyOps } from "./recordProperty";
 import { Option } from "../../models/Option";
 import { getLock } from "../locks";
+import { RecordPropertyType } from "./record";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -949,14 +950,7 @@ export namespace DestinationOps {
           continue;
         }
 
-        //update the properties by re-reading the columns
-        const updatedExport = await Export.findById(givenExport.id);
-
-        if (!updatedExport.hasChanges) {
-          await updatedExport.complete(); // do not do send exports with hasChanges=false
-        } else {
-          _exports.push(updatedExport);
-        }
+        _exports.push(givenExport);
       }
 
       const exportRecords: ExportRecordsPluginMethod = await getBatchFunction(
