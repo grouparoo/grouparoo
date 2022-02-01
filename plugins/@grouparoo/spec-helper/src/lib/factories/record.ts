@@ -3,6 +3,8 @@ import faker from "@faker-js/faker";
 import { loadPath } from "../loadPath";
 import ModelFactory from "./model";
 
+const seenNumbers = [];
+
 const data = async (props: { modelId?: string } = {}) => {
   const { GrouparooModel } = await import(`@grouparoo/core/${loadPath}`);
   const model =
@@ -30,9 +32,12 @@ export default async (props?: { [key: string]: any }, properties = {}) => {
   const primaryKeyProperty = allProperties.find((p) => p.isPrimaryKey);
 
   if (primaryKeyProperty) {
-    properties[primaryKeyProperty.key] = faker.unique(faker.datatype.number, [
-      { min: 1, max: 999999999999 },
-    ]);
+    let id = faker.datatype.number();
+    while (seenNumbers.includes(id)) {
+      id = faker.datatype.number({ min: 1, max: 99999999999 });
+    }
+    properties[primaryKeyProperty.key] = id;
+    seenNumbers.push(id);
   }
 
   await record.addOrUpdateProperties({
