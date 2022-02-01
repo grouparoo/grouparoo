@@ -81,7 +81,7 @@ describe("sqlite/table/recordProperty", () => {
     record = await helper.factories.record();
     await record.addOrUpdateProperties({
       userId: [1],
-      email: ["ejervois0@example.com"],
+      email: ["eohara0@example.com"],
       lastName: null,
     });
     expect(record.id).toBeTruthy();

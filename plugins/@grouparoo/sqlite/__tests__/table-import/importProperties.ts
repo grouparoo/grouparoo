@@ -122,7 +122,7 @@ describe("sqlite/table/recordProperties", () => {
     record = await helper.factories.record();
     await record.addOrUpdateProperties({
       userId: [1],
-      email: ["ejervois0@example.com"],
+      email: ["eohara0@example.com"],
       lastName: null,
     });
     expect(record.id).toBeTruthy();
@@ -172,7 +172,9 @@ describe("sqlite/table/recordProperties", () => {
             aggregationMethod,
           });
           expect(values[record.id][properties[0].id]).toEqual(["Erie"]);
-          expect(values[otherRecord.id][properties[0].id]).toEqual(["Cacilie"]);
+          expect(values[otherRecord.id][properties[0].id]).toEqual([
+            `Cacilie "Cici"`,
+          ]);
         });
 
         test("to get multiple values with a string", async () => {
@@ -183,8 +185,10 @@ describe("sqlite/table/recordProperties", () => {
             aggregationMethod,
           });
           expect(values[record.id][properties[0].id]).toEqual(["Erie"]);
-          expect(values[otherRecord.id][properties[0].id]).toEqual(["Cacilie"]);
-          expect(values[record.id][properties[1].id]).toEqual(["Jervois"]);
+          expect(values[otherRecord.id][properties[0].id]).toEqual([
+            `Cacilie "Cici"`,
+          ]);
+          expect(values[record.id][properties[1].id]).toEqual(["O‘Hara"]);
           expect(values[otherRecord.id][properties[1].id]).toEqual(["Eate"]);
         });
 
@@ -196,9 +200,13 @@ describe("sqlite/table/recordProperties", () => {
             aggregationMethod,
           });
           expect(values[record.id][properties[0].id]).toEqual(["Erie"]);
-          expect(values[otherRecord.id][properties[0].id]).toEqual(["Cacilie"]);
+          expect(values[otherRecord.id][properties[0].id]).toEqual([
+            `Cacilie "Cici"`,
+          ]);
           expect(values[record.id][properties[1].id]).toEqual(["Erie"]);
-          expect(values[otherRecord.id][properties[1].id]).toEqual(["Cacilie"]);
+          expect(values[otherRecord.id][properties[1].id]).toEqual([
+            `Cacilie "Cici"`,
+          ]);
         });
 
         test("to get a float", async () => {
@@ -221,7 +229,7 @@ describe("sqlite/table/recordProperties", () => {
           });
           expect(values[record.id][properties[0].id]).toEqual([259.12]);
           expect(values[otherRecord.id][properties[0].id]).toEqual([94.36]);
-          expect(values[record.id][properties[1].id]).toEqual(["Jervois"]);
+          expect(values[record.id][properties[1].id]).toEqual(["O‘Hara"]);
           expect(values[otherRecord.id][properties[1].id]).toEqual(["Eate"]);
         });
 
@@ -245,7 +253,7 @@ describe("sqlite/table/recordProperties", () => {
           });
           expect(values[record.id][properties[0].id]).toEqual(["true"]);
           expect(values[otherRecord.id][properties[0].id]).toEqual(["false"]);
-          expect(values[record.id][properties[1].id]).toEqual(["Jervois"]);
+          expect(values[record.id][properties[1].id]).toEqual(["O‘Hara"]);
           expect(values[otherRecord.id][properties[1].id]).toEqual(["Eate"]);
         });
 
@@ -273,7 +281,7 @@ describe("sqlite/table/recordProperties", () => {
           expect(values[otherRecord.id][properties[0].id]).toEqual([
             "2020/02/02",
           ]);
-          expect(values[record.id][properties[1].id]).toEqual(["Jervois"]);
+          expect(values[record.id][properties[1].id]).toEqual(["O‘Hara"]);
           expect(values[otherRecord.id][properties[1].id]).toEqual(["Eate"]);
         });
 
@@ -305,7 +313,7 @@ describe("sqlite/table/recordProperties", () => {
           expect(
             (<string[]>values[otherRecord.id][properties[0].id])[0]
           ).toEqual("2020/02/02 12:13:14");
-          expect(values[record.id][properties[1].id]).toEqual(["Jervois"]);
+          expect(values[record.id][properties[1].id]).toEqual(["O‘Hara"]);
           expect(values[otherRecord.id][properties[1].id]).toEqual(["Eate"]);
         });
       });
