@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "axios": "0.24.0",
-    "faker": "5.5.3",
+    "faker": "6.6.6",
     "fs-extra": "10.0.0",
     "nock": "13.2.2",
     "prettier": "2.5.1",
