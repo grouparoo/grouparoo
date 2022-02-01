@@ -1,31 +1,8 @@
 import { helper } from "@grouparoo/spec-helper";
-import { AsyncReturnType } from "type-fest";
 import { ScheduleConfigurationObject } from "../../../src/classes/codeConfig";
 import { Schedule } from "../../../src/models/Schedule";
 import { loadSchedule } from "../../../src/modules/configLoaders/schedule";
 import { ConfigWriter } from "../../../src/modules/configWriter";
-
-type ScheduleApiData = AsyncReturnType<Schedule["apiData"]>;
-
-const expectApiDataToMatchConfig = (
-  apiData: ScheduleApiData,
-  scheduleConfig: ScheduleConfigurationObject
-) => {
-  const props = Object.keys(scheduleConfig).filter((key) => key !== "class");
-
-  for (const prop of props) {
-    const actual = apiData[prop as keyof ScheduleApiData];
-    const expected = scheduleConfig[prop as keyof ScheduleConfigurationObject];
-
-    try {
-      expect(actual).toEqual(expected);
-    } catch (e) {
-      throw new Error(
-        `"${prop}" does not match. Expected: ${expected}, Actual: ${actual}`
-      );
-    }
-  }
-};
 
 describe("modules/configLoaders/schedule", () => {
   const mockedConfigWriterGetLockKey = jest.fn().mockReturnValue(null);
@@ -81,13 +58,13 @@ describe("modules/configLoaders/schedule", () => {
       const schedule = await Schedule.scope(null).findOne({
         where: { id: scheduleId },
       });
-      const apiData = await schedule.apiData();
 
-      expectApiDataToMatchConfig(apiData, scheduleConfig);
-
-      await expect(schedule.getOptions()).resolves.toEqual(
-        scheduleConfig.options
-      );
+      const configObject = await schedule.getConfigObject();
+      const expectedSchedule = {
+        ...scheduleConfig,
+        sourceId: schedule.source.getConfigId(),
+      };
+      expect(configObject).toEqual(expectedSchedule);
     });
 
     it("loads all schedule default values from partial config", async () => {
@@ -105,21 +82,20 @@ describe("modules/configLoaders/schedule", () => {
         where: { id: scheduleId },
       });
 
-      const apiData = await schedule.apiData();
+      const configObject = await schedule.getConfigObject();
       const expectedConfig: ScheduleConfigurationObject = {
         ...partialScheduleConfig,
+        class: "Schedule",
+        filters: [],
         recurring: false,
         incremental: true,
         recurringFrequency: null,
         confirmRecords: false,
         refreshEnabled: true,
+        sourceId: schedule.source.getConfigId(),
       };
 
-      expectApiDataToMatchConfig(apiData, expectedConfig);
-
-      await expect(schedule.getOptions()).resolves.toEqual(
-        scheduleConfig.options
-      );
+      expect(configObject).toEqual(expectedConfig);
     });
   });
 });
