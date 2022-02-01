@@ -1,4 +1,3 @@
-import { Op } from "sequelize";
 import { GrouparooRecord } from "../../models/GrouparooRecord";
 import { Import } from "../../models/Import";
 import { Destination } from "../../models/Destination";
@@ -7,6 +6,8 @@ import { RetryableTask } from "../../classes/tasks/retryableTask";
 import { env, log, ParamsFrom } from "actionhero";
 import { DestinationOps } from "../../modules/ops/destination";
 import { APIData } from "../../modules/apiData";
+import { GroupMember } from "../../models/GroupMember";
+import { RecordProperty } from "../../models/RecordProperty";
 
 export class RecordExport extends RetryableTask {
   name = "record:export";
@@ -19,59 +20,44 @@ export class RecordExport extends RetryableTask {
   };
 
   async runWithinTransaction({ force, recordId }: ParamsFrom<RecordExport>) {
-    const record = await GrouparooRecord.findOne({ where: { id: recordId } });
+    const record = await GrouparooRecord.findOne({
+      where: { id: recordId },
+      include: [RecordProperty, { model: GroupMember, include: [Group] }],
+    });
 
     if (!record) return; // the record may have been deleted or merged by the time this task ran
-    if (record.state !== "ready") return;
+    if (record.state !== "exporting") return;
 
     const imports = await Import.findAll({
       where: {
-        state: "processing",
+        state: "complete",
         recordId: record.id,
       },
       order: [["createdAt", "asc"]],
     });
 
-    try {
-      const oldGroupIds = imports[0]?.oldGroupIds;
-      const newGroupIds = imports[imports.length - 1]?.newGroupIds;
+    const destinations = await DestinationOps.relevantFor(
+      record,
+      record.groupMembers.map((gm) => gm.group)
+    );
 
-      const oldGroups =
-        oldGroupIds && oldGroupIds.length > 0
-          ? await Group.findAll({
-              where: { id: { [Op.in]: oldGroupIds } },
-            })
-          : [];
-
-      const newGroups =
-        newGroupIds && newGroupIds.length > 0
-          ? await Group.findAll({
-              where: { id: { [Op.in]: newGroupIds } },
-            })
-          : [];
-
-      const destinations = await DestinationOps.relevantFor(
-        record,
-        oldGroups,
-        newGroups
-      );
-
-      // check for explicit destinations to export to from each import
-      for (const i in imports) {
-        const _import = imports[i];
-        if (
-          _import.data?._meta?.destinationId &&
-          !destinations
-            .map((d) => d.id)
-            .includes(_import.data?._meta?.destinationId)
-        ) {
-          const destination = await Destination.scope(null).findOne({
-            where: { id: _import.data._meta.destinationId },
-          });
-          if (destination) destinations.push(destination);
-        }
+    // check for explicit destinations to export to from each import
+    for (const i in imports) {
+      const _import = imports[i];
+      if (
+        _import.data?._meta?.destinationId &&
+        !destinations
+          .map((d) => d.id)
+          .includes(_import.data?._meta?.destinationId)
+      ) {
+        const destination = await Destination.scope(null).findOne({
+          where: { id: _import.data._meta.destinationId },
+        });
+        if (destination) destinations.push(destination);
       }
+    }
 
+    try {
       for (const i in destinations) {
         await destinations[i].exportRecord(
           record,
@@ -88,10 +74,12 @@ export class RecordExport extends RetryableTask {
       }
     } catch (error) {
       if (env !== "test") log(`[EXPORT ERROR] ${error}`, "alert");
+    }
 
-      for (const i of imports) {
-        await i.setError(error, this.name);
-      }
+    try {
+      await record.update({ state: "ready" });
+    } catch (error) {
+      if (env !== "test") log(`[EXPORT ERROR] ${error}`, "alert");
     }
   }
 }

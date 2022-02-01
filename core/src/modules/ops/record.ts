@@ -587,7 +587,6 @@ export namespace RecordOps {
       if (toSave) {
         await buildNullProperties([record]);
 
-        await record.save();
         await RecordProperty.update(
           { state: "ready" },
           { where: { recordId: record.id } }
@@ -606,18 +605,13 @@ export namespace RecordOps {
   export async function _export(
     record: GrouparooRecord,
     force = false,
-    oldGroups: Group[] = [],
+    additionalGroups: Group[] = [],
     saveExports = true,
     sync = true,
     toDelete?: boolean
   ) {
-    const groups = await record.$get("groups");
-
-    const destinations = await DestinationOps.relevantFor(
-      record,
-      oldGroups,
-      groups
-    );
+    const groups = [...additionalGroups, ...(await record.$get("groups"))];
+    const destinations = await DestinationOps.relevantFor(record, groups);
 
     // We want to find destinations which aren't in the above set and already have an Export for this GrouparooRecord.
     // That's a sign that the GrouparooRecord is about to get a toDelete export
@@ -1041,16 +1035,8 @@ export namespace RecordOps {
   export async function computeRecordsValidity(records: GrouparooRecord[]) {
     const recordIds = records.map((r) => r.id);
     await GrouparooRecord.update(
-      {
-        invalid: false,
-      },
-      {
-        where: {
-          id: {
-            [Op.in]: recordIds,
-          },
-        },
-      }
+      { invalid: false },
+      { where: { id: { [Op.in]: recordIds } } }
     );
     // Update records to invalid if any associated properties are invalid.
     await api.sequelize.query(`
@@ -1074,13 +1060,11 @@ export namespace RecordOps {
    * Find records that are not ready but whose properties are and make them ready.
    * Then, process the related imports.
    */
-  export async function makeReadyAndCompleteImports(
-    limit = 100,
-    toExport = true
-  ) {
+  export async function makeExports(limit = 100) {
+    const now = new Date();
     const records: GrouparooRecord[] = await api.sequelize.query(
       `
-      SELECT "id" from "records" where "state" = 'pending'
+      SELECT id from "records" where "state" = 'pending'
       EXCEPT
       SELECT DISTINCT("recordId") FROM "recordProperties" WHERE "state" = 'pending'
       LIMIT ${limit};
@@ -1091,12 +1075,10 @@ export namespace RecordOps {
       }
     );
 
-    if (!records.length) {
-      return [];
-    }
+    if (!records.length) return [];
 
     await GrouparooRecord.update(
-      { state: "ready" },
+      { state: "exporting" },
       {
         where: {
           id: { [Op.in]: records.map((p) => p.id) },
@@ -1105,54 +1087,20 @@ export namespace RecordOps {
       }
     );
 
-    await completeRecordImports(
-      records.map((p) => p.id),
-      toExport
+    await Import.update(
+      { state: "complete", importedAt: now },
+      {
+        where: {
+          recordId: { [Op.in]: records.map((p) => p.id) },
+          state: "importing",
+          recordAssociatedAt: { [Op.lt]: now },
+        },
+      }
     );
 
-    return records;
-  }
-
-  async function completeRecordImports(recordIds: string[], toExport: boolean) {
-    const records = await GrouparooRecord.findAll({
-      where: {
-        id: { [Op.in]: recordIds },
-      },
-      include: [
-        { model: RecordProperty, required: true },
-        { model: Import, required: false, where: { state: "importing" } },
-      ],
-    });
-    if (!records.length) {
-      return;
-    }
-
-    const memberships = await RecordOps.updateGroupMemberships(records);
-    const now = new Date();
-
+    await RecordOps.updateGroupMemberships(records);
     await computeRecordsValidity(records);
 
-    for (const record of records) {
-      const imports = record.imports;
-      if (imports.length > 0) {
-        const newRecordProperties = await record.simplifiedProperties();
-        const newGroupIds = Object.keys(memberships[record.id]).filter(
-          (groupId) => memberships[record.id][groupId] === true
-        );
-
-        await Import.update(
-          {
-            state: toExport ? "processing" : "complete",
-            newRecordProperties: newRecordProperties,
-            newGroupIds: newGroupIds,
-            importedAt: now,
-            processedAt: toExport ? undefined : now, // we want to indicate that the import's lifecycle is complete
-          },
-          {
-            where: { id: { [Op.in]: imports.map((i) => i.id) } },
-          }
-        );
-      }
-    }
+    return records;
   }
 }

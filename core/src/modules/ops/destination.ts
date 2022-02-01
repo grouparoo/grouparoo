@@ -1076,10 +1076,9 @@ export namespace DestinationOps {
    */
   export async function relevantFor(
     record: GrouparooRecord,
-    oldGroups: Group[] = [],
-    newGroups: Group[] = []
+    groups: Group[] = []
   ) {
-    const combinedGroupIds = [...oldGroups, ...newGroups].map((g) => g.id);
+    const combinedGroupIds = groups.map((g) => g.id);
     const relevantDestinations =
       combinedGroupIds.length > 0
         ? await Destination.findAll({

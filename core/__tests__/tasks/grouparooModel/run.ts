@@ -163,12 +163,6 @@ describe("tasks/grouparooModel:run", () => {
 
         imports = await Import.findAll();
         expect(imports.length).toBe(3);
-
-        for (const i of imports) {
-          expect(i.rawData).toEqual({
-            _meta: { destinationId: destination.id },
-          });
-        }
       });
     });
   });

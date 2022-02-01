@@ -384,9 +384,7 @@ describe("models/group", () => {
 
       const data = { _meta: { destinationId: "abc123" } };
       expect(imports[0].data).toEqual(data);
-      expect(imports[0].rawData).toEqual(data);
       expect(imports[1].data).toEqual(data);
-      expect(imports[1].rawData).toEqual(data);
     });
 
     test("group rules must have a related recordProperty Ryle", async () => {

@@ -77,16 +77,9 @@ export namespace RunOps {
       steps: {
         associate: number;
         imported: number;
-        processed: number;
       };
     }[] = [];
     const start = run.createdAt.getTime();
-
-    const lastProcessedImport = await Import.findOne({
-      where: { creatorId: run.id },
-      order: [["processedAt", "desc"]],
-      limit: 1,
-    });
 
     const lastImportedImport = await Import.findOne({
       where: { creatorId: run.id },
@@ -95,8 +88,7 @@ export namespace RunOps {
     });
 
     const end =
-      lastProcessedImport?.processedAt?.getTime() ||
-      lastImportedImport?.processedAt?.getTime() ||
+      lastImportedImport?.importedAt?.getTime() ||
       run?.completedAt?.getTime() ||
       new Date().getTime();
 
@@ -123,14 +115,6 @@ export namespace RunOps {
           imported: await run.$count("imports", {
             where: {
               importedAt: {
-                [Op.gte]: lastBoundary,
-                [Op.lt]: nextBoundary,
-              },
-            },
-          }),
-          processed: await run.$count("imports", {
-            where: {
-              processedAt: {
                 [Op.gte]: lastBoundary,
                 [Op.lt]: nextBoundary,
               },

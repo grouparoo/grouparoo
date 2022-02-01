@@ -21,14 +21,11 @@ export namespace GroupOps {
     for (const recordId of recordIds) {
       bulkData.push({
         state: "importing",
-        rawData: destinationId ? { _meta: { destinationId } } : {},
         data: destinationId ? { _meta: { destinationId } } : {},
         creatorType,
         creatorId,
         recordId,
         recordAssociatedAt: new Date(),
-        oldRecordProperties: {},
-        oldGroupIds: [],
       });
     }
 
@@ -196,7 +193,7 @@ export namespace GroupOps {
     const { where, include } = await group._buildGroupMemberQueryParts(
       rules,
       group.matchType,
-      "ready"
+      ["ready", "exporting"]
     );
 
     where.createdAt = { [Op.and]: [{ [Op.lt]: run.createdAt }] };

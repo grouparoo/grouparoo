@@ -94,15 +94,11 @@ describe("tasks/group:run", () => {
 
     it("can create imports for records which should be added", async () => {
       let imports = [];
-      await group.setRules([
+      const run = await group.setRules([
         { key: "email", match: "%@%", operation: { op: "like" } },
       ]);
 
       expect(group.state).toBe("updating");
-      const run = await Run.findOne({
-        where: { state: "running", creatorId: group.id },
-      });
-
       await specHelper.runTask("group:run", { runId: run.id }); // adding records (some found, enqueue add again)
 
       await run.reload();
@@ -153,7 +149,7 @@ describe("tasks/group:run", () => {
 
     it("can create imports for records which should be removed", async () => {
       let imports = [];
-      await group.setRules([
+      const run = await group.setRules([
         {
           key: "lastName",
           match: "Mario",
@@ -162,9 +158,6 @@ describe("tasks/group:run", () => {
       ]);
 
       expect(group.state).toBe("updating");
-      const run = await Run.findOne({
-        where: { state: "running", creatorId: group.id },
-      });
 
       imports = await Import.findAll();
       expect(imports.length).toBe(0); // no imports to add records to the group
@@ -240,11 +233,7 @@ describe("tasks/group:run", () => {
 
       expect((await group.$get("groupMembers")).length).toBe(1);
 
-      await group.run();
-
-      const run = await Run.findOne({
-        where: { state: "running", creatorId: group.id },
-      });
+      const run = await group.run();
 
       await specHelper.runTask("group:run", { runId: run.id });
 
@@ -282,15 +271,11 @@ describe("tasks/group:run", () => {
     });
 
     it("the group run will not complete until all imports are complete", async () => {
-      await group.setRules([
+      const run = await group.setRules([
         { key: "email", match: "%@%", operation: { op: "like" } },
       ]);
 
       expect(group.state).toBe("updating");
-
-      const run = await Run.findOne({
-        where: { state: "running", creatorId: group.id },
-      });
 
       await specHelper.runTask("group:run", { runId: run.id });
       await specHelper.runTask("group:run", { runId: run.id });

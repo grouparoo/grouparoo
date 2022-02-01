@@ -1,11 +1,12 @@
 import { config } from "actionhero";
 import { CLSTask } from "../../classes/tasks/clsTask";
+import { CLS } from "../../modules/cls";
 import { RecordOps } from "../../modules/ops/record";
 
-export class GrouparooRecordsCheckReady extends CLSTask {
-  name = "records:checkReady";
+export class GrouparooRecordsMakeExports extends CLSTask {
+  name = "records:makeExports";
   description =
-    "If all of a GrouparooRecord's Properties are ready, mark the record ready and complete the import";
+    "If all of a GrouparooRecord's Properties are ready, mark the record ready and start the export";
   frequency = 1000 * 10;
   queue = "records";
   inputs = {};
@@ -16,6 +17,12 @@ export class GrouparooRecordsCheckReady extends CLSTask {
       ? process.env.GROUPAROO_DISABLE_EXPORTS !== "true"
       : true;
 
-    await RecordOps.makeReadyAndCompleteImports(limit, toExport);
+    const records = await RecordOps.makeExports(limit);
+
+    if (toExport) {
+      for (const record of records) {
+        await CLS.enqueueTask("record:export", { recordId: record.id });
+      }
+    }
   }
 }
