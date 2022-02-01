@@ -636,6 +636,20 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   @BeforeCreate
+  static async ensureSupportedAppType(instance: Destination) {
+    const app = await App.findById(instance.appId);
+    const { pluginConnection } = await instance.getPlugin();
+    if (!pluginConnection.apps.includes(app.type))
+      throw new Error(
+        `Destination of type "${instance.type}" does not support the App \`${
+          app.name
+        }\` (${app.id}) of type "${
+          app.type
+        }". Supported App types: ${pluginConnection.apps.join(", ")}.`
+      );
+  }
+
+  @BeforeCreate
   static async ensureExportRecordsMethod(instance: Destination) {
     const { pluginConnection } = await instance.getPlugin();
     if (!pluginConnection) {

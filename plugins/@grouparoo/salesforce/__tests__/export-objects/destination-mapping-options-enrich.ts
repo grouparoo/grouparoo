@@ -33,7 +33,10 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
 
   beforeAll(async () => {
     ({ model } = await helper.factories.properties());
-    app = await helper.factories.app();
+    app = await helper.factories.app({
+      type: "salesforce",
+      options: appOptions,
+    });
     destination = await Destination.create({
       name: "Salesforce Test Destination",
       type: "salesforce-export-accounts",
