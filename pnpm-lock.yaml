@@ -285,7 +285,7 @@ importers:
       libphonenumber-js: 1.9.46
       moment: 2.29.1
       mustache: 4.2.0
-      nock: 13.2.1
+      nock: 13.2.2
       node-resque: 9.1.5
       nodemon: 2.0.15
       pacote: 12.0.3
@@ -306,7 +306,7 @@ importers:
       typescript: 4.5.5
       uuid: 8.3.2
       validator: 13.7.0
-      winston: 3.3.3
+      winston: 3.5.1
       ws: 8.4.2
     dependencies:
       '@types/fs-extra': 9.0.13
@@ -346,7 +346,7 @@ importers:
       ts-node: 10.4.0_06de4b00c69b73d094e2c5b522a6ad57
       uuid: 8.3.2
       validator: 13.7.0
-      winston: 3.3.3
+      winston: 3.5.1
       ws: 8.4.2
     devDependencies:
       '@grouparoo/spec-helper': link:../plugins/@grouparoo/spec-helper
@@ -363,7 +363,7 @@ importers:
       csv-parse: 4.16.3
       jest: 27.4.5_ts-node@10.4.0
       jest-fetch-mock: 3.0.3
-      nock: 13.2.1
+      nock: 13.2.2
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
       type-fest: 2.11.1
       typedoc: 0.22.11_typescript@4.5.5
@@ -383,7 +383,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.4.5
       jest-mock-extended: 2.0.4
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2
@@ -403,7 +403,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.4.5
       jest-mock-extended: 2.0.4_jest@27.4.5+typescript@4.5.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
@@ -419,7 +419,7 @@ importers:
       '@types/uuid': '*'
       actionhero: 28.1.7
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       ts-jest: 27.1.2
       typescript: 4.5.5
@@ -432,7 +432,7 @@ importers:
       '@types/uuid': 8.3.4
       actionhero: 28.1.7
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
       typescript: 4.5.5
@@ -450,7 +450,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2
@@ -467,7 +467,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
@@ -485,7 +485,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2
@@ -503,7 +503,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
@@ -583,12 +583,12 @@ importers:
       ts-jest: 27.1.2
       type-fest: 2.11.1
       typescript: 4.5.5
-      winston: 3.3.3
+      winston: 3.5.1
       winston-cloudwatch: 3.1.1
     dependencies:
       aws-sdk: 2.1066.0
-      winston: 3.3.3
-      winston-cloudwatch: 3.1.1_winston@3.3.3
+      winston: 3.5.1
+      winston-cloudwatch: 3.1.1_winston@3.5.1
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -647,7 +647,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2
@@ -665,7 +665,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
@@ -681,7 +681,7 @@ importers:
       actionhero: 28.1.7
       jest: 27.4.5
       js-yaml: 4.1.0
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       ts-jest: 27.1.2
       typescript: 4.5.5
@@ -695,7 +695,7 @@ importers:
       '@types/node': 16.11.21
       actionhero: 28.1.7
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
       typescript: 4.5.5
@@ -761,7 +761,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2
@@ -778,7 +778,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
@@ -799,7 +799,7 @@ importers:
       iso-3166-1-alpha-2: 1.0.0
       jest: 27.4.5
       js-sha256: 0.9.0
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2
@@ -819,7 +819,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
@@ -838,7 +838,7 @@ importers:
       fs-extra: 10.0.0
       google-spreadsheet: 3.2.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2
@@ -858,7 +858,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
@@ -879,7 +879,7 @@ importers:
       fs-extra: 10.0.0
       hubspot-api: 2.15.3
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2
@@ -898,7 +898,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
@@ -917,7 +917,7 @@ importers:
       fs-extra: 10.0.0
       intercom-client: 2.11.2
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2
@@ -934,7 +934,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
@@ -951,7 +951,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       node-iterable-api: 1.1.0
       prettier: 2.5.1
       sequelize: 6.11.0
@@ -969,7 +969,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
@@ -987,7 +987,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       node-klaviyo: 1.1.3
       prettier: 2.5.1
       sequelize: 6.11.0
@@ -1006,7 +1006,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
@@ -1052,7 +1052,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.4.5
       mailchimp-api-v3: 1.15.0
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2
@@ -1071,7 +1071,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
@@ -1090,7 +1090,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       node-mailjet: 3.3.4
       prettier: 2.5.1
       sequelize: 6.11.0
@@ -1110,7 +1110,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
@@ -1129,7 +1129,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2
@@ -1146,7 +1146,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
@@ -1164,7 +1164,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2
@@ -1181,7 +1181,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
@@ -1289,7 +1289,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       onesignal-node: 3.3.0
       prettier: 2.5.1
       sequelize: 6.11.0
@@ -1307,7 +1307,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
@@ -1327,7 +1327,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.4.5
       jsforce: 1.11.0
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2
@@ -1346,7 +1346,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
@@ -1364,7 +1364,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2
@@ -1381,7 +1381,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
@@ -1530,7 +1530,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sailthru-client: 4.0.0
       sequelize: 6.11.0
@@ -1548,7 +1548,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
@@ -1566,7 +1566,7 @@ importers:
       fs-extra: 10.0.0
       jest: 27.4.5
       jsforce: 1.11.0
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2
@@ -1583,7 +1583,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
@@ -1601,7 +1601,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2
@@ -1618,7 +1618,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
@@ -1662,7 +1662,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       snowflake-promise: 4.5.0
@@ -1682,7 +1682,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
@@ -1699,7 +1699,7 @@ importers:
       faker: 5.5.3
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2
@@ -1709,7 +1709,7 @@ importers:
       axios: 0.24.0
       faker: 5.5.3
       fs-extra: 10.0.0
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       uuid: 8.3.2
@@ -1774,7 +1774,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2
@@ -1791,7 +1791,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
@@ -1808,7 +1808,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       node-zendesk: 2.1.0
       prettier: 2.5.1
       sequelize: 6.11.0
@@ -1826,7 +1826,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 27.4.5
-      nock: 13.2.1
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.11.0
       ts-jest: 27.1.2_2bbca1cabebf3b65a1d857755c03321e
@@ -1844,7 +1844,7 @@ importers:
       dotenv: 10.0.0
       enzyme: 3.11.0
       eslint: 8.8.0
-      eslint-config-next: 12.0.7
+      eslint-config-next: 12.0.10
       jest: 27.4.5
       jest-environment-webdriver: grouparoo/jest-webdriver#jest-v27-webdriver
       next: 12.0.7
@@ -1873,7 +1873,7 @@ importers:
       actionhero: 28.1.7
       enzyme: 3.11.0
       eslint: 8.8.0
-      eslint-config-next: 12.0.7_ec42a7e5d40bbfc6d99363387bca4641
+      eslint-config-next: 12.0.10_ec42a7e5d40bbfc6d99363387bca4641
       jest: 27.4.5
       jest-environment-webdriver: github.com/grouparoo/jest-webdriver/3fa07db08cc6901e740d1e927a20db55f9406398_jest@27.4.5
       prettier: 2.5.1
@@ -1974,7 +1974,7 @@ importers:
       dotenv: 10.0.0
       enzyme: 3.11.0
       eslint: 8.8.0
-      eslint-config-next: 12.0.7
+      eslint-config-next: 12.0.10
       jest: 27.4.5
       jest-environment-webdriver: grouparoo/jest-webdriver#jest-v27-webdriver
       next: 12.0.7
@@ -2007,7 +2007,7 @@ importers:
       actionhero: 28.1.7
       enzyme: 3.11.0
       eslint: 8.8.0
-      eslint-config-next: 12.0.7_ec42a7e5d40bbfc6d99363387bca4641
+      eslint-config-next: 12.0.10_ec42a7e5d40bbfc6d99363387bca4641
       jest: 27.4.5
       jest-environment-webdriver: github.com/grouparoo/jest-webdriver/3fa07db08cc6901e740d1e927a20db55f9406398_jest@27.4.5
       prettier: 2.5.1
@@ -2027,7 +2027,7 @@ importers:
       dotenv: 10.0.0
       enzyme: 3.11.0
       eslint: 8.8.0
-      eslint-config-next: 12.0.7
+      eslint-config-next: 12.0.10
       jest: 27.4.5
       jest-environment-webdriver: grouparoo/jest-webdriver#jest-v27-webdriver
       next: 12.0.7
@@ -2056,7 +2056,7 @@ importers:
       actionhero: 28.1.7
       enzyme: 3.11.0
       eslint: 8.8.0
-      eslint-config-next: 12.0.7_ec42a7e5d40bbfc6d99363387bca4641
+      eslint-config-next: 12.0.10_ec42a7e5d40bbfc6d99363387bca4641
       jest: 27.4.5
       jest-environment-webdriver: github.com/grouparoo/jest-webdriver/3fa07db08cc6901e740d1e927a20db55f9406398_jest@27.4.5
       prettier: 2.5.1
@@ -3706,8 +3706,8 @@ packages:
   /@next/env/12.0.7:
     resolution: {integrity: sha512-TNDqBV37wd95SiNdZsSUq8gnnrTwr+aN9wqy4Zxrxw4bC/jCHNsbK94DxjkG99VL30VCRXXDBTA1/Wa2jIpF9Q==}
 
-  /@next/eslint-plugin-next/12.0.7:
-    resolution: {integrity: sha512-xk7eMjw4+roWWR/0ETIoToCNs2wdvCGgQUiUO390Rj33/82yxZsh+ODRSaFWkiKp8zHWQN5GCW+U5pfjt/gyQg==}
+  /@next/eslint-plugin-next/12.0.10:
+    resolution: {integrity: sha512-PbGRnV5HGSfRGLjf8uTh1MaWgLwnjKjWiGVjK752ifITJbZ28/5AmLAFT2shDYeux8BHgpgVll5QXu7GN3YLFw==}
     dependencies:
       glob: 7.1.7
     dev: true
@@ -4717,26 +4717,6 @@ packages:
       - typescript
     dev: true
 
-  /@typescript-eslint/parser/5.10.1_eslint@8.8.0+typescript@4.5.5:
-    resolution: {integrity: sha512-GReo3tjNBwR5RnRO0K2wDIDN31cM3MmDtgyQ85oAxAmC5K3j/g85IjP+cDfcqDsDDBf1HNKQAD0WqOYL8jXqUA==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    peerDependencies:
-      eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
-      typescript: '*'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-    dependencies:
-      '@typescript-eslint/scope-manager': 5.10.1
-      '@typescript-eslint/types': 5.10.1
-      '@typescript-eslint/typescript-estree': 5.10.1_typescript@4.5.5
-      debug: 4.3.3
-      eslint: 8.8.0
-      typescript: 4.5.5
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
   /@typescript-eslint/parser/5.10.2_eslint@8.8.0+typescript@4.5.5:
     resolution: {integrity: sha512-JaNYGkaQVhP6HNF+lkdOr2cAs2wdSZBoalE22uYWq8IEv/OVH0RksSGydk+sW8cLoSeYmC+OHvRyv2i4AQ7Czg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -4757,14 +4737,6 @@ packages:
       - supports-color
     dev: true
 
-  /@typescript-eslint/scope-manager/5.10.1:
-    resolution: {integrity: sha512-Lyvi559Gvpn94k7+ElXNMEnXu/iundV5uFmCUNnftbFrUbAJ1WBoaGgkbOBm07jVZa682oaBU37ao/NGGX4ZDg==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    dependencies:
-      '@typescript-eslint/types': 5.10.1
-      '@typescript-eslint/visitor-keys': 5.10.1
-    dev: true
-
   /@typescript-eslint/scope-manager/5.10.2:
     resolution: {integrity: sha512-39Tm6f4RoZoVUWBYr3ekS75TYgpr5Y+X0xLZxXqcZNDWZdJdYbKd3q2IR4V9y5NxxiPu/jxJ8XP7EgHiEQtFnw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -4781,11 +4753,6 @@ packages:
       '@typescript-eslint/visitor-keys': 5.6.0
     dev: true
 
-  /@typescript-eslint/types/5.10.1:
-    resolution: {integrity: sha512-ZvxQ2QMy49bIIBpTqFiOenucqUyjTQ0WNLhBM6X1fh1NNlYAC6Kxsx8bRTY3jdYsYg44a0Z/uEgQkohbR0H87Q==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    dev: true
-
   /@typescript-eslint/types/5.10.2:
     resolution: {integrity: sha512-Qfp0qk/5j2Rz3p3/WhWgu4S1JtMcPgFLnmAKAW061uXxKSa7VWKZsDXVaMXh2N60CX9h6YLaBoy9PJAfCOjk3w==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -4794,27 +4761,6 @@ packages:
   /@typescript-eslint/types/5.6.0:
     resolution: {integrity: sha512-OIZffked7mXv4mXzWU5MgAEbCf9ecNJBKi+Si6/I9PpTaj+cf2x58h2oHW5/P/yTnPkKaayfjhLvx+crnl5ubA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    dev: true
-
-  /@typescript-eslint/typescript-estree/5.10.1_typescript@4.5.5:
-    resolution: {integrity: sha512-PwIGnH7jIueXv4opcwEbVGDATjGPO1dx9RkUl5LlHDSe+FXxPwFL5W/qYd5/NHr7f6lo/vvTrAzd0KlQtRusJQ==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    peerDependencies:
-      typescript: '*'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-    dependencies:
-      '@typescript-eslint/types': 5.10.1
-      '@typescript-eslint/visitor-keys': 5.10.1
-      debug: 4.3.3
-      globby: 11.1.0
-      is-glob: 4.0.3
-      semver: 7.3.5
-      tsutils: 3.21.0_typescript@4.5.5
-      typescript: 4.5.5
-    transitivePeerDependencies:
-      - supports-color
     dev: true
 
   /@typescript-eslint/typescript-estree/5.10.2_typescript@4.5.5:
@@ -4857,14 +4803,6 @@ packages:
       typescript: 4.5.5
     transitivePeerDependencies:
       - supports-color
-    dev: true
-
-  /@typescript-eslint/visitor-keys/5.10.1:
-    resolution: {integrity: sha512-NjQ0Xinhy9IL979tpoTRuLKxMc0zJC7QVSdeerXs2/QvOy2yRkzX5dRb10X5woNUdJgU8G3nYRDlI33sq1K4YQ==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    dependencies:
-      '@typescript-eslint/types': 5.10.1
-      eslint-visitor-keys: 3.2.0
     dev: true
 
   /@typescript-eslint/visitor-keys/5.10.2:
@@ -4987,7 +4925,7 @@ packages:
       primus: 8.0.5
       qs: 6.10.3
       uuid: 8.3.2
-      winston: 3.4.0
+      winston: 3.5.1
       ws: 8.4.2
       yargs: 17.3.1
     transitivePeerDependencies:
@@ -7307,8 +7245,8 @@ packages:
       source-map: 0.6.1
     dev: true
 
-  /eslint-config-next/12.0.7_ec42a7e5d40bbfc6d99363387bca4641:
-    resolution: {integrity: sha512-kWOaym5qjyzR190zFKkZMaHetmiRORmzJiKML7Kr9CL213S6SwkrHHCEL58TRdpx0NA+HzrsFR9zgcV2pvV2Yg==}
+  /eslint-config-next/12.0.10_ec42a7e5d40bbfc6d99363387bca4641:
+    resolution: {integrity: sha512-l1er6mwSo1bltjLwmd71p5BdT6k/NQxV1n4lKZI6xt3MDMrq7ChUBr+EecxOry8GC/rCRUtPpH8Ygs0BJc5YLg==}
     peerDependencies:
       eslint: ^7.23.0 || ^8.0.0
       next: '>=10.2.0'
@@ -7317,9 +7255,9 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@next/eslint-plugin-next': 12.0.7
+      '@next/eslint-plugin-next': 12.0.10
       '@rushstack/eslint-patch': 1.1.0
-      '@typescript-eslint/parser': 5.10.1_eslint@8.8.0+typescript@4.5.5
+      '@typescript-eslint/parser': 5.10.2_eslint@8.8.0+typescript@4.5.5
       eslint: 8.8.0
       eslint-import-resolver-node: 0.3.6
       eslint-import-resolver-typescript: 2.5.0_392f898cec7735a5f7a99430cbc0b4f4
@@ -11585,8 +11523,8 @@ packages:
       - webpack
     dev: false
 
-  /nock/13.2.1:
-    resolution: {integrity: sha512-CoHAabbqq/xZEknubuyQMjq6Lfi5b7RtK6SoNK6m40lebGp3yiMagWtIoYaw2s9sISD7wPuCfwFpivVHX/35RA==}
+  /nock/13.2.2:
+    resolution: {integrity: sha512-PcBHuvl9i6zfaJ50A7LS55oU+nFLv8htXIhffJO+FxyfibdZ4jEvd9kTuvkrJireBFIGMZ+oUIRpMK5gU9h//g==}
     engines: {node: '>= 10.13'}
     dependencies:
       debug: 4.3.3
@@ -14000,6 +13938,10 @@ packages:
   /safe-stable-stringify/1.1.1:
     resolution: {integrity: sha512-ERq4hUjKDbJfE4+XtZLFPCDi8Vb1JqaxAPTxWFLBx8XcAlf9Bda/ZJdVezs/NAfsMQScyIlUMx+Yeu7P7rx5jw==}
 
+  /safe-stable-stringify/2.3.1:
+    resolution: {integrity: sha512-kYBSfT+troD9cDA85VDnHZ1rpHC50O0g1e6WlGHVCz/g+JS+9WKLj+XwFYyR8UbrZN8ll9HUpDAAddY58MGisg==}
+    engines: {node: '>=10'}
+
   /safer-buffer/2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
 
@@ -16065,7 +16007,7 @@ packages:
     dependencies:
       string-width: 4.2.3
 
-  /winston-cloudwatch/3.1.1_winston@3.3.3:
+  /winston-cloudwatch/3.1.1_winston@3.5.1:
     resolution: {integrity: sha512-yvqMpgophVm9KCf+bDMNH9JAnD3QoPeoOEE3/xbCo38bT5nzm/MWW0gsxoA7F0/dB9v+3d/DQNb9//znZlOO3A==}
     peerDependencies:
       winston: ^3.0.0
@@ -16078,7 +16020,7 @@ packages:
       lodash.isempty: 4.4.0
       lodash.iserror: 3.1.1
       proxy-agent: 5.0.0
-      winston: 3.3.3
+      winston: 3.5.1
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -16091,8 +16033,8 @@ packages:
       readable-stream: 3.6.0
       triple-beam: 1.3.0
 
-  /winston/3.3.3:
-    resolution: {integrity: sha512-oEXTISQnC8VlSAKf1KYSSd7J6IWuRPQqDdo8eoRNaYKLvwSb5+79Z3Yi1lrl6KDpU6/VWaxpakDAtb1oQ4n9aw==}
+  /winston/3.4.0:
+    resolution: {integrity: sha512-FqilVj+5HKwCfIHQzMxrrd5tBIH10JTS3koFGbLVWBODjiIYq7zir08rFyBT4rrTYG/eaTqDcfSIbcjSM78YSw==}
     engines: {node: '>= 6.4.0'}
     dependencies:
       '@dabh/diagnostics': 2.0.2
@@ -16106,8 +16048,8 @@ packages:
       winston-transport: 4.4.2
     dev: false
 
-  /winston/3.4.0:
-    resolution: {integrity: sha512-FqilVj+5HKwCfIHQzMxrrd5tBIH10JTS3koFGbLVWBODjiIYq7zir08rFyBT4rrTYG/eaTqDcfSIbcjSM78YSw==}
+  /winston/3.5.1:
+    resolution: {integrity: sha512-tbRtVy+vsSSCLcZq/8nXZaOie/S2tPXPFt4be/Q3vI/WtYwm7rrwidxVw2GRa38FIXcJ1kUM6MOZ9Jmnk3F3UA==}
     engines: {node: '>= 6.4.0'}
     dependencies:
       '@dabh/diagnostics': 2.0.2
@@ -16116,6 +16058,7 @@ packages:
       logform: 2.3.2
       one-time: 1.0.0
       readable-stream: 3.6.0
+      safe-stable-stringify: 2.3.1
       stack-trace: 0.0.10
       triple-beam: 1.3.0
       winston-transport: 4.4.2
