@@ -1908,7 +1908,7 @@ importers:
       react-bootstrap-typeahead: 5.2.1
       react-dom: 17.0.2
       react-hook-form: 7.22.5
-      react-markdown: 7.1.2
+      react-markdown: 8.0.0
       react-moment: 1.1.1
       recharts: 2.1.8
       sass: 1.49.4
@@ -1948,7 +1948,7 @@ importers:
       react-bootstrap-typeahead: 5.2.1_react-dom@17.0.2+react@17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-hook-form: 7.22.5_react@17.0.2
-      react-markdown: 7.1.2_b08e3c15324cbe90a6ff8fcd416c932c
+      react-markdown: 8.0.0_b08e3c15324cbe90a6ff8fcd416c932c
       react-moment: 1.1.1_8c3aac099a456479df6de1fd023865c2
       recharts: 2.1.8_75cb922c19ee1b7939faae9b4d1f4cf7
       sass: 1.49.4
@@ -10682,14 +10682,15 @@ packages:
       - supports-color
     dev: true
 
-  /mdast-util-to-hast/11.3.0:
-    resolution: {integrity: sha512-4o3Cli3hXPmm1LhB+6rqhfsIUBjnKFlIUZvudaermXB+4/KONdd/W4saWWkC+LBLbPMqhFSSTSRgafHsT5fVJw==}
+  /mdast-util-to-hast/12.1.1:
+    resolution: {integrity: sha512-qE09zD6ylVP14jV4mjLIhDBOrpFdShHZcEsYvvKGABlr9mGbV7mTlRWdoFxL/EYSTNDiC9GZXy7y8Shgb9Dtzw==}
     dependencies:
       '@types/hast': 2.3.4
       '@types/mdast': 3.0.10
       '@types/mdurl': 1.0.2
       mdast-util-definitions: 5.1.0
       mdurl: 1.0.1
+      micromark-util-sanitize-uri: 1.0.0
       unist-builder: 3.0.0
       unist-util-generated: 2.0.0
       unist-util-position: 4.0.1
@@ -13096,8 +13097,8 @@ packages:
   /react-lifecycles-compat/3.0.4:
     resolution: {integrity: sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==}
 
-  /react-markdown/7.1.2_b08e3c15324cbe90a6ff8fcd416c932c:
-    resolution: {integrity: sha512-ibMcc0EbfmbwApqJD8AUr0yls8BSrKzIbHaUsPidQljxToCqFh34nwtu3CXNEItcVJNzpjDHrhK8A+MAh2JW3A==}
+  /react-markdown/8.0.0_b08e3c15324cbe90a6ff8fcd416c932c:
+    resolution: {integrity: sha512-qbrWpLny6Ef2xHqnYqtot948LXP+4FtC+MWIuaN1kvSnowM+r1qEeEHpSaU0TDBOisQuj+Qe6eFY15cNL3gLAw==}
     peerDependencies:
       '@types/react': '>=16'
       react: '>=16'
@@ -13112,7 +13113,7 @@ packages:
       react: 17.0.2
       react-is: 17.0.2
       remark-parse: 10.0.1
-      remark-rehype: 9.1.0
+      remark-rehype: 10.1.0
       space-separated-tokens: 2.0.1
       style-to-object: 0.3.0
       unified: 10.1.1
@@ -13512,12 +13513,12 @@ packages:
       - supports-color
     dev: true
 
-  /remark-rehype/9.1.0:
-    resolution: {integrity: sha512-oLa6YmgAYg19zb0ZrBACh40hpBLteYROaPLhBXzLgjqyHQrN+gVP9N/FJvfzuNNuzCutktkroXEZBrxAxKhh7Q==}
+  /remark-rehype/10.1.0:
+    resolution: {integrity: sha512-EFmR5zppdBp0WQeDVZ/b66CWJipB2q2VLNFMabzDSGR66Z2fQii83G5gTBbgGEnEEA0QRussvrFHxk1HWGJskw==}
     dependencies:
       '@types/hast': 2.3.4
       '@types/mdast': 3.0.10
-      mdast-util-to-hast: 11.3.0
+      mdast-util-to-hast: 12.1.1
       unified: 10.1.1
     dev: true
 
