@@ -3,10 +3,6 @@ import Head from "next/head";
 import { Row, Col, Table, Alert, Card } from "react-bootstrap";
 import Link from "next/link";
 import { Models } from "../../../utils/apiData";
-import {
-  ImportRecordPropertiesDiff,
-  ImportGroupsDiff,
-} from "../../../components/import/Diff";
 import { DurationTime } from "../../../components/DurationTime";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 import StateBadge from "../../../components/badges/StateBadge";
@@ -81,32 +77,10 @@ export default function Page(props) {
       <Card>
         <Card.Body>
           <h2>Data</h2>
-
-          <Row>
-            <Col md={6}>
-              <strong>Record Properties</strong>
-              <ImportRecordPropertiesDiff _import={_import} />
-            </Col>
-            <Col md={6}>
-              <strong>Groups</strong>
-              <ImportGroupsDiff _import={_import} groups={groups} />
-            </Col>
-          </Row>
-
-          <Row>
-            <Col md={6}>
-              <strong>Data</strong>
-              <pre>
-                <code>{JSON.stringify(_import.data, null, 4)}</code>
-              </pre>
-            </Col>
-            <Col md={6}>
-              <strong>Raw Data</strong>
-              <pre>
-                <code>{JSON.stringify(_import.rawData, null, 4)}</code>
-              </pre>
-            </Col>
-          </Row>
+          <strong>Data</strong>
+          <pre>
+            <code>{JSON.stringify(_import.data, null, 4)}</code>
+          </pre>
         </Card.Body>
       </Card>
 
@@ -120,7 +94,7 @@ export default function Page(props) {
             <strong>
               <DurationTime
                 start={_import.createdAt}
-                end={_import.processedAt}
+                end={_import.importedAt}
               />
             </strong>
           </p>
@@ -169,21 +143,6 @@ export default function Page(props) {
                   <DurationTime
                     start={_import.recordAssociatedAt}
                     end={_import.importedAt}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>Processed</td>
-                <td>
-                  {_import.processedAt
-                    ? formatTimestamp(_import.processedAt)
-                    : "pending"}
-                </td>
-                <td>
-                  ⇣
-                  <DurationTime
-                    start={_import.importedAt}
-                    end={_import.processedAt}
                   />
                 </td>
               </tr>

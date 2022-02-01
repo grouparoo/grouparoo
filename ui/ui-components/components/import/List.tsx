@@ -8,7 +8,6 @@ import Pagination from "../Pagination";
 import LoadingTable from "../LoadingTable";
 import { Models, Actions } from "../../utils/apiData";
 import { formatTimestamp } from "../../utils/formatTimestamp";
-import { ImportRecordPropertiesDiff, ImportGroupsDiff } from "./Diff";
 import StateBadge from "../badges/StateBadge";
 import { capitalize } from "../../utils/languageHelper";
 import { NextPageContext } from "next";
@@ -121,8 +120,6 @@ export default function ImportList(props) {
           <tr>
             <th>Ids</th>
             <th>Times</th>
-            <th>Record Properties</th>
-            <th>Groups</th>
             <th>Data</th>
           </tr>
         </thead>
@@ -171,16 +168,6 @@ export default function ImportList(props) {
                     {_import.importedAt
                       ? formatTimestamp(_import.importedAt)
                       : "pending"}
-                    <br /> Processed:{" "}
-                    {_import.processedAt
-                      ? formatTimestamp(_import.processedAt)
-                      : "pending"}
-                  </td>
-                  <td>
-                    <ImportRecordPropertiesDiff _import={_import} />
-                  </td>
-                  <td>
-                    <ImportGroupsDiff _import={_import} groups={groups} />
                   </td>
                   <td>
                     {Object.keys(_import.data).map((k) => (
