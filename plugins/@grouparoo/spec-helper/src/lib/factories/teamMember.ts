@@ -1,5 +1,5 @@
 import { loadPath } from "../loadPath";
-import faker from "faker";
+import faker from "@faker-js/faker";
 import TeamFactory from "./team";
 import { Team, TeamMember } from "@grouparoo/core";
 

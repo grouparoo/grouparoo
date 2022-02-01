@@ -29,8 +29,8 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
+    "@faker-js/faker": "6.0.0-alpha.5",
     "axios": "0.24.0",
-    "faker": "5.5.3",
     "fs-extra": "10.0.0",
     "nock": "13.2.2",
     "prettier": "2.5.1",
@@ -39,7 +39,6 @@
   },
   "devDependencies": {
     "@grouparoo/core": "0.8.1-alpha.0",
-    "@types/faker": "5.5.3",
     "@types/jest": "*",
     "@types/node": "16.*.*",
     "actionhero": "28.1.7",

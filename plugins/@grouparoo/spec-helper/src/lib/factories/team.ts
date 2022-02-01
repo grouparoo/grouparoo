@@ -1,5 +1,5 @@
 import { loadPath } from "../loadPath";
-import faker from "faker";
+import faker from "@faker-js/faker";
 import { Team } from "@grouparoo/core";
 
 const data = async (props = {}) => {
