@@ -904,6 +904,7 @@ export namespace DestinationOps {
   }
 
   async function cancelOldExport(oldExport: Export, newExport: Export) {
+    console.info(`canceling ${oldExport.id}`);
     await oldExport.update({
       state: "canceled",
       sendAt: null,
