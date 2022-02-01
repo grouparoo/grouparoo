@@ -16,7 +16,7 @@ const ManagedCard: React.FC<Props> = ({
   disabled,
   border,
   children,
-  loading
+  loading,
 }) => {
   const slugTitle = title.toLowerCase().replace(/ /, "-");
   return (
@@ -25,7 +25,10 @@ const ManagedCard: React.FC<Props> = ({
         <Row>
           <Col>
             <h5 id={slugTitle} className="my-1">
-              {title} {loading && <Loader style={{verticalAlign: "inherit"}} size="sm" />}
+              {title}{" "}
+              {loading && (
+                <Loader style={{ verticalAlign: "inherit" }} size="sm" />
+              )}
             </h5>
           </Col>
           {actions && (
