@@ -8,6 +8,7 @@ import { ConfigWriter } from "@grouparoo/core/dist/modules/configWriter";
 
 const workerId = process.env.JEST_WORKER_ID || 1;
 export const usersTableName = `USERS - '${workerId}'`;
+export const usersByEmailTableName = `USERS BY EMAIL - '${workerId}'`;
 export const usersTableSlug = ConfigWriter.generateId(usersTableName);
 export const purchasesTableName = `Purchases - '${workerId}'`;
 export const recordsDestinationTableName = `OUTPUT_USERS - '${workerId}'`;
@@ -28,6 +29,13 @@ CREATE TABLE "${usersTableName}" (
   "ltv" float,
   "date" date,
   "stamp" datetime
+)
+`,
+  [usersByEmailTableName]: `
+CREATE TABLE "${usersByEmailTableName}" (
+  "email" text PRIMARY KEY,
+  "first_name" text,
+  "last_name" text
 )
 `,
   [purchasesTableName]: `

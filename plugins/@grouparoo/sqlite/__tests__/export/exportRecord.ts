@@ -8,13 +8,20 @@ import {
   Destination,
   DestinationSyncModeData,
 } from "@grouparoo/core/dist/models/Destination";
-import { afterData, beforeData, getConfig } from "../utils/data";
+import {
+  afterData,
+  beforeData,
+  getConfig,
+  usersByEmailTableName,
+} from "../utils/data";
 import { helper } from "@grouparoo/spec-helper";
 import { App } from "@grouparoo/core";
+import SQLiteQueryBuilder from "../../src/lib/queryBuilder";
+import { SQLiteConnection } from "../../src/lib/sqlite";
 
 let app: App;
 let destination: Destination;
-let client: any;
+let client: SQLiteConnection;
 let user: any;
 const ipAddress = "127.0.0.1";
 const newIpAddress = "127.0.0.2";
@@ -47,9 +54,16 @@ const ltv = 3039;
 
 const { appOptions, usersTableName, groupsDestinationTableName } = getConfig();
 
-async function getUser(userId) {
+async function getRecordFromTable(
+  tableName: string,
+  primaryColumn: string,
+  value: number | string
+) {
   const result = await client.asyncQuery(
-    `SELECT * FROM "${usersTableName}" WHERE "id" = ${userId}`
+    ...SQLiteQueryBuilder.build(
+      `SELECT * FROM "${tableName}" WHERE "${primaryColumn}" = ?`,
+      [value]
+    )
   );
   if (result.length > 0) {
     return result[0];
@@ -57,11 +71,18 @@ async function getUser(userId) {
   return null;
 }
 
+const getUser = (userId) => getRecordFromTable(usersTableName, "id", userId);
+const getUserByEmail = (email) =>
+  getRecordFromTable(usersByEmailTableName, "email", email);
+
 async function getUserGroups(userId) {
   let { groupsTable, groupForeignKey, groupColumnName } =
     await destination.parameterizedOptions();
   const result = await client.asyncQuery(
-    `SELECT "${groupColumnName}" FROM "${groupsTable}" WHERE ${groupForeignKey} = ${userId}`
+    ...SQLiteQueryBuilder.build(
+      `SELECT "${groupColumnName}" FROM "${groupsTable}" WHERE ${groupForeignKey} = ?`,
+      [userId]
+    )
   );
   return result.map((groupEntry) => Object.values(groupEntry)[0]);
 }
@@ -73,13 +94,14 @@ async function runExport({
   oldGroups,
   newGroups,
   toDelete,
+  toDestination = destination,
 }) {
   return exportRecord({
     appOptions,
     appId: app.id,
     connection: client,
     app: app,
-    destination,
+    destination: toDestination,
     destinationId: null,
     destinationOptions: null,
     syncOperations,
@@ -580,5 +602,40 @@ describe("sqlite/exportRecord", () => {
     });
     const user = await getUser(nonexistentId);
     expect(user).toBe(null);
+  });
+
+  describe("with destination that has string column as primary key", () => {
+    let emailDestination: Destination;
+
+    beforeAll(async () => {
+      emailDestination = await helper.factories.destination(app, {
+        type: "sqlite-export-records",
+        options: {
+          table: usersByEmailTableName,
+          primaryKey: "email",
+          groupsTable: groupsDestinationTableName,
+          groupForeignKey: "userId",
+          groupColumnName: "group",
+        },
+      });
+    });
+
+    test("can create record on sqlite destination", async () => {
+      user = await getUserByEmail(email);
+      expect(user).toBe(null);
+
+      await runExport({
+        oldRecordProperties: {},
+        newRecordProperties: { email, first_name: firstName },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+        toDestination: emailDestination,
+      });
+      user = await getUserByEmail(email);
+      expect(user).not.toBe(null);
+      expect(user["email"]).toBe(email);
+      expect(user["first_name"]).toBe(firstName);
+    });
   });
 });
