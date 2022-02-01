@@ -197,6 +197,7 @@ describe("tasks/record:export", () => {
         await ImportWorkflow();
 
         await records[0].reload();
+        expect(records[0].state).toBe("exporting");
         const properties = await records[0].simplifiedProperties();
         expect(properties.email).toEqual(["mario@example.com"]);
         expect(properties.firstName).toEqual(["Super"]);
@@ -235,6 +236,9 @@ describe("tasks/record:export", () => {
         await importB.reload();
         expect(importA.state).toBe("complete");
         expect(importB.state).toBe("complete");
+
+        await records[0].reload();
+        expect(records[0].state).toBe("ready");
       });
 
       test("it will append destinationIds from imports", async () => {
