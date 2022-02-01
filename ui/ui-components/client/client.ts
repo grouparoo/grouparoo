@@ -25,13 +25,9 @@ interface ClientCacheGetObject<T = unknown> {
 }
 
 export class ClientCache {
-  cache: { [key: string]: ClientCacheObject };
-  ttl: number;
+  cache: { [key: string]: ClientCacheObject } = {};
 
-  constructor(ttl = 5000) {
-    this.ttl = ttl;
-    this.cache = {};
-  }
+  constructor(private ttl = 5000) {}
 
   async sleep(wait = 100) {
     return new Promise((resolve) => {

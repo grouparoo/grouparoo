@@ -10,15 +10,13 @@ import { Actions, Models } from "@grouparoo/ui-components/utils/apiData";
 import LoadingButton from "@grouparoo/ui-components/components/LoadingButton";
 import AddSampleRecordModal from "@grouparoo/ui-components/components/record/AddSampleRecordModal";
 import { useApi } from "@grouparoo/ui-components/contexts/api";
+import { NextPageContext } from "next";
+import { useGrouparooModel } from "@grouparoo/ui-components/contexts/grouparooModel";
 
-export default function Page(props) {
-  const {
-    modelId,
-    properties,
-  }: {
-    modelId: string;
-    properties: Models.PropertyType[];
-  } = props;
+export default function Page(
+  props: Awaited<ReturnType<typeof RecordsPage.getInitialProps>>
+) {
+  const { model } = useGrouparooModel();
   const router = useRouter();
   const { client } = useApi();
 
@@ -31,7 +29,7 @@ export default function Page(props) {
     successHandler.set({ message: "Importing Records..." });
     const response: Actions.RecordsImport = await client.request(
       "post",
-      `/records/${modelId}/import`
+      `/records/${model.id}/import`
     );
     if (response) {
       recordsHandler.publish(
@@ -65,8 +63,8 @@ export default function Page(props) {
         Import All Records
       </LoadingButton>
       <AddSampleRecordModal
-        modelId={modelId}
-        properties={properties}
+        modelId={model.id}
+        properties={props.properties}
         show={addingRecord}
         onRecordCreated={() => {
           setReloading(true);
@@ -80,6 +78,6 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  return RecordsPage.getInitialProps(ctx);
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  return await RecordsPage.getInitialProps(ctx);
 };
