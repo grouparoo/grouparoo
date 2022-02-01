@@ -218,7 +218,7 @@ describe("actions/records", () => {
       );
 
       // Run the import task
-      await RecordOps.makeReady();
+      await RecordOps.makeExports();
 
       connection.params = {
         csrfToken,
@@ -288,7 +288,7 @@ describe("actions/records", () => {
         }
       );
 
-      await RecordOps.makeReady();
+      await RecordOps.makeExports();
 
       ({ records: invalidRecords, total: invalidTotal } =
         await specHelper.runAction<RecordsList>("records:list", connection));
