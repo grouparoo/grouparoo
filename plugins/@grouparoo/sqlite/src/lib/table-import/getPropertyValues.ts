@@ -8,6 +8,7 @@ import {
 } from "@grouparoo/app-templates/dist/source/table";
 import SQLiteQueryBuilder from "../queryBuilder";
 import { SQLiteConnection } from "../sqlite";
+import { buildKeyList } from "../util";
 
 export const getPropertyValues: GetPropertyValuesMethod<
   SQLiteConnection
@@ -76,7 +77,7 @@ export const getPropertyValues: GetPropertyValuesMethod<
     queryBuilder.push(`${columnList}`, undefined, { prependComma: true });
     if (!isArray && orderBys.length > 0) {
       // Note: windowing (ROW_NUMBER) only in SQLite >= 3.25.0 released 2018-09-15
-      const order = `ORDER BY ${orderBys.join(", ")}`;
+      const order = `ORDER BY ${orderBys}`;
       queryBuilder.push(
         `ROW_NUMBER() OVER (PARTITION BY "${tablePrimaryKeyCol}" ${order}) AS __rownum`,
         undefined,
@@ -109,10 +110,10 @@ export const getPropertyValues: GetPropertyValuesMethod<
   addAnd = true;
 
   if (groupByColumns.length > 0) {
-    queryBuilder.push(`GROUP BY ${groupByColumns}`);
+    queryBuilder.push(`GROUP BY ${buildKeyList(groupByColumns)}`);
   }
   if (!ranked && orderBys.length > 0) {
-    queryBuilder.push(`ORDER BY ${orderBys.join(", ")}`);
+    queryBuilder.push(`ORDER BY ${orderBys}}`);
   }
 
   let [query, params] = queryBuilder.build();

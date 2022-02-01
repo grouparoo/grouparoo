@@ -17,7 +17,7 @@ export const getRows: GetRowsMethod<SQLiteConnection> = async ({
 }) => {
   // Begin with SELECT statement.
   const queryBuilder = new SQLiteQueryBuilder(
-    `SELECT *, ${highWaterMarkAndSortColumnASC} AS ${highWaterMarkKey} FROM "${tableName}"`
+    `SELECT *, "${highWaterMarkAndSortColumnASC}" AS "${highWaterMarkKey}" FROM "${tableName}"`
   );
 
   // Add WHERE clause, if there is a condition for the HWM.
@@ -34,7 +34,7 @@ export const getRows: GetRowsMethod<SQLiteConnection> = async ({
 
   // Add ORDER, LIMIT, and OFFSET clauses.
   queryBuilder.push(
-    `ORDER BY ${highWaterMarkAndSortColumnASC} ASC, ${secondarySortColumnASC} ASC LIMIT ${limit} OFFSET ${sourceOffset}`
+    `ORDER BY "${highWaterMarkAndSortColumnASC}" ASC, "${secondarySortColumnASC}" ASC LIMIT ${limit} OFFSET ${sourceOffset}`
   );
 
   // Run the query and return the result.
