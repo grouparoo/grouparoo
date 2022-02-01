@@ -81,16 +81,6 @@ GrouparooNextApp.getInitialProps = async (appContext: AppContext) => {
   try {
     let model: Models.GrouparooModelType | null = null;
 
-    const promises: Promise<any>[] = [
-      client.request<Actions.NavigationList>("get", `/navigation`),
-    ];
-
-    if (modelId) {
-      promises.push(
-        client.request<Actions.ModelView>("get", `/model/${modelId}`)
-      );
-    }
-
     const [navigationResponse, modelResponse] = await Promise.all([
       client.request<Actions.NavigationList>("get", `/navigation`),
       modelId
