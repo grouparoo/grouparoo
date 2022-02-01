@@ -36,7 +36,6 @@ const Page: NextPage<Props> = ({
   destinations,
 }) => {
   const { model } = useGrouparooModel();
-
   const sources = useMemo(() => {
     const result = [...secondarySources];
     if (primarySource) {

@@ -141,8 +141,11 @@ const Page: NextPage<Props> = ({
 
   useEffect(() => {
     loadPreview(source.previewAvailable);
+  }, [loadPreview, source.previewAvailable]);
+
+  useEffect(() => {
     loadOptions();
-  }, [loadOptions, loadPreview, source.previewAvailable]);
+  }, [loadOptions]);
 
   const onSubmit: SubmitHandler<FormData> = async (data, event) => {
     event.preventDefault();
@@ -220,6 +223,7 @@ const Page: NextPage<Props> = ({
         );
       }
 
+      successHandler.set({ message: "Source saved" });
       // this source can have a schedule, and we have no schedules yet
       if (scheduleCount === 0 && response.source.scheduleAvailable) {
         const createdScheduleAndRedirected = await createSchedule({
@@ -239,8 +243,6 @@ const Page: NextPage<Props> = ({
           "/model/[modelId]/source/[sourceId]/overview",
           `/model/${response.source.modelId}/source/${sourceId}/overview`
         );
-      } else {
-        successHandler.set({ message: "Source updated" });
       }
     }
 
@@ -296,12 +298,16 @@ const Page: NextPage<Props> = ({
   };
 
   // not every row returned is guaranteed to have the same columns
-  const previewColumns = preview
-    .map((row) => Object.keys(row))
-    .reduce((acc, val) => acc.concat(val), [])
-    .filter((value, index, self) => {
-      return self.indexOf(value) === index;
-    });
+  const previewColumns = useMemo(
+    () =>
+      preview
+        .map((row) => Object.keys(row))
+        .reduce((acc, val) => acc.concat(val), [])
+        .filter((value, index, self) => {
+          return self.indexOf(value) === index;
+        }),
+    [preview]
+  );
 
   return (
     <>
@@ -329,9 +335,8 @@ const Page: NextPage<Props> = ({
                   type="text"
                   placeholder="Source Name"
                   defaultValue={source.name}
-                  onChange={(e) => update(e)}
                   name="source.name"
-                  {...register("source.name")}
+                  {...register("source.name", { onChange: (e) => update(e) })}
                 />
                 <Form.Control.Feedback type="invalid">
                   Name is required
@@ -377,9 +382,6 @@ const Page: NextPage<Props> = ({
                               id="typeahead"
                               labelKey="key"
                               disabled={loading || loadingOptions}
-                              onChange={(selected) => {
-                                updateOption(opt.key, selected[0]?.key);
-                              }}
                               options={connectionOptions[opt.key]?.options.map(
                                 (k, idx) => {
                                   return {
@@ -416,8 +418,11 @@ const Page: NextPage<Props> = ({
                                   ? [source.options[opt.key]]
                                   : undefined
                               }
-                              name={`source.options.${opt.key}`}
-                              ref={register}
+                              {...register(`source.options.${opt.key}`, {
+                                onChange: (selected) => {
+                                  updateOption(opt.key, selected[0]?.key);
+                                },
+                              })}
                             />
                             <Form.Text className="text-muted">
                               {opt.description}
@@ -434,14 +439,14 @@ const Page: NextPage<Props> = ({
                               defaultValue={
                                 source.options[opt.key]?.toString() || ""
                               }
-                              onChange={(e) =>
-                                updateOption(
-                                  e.target.id.replace("_opt~", ""),
-                                  e.target.value
-                                )
-                              }
                               name={`source.options.${opt.key}`}
-                              {...register(`source.options.${opt.key}`)}
+                              {...register(`source.options.${opt.key}`, {
+                                onChange: (e) =>
+                                  updateOption(
+                                    e.target.id.replace("_opt~", ""),
+                                    e.target.value
+                                  ),
+                              })}
                             >
                               <option value={""} disabled>
                                 Select an option
@@ -494,14 +499,14 @@ const Page: NextPage<Props> = ({
                               disabled={loading || loadingOptions}
                               defaultValue={source.options[opt.key]?.toString()}
                               placeholder={opt.placeholder}
-                              onChange={(e) =>
-                                updateOption(
-                                  e.target.id.replace("_opt~", ""),
-                                  e.target.value
-                                )
-                              }
                               name={`source.options.${opt.key}`}
-                              {...register(`source.options.${opt.key}`)}
+                              {...register(`source.options.${opt.key}`, {
+                                onChange: (e) =>
+                                  updateOption(
+                                    e.target.id.replace("_opt~", ""),
+                                    e.target.value
+                                  ),
+                              })}
                             />
                             <Form.Text className="text-muted">
                               {opt.description}

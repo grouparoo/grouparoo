@@ -122,11 +122,11 @@ const FormMappingSelector: React.FC<Props> = ({
             required
             disabled={disabled || !previewColumns.length}
             value={selectedColumn}
-            onChange={(e) => {
-              setSelectedColumn(e.target.value);
-            }}
-            name="mapping.sourceColumn"
-            {...register("mapping_source_column")}
+            {...register("mapping.sourceColumn", {
+              onChange: (e) => {
+                setSelectedColumn(e.target.value);
+              },
+            })}
           >
             <option value={""} disabled>
               Select an option
@@ -152,17 +152,16 @@ const FormMappingSelector: React.FC<Props> = ({
                 as="select"
                 required
                 disabled={disabled}
-                defaultValue={""}
                 value={selectedProperty?.key}
-                onChange={(e) => {
-                  setSelectedProperty(
-                    availableProperties.find(
-                      ({ key }) => key === e.target.value
-                    )
-                  );
-                }}
-                name="mapping.propertyKey"
-                {...register("mapping_property")}
+                {...register("mapping.propertyKey", {
+                  onChange: (e) => {
+                    setSelectedProperty(
+                      availableProperties.find(
+                        ({ key }) => key === e.target.value
+                      )
+                    );
+                  },
+                })}
               >
                 <option value={""} disabled>
                   Select an option

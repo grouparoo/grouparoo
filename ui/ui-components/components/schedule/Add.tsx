@@ -1,13 +1,16 @@
 import { useState } from "react";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import LoadingButton from "../LoadingButton";
 import { Actions, Models } from "../../utils/apiData";
 import StateBadge from "../badges/StateBadge";
-import { errorHandler } from "../../eventHandlers";
 import { useApi } from "../../contexts/api";
+import { Client } from "../../client/client";
 
-export default function AddScheduleForm(props) {
-  const { source }: { source: Models.SourceType } = props;
+export default function AddScheduleForm({
+  source,
+}: {
+  source: Models.SourceType;
+}) {
   const { client } = useApi();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -37,15 +40,24 @@ export default function AddScheduleForm(props) {
   );
 }
 
-// TODO: Revisit this, pattern is suspicious.
-export async function createSchedule({ client, router, source, setLoading }) {
+export async function createSchedule({
+  client,
+  router,
+  source,
+  setLoading,
+}: {
+  client: Client;
+  router: NextRouter;
+  source: Models.SourceType;
+  setLoading: (loading: boolean) => void;
+}) {
   const data = {
     sourceId: source.id,
     recurring: true,
   };
 
   setLoading(true);
-  const response: Actions.ScheduleCreate = await client.action(
+  const response: Actions.ScheduleCreate = await client.request(
     "post",
     `/schedule`,
     data
