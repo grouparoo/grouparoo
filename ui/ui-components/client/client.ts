@@ -5,13 +5,14 @@ import Axios, {
   Method,
 } from "axios";
 import type { IncomingMessage, ServerResponse } from "http";
-
 import PackageJSON from "../package.json";
 import { errorHandler } from "../eventHandlers";
 import type { AppContext } from "next/app";
 import type { GetServerSidePropsContext, NextPageContext } from "next";
 import { getRequestContext } from "../utils/appContext";
+import type { NextContextType } from "../utils/appContext";
 import type { ErrorHandler } from "../eventHandlers/errorHandler";
+import { isBrowser } from "../utils/isBrowser";
 
 interface ClientCacheObject<T = any> {
   locked: boolean;
@@ -101,10 +102,63 @@ export class Client {
 
   constructor(
     private getRequestContext: () => {
+      type?: NextContextType;
       req?: IncomingMessage;
       res?: ServerResponse;
     } = () => ({})
   ) {}
+
+  private checkForLoggedIn({ code }: { code: string }) {
+    if (isBrowser()) {
+      switch (code) {
+        case "AUTHENTICATION_ERROR":
+          if (window.location.pathname !== "/session/sign-in") {
+            window.location.href = `/session/sign-in?nextPage=${window.location.pathname}`;
+          }
+          return;
+
+        case "NO_TEAMS_ERROR":
+          window.location.href = `/`;
+          return;
+
+        case "AUTHORIZATION_ERROR":
+        default:
+          // ok, it will be rendered on the page
+          return;
+      }
+    }
+
+    const { type, req, res } = this.getRequestContext();
+    if (!req || !res || (type !== "AppContext" && type !== "NextPageContext")) {
+      return;
+    }
+
+    switch (code) {
+      case "AUTHENTICATION_ERROR": {
+        const requestPath = req.url.match("^[^?]*")[0];
+        res.writeHead(302, {
+          Location: `/session/sign-in?nextPage=${requestPath}`,
+        });
+        res.end();
+        return;
+      }
+
+      case "NO_TEAMS_ERROR": {
+        const requestPath = req.url.match("^[^?]*")[0];
+        res.writeHead(302, {
+          Location: `/session/sign-in?nextPage=${requestPath}`,
+        });
+        res.end();
+        return;
+      }
+
+      case "AUTHORIZATION_ERROR":
+
+      default:
+        // ok, it will be rendered on the page
+        return;
+    }
+  }
 
   private csrfToken = () => {
     if (globalThis?.localStorage) {
@@ -137,6 +191,8 @@ export class Client {
       }
 
       if (error.response && error.response.data && error.response.data.error) {
+        this.checkForLoggedIn(error.response.data.error);
+
         const err =
           error.response?.data?.error?.message ??
           error.response?.data?.error ??
