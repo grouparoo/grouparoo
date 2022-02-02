@@ -19,16 +19,10 @@ import { grouparooUiEdition } from "../../../utils/uiEdition";
 import { NextPageContext } from "next";
 import { generateClient } from "../../../client/client";
 
-export default function Page(props) {
-  const {
-    environmentVariableOptions,
-    options,
-    pluginOptions,
-  }: {
-    environmentVariableOptions: Actions.AppOptions["environmentVariableOptions"];
-    options: Actions.AppOptions["options"];
-    pluginOptions: Actions.AppOptions["pluginOptions"];
-  } = props;
+export default function Page(
+  props: Awaited<ReturnType<typeof Page.getInitialProps>>
+) {
+  const { environmentVariableOptions, options, pluginOptions } = props;
   const router = useRouter();
   const { client } = useApi();
   const [app, setApp] = useState<Models.AppType>(props.app);
@@ -96,6 +90,7 @@ export default function Page(props) {
   }, [loadOAuthRequest, oAuthPopup]);
 
   async function edit(appData: Models.AppType) {
+    console.log(appData);
     const state = app.state === "ready" ? undefined : "ready";
     setLoading(true);
     const response: Actions.AppEdit = await client.request(
@@ -505,7 +500,7 @@ export default function Page(props) {
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { id } = ctx.query;
   const client = generateClient(ctx);
-  const { app } = await client.request("get", `/app/${id}`);
+  const { app } = await client.request<Actions.AppView>("get", `/app/${id}`);
   const {
     options,
     pluginOptions,
