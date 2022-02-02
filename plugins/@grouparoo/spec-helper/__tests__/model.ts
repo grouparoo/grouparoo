@@ -1,21 +1,15 @@
 import { helper } from "../src";
-import { Log } from "@grouparoo/core";
+import { GrouparooRecord } from "@grouparoo/core";
 
 describe("model/log", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
-  test("the Log model works", async () => {
-    const log = await Log.create({
-      topic: "test",
-      verb: "create",
-      data: {},
-      ownerId: "test",
-      message: "log test message",
-    });
+  test("the GrouparooRecord model works", async () => {
+    const record = await helper.factories.record();
 
-    const count = await Log.count();
-    expect(count).toBeGreaterThan(0);
+    const count = await GrouparooRecord.count();
+    expect(count).toBe(1);
 
-    await log.destroy();
+    await record.destroy();
   });
 });
