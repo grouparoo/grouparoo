@@ -21,16 +21,16 @@ async function ensureGroupField(
 
   // see if it's already there
   let closeioFieldMap = await getAllFields(client, type, cacheData);
-  let fieldKey = closeioFieldMap[fieldName];
+  let fieldKey = closeioFieldMap.find((field) => field.key === fieldName);
   if (fieldKey) {
-    return fieldKey;
+    return fieldKey.closeioKey;
   }
 
   // maybe it's just not cached yet
   closeioFieldMap = await getAllFields(client, type, cacheData, true);
-  fieldKey = closeioFieldMap[fieldName];
+  fieldKey = closeioFieldMap.find((field) => field.key === fieldName);
   if (fieldKey) {
-    return fieldKey;
+    return fieldKey.closeioKey;
   }
 
   // need to create it

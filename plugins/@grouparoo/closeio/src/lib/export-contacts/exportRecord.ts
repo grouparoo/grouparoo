@@ -62,6 +62,14 @@ const handleContactChanges: ExportRecordPluginMethod = async ({
     return { success: true };
   }
 
+  if (
+    foundId &&
+    oldName == newName &&
+    oldRecordProperties["Lead"] !== newRecordProperties["Lead"]
+  ) {
+    throw new Errors.InfoError("Can not change the lead once it is set.");
+  }
+
   const payload = await makePayload(
     client,
     "contact",
@@ -73,22 +81,26 @@ const handleContactChanges: ExportRecordPluginMethod = async ({
   );
 
   if (payload["lead_id"]) {
-    const leadName = payload["lead_id"];
-
-    const leadId = await client.findLeadIdByName(leadName);
-    if (leadId) {
-      payload["lead_id"] = leadId;
+    if (foundId) {
+      payload["lead_id"] = undefined;
     } else {
-      if (!syncOperations.create) {
-        throw new Errors.InfoError(
-          "Destination sync mode does not create new records."
-        );
-      }
+      const leadName = payload["lead_id"];
 
-      const lead = await client.closeio.lead.create({
-        name: leadName,
-      });
-      payload["lead_id"] = lead.id;
+      const leadId = await client.findLeadIdByName(leadName);
+      if (leadId) {
+        payload["lead_id"] = leadId;
+      } else {
+        if (!syncOperations.create) {
+          throw new Errors.InfoError(
+            "Destination sync mode does not create new records."
+          );
+        }
+
+        const lead = await client.closeio.lead.create({
+          name: leadName,
+        });
+        payload["lead_id"] = lead.id;
+      }
     }
   }
 

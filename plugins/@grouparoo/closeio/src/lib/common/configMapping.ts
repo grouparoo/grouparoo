@@ -22,42 +22,34 @@ export const configMapping = {
         closeioKey: "description",
       },
       {
-        key: "Status Label",
-        closeioKey: "status_label",
-      },
-      {
-        key: "Display Name",
-        closeioKey: "display_name",
-      },
-      {
         key: "Address Label",
-        closeioKey: "addresse[0].label",
+        closeioKey: "addresses[0].label",
       },
       {
         key: "Address Line 1",
-        closeioKey: "addresse[0].address_1",
+        closeioKey: "addresses[0].address_1",
       },
       {
         key: "Address Line 2",
-        closeioKey: "addresse[0].address_2",
+        closeioKey: "addresses[0].address_2",
       },
       {
         key: "City",
-        closeioKey: "addresse[0].city",
+        closeioKey: "addresses[0].city",
         important: true,
       },
       {
         key: "State",
-        closeioKey: "addresse[0].state",
+        closeioKey: "addresses[0].state",
         important: true,
       },
       {
         key: "Zip Code",
-        closeioKey: "addresse[0].zipcode",
+        closeioKey: "addresses[0].zipcode",
       },
       {
         key: "Country",
-        closeioKey: "addresse[0].country",
+        closeioKey: "addresses[0].country",
       },
     ],
   },
@@ -81,10 +73,6 @@ export const configMapping = {
       {
         key: "Title",
         closeioKey: "title",
-      },
-      {
-        key: "Display Name",
-        closeioKey: "display_name",
       },
       {
         key: "URL",

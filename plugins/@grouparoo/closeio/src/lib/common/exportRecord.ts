@@ -15,8 +15,6 @@ export const getExportRecordWithErrorHandling: (
   try {
     return await callback(args);
   } catch (error) {
-    console.log(error);
-
     if (error?.response?.status === 429) {
       // look for the rate limit exceeded status code.
       const retryIn = Math.floor(Math.random() * 10) + 1;
@@ -70,6 +68,18 @@ export const makePayload = async (
     ...dot.object(knownFieldsData),
     ...customFieldsData,
   };
+
+  for (const [key, value] of Object.entries(payload)) {
+    if (Array.isArray(value)) {
+      payload[key] = value
+        .map((item) => {
+          return Object.fromEntries(
+            Object.entries(item).filter(([key01, value1]) => value1 !== null)
+          );
+        })
+        .filter((item) => Object.keys(item).length > 0);
+    }
+  }
 
   // Set group fields
   for (const group of newGroups) {
