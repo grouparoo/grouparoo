@@ -3,7 +3,7 @@ import fs from "fs-extra";
 import path from "path";
 import { tmpdir } from "os";
 import { SimpleSourceOptions } from "@grouparoo/core";
-import Spreadsheet from "./Spreadsheet";
+import Spreadsheet from "../shared/Spreadsheet";
 import csvWriter from "csv-write-stream";
 import * as uuid from "uuid";
 

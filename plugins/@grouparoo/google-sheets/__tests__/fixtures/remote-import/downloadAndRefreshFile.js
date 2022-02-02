@@ -1,5 +1,5 @@
 const nock = require("nock");
-process.env.GOOGLE_SHEETS_JEST_TIMESTAMP = "1643140882022";
+process.env.GOOGLE_SHEETS_JEST_TIMESTAMP = "1643812846149";
 
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
   .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
@@ -18,7 +18,9 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "02",
       "ff",
       "ed",
-      "d4417282300000c0bfe4ac8e2150486f05a310348275d4e19209185b4005420a4aa77fafd36bbfe03e62bf81c832d9b65c57a5bc82577017069e649374fa76e8a6c396616e042ce23b1376ef468ac5784f86fed4ce6e0e2b9aa5f2af66b33f138acfee22201d13aa190c6a1dd7d3c88fdc6c9b49487425239c7f791e0c821c85feba5e3866e204d0402c452f655a6e5a648fef7d52d2a5feb47da66f971591ccdaf903241b568b9d1247b7490f5e48438f767e515ce8c93c54cc3969967c940ae6de700951656a62afcee38dcdd3c112c764eef2a2af0d54c671338733a5da95cee93cee274f4f4fff801190b73a57b2e5f9e30364613c027f39707dafe56308570a2515f8f90516065f6e3b040000",
+      "d4",
+      "41",
+      "7282301400d0bb64ad0e1604d25d5088082a568c910d83992f0a0a1850d04eef5ea7db5ec17788f78d1221a0aee3a6cca1409fe8917ce08118ec15c2efca330cee4b9318b5795c455d10956c7e65ad2ac3f36173c164e18c3de7ae5a311fca5d5eb2aaa5f90a9c5ddfbdaa9acccc2d105b67fed63fce66fb891ef94cf15609641c6f94b46f989da46b3ab9f2beec169ea594b425629a7c6c1dcf2a826ce9c024b7e8790aead7d2088c225ce03a4cd999d499b0dc6a941e8e3c560ff388f9b7e71a5f0a3b6cd7aea868a1e986ddf824753383ba81aedd2a610fc73cc5606a823f1b3fde0cdededefe413d045d759250c7a7d707ea08e31efacb216e1e15bc86b0209120d1cf2ffdf338783b040000",
     ],
     [
       "Content-Type",
@@ -32,7 +34,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 25 Jan 2022 20:01:22 GMT",
+      "Wed, 02 Feb 2022 14:40:48 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -211,7 +213,7 @@ nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
       "Vary",
       "Referer",
       "Date",
-      "Tue, 25 Jan 2022 20:01:22 GMT",
+      "Wed, 02 Feb 2022 14:40:48 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -267,7 +269,63 @@ nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
       "Vary",
       "Referer",
       "Date",
-      "Tue, 25 Jan 2022 20:01:23 GMT",
+      "Wed, 02 Feb 2022 14:40:49 GMT",
+      "Server",
+      "ESF",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Accept-Ranges",
+      "none",
+      "Vary",
+      "Origin,Accept-Encoding",
+      "Connection",
+      "close",
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
+  .get(
+    "/v4/spreadsheets/11zccS101c27B9mYLMJiaAPfDgoj2chOq39n3MZrcKTk/values/%27profiles-10.csv%27!A1:Z1"
+  )
+  .once()
+  .reply(
+    200,
+    {
+      range: "'profiles-10.csv'!A1:Z1",
+      majorDimension: "ROWS",
+      values: [
+        [
+          "id",
+          "first_name",
+          "last_name",
+          "email",
+          "gender",
+          "ip_address",
+          "ios_app",
+          "android_app",
+          "vip",
+          "ltv",
+        ],
+      ],
+    },
+    [
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Date",
+      "Wed, 02 Feb 2022 14:40:49 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -431,7 +489,7 @@ nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
       "Vary",
       "Referer",
       "Date",
-      "Tue, 25 Jan 2022 20:01:23 GMT",
+      "Wed, 02 Feb 2022 14:40:50 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -468,7 +526,10 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "02ffedd44b7282300000d0bb64ad4cc4a648777cd4967f052cb86102a61484000928d0e9ddeb74db2bf80ef1be01ce32c279d2371742c10b98b0280b99904225bac23970b4787015c24c5ddbc6cd9c1e50cef49d4af9c4cb1d8e78f0ce0c281d6c4ae93c543d46135a6d9ad5974750abf78139a0da498b9698cfb37b5c2ad692d97186ba57fcd4d50862e9adf25767353020b3a88262c74f0bbffc4c83a198246855e156941a720aa1662cabbe4c6257e6a95f6ba115599753874b68a0db15da639b7b65ac1a95581f31dc74d4c317f6e1e8d7355d6bb91778276fcfe06d3ee76355ec7bd5e0c2c3c3c33f6001c8d8168cf0a4b87fb046b2bc007f3924fdd492fb102ac18c30f0f30bd18d08063b040000",
+      "02",
+      "ff",
+      "ed",
+      "d44b7282300000d0bb642d0e8aa074a712455422a015d864428856d11020f2b1d3bbd7e9b657f01de27d034229ab2a2cf38c71f0013a3234fbb49fa8d3b0569f7b64c0c2bd8c7d5d1cd03a419b3aaa33bab2fcdd9e9c60c21756baed14f376751337e793b35ec37630524b4b9fc468ae6387054dfc68f4b4a95dff73291d8576f3abad345f4f8f2cc333643651d9bd9510e1a849499b228389e288bd3baed87106473b0195d2d0b64ab78f7890c94284c110da67698e1d82b7697b901a8f6f5638ae8a65483d0a634db38737ee3d26dd22cb9cd966f014468e94f52a1fb43c72d551709a1ffa6f6f6fff801e60adb894acc297d7079a6e9a3df09703969d60af21668c94ac043fbf7db53d693b040000",
     ],
     [
       "Content-Type",
@@ -482,7 +543,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 25 Jan 2022 20:01:23 GMT",
+      "Wed, 02 Feb 2022 14:40:50 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -661,7 +722,7 @@ nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
       "Vary",
       "Referer",
       "Date",
-      "Tue, 25 Jan 2022 20:01:24 GMT",
+      "Wed, 02 Feb 2022 14:40:51 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -704,7 +765,50 @@ nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
       "Vary",
       "Referer",
       "Date",
-      "Tue, 25 Jan 2022 20:01:24 GMT",
+      "Wed, 02 Feb 2022 14:40:51 GMT",
+      "Server",
+      "ESF",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Accept-Ranges",
+      "none",
+      "Vary",
+      "Origin,Accept-Encoding",
+      "Connection",
+      "close",
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
+  .get(
+    "/v4/spreadsheets/11zccS101c27B9mYLMJiaAPfDgoj2chOq39n3MZrcKTk/values/%27food.csv%27!A1:Z1"
+  )
+  .once()
+  .reply(
+    200,
+    {
+      range: "food.csv!A1:Z1",
+      majorDimension: "ROWS",
+      values: [["id", "fruit", "vegetable"]],
+    },
+    [
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Date",
+      "Wed, 02 Feb 2022 14:40:52 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -758,7 +862,7 @@ nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
       "Vary",
       "Referer",
       "Date",
-      "Tue, 25 Jan 2022 20:01:24 GMT",
+      "Wed, 02 Feb 2022 14:40:52 GMT",
       "Server",
       "ESF",
       "Cache-Control",

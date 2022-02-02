@@ -827,6 +827,7 @@ importers:
 
   plugins/@grouparoo/google-sheets:
     specifiers:
+      '@grouparoo/app-templates': 0.8.1-alpha.0
       '@grouparoo/core': 0.8.1-alpha.0
       '@grouparoo/csv': 0.8.1-alpha.0
       '@grouparoo/spec-helper': 0.8.1-alpha.0
@@ -846,6 +847,7 @@ importers:
       typescript: 4.5.5
       uuid: 8.3.2
     dependencies:
+      '@grouparoo/app-templates': link:../app-templates
       '@grouparoo/csv': link:../csv
       csv-write-stream: 2.0.0
       google-spreadsheet: 3.2.0
