@@ -2,7 +2,7 @@
 
 **Sync, Segment, and Send your Product Data Everywhere**
 
-Focus on building your core product, not integrating with 3rd-party tools. Learn more at [www.grouparoo.com](https://www.grouparoo.com)
+Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools. Learn more at [www.grouparoo.com](https://www.grouparoo.com)
 
 ![Grouparoo Data Bowtie](https://raw.githubusercontent.com/grouparoo/grouparoo/main/documents/images/grouparoo-diagram.png)
 
