@@ -220,7 +220,7 @@ importers:
       '@types/fs-extra': '*'
       '@types/node': 16.*.*
       chalk: 4.1.2
-      commander: 8.3.0
+      commander: 9.0.0
       fs-extra: 10.0.0
       glob: 7.2.0
       isomorphic-fetch: 3.0.0
@@ -233,7 +233,7 @@ importers:
       typescript: 4.5.5
     dependencies:
       chalk: 4.1.2
-      commander: 8.3.0
+      commander: 9.0.0
       fs-extra: 10.0.0
       glob: 7.2.0
       isomorphic-fetch: 3.0.0
@@ -5925,6 +5925,11 @@ packages:
   /commander/8.3.0:
     resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==}
     engines: {node: '>= 12'}
+
+  /commander/9.0.0:
+    resolution: {integrity: sha512-JJfP2saEKbQqvW+FI93OYUB4ByV5cizMpFMiiJI8xDbBvQvSkIk0VvQdn1CZ8mqAO8Loq2h0gYTYtDFUZUeERw==}
+    engines: {node: ^12.20.0 || >=14}
+    dev: false
 
   /compare-func/2.0.0:
     resolution: {integrity: sha512-zHig5N+tPWARooBnb0Zx1MFcdfpyJrfTJ3Y5L+IFvUm8rM74hHz66z0gw0x4tijh5CorKkKUCnW82R2vmpeCRA==}
@@ -14633,7 +14638,7 @@ packages:
       '@types/jest': 27.4.0
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
-      jest: 27.4.5
+      jest: 27.4.5_ts-node@10.4.0
       jest-util: 27.4.2
       json5: 2.2.0
       lodash.memoize: 4.1.2
