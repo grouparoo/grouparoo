@@ -806,7 +806,8 @@ describe("modules/configWriter", () => {
     test("properties should only humanize their ID if it matches default pattern", async () => {
       let property: Property = await helper.factories.property(
         source,
-        { key: faker.lorem.word() },
+        // @ts-expect-error can be removed once faker.unique types are fixed (https://github.com/faker-js/faker/pull/333)
+        { key: faker.unique(faker.lorem.word) },
         { column: faker.database.column() }
       );
       expect(property.getConfigId()).toEqual(
@@ -817,7 +818,8 @@ describe("modules/configWriter", () => {
         source,
         {
           id: "hello-world",
-          key: faker.lorem.word(),
+          // @ts-expect-error can be removed once faker.unique types are fixed (https://github.com/faker-js/faker/pull/333)
+          key: faker.unique(faker.lorem.word),
         },
         { column: faker.database.column() }
       );
