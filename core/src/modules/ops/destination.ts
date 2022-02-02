@@ -928,11 +928,10 @@ export namespace DestinationOps {
 
     try {
       for (const givenExport of givenExports) {
-        if (!givenExport.hasChanges) await givenExport.complete();
-
-        const lock = await getLock(
-          `${givenExport.recordId}:${givenExport.destinationId}`
-        );
+        if (!givenExport.hasChanges) {
+          await givenExport.complete();
+          continue;
+        }
 
         const mostRecentExport = await Export.findOne({
           where: {
@@ -943,17 +942,23 @@ export namespace DestinationOps {
         });
 
         const isNewest = mostRecentExport.id === givenExport.id;
-        if (!isNewest) console.info(mostRecentExport);
-        const gotLock = typeof lock === "function";
-
-        if (gotLock) locks.push(lock);
         if (!isNewest) {
           await cancelOldExport(givenExport, mostRecentExport);
           continue;
         }
-        if (gotLock && isNewest && givenExport.hasChanges)
-          _exports.push(givenExport);
+
+        const lock = await getLock(
+          `${givenExport.recordId}:${givenExport.destinationId}`
+        );
+
+        const gotLock = typeof lock === "function";
+
+        if (gotLock) locks.push(lock);
+
+        if (gotLock && isNewest) _exports.push(givenExport);
       }
+
+      if (_exports.length === 0) return;
 
       const exportRecords: ExportRecordsPluginMethod = await getBatchFunction(
         destination
