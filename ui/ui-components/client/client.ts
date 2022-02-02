@@ -108,31 +108,35 @@ export class Client {
     } = () => ({})
   ) {}
 
-  private checkForLoggedIn({ code }: { code: string }) {
+  private redirectOnAccessError({ code }: { code: string }): boolean {
     if (isBrowser()) {
       switch (code) {
         case "AUTHENTICATION_ERROR":
           if (window.location.pathname !== "/session/sign-in") {
             window.location.href = `/session/sign-in?nextPage=${window.location.pathname}`;
           }
-          return;
+          return true;
 
         case "NO_TEAMS_ERROR":
           window.location.href = `/`;
-          return;
+          return true;
 
         case "AUTHORIZATION_ERROR":
         default:
           // ok, it will be rendered on the page
-          return;
+          break;
       }
+
+      return false;
     }
 
     const { type, req, res } = this.getRequestContext();
     if (!req || !res || (type !== "AppContext" && type !== "NextPageContext")) {
-      return;
+      return false;
     }
 
+    // Only check requests from `Page.getInitialProps` or `NextApp.getInitialProps`
+    // getServerSideProps requests will be handled by `withServerErrorHandler`
     switch (code) {
       case "AUTHENTICATION_ERROR": {
         const requestPath = req.url.match("^[^?]*")[0];
@@ -140,7 +144,7 @@ export class Client {
           Location: `/session/sign-in?nextPage=${requestPath}`,
         });
         res.end();
-        return;
+        return true;
       }
 
       case "NO_TEAMS_ERROR": {
@@ -149,14 +153,13 @@ export class Client {
           Location: `/session/sign-in?nextPage=${requestPath}`,
         });
         res.end();
-        return;
+        return true;
       }
 
       case "AUTHORIZATION_ERROR":
-
       default:
         // ok, it will be rendered on the page
-        return;
+        return false;
     }
   }
 
@@ -191,7 +194,9 @@ export class Client {
       }
 
       if (error.response && error.response.data && error.response.data.error) {
-        this.checkForLoggedIn(error.response.data.error);
+        if (this.redirectOnAccessError(error.response.data.error)) {
+          return new Promise<Response>(() => {});
+        }
 
         const err =
           error.response?.data?.error?.message ??
