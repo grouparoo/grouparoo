@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
-import { useForm } from "react-hook-form";
+import { UseFormRegister } from "react-hook-form";
 import FormInputContainer from "../lib/form/FormInputContainer";
-import { Models } from "../../utils/apiData";
+import { Actions, Models } from "../../utils/apiData";
+import { FormData } from "../../pages/model/[modelId]/source/[sourceId]/edit";
 
 const renderExamples = (exampleText?: string) => (
   <p>
@@ -15,10 +16,10 @@ interface Props {
   columnName?: string;
   propertyKey?: string;
   preview: Record<string, unknown>[];
-  properties: Models.PropertyType[];
+  properties: Actions.PropertiesList["properties"];
   propertyExamples: Record<string, string[]>;
-  source: Models.SourceType;
-  register: ReturnType<typeof useForm>["register"];
+  source: Actions.SourceView["source"];
+  register: UseFormRegister<FormData>;
   mappingDisabled?: boolean;
 }
 

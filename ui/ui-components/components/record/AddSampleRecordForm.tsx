@@ -39,16 +39,20 @@ const AddSampleRecordForm: React.FC<Props> = ({
     [properties]
   );
 
-  const selectedUniquePropertyValue = useMemo(
-    () => propertiesWithPrimaryKey?.[0]?.key || "",
-    [propertiesWithPrimaryKey]
-  );
+  const [selectedUniquePropertyValue, setSelectedUniquePropertyValue] =
+    useState(propertiesWithPrimaryKey?.[0]?.key || "");
 
   const selectedUniqueProperty = useMemo(() => {
     return propertiesWithPrimaryKey?.find(
       ({ key }) => key === selectedUniquePropertyValue
     );
   }, [propertiesWithPrimaryKey, selectedUniquePropertyValue]);
+
+  const onSelectUniqueProperty: React.ChangeEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    setSelectedUniquePropertyValue(event.target.value);
+  };
 
   const onSubmit: Parameters<typeof handleSubmit>[0] = useCallback(
     async (data) => {
@@ -83,8 +87,10 @@ const AddSampleRecordForm: React.FC<Props> = ({
           name="uniqueProperty"
           as="select"
           disabled={submitting}
-          defaultValue={propertiesWithPrimaryKey?.[0]?.key || ""}
-          {...register("uniqueProperty")}
+          value={selectedUniquePropertyValue}
+          {...register("uniqueProperty", {
+            onChange: onSelectUniqueProperty,
+          })}
         >
           {propertiesWithPrimaryKey.map((rule) => (
             <option key={`rule-${rule.key}`} value={rule.key}>
