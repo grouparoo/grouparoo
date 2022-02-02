@@ -134,7 +134,7 @@ function buildPayload(config: BatchConfig, user) {
   }
   const groupsColumn = config?.destinationOptions?.groupsColumn?.toString();
   if (groupsColumn) {
-    formattedDataFields[groupsColumn] = newGroups.join(",");
+    formattedDataFields[groupsColumn] = newGroups.sort().join(",");
   }
   return formattedDataFields;
 }
