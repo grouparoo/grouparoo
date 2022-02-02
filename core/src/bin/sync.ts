@@ -14,7 +14,6 @@ export class SyncCLI extends CLI {
       letter: "p",
     },
     "no-export": {
-      default: false,
       description: "Skip exporting the record",
       letter: "n",
       flag: true,

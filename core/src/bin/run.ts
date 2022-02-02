@@ -25,7 +25,6 @@ export class RunCLI extends CLI {
       flag: true,
     },
     "no-export": {
-      default: false,
       description: "Skip exporting the records",
       letter: "n",
       flag: true,
