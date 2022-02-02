@@ -3,7 +3,6 @@ import { api, specHelper } from "actionhero";
 import {
   plugin,
   App,
-  Log,
   Schedule,
   Source,
   Option,
@@ -59,16 +58,6 @@ describe("models/schedule", () => {
       await schedule.destroy();
     });
 
-    test("creating a schedule creates a log entry", async () => {
-      const latestLog = await Log.findOne({
-        where: { verb: "create", topic: "schedule" },
-        order: [["createdAt", "desc"]],
-        limit: 1,
-      });
-
-      expect(latestLog).toBeTruthy();
-    });
-
     test("a schedule name will be generated from the source if one is not provided", async () => {
       const schedule = await Schedule.create({
         type: "test-plugin-import",
@@ -78,24 +67,6 @@ describe("models/schedule", () => {
       expect(schedule.name).toMatch(/test source schedule/);
 
       await schedule.destroy();
-    });
-
-    test("deleting a schedule creates a log entry", async () => {
-      const schedule = await Schedule.create({
-        name: "bye schedule",
-        type: "test-plugin-import",
-        sourceId: source.id,
-      });
-
-      await schedule.destroy();
-
-      const latestLog = await Log.findOne({
-        where: { verb: "create", topic: "schedule" },
-        order: [["createdAt", "desc"]],
-        limit: 1,
-      });
-
-      expect(latestLog).toBeTruthy();
     });
 
     test("a schedule cannot be created if the source does not have all the required options set", async () => {

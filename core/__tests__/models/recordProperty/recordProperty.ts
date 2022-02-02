@@ -1,6 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
 import {
-  Log,
   Source,
   GrouparooRecord,
   RecordProperty,

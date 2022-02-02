@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { GrouparooModel, Log } from "../../src";
+import { GrouparooModel } from "../../src";
 
 describe("models/grouparooModel", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -18,16 +18,6 @@ describe("models/grouparooModel", () => {
     expect(model.updatedAt).toBeTruthy();
   });
 
-  test("creating a model creates a log entry", async () => {
-    const latestLog = await Log.findOne({
-      where: { verb: "create", topic: "grouparooModel" },
-      order: [["createdAt", "desc"]],
-      limit: 1,
-    });
-
-    expect(latestLog).toBeTruthy();
-  });
-
   test("models default to the ready state", async () => {
     const model = new GrouparooModel({
       name: "test model",
@@ -36,23 +26,6 @@ describe("models/grouparooModel", () => {
     await model.save();
 
     expect(model.state).toBe("ready");
-  });
-
-  test("destroying a model creates a log entry", async () => {
-    const model = await GrouparooModel.create({
-      name: "test model",
-      type: "profile",
-    });
-
-    await model.destroy();
-
-    const latestLog = await Log.findOne({
-      where: { verb: "destroy", topic: "grouparooModel" },
-      order: [["createdAt", "desc"]],
-      limit: 1,
-    });
-
-    expect(latestLog).toBeTruthy();
   });
 
   describe("validations", () => {

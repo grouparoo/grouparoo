@@ -6,10 +6,8 @@ import {
   RecordProperty,
   Property,
   Group,
-  GroupMember,
   App,
   Source,
-  Log,
   GrouparooModel,
 } from "../../../src";
 import { RecordOps } from "../../../src/modules/ops/record";
@@ -39,25 +37,6 @@ describe("models/record", () => {
     expect(record.id.length).toBe(40);
     expect(record.createdAt).toBeTruthy();
     expect(record.updatedAt).toBeTruthy();
-  });
-
-  it("records can retrieve related log messages with custom messages", async () => {
-    const record = await GrouparooRecord.findOne();
-    const logs = await record.$get("logs");
-    expect(logs.length).toBe(1);
-    expect(logs[0].topic).toBe("grouparooRecord");
-    expect(logs[0].verb).toBe("create");
-    expect(logs[0].message).toBe("record created");
-  });
-
-  it("deleting a record creates a custom log messages", async () => {
-    const record = await GrouparooRecord.create({ modelId: model.id });
-    await record.destroy();
-    const logs = await record.$get("logs", { order: [["createdAt", "asc"]] });
-    expect(logs.length).toBe(2);
-    expect(logs[1].topic).toBe("grouparooRecord");
-    expect(logs[1].verb).toBe("destroy");
-    expect(logs[1].message).toBe("record destroyed");
   });
 
   test("records require a valid modelId", async () => {
@@ -1279,14 +1258,6 @@ describe("models/record", () => {
       for (const k in properties) {
         expect(properties[k].state).toBe("pending");
       }
-    });
-
-    test("the merged record has a log entry about the merge", async () => {
-      const logs = await Log.findAll({
-        where: { ownerId: recordA.id, verb: "merge" },
-      });
-      expect(logs.length).toEqual(1);
-      expect(logs[0].message).toEqual(`merged with record ${recordB.id}`);
     });
 
     test("after merging the other record is deleted", async () => {

@@ -12,7 +12,6 @@ import {
   TeamMember,
   GrouparooRecord,
   GroupMember,
-  Log,
   GrouparooModel,
 } from "../../../src";
 import { utils } from "actionhero";
@@ -228,16 +227,8 @@ describe("models/run", () => {
         expect(run.percentComplete).toBe(99);
       });
 
-      test("running - group - deleted", async () => {
+      test("running - group - deleted always returns 99%", async () => {
         await group.update({ state: "deleted" });
-
-        await Log.create({
-          ownerId: group.id,
-          topic: "group",
-          verb: "update",
-          message: "all good",
-          data: { recordsCount: 10 }, // previous group size was 10
-        });
 
         run = await Run.create({
           state: "running",
@@ -252,7 +243,7 @@ describe("models/run", () => {
         await GroupMember.create({ groupId: group.id, recordId: recordC.id });
 
         await run.determinePercentComplete();
-        expect(run.percentComplete).toBe(70);
+        expect(run.percentComplete).toBe(99);
       });
 
       test("running - teamMember", async () => {
