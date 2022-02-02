@@ -4,21 +4,35 @@ importers:
 
   .:
     specifiers:
+      '@grouparoo/core': 0.8.1-alpha.0
+      '@grouparoo/spec-helper': 0.8.1-alpha.0
+      '@types/jest': '*'
+      '@types/jest-json-schema': 6.1.0
       glob: 7.2.0
+      jest: 27.4.5
+      jest-json-schema: 6.1.0
       lerna: 4.0.0
       lerna-changelog: 2.2.0
       license-checker: github:grouparoo/license-checker
       npm-check-updates: 12.2.1
       prettier: 2.5.1
       syncpack: 6.2.0
+      ts-jest: 27.1.3
     devDependencies:
+      '@grouparoo/core': link:core
+      '@grouparoo/spec-helper': link:plugins/@grouparoo/spec-helper
+      '@types/jest': 27.4.0
+      '@types/jest-json-schema': 6.1.0
       glob: 7.2.0
+      jest: 27.4.5
+      jest-json-schema: 6.1.0
       lerna: 4.0.0
       lerna-changelog: 2.2.0
       license-checker: github.com/grouparoo/license-checker/1054593024d6f7e50ad47feb3b61d52c9506c274
       npm-check-updates: 12.2.1
       prettier: 2.5.1
       syncpack: 6.2.0
+      ts-jest: 27.1.3_@types+jest@27.4.0+jest@27.4.5
 
   apps/staging-community:
     specifiers:
@@ -4353,6 +4367,13 @@ packages:
       '@types/istanbul-lib-report': 3.0.0
     dev: true
 
+  /@types/jest-json-schema/6.1.0:
+    resolution: {integrity: sha512-8e9qbbrXbDCxLQTLca84AF2oWTxa/Vd3tiOLq7cblsY6zgtk7JgZ7nsfYxqLQEWjXF3IC4sqOHsA84R/hr555Q==}
+    dependencies:
+      '@types/jest': 27.4.0
+      ajv: 6.12.6
+    dev: true
+
   /@types/jest/27.4.0:
     resolution: {integrity: sha512-gHl8XuC1RZ8H2j5sHv/JqsaxXkDDM9iDOgu0Wp8sjs4u/snb2PVehyWXJPr+ORA0RPpgw231mnutWI1+0hgjIQ==}
     dependencies:
@@ -4887,6 +4908,15 @@ packages:
       - encoding
     dev: false
 
+  /ajv-formats/2.1.1:
+    resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
+    peerDependenciesMeta:
+      ajv:
+        optional: true
+    dependencies:
+      ajv: 8.9.0
+    dev: true
+
   /ajv/6.12.6:
     resolution: {integrity: sha512-j3fVLgvTo527anyYyJOGTYJbG+vnnQYvE0m5mmkc1TK+nxAppkCLMIL0aZ4dblVCNoGShhm+kzE4ZUykBoMg4g==}
     dependencies:
@@ -4894,6 +4924,15 @@ packages:
       fast-json-stable-stringify: 2.1.0
       json-schema-traverse: 0.4.1
       uri-js: 4.4.1
+
+  /ajv/8.9.0:
+    resolution: {integrity: sha512-qOKJyNj/h+OWx7s5DePL6Zu1KeM9jPZhwBqs+7DzP6bGOvqzVCSf0xueYmVuaC/oQ/VtS2zLMLHdQFbkka+XDQ==}
+    dependencies:
+      fast-deep-equal: 3.1.3
+      json-schema-traverse: 1.0.0
+      require-from-string: 2.0.2
+      uri-js: 4.4.1
+    dev: true
 
   /ansi-align/3.0.1:
     resolution: {integrity: sha512-IOfwwBF5iczOjp/WeY4YxyjqAFMQoZufdQWDd19SEExbVLNXqvpzSJ/M7Za4/sCPmQ0+GRquoA7bGcINcxew6w==}
@@ -9161,6 +9200,16 @@ packages:
       - supports-color
     dev: true
 
+  /jest-json-schema/6.1.0:
+    resolution: {integrity: sha512-LMHuLmKjr/4X+H8v1xF5TEwfYEkzwGeWJ0epYQVQhlVTDDR5FWCdSO8vmsecb5cLf9NeWAqMKn3qhJvP9um0AA==}
+    engines: {node: ^12.13.0 || ^14.15.0 || >=15.0.0}
+    dependencies:
+      ajv: 8.9.0
+      ajv-formats: 2.1.1
+      chalk: 4.1.2
+      jest-matcher-utils: 27.4.6
+    dev: true
+
   /jest-leak-detector/27.4.6:
     resolution: {integrity: sha512-kkaGixDf9R7CjHm2pOzfTxZTQQQ2gHTIWKY/JZSiYTc90bZp8kSZnUMS3uLAfwTZwc0tcMRoEX74e14LG1WapA==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
@@ -9576,6 +9625,10 @@ packages:
 
   /json-schema-traverse/0.4.1:
     resolution: {integrity: sha512-xbbCH5dCYU5T8LcEhhuh7HJ88HXuW3qsI3Y0zOZFKfZEHcpWiHU/Jxzk629Brsab/mMiHQti9wMP+845RPe3Vg==}
+
+  /json-schema-traverse/1.0.0:
+    resolution: {integrity: sha512-NM8/P9n3XjXhIZn1lLhkFaACTOURQXjWhV4BA/RnOv8xvgqtqpAX9IO4mRQxSx1Rlo4tqzeqb0sOlruaOy3dug==}
+    dev: true
 
   /json-schema/0.4.0:
     resolution: {integrity: sha512-es94M3nTIfsEPisRafak+HDLfHXnKBhV3vU5eqPcS3flIWqcxJWgXHXiey3YrpaNsanY5ei1VoYEbOzijuq9BA==}
@@ -14645,6 +14698,39 @@ packages:
       make-error: 1.3.6
       semver: 7.3.5
       typescript: 4.5.5
+      yargs-parser: 20.2.9
+    dev: true
+
+  /ts-jest/27.1.3_@types+jest@27.4.0+jest@27.4.5:
+    resolution: {integrity: sha512-6Nlura7s6uM9BVUAoqLH7JHyMXjz8gluryjpPXxr3IxZdAXnU6FhjvVLHFtfd1vsE1p8zD1OJfskkc0jhTSnkA==}
+    engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
+    hasBin: true
+    peerDependencies:
+      '@babel/core': '>=7.0.0-beta.0 <8'
+      '@types/jest': ^27.0.0
+      babel-jest: '>=27.0.0 <28'
+      esbuild: ~0.14.0
+      jest: ^27.0.0
+      typescript: '>=3.8 <5.0'
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+      '@types/jest':
+        optional: true
+      babel-jest:
+        optional: true
+      esbuild:
+        optional: true
+    dependencies:
+      '@types/jest': 27.4.0
+      bs-logger: 0.2.6
+      fast-json-stable-stringify: 2.1.0
+      jest: 27.4.5
+      jest-util: 27.4.2
+      json5: 2.2.0
+      lodash.memoize: 4.1.2
+      make-error: 1.3.6
+      semver: 7.3.5
       yargs-parser: 20.2.9
     dev: true
 
