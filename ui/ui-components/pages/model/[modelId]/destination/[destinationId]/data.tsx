@@ -6,7 +6,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState, useRef } from "react";
 import { Typeahead } from "react-bootstrap-typeahead";
-import { errorHandler, successHandler } from "../../../../../eventHandlers";
+import { successHandler } from "../../../../../eventHandlers";
 import DestinationTabs from "../../../../../components/tabs/Destination";
 import LoadingButton from "../../../../../components/LoadingButton";
 import StateBadge from "../../../../../components/badges/StateBadge";
@@ -19,21 +19,15 @@ import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 import { generateClient } from "../../../../../client/client";
 
-export default function Page(props) {
+export default function Page(
+  props: Awaited<ReturnType<typeof Page.getInitialProps>>
+) {
   const {
     properties,
     mappingOptions,
     destinationTypeConversions,
     groups,
     exportArrayProperties,
-    hydrationError,
-  }: {
-    hydrationError: Error;
-    properties: Models.PropertyType[];
-    groups: Models.GroupType[];
-    mappingOptions: Actions.DestinationMappingOptions["options"];
-    destinationTypeConversions: Actions.DestinationMappingOptions["destinationTypeConversions"];
-    exportArrayProperties: Actions.DestinationExportArrayProperties["exportArrayProperties"];
   } = props;
   const { client } = useApi();
   const router = useRouter();
@@ -53,8 +47,6 @@ export default function Page(props) {
   const [unlockedProperties, setUnlockedProperties] = useState({});
   const [unlockedGroups, setUnlockedGroups] = useState<string[]>([]);
   const { destinationId } = router.query;
-
-  if (hydrationError) errorHandler.set({ message: hydrationError });
 
   const update = async (event) => {
     event.preventDefault();
@@ -858,41 +850,38 @@ export default function Page(props) {
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const client = generateClient(ctx);
   const { destinationId, modelId } = ctx.query;
-  const { destination } = await client.request(
+  const { destination } = await client.request<Actions.DestinationView>(
     "get",
     `/destination/${destinationId}`
   );
   ensureMatchingModel("Destination", destination.modelId, modelId.toString());
-  const { groups } = await client.request("get", `/groups`, {
-    modelId: destination?.modelId,
-  });
-  const { properties } = await client.request("get", `/properties`, {
-    state: "ready",
-    modelId: destination?.modelId,
-  });
+  const { groups } = await client.request<Actions.GroupsList>(
+    "get",
+    `/groups`,
+    {
+      modelId: destination?.modelId,
+    }
+  );
+  const { properties } = await client.request<Actions.PropertiesList>(
+    "get",
+    `/properties`,
+    {
+      state: "ready",
+      modelId: destination?.modelId,
+    }
+  );
 
-  let mappingOptions = {};
-  let destinationTypeConversions = {};
-  let exportArrayProperties = [];
-  let hydrationError: Error;
-
-  try {
-    const mappingOptionsResponse = await client.request(
+  const { options: mappingOptions, destinationTypeConversions } =
+    await client.request<Actions.DestinationMappingOptions>(
       "get",
       `/destination/${destinationId}/mappingOptions`
     );
-    mappingOptions = mappingOptionsResponse.options;
-    destinationTypeConversions =
-      mappingOptionsResponse.destinationTypeConversions;
 
-    const exportArrayPropertiesResponse = await client.request(
+  const { exportArrayProperties } =
+    await client.request<Actions.DestinationExportArrayProperties>(
       "get",
       `/destination/${destinationId}/exportArrayProperties`
     );
-    exportArrayProperties = exportArrayPropertiesResponse.exportArrayProperties;
-  } catch (error) {
-    hydrationError = error.toString();
-  }
 
   return {
     destination,
@@ -903,6 +892,5 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     groups: groups
       .filter((group) => group.state !== "draft")
       .filter((group) => group.state !== "deleted"),
-    hydrationError,
   };
 };
