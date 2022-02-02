@@ -1002,7 +1002,6 @@ describe("models/destination - with custom exportRecord plugin", () => {
         retryDelay: undefined,
       };
 
-      foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
       await specHelper.runTask("export:send", foundSendTasks[0].args[0]);
       await _export.reload();
       expect(_export.completedAt).toBeTruthy();
