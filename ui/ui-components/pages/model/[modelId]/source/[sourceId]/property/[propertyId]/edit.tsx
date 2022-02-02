@@ -782,24 +782,29 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   const { propertyId, modelId } = ctx.query;
   const client = generateClient(ctx);
 
-  const { sources } = await client.request<Actions.SourcesList>(
-    "get",
-    "/sources"
-  );
-  const { types } = await client.request<Actions.PropertiesOptions>(
-    "get",
-    `/propertyOptions`
-  );
-
   const { property } = await client.request<Actions.PropertyView>(
     "get",
     `/property/${propertyId}`
+  );
+
+  if (!property) {
+    throw new Error(`Property ${propertyId} not found`);
+  }
+
+  const { sources } = await client.request<Actions.SourcesList>(
+    "get",
+    "/sources"
   );
 
   const source = sources.find(
     (s: Models.SourceType) => s.id === property.sourceId
   );
   ensureMatchingModel("Property", source.modelId, modelId.toString());
+
+  const { types } = await client.request<Actions.PropertiesOptions>(
+    "get",
+    `/propertyOptions`
+  );
 
   const { properties } = await client.request<Actions.PropertiesList>(
     "get",
