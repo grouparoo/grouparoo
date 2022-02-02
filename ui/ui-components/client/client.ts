@@ -91,7 +91,7 @@ export class Client {
 
   private static readonly defaultOptions: ClientRequestOptions = {
     useCache: true,
-    errorHandler,
+    errorHandler: isBrowser() ? errorHandler : undefined,
   };
 
   private static readonly defaultHeaders: AxiosRequestHeaders = {
