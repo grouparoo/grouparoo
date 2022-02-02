@@ -27,7 +27,11 @@ describe("tasks/record:makeExports", () => {
     await mario.reload();
     await luigi.reload();
 
-    expect([mario.state, luigi.state].sort()).toEqual(["exporting", "pending"]);
+    expect([mario.state, luigi.state].sort()).toEqual(["pending", "ready"]);
+    expect([mario.readyToExport, luigi.readyToExport].sort()).toEqual([
+      false,
+      true,
+    ]);
 
     await mario.destroy();
     await luigi.destroy();

@@ -21,7 +21,7 @@ export class GrouparooRecordsReEnqueueStuckExportingRecords extends CLSTask {
 
     const records = await GrouparooRecord.findAll({
       where: {
-        state: "exporting",
+        readyToExport: true,
         updatedAt: { [Op.lt]: new Date(new Date().getTime() - delay) },
       },
       limit,

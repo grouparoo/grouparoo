@@ -1,7 +1,10 @@
 import Sequelize from "sequelize";
 
 export default {
-  up: async (queryInterface: Sequelize.QueryInterface) => {
+  up: async (
+    queryInterface: Sequelize.QueryInterface,
+    DataTypes: typeof Sequelize
+  ) => {
     await queryInterface.removeColumn("imports", "rawData");
     await queryInterface.removeColumn("imports", "oldRecordProperties");
     await queryInterface.removeColumn("imports", "newRecordProperties");
@@ -12,6 +15,17 @@ export default {
     await queryInterface.sequelize.query(
       `UPDATE imports SET state='importing' where state='processing'`
     );
+
+    await queryInterface.addColumn("records", "readyToExport", {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    });
+
+    await queryInterface.changeColumn("records", "readyToExport", {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    });
   },
 
   down: async (

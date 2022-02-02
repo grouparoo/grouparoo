@@ -447,7 +447,7 @@ export class Group extends LoggedModel<Group> {
   async _buildGroupMemberQueryParts(
     rules?: GroupRuleWithKey[],
     matchType: typeof matchTypes[number] = this.matchType,
-    recordStates?: string[]
+    recordState?: string
   ) {
     if (!rules) rules = await this.getRules();
 
@@ -646,7 +646,7 @@ export class Group extends LoggedModel<Group> {
 
     const joinType = matchType === "all" ? Op.and : Op.or;
     const whereContainer: WhereAttributeHash = {};
-    if (recordStates) whereContainer.state = { [Op.in]: recordStates };
+    if (recordState) whereContainer.state = recordState;
     // @ts-ignore
     whereContainer[joinType] = wheres;
 

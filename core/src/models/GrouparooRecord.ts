@@ -29,7 +29,7 @@ import { Source } from "./Source";
 import { GrouparooModel } from "./GrouparooModel";
 import { ModelGuard } from "../modules/modelGuard";
 
-const STATES = ["draft", "pending", "exporting", "ready", "deleted"] as const;
+const STATES = ["draft", "pending", "ready", "deleted"] as const;
 
 const STATE_TRANSITIONS = [
   { from: "draft", to: "pending", checks: [] },
@@ -42,34 +42,8 @@ const STATE_TRANSITIONS = [
         await instance.validateRecordPropertiesAreReady(),
     ],
   },
-  {
-    from: "ready",
-    to: "exporting",
-    checks: [
-      async (instance: GrouparooRecord) =>
-        await instance.validateRecordPropertiesAreReady(),
-    ],
-  },
   { from: "ready", to: "pending", checks: [] },
-  {
-    from: "exporting",
-    to: "pending",
-    checks: [
-      async (instance: GrouparooRecord) =>
-        await instance.validateRecordPropertiesAreReady(),
-    ],
-  },
-  {
-    from: "exporting",
-    to: "ready",
-    checks: [
-      async (instance: GrouparooRecord) =>
-        await instance.validateRecordPropertiesAreReady(),
-    ],
-  },
-  { from: "exporting", to: "draft", checks: [] },
   { from: "draft", to: "deleted", checks: [] },
-  { from: "exporting", to: "deleted", checks: [] },
   { from: "pending", to: "deleted", checks: [] },
   { from: "ready", to: "deleted", checks: [] },
 ];
@@ -94,6 +68,11 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
   @ForeignKey(() => GrouparooModel)
   @Column
   modelId: string;
+
+  @AllowNull(false)
+  @Default(false)
+  @Column
+  readyToExport: boolean;
 
   @HasMany(() => RecordProperty)
   recordProperties: RecordProperty[];
@@ -129,6 +108,7 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
       groupIds: groups.map((g) => g.id),
       invalid: this.invalid,
       properties,
+      readyToExport: this.readyToExport,
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),
     };

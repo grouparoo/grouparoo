@@ -88,11 +88,17 @@ describe("tasks/record:makeExports", () => {
     await peach.reload();
     await bowser.reload();
 
-    expect(mario.state).toBe("exporting");
-    expect(luigi.state).toBe("exporting");
+    expect(mario.state).toBe("ready");
+    expect(luigi.state).toBe("ready");
     expect(toad.state).toBe("ready");
     expect(peach.state).toBe("pending");
     expect(bowser.state).toBe("pending");
+
+    expect(mario.readyToExport).toBe(true);
+    expect(luigi.readyToExport).toBe(true);
+    expect(toad.readyToExport).toBe(false);
+    expect(peach.readyToExport).toBe(false);
+    expect(bowser.readyToExport).toBe(false);
 
     await mario.destroy();
     await luigi.destroy();
@@ -113,7 +119,8 @@ describe("tasks/record:makeExports", () => {
     await specHelper.runTask("records:makeExports", {});
 
     await record.reload();
-    expect(record.state).toBe("exporting");
+    expect(record.state).toBe("ready");
+    expect(record.readyToExport).toBe(true);
 
     groups = await record.$get("groups");
     expect(groups.length).toBe(1);
@@ -159,7 +166,8 @@ describe("tasks/record:makeExports", () => {
     await specHelper.runTask("records:makeExports", {});
 
     await record.reload();
-    expect(record.state).toBe("exporting");
+    expect(record.state).toBe("ready");
+    expect(record.readyToExport).toBe(true);
 
     await _importA.reload();
     await _importB.reload();
@@ -196,7 +204,8 @@ describe("tasks/record:makeExports", () => {
     await specHelper.runTask("records:makeExports", {});
 
     await record.reload();
-    expect(record.state).toBe("exporting");
+    expect(record.state).toBe("ready");
+    expect(record.readyToExport).toBe(true);
 
     await _importA.reload();
     expect(_importA.importedAt).toBeTruthy();

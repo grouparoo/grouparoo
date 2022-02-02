@@ -74,7 +74,7 @@ describe("integration/runs/internalRun", () => {
       await ImportWorkflow();
 
       await record.reload();
-      expect(record.state).toBe("exporting");
+      expect(record.state).toBe("ready");
 
       // run all enqueued export tasks
       const foundExportTasks = await specHelper.findEnqueuedTasks(

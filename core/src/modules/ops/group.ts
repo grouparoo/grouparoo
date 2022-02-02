@@ -193,7 +193,7 @@ export namespace GroupOps {
     const { where, include } = await group._buildGroupMemberQueryParts(
       rules,
       group.matchType,
-      ["ready", "exporting"]
+      "ready"
     );
 
     where.createdAt = { [Op.and]: [{ [Op.lt]: run.createdAt }] };

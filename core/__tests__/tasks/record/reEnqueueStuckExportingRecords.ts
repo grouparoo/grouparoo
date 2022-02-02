@@ -14,7 +14,7 @@ describe("tasks/records:reEnqueueStuckExportingRecords", () => {
     expect(found.length).toEqual(1);
   });
 
-  test("it will find records that are in the exporting state", async () => {
+  test("it will export records that are stuck in the ready state but still need to be exported", async () => {
     // mario is ready
     const mario = await helper.factories.record();
     await mario.import();
@@ -24,13 +24,13 @@ describe("tasks/records:reEnqueueStuckExportingRecords", () => {
     const luigi = await helper.factories.record();
     await luigi.import();
     await luigi.update({ state: "ready" });
-    await luigi.update({ state: "exporting" });
+    await luigi.update({ readyToExport: true });
 
     // luigi is exporting, but it's been a while
     const toad = await helper.factories.record();
     await toad.import();
     await toad.update({ state: "ready" });
-    await toad.update({ state: "exporting" });
+    await toad.update({ readyToExport: true });
     await helper.changeTimestamps(
       [toad],
       false,

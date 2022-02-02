@@ -26,7 +26,7 @@ export class RecordExport extends RetryableTask {
     });
 
     if (!record) return; // the record may have been deleted or merged by the time this task ran
-    if (record.state !== "exporting") return;
+    if (record.state !== "ready") return;
 
     const imports = await Import.findAll({
       where: {
@@ -77,7 +77,7 @@ export class RecordExport extends RetryableTask {
     }
 
     try {
-      await record.update({ state: "ready" });
+      await record.update({ readyToExport: false });
     } catch (error) {
       if (env !== "test") log(`[EXPORT ERROR] ${error}`, "alert");
     }
