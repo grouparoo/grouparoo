@@ -65,13 +65,6 @@ export class RecordExport extends RetryableTask {
           force ? force : undefined
         );
       }
-
-      if (imports.length > 0) {
-        await Import.update(
-          { processedAt: new Date(), state: "complete" },
-          { where: { id: imports.map((i) => i.id) } }
-        );
-      }
     } catch (error) {
       if (env !== "test") log(`[EXPORT ERROR] ${error}`, "alert");
     }
