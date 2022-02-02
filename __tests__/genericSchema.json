@@ -1,0 +1,244 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "title": "Generic Schema for Package.json files",
+  "description": "Schema for all Package.json files in Grouparoo.",
+  "required": [
+    "author",
+    "name",
+    "description",
+    "version",
+    "license",
+    "private"
+  ],
+  "properties": {
+    "author": {
+      "$id": "#/properties/author",
+      "type": "string",
+      "examples": ["Grouparoo Inc <hello@grouparoo.com>"]
+    },
+    "name": {
+      "$id": "#/properties/name",
+      "type": "string",
+      "examples": ["@grouparoo/core"]
+    },
+    "description": {
+      "$id": "#/properties/description",
+      "type": "string",
+      "examples": ["The Grouparoo Core"]
+    },
+    "version": {
+      "$id": "#/properties/version",
+      "type": "string",
+      "examples": ["0.8.1-alpha.0"]
+    },
+    "license": {
+      "$id": "#/properties/license",
+      "type": "string",
+      "title": "The license schema",
+      "examples": ["MPL-2.0"]
+    },
+    "private": {
+      "$id": "#/properties/private",
+      "type": "boolean",
+      "examples": [false]
+    },
+    "publishConfig": {
+      "$id": "#/properties/publishConfig",
+      "type": "object",
+      "examples": [
+        {
+          "access": "public"
+        }
+      ],
+      "required": ["access"],
+      "properties": {
+        "access": {
+          "$id": "#/properties/publishConfig/properties/access",
+          "type": "string",
+          "examples": ["public"]
+        }
+      },
+      "additionalProperties": true
+    },
+    "engines": {
+      "$id": "#/properties/engines",
+      "type": "object",
+      "examples": [
+        {
+          "node": ">=12.0.0 <17.0.0"
+        }
+      ],
+      "required": ["node"],
+      "properties": {
+        "node": {
+          "$id": "#/properties/engines/properties/node",
+          "type": "string",
+
+          "examples": [">=12.0.0 <17.0.0"]
+        }
+      }
+    },
+    "homepage": {
+      "$id": "#/properties/homepage",
+      "type": "string",
+      "examples": ["https://www.grouparoo.com"]
+    },
+    "bugs": {
+      "$id": "#/properties/bugs",
+      "type": "object",
+      "examples": [
+        {
+          "url": "https://github.com/grouparoo/grouparoo/issues"
+        }
+      ],
+      "required": ["url"],
+      "properties": {
+        "url": {
+          "$id": "#/properties/bugs/properties/url",
+          "examples": ["https://github.com/grouparoo/grouparoo/issues"]
+        }
+      },
+      "additionalProperties": true
+    },
+    "repository": {
+      "$id": "#/properties/repository",
+      "type": "object",
+      "examples": [
+        {
+          "type": "git",
+          "url": "https://github.com/grouparoo/grouparoo.git",
+          "directory": "core"
+        }
+      ],
+      "required": ["type", "url"],
+      "properties": {
+        "type": {
+          "$id": "#/properties/repository/properties/type",
+          "type": "string",
+          "examples": ["git"]
+        },
+        "url": {
+          "$id": "#/properties/repository/properties/url",
+          "type": "string",
+          "examples": ["https://github.com/grouparoo/grouparoo.git"]
+        },
+        "directory": {
+          "$id": "#/properties/repository/properties/directory",
+          "type": "string",
+          "examples": ["core"]
+        }
+      },
+      "additionalProperties": true
+    },
+    "main": {
+      "$id": "#/properties/main",
+      "type": "string",
+      "examples": ["dist/index"]
+    },
+    "types": {
+      "$id": "#/properties/types",
+      "type": "string",
+      "examples": ["dist/index"]
+    },
+    "scripts": {
+      "$id": "#/properties/scripts",
+      "type": "object",
+      "examples": [
+        {
+          "prepare": "./bin/build",
+          "dev": "./bin/dev",
+          "pretest": "npm run lint && npm run prepare",
+          "test": "jest",
+          "lint": "prettier --check src __tests__",
+          "docs": "typedoc --out docs --theme default src/index.ts",
+          "import": "./api/bin/import",
+          "watch": "tsc --watch"
+        }
+      ],
+      "properties": {},
+      "additionalProperties": true
+    },
+    "dependencies": {
+      "$id": "#/properties/dependencies",
+      "type": "object",
+      "examples": [
+        {
+          "@types/fs-extra": "*",
+          "@types/node": "16.*.*",
+          "@types/validator": "*",
+          "actionhero": "28.1.7",
+          "ah-sequelize-plugin": "5.1.1",
+          "bcryptjs": "2.4.3",
+          "cls-hooked": "4.2.2",
+          "colors": "1.4.0",
+          "csv-stringify": "6.0.5",
+          "dotenv": "15.0.0",
+          "form-data": "4.0.0",
+          "fs-extra": "10.0.0",
+          "glob": "7.2.0",
+          "grouparoo": "0.8.1-alpha.0",
+          "ioredis": "4.28.3",
+          "ioredis-mock": "7.0.0",
+          "isomorphic-fetch": "3.0.0",
+          "json5": "2.2.0",
+          "libphonenumber-js": "1.9.46",
+          "moment": "2.29.1",
+          "mustache": "4.2.0",
+          "node-resque": "9.1.5",
+          "nodemon": "2.0.15",
+          "pacote": "12.0.3",
+          "pg": "8.7.1",
+          "pg-hstore": "2.3.4",
+          "pluralize": "8.0.0",
+          "prettier": "2.5.1",
+          "reflect-metadata": "0.1.13",
+          "semver": "7.3.5",
+          "sequelize": "6.15.0",
+          "sequelize-typescript": "2.1.2",
+          "sqlite3": "5.0.2",
+          "tar": "6.1.11",
+          "ts-node": "10.4.0",
+          "uuid": "8.3.2",
+          "validator": "13.7.0",
+          "winston": "3.5.1",
+          "ws": "8.4.2"
+        }
+      ],
+      "properties": {},
+      "additionalProperties": true,
+      "pattern": "[^^~]"
+    },
+    "devDependencies": {
+      "$id": "#/properties/devDependencies",
+      "type": "object",
+      "examples": [
+        {
+          "@faker-js/faker": "6.0.0-alpha.5",
+          "@grouparoo/spec-helper": "0.8.1-alpha.0",
+          "@types/bcryptjs": "2.4.2",
+          "@types/cls-hooked": "4.3.3",
+          "@types/isomorphic-fetch": "0.0.35",
+          "@types/jest": "*",
+          "@types/mustache": "4.1.2",
+          "@types/pacote": "11.1.3",
+          "@types/pluralize": "0.0.29",
+          "@types/semver": "7.3.9",
+          "@types/tar": "6.1.1",
+          "csv-parse": "4.16.3",
+          "jest": "27.4.5",
+          "jest-fetch-mock": "3.0.3",
+          "nock": "13.2.2",
+          "ts-jest": "27.1.3",
+          "type-fest": "2.11.1",
+          "typedoc": "0.22.11",
+          "typescript": "4.5.5"
+        }
+      ],
+      "properties": {},
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

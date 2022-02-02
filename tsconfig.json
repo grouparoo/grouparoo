@@ -1,0 +1,15 @@
+{
+  //todo: this is copied from core, but likely not completely correct....
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "allowJs": true,
+    "module": "commonjs",
+    "target": "es2019",
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "include": ["./src/**/*"],
+  "exclude": ["./../node_modules"]
+}
