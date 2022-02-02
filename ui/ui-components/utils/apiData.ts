@@ -307,7 +307,6 @@ import {
   TeamView,
   TeamsList,
 } from "@grouparoo/core/src/actions/teams";
-import { TotalsAction } from "@grouparoo/core/src/actions/totals";
 import { ObjectFind } from "@grouparoo/core/src/actions/object";
 
 export namespace Actions {
@@ -795,10 +794,6 @@ export namespace Actions {
   >;
   export type TeamsList = AsyncReturnType<
     typeof TeamsList.prototype.runWithinTransaction
-  >;
-
-  export type TotalsAction = AsyncReturnType<
-    typeof TotalsAction.prototype.runWithinTransaction
   >;
 
   export type ObjectFind = AsyncReturnType<
