@@ -281,22 +281,6 @@ const Page: NextPage<Props> = ({
     }
   }
 
-  const update = async (event) => {
-    const _source = Object.assign({}, source);
-    _source[event.target.id] =
-      event.target.type === "checkbox"
-        ? event.target.checked
-        : event.target.value;
-    setSource(_source);
-  };
-
-  const updateOption = async (optKey, optValue) => {
-    const _source = Object.assign({}, source);
-    _source.options[optKey] = optValue;
-    setSource(_source);
-    loadPreview();
-  };
-
   // not every row returned is guaranteed to have the same columns
   const previewColumns = useMemo(
     () =>
@@ -336,7 +320,7 @@ const Page: NextPage<Props> = ({
                   placeholder="Source Name"
                   defaultValue={source.name}
                   name="source.name"
-                  {...register("source.name", { onChange: (e) => update(e) })}
+                  {...register("source.name")}
                 />
                 <Form.Control.Feedback type="invalid">
                   Name is required
@@ -413,16 +397,12 @@ const Page: NextPage<Props> = ({
                                   </small>,
                                 ];
                               }}
-                              defaultSelected={
+                              defaultValue={
                                 source.options[opt.key]
                                   ? [source.options[opt.key]]
                                   : undefined
                               }
-                              {...register(`source.options.${opt.key}`, {
-                                onChange: (selected) => {
-                                  updateOption(opt.key, selected[0]?.key);
-                                },
-                              })}
+                              {...register(`source.options.${opt.key}`)}
                             />
                             <Form.Text className="text-muted">
                               {opt.description}
@@ -440,13 +420,7 @@ const Page: NextPage<Props> = ({
                                 source.options[opt.key]?.toString() || ""
                               }
                               name={`source.options.${opt.key}`}
-                              {...register(`source.options.${opt.key}`, {
-                                onChange: (e) =>
-                                  updateOption(
-                                    e.target.id.replace("_opt~", ""),
-                                    e.target.value
-                                  ),
-                              })}
+                              {...register(`source.options.${opt.key}`)}
                             >
                               <option value={""} disabled>
                                 Select an option
@@ -500,13 +474,7 @@ const Page: NextPage<Props> = ({
                               defaultValue={source.options[opt.key]?.toString()}
                               placeholder={opt.placeholder}
                               name={`source.options.${opt.key}`}
-                              {...register(`source.options.${opt.key}`, {
-                                onChange: (e) =>
-                                  updateOption(
-                                    e.target.id.replace("_opt~", ""),
-                                    e.target.value
-                                  ),
-                              })}
+                              {...register(`source.options.${opt.key}`)}
                             />
                             <Form.Text className="text-muted">
                               {opt.description}
