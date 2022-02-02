@@ -19,8 +19,8 @@ export class GrouparooRecordsMakeExports extends CLSTask {
 
     const records = await RecordOps.makeExports(limit);
 
-    for (const record of records) {
-      if (toExport && record.readyToExport) {
+    if (toExport) {
+      for (const record of records) {
         await CLS.enqueueTask("record:export", { recordId: record.id });
       }
     }

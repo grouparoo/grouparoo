@@ -193,11 +193,14 @@ describe("tasks/record:export", () => {
 
         records = await GrouparooRecord.findAll();
         expect(records.length).toBe(1);
+        expect(records[0].state).toBe("pending");
+        expect(records[0].readyToExport).toBe(false);
 
         await ImportWorkflow();
 
         await records[0].reload();
         expect(records[0].state).toBe("ready");
+        expect(records[0].readyToExport).toBe(true);
         const properties = await records[0].simplifiedProperties();
         expect(properties.email).toEqual(["mario@example.com"]);
         expect(properties.firstName).toEqual(["Super"]);
@@ -239,6 +242,7 @@ describe("tasks/record:export", () => {
 
         await records[0].reload();
         expect(records[0].state).toBe("ready");
+        expect(records[0].readyToExport).toBe(false);
       });
 
       test("it will append destinationIds from imports", async () => {
