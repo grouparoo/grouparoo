@@ -7,13 +7,12 @@ import {
   BeforeSave,
   ForeignKey,
   DataType,
-  Model,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
-import { LoggedModel } from "../classes/loggedModel";
 import { Team } from "./Team";
 import { ApiKey } from "./ApiKey";
 import { LockableHelper } from "../modules/lockableHelper";
+import { CommonModel } from "../classes/commonModel";
 
 export const PermissionTopics = [
   "apiKey",
@@ -45,7 +44,7 @@ export type ActionPermission = {
 };
 
 @Table({ tableName: "permissions", paranoid: false })
-export class Permission extends LoggedModel<Permission> {
+export class Permission extends CommonModel<Permission> {
   idPrefix() {
     return "prm";
   }

@@ -9,9 +9,9 @@ import {
   BeforeValidate,
   BeforeSave,
   BeforeDestroy,
+  AfterCreate,
 } from "sequelize-typescript";
 import * as UUID from "uuid";
-import { LoggedModel } from "../classes/loggedModel";
 import {
   ActionPermissionTopic,
   ActionPermissionMode,
@@ -20,9 +20,11 @@ import {
 } from "./Permission";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
+import { CommonModel } from "../classes/commonModel";
+import { broadcastModel } from "../modules/broadcastHelper";
 
 @Table({ tableName: "apiKeys", paranoid: false })
-export class ApiKey extends LoggedModel<ApiKey> {
+export class ApiKey extends CommonModel<ApiKey> {
   idPrefix() {
     return "key";
   }
@@ -123,6 +125,11 @@ export class ApiKey extends LoggedModel<ApiKey> {
     const instance = await this.scope(null).findOne({ where: { id } });
     if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
+  }
+
+  @AfterCreate
+  static async broadcastAfterCreate(instance: ApiKey) {
+    return broadcastModel(instance);
   }
 
   @BeforeSave

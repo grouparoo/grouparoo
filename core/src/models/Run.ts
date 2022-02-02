@@ -27,6 +27,7 @@ import Moment from "moment";
 import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
 import { GrouparooModel } from "./GrouparooModel";
+import { broadcastModel } from "../modules/broadcastHelper";
 
 export interface HighWaterMark {
   [key: string]: string | number | Date;
@@ -345,10 +346,7 @@ export class Run extends CommonModel<Run> {
       instance.changed("sourceOffset") ||
       instance.changed("percentComplete")
     ) {
-      await chatRoom.broadcast({}, `model:run`, {
-        model: await instance.apiData(),
-        verb: "update",
-      });
+      await broadcastModel(instance, "update");
     }
   }
 

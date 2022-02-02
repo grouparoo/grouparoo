@@ -1,6 +1,4 @@
 import { cache as actionheroCache, api, task, config } from "actionhero";
-import { Op } from "sequelize";
-
 import { App } from "../models/App";
 import { Destination } from "../models/Destination";
 import { DestinationGroupMembership } from "../models/DestinationGroupMembership";
@@ -9,7 +7,6 @@ import { Group } from "../models/Group";
 import { GroupMember } from "../models/GroupMember";
 import { GroupRule } from "../models/GroupRule";
 import { Import } from "../models/Import";
-import { Log } from "../models/Log";
 import { Mapping } from "../models/Mapping";
 import { Option } from "../models/Option";
 import { GrouparooRecord } from "../models/GrouparooRecord";
@@ -68,8 +65,6 @@ export namespace Reset {
     await clearLocalCaches();
     await clearRedis();
 
-    await logMethod(callerId, "cluster", { counts });
-
     return counts;
   }
 
@@ -86,12 +81,9 @@ export namespace Reset {
     await Import.truncate();
     await Export.truncate();
     await Run.truncate();
-    await Log.truncate();
 
     await clearLocalCaches();
     await clearRedis();
-
-    await logMethod(callerId, "data");
   }
 
   /**
@@ -102,23 +94,11 @@ export namespace Reset {
   export async function cache(callerId: string) {
     await clearLocalCaches();
     await clearRedis();
-
-    await logMethod(callerId, "cache");
   }
 
   export async function resetHighWatermarks() {
     const schedules = await Schedule.findAll();
     for (const schedule of schedules) await schedule.resetHighWatermarks();
-  }
-
-  async function logMethod(callerId: string, topic: string, data = {}) {
-    return Log.create({
-      topic,
-      verb: "reset",
-      message: `Reset ${topic} by ${callerId}`,
-      ownerId: callerId,
-      data,
-    });
   }
 
   export async function clearLocalCaches() {

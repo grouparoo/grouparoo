@@ -4,7 +4,6 @@ import { Property } from "../models/Property";
 import { Source } from "./../models/Source";
 import { Destination } from "./../models/Destination";
 import { LockableHelper } from "./lockableHelper";
-import { LoggedModel } from "../classes/loggedModel";
 import { modelName } from "./modelName";
 
 export namespace MappingHelper {
@@ -134,7 +133,6 @@ export namespace MappingHelper {
 
     instance.mappings = newMappings;
     await instance.touch();
-    await LoggedModel.logUpdate(instance);
 
     // if there's an afterSetMapping hook and we want to commit our changes
     if (typeof instance["afterSetMapping"] === "function") {

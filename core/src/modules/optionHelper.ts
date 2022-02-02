@@ -11,7 +11,6 @@ import { Destination } from "./../models/Destination";
 import { Schedule, SimpleScheduleOptions } from "./../models/Schedule";
 import { Property, SimplePropertyOptions } from "../models/Property";
 import { App } from "./../models/App";
-import { LoggedModel } from "../classes/loggedModel";
 import { LockableHelper } from "./lockableHelper";
 import { plural } from "pluralize";
 import { modelName } from "./modelName";
@@ -128,7 +127,6 @@ export namespace OptionHelper {
 
     instance.__options = newOptions;
     await instance.touch();
-    await LoggedModel.logUpdate(instance);
 
     // if there's an afterSetOptions hook and we want to commit our changes
     if (typeof instance["afterSetOptions"] === "function") {

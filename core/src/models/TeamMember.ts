@@ -11,15 +11,16 @@ import {
   BeforeDestroy,
   AfterCreate,
 } from "sequelize-typescript";
-import { LoggedModel } from "../classes/loggedModel";
 import { Team } from "./Team";
 import { TeamMemberOps } from "../modules/ops/teamMember";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
 import { CLS } from "../modules/cls";
+import { CommonModel } from "../classes/commonModel";
+import { broadcastModel } from "../modules/broadcastHelper";
 
 @Table({ tableName: "teamMembers", paranoid: false })
-export class TeamMember extends LoggedModel<TeamMember> {
+export class TeamMember extends CommonModel<TeamMember> {
   idPrefix() {
     return "tem";
   }
@@ -88,6 +89,11 @@ export class TeamMember extends LoggedModel<TeamMember> {
   @BeforeValidate
   static lowercaseEmail(instance: TeamMember) {
     if (instance.email) instance.email = instance.email.toLocaleLowerCase();
+  }
+
+  @AfterCreate
+  static async broadcastAfterCreate(instance: TeamMember) {
+    return broadcastModel(instance);
   }
 
   @BeforeSave

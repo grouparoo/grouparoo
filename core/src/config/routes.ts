@@ -46,7 +46,6 @@ export const DEFAULT: { [namespace]: () => RoutesConfig } = {
         { path: "/v:apiVersion/groups/ruleOptions",action: "groups:ruleOptions" },
         { path: "/v:apiVersion/import/:id", action: "import:view" },
         { path: "/v:apiVersion/imports", action: "imports:list" },
-        { path: "/v:apiVersion/logs", action: "logs:list" },
         { path: "/v:apiVersion/model/:id", action: "model:view" },
         { path: "/v:apiVersion/modelOptions", action: "model:options" },
         { path: "/v:apiVersion/models", action: "models:list" },

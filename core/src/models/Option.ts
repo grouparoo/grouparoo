@@ -8,16 +8,16 @@ import {
   BeforeSave,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
-import { LoggedModel } from "../classes/loggedModel";
 import { App } from "./App";
 import { Source } from "./Source";
 import { Destination } from "./Destination";
 import { APIData } from "../modules/apiData";
+import { CommonModel } from "../classes/commonModel";
 
 export const OptionTypes = ["boolean", "string", "number"] as const;
 
 @Table({ tableName: "options", paranoid: false })
-export class Option extends LoggedModel<Option> {
+export class Option extends CommonModel<Option> {
   idPrefix() {
     return "opt";
   }

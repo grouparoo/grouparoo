@@ -10,10 +10,10 @@ import {
   BeforeDestroy,
   DefaultScope,
   Default,
+  AfterCreate,
 } from "sequelize-typescript";
 import { Source } from "./Source";
 import { ModelConfigurationObject } from "../classes/codeConfig";
-import { LoggedModel } from "../classes/loggedModel";
 import { APIData } from "../modules/apiData";
 import { ConfigWriter } from "../modules/configWriter";
 import { LockableHelper } from "../modules/lockableHelper";
@@ -22,6 +22,8 @@ import { Group } from "./Group";
 import { GrouparooRecord } from "./GrouparooRecord";
 import { RunOps } from "../modules/ops/runs";
 import { StateMachine } from "../modules/stateMachine";
+import { CommonModel } from "../classes/commonModel";
+import { broadcastModel } from "../modules/broadcastHelper";
 
 export const ModelTypes = ["profile", "account", "custom"] as const;
 export type ModelType = typeof ModelTypes[number];
@@ -41,7 +43,7 @@ const STATE_TRANSITIONS: StateMachine.StateTransition[] = [
   where: { state: "ready" },
 }))
 @Table({ tableName: "models", paranoid: false })
-export class GrouparooModel extends LoggedModel<GrouparooModel> {
+export class GrouparooModel extends CommonModel<GrouparooModel> {
   idPrefix() {
     return "mod";
   }
@@ -136,6 +138,11 @@ export class GrouparooModel extends LoggedModel<GrouparooModel> {
         `${instance.type} is not a valid model type (${ModelTypes.join(", ")})`
       );
     }
+  }
+
+  @AfterCreate
+  static async broadcastAfterCreate(instance: GrouparooModel) {
+    return broadcastModel(instance);
   }
 
   @BeforeSave

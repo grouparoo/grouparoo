@@ -3,7 +3,6 @@ import { Run } from "../../models/Run";
 import { Import } from "../../models/Import";
 import { Export } from "../../models/Export";
 import { ExportProcessor } from "../../models/ExportProcessor";
-import { Log } from "../../models/Log";
 import { Session } from "../../models/Session";
 import { OAuthRequest } from "../../models/OAuthRequest";
 import { CLSTask } from "../../classes/tasks/clsTask";
@@ -58,10 +57,6 @@ export class Sweeper extends CLSTask {
     while (count !== 0) {
       count = await ExportProcessor.sweep(limit);
     }
-
-    // --- LOGS ---
-    response = await Log.sweep();
-    this.log("log", response.count, response.days);
 
     // --- SESSIONS ---
     response = await Session.sweep();

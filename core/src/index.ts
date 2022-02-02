@@ -21,7 +21,6 @@ export { Group, GroupRuleWithKey } from "./models/Group";
 export { GroupMember } from "./models/GroupMember";
 export { GroupRule } from "./models/GroupRule";
 export { Import } from "./models/Import";
-export { Log } from "./models/Log";
 export { Notification } from "./models/Notification";
 export { Mapping } from "./models/Mapping";
 export { Option } from "./models/Option";

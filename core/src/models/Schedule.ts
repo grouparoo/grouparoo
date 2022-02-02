@@ -17,9 +17,9 @@ import {
   DefaultScope,
   BeforeDestroy,
   AfterSave,
+  AfterCreate,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
-import { LoggedModel } from "../classes/loggedModel";
 import { Source, SimpleSourceOptions } from "./Source";
 import { Property } from "./Property";
 import { App, SimpleAppOptions } from "./App";
@@ -35,6 +35,8 @@ import { APIData } from "../modules/apiData";
 import { FilterHelper } from "../modules/filterHelper";
 import { Filter } from "./Filter";
 import { ScheduleConfigurationObject } from "../classes/codeConfig";
+import { CommonModel } from "../classes/commonModel";
+import { broadcastModel } from "../modules/broadcastHelper";
 
 /**
  * Metadata and methods to return the options a Schedule for this connection/app.
@@ -81,7 +83,7 @@ const STATE_TRANSITIONS = [
   where: { state: "ready" },
 }))
 @Table({ tableName: "schedules", paranoid: false })
-export class Schedule extends LoggedModel<Schedule> {
+export class Schedule extends CommonModel<Schedule> {
   idPrefix() {
     return "sch";
   }
@@ -380,6 +382,11 @@ export class Schedule extends LoggedModel<Schedule> {
     if (existingCount > 0) {
       throw new Error(`source ${instance.sourceId} already has a schedule`);
     }
+  }
+
+  @AfterCreate
+  static async broadcastAfterCreate(instance: Schedule) {
+    return broadcastModel(instance);
   }
 
   @BeforeSave

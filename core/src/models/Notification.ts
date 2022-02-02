@@ -1,9 +1,10 @@
-import { Table, Column, AllowNull } from "sequelize-typescript";
-import { LoggedModel } from "../classes/loggedModel";
+import { Table, Column, AllowNull, AfterCreate } from "sequelize-typescript";
+import { CommonModel } from "../classes/commonModel";
 import { APIData } from "../modules/apiData";
+import { broadcastModel } from "../modules/broadcastHelper";
 
 @Table({ tableName: "notifications", paranoid: false })
-export class Notification extends LoggedModel<Notification> {
+export class Notification extends CommonModel<Notification> {
   idPrefix() {
     return "not";
   }
@@ -49,5 +50,10 @@ export class Notification extends LoggedModel<Notification> {
     const instance = await this.scope(null).findOne({ where: { id } });
     if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
+  }
+
+  @AfterCreate
+  static async broadcastAfterCreate(instance: Notification) {
+    return broadcastModel(instance);
   }
 }

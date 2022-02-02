@@ -10,14 +10,16 @@ import {
   DefaultScope,
   BelongsTo,
   Default,
+  AfterCreate,
 } from "sequelize-typescript";
-import { LoggedModel } from "../classes/loggedModel";
 import { StateMachine } from "../modules/stateMachine";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
 import { AppRefreshQueryOps } from "../modules/ops/appRefreshQuery";
 import { App } from "./App";
 import { CLS } from "../modules/cls";
+import { CommonModel } from "../classes/commonModel";
+import { broadcastModel } from "../modules/broadcastHelper";
 
 const STATES = ["draft", "ready"] as const;
 
@@ -29,7 +31,7 @@ const STATE_TRANSITIONS: StateMachine.StateTransition[] = [
   where: { state: "ready" },
 }))
 @Table({ tableName: "appRefreshQueries", paranoid: false })
-export class AppRefreshQuery extends LoggedModel<AppRefreshQuery> {
+export class AppRefreshQuery extends CommonModel<AppRefreshQuery> {
   idPrefix() {
     return "adr";
   }
@@ -116,6 +118,12 @@ export class AppRefreshQuery extends LoggedModel<AppRefreshQuery> {
       throw new Error(`app ${instance.appId} already has an app refresh query`);
     }
   }
+
+  @AfterCreate
+  static async broadcastAfterCreate(instance: AppRefreshQuery) {
+    return broadcastModel(instance);
+  }
+
   @BeforeSave
   static async noUpdateIfLocked(instance: AppRefreshQuery) {
     await LockableHelper.beforeSave(instance, [

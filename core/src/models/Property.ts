@@ -1,6 +1,7 @@
 import { config, env, redis } from "actionhero";
 import Sequelize, { Op, WhereOptions } from "sequelize";
 import {
+  AfterCreate,
   AfterDestroy,
   AfterSave,
   AllowNull,
@@ -18,7 +19,6 @@ import {
   Table,
 } from "sequelize-typescript";
 import { PropertyConfigurationObject } from "../classes/codeConfig";
-import { LoggedModel } from "../classes/loggedModel";
 import { APIData } from "../modules/apiData";
 import { CLS } from "../modules/cls";
 import { ConfigWriter } from "../modules/configWriter";
@@ -39,6 +39,8 @@ import { RecordProperty } from "./RecordProperty";
 import { Run } from "./Run";
 import { Source } from "./Source";
 import { getGrouparooRunMode } from "../modules/runMode";
+import { CommonModel } from "../classes/commonModel";
+import { broadcastModel } from "../modules/broadcastHelper";
 
 const jsMap = {
   boolean: config?.sequelize?.dialect === "sqlite" ? "text" : "boolean", // there is no boolean type in SQLite
@@ -95,7 +97,7 @@ export const CachedProperties = {
   where: { state: { [Op.notIn]: ["draft"] } },
 }))
 @Table({ tableName: "properties", paranoid: false })
-export class Property extends LoggedModel<Property> {
+export class Property extends CommonModel<Property> {
   idPrefix() {
     return "prp";
   }
@@ -368,6 +370,11 @@ export class Property extends LoggedModel<Property> {
     await CLS.afterCommit(
       async () => await redis.doCluster("api.rpc.property.invalidateCache")
     );
+  }
+
+  @AfterCreate
+  static async broadcastAfterCreate(instance: Property) {
+    return broadcastModel(instance);
   }
 
   @BeforeSave

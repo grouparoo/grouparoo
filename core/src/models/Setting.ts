@@ -7,16 +7,16 @@ import {
   BeforeDestroy,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
-import { LoggedModel } from "../classes/loggedModel";
 import { ConfigWriter } from "../modules/configWriter";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
 import { SettingConfigurationObject } from "../classes/codeConfig";
+import { CommonModel } from "../classes/commonModel";
 
 export const settingTypes = ["string", "number", "boolean"] as const;
 
 @Table({ tableName: "settings", paranoid: false })
-export class Setting extends LoggedModel<Setting> {
+export class Setting extends CommonModel<Setting> {
   idPrefix() {
     return "set";
   }
