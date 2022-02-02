@@ -91,7 +91,6 @@ export const DEFAULT: { [namespace]: () => RoutesConfig } = {
         { path: "/v:apiVersion/team/member/:id", action: "teamMember:view" },
         { path: "/v:apiVersion/teamMembers", action: "teamMembers:list" },
         { path: "/v:apiVersion/teams", action: "teams:list" },
-        { path: "/v:apiVersion/totals", action: "totals" },
       ],
 
       post: [
