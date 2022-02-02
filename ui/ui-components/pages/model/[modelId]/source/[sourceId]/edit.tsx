@@ -70,9 +70,13 @@ const Page: NextPage<Props> = ({
     Actions.SourceConnectionOptions["options"]
   >({});
   const { sourceId } = router.query;
-  const [[mappingColumn, mappingPropertyKey]] = useMemo<[string, string][]>(
-    () => Object.entries(source.mapping),
-    [source]
+  const mappingColumn = useMemo(
+    () => Object.keys(props.source.mapping)[0],
+    [props.source.mapping]
+  );
+  const mappingPropertyKey = useMemo(
+    () => Object.values(props.source.mapping)[0],
+    [props.source.mapping]
   );
   const isPrimarySource = useMemo(
     () =>
@@ -104,6 +108,11 @@ const Page: NextPage<Props> = ({
       setPreviewLoading(false);
       if (response?.preview) {
         setPreview(response.preview);
+        setSource((source) => {
+          // Need to clear the mapping when a new preview is loaded
+          source.mapping = {};
+          return source;
+        });
       }
     },
     [client, source.options, source.previewAvailable, sourceId]
@@ -133,12 +142,13 @@ const Page: NextPage<Props> = ({
       { options: source.options },
       { useCache: false }
     );
-    if (response?.options) setConnectionOptions(response.options);
+    if (response?.options) {
+      setConnectionOptions(response.options);
+    }
     setLoadingOptions(false);
   }, [client, source.options, sourceId]);
 
   useEffect(() => {
-    console.log("loadPreview");
     loadPreview(source.previewAvailable);
   }, [loadPreview, source]);
 
@@ -290,14 +300,12 @@ const Page: NextPage<Props> = ({
       event.target.type === "checkbox"
         ? event.target.checked
         : event.target.value;
-    console.log(1, _source);
     setSource(_source);
   };
 
   const updateOption = async (optKey, optValue) => {
     const _source = { ...source };
     _source.options[optKey] = optValue;
-    console.log(2, _source);
     setSource(_source);
     loadPreview();
   };

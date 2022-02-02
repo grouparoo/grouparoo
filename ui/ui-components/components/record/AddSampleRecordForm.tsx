@@ -28,6 +28,7 @@ const AddSampleRecordForm: React.FC<Props> = ({
   onSubmitComplete,
   properties,
 }) => {
+  // TODO: Remove me when 180627104-better-add-sample-record-logic-for-invalid-ids is merged
   modelId = useGrouparooModel().model.id;
   const { handleSubmit, register } = useForm();
   const [submitting, setSubmitting] = useState(false);

@@ -55,8 +55,12 @@ const FormMappingSelector: React.FC<Props> = ({
   }, [preview]);
 
   const [selectedColumn, setSelectedColumn] = useState<string>(
-    () => columnName || previewColumns?.[0] || ""
+    columnName || previewColumns?.[0] || ""
   );
+
+  useEffect(() => {
+    setSelectedColumn(columnName || previewColumns?.[0] || "");
+  }, [columnName, previewColumns]);
 
   useEffect(() => {
     // The preview changes if one of the source options has changed
