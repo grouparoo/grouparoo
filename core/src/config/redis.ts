@@ -41,7 +41,7 @@ export const DEFAULT = {
       username:
         username?.length > 1 || process.env.REDIS_USER ? username : undefined,
       password,
-      db: parseInt(db),
+      db: parseInt(db ?? "0"),
       // ssl options
       tls: protocol === "rediss" ? { rejectUnauthorized: false } : undefined,
       // you can learn more about retryStrategy @ https://github.com/luin/ioredis#auto-reconnect
