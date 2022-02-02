@@ -44,7 +44,7 @@ export async function waitForLock(
 
 export async function getLock(key: string, ttl = LOCK_DURATION_MS) {
   const client = api.redis.clients.client;
-  const lockKey = `grouparoo:lock:${key}`; // grouparoo:lock:export:record123:dest456
+  const lockKey = `grouparoo:lock:${key}`;
   let releaseLock: typeof client.del = null;
 
   const set = await client.setnx(lockKey, new Date().getTime());

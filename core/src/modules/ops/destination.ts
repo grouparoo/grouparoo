@@ -904,7 +904,6 @@ export namespace DestinationOps {
   }
 
   async function cancelOldExport(oldExport: Export, newExport: Export) {
-    console.info(`canceling ${oldExport.id}`);
     await oldExport.update({
       state: "canceled",
       sendAt: null,
@@ -948,14 +947,15 @@ export namespace DestinationOps {
         }
 
         const lock = await getLock(
-          `${givenExport.recordId}:${givenExport.destinationId}`
+          `export:${givenExport.recordId}:${givenExport.destinationId}`
         );
 
         const gotLock = typeof lock === "function";
 
-        if (gotLock) locks.push(lock);
-
-        if (gotLock && isNewest) _exports.push(givenExport);
+        if (gotLock) {
+          locks.push(lock);
+          _exports.push(givenExport);
+        }
       }
 
       if (_exports.length === 0) return;

@@ -8,7 +8,7 @@ import {
   GrouparooModel,
   GroupMember,
 } from "../../../../src";
-import { api, redis, specHelper } from "actionhero";
+import { api, specHelper } from "actionhero";
 import { Op } from "sequelize";
 
 describe("models/destination - with custom exportRecords plugin", () => {
@@ -692,7 +692,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       expect(newExport.completedAt).toBeTruthy();
     });
 
-    test("if two exports are pending for the same record/destination pair, the older one is canceled", async () => {
+    test("If multiple exports exist for a single record/destination pair, the newest is sent and older are canceled", async () => {
       const record = await helper.factories.record();
       const group = await helper.factories.group();
       await GroupMember.create({ recordId: record.id, groupId: group.id });
