@@ -25,17 +25,17 @@ export const getSourceOptions: GetSourceOptionsMethod = ({
     appOptions,
     appId,
   }) => {
-    const response: SourceOptionsMethodResponse = {
-      [tableNameKey]: { type: "list", options: [] },
-    };
     const map: TableDefinitionMap = await getTables({
       connection,
       appOptions,
       appId,
     });
-    for (const tableName in map) {
-      response[tableNameKey].options.push(tableName);
-    }
+
+    const tableNames = Object.keys(map).sort();
+    const response: SourceOptionsMethodResponse = {
+      [tableNameKey]: { type: "typeahead", options: tableNames },
+    };
+
     // TODO later: const getMore = extraSourceOptions?.method
     const extra = extraSourceOptions?.options || [];
     for (const option of extra) {
