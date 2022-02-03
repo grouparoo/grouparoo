@@ -4,10 +4,10 @@ import { helper } from "@grouparoo/spec-helper";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { CloseioClient } from "../../src/lib/client";
-import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
+import { DestinationSyncModeData } from "@grouparoo/core/src/models/Destination";
 import { exportContactRecord } from "../../src/lib/export-contacts/exportRecord";
 import { customFields, indexUsers } from "../utils/shared";
-import { getAllFields } from "../../dist/lib/common/destinationMappingOptions";
+import { getAllFields } from "../../src/lib/common/destinationMappingOptions";
 import { getCloseioCustomFieldKey } from "../../src/lib/common/destinationMappingOptions";
 
 let client: CloseioClient;

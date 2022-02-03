@@ -4,7 +4,7 @@ import { helper } from "@grouparoo/spec-helper";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { CloseioClient } from "../../src/lib/client";
-import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
+import { DestinationSyncModeData } from "@grouparoo/core/src/models/Destination";
 import { exportLeadRecord } from "../../src/lib/export-leads/exportRecord";
 import { getAllFields } from "../../src/lib/common/destinationMappingOptions";
 import { customFields } from "../utils/shared";

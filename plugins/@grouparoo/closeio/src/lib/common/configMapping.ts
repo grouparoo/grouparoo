@@ -68,6 +68,7 @@ export const configMapping = {
       {
         key: "Email",
         closeioKey: "emails[0].email",
+        type: "email",
         important: true,
       },
       {
@@ -76,10 +77,12 @@ export const configMapping = {
       },
       {
         key: "URL",
+        type: "url",
         closeioKey: "urls[0].url",
       },
       {
         key: "Phone",
+        type: "phoneNumber",
         closeioKey: "phones[0].phone",
       },
     ],
