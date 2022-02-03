@@ -90,7 +90,6 @@ export default function Page(
   }, [loadOAuthRequest, oAuthPopup]);
 
   async function edit(appData: Models.AppType) {
-    console.log(appData);
     const state = app.state === "ready" ? undefined : "ready";
     setLoading(true);
     const response: Actions.AppEdit = await client.request(
