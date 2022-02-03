@@ -1,7 +1,6 @@
 import { log } from "actionhero";
 import { Op } from "sequelize";
 import {
-  AfterCreate,
   AfterDestroy,
   AllowNull,
   BeforeCreate,
@@ -42,7 +41,6 @@ import { Property } from "./Property";
 import { GrouparooModel } from "./GrouparooModel";
 import { ModelGuard } from "../modules/modelGuard";
 import { CommonModel } from "../classes/commonModel";
-import { broadcastModel } from "../modules/broadcastHelper";
 
 export interface DestinationMapping extends MappingHelper.Mappings {}
 export interface SimpleDestinationGroupMembership {
@@ -666,11 +664,6 @@ export class Destination extends CommonModel<Destination> {
         `a destination of type ${instance.type} cannot be created as there are no record export methods`
       );
     }
-  }
-
-  @AfterCreate
-  static async broadcastAfterCreate(instance: Destination) {
-    return broadcastModel<Destination>(instance);
   }
 
   @BeforeSave

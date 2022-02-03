@@ -8,7 +8,6 @@ import {
   HasMany,
   AfterDestroy,
   BeforeSave,
-  AfterCreate,
 } from "sequelize-typescript";
 import { api } from "actionhero";
 import { TeamMember } from "./TeamMember";
@@ -21,7 +20,6 @@ import {
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
-import { broadcastModel } from "../modules/broadcastHelper";
 
 @Table({ tableName: "teams", paranoid: false })
 export class Team extends CommonModel<Team> {
@@ -115,11 +113,6 @@ export class Team extends CommonModel<Team> {
     const instance = await this.scope(null).findOne({ where: { id } });
     if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
-  }
-
-  @AfterCreate
-  static async broadcastAfterCreate(instance: Team) {
-    return broadcastModel<Team>(instance);
   }
 
   @BeforeSave

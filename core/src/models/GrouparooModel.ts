@@ -10,7 +10,6 @@ import {
   BeforeDestroy,
   DefaultScope,
   Default,
-  AfterCreate,
 } from "sequelize-typescript";
 import { Source } from "./Source";
 import { ModelConfigurationObject } from "../classes/codeConfig";
@@ -23,7 +22,6 @@ import { GrouparooRecord } from "./GrouparooRecord";
 import { RunOps } from "../modules/ops/runs";
 import { StateMachine } from "../modules/stateMachine";
 import { CommonModel } from "../classes/commonModel";
-import { broadcastModel } from "../modules/broadcastHelper";
 
 export const ModelTypes = ["profile", "account", "custom"] as const;
 export type ModelType = typeof ModelTypes[number];
@@ -138,11 +136,6 @@ export class GrouparooModel extends CommonModel<GrouparooModel> {
         `${instance.type} is not a valid model type (${ModelTypes.join(", ")})`
       );
     }
-  }
-
-  @AfterCreate
-  static async broadcastAfterCreate(instance: GrouparooModel) {
-    return broadcastModel<GrouparooModel>(instance);
   }
 
   @BeforeSave

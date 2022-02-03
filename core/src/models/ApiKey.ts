@@ -9,7 +9,6 @@ import {
   BeforeValidate,
   BeforeSave,
   BeforeDestroy,
-  AfterCreate,
 } from "sequelize-typescript";
 import * as UUID from "uuid";
 import {
@@ -21,7 +20,6 @@ import {
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
-import { broadcastModel } from "../modules/broadcastHelper";
 
 @Table({ tableName: "apiKeys", paranoid: false })
 export class ApiKey extends CommonModel<ApiKey> {
@@ -125,11 +123,6 @@ export class ApiKey extends CommonModel<ApiKey> {
     const instance = await this.scope(null).findOne({ where: { id } });
     if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
-  }
-
-  @AfterCreate
-  static async broadcastAfterCreate(instance: ApiKey) {
-    return broadcastModel<ApiKey>(instance);
   }
 
   @BeforeSave

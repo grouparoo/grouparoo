@@ -12,7 +12,6 @@ import {
   HasMany,
   HasOne,
   DefaultScope,
-  AfterCreate,
 } from "sequelize-typescript";
 import { api, redis } from "actionhero";
 import { Op } from "sequelize";
@@ -28,7 +27,6 @@ import { APIData } from "../modules/apiData";
 import { AppConfigurationObject } from "../classes/codeConfig";
 import { AppRefreshQuery } from "./AppRefreshQuery";
 import { CommonModel } from "../classes/commonModel";
-import { broadcastModel } from "../modules/broadcastHelper";
 
 export interface SimpleAppOptions extends OptionHelper.SimpleOptions {}
 
@@ -315,11 +313,6 @@ export class App extends CommonModel<App> {
         `cannot create a new ${instance.type} app, only ${pluginApp.maxInstances} allowed`
       );
     }
-  }
-
-  @AfterCreate
-  static async broadcastAfterCreate(instance: App) {
-    return broadcastModel<App>(instance);
   }
 
   @BeforeSave

@@ -2,7 +2,6 @@ import { api, config } from "actionhero";
 import Moment from "moment";
 import Sequelize, { Op, WhereAttributeHash, Includeable } from "sequelize";
 import {
-  AfterCreate,
   AfterDestroy,
   AllowNull,
   BeforeCreate,
@@ -52,7 +51,6 @@ import { RunOps } from "../modules/ops/runs";
 import { ModelGuard } from "../modules/modelGuard";
 import { getGrouparooRunMode } from "../modules/runMode";
 import { CommonModel } from "../classes/commonModel";
-import { broadcastModel } from "../modules/broadcastHelper";
 
 export const GROUP_RULE_LIMIT = 10;
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -716,11 +714,6 @@ export class Group extends CommonModel<Group> {
   @BeforeSave
   static async ensureModel(instance: Group) {
     return ModelGuard.check(instance);
-  }
-
-  @AfterCreate
-  static async broadcastAfterCreate(instance: Group) {
-    return broadcastModel<Group>(instance);
   }
 
   @BeforeSave

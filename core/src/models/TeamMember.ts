@@ -17,7 +17,6 @@ import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
 import { CLS } from "../modules/cls";
 import { CommonModel } from "../classes/commonModel";
-import { broadcastModel } from "../modules/broadcastHelper";
 
 @Table({ tableName: "teamMembers", paranoid: false })
 export class TeamMember extends CommonModel<TeamMember> {
@@ -89,11 +88,6 @@ export class TeamMember extends CommonModel<TeamMember> {
   @BeforeValidate
   static lowercaseEmail(instance: TeamMember) {
     if (instance.email) instance.email = instance.email.toLocaleLowerCase();
-  }
-
-  @AfterCreate
-  static async broadcastAfterCreate(instance: TeamMember) {
-    return broadcastModel<TeamMember>(instance);
   }
 
   @BeforeSave

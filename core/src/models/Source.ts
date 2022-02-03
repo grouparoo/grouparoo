@@ -1,6 +1,5 @@
 import { Op } from "sequelize";
 import {
-  AfterCreate,
   AfterDestroy,
   AllowNull,
   BeforeCreate,
@@ -44,7 +43,6 @@ import { Run } from "./Run";
 import { GrouparooModel } from "./GrouparooModel";
 import { ModelGuard } from "../modules/modelGuard";
 import { CommonModel } from "../classes/commonModel";
-import { broadcastModel } from "../modules/broadcastHelper";
 
 export interface BootstrapUniquePropertyParams {
   mappedColumn: string;
@@ -411,11 +409,6 @@ export class Source extends CommonModel<Source> {
           app.type
         }". Supported App types: ${pluginConnection.apps.join(", ")}.`
       );
-  }
-
-  @AfterCreate
-  static async broadcastAfterCreate(instance: Source) {
-    return broadcastModel<Source>(instance);
   }
 
   @BeforeSave

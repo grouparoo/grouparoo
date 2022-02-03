@@ -17,7 +17,6 @@ import {
   DefaultScope,
   BeforeDestroy,
   AfterSave,
-  AfterCreate,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
 import { Source, SimpleSourceOptions } from "./Source";
@@ -36,7 +35,6 @@ import { FilterHelper } from "../modules/filterHelper";
 import { Filter } from "./Filter";
 import { ScheduleConfigurationObject } from "../classes/codeConfig";
 import { CommonModel } from "../classes/commonModel";
-import { broadcastModel } from "../modules/broadcastHelper";
 
 /**
  * Metadata and methods to return the options a Schedule for this connection/app.
@@ -382,11 +380,6 @@ export class Schedule extends CommonModel<Schedule> {
     if (existingCount > 0) {
       throw new Error(`source ${instance.sourceId} already has a schedule`);
     }
-  }
-
-  @AfterCreate
-  static async broadcastAfterCreate(instance: Schedule) {
-    return broadcastModel<Schedule>(instance);
   }
 
   @BeforeSave

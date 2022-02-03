@@ -1,7 +1,6 @@
 import { config, env, redis } from "actionhero";
 import Sequelize, { Op, WhereOptions } from "sequelize";
 import {
-  AfterCreate,
   AfterDestroy,
   AfterSave,
   AllowNull,
@@ -40,7 +39,6 @@ import { Run } from "./Run";
 import { Source } from "./Source";
 import { getGrouparooRunMode } from "../modules/runMode";
 import { CommonModel } from "../classes/commonModel";
-import { broadcastModel } from "../modules/broadcastHelper";
 
 const jsMap = {
   boolean: config?.sequelize?.dialect === "sqlite" ? "text" : "boolean", // there is no boolean type in SQLite
@@ -370,11 +368,6 @@ export class Property extends CommonModel<Property> {
     await CLS.afterCommit(
       async () => await redis.doCluster("api.rpc.property.invalidateCache")
     );
-  }
-
-  @AfterCreate
-  static async broadcastAfterCreate(instance: Property) {
-    return broadcastModel<Property>(instance);
   }
 
   @BeforeSave

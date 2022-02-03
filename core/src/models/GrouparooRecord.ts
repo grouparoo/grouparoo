@@ -27,7 +27,6 @@ import { Source } from "./Source";
 import { GrouparooModel } from "./GrouparooModel";
 import { ModelGuard } from "../modules/modelGuard";
 import { CommonModel } from "../classes/commonModel";
-import { broadcastModel } from "../modules/broadcastHelper";
 
 const STATES = ["draft", "pending", "ready", "deleted"] as const;
 
@@ -263,11 +262,6 @@ export class GrouparooRecord extends CommonModel<GrouparooRecord> {
   @BeforeSave
   static async ensureModel(instance: GrouparooRecord) {
     return ModelGuard.check(instance);
-  }
-
-  @AfterCreate
-  static async broadcastAfterCreate(instance: GrouparooRecord) {
-    return broadcastModel<GrouparooRecord>(instance);
   }
 
   @BeforeSave

@@ -12,7 +12,6 @@ import {
   HasMany,
   AfterCreate,
   ForeignKey,
-  BeforeUpdate,
 } from "sequelize-typescript";
 import { chatRoom, log } from "actionhero";
 import { Schedule } from "./Schedule";
@@ -27,7 +26,6 @@ import Moment from "moment";
 import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
 import { GrouparooModel } from "./GrouparooModel";
-import { broadcastModel } from "../modules/broadcastHelper";
 
 export interface HighWaterMark {
   [key: string]: string | number | Date;
@@ -333,21 +331,6 @@ export class Run extends CommonModel<Run> {
   @AfterCreate
   static async testRun(instance: Run) {
     return instance.test();
-  }
-
-  @BeforeUpdate
-  static async broadcast(instance: Run) {
-    // we only need to broadcast at the end of each batch or on a state change, not as we increment values
-    if (
-      instance.changed("state") ||
-      instance.changed("memberLimit") ||
-      instance.changed("memberOffset") ||
-      instance.changed("highWaterMark") ||
-      instance.changed("sourceOffset") ||
-      instance.changed("percentComplete")
-    ) {
-      await broadcastModel<Run>(instance, "update");
-    }
   }
 
   static async sweep(limit: number) {

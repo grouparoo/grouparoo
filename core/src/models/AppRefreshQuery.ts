@@ -10,7 +10,6 @@ import {
   DefaultScope,
   BelongsTo,
   Default,
-  AfterCreate,
 } from "sequelize-typescript";
 import { StateMachine } from "../modules/stateMachine";
 import { LockableHelper } from "../modules/lockableHelper";
@@ -19,7 +18,6 @@ import { AppRefreshQueryOps } from "../modules/ops/appRefreshQuery";
 import { App } from "./App";
 import { CLS } from "../modules/cls";
 import { CommonModel } from "../classes/commonModel";
-import { broadcastModel } from "../modules/broadcastHelper";
 
 const STATES = ["draft", "ready"] as const;
 
@@ -117,11 +115,6 @@ export class AppRefreshQuery extends CommonModel<AppRefreshQuery> {
     if (existingCount > 0) {
       throw new Error(`app ${instance.appId} already has an app refresh query`);
     }
-  }
-
-  @AfterCreate
-  static async broadcastAfterCreate(instance: AppRefreshQuery) {
-    return broadcastModel<AppRefreshQuery>(instance);
   }
 
   @BeforeSave

@@ -1,7 +1,6 @@
-import { Table, Column, AllowNull, AfterCreate } from "sequelize-typescript";
+import { Table, Column, AllowNull } from "sequelize-typescript";
 import { CommonModel } from "../classes/commonModel";
 import { APIData } from "../modules/apiData";
-import { broadcastModel } from "../modules/broadcastHelper";
 
 @Table({ tableName: "notifications", paranoid: false })
 export class Notification extends CommonModel<Notification> {
@@ -50,10 +49,5 @@ export class Notification extends CommonModel<Notification> {
     const instance = await this.scope(null).findOne({ where: { id } });
     if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
-  }
-
-  @AfterCreate
-  static async broadcastAfterCreate(instance: Notification) {
-    return broadcastModel<Notification>(instance);
   }
 }
