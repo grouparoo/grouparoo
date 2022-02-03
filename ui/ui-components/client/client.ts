@@ -171,6 +171,7 @@ export class Client {
 
   private async sendRequest<Response>(
     config: AxiosRequestConfig,
+    options: Partial<ClientRequestOptions>,
     unlock?: ClientCacheGetObject["unlock"]
   ) {
     try {
@@ -195,6 +196,11 @@ export class Client {
 
       if (error.response && error.response.data && error.response.data.error) {
         if (this.redirectOnAccessError(error.response.data.error)) {
+          if (options.errorHandler && error.response.data.error.message) {
+            options.errorHandler.set({
+              message: error.response.data.error.message,
+            });
+          }
           return new Promise<Response>(() => {});
         }
 
@@ -205,6 +211,7 @@ export class Client {
 
         const newError = new Error(err);
         newError["code"] = error.response?.data?.error?.code;
+
         throw newError;
       } else {
         throw error;
@@ -274,7 +281,7 @@ export class Client {
         this.cache.clear();
       }
 
-      return await this.sendRequest(config, unlock);
+      return await this.sendRequest(config, options, unlock);
     } catch (error) {
       if (options.errorHandler) {
         options.errorHandler.set({ message: error });
