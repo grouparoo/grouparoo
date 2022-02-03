@@ -1,5 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
+import { Import } from "../../..";
 
 describe("tasks/records:reEnqueueStuckExportingRecords", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -15,27 +16,34 @@ describe("tasks/records:reEnqueueStuckExportingRecords", () => {
   });
 
   test("it will export records that are stuck in the ready state but still need to be exported", async () => {
-    // mario is ready
+    // mario is ready with no processing imports
     const mario = await helper.factories.record();
     await mario.import();
     await mario.update({ state: "ready" });
 
-    // luigi is exporting, but recently
+    // luigi is exporting with processing imports, but recently
     const luigi = await helper.factories.record();
     await luigi.import();
     await luigi.update({ state: "ready" });
-    await luigi.update({ readyToExport: true });
+    await Import.create({
+      state: "importing",
+      recordId: luigi.id,
+      importedAt: new Date(),
+      creatorId: "foo",
+      creatorType: "foo",
+    }).then(async (i) => await i.update({ state: "processing" }));
 
-    // luigi is exporting, but it's been a while
+    // luigi is exporting with processing imports, but it's been a while
     const toad = await helper.factories.record();
     await toad.import();
     await toad.update({ state: "ready" });
-    await toad.update({ readyToExport: true });
-    await helper.changeTimestamps(
-      [toad],
-      false,
-      new Date(new Date().getTime() - 2 * 60 * 60 * 1000) // 2 hours ago
-    );
+    await Import.create({
+      state: "importing",
+      recordId: toad.id,
+      importedAt: new Date(0),
+      creatorId: "foo",
+      creatorType: "foo",
+    }).then(async (i) => await i.update({ state: "processing" }));
 
     await specHelper.runTask("records:reEnqueueStuckExportingRecords", {});
 

@@ -33,7 +33,6 @@ export class RecordExport extends RetryableTask {
         state: "processing",
         recordId: record.id,
       },
-      order: [["createdAt", "asc"]],
     });
 
     const destinations = await DestinationOps.relevantFor(

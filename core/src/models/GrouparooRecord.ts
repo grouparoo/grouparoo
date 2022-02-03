@@ -69,11 +69,6 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
   @Column
   modelId: string;
 
-  @AllowNull(false)
-  @Default(false)
-  @Column
-  readyToExport: boolean;
-
   @HasMany(() => RecordProperty)
   recordProperties: RecordProperty[];
 
@@ -108,7 +103,6 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
       groupIds: groups.map((g) => g.id),
       invalid: this.invalid,
       properties,
-      readyToExport: this.readyToExport,
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),
     };

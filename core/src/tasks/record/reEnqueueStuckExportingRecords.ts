@@ -1,6 +1,6 @@
 import { config } from "actionhero";
-import { Op } from "sequelize";
-import { GrouparooRecord } from "../..";
+import Sequelize, { Op } from "sequelize";
+import { Import } from "../../models/Import";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { CLS } from "../../modules/cls";
 
@@ -15,22 +15,38 @@ export class GrouparooRecordsReEnqueueStuckExportingRecords extends CLSTask {
 
   async runWithinTransaction() {
     const limit: number = config.batchSize.exports;
+    let offset = 0;
     const toExport = process.env.GROUPAROO_DISABLE_EXPORTS
       ? process.env.GROUPAROO_DISABLE_EXPORTS !== "true"
       : true;
 
-    const records = await GrouparooRecord.findAll({
-      where: {
-        readyToExport: true,
-        updatedAt: { [Op.lt]: new Date(new Date().getTime() - delay) },
-      },
-      limit,
-    });
-
-    if (toExport) {
-      for (const record of records) {
-        await CLS.enqueueTask("record:export", { recordId: record.id });
+    let imports = await getStuckImports(limit, offset);
+    while (imports.length > 0) {
+      if (toExport) {
+        for (const _import of imports) {
+          await CLS.enqueueTask("record:export", {
+            recordId: _import.recordId,
+          });
+        }
       }
+
+      offset = offset + limit;
+      imports = await getStuckImports(limit, offset);
     }
   }
+}
+
+async function getStuckImports(limit: number, offset: number) {
+  return Import.findAll({
+    attributes: [
+      [Sequelize.fn("DISTINCT", Sequelize.col("recordId")), "recordId"],
+    ],
+    where: {
+      state: "processing",
+      importedAt: { [Op.lt]: new Date(new Date().getTime() - delay) },
+    },
+    limit,
+    offset,
+    logging: true,
+  });
 }
