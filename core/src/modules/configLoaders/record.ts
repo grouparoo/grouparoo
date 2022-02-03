@@ -55,7 +55,7 @@ export async function loadRecord(
 
   await record.addOrUpdateProperties(nonNullProperties);
 
-  logModel(
+  logModel<GrouparooRecord>(
     record,
     validate ? "validated" : isNew ? "created" : "updated",
     serializedProps

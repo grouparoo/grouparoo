@@ -127,10 +127,13 @@ export async function loadSource(
     }
   }
 
-  logModel(source, validate ? "validated" : isNew ? "created" : "updated");
+  logModel<Source>(
+    source,
+    validate ? "validated" : isNew ? "created" : "updated"
+  );
 
   if (bootstrappedProperty) {
-    logModel(
+    logModel<Property>(
       bootstrappedProperty,
       validate ? "validated" : isNew ? "created" : "updated"
     );
@@ -150,7 +153,7 @@ export async function deleteSources(ids: string[]) {
   for (const i in sources) {
     const source = sources[i];
     await source.update({ state: "deleted", locked: null });
-    logModel(source, "deleted");
+    logModel<Source>(source, "deleted");
   }
 
   return sources.map((instance) => instance.id);

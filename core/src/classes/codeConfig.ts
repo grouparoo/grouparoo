@@ -216,8 +216,8 @@ export function validateConfigObjectKeys(
 /**
  * Log a Sequelize Model
  */
-export function logModel(
-  instance: CommonModel<unknown> & {
+export function logModel<T>(
+  instance: CommonModel<T> & {
     key?: string;
     email?: string;
     name?: string;

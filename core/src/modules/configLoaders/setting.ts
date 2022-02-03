@@ -22,7 +22,7 @@ export async function loadSetting(
 
   await setting.update({ locked: getCodeConfigLockKey() });
 
-  logModel(setting, validate ? "validated" : "updated");
+  logModel<Setting>(setting, validate ? "validated" : "updated");
 
   // Settings is a special case that is not in the seenIds
   return {};

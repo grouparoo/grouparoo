@@ -101,7 +101,10 @@ export async function loadDestination(
 
   await destination.update({ state: "ready" });
 
-  logModel(destination, validate ? "validated" : isNew ? "created" : "updated");
+  logModel<Destination>(
+    destination,
+    validate ? "validated" : isNew ? "created" : "updated"
+  );
 
   return { destination: [destination.id] };
 }
@@ -117,7 +120,7 @@ export async function deleteDestinations(ids: string[]) {
     // destination:destroy will be enqueued by the `destroy` system task
     await destination.update({ state: "deleted", locked: null });
 
-    logModel(destination, "deleted");
+    logModel<Destination>(destination, "deleted");
   }
 
   return destinations.map((instance) => instance.id);
