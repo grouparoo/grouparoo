@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -28,8 +29,9 @@ import PrimaryKeyBadge from "../../../../../components/badges/PrimaryKeyBadge";
 import { useApi } from "../../../../../contexts/api";
 import { generateClient } from "../../../../../client/client";
 import { withServerErrorHandler } from "../../../../../utils/withServerErrorHandler";
+import { SourcePreviewMethodResponseRow } from "@grouparoo/core/src/classes/plugin";
 
-interface FormData {
+export interface FormData {
   mapping?: {
     sourceColumn: string;
     propertyKey: string;
@@ -44,6 +46,7 @@ interface Props {
   scheduleCount: number;
   source: Models.SourceType;
   totalSources: number;
+  preview: SourcePreviewMethodResponseRow[];
 }
 
 const Page: NextPage<Props> = ({
@@ -54,30 +57,43 @@ const Page: NextPage<Props> = ({
 }) => {
   const router = useRouter();
   const { client } = useApi();
-  const { handleSubmit, register } = useForm();
-  const [preview, setPreview] = useState([]);
+  const [preview, setPreview] = useState(props.preview ?? []);
   const [loading, setLoading] = useState(false);
   const [loadingOptions, setLoadingOptions] = useState(false);
   const [previewLoading, setPreviewLoading] = useState(false);
-  const [properties, setProperties] = useState<Models.PropertyType[]>(
-    props.properties
-  );
+  const [properties, setProperties] = useState(props.properties);
   const [propertyExamples, setPropertyExamples] = useState<
     Record<string, string[]>
   >(props.propertyExamples);
-  const [source, setSource] = useState<Models.SourceType>(props.source);
+  const [source, setSource] = useState(props.source);
   const [connectionOptions, setConnectionOptions] = useState<
     Actions.SourceConnectionOptions["options"]
   >({});
   const { sourceId } = router.query;
+
+  // not every row returned is guaranteed to have the same columns
+  const previewColumns = useMemo(() => {
+    return preview
+      .map((row) => Object.keys(row))
+      .reduce((acc, keys) => {
+        keys.forEach((key) => {
+          if (!acc.includes(key)) acc.push(key);
+        });
+
+        return acc;
+      }, [] as string[])
+      .sort();
+  }, [preview]);
+
   const mappingColumn = useMemo(
-    () => Object.keys(props.source.mapping)[0] as string,
-    [props.source.mapping]
+    () => Object.keys(source.mapping)[0] ?? previewColumns?.[0],
+    [previewColumns, source.mapping]
   );
   const mappingPropertyKey = useMemo(
-    () => Object.values(props.source.mapping)[0] as string,
-    [props.source.mapping]
+    () => Object.values(source.mapping)[0],
+    [source.mapping]
   );
+
   const isPrimarySource = useMemo(
     () =>
       totalSources === 1 ||
@@ -87,14 +103,32 @@ const Page: NextPage<Props> = ({
     [properties, source.id, totalSources]
   );
 
+  const resetFormData = useCallback<() => FormData>(
+    () => ({
+      source: {
+        name: source.name,
+        options: source.options,
+      },
+      mapping: {
+        propertyKey: mappingPropertyKey,
+        sourceColumn: mappingColumn,
+      },
+    }),
+    [mappingColumn, mappingPropertyKey, source.name, source.options]
+  );
+
+  const { handleSubmit, register, reset, watch } = useForm<FormData>({
+    defaultValues: resetFormData(),
+  });
+
   const loadPreview = useCallback(
-    async (previewAvailable: boolean = source.previewAvailable) => {
+    async (previewAvailable = source.previewAvailable) => {
       if (!previewAvailable) {
         return;
       }
 
       setPreviewLoading(true);
-      const response: Actions.SourcePreview = await client.request(
+      const response = await client.request<Actions.SourcePreview>(
         "get",
         `/source/${sourceId}/preview`,
         {
@@ -106,9 +140,17 @@ const Page: NextPage<Props> = ({
       setPreviewLoading(false);
       if (response?.preview) {
         setPreview(response.preview);
+        reset(resetFormData());
       }
     },
-    [client, source.options, source.previewAvailable, sourceId]
+    [
+      client,
+      resetFormData,
+      reset,
+      source.options,
+      source.previewAvailable,
+      sourceId,
+    ]
   );
 
   const sourceBadges = useMemo(() => {
@@ -135,132 +177,139 @@ const Page: NextPage<Props> = ({
       { options: source.options },
       { useCache: false }
     );
-    if (response?.options) setConnectionOptions(response.options);
+    if (response?.options) {
+      setConnectionOptions(response.options);
+    }
     setLoadingOptions(false);
   }, [client, source.options, sourceId]);
 
   useEffect(() => {
     loadPreview(source.previewAvailable);
+  }, [loadPreview, source]);
+
+  useEffect(() => {
     loadOptions();
-  }, [loadOptions, loadPreview, source.previewAvailable]);
+  }, [loadOptions]);
 
-  const onSubmit: SubmitHandler<FormData> = async (data, event) => {
-    event.preventDefault();
-    setLoading(true);
+  const onSubmit: SubmitHandler<FormData> = useCallback(
+    async (data, event) => {
+      event.preventDefault();
+      setLoading(true);
 
-    const isBootstrappingUniqueProperty =
-      source.previewAvailable &&
-      !source.connection.skipSourceMapping &&
-      !data.mapping?.propertyKey;
-    let bootstrapSuccess = false;
-    let mapping: Record<string, string>;
+      const isBootstrappingUniqueProperty =
+        source.previewAvailable &&
+        !source.connection.skipSourceMapping &&
+        !data.mapping?.propertyKey;
+      let bootstrapSuccess = false;
+      let mapping: Record<string, string>;
 
-    // Unique Property is being created and need to bootstrap?
-    if (isBootstrappingUniqueProperty) {
-      const bootstrapResponse: Actions.SourceBootstrapUniqueProperty =
-        await client.request(
-          "post",
-          `/source/${source.id}/bootstrapUniqueProperty`,
-          {
-            mappedColumn: data.mapping.sourceColumn,
-            sourceOptions: source.options,
-          }
-        );
+      // Unique Property is being created and need to bootstrap?
+      if (isBootstrappingUniqueProperty) {
+        const bootstrapResponse: Actions.SourceBootstrapUniqueProperty =
+          await client.request(
+            "post",
+            `/source/${source.id}/bootstrapUniqueProperty`,
+            {
+              mappedColumn: data.mapping.sourceColumn,
+              sourceOptions: source.options,
+            }
+          );
 
-      if (bootstrapResponse?.property) {
-        bootstrapSuccess = true;
-        mapping = {
-          [data.mapping.sourceColumn]: bootstrapResponse.property.key,
-        };
-      } else if (!Object.keys(bootstrapResponse).length) {
-        errorHandler.set({
-          message: "Unable to map to property.",
-        });
-        setLoading(false);
-        return;
-      }
-    }
-
-    if (!mapping) {
-      mapping = data.mapping?.propertyKey
-        ? {
-            [data.mapping.sourceColumn]: data.mapping.propertyKey,
-          }
-        : source.mapping;
-    }
-
-    const state =
-      source.connection.skipSourceMapping ||
-      data.mapping?.propertyKey ||
-      bootstrapSuccess
-        ? "ready"
-        : source.previewAvailable
-        ? undefined
-        : "ready";
-
-    const response = await client.request<Actions.SourceEdit>(
-      "put",
-      `/source/${sourceId}`,
-      { ...source, state, mapping }
-    );
-
-    if (response?.source) {
-      sourceHandler.set(response.source);
-
-      // we made the first source, and now should attempt to make sample properties
-      if (
-        grouparooUiEdition() === "config" &&
-        isBootstrappingUniqueProperty &&
-        response.source.state === "ready"
-      ) {
-        await client.request<Actions.SourceGenerateSampleRecords>(
-          "post",
-          `/source/${sourceId}/generateSampleRecords`,
-          { id: sourceId }
-        );
-      }
-
-      // this source can have a schedule, and we have no schedules yet
-      if (scheduleCount === 0 && response.source.scheduleAvailable) {
-        const createdScheduleAndRedirected = await createSchedule({
-          router,
-          client,
-          source: response.source,
-          setLoading: () => {},
-        });
-        if (createdScheduleAndRedirected) {
+        if (bootstrapResponse?.property) {
+          bootstrapSuccess = true;
+          mapping = {
+            [data.mapping.sourceColumn]: bootstrapResponse.property.key,
+          };
+        } else if (!Object.keys(bootstrapResponse).length) {
+          errorHandler.set({
+            message: "Unable to map to property.",
+          });
+          setLoading(false);
           return;
         }
-      } else if (
-        response.source.state === "ready" &&
-        source.state === "draft"
-      ) {
-        router.push(
-          "/model/[modelId]/source/[sourceId]/overview",
-          `/model/${response.source.modelId}/source/${sourceId}/overview`
-        );
-      } else {
-        successHandler.set({ message: "Source updated" });
       }
-    }
 
-    const { properties, examples } =
-      await client.request<Actions.PropertiesList>("get", `/properties`, {
-        unique: true,
-        includeExamples: true,
-        state: "ready",
-        modelId: source?.modelId,
-      });
+      if (!mapping) {
+        mapping = data.mapping?.propertyKey
+          ? {
+              [data.mapping.sourceColumn]: data.mapping.propertyKey,
+            }
+          : source.mapping;
+      }
 
-    setProperties(properties);
-    setPropertyExamples(examples);
-    if (response?.source) {
-      setSource(response.source);
-    }
-    setLoading(false);
-  };
+      const state =
+        source.connection.skipSourceMapping ||
+        data.mapping?.propertyKey ||
+        bootstrapSuccess
+          ? "ready"
+          : source.previewAvailable
+          ? undefined
+          : "ready";
 
-  async function handleDelete() {
+      const response = await client.request<Actions.SourceEdit>(
+        "put",
+        `/source/${sourceId}`,
+        { ...source, state, mapping }
+      );
+
+      if (response?.source) {
+        sourceHandler.set(response.source);
+
+        // we made the first source, and now should attempt to make sample properties
+        if (
+          grouparooUiEdition() === "config" &&
+          isBootstrappingUniqueProperty &&
+          response.source.state === "ready"
+        ) {
+          await client.request<Actions.SourceGenerateSampleRecords>(
+            "post",
+            `/source/${sourceId}/generateSampleRecords`,
+            { id: sourceId }
+          );
+        }
+
+        successHandler.set({ message: "Source saved" });
+        // this source can have a schedule, and we have no schedules yet
+        if (scheduleCount === 0 && response.source.scheduleAvailable) {
+          const createdScheduleAndRedirected = await createSchedule({
+            router,
+            client,
+            source: response.source,
+            setLoading: () => {},
+          });
+          if (createdScheduleAndRedirected) {
+            return;
+          }
+        } else if (
+          response.source.state === "ready" &&
+          source.state === "draft"
+        ) {
+          router.push(
+            "/model/[modelId]/source/[sourceId]/overview",
+            `/model/${response.source.modelId}/source/${sourceId}/overview`
+          );
+        }
+      }
+
+      const { properties, examples } =
+        await client.request<Actions.PropertiesList>("get", `/properties`, {
+          unique: true,
+          includeExamples: true,
+          state: "ready",
+          modelId: source?.modelId,
+        });
+
+      setProperties(properties);
+      setPropertyExamples(examples);
+      if (response?.source) {
+        setSource(response.source);
+      }
+      setLoading(false);
+    },
+    [client, router, scheduleCount, source, sourceId]
+  );
+
+  const handleDelete = useCallback(async () => {
     if (window.confirm("are you sure?")) {
       setLoading(true);
       const { success }: Actions.SourceDestroy = await client.request(
@@ -277,7 +326,7 @@ const Page: NextPage<Props> = ({
         setLoading(false);
       }
     }
-  }
+  }, [client, router, source.modelId, sourceId]);
 
   const update = async (event) => {
     const _source = Object.assign({}, source);
@@ -289,19 +338,12 @@ const Page: NextPage<Props> = ({
   };
 
   const updateOption = async (optKey, optValue) => {
-    const _source = Object.assign({}, source);
+    const _source = { ...source };
     _source.options[optKey] = optValue;
+    _source.mapping = {};
     setSource(_source);
     loadPreview();
   };
-
-  // not every row returned is guaranteed to have the same columns
-  const previewColumns = preview
-    .map((row) => Object.keys(row))
-    .reduce((acc, val) => acc.concat(val), [])
-    .filter((value, index, self) => {
-      return self.indexOf(value) === index;
-    });
 
   return (
     <>
@@ -329,9 +371,8 @@ const Page: NextPage<Props> = ({
                   type="text"
                   placeholder="Source Name"
                   defaultValue={source.name}
-                  onChange={(e) => update(e)}
                   name="source.name"
-                  {...register("source.name")}
+                  {...register("source.name", { onChange: (e) => update(e) })}
                 />
                 <Form.Control.Feedback type="invalid">
                   Name is required
@@ -377,9 +418,6 @@ const Page: NextPage<Props> = ({
                               id="typeahead"
                               labelKey="key"
                               disabled={loading || loadingOptions}
-                              onChange={(selected) => {
-                                updateOption(opt.key, selected[0]?.key);
-                              }}
                               options={connectionOptions[opt.key]?.options.map(
                                 (k, idx) => {
                                   return {
@@ -411,13 +449,16 @@ const Page: NextPage<Props> = ({
                                   </small>,
                                 ];
                               }}
-                              defaultSelected={
+                              defaultValue={
                                 source.options[opt.key]
                                   ? [source.options[opt.key]]
                                   : undefined
                               }
-                              name={`source.options.${opt.key}`}
-                              ref={register}
+                              {...register(`source.options.${opt.key}`, {
+                                onChange: (selected) => {
+                                  updateOption(opt.key, selected[0]?.key);
+                                },
+                              })}
                             />
                             <Form.Text className="text-muted">
                               {opt.description}
@@ -434,14 +475,14 @@ const Page: NextPage<Props> = ({
                               defaultValue={
                                 source.options[opt.key]?.toString() || ""
                               }
-                              onChange={(e) =>
-                                updateOption(
-                                  e.target.id.replace("_opt~", ""),
-                                  e.target.value
-                                )
-                              }
                               name={`source.options.${opt.key}`}
-                              {...register(`source.options.${opt.key}`)}
+                              {...register(`source.options.${opt.key}`, {
+                                onChange: (e) =>
+                                  updateOption(
+                                    e.target.id.replace("_opt~", ""),
+                                    e.target.value
+                                  ),
+                              })}
                             >
                               <option value={""} disabled>
                                 Select an option
@@ -494,14 +535,14 @@ const Page: NextPage<Props> = ({
                               disabled={loading || loadingOptions}
                               defaultValue={source.options[opt.key]?.toString()}
                               placeholder={opt.placeholder}
-                              onChange={(e) =>
-                                updateOption(
-                                  e.target.id.replace("_opt~", ""),
-                                  e.target.value
-                                )
-                              }
                               name={`source.options.${opt.key}`}
-                              {...register(`source.options.${opt.key}`)}
+                              {...register(`source.options.${opt.key}`, {
+                                onChange: (e) =>
+                                  updateOption(
+                                    e.target.id.replace("_opt~", ""),
+                                    e.target.value
+                                  ),
+                              })}
                             />
                             <Form.Text className="text-muted">
                               {opt.description}
@@ -557,6 +598,7 @@ const Page: NextPage<Props> = ({
                     properties={properties}
                     propertyExamples={propertyExamples}
                     register={register}
+                    watch={watch}
                     source={source}
                     mappingDisabled={
                       isPrimarySource && source.state !== "ready"
@@ -630,7 +672,10 @@ export const getServerSideProps: GetServerSideProps<Props> =
   withServerErrorHandler(async (ctx) => {
     const { sourceId, modelId } = ctx.query;
     const client = generateClient(ctx);
-    const { source } = await client.request("get", `/source/${sourceId}`);
+    const { source } = await client.request<Actions.SourceView>(
+      "get",
+      `/source/${sourceId}`
+    );
     ensureMatchingModel("Source", source.modelId, modelId.toString());
 
     const { total: totalSources } = await client.request("get", `/sources`, {
@@ -655,6 +700,15 @@ export const getServerSideProps: GetServerSideProps<Props> =
         modelId: source?.modelId,
       });
 
+    const { preview = [] } = await client.request<Actions.SourcePreview>(
+      "get",
+      `/source/${sourceId}/preview`,
+      {
+        options: Object.keys(source.options).length > 0 ? source.options : null,
+      },
+      { useCache: false }
+    );
+
     return {
       props: {
         environmentVariableOptions,
@@ -663,6 +717,7 @@ export const getServerSideProps: GetServerSideProps<Props> =
         source,
         scheduleCount,
         totalSources,
+        preview,
       },
     };
   });

@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from "react";
 import { Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useApi } from "../../contexts/api";
+import { useGrouparooModel } from "../../contexts/grouparooModel";
 import { errorHandler } from "../../eventHandlers";
 import { Actions, Models } from "../../utils/apiData";
 import LoadingButton from "../LoadingButton";
@@ -27,6 +28,8 @@ const AddSampleRecordForm: React.FC<Props> = ({
   onSubmitComplete,
   properties,
 }) => {
+  // TODO: Remove me when 180627104-better-add-sample-record-logic-for-invalid-ids is merged
+  modelId = useGrouparooModel().model.id;
   const { handleSubmit, register } = useForm();
   const [submitting, setSubmitting] = useState(false);
   const { client } = useApi();
@@ -86,8 +89,9 @@ const AddSampleRecordForm: React.FC<Props> = ({
           as="select"
           disabled={submitting}
           value={selectedUniquePropertyValue}
-          onChange={onSelectUniqueProperty}
-          {...register("uniqueProperty")}
+          {...register("uniqueProperty", {
+            onChange: onSelectUniqueProperty,
+          })}
         >
           {propertiesWithPrimaryKey.map((rule) => (
             <option key={`rule-${rule.key}`} value={rule.key}>

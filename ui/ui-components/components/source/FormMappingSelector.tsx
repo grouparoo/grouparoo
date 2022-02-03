@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
-import { useForm } from "react-hook-form";
+import { UseFormRegister, UseFormWatch } from "react-hook-form";
 import FormInputContainer from "../lib/form/FormInputContainer";
-import { Models } from "../../utils/apiData";
+import { Actions, Models } from "../../utils/apiData";
+import { FormData } from "../../pages/model/[modelId]/source/[sourceId]/edit";
 
 const renderExamples = (exampleText?: string) => (
   <p>
@@ -18,7 +19,8 @@ interface Props {
   properties: Models.PropertyType[];
   propertyExamples: Record<string, string[]>;
   source: Models.SourceType;
-  register: ReturnType<typeof useForm>["register"];
+  register: UseFormRegister<FormData>;
+  watch: UseFormWatch<FormData>;
   mappingDisabled?: boolean;
 }
 
@@ -30,6 +32,7 @@ const FormMappingSelector: React.FC<Props> = ({
   properties,
   propertyExamples,
   register,
+  watch,
   source,
   mappingDisabled,
 }) => {
@@ -53,18 +56,7 @@ const FormMappingSelector: React.FC<Props> = ({
       .sort();
   }, [preview]);
 
-  const [selectedColumn, setSelectedColumn] = useState<string>(
-    () => columnName || previewColumns?.[0] || ""
-  );
-
-  useEffect(() => {
-    // The preview changes if one of the source options has changed
-    // So we reset the selected column
-    if (!previewColumns.length) return;
-    setSelectedColumn(
-      (selectedColumn) => previewColumns.find((c) => c === selectedColumn) || ""
-    );
-  }, [previewColumns]);
+  const selectedColumn = watch("mapping.sourceColumn");
 
   const columnExample = useMemo<string>(
     () =>
@@ -121,12 +113,8 @@ const FormMappingSelector: React.FC<Props> = ({
             as="select"
             required
             disabled={disabled || !previewColumns.length}
-            value={selectedColumn}
-            onChange={(e) => {
-              setSelectedColumn(e.target.value);
-            }}
-            name="mapping.sourceColumn"
-            {...register("mapping_source_column")}
+            defaultValue={columnName || previewColumns?.[0] || ""}
+            {...register("mapping.sourceColumn")}
           >
             <option value={""} disabled>
               Select an option
@@ -152,17 +140,16 @@ const FormMappingSelector: React.FC<Props> = ({
                 as="select"
                 required
                 disabled={disabled}
-                defaultValue={""}
                 value={selectedProperty?.key}
-                onChange={(e) => {
-                  setSelectedProperty(
-                    availableProperties.find(
-                      ({ key }) => key === e.target.value
-                    )
-                  );
-                }}
-                name="mapping.propertyKey"
-                {...register("mapping_property")}
+                {...register("mapping.propertyKey", {
+                  onChange: (e) => {
+                    setSelectedProperty(
+                      availableProperties.find(
+                        ({ key }) => key === e.target.value
+                      )
+                    );
+                  },
+                })}
               >
                 <option value={""} disabled>
                   Select an option
