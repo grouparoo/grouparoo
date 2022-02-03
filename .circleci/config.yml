@@ -72,6 +72,7 @@ jobs:
             - plugins/@grouparoo/braze/node_modules
             - plugins/@grouparoo/calculated-property/node_modules
             - plugins/@grouparoo/clickhouse/node_modules
+            - plugins/@grouparoo/closeio/node_modules
             - plugins/@grouparoo/cloudwatch/node_modules
             - plugins/@grouparoo/csv/node_modules
             - plugins/@grouparoo/customerio/node_modules
@@ -127,6 +128,7 @@ jobs:
             - plugins/@grouparoo/braze/dist
             - plugins/@grouparoo/calculated-property/dist
             - plugins/@grouparoo/clickhouse/dist
+            - plugins/@grouparoo/closeio/dist
             - plugins/@grouparoo/cloudwatch/dist
             - plugins/@grouparoo/csv/dist
             - plugins/@grouparoo/customerio/dist
@@ -1698,6 +1700,61 @@ jobs:
       - run:
           name: test
           command: cd plugins/@grouparoo/clickhouse && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-closeio:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: circleci/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/closeio && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-cloudwatch:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
@@ -3898,6 +3955,11 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
+      - test-plugin-closeio:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
       - test-plugin-cloudwatch:
           filters:
             <<: *ignored-branches
@@ -4116,6 +4178,7 @@ workflows:
             - test-plugin-braze
             - test-plugin-calculated-property
             - test-plugin-clickhouse
+            - test-plugin-closeio
             - test-plugin-cloudwatch
             - test-plugin-csv
             - test-plugin-customerio
