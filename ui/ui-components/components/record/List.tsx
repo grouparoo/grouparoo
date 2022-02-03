@@ -198,7 +198,7 @@ export default function RecordsList(props: Props) {
                       key={`typeahead-search-${searchKey}`}
                       id={`typeahead-search-${searchKey}`}
                       minLength={0}
-                      disabled={props.searchValue || loading ? true : false}
+                      disabled={props.searchKey || loading ? true : false}
                       isLoading={searchLoading}
                       allowNew={true}
                       onChange={(selected) => {
