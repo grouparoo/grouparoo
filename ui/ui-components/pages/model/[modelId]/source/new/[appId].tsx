@@ -2,28 +2,28 @@ import { NextPageContext } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState, Fragment, useEffect } from "react";
-import { UseApi } from "../../../../../hooks/useApi";
 import { Row, Col, Card } from "react-bootstrap";
 import LoadingButton from "../../../../../components/LoadingButton";
 import AppIcon from "../../../../../components/AppIcon";
-import { errorHandler } from "../../../../../eventHandlers";
-import { humanizePluginName } from "../../../../../utils/languageHelper";
-import { Actions } from "../../../../../utils/apiData";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import AppBadge from "../../../../../components/badges/AppBadge";
+import { generateClient } from "../../../../../client/client";
+import { useApi } from "../../../../../contexts/api";
+import { useGrouparooModel } from "../../../../../contexts/grouparooModel";
+import { humanizePluginName } from "../../../../../utils/languageHelper";
+import { Actions } from "../../../../../utils/apiData";
 
 export default function Page(props) {
   const {
     connectionApps,
-    model,
     isPrimarySourceNotReady,
   }: {
     connectionApps: Actions.SourceConnectionApps["connectionApps"];
-    model: Actions.ModelView["model"];
     isPrimarySourceNotReady: boolean;
   } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
+  const { model } = useGrouparooModel();
   const [loading, setLoading] = useState(false);
   const { appId } = router.query;
 
@@ -47,11 +47,15 @@ export default function Page(props) {
 
   const create = async (connection) => {
     setLoading(true);
-    const response: Actions.SourceCreate = await execApi("post", `/source`, {
-      appId,
-      modelId: model.id,
-      type: connection.name,
-    });
+    const response: Actions.SourceCreate = await client.request(
+      "post",
+      `/source`,
+      {
+        appId,
+        modelId: model.id,
+        type: connection.name,
+      }
+    );
     if (response?.source) {
       router.push(
         `/model/${response.source.modelId}/source/${response.source.id}/edit`
@@ -107,17 +111,19 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { execApi } = UseApi(ctx);
+  const client = generateClient(ctx);
   const { modelId } = ctx.query;
-  const { connectionApps } = await execApi("get", `/sources/connectionApps`);
-  const { model } = await execApi("get", `/model/${modelId}`);
-  const { sources, total: totalSources } = await execApi<Actions.SourcesList>(
+  const { connectionApps } = await client.request(
     "get",
-    "/sources",
-    { modelId, limit: 1 }
+    `/sources/connectionApps`
   );
+  const { sources, total: totalSources } =
+    await client.request<Actions.SourcesList>("get", "/sources", {
+      modelId,
+      limit: 1,
+    });
   const isPrimarySourceNotReady =
     totalSources === 1 && sources[0].state !== "ready";
 
-  return { connectionApps, model, isPrimarySourceNotReady };
+  return { connectionApps, isPrimarySourceNotReady };
 };

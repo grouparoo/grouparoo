@@ -1,4 +1,4 @@
-import { UseApi } from "../../../hooks/useApi";
+import { useApi } from "../../../contexts/api";
 import { useState, Fragment } from "react";
 import { Row, Col, Badge, Alert, Card } from "react-bootstrap";
 import Link from "../../../components/GrouparooLink";
@@ -7,9 +7,11 @@ import RunTabs from "../../../components/tabs/Run";
 import Head from "next/head";
 import LoadingButton from "../../../components/LoadingButton";
 import { DurationTime } from "../../../components/DurationTime";
-import { errorHandler, successHandler } from "../../../eventHandlers";
+import { successHandler } from "../../../eventHandlers";
 import { Models, Actions } from "../../../utils/apiData";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
+import { generateClient } from "../../../client/client";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
@@ -17,16 +19,20 @@ export default function Page(props) {
   }: {
     quantizedTimeline: any;
   } = props;
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [run, setRun] = useState<Models.RunType>(props.run);
   const { chartData, chartKeys } = buildChartData(quantizedTimeline);
   const [loading, setLoading] = useState(false);
 
   async function stopRun() {
     setLoading(true);
-    const response: Actions.RunEdit = await execApi("put", `/run/${run.id}`, {
-      state: "stopped",
-    });
+    const response: Actions.RunEdit = await client.request(
+      "put",
+      `/run/${run.id}`,
+      {
+        state: "stopped",
+      }
+    );
     setLoading(false);
     if (response?.run) {
       successHandler.set({ message: "Run stopped" });
@@ -147,10 +153,10 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
+Page.getInitialProps = async (ctx: NextPageContext) => {
   const { id } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { run, quantizedTimeline } = await execApi("get", `/run/${id}`);
+  const client = generateClient(ctx);
+  const { run, quantizedTimeline } = await client.request("get", `/run/${id}`);
   return { run, quantizedTimeline };
 };
 

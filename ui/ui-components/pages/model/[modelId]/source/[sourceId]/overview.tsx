@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { Row, Col, Table, Badge, Alert, Card } from "react-bootstrap";
-import { UseApi } from "../../../../../hooks/useApi";
 import PageHeader from "../../../../../components/PageHeader";
 import StateBadge from "../../../../../components/badges/StateBadge";
 import LockedBadge from "../../../../../components/badges/LockedBadge";
@@ -18,15 +17,15 @@ import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 import ManagedCard from "../../../../../components/lib/ManagedCard";
+import PrimaryKeyBadge from "../../../../../components/badges/PrimaryKeyBadge";
+import { generateClient } from "../../../../../client/client";
 
 export default function Page({
-  model,
   source,
   totalSources,
   run,
   properties,
 }: {
-  model: Models.GrouparooModelType;
   source: Models.SourceType;
   totalSources: number;
   run: Models.RunType;
@@ -50,7 +49,7 @@ export default function Page({
       <ModelBadge modelName={source.modelName} modelId={source.modelId} />,
     ];
     if (isPrimarySource) {
-      badges.unshift(<Badge variant="info">primary source</Badge>);
+      badges.unshift(<PrimaryKeyBadge isSource />);
     }
     return badges;
   }, [source, isPrimarySource]);
@@ -66,7 +65,7 @@ export default function Page({
         <title>Grouparoo: {source.name}</title>
       </Head>
 
-      <SourceTabs source={source} model={model} />
+      <SourceTabs source={source} />
 
       <PageHeader
         icon={source.app.icon}
@@ -157,7 +156,7 @@ export default function Page({
                           {rule.isPrimaryKey && (
                             <>
                               {" "}
-                              <Badge variant="info">primary</Badge>
+                              <PrimaryKeyBadge />
                             </>
                           )}
                         </td>
@@ -322,31 +321,26 @@ export default function Page({
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { sourceId, modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { source } = await execApi("get", `/source/${sourceId}`);
+  const client = generateClient(ctx);
+  const { source } = await client.request("get", `/source/${sourceId}`);
   ensureMatchingModel("Source", source.modelId, modelId.toString());
 
-  const { model } = await execApi<Actions.ModelView>(
-    "get",
-    `/model/${modelId}`
-  );
-
-  const { total: totalSources } = await execApi("get", `/sources`, {
+  const { total: totalSources } = await client.request("get", `/sources`, {
     modelId,
     limit: 1,
   });
-  const { properties } = await execApi("get", `/properties`, {
+  const { properties } = await client.request("get", `/properties`, {
     sourceId,
   });
 
   let run;
   if (source?.schedule?.id) {
-    const { runs } = await execApi("get", `/runs`, {
+    const { runs } = await client.request("get", `/runs`, {
       id: source.schedule.id,
       limit: 1,
     });
     run = runs[0];
   }
 
-  return { model, source, totalSources, run, properties };
+  return { source, totalSources, run, properties };
 };

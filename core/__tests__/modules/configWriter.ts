@@ -2,7 +2,7 @@ import fs from "fs";
 import glob from "glob";
 import path from "path";
 import os from "os";
-import faker from "faker";
+import faker from "@faker-js/faker";
 import * as uuid from "uuid";
 import { helper } from "@grouparoo/spec-helper";
 
@@ -720,7 +720,9 @@ describe("modules/configWriter", () => {
         name,
         sourceId: source.getConfigId(),
         recurring,
+        incremental: true,
         recurringFrequency,
+        refreshEnabled: true,
         confirmRecords,
         options: Object.fromEntries(options.map((o) => [o.key, o.value])),
         filters: [
@@ -804,7 +806,7 @@ describe("modules/configWriter", () => {
     test("properties should only humanize their ID if it matches default pattern", async () => {
       let property: Property = await helper.factories.property(
         source,
-        { key: faker.lorem.word() },
+        { key: uuid.v4() },
         { column: faker.database.column() }
       );
       expect(property.getConfigId()).toEqual(
@@ -815,7 +817,7 @@ describe("modules/configWriter", () => {
         source,
         {
           id: "hello-world",
-          key: faker.lorem.word(),
+          key: uuid.v4(),
         },
         { column: faker.database.column() }
       );

@@ -48,9 +48,11 @@ module.exports = async function getConfig() {
       name: "Users Table Schedule",
       class: "Schedule",
       sourceId: "users_table", // sourceId -> `users_table`
+      incremental: false,
       recurring: true,
       recurringFrequency: 1000 * 60 * 15, // 15 minutes in ms
       confirmRecords: true,
+      refreshEnabled: false,
       options: {
         maxColumn: "updated_at",
       },

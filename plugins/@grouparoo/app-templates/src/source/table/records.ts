@@ -2,7 +2,7 @@ import {
   columnNameKey,
   tableNameKey,
   MatchCondition,
-  GetChangedRowsMethod,
+  GetRowsMethod,
 } from "./pluginMethods";
 import { getFilterOperation } from "./getFilterOperation";
 import {
@@ -15,10 +15,10 @@ import {
 } from "@grouparoo/core";
 
 export interface GetRecordsMethod {
-  (argument: { getChangedRows: GetChangedRowsMethod }): RecordsPluginMethod;
+  (argument: { getRows: GetRowsMethod }): RecordsPluginMethod;
 }
 
-export const getRecords: GetRecordsMethod = ({ getChangedRows }) => {
+export const getRecords: GetRecordsMethod = ({ getRows }) => {
   const records: RecordsPluginMethod = async ({
     connection,
     appOptions,
@@ -31,6 +31,7 @@ export const getRecords: GetRecordsMethod = ({ getChangedRows }) => {
     highWaterMark,
     sourceOffset,
     scheduleFilters,
+    schedule,
   }) => {
     const { tableName, highWaterMarkCondition } = await getChangeVariables({
       run,
@@ -54,7 +55,7 @@ export const getRecords: GetRecordsMethod = ({ getChangedRows }) => {
       });
     }
 
-    const results = await getChangedRows({
+    const results = await getRows({
       connection,
       appOptions,
       appId,
@@ -66,6 +67,7 @@ export const getRecords: GetRecordsMethod = ({ getChangedRows }) => {
       highWaterMarkKey,
       highWaterMarkCondition,
       matchConditions,
+      incremental: schedule.incremental,
     });
 
     let nextSourceOffset = 0;
@@ -82,7 +84,10 @@ export const getRecords: GetRecordsMethod = ({ getChangedRows }) => {
       const currentValue = highWaterMark[highWaterMarkAndSortColumnASC];
       const newValue = lastRow[highWaterMarkKey].toString();
 
-      if (currentValue && newValue === currentValue) {
+      if (!schedule.incremental) {
+        nextSourceOffset = sourceOffset + limit;
+        nextHighWaterMark[highWaterMarkAndSortColumnASC] = newValue;
+      } else if (currentValue && newValue === currentValue) {
         nextSourceOffset = sourceOffset + limit;
       } else {
         nextHighWaterMark[highWaterMarkAndSortColumnASC] = newValue;
@@ -106,7 +111,7 @@ export interface ChangeVariablesMin {
   highWaterMarkCondition: MatchCondition;
 }
 export interface Get {
-  (argument: { getChangedRows: GetChangedRowsMethod }): RecordsPluginMethod;
+  (argument: { getRows: GetRowsMethod }): RecordsPluginMethod;
 }
 export interface GetChangeVariablesMethod {
   (argument: {

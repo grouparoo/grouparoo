@@ -1,9 +1,9 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import mockAxios from "jest-mock-axios";
-import { NextPageContext } from "next";
+import { Client } from "../../client/client";
 import Component from "../../components/navigation/SetupStepsNavProgressBar";
+import { ApiContext } from "../../contexts/api";
 import { Actions } from "../../utils/apiData";
-import { UseApi } from "../../hooks/useApi";
 
 const useRouter = jest.spyOn(require("next/router"), "useRouter");
 
@@ -17,17 +17,25 @@ describe("setupStepsNavProgressBar", () => {
     });
 
     for (const page of ["/", "/session/sign-in"]) {
-      it(`does not render on ${page}`, () => {
+      it(`does not render on ${page}`, async () => {
         useRouter.mockImplementation(() => ({ pathname: page, asPath: page }));
-        render(<Component execApi={() => {}} />);
+        await act(async () => {
+          render(
+            <ApiContext.Provider
+              value={{
+                client: new Client(),
+              }}
+            >
+              <Component />
+            </ApiContext.Provider>
+          );
+        });
         expect(screen.queryByTestId("setupStepsProgressBar")).toBeNull();
       });
     }
   });
 
   describe("on a logged in page", () => {
-    const { execApi } = UseApi({} as NextPageContext);
-
     beforeEach(() => {
       useRouter.mockImplementation(() => ({
         pathname: "/dashboard",
@@ -41,7 +49,17 @@ describe("setupStepsNavProgressBar", () => {
     });
 
     it("doesn't display without steps", async () => {
-      render(<Component execApi={execApi} />);
+      await act(async () => {
+        render(
+          <ApiContext.Provider
+            value={{
+              client: new Client(),
+            }}
+          >
+            <Component />
+          </ApiContext.Provider>
+        );
+      });
 
       expect(screen.queryByTestId("setupStepsProgressBar")).toBeNull();
     });
@@ -69,7 +87,17 @@ describe("setupStepsNavProgressBar", () => {
         ],
       };
 
-      render(<Component execApi={execApi} />);
+      await act(async () => {
+        render(
+          <ApiContext.Provider
+            value={{
+              client: new Client(),
+            }}
+          >
+            <Component />
+          </ApiContext.Provider>
+        );
+      });
 
       expect(mockAxios).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -107,7 +135,17 @@ describe("setupStepsNavProgressBar", () => {
         ],
       };
 
-      render(<Component execApi={execApi} />);
+      await act(async () => {
+        render(
+          <ApiContext.Provider
+            value={{
+              client: new Client(),
+            }}
+          >
+            <Component />
+          </ApiContext.Provider>
+        );
+      });
 
       mockAxios.mockResponse({ data: stepsResponse });
       await expect(

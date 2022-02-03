@@ -1,5 +1,5 @@
+import { useApi } from "../../contexts/api";
 import { useState, useEffect } from "react";
-import { UseApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { Table, Row, Col } from "react-bootstrap";
 import Pagination from "../../components/Pagination";
@@ -7,11 +7,11 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import ResqueTabs from "../../components/tabs/Resque";
 import LoadingButton from "../../components/LoadingButton";
-import { errorHandler, successHandler } from "../../eventHandlers";
+import { successHandler } from "../../eventHandlers";
 
 export default function ResqueDelayedList(props) {
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [timestamps, setTimestamps] = useState([]);
   const [delayedJobs, setDelayedJobs] = useState({});
   const [loading, setLoading] = useState(false);
@@ -28,16 +28,14 @@ export default function ResqueDelayedList(props) {
   async function load() {
     updateURLParams(router, { offset });
     setLoading(true);
-    const response = await execApi(
+    const response = await client.request(
       "get",
       "/resque/delayedjobs",
       {
         limit,
         offset,
       },
-      null,
-      null,
-      false
+      { useCache: false }
     );
 
     const _timestamps = [];
@@ -60,7 +58,7 @@ export default function ResqueDelayedList(props) {
   async function delDelayed(timestamp, count) {
     if (window.confirm("Are you sure?")) {
       setLoading(true);
-      await execApi("post", "/resque/delDelayed", {
+      await client.request("post", "/resque/delDelayed", {
         timestamp: timestamp,
         count: count,
       });
@@ -72,7 +70,7 @@ export default function ResqueDelayedList(props) {
 
   async function runDelayed(timestamp, count) {
     setLoading(true);
-    await execApi("post", "/resque/runDelayed", {
+    await client.request("post", "/resque/runDelayed", {
       timestamp: timestamp,
       count: count,
     });

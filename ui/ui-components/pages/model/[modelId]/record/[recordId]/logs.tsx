@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { UseApi } from "../../../../../hooks/useApi";
 import LogsList from "../../../../../components/log/List";
 import RecordTabs from "../../../../../components/tabs/Record";
 import { getRecordDisplayName } from "../../../../../components/record/GetRecordDisplayName";
@@ -9,15 +8,14 @@ import StateBadge from "../../../../../components/badges/StateBadge";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
+import { generateClient } from "../../../../../client/client";
 
 export default function Page(props) {
   const {
     record,
-    model,
     properties,
   }: {
     record: Models.GrouparooRecordType;
-    model: Models.GrouparooModelType;
     properties: Models.PropertyType[];
   } = props;
 
@@ -39,7 +37,7 @@ export default function Page(props) {
         <title>Grouparoo: {getRecordDisplayName(record)}</title>
       </Head>
 
-      <RecordTabs record={record} model={model} />
+      <RecordTabs record={record} />
 
       <LogsList
         header={
@@ -64,14 +62,19 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { recordId, modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { record } = await execApi("get", `/record/${recordId}`);
-  ensureMatchingModel("Record", record?.modelId, modelId.toString());
-  const { model } = await execApi<Actions.ModelView>(
+  const client = generateClient(ctx);
+  const { record } = await client.request<Actions.RecordView>(
     "get",
-    `/model/${modelId}`
+    `/record/${recordId}`
   );
-  const { properties } = await execApi("get", `/properties`, { modelId });
+  ensureMatchingModel("Record", record?.modelId, modelId.toString());
+  const { properties } = await client.request<Actions.PropertiesList>(
+    "get",
+    `/properties`,
+    {
+      modelId,
+    }
+  );
   const logListInitialProps = await LogsList.hydrate(ctx);
-  return { record, model, properties, ...logListInitialProps };
+  return { record, properties, ...logListInitialProps };
 };

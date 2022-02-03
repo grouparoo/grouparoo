@@ -150,6 +150,7 @@ export class ScheduleCreate extends AuthenticatedAction {
     },
     state: { required: false },
     refreshEnabled: { required: false, formatter: APIData.ensureBoolean },
+    incremental: { required: false, formatter: APIData.ensureBoolean },
     options: { required: false, formatter: APIData.ensureObject },
     recurringFrequency: {
       required: true,
@@ -170,6 +171,7 @@ export class ScheduleCreate extends AuthenticatedAction {
       recurring: params.recurring,
       recurringFrequency: params.recurringFrequency,
       confirmRecords: params.confirmRecords,
+      incremental: params.incremental,
     });
 
     if (params.options) await schedule.setOptions(params.options);
@@ -198,6 +200,7 @@ export class ScheduleEdit extends AuthenticatedAction {
     sourceId: { required: false },
     recurring: { required: false, formatter: APIData.ensureBoolean },
     refreshEnabled: { required: false, formatter: APIData.ensureBoolean },
+    incremental: { required: false, formatter: APIData.ensureBoolean },
     confirmRecords: {
       required: false,
       formatter: APIData.ensureBoolean,
@@ -235,6 +238,8 @@ export class ScheduleEdit extends AuthenticatedAction {
       state: params.state,
       name: params.name,
       confirmRecords: params.confirmRecords,
+      incremental: params.incremental,
+      refreshEnabled: params.refreshEnabled,
     });
 
     await ConfigWriter.run();

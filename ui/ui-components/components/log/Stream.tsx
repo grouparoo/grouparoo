@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
-import { UseApi } from "../../hooks/useApi";
+import { NextPageContext } from "next";
+import { useEffect, useState } from "react";
+import { generateClient } from "../../client/client";
 import { useRealtimeStream } from "../../hooks/useRealtimeStream";
 import { Models } from "../../utils/apiData";
 
@@ -63,9 +64,10 @@ export default function LogsList(props) {
   );
 }
 
-LogsList.hydrate = async (ctx) => {
-  const { execApi } = UseApi(ctx);
-  const { logs } = await execApi("get", `/logs`, { limit });
+LogsList.hydrate = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
+
+  const { logs } = await client.request("get", `/logs`, { limit });
   return { logs: logs.reverse() };
 };
 

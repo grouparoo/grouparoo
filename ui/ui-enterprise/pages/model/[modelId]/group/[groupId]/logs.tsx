@@ -1,6 +1,5 @@
 import { NextPageContext } from "next";
 import Head from "next/head";
-import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import LogsList from "@grouparoo/ui-components/components/log/List";
 import GroupTabs from "@grouparoo/ui-components/components/tabs/Group";
 import PageHeader from "@grouparoo/ui-components/components/PageHeader";
@@ -8,9 +7,10 @@ import LockedBadge from "@grouparoo/ui-components/components/badges/LockedBadge"
 import StateBadge from "@grouparoo/ui-components/components/badges/StateBadge";
 import ModelBadge from "@grouparoo/ui-components/components/badges/ModelBadge";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
+import { generateClient } from "@grouparoo/ui-components/client/client";
 
 export default function Page(props) {
-  const { group, model } = props;
+  const { group } = props;
 
   return (
     <>
@@ -18,7 +18,7 @@ export default function Page(props) {
         <title>Grouparoo: Logs</title>
       </Head>
 
-      <GroupTabs group={group} model={model} />
+      <GroupTabs group={group} />
 
       <LogsList
         header={
@@ -43,13 +43,12 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { groupId, modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { group } = await execApi("get", `/group/${groupId}`);
-  const { model } = await execApi<Actions.ModelView>(
+  const { groupId } = ctx.query;
+  const client = generateClient(ctx);
+  const { group } = await client.request<Actions.GroupView>(
     "get",
-    `/model/${modelId}`
+    `/group/${groupId}`
   );
   const logListInitialProps = await LogsList.hydrate(ctx);
-  return { group, model, ...logListInitialProps };
+  return { group, ...logListInitialProps };
 };

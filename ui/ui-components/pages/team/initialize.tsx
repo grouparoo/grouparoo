@@ -1,33 +1,31 @@
+import { useApi } from "../../contexts/api";
 import Head from "next/head";
 import { useState } from "react";
-import { UseApi } from "../../hooks/useApi";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { Form, Card } from "react-bootstrap";
 import LoadingButton from "../../components/LoadingButton";
 import { Actions } from "../../utils/apiData";
-import {
-  errorHandler,
-  sessionHandler,
-  successHandler,
-} from "../../eventHandlers";
+import { sessionHandler, successHandler } from "../../eventHandlers";
+import { generateClient } from "../../client/client";
+import { NextPageContext } from "next";
 
 export default function TeamInitializePage(props) {
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
   const setting: Actions.SettingCoreClusterName["setting"] = props.setting;
 
   async function onSubmit(data) {
     setLoading(true);
-    const response: Actions.TeamInitialize = await execApi(
+    const response: Actions.TeamInitialize = await client.request(
       "post",
       `/team/initialize`,
       data
     );
     if (response?.team) {
-      const response: Actions.SessionCreate = await execApi(
+      const response: Actions.SessionCreate = await client.request(
         "post",
         `/session`,
         data
@@ -68,7 +66,7 @@ export default function TeamInitializePage(props) {
                 name="companyName"
                 placeholder={setting.locked ? setting.value : ""}
                 disabled={loading || setting.locked ? true : false}
-                ref={register}
+                {...register("companyName")}
               />
               <Form.Control.Feedback type="invalid">
                 Company Name is required
@@ -91,7 +89,7 @@ export default function TeamInitializePage(props) {
                 required
                 type="text"
                 name="firstName"
-                ref={register}
+                {...register("firstName")}
                 placeholder=""
                 disabled={loading}
               />
@@ -108,7 +106,7 @@ export default function TeamInitializePage(props) {
                 name="lastName"
                 placeholder=""
                 disabled={loading}
-                ref={register}
+                {...register("lastName")}
               />
               <Form.Control.Feedback type="invalid">
                 Last Name is required
@@ -123,7 +121,7 @@ export default function TeamInitializePage(props) {
                 name="email"
                 placeholder=""
                 disabled={loading}
-                ref={register}
+                {...register("email")}
               />
               <Form.Control.Feedback type="invalid">
                 Email is required
@@ -138,7 +136,7 @@ export default function TeamInitializePage(props) {
                 name="password"
                 placeholder=""
                 disabled={loading}
-                ref={register}
+                {...register("password")}
               />
               <Form.Control.Feedback type="invalid">
                 A password is required
@@ -152,11 +150,15 @@ export default function TeamInitializePage(props) {
                 label={`Subscribe to the Grouparoo Newsletter`}
                 disabled={loading}
                 defaultChecked
-                ref={register}
+                {...register("subscribed")}
               />
             </Form.Group>
             <p>
-              <a href="https://www.grouparoo.com/legal/privacy" target="_blank">
+              <a
+                href="https://www.grouparoo.com/legal/privacy"
+                target="_blank"
+                rel="noreferrer"
+              >
                 Privacy Policy
               </a>
             </p>
@@ -173,8 +175,8 @@ export default function TeamInitializePage(props) {
   );
 }
 
-TeamInitializePage.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
-  const { setting } = await execApi("get", `/setting/core/cluster-name`);
+TeamInitializePage.getInitialProps = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
+  const { setting } = await client.request("get", `/setting/core/cluster-name`);
   return { setting };
 };

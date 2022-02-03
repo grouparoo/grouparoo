@@ -3,10 +3,10 @@ import { getSampleRows } from "@grouparoo/mysql/dist/lib/table-import/getSampleR
 import { getTables } from "@grouparoo/mysql/dist/lib/table-import/getTables";
 
 import { getColumns } from "./getColumns";
-import { getChangedRows } from "./getChangedRows";
+import { getRows } from "./getRows";
 import { getPropertyValue } from "./getPropertyValue";
 import { getPropertyValues } from "./getPropertyValues";
-import { getChangedRowCount } from "./getChangedRowCount";
+import { getRowCount } from "./getRowCount";
 
 export function getConnection() {
   return buildConnection({
@@ -18,9 +18,9 @@ export function getConnection() {
     getSampleRows,
     getColumns,
     getTables,
-    getChangedRows,
+    getRows,
     getPropertyValue,
     getPropertyValues,
-    getChangedRowCount,
+    getRowCount,
   });
 }

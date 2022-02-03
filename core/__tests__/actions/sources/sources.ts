@@ -132,7 +132,7 @@ describe("actions/sources", () => {
         "scheduleOptions",
         "uniquePropertyBootstrapOptions",
         "sourceFilters",
-        "records",
+        "importRecords",
         "recordProperty",
         "recordProperties",
       ]);
@@ -325,9 +325,9 @@ describe("actions/sources", () => {
         otherProperty = await helper.factories.property(
           source,
           {
-            key: "fname",
+            key: "Fname",
           },
-          { column: "fname" }
+          { column: "Fname" }
         );
       });
 

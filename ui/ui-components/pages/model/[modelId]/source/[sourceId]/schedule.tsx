@@ -1,4 +1,4 @@
-import { UseApi } from "../../../../../hooks/useApi";
+import { useApi } from "../../../../../contexts/api";
 import SourceTabs from "../../../../../components/tabs/Source";
 import Head from "next/head";
 import { useState } from "react";
@@ -11,7 +11,7 @@ import PageHeader from "../../../../../components/PageHeader";
 import StateBadge from "../../../../../components/badges/StateBadge";
 import LockedBadge from "../../../../../components/badges/LockedBadge";
 import DatePicker from "../../../../../components/DatePicker";
-import { errorHandler, successHandler } from "../../../../../eventHandlers";
+import { successHandler } from "../../../../../eventHandlers";
 import { Models, Actions } from "../../../../../utils/apiData";
 import { formatTimestamp } from "../../../../../utils/formatTimestamp";
 import { filtersAreEqual } from "../../../../../utils/filtersAreEqual";
@@ -20,11 +20,20 @@ import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
+import { generateClient } from "../../../../../client/client";
+
+const renderCheckboxLabel = (
+  label: string,
+  description: string
+): React.ReactNode => (
+  <>
+    <code>{label}</code>: <small>{description}</small>
+  </>
+);
 
 export default function Page(props) {
   const {
     source,
-    model,
     run,
     pluginOptions,
     filterOptions,
@@ -33,7 +42,6 @@ export default function Page(props) {
     totalSources,
   }: {
     source: Models.SourceType;
-    model: Models.GrouparooModelType;
     run: Models.RunType;
     pluginOptions: Actions.ScheduleView["pluginOptions"];
     filterOptions: Actions.ScheduleFilterOptions["options"];
@@ -42,7 +50,7 @@ export default function Page(props) {
     totalSources: number;
   } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
   const [schedule, setSchedule] = useState<Models.ScheduleType>(props.schedule);
   const [localFilters, setLocalFilters] = useState<
@@ -65,7 +73,7 @@ export default function Page(props) {
         : 0,
     };
 
-    const response = await execApi<Actions.ScheduleEdit>(
+    const response = await client.request<Actions.ScheduleEdit>(
       "put",
       `/schedule/${schedule.id}`,
       scheduleToSave
@@ -94,7 +102,7 @@ export default function Page(props) {
 
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
-      const { success }: Actions.ScheduleDestroy = await execApi(
+      const { success }: Actions.ScheduleDestroy = await client.request(
         "delete",
         `/schedule/${schedule.id}`
       );
@@ -152,7 +160,7 @@ export default function Page(props) {
       <Head>
         <title>Grouparoo: {source.name}</title>
       </Head>
-      <SourceTabs source={source} model={model} />
+      <SourceTabs source={source} />
       <PageHeader
         icon={source.app.icon}
         title={`${source.name} - Schedule`}
@@ -172,10 +180,27 @@ export default function Page(props) {
         <fieldset disabled={Boolean(schedule.locked)}>
           <Row>
             <Col>
+              <Form.Group controlId="incremental">
+                <Form.Check
+                  type="checkbox"
+                  label={renderCheckboxLabel(
+                    "Incremental",
+                    schedule.supportIncrementalSchedule
+                      ? "Only update records that have changed since last schedule run"
+                      : "Not supported"
+                  )}
+                  disabled={!schedule.supportIncrementalSchedule || loading}
+                  checked={schedule.incremental}
+                  onChange={(e) => update(e)}
+                />
+              </Form.Group>
               <Form.Group controlId="confirmRecords">
                 <Form.Check
                   type="checkbox"
-                  label="Confirm that records exist when running schedule?"
+                  label={renderCheckboxLabel(
+                    "Confirm Records",
+                    "Confirm that records exist when running schedule"
+                  )}
                   disabled={loading}
                   checked={schedule.confirmRecords}
                   onChange={(e) => update(e)}
@@ -184,7 +209,10 @@ export default function Page(props) {
               <Form.Group controlId="recurring">
                 <Form.Check
                   type="checkbox"
-                  label="Recurring"
+                  label={renderCheckboxLabel(
+                    "Recurring",
+                    "Automatically run this Schedule at a regular interval"
+                  )}
                   disabled={loading}
                   checked={schedule.recurring}
                   onChange={(e) => update(e)}
@@ -193,7 +221,10 @@ export default function Page(props) {
               <Form.Group controlId="refreshEnabled">
                 <Form.Check
                   type="checkbox"
-                  label="Refresh Enabled?"
+                  label={renderCheckboxLabel(
+                    "Refresh",
+                    "Trigger this Schedule when the parent App’s Refresh Query finds new data"
+                  )}
                   disabled={loading}
                   checked={schedule.refreshEnabled}
                   onChange={(e) => update(e)}
@@ -345,9 +376,6 @@ export default function Page(props) {
                             </option>
                           ))}
                         </Form.Control>
-                        <Form.Text className="text-muted">
-                          {opt.description}
-                        </Form.Text>
                       </>
                     ) : null}
 
@@ -586,7 +614,7 @@ export default function Page(props) {
                 <Alert variant="info">
                   Note that changing the options or filters for a Schedule will
                   reset the high water mark and stop all running Runs. A new Run
-                  will be enqueued.
+                  will be enqueued and the full table will be scanned again.
                 </Alert>
               ) : null}
 
@@ -613,47 +641,42 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { sourceId, modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { source } = await execApi("get", `/source/${sourceId}`);
+  const client = generateClient(ctx);
+  const { source } = await client.request("get", `/source/${sourceId}`);
   let filterOptions = {};
   let filterOptionDescriptions = {};
   ensureMatchingModel("Source", source.modelId, modelId.toString());
 
-  const { model } = await execApi<Actions.ModelView>(
-    "get",
-    `/model/${modelId}`
-  );
-
-  const { schedule, pluginOptions } = await execApi(
+  const { schedule, pluginOptions } = await client.request(
     "get",
     `/schedule/${source.schedule.id}`
   );
-  const filterResponse = await execApi(
+  const filterResponse = await client.request(
     "get",
     `/schedule/${source.schedule.id}/filterOptions`
   );
   filterOptions = filterResponse.options;
   filterOptionDescriptions = filterResponse.optionDescriptions;
 
-  const { runs } = await execApi("get", `/runs`, {
+  const { runs } = await client.request("get", `/runs`, {
     id: source.schedule.id,
     limit: 1,
   });
 
-  const { total: totalSources } = await execApi<Actions.SourcesList>(
+  const { total: totalSources } = await client.request<Actions.SourcesList>(
     "get",
     "/sources",
     { modelId, limit: 1 }
   );
-  const { total: totalProperties } = await execApi<Actions.PropertiesList>(
-    "get",
-    `/properties`,
-    { sourceId, modelId, limit: 1 }
-  );
+  const { total: totalProperties } =
+    await client.request<Actions.PropertiesList>("get", `/properties`, {
+      sourceId,
+      modelId,
+      limit: 1,
+    });
 
   return {
     source,
-    model,
     schedule,
     pluginOptions,
     filterOptions,

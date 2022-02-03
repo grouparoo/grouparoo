@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/ui-enterprise",
   "description": "The Grouparoo Enterprise Web UI",
-  "version": "0.8.0-alpha.10",
+  "version": "0.8.1-alpha.0",
   "license": "UNLICENSED",
   "private": false,
   "publishConfig": {
@@ -29,30 +29,30 @@
     "lint": "prettier --check pages __tests__"
   },
   "dependencies": {
-    "dotenv": "10.0.0",
-    "next": "12.0.7",
+    "dotenv": "15.0.0",
+    "next": "12.0.10",
     "react": "17.0.2",
     "react-bootstrap": "1.6.4",
     "react-dom": "17.0.2",
-    "react-hook-form": "6.15.5"
+    "react-hook-form": "7.22.5"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.8.0-alpha.10",
-    "@grouparoo/spec-helper": "0.8.0-alpha.10",
-    "@grouparoo/ui-components": "0.8.0-alpha.10",
+    "@grouparoo/core": "0.8.1-alpha.0",
+    "@grouparoo/spec-helper": "0.8.1-alpha.0",
+    "@grouparoo/ui-components": "0.8.1-alpha.0",
     "@types/jest": "*",
     "@types/react": "*",
     "@types/react-dom": "*",
-    "actionhero": "28.1.4",
+    "actionhero": "28.1.7",
     "enzyme": "3.11.0",
-    "eslint": "8.6.0",
-    "eslint-config-next": "12.0.7",
+    "eslint": "8.8.0",
+    "eslint-config-next": "12.0.10",
     "jest": "27.4.5",
     "jest-environment-webdriver": "grouparoo/jest-webdriver#jest-v27-webdriver",
     "prettier": "2.5.1",
-    "prop-types": "15.8.0",
-    "ts-jest": "27.1.2",
-    "typescript": "4.5.4"
+    "prop-types": "15.8.1",
+    "ts-jest": "27.1.3",
+    "typescript": "4.5.5"
   },
   "acceptDependencies": {
     "react": "^16 || ^17",

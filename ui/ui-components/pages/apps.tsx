@@ -1,5 +1,5 @@
+import { useApi } from "../contexts/api";
 import { useState } from "react";
-import { UseApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import { useCallback } from "react";
@@ -11,32 +11,35 @@ import Pagination from "../components/Pagination";
 import LoadingTable from "../components/LoadingTable";
 import AppIcon from "../components/AppIcon";
 import StateBadge from "../components/badges/StateBadge";
-import { Models, Actions } from "../utils/apiData";
+import { Actions } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
 import LinkButton from "../components/LinkButton";
 import LoadingButton from "../components/LoadingButton";
 import { grouparooUiEdition } from "../utils/uiEdition";
 import { formatName } from "../utils/formatName";
 import { NextPageWithInferredProps } from "../utils/pageHelper";
-import { errorHandler, successHandler } from "../eventHandlers";
+import { successHandler } from "../eventHandlers";
+import { generateClient } from "../client/client";
+import { withServerErrorHandler } from "../utils/withServerErrorHandler";
 
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const { execApi } = UseApi(ctx);
-  const { limit, offset } = ctx.query;
-  const { apps, total } = await execApi<Actions.AppsList>("get", `/apps`, {
-    limit,
-    offset,
-  });
-  return { props: { apps, total } };
-};
+export const getServerSideProps = withServerErrorHandler(
+  async (ctx: GetServerSidePropsContext) => {
+    const client = generateClient(ctx);
+    const { limit, offset } = ctx.query;
+    const { apps, total } = await client.request<Actions.AppsList>(
+      "get",
+      `/apps`,
+      { limit, offset }
+    );
+    return { props: { apps, total } };
+  }
+);
 
-const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
-  ...props
-}) => {
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   const router = useRouter();
-  const { execApi } = UseApi(undefined, errorHandler);
-  const [apps, setApps] = useState<Models.AppType[]>(props.apps);
-  const [total, setTotal] = useState<number>(props.total);
+  const { client } = useApi();
+  const [apps, setApps] = useState(props.apps);
+  const [total, setTotal] = useState(props.total);
   const [loading, setLoading] = useState(false);
 
   // pagination
@@ -50,7 +53,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
   async function load() {
     updateURLParams(router, { offset });
     setLoading(true);
-    const response: Actions.AppsList = await execApi("get", `/apps`, {
+    const response: Actions.AppsList = await client.request("get", `/apps`, {
       limit,
       offset,
     });
@@ -70,7 +73,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
       setLoading(true);
       const appRefreshQuery = app.appRefreshQuery;
       try {
-        const response: Actions.AppRefreshQueryRun = await execApi(
+        const response: Actions.AppRefreshQueryRun = await client.request(
           "post",
           `/appRefreshQuery/${appRefreshQuery.id}/run`
         );
@@ -83,13 +86,13 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
             message: `Query returned ${response.appRefreshQuery.value}. No schedules enqueued.`,
           });
         }
-        const { apps }: Actions.AppsList = await execApi("get", `/apps`);
+        const { apps }: Actions.AppsList = await client.request("get", `/apps`);
         setApps(apps);
       } finally {
         setLoading(false);
       }
     },
-    [execApi, successHandler]
+    [client]
   );
 
   return (

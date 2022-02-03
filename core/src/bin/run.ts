@@ -1,8 +1,10 @@
-import { GrouparooCLI } from "../modules/cli";
-import { CLI, Task, api, config, ParamsFrom } from "actionhero";
-import { Reset } from "../modules/reset";
+import { CLI, Task, api, config, ParamsFrom, log } from "actionhero";
 import { Worker } from "node-resque";
+import { GrouparooCLI } from "../modules/cli";
+import { Reset } from "../modules/reset";
 import { getGrouparooRunMode } from "../modules/runMode";
+import { Schedule } from "../models/Schedule";
+import { Run } from "../models/Run";
 
 export class RunCLI extends CLI {
   name = "run";
@@ -23,7 +25,6 @@ export class RunCLI extends CLI {
       flag: true,
     },
     "no-export": {
-      default: false,
       description: "Skip exporting the records",
       letter: "n",
       flag: true,
@@ -37,12 +38,12 @@ export class RunCLI extends CLI {
     scheduleIds: {
       description: "Only run specific Schedules by id",
       required: false,
+      requiredValue: true,
       variadic: true,
       letter: "s",
       placeholder: "schedule ids",
-      formatter: (v: any) => v as boolean | string[],
     },
-  };
+  } as const;
 
   constructor() {
     super();
@@ -65,6 +66,7 @@ export class RunCLI extends CLI {
     >;
   }) {
     GrouparooCLI.logCLI(this.name, false);
+
     this.checkWorkers();
 
     if (!params.web) GrouparooCLI.disableWebServer();
@@ -76,6 +78,9 @@ export class RunCLI extends CLI {
 
     const { main } = await import("../grouparoo");
     await main();
+
+    await this.checkSchedules(params.scheduleIds);
+    await this.stopScheduleRuns();
 
     const scheduleIds = Array.isArray(params.scheduleIds)
       ? params.scheduleIds
@@ -89,6 +94,39 @@ export class RunCLI extends CLI {
     if (config.tasks.minTaskProcessors < 1) {
       return GrouparooCLI.logger.fatal(
         `No Task Workers are enabled. Modify your environment to add Workers`
+      );
+    }
+  }
+
+  async checkSchedules(scheduleIds?: string[]) {
+    if (typeof scheduleIds === "undefined") return;
+
+    const schedules = await Schedule.findAll({ where: { id: scheduleIds } });
+    const foundScheduleIds = schedules.map((s) => s.id);
+    scheduleIds.forEach((id) => {
+      if (!foundScheduleIds.includes(id))
+        return GrouparooCLI.logger.fatal(
+          `Schedule with id "${id}" was not found`
+        );
+    });
+  }
+
+  async stopScheduleRuns() {
+    const runningRuns = await Run.findAll({
+      where: {
+        state: "running",
+        creatorType: "schedule",
+      },
+    });
+
+    for (const run of runningRuns) {
+      await run.stop();
+    }
+
+    if (runningRuns.length) {
+      log(
+        `Stopped ${runningRuns.length} previously running Schedules`,
+        "notice"
       );
     }
   }

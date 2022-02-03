@@ -73,10 +73,27 @@ export namespace APIData {
     }
   }
 
+  export function ensureDate(param: Date | string | number) {
+    if (param instanceof Date) return param;
+
+    if (typeof param === "string" || typeof param === "number") {
+      const asNumber = Number(param);
+      if (!isNaN(asNumber)) param = asNumber;
+
+      const date = new Date(param);
+      if (!isNaN(date.getTime())) return date;
+    }
+
+    throw new Error(`${param} cannot be converted to a date`);
+  }
+
   export function formatDate(date: Date | string) {
     if (!date || date === "") return null;
     else if (date instanceof Date) return date.getTime();
-    else if (typeof date === "string") return new Date(date).getTime();
-    else throw new Error(`${date} is not a date`);
+    else if (typeof date === "string") {
+      const asNumber = Number(date);
+      if (!isNaN(asNumber)) return asNumber;
+      return new Date(date).getTime();
+    } else throw new Error(`${date} is not a date`);
   }
 }

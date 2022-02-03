@@ -435,7 +435,7 @@ describe("session", () => {
           );
           expect(secondResponse.error.code).toBe("AUTHENTICATION_ERROR");
           expect(secondResponse.error.message).toBe(
-            "Please log in to continue"
+            "Please sign in to continue"
           );
           expect(secondResponse["success"]).toBeFalsy();
         });
@@ -673,7 +673,7 @@ describe("session", () => {
 
         test("without an apiKey, actions are not authenticated", async () => {
           let response = await specHelper.runAction("appReadAction", {});
-          expect(response.error.message).toBe("Please log in to continue");
+          expect(response.error.message).toBe("Please sign in to continue");
           expect(response.error.code).toBe("AUTHENTICATION_ERROR");
           expect(response["success"]).toBeFalsy();
         });

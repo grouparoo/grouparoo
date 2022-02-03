@@ -1,5 +1,5 @@
 import { loadPath } from "../loadPath";
-import faker from "faker";
+import faker from "@faker-js/faker";
 import { ApiKey } from "@grouparoo/core";
 
 const data = async (props = {}) => {
@@ -10,7 +10,7 @@ const data = async (props = {}) => {
     updatedAt: new Date(),
   };
 
-  return Object.assign({}, defaultProps, props);
+  return { ...defaultProps, ...props };
 };
 
 export default async (props = {}) => {

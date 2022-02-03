@@ -1,5 +1,5 @@
 import { loadPath } from "../loadPath";
-import faker from "faker";
+import faker from "@faker-js/faker";
 import { Group, GrouparooModel } from "@grouparoo/core";
 import ModelFactory from "./model";
 
@@ -18,7 +18,7 @@ const data = async (props: { modelId?: string } = {}) => {
     updatedAt: new Date(),
   };
 
-  return Object.assign({}, defaultProps, props);
+  return { ...defaultProps, ...props };
 };
 
 export default async (props: { [key: string]: any } = {}) => {

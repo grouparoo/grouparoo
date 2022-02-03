@@ -4,7 +4,7 @@ import Ora from "ora";
 import * as glob from "glob";
 import { readPackageJSON } from "./readPackageJSON";
 import { ensureNoTsHeaderFiles } from "./ensureNoTsHeaderFiles";
-import { Command } from "commander";
+import { Command, InvalidArgumentError } from "commander";
 
 // We don't want to require actionhero in the project (so we can rely on core's version), so we need to stub this type
 type ActionheroCLIStub = {
@@ -25,10 +25,13 @@ type ActionheroCLIInputStub = {
   description?: string;
   default?: boolean;
   required?: boolean;
+  requiredValue?: boolean;
   letter?: string;
   flag?: string;
   placeholder?: string;
   variadic?: boolean;
+  formatter?: Function;
+  validator?: Function;
 };
 
 export async function loadLocalCommands(program: Command): Promise<boolean> {
@@ -189,17 +192,43 @@ async function convertCLIToCommanderAction(
 
   for (const key in instance.inputs) {
     const input = instance.inputs[key];
-    const separators = input.required ? ["<", ">"] : ["[", "]"];
+    const separators =
+      input.required || input.requiredValue ? ["<", ">"] : ["[", "]"];
     const methodName = input.required ? "requiredOption" : "option";
+    const argString = `${input.letter ? `-${input.letter}, ` : ""}--${key} ${
+      input.flag
+        ? ""
+        : `${separators[0]}${input.placeholder || key}${
+            input.variadic ? "..." : ""
+          }${separators[1]}`
+    }`;
+
+    const argProcessor = (value: string, accumulator?: unknown[]): unknown => {
+      try {
+        if (typeof input.formatter === "function") {
+          value = input.formatter(value);
+        }
+
+        if (typeof input.validator === "function") {
+          input.validator(value);
+        }
+
+        if (input.variadic) {
+          if (!Array.isArray(accumulator)) accumulator = [];
+          accumulator.push(value);
+          return accumulator;
+        }
+
+        return value;
+      } catch (error) {
+        throw new InvalidArgumentError(error?.message ?? error);
+      }
+    };
+
     command[methodName](
-      `${input.letter ? `-${input.letter}, ` : ""}--${key} ${
-        input.flag
-          ? ""
-          : `${separators[0]}${input.placeholder || key}${
-              input.variadic ? "..." : ""
-            }${separators[1]}`
-      }`,
+      argString,
       input.description,
+      argProcessor,
       input.default
     );
   }

@@ -1,3 +1,4 @@
+import { useApi } from "../../contexts/api";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -9,9 +10,10 @@ import {
   successHandler,
   teamMemberHandler,
 } from "../../eventHandlers";
-import { UseApi } from "../../hooks/useApi";
 import { Actions, Models } from "../../utils/apiData";
 import { grouparooUiEdition } from "../../utils/uiEdition";
+import { generateClient } from "../../client/client";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
@@ -20,7 +22,7 @@ export default function Page(props) {
     teams: Models.TeamType[];
   } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
   const { id: teamId } = router.query;
@@ -30,7 +32,7 @@ export default function Page(props) {
     if (!data.teamId && teamId) data.teamId = teamId;
 
     setLoading(true);
-    const response: Actions.TeamMemberCreate = await execApi(
+    const response: Actions.TeamMemberCreate = await client.request(
       "post",
       `/team/member`,
       data
@@ -61,7 +63,7 @@ export default function Page(props) {
           <Form.Control
             as="select"
             name="teamId"
-            ref={register}
+            {...register("teamId")}
             defaultValue={
               teamId ? teamId : teams.length > 0 ? teams[0].id : null
             }
@@ -83,7 +85,7 @@ export default function Page(props) {
             type="text"
             name="firstName"
             placeholder="First Name"
-            ref={register}
+            {...register("firstName")}
             disabled={loading}
           />
           <Form.Control.Feedback type="invalid">
@@ -98,7 +100,7 @@ export default function Page(props) {
             type="text"
             name="lastName"
             placeholder="Last Name"
-            ref={register}
+            {...register("lastName")}
             disabled={loading}
           />
           <Form.Control.Feedback type="invalid">
@@ -113,7 +115,7 @@ export default function Page(props) {
             type="email"
             name="email"
             placeholder="email"
-            ref={register}
+            {...register("email")}
             disabled={loading}
           />
           <Form.Control.Feedback type="invalid">
@@ -128,7 +130,7 @@ export default function Page(props) {
             name="password"
             type="password"
             placeholder="password"
-            ref={register}
+            {...register("password")}
             disabled={loading}
           />
           <Form.Control.Feedback type="invalid">
@@ -142,12 +144,16 @@ export default function Page(props) {
             name="subscribed"
             label={`Subscribe to the Grouparoo Newsletter`}
             defaultChecked
-            ref={register}
+            {...register("subscribed")}
             disabled={loading}
           />
         </Form.Group>
         <p>
-          <a href="https://www.grouparoo.com/legal/privacy" target="_blank">
+          <a
+            href="https://www.grouparoo.com/legal/privacy"
+            target="_blank"
+            rel="noreferrer"
+          >
             Privacy Policy
           </a>
         </p>
@@ -160,8 +166,8 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
-  const { teams } = await execApi("get", `/teams`);
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
+  const { teams } = await client.request("get", `/teams`);
   return { teams };
 };

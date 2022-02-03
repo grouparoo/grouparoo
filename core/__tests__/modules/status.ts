@@ -487,6 +487,7 @@ describe("modules/status", () => {
 
     test("it gathers records", async () => {
       const records = await FinalSummaryReporters.GrouparooRecords.getData();
+      expect(records[0].name).toBeNull();
       expect(records[0].recordsCreated).toEqual(1);
       expect(records[0].recordsUpdated).toEqual(1);
       expect(records[0].allRecords).toEqual(2);
@@ -558,42 +559,99 @@ describe("modules/status", () => {
         expect(destinationReport).toEqual([]);
       });
 
-      it.each(["ready", "deleted"])(
-        "shows %p destinations that ran",
-        async (destinationState) => {
-          const destination: Destination = await helper.factories.destination();
+      describe.each(["ready", "deleted"])(
+        "with a %p destination",
+        (destinationState) => {
+          it("shows destinations that created new exports", async () => {
+            const destination = await helper.factories.destination();
+            await helper.factories.export(undefined, destination);
 
-          const _export = await helper.factories.export(
-            undefined,
-            destination,
-            undefined
-          );
-          const _export2 = await helper.factories.export(
-            undefined,
-            destination,
-            undefined
-          );
-          const _export3 = await helper.factories.export(
-            undefined,
-            destination,
-            undefined
-          );
-          await helper.changeTimestamps([_export3], true);
+            await destination.update({ state: destinationState });
 
-          const now = new Date();
-          await _export.update({
-            completedAt: new Date(now),
-            state: "complete",
+            const destinations =
+              await FinalSummaryReporters.Destinations.getData();
+            expect(destinations[0].name).toEqual(destination.name);
+            expect(destinations[0].exportsCreated).toEqual(1);
+            expect(destinations[0].exportsFailed).toEqual(0);
+            expect(destinations[0].exportsComplete).toEqual(0);
           });
 
-          await destination.update({ state: destinationState });
+          it("shows destinations that completed exports", async () => {
+            const destination = await helper.factories.destination();
+            const _export = await helper.factories.export(
+              undefined,
+              destination
+            );
+            await _export.update({
+              state: "complete",
+              completedAt: new Date(),
+            });
 
-          const destinations =
-            await FinalSummaryReporters.Destinations.getData();
-          expect(destinations[0].name).toEqual(destination.name);
-          expect(destinations[0].exportsCreated).toEqual(2);
-          expect(destinations[0].exportsFailed).toEqual(0);
-          expect(destinations[0].exportsComplete).toEqual(1);
+            await destination.update({ state: destinationState });
+
+            const destinations =
+              await FinalSummaryReporters.Destinations.getData();
+            expect(destinations[0].name).toEqual(destination.name);
+            expect(destinations[0].exportsCreated).toEqual(1);
+            expect(destinations[0].exportsFailed).toEqual(0);
+            expect(destinations[0].exportsComplete).toEqual(1);
+          });
+
+          it("shows destinations that completed old exports", async () => {
+            const destination = await helper.factories.destination();
+            const _export = await helper.factories.export(
+              undefined,
+              destination
+            );
+            await helper.changeTimestamps([_export], true, new Date(0));
+            await _export.complete();
+
+            await destination.update({ state: destinationState });
+
+            const destinations =
+              await FinalSummaryReporters.Destinations.getData();
+            expect(destinations[0].name).toEqual(destination.name);
+            expect(destinations[0].exportsCreated).toEqual(0);
+            expect(destinations[0].exportsFailed).toEqual(0);
+            expect(destinations[0].exportsComplete).toEqual(1);
+          });
+
+          it("shows destinations that failed exports", async () => {
+            const destination = await helper.factories.destination();
+            const _export = await helper.factories.export(
+              undefined,
+              destination
+            );
+            await _export.update({ state: "failed" });
+
+            await destination.update({ state: destinationState });
+
+            const destinations =
+              await FinalSummaryReporters.Destinations.getData();
+            expect(destinations[0].name).toEqual(destination.name);
+            expect(destinations[0].exportsCreated).toEqual(1);
+            expect(destinations[0].exportsFailed).toEqual(1);
+            expect(destinations[0].exportsComplete).toEqual(0);
+          });
+
+          it("shows destinations that failed old exports", async () => {
+            const destination = await helper.factories.destination();
+            const _export = await helper.factories.export(
+              undefined,
+              destination
+            );
+            await helper.changeTimestamps([_export], true, new Date(0));
+            await _export.update({ state: "failed" });
+
+            await destination.update({ state: destinationState });
+
+            const destinations =
+              await FinalSummaryReporters.Destinations.getData();
+            expect(destinations[0].name).toEqual(destination.name);
+            expect(destinations[0].exportsCreated).toEqual(0);
+            expect(destinations[0].exportsFailed).toEqual(1);
+            expect(destinations[0].exportsComplete).toEqual(0);
+          });
         }
       );
     });

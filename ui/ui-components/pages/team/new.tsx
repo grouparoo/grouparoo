@@ -1,22 +1,25 @@
+import { useApi } from "../../contexts/api";
 import Head from "next/head";
 import { useState } from "react";
-import { UseApi } from "../../hooks/useApi";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { Form } from "react-bootstrap";
 import LoadingButton from "../../components/LoadingButton";
 import { Actions } from "../../utils/apiData";
-import { errorHandler } from "../../eventHandlers";
 
 export default function NewTeamPage(props) {
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(data) {
     setLoading(true);
-    const response: Actions.TeamCreate = await execApi("post", `/team`, data);
+    const response: Actions.TeamCreate = await client.request(
+      "post",
+      `/team`,
+      data
+    );
     if (response?.team) {
       router.push("/team/[id]/edit", `/team/${response.team.id}/edit`);
     } else {
@@ -40,7 +43,7 @@ export default function NewTeamPage(props) {
             required
             type="text"
             name="name"
-            ref={register}
+            {...register("name")}
             placeholder="Team Name"
             disabled={loading}
           />

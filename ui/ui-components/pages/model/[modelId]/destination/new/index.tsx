@@ -1,23 +1,24 @@
+import { NextPageContext } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Form, Alert } from "react-bootstrap";
-import { errorHandler } from "../../../../../eventHandlers";
-import { UseApi } from "../../../../../hooks/useApi";
+import { generateClient } from "../../../../../client/client";
 import AppSelectorList from "../../../../../components/AppSelectorList";
-import { Actions } from "../../../../../utils/apiData";
 import LinkButton from "../../../../../components/LinkButton";
+import { useApi } from "../../../../../contexts/api";
+import { useGrouparooModel } from "../../../../../contexts/grouparooModel";
+import { Actions } from "../../../../../utils/apiData";
 
 export default function Page(props) {
   const {
     connectionApps,
-    model,
   }: {
     connectionApps: Actions.DestinationConnectionApps["connectionApps"];
-    model: Actions.ModelView["model"];
   } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
+  const { model } = useGrouparooModel();
   const [loading, setLoading] = useState(false);
   const [app, setApp] = useState({ id: null });
 
@@ -42,7 +43,7 @@ export default function Page(props) {
       if (loading) return;
 
       setLoading(true);
-      const response: Actions.DestinationCreate = await execApi(
+      const response: Actions.DestinationCreate = await client.request(
         "post",
         `/destination`,
         {
@@ -96,13 +97,11 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
-  const { modelId } = ctx.query;
-  const { model } = await execApi("get", `/model/${modelId}`);
-  const { connectionApps } = await execApi(
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
+  const { connectionApps } = await client.request(
     "get",
     `/destinations/connectionApps`
   );
-  return { connectionApps, model };
+  return { connectionApps };
 };

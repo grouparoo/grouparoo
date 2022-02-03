@@ -1,11 +1,22 @@
-import { ConnectPluginAppMethod } from "@grouparoo/core";
+import { ConnectPluginAppMethod, SimpleAppOptions } from "@grouparoo/core";
 import { log } from "actionhero";
-import { Pool, types } from "pg";
+import { Pool, PoolClient, types } from "pg";
+import { TypeId } from "pg-types";
 import format from "pg-format";
 import parseDate from "postgres-date";
 
+export interface PostgresPoolClient extends PoolClient {
+  setTypeParser: (
+    type: TypeId,
+    method: (text: string) => string | Date
+  ) => void;
+  end: () => Promise<void>;
+}
+
 export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
-  const formattedOptions: any = Object.assign({}, appOptions);
+  const formattedOptions: SimpleAppOptions & {
+    ssl?: { rejectUnauthorized?: boolean } | boolean;
+  } = { ...appOptions };
 
   // ensure that the "ssl" option by itself, if present, is a boolean
   if (formattedOptions["ssl"]) {
@@ -24,6 +35,7 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
   sslOptions.forEach((opt) => {
     if (formattedOptions[opt] !== null && formattedOptions[opt] !== undefined) {
       if (!formattedOptions["ssl"]) formattedOptions["ssl"] = {};
+      // @ts-ignore I think this is wrong, but don't want to mess with it
       formattedOptions["ssl"][opt.replace("ssl_", "")] = formattedOptions[opt];
       delete formattedOptions[opt];
     }
@@ -31,12 +43,9 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
 
   const pool = new Pool(formattedOptions);
 
-  pool.on("connect", async (client) => {
-    // @ts-ignore these are not on the types but exist on the object
+  pool.on("connect", async (client: PostgresPoolClient) => {
     client.setTypeParser(types.builtins.DATE, formatAsText); // Date
-    // @ts-ignore
     client.setTypeParser(types.builtins.TIMESTAMP, formatInUtcDefault); // Timestamp without zone
-    // @ts-ignore
     client.setTypeParser(types.builtins.TIMESTAMPTZ, formatInUtcDefault); // Timestamp without zone
 
     if (appOptions.schema) {
@@ -64,11 +73,13 @@ export function formatAsText(text: string) {
 }
 
 export function formatInUtcDefault(text: string) {
-  if (!text) return null;
+  if (!text) {
+    return null;
+  }
   const zone = timeZoneOffset(text);
 
   let date: Date;
-  let parsed = parseDate(text);
+  const parsed = parseDate(text);
   date = parsed instanceof Date ? parsed : new Date(parsed);
 
   if (!zone) {
@@ -81,9 +92,9 @@ export function formatInUtcDefault(text: string) {
 
 // from parseDate library
 const TIME_ZONE = /([Z+-])(\d{2})?:?(\d{2})?:?(\d{2})?/;
-function timeZoneOffset(isoDate: String) {
+function timeZoneOffset(isoDate: string) {
   if (isoDate.endsWith("+00")) return true;
-  const zone: any = TIME_ZONE.exec(isoDate.split(" ")[1]);
+  const zone = TIME_ZONE.exec(isoDate.split(" ")[1]);
   if (!zone) {
     return false;
   }

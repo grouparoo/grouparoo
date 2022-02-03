@@ -1,6 +1,5 @@
 import ImportTabs from "../../../components/tabs/Import";
 import Head from "next/head";
-import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Table, Alert, Card } from "react-bootstrap";
 import Link from "next/link";
 import { Models } from "../../../utils/apiData";
@@ -11,6 +10,8 @@ import {
 import { DurationTime } from "../../../components/DurationTime";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 import StateBadge from "../../../components/badges/StateBadge";
+import { generateClient } from "../../../client/client";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
@@ -194,11 +195,11 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
+Page.getInitialProps = async (ctx: NextPageContext) => {
   const { id } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { import: _import } = await execApi("get", `/import/${id}`);
+  const client = generateClient(ctx);
+  const { import: _import } = await client.request("get", `/import/${id}`);
 
-  const { groups } = await execApi("get", `/groups`);
+  const { groups } = await client.request("get", `/groups`);
   return { _import, groups };
 };

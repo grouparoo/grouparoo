@@ -1,8 +1,8 @@
+import { useApi } from "../contexts/api";
 import { GetServerSidePropsContext } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { UseApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import Pagination from "../components/Pagination";
@@ -14,22 +14,25 @@ import GrouparooLink from "../components/GrouparooLink";
 import StateBadge from "../components/badges/StateBadge";
 import LinkButton from "../components/LinkButton";
 import { NextPageWithInferredProps } from "../utils/pageHelper";
-import { errorHandler } from "../eventHandlers";
+import { generateClient } from "../client/client";
+import { withServerErrorHandler } from "../utils/withServerErrorHandler";
 
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const { execApi } = UseApi(ctx);
-  const { limit, offset } = ctx.query;
-  const { models, total } = await execApi<Actions.ModelsList>(
-    "get",
-    `/models`,
-    { limit, offset }
-  );
-  return { props: { models, total } };
-};
+export const getServerSideProps = withServerErrorHandler(
+  async (ctx: GetServerSidePropsContext) => {
+    const client = generateClient(ctx);
+    const { limit, offset } = ctx.query;
+    const { models, total } = await client.request<Actions.ModelsList>(
+      "get",
+      `/models`,
+      { limit, offset }
+    );
+    return { props: { models, total } };
+  }
+);
 
 const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   const router = useRouter();
-  const { execApi } = UseApi(undefined, errorHandler);
+  const { client } = useApi();
   const [models, setModels] = useState<Models.GrouparooModelType[]>(
     props.models
   );
@@ -47,10 +50,14 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   async function load() {
     updateURLParams(router, { offset });
     setLoading(true);
-    const response: Actions.ModelsList = await execApi("get", `/models`, {
-      limit,
-      offset,
-    });
+    const response: Actions.ModelsList = await client.request(
+      "get",
+      `/models`,
+      {
+        limit,
+        offset,
+      }
+    );
     setLoading(false);
     if (response?.models) {
       setModels(response.models);

@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/onesignal",
   "description": "The Grouparoo OneSignal Plugin",
-  "version": "0.8.0-alpha.10",
+  "version": "0.8.1-alpha.0",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -28,23 +28,23 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@grouparoo/app-templates": "0.8.0-alpha.10",
+    "@grouparoo/app-templates": "0.8.1-alpha.0",
     "onesignal-node": "3.3.0"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.8.0-alpha.10",
-    "@grouparoo/spec-helper": "0.8.0-alpha.10",
+    "@grouparoo/core": "0.8.1-alpha.0",
+    "@grouparoo/spec-helper": "0.8.1-alpha.0",
     "@types/jest": "*",
     "@types/node": "16.*.*",
-    "actionhero": "28.1.4",
-    "dotenv": "10.0.0",
+    "actionhero": "28.1.7",
+    "dotenv": "15.0.0",
     "fs-extra": "10.0.0",
     "jest": "27.4.5",
-    "nock": "13.2.1",
+    "nock": "13.2.2",
     "prettier": "2.5.1",
-    "sequelize": "6.11.0",
-    "ts-jest": "27.1.2",
-    "typescript": "4.5.4"
+    "sequelize": "6.15.0",
+    "ts-jest": "27.1.3",
+    "typescript": "4.5.5"
   },
   "gitHead": "fde75653f20bf5c26b7457ea37682d9ca55f0786"
 }

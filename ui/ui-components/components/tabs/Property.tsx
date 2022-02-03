@@ -1,14 +1,16 @@
 import Tabs from "../Tabs";
 import { Models } from "../../utils/apiData";
 import { grouparooUiEdition } from "../../utils/uiEdition";
+import { useGrouparooModel } from "../../contexts/grouparooModel";
 
 interface Props {
-  model: Models.GrouparooModelType;
   property: Models.PropertyType;
   source: Models.SourceType;
 }
 
-const PropertyTabs: React.FC<Props> = ({ model, property, source }) => {
+const PropertyTabs: React.FC<Props> = ({ property, source }) => {
+  const { model } = useGrouparooModel();
+
   let tabs = ["edit"];
 
   if (grouparooUiEdition() === "enterprise") {

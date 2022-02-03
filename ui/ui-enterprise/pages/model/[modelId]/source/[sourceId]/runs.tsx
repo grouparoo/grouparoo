@@ -1,37 +1,36 @@
+import { useApi } from "../../../../../../ui-components/contexts/api";
 import Head from "next/head";
 import { useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import RunsList from "@grouparoo/ui-components/components/runs/List";
-import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import SourceTabs from "@grouparoo/ui-components/components/tabs/Source";
 import PageHeader from "@grouparoo/ui-components/components/PageHeader";
 import StateBadge from "@grouparoo/ui-components/components/badges/StateBadge";
 import LockedBadge from "@grouparoo/ui-components/components/badges/LockedBadge";
 import ModelBadge from "@grouparoo/ui-components/components/badges/ModelBadge";
 import {
-  errorHandler,
   runsHandler,
   successHandler,
 } from "@grouparoo/ui-components/eventHandlers";
 import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
 import LoadingButton from "@grouparoo/ui-components/components/LoadingButton";
 import { ensureMatchingModel } from "@grouparoo/ui-components/utils/ensureMatchingModel";
+import { NextPageContext } from "next";
+import { generateClient } from "@grouparoo/ui-components/client/client";
 
 export default function Page(props) {
   const {
     source,
-    model,
   }: {
     source: Models.SourceType;
-    model: Models.GrouparooModelType;
   } = props;
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
 
   async function enqueueScheduleRun() {
     setLoading(true);
     try {
-      const response: Actions.ScheduleRun = await execApi(
+      const response: Actions.ScheduleRun = await client.request(
         "post",
         `/schedule/${source.schedule.id}/run`
       );
@@ -50,7 +49,7 @@ export default function Page(props) {
         <title>Grouparoo: {source.name}</title>
       </Head>
 
-      <SourceTabs source={source} model={model} />
+      <SourceTabs source={source} />
 
       <RunsList
         header={
@@ -93,17 +92,13 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
+Page.getInitialProps = async (ctx: NextPageContext) => {
   const { sourceId, modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { source } = await execApi("get", `/source/${sourceId}`);
+  const client = generateClient(ctx);
+  const { source } = await client.request("get", `/source/${sourceId}`);
   ensureMatchingModel("Source", source.modelId, modelId.toString());
 
-  const { model } = await execApi<Actions.ModelView>(
-    "get",
-    `/model/${modelId}`
-  );
   const runsListInitialProps = await RunsList.hydrate(ctx, { topic: "source" });
 
-  return { source, model, ...runsListInitialProps };
+  return { source, ...runsListInitialProps };
 };

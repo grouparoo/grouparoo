@@ -1,6 +1,6 @@
 import { buildConnection } from "@grouparoo/app-templates/dist/source/query";
 import { executeQuery } from "./executeQuery";
-import { getChangedRows } from "./getChangedRows";
+import { getRows } from "./getRows";
 import { getTables } from "../table-import/getTables";
 import { validateQuery } from "./validateQuery";
 
@@ -20,7 +20,7 @@ export function getConnection() {
       },
     ],
     executeQuery,
-    getChangedRows,
+    getRows,
     validateQuery,
     getTables,
   });

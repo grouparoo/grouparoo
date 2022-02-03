@@ -1,12 +1,14 @@
+import { useApi } from "../../../contexts/api";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 import { Alert, Badge, Card } from "react-bootstrap";
 import { errorHandler } from "../../../eventHandlers";
-import { UseApi } from "../../../hooks/useApi";
 import { Actions } from "../../../utils/apiData";
 import LoadingButton from "../../../components/LoadingButton";
 import PageHeader from "../../../components/PageHeader";
+import { generateClient } from "../../../client/client";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const {
@@ -16,14 +18,14 @@ export default function Page(props) {
   } = props;
   const router = useRouter();
   const pluginName = router.asPath.replace(`/app/new/`, "");
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
 
   const create = async (
     app: Actions.PluginsList["plugins"][number]["apps"][number]
   ) => {
     setLoading(true);
-    const response: Actions.AppCreate = await execApi("post", `/app`, {
+    const response: Actions.AppCreate = await client.request("post", `/app`, {
       type: app.name,
     });
     if (response?.app) {
@@ -107,12 +109,16 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
-  const { plugins }: Actions.PluginsList = await execApi("get", `/plugins`, {
-    includeInstalled: true,
-    includeAvailable: false,
-    includeVersions: false,
-  });
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
+  const { plugins }: Actions.PluginsList = await client.request(
+    "get",
+    `/plugins`,
+    {
+      includeInstalled: true,
+      includeAvailable: false,
+      includeVersions: false,
+    }
+  );
   return { plugins };
 };

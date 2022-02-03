@@ -1,21 +1,18 @@
+import { useApi } from "../../ui-components/contexts/api";
 import Head from "next/head";
 import { useState } from "react";
 import { Row, Col, Button } from "react-bootstrap";
-import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
-import {
-  errorHandler,
-  successHandler,
-} from "@grouparoo/ui-components/eventHandlers";
+import { successHandler } from "@grouparoo/ui-components/eventHandlers";
 import { CLIStream } from "../components/cliStream";
 
-export default function ValidatePage(props) {
+export default function ValidatePage() {
   const [loading, setLoading] = useState(false);
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
 
   async function validate() {
     setLoading(true);
-    const response: Actions.ConfigValidate = await execApi(
+    const response: Actions.ConfigValidate = await client.request(
       "post",
       `/config/validate`
     );

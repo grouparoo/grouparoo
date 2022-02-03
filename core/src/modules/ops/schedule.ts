@@ -16,7 +16,7 @@ export namespace ScheduleOps {
     const app = await source.$get("app", { include: [Option], scope: null });
     const properties = await Property.findAllWithCache(source.modelId);
     const { pluginConnection } = await source.getPlugin();
-    const method = pluginConnection.methods.records;
+    const method = pluginConnection.methods.importRecords;
 
     if (!method) {
       throw new Error(`cannot find an import method for app type ${app.type}`);
@@ -32,10 +32,10 @@ export namespace ScheduleOps {
     const limit: number = config.batchSize.imports;
     const sourceOffset: number | string = run.sourceOffset || 0;
 
-    let highWaterMark = {};
+    let highWaterMark: HighWaterMark = {};
     if (run.highWaterMark && Object.keys(run.highWaterMark).length > 0) {
       highWaterMark = run.highWaterMark;
-    } else {
+    } else if (schedule.incremental) {
       const previousRun = await run.previousRun();
       if (previousRun?.highWaterMark) highWaterMark = previousRun.highWaterMark;
     }

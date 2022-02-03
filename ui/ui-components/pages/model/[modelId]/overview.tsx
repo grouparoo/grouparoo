@@ -1,8 +1,8 @@
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 import { useMemo } from "react";
-import { Col, ListGroup, ListGroupItem, Row } from "react-bootstrap";
+import { Alert, Col, ListGroup, ListGroupItem, Row } from "react-bootstrap";
+import { generateClient } from "../../../client/client";
 import ManagedCard from "../../../components/lib/ManagedCard";
 import ModelOverviewDestinations from "../../../components/model/overview/ModelOverviewDestinations";
 import ModelOverviewGroups from "../../../components/model/overview/ModelOverviewGroups";
@@ -12,13 +12,11 @@ import ModelOverviewSchedules from "../../../components/model/overview/ModelOver
 import ModelOverviewSecondarySources from "../../../components/model/overview/ModelOverviewSecondarySources";
 import PageHeader from "../../../components/PageHeader";
 import ModelTabs from "../../../components/tabs/Model";
-import { GrouparooModelContextProvider } from "../../../contexts/grouparooModel";
-import { errorHandler } from "../../../eventHandlers";
-import { UseApi } from "../../../hooks/useApi";
+import { useGrouparooModel } from "../../../contexts/grouparooModel";
 import { Actions, Models } from "../../../utils/apiData";
+import { withServerErrorHandler } from "../../../utils/withServerErrorHandler";
 
 interface Props {
-  model: Models.GrouparooModelType;
   primarySource?: Models.SourceType;
   secondarySources: Models.SourceType[];
   totalSources: number;
@@ -29,7 +27,6 @@ interface Props {
 }
 
 const Page: NextPage<Props> = ({
-  model,
   primarySource,
   secondarySources,
   totalSources,
@@ -38,7 +35,8 @@ const Page: NextPage<Props> = ({
   schedules,
   destinations,
 }) => {
-  const { execApi } = UseApi(undefined, errorHandler);
+  const { model } = useGrouparooModel();
+
   const sources = useMemo(() => {
     const result = [...secondarySources];
     if (primarySource) {
@@ -52,11 +50,13 @@ const Page: NextPage<Props> = ({
     [properties]
   );
 
+  if (!model) return <Alert variant="warning">Model not found</Alert>;
+
   const canCreateSecondarySource =
     !!totalSources && sources[0].state === "ready";
 
   return (
-    <GrouparooModelContextProvider model={model}>
+    <>
       <Head>
         <title>Grouparoo: {model.name}</title>
       </Head>
@@ -99,7 +99,6 @@ const Page: NextPage<Props> = ({
                 <ModelOverviewSchedules
                   schedules={schedules}
                   sources={sources}
-                  execApi={execApi}
                 />
               </ListGroupItem>
             </ListGroup>
@@ -111,7 +110,6 @@ const Page: NextPage<Props> = ({
           <ModelOverviewSampleRecord
             modelId={model.id}
             properties={properties}
-            execApi={execApi}
             disabled={!sources.length}
           />
         </Col>
@@ -124,61 +122,57 @@ const Page: NextPage<Props> = ({
           />
         </Col>
       </Row>
-    </GrouparooModelContextProvider>
+    </>
   );
 };
 
-export const getServerSideProps: GetServerSideProps<Props> = async (
-  context
-) => {
-  const { modelId, limit, offset } = context.query;
-  const { execApi } = UseApi(context);
+export const getServerSideProps: GetServerSideProps<Props> =
+  withServerErrorHandler(async (context) => {
+    const { modelId, limit, offset } = context.query;
+    const client = generateClient(context);
 
-  const params = {
-    limit,
-    offset,
-    modelId,
-  };
+    const params = {
+      limit,
+      offset,
+      modelId,
+    };
 
-  const [
-    { sources, total: totalSources },
-    { destinations },
-    { properties },
-    { groups },
-    { schedules },
-    { model },
-  ] = await Promise.all([
-    execApi<Actions.SourcesList>("get", `/sources`, params),
-    execApi<Actions.DestinationsList>("get", `/destinations`, params),
-    execApi<Actions.PropertiesList>("get", `/properties`, params),
-    execApi<Actions.GroupsList>("get", `/groups`, params),
-    execApi<Actions.SchedulesList>("get", `/schedules`, params),
-    execApi<Actions.ModelView>("get", `/model/${modelId}`),
-  ]);
+    const [
+      { sources, total: totalSources },
+      { destinations },
+      { properties },
+      { groups },
+      { schedules },
+    ] = await Promise.all([
+      client.request<Actions.SourcesList>("get", `/sources`, params),
+      client.request<Actions.DestinationsList>("get", `/destinations`, params),
+      client.request<Actions.PropertiesList>("get", `/properties`, params),
+      client.request<Actions.GroupsList>("get", `/groups`, params),
+      client.request<Actions.SchedulesList>("get", `/schedules`, params),
+    ]);
 
-  const primaryKeyProperty = properties.find((p) => p.isPrimaryKey);
-  const primarySource =
-    sources.length === 1
-      ? sources[0] // If there is only one source this will be the primary source
-      : primaryKeyProperty
-      ? sources.find(({ id }) => id === primaryKeyProperty.sourceId)
-      : null;
-  const secondarySources = primarySource
-    ? sources.filter(({ id }) => id !== primarySource.id)
-    : sources;
+    const primaryKeyProperty = properties.find((p) => p.isPrimaryKey);
+    const primarySource =
+      sources.length === 1
+        ? sources[0] // If there is only one source this will be the primary source
+        : primaryKeyProperty
+        ? sources.find(({ id }) => id === primaryKeyProperty.sourceId)
+        : null;
+    const secondarySources = primarySource
+      ? sources.filter(({ id }) => id !== primarySource.id)
+      : sources;
 
-  return {
-    props: {
-      model,
-      primarySource,
-      secondarySources,
-      totalSources,
-      properties,
-      groups,
-      schedules,
-      destinations,
-    },
-  };
-};
+    return {
+      props: {
+        primarySource,
+        secondarySources,
+        totalSources,
+        properties,
+        groups,
+        schedules,
+        destinations,
+      },
+    };
+  });
 
 export default Page;

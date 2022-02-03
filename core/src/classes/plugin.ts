@@ -75,6 +75,7 @@ export interface PluginConnection {
   description: string;
   direction: "import" | "export";
   skipSourceMapping?: boolean;
+  supportIncrementalSchedule?: boolean;
   apps: string[];
   options: ConnectionOptionsOption[];
   syncModes?: DestinationSyncMode[];
@@ -88,7 +89,7 @@ export interface PluginConnection {
     uniquePropertyBootstrapOptions?: UniquePropertyBootstrapOptions;
     scheduleOptions?: ScheduleOptionsMethod;
     propertyOptions?: PropertyOptionsMethod;
-    records?: RecordsPluginMethod;
+    importRecords?: RecordsPluginMethod;
     recordProperty?: RecordPropertyPluginMethod;
     recordProperties?: RecordPropertiesPluginMethod;
     destinationOptions?: DestinationOptionsMethod;
@@ -442,7 +443,7 @@ export interface SourcePreviewMethodResponseRow {
 
 /**
  * Return a list of things that this property can be filtered by
- * [{key: createdAt, ops: ['greater than', 'less than'], canHaveRelativeMatch: true}]
+ * [{key: createdAt, ops: ['gt', 'lt'], canHaveRelativeMatch: true}]
  */
 export interface SourceFilterMethod<AppConnection = any> {
   (argument: {

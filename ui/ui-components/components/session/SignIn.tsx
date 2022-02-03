@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect, Fragment, useCallback, useMemo } from "react";
 import { useRouter } from "next/router";
 import { Form, Row, Col, Button, Modal, ButtonGroup } from "react-bootstrap";
 import { useForm } from "react-hook-form";
@@ -7,13 +7,13 @@ import {
   sessionHandler,
   successHandler,
 } from "../../eventHandlers";
-import { UseApi } from "../../hooks/useApi";
 import { Actions, OAuth, Models } from "../../utils/apiData";
 import LoadingButton from "../LoadingButton";
 import Loader from "../Loader";
+import { useApi } from "../../contexts/api";
 
-export default function SignInForm(props) {
-  const { execApi } = UseApi(props, errorHandler);
+export default function SignInForm() {
+  const { client } = useApi();
   const { handleSubmit, register } = useForm();
   const router = useRouter();
   const [loadingEmail, setLoadingEmail] = useState(false);
@@ -26,25 +26,29 @@ export default function SignInForm(props) {
     useState<Models.OAuthRequestType>(null);
   const { nextPage, requestId } = router.query;
 
-  const createSession = async (
-    arg: Record<string, any>,
-    type: "password" | "requestId"
-  ) => {
-    const response: Actions.SessionCreate = await execApi("post", `/session`, {
-      email: arg.email,
-      requestId: type === "requestId" ? requestId : undefined,
-      password: type === "password" ? arg.password : undefined,
-    });
-    if (response?.teamMember) {
-      window.localStorage.setItem("session:csrfToken", response.csrfToken);
-      sessionHandler.set(response.teamMember);
-      return response?.teamMember;
-    }
-  };
+  const createSession = useCallback(
+    async (arg: Record<string, any>, type: "password" | "requestId") => {
+      const response: Actions.SessionCreate = await client.request(
+        "post",
+        `/session`,
+        {
+          email: arg.email,
+          requestId: type === "requestId" ? requestId : undefined,
+          password: type === "password" ? arg.password : undefined,
+        }
+      );
+      if (response?.teamMember) {
+        window.localStorage.setItem("session:csrfToken", response.csrfToken);
+        sessionHandler.set(response.teamMember);
+        return response?.teamMember;
+      }
+    },
+    [client, requestId]
+  );
 
-  const loadOauthOptions = async () => {
+  const loadOauthOptions = useCallback(async () => {
     setLoadingOauthProviders(true);
-    const response: Actions.OAuthListProviders = await execApi(
+    const response: Actions.OAuthListProviders = await client.request(
       "get",
       `/oauth/providers?type=user`
     );
@@ -52,25 +56,69 @@ export default function SignInForm(props) {
       setProviders(response.providers);
     }
     setLoadingOauthProviders(false);
-  };
+  }, [client]);
 
-  const startOauthLogin = async (provider: string, type: string) => {
-    setLoadingOAuth(true);
-    const response: Actions.OAuthClientStart = await execApi(
-      "post",
-      `/oauth/${provider}/client/start`,
-      { type }
+  const startOauthLogin = useCallback(
+    async (provider: string, type: string) => {
+      setLoadingOAuth(true);
+      const response: Actions.OAuthClientStart = await client.request(
+        "post",
+        `/oauth/${provider}/client/start`,
+        { type }
+      );
+      if (response.location) {
+        window.location.assign(response.location);
+      } else {
+        setLoadingOAuth(false);
+      }
+    },
+    [client]
+  );
+
+  const getSetupSteps = useCallback(async () => {
+    const { setupSteps }: Actions.SetupStepsList = await client.request(
+      "get",
+      `/setupSteps`
     );
-    if (response.location) {
-      window.location.assign(response.location);
-    } else {
-      setLoadingOAuth(false);
-    }
-  };
+    return { setupSteps };
+  }, [client]);
 
-  const loadOAuthRequest = async () => {
+  const onSubmit = useCallback(
+    async (
+      arg: Models.OAuthRequestType["identities"][number] | Record<string, any>,
+      type: "password" | "requestId"
+    ) => {
+      type === "password" ? setLoadingEmail(true) : setLoadingOAuth(true);
+      const teamMember = await createSession(arg, type);
+      type === "password" ? setLoadingEmail(false) : setLoadingOAuth(false);
+      if (teamMember) {
+        successHandler.set({
+          message: `Welcome Back${
+            teamMember.firstName ? `, ${teamMember.firstName}` : ""
+          }!`,
+        });
+        if (nextPage) {
+          router.push(nextPage.toString());
+        } else {
+          const { setupSteps } = await getSetupSteps();
+          const isSetupComplete = setupSteps.every((step) => step.complete);
+          if (isSetupComplete) {
+            router.push("/dashboard");
+          } else {
+            router.push("/setup");
+          }
+        }
+      } else {
+        setShowModal(false);
+        setConfirmingOauthRequest(false);
+      }
+    },
+    [createSession, getSetupSteps, nextPage, router]
+  );
+
+  const loadOAuthRequest = useCallback(async () => {
     if (requestId) {
-      const response: Actions.OAuthClientView = await execApi(
+      const response: Actions.OAuthClientView = await client.request(
         "get",
         `/oauth/client/request/${requestId}/view`
       );
@@ -92,51 +140,12 @@ export default function SignInForm(props) {
     } else {
       setConfirmingOauthRequest(false);
     }
-  };
-
-  const onSubmit = async (
-    arg: Models.OAuthRequestType["identities"][number] | Record<string, any>,
-    type: "password" | "requestId"
-  ) => {
-    type === "password" ? setLoadingEmail(true) : setLoadingOAuth(true);
-    const teamMember = await createSession(arg, type);
-    type === "password" ? setLoadingEmail(false) : setLoadingOAuth(false);
-    if (teamMember) {
-      successHandler.set({
-        message: `Welcome Back${
-          teamMember.firstName ? `, ${teamMember.firstName}` : ""
-        }!`,
-      });
-      if (nextPage) {
-        router.push(nextPage.toString());
-      } else {
-        const { setupSteps } = await getSetupSteps();
-        const isSetupComplete = setupSteps.every((step) => step.complete);
-        if (isSetupComplete) {
-          router.push("/dashboard");
-        } else {
-          router.push("/setup");
-        }
-      }
-    } else {
-      setShowModal(false);
-      setConfirmingOauthRequest(false);
-    }
-  };
-
-  const getSetupSteps = async () => {
-    const { setupSteps }: Actions.SetupStepsList = await execApi(
-      "get",
-      `/setupSteps`
-    );
-    return { setupSteps };
-  };
+  }, [client, onSubmit, requestId, router]);
 
   useEffect(() => {
-    setConfirmingOauthRequest(true);
     loadOauthOptions();
     loadOAuthRequest();
-  }, []);
+  }, [loadOAuthRequest, loadOauthOptions]);
 
   return (
     <>
@@ -163,7 +172,7 @@ export default function SignInForm(props) {
                       name="email"
                       type="email"
                       placeholder="Email Address"
-                      ref={register}
+                      {...register("email")}
                     />
                     <Form.Control.Feedback type="invalid">
                       Email is required
@@ -177,7 +186,7 @@ export default function SignInForm(props) {
                       name="password"
                       type="password"
                       placeholder="Password"
-                      ref={register}
+                      {...register("password")}
                     />
                     <Form.Control.Feedback type="invalid">
                       A password is required
@@ -225,6 +234,7 @@ export default function SignInForm(props) {
                         <img
                           style={{ margin: 10, height: 40, width: 40 }}
                           src={provider.icon}
+                          alt={`${provider.name} OAuth Login`}
                         />
                       </LoadingButton>
                     </Fragment>

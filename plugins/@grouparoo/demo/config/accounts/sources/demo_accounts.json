@@ -19,6 +19,7 @@
     "name": "Accounts Schedule",
     "sourceId": "demo_accounts",
     "recurring": true,
+    "incremental": true,
     "recurringFrequency": 900000,
     "confirmRecords": false,
     "options": {

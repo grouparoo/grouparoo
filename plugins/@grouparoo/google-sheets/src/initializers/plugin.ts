@@ -1,21 +1,15 @@
 import { Initializer } from "actionhero";
-import { AggregationMethod, plugin } from "@grouparoo/core";
+import { plugin } from "@grouparoo/core";
 
 import { test } from "../lib/test";
 
-import { sourcePreview } from "../lib/sheet-import/sourcePreview";
-import { records } from "../lib/sheet-import/records";
-import { propertyOptions } from "../lib/sheet-import/propertyOptions";
-import { uniquePropertyBootstrapOptions } from "@grouparoo/csv/dist/lib/uniquePropertyBootstrapOptions";
-import { sourceRunPercentComplete } from "../lib/sheet-import/sourceRunPercentComplete";
-import { recordProperty } from "../lib/sheet-import/recordProperty";
-import { recordProperties } from "../lib/sheet-import/recordProperties";
-
 import {
   GoogleSheetAppTemplate,
-  GoogleSheetSourceTemplate,
   GoogleSheetPropertyTemplate,
+  GoogleSheetSourceTemplate,
 } from "../lib/sheet-import/templates";
+import { sourceConnection } from "../lib/sheet-import/connection";
+import { destinationConnection } from "../lib/sheet-export/connection";
 
 const packageJSON = require("./../../package.json");
 
@@ -59,34 +53,7 @@ export class Plugins extends Initializer {
           methods: { test },
         },
       ],
-      connections: [
-        {
-          name: "google-sheet-import",
-          displayName: "Google Sheets Import",
-          direction: "import",
-          description: "Import or update Records from a Google Sheet.",
-          apps: ["google-sheets"],
-          groupAggregations: [AggregationMethod.Exact],
-          options: [
-            {
-              key: "sheet_url",
-              displayName: "Google Sheet URL",
-              required: true,
-              description:
-                "The url of the Google Sheet, with the gid (tab) included.",
-            },
-          ],
-          methods: {
-            sourcePreview,
-            propertyOptions,
-            records,
-            sourceRunPercentComplete,
-            uniquePropertyBootstrapOptions,
-            recordProperty,
-            recordProperties,
-          },
-        },
-      ],
+      connections: [sourceConnection, destinationConnection],
     });
   }
 

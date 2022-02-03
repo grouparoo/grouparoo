@@ -33,6 +33,7 @@ describe("modules/plugin", () => {
             name: "sample-plugin-import",
             displayName: "sample-plugin-import",
             direction: "import",
+            supportIncrementalSchedule: true,
             description: "import or update records from an uploaded file",
             apps: ["sample-plugin-app"],
             options: [],
@@ -54,7 +55,7 @@ describe("modules/plugin", () => {
               sourceFilters: async () => {
                 return [];
               },
-              records: async () => {
+              importRecords: async () => {
                 return {
                   importsCount: 0,
                   highWaterMark: { col: 0 },

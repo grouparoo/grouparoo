@@ -1,10 +1,10 @@
+import { useApi } from "../../../../../contexts/api";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { Row, Col, ListGroup, Alert } from "react-bootstrap";
 import EnterpriseLink from "../../../../../components/GrouparooLink";
 import RecordTabs from "../../../../../components/tabs/Record";
-import { UseApi } from "../../../../../hooks/useApi";
 import LoadingButton from "../../../../../components/LoadingButton";
 import LoadingTable from "../../../../../components/LoadingTable";
 import { getRecordDisplayName } from "../../../../../components/record/GetRecordDisplayName";
@@ -23,21 +23,20 @@ import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import LinkButton from "../../../../../components/LinkButton";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
+import { generateClient } from "../../../../../client/client";
 
 export default function Page(props) {
   const {
-    model,
     properties,
     allGroups,
   }: {
-    model: Models.GrouparooModelType;
     properties: Models.PropertyType[];
     allGroups: Models.GroupType[];
     apps: Models.AppType[];
     sources: Models.SourceType[];
   } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
   const [record, setRecord] = useState<Models.GrouparooRecordType>(
     props.record
@@ -60,7 +59,7 @@ export default function Page(props) {
 
   async function load() {
     setLoading(true);
-    const response: Actions.RecordView = await execApi(
+    const response: Actions.RecordView = await client.request(
       "get",
       `/record/${record.id}`
     );
@@ -70,7 +69,7 @@ export default function Page(props) {
   async function importRecord() {
     setLoading(true);
     successHandler.set({ message: "enqueued for import..." });
-    const response: Actions.RecordImport = await execApi(
+    const response: Actions.RecordImport = await client.request(
       "post",
       `/record/${record.id}/import`
     );
@@ -85,7 +84,7 @@ export default function Page(props) {
   async function exportRecord() {
     setLoading(true);
     successHandler.set({ message: "enqueued for export..." });
-    const response: Actions.RecordExport = await execApi(
+    const response: Actions.RecordExport = await client.request(
       "post",
       `/record/${record.id}/export`
     );
@@ -120,7 +119,7 @@ export default function Page(props) {
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const { success }: Actions.RecordDestroy = await execApi(
+      const { success }: Actions.RecordDestroy = await client.request(
         "delete",
         `/record/${record.id}`
       );
@@ -170,7 +169,7 @@ export default function Page(props) {
         <title>Grouparoo: {getRecordDisplayName(record)}</title>
       </Head>
 
-      <RecordTabs record={record} model={model} />
+      <RecordTabs record={record} />
 
       <PageHeader
         title={uniqueRecordProperties
@@ -368,28 +367,23 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { recordId, modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { record, groups, destinations } = await execApi(
+  const client = generateClient(ctx);
+  const { record, groups, destinations } = await client.request(
     "get",
     `/record/${recordId}`
   );
   ensureMatchingModel("Record", record?.modelId, modelId.toString());
 
-  const { model } = await execApi<Actions.ModelView>(
-    "get",
-    `/model/${modelId}`
-  );
-  const { properties } = await execApi("get", `/properties`, {
+  const { properties } = await client.request("get", `/properties`, {
     modelId: record?.modelId,
   });
-  const { groups: allGroups } = await execApi("get", `/groups`);
-  const { apps } = await execApi("get", `/apps`);
-  const { sources } = await execApi("get", `/sources`);
+  const { groups: allGroups } = await client.request("get", `/groups`);
+  const { apps } = await client.request("get", `/apps`);
+  const { sources } = await client.request("get", `/sources`);
 
   return {
     record,
     properties,
-    model,
     groups,
     allGroups,
     destinations,

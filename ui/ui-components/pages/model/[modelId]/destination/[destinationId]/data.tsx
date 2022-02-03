@@ -1,3 +1,4 @@
+import { useApi } from "../../../../../contexts/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NextPageContext } from "next";
 import { Row, Col, Form, Badge, Button, Table, Alert } from "react-bootstrap";
@@ -11,16 +12,15 @@ import LoadingButton from "../../../../../components/LoadingButton";
 import StateBadge from "../../../../../components/badges/StateBadge";
 import LockedBadge from "../../../../../components/badges/LockedBadge";
 import PageHeader from "../../../../../components/PageHeader";
-import { UseApi } from "../../../../../hooks/useApi";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import DestinationSampleRecord from "../../../../../components/destination/DestinationSampleRecord";
 import { Actions, Models } from "../../../../../utils/apiData";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
+import { generateClient } from "../../../../../client/client";
 
 export default function Page(props) {
   const {
-    model,
     properties,
     mappingOptions,
     destinationTypeConversions,
@@ -28,7 +28,6 @@ export default function Page(props) {
     exportArrayProperties,
     hydrationError,
   }: {
-    model: Models.GrouparooModelType;
     hydrationError: Error;
     properties: Models.PropertyType[];
     groups: Models.GroupType[];
@@ -36,7 +35,7 @@ export default function Page(props) {
     destinationTypeConversions: Actions.DestinationMappingOptions["destinationTypeConversions"];
     exportArrayProperties: Actions.DestinationExportArrayProperties["exportArrayProperties"];
   } = props;
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [destination, setDestination] = useState<Models.DestinationType>(
@@ -73,7 +72,7 @@ export default function Page(props) {
       (dgm) => (destinationGroupMembershipsObject[dgm.groupId] = dgm.remoteKey)
     );
 
-    await execApi("put", `/destination/${destinationId}`, {
+    await client.request("put", `/destination/${destinationId}`, {
       mapping: filteredMapping,
       collection,
       groupId,
@@ -269,7 +268,7 @@ export default function Page(props) {
         <title>Grouparoo: {destination.name}</title>
       </Head>
 
-      <DestinationTabs destination={destination} model={model} />
+      <DestinationTabs destination={destination} />
 
       <PageHeader
         icon={destination.app.icon}
@@ -847,7 +846,6 @@ export default function Page(props) {
             collection={collection}
             mappingOptions={mappingOptions}
             destination={destination}
-            execApi={execApi}
             properties={properties}
             hideViewAllRecords
           />
@@ -858,21 +856,20 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { execApi } = UseApi(ctx);
+  const client = generateClient(ctx);
   const { destinationId, modelId } = ctx.query;
-  const { destination } = await execApi("get", `/destination/${destinationId}`);
+  const { destination } = await client.request(
+    "get",
+    `/destination/${destinationId}`
+  );
   ensureMatchingModel("Destination", destination.modelId, modelId.toString());
-  const { groups } = await execApi("get", `/groups`, {
+  const { groups } = await client.request("get", `/groups`, {
     modelId: destination?.modelId,
   });
-  const { properties } = await execApi("get", `/properties`, {
+  const { properties } = await client.request("get", `/properties`, {
     state: "ready",
     modelId: destination?.modelId,
   });
-  const { model } = await execApi<Actions.ModelView>(
-    "get",
-    `/model/${modelId}`
-  );
 
   let mappingOptions = {};
   let destinationTypeConversions = {};
@@ -880,7 +877,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   let hydrationError: Error;
 
   try {
-    const mappingOptionsResponse = await execApi(
+    const mappingOptionsResponse = await client.request(
       "get",
       `/destination/${destinationId}/mappingOptions`
     );
@@ -888,7 +885,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     destinationTypeConversions =
       mappingOptionsResponse.destinationTypeConversions;
 
-    const exportArrayPropertiesResponse = await execApi(
+    const exportArrayPropertiesResponse = await client.request(
       "get",
       `/destination/${destinationId}/exportArrayProperties`
     );
@@ -900,7 +897,6 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   return {
     destination,
     properties,
-    model,
     mappingOptions,
     destinationTypeConversions,
     exportArrayProperties,

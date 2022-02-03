@@ -6,7 +6,7 @@ import EntityInfoContainer from "../../lib/entity/EntityInfoContainer";
 import EntityInfoHeader from "../../lib/entity/EntityInfoHeader";
 import Link from "next/link";
 import EnterpriseLink from "../../../components/GrouparooLink";
-import { useGrouparooModelContext } from "../../../contexts/grouparooModel";
+import { useGrouparooModel } from "../../../contexts/grouparooModel";
 import LinkButton from "../../LinkButton";
 import ManagedCard from "../../lib/ManagedCard";
 import SectionContainer from "../../lib/SectionContainer";
@@ -47,7 +47,7 @@ const ModelOverviewDestinations: React.FC<Props> = ({
   destinations,
   disabled,
 }) => {
-  const model = useGrouparooModelContext();
+  const { model } = useGrouparooModel();
 
   return (
     <ManagedCard

@@ -90,11 +90,11 @@ const FormMappingSelector: React.FC<Props> = ({
       ).length > 0;
 
     // Properties rules:
-    // Include properties in own source if it has the primary key or the primary key has not been defined
-    // Otherwise, show properties from other sources
+    // Include unique properties in own source if it has the primary key or the primary key has not been defined
+    // Otherwise, it's not the primary source and show all properties from other sources
     return properties.filter((property) =>
       isPrimaryKeyInSource || !hasPrimaryKeyProperty
-        ? property.sourceId === source.id
+        ? property.sourceId === source.id && property.unique
         : property.sourceId !== source.id
     );
   }, [source, properties, hasPrimaryKeyProperty]);
@@ -104,7 +104,7 @@ const FormMappingSelector: React.FC<Props> = ({
       selectedProperty
         ? propertyExamples[selectedProperty.id].slice(0, 3).join(", ")
         : undefined,
-    [properties, selectedProperty]
+    [propertyExamples, selectedProperty]
   );
 
   const hasAvailableProperties = !!availableProperties.length;
@@ -126,7 +126,7 @@ const FormMappingSelector: React.FC<Props> = ({
               setSelectedColumn(e.target.value);
             }}
             name="mapping.sourceColumn"
-            ref={register}
+            {...register("mapping_source_column")}
           >
             <option value={""} disabled>
               Select an option
@@ -152,6 +152,7 @@ const FormMappingSelector: React.FC<Props> = ({
                 as="select"
                 required
                 disabled={disabled}
+                defaultValue={""}
                 value={selectedProperty?.key}
                 onChange={(e) => {
                   setSelectedProperty(
@@ -161,7 +162,7 @@ const FormMappingSelector: React.FC<Props> = ({
                   );
                 }}
                 name="mapping.propertyKey"
-                ref={register}
+                {...register("mapping_property")}
               >
                 <option value={""} disabled>
                   Select an option

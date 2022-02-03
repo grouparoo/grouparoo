@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/spec-helper",
   "description": "Shared Utilities for testing Grouparoo and Grouparoo Plugins",
-  "version": "0.8.0-alpha.10",
+  "version": "0.8.1-alpha.0",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -29,23 +29,22 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
+    "@faker-js/faker": "6.0.0-alpha.5",
     "axios": "0.24.0",
-    "faker": "5.5.3",
     "fs-extra": "10.0.0",
-    "nock": "13.2.1",
+    "nock": "13.2.2",
     "prettier": "2.5.1",
-    "sequelize": "6.11.0",
+    "sequelize": "6.15.0",
     "uuid": "8.3.2"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.8.0-alpha.10",
-    "@types/faker": "*",
+    "@grouparoo/core": "0.8.1-alpha.0",
     "@types/jest": "*",
     "@types/node": "16.*.*",
-    "actionhero": "28.1.4",
+    "actionhero": "28.1.7",
     "jest": "27.4.5",
-    "ts-jest": "27.1.2",
-    "typescript": "4.5.4"
+    "ts-jest": "27.1.3",
+    "typescript": "4.5.5"
   },
   "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"
 }

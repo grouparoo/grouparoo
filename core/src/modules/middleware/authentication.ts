@@ -72,7 +72,7 @@ async function authenticateTeamMemberFromSession(
             "NO_TEAMS_ERROR"
           );
         } else {
-          throw new Errors.AuthenticationError("Please log in to continue");
+          throw new Errors.AuthenticationError("Please sign in to continue");
         }
       } else if (
         (data.params.csrfToken && data.params.csrfToken !== session.id) ||
@@ -203,7 +203,7 @@ async function authenticateTeamMemberInRoom(
   await CLS.wrap(async () => {
     const session = await api.session.load(connection);
     if (!session || !session.id) {
-      throw new Errors.AuthenticationError("Please log in to continue");
+      throw new Errors.AuthenticationError("Please sign in to continue");
     } else {
       const teamMember = await TeamMember.findOne({
         where: { id: session.teamMemberId },

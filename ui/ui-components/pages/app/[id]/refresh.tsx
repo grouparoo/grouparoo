@@ -1,6 +1,6 @@
+import { useApi } from "../../../contexts/api";
 import Head from "next/head";
 import { useMemo, useState } from "react";
-import { UseApi } from "../../../hooks/useApi";
 import { Row, Col, Form, Alert, Button, Container } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { errorHandler, successHandler } from "../../../eventHandlers";
@@ -15,10 +15,12 @@ import AppRefreshQueryScheduleList from "../../../components/app/AppRefreshSched
 import AppRefreshQueryStats from "../../../components/app/AppRefreshQueryStats";
 import { Actions, Models } from "../../../utils/apiData";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
+import { NextPageContext } from "next";
+import { generateClient } from "../../../client/client";
 
 export default function Page(props) {
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [app, setApp] = useState<Models.AppType>(props.app);
   const [appRefreshQuery, setAppRefreshQuery] =
     useState<Models.AppRefreshQueryType>(props.appRefreshQuery);
@@ -49,7 +51,7 @@ export default function Page(props) {
 
     const appRefreshQuery = { appId: app.id };
 
-    const response: Actions.AppRefreshQueryCreate = await execApi(
+    const response: Actions.AppRefreshQueryCreate = await client.request(
       "post",
       `/appRefreshQuery/`,
       appRefreshQuery
@@ -89,7 +91,7 @@ export default function Page(props) {
       appRefreshQuery.state = "ready";
     }
     setLoading(true);
-    const response: Actions.AppRefreshQueryEdit = await execApi(
+    const response: Actions.AppRefreshQueryEdit = await client.request(
       "put",
       `/appRefreshQuery/${appRefreshQuery.id}`,
       appRefreshQuery
@@ -104,7 +106,7 @@ export default function Page(props) {
       setAppRefreshQuery(response.appRefreshQuery);
 
       try {
-        const response: Actions.AppRefreshQueryRun = await execApi(
+        const response: Actions.AppRefreshQueryRun = await client.request(
           "post",
           `/appRefreshQuery/${appRefreshQuery.id}/run`
         );
@@ -134,7 +136,7 @@ export default function Page(props) {
   }
 
   async function cancelEdit() {
-    const response: Actions.AppRefreshQueryView = await execApi(
+    const response: Actions.AppRefreshQueryView = await client.request(
       "get",
       `/appRefreshQuery/${appRefreshQuery.id}/`,
       { id: appRefreshQuery.id }
@@ -148,7 +150,7 @@ export default function Page(props) {
     setRanTest(false);
     setTestResult({ success: null, message: null, error: null });
 
-    const response: Actions.AppRefreshQueryTest = await execApi(
+    const response: Actions.AppRefreshQueryTest = await client.request(
       "put",
       `/appRefreshQuery/${appRefreshQuery.id}/test`,
       { refreshQuery: appRefreshQuery.refreshQuery }
@@ -165,7 +167,7 @@ export default function Page(props) {
     setLoading(true);
 
     try {
-      const response: Actions.AppRefreshQueryRun = await execApi(
+      const response: Actions.AppRefreshQueryRun = await client.request(
         "post",
         `/appRefreshQuery/${appRefreshQuery.id}/run`
       );
@@ -187,7 +189,7 @@ export default function Page(props) {
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const response: Actions.AppRefreshQueryDestroy = await execApi(
+      const response: Actions.AppRefreshQueryDestroy = await client.request(
         "delete",
         `/appRefreshQuery/${appRefreshQuery.id}`
       );
@@ -417,22 +419,22 @@ export default function Page(props) {
   }
 }
 
-Page.getInitialProps = async (ctx) => {
+Page.getInitialProps = async (ctx: NextPageContext) => {
   const { id } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { app } = await execApi("get", `/app/${id}`);
+  const client = generateClient(ctx);
+  const { app } = await client.request("get", `/app/${id}`);
 
   let foundAppRefreshQuery;
 
   if (app.appRefreshQuery !== null) {
-    const { appRefreshQuery } = await execApi(
+    const { appRefreshQuery } = await client.request(
       "get",
       `/appRefreshQuery/${app.appRefreshQuery.id}`
     );
     foundAppRefreshQuery = appRefreshQuery;
   }
 
-  const { sources } = await execApi("get", `/sources`);
+  const { sources } = await client.request("get", `/sources`);
 
   let scheduleRuns = [];
   let schedules = [];
@@ -446,7 +448,7 @@ Page.getInitialProps = async (ctx) => {
       .map((source) => source.schedule);
 
     for (const schedule of schedules) {
-      const { runs } = await execApi("get", `/runs`, {
+      const { runs } = await client.request("get", `/runs`, {
         creatorId: schedule.id,
         limit: 1,
       });

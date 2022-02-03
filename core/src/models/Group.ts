@@ -455,8 +455,6 @@ export class Group extends LoggedModel<Group> {
     const wheres: WhereAttributeHash[] = [];
     const localNumbers = [].concat(numbers);
 
-    if (recordState) wheres.push({ state: recordState });
-
     for (const i in rules) {
       const rule = rules[i];
       const number = localNumbers.pop();
@@ -648,6 +646,7 @@ export class Group extends LoggedModel<Group> {
 
     const joinType = matchType === "all" ? Op.and : Op.or;
     const whereContainer: WhereAttributeHash = {};
+    if (recordState) whereContainer.state = recordState;
     // @ts-ignore
     whereContainer[joinType] = wheres;
 

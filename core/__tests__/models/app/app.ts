@@ -414,11 +414,12 @@ describe("models/app", () => {
             name: "import-from-test-template-app",
             displayName: "import-from-test-template-app",
             description: "a test app connection",
+            supportIncrementalSchedule: true,
             apps: ["test-template-app"],
             direction: "import" as "import",
             options: [],
             methods: {
-              records: async () => {
+              importRecords: async () => {
                 return {
                   importsCount: 0,
                   highWaterMark: { col: "0" },

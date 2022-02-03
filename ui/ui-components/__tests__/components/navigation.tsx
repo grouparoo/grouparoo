@@ -4,6 +4,8 @@ import Component from "../../components/Navigation";
 import "../../components/Icons"; // this is needed to load the library
 import commonProps from "../__utils__/commonProps";
 import { WebAppContext } from "../../contexts/webApp";
+import { ApiContext } from "../../contexts/api";
+import { Client } from "../../client/client";
 
 const useRouter = jest.spyOn(require("next/router"), "useRouter");
 
@@ -38,9 +40,11 @@ describe("navigation", () => {
     };
 
     render(
-      <WebAppContext.Provider value={webAppContext}>
-        <Component {...commonProps} />
-      </WebAppContext.Provider>
+      <ApiContext.Provider value={{ client: new Client() }}>
+        <WebAppContext.Provider value={webAppContext}>
+          <Component {...commonProps} />
+        </WebAppContext.Provider>
+      </ApiContext.Provider>
     );
   });
 

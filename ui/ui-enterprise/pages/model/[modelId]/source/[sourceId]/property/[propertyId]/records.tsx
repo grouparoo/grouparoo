@@ -1,4 +1,3 @@
-import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import Head from "next/head";
 import PropertyTabs from "@grouparoo/ui-components/components/tabs/Property";
 import RecordsList from "@grouparoo/ui-components/components/record/List";
@@ -8,10 +7,10 @@ import LockedBadge from "@grouparoo/ui-components/components/badges/LockedBadge"
 import { Actions, Models } from "@grouparoo/ui-components/utils/apiData";
 import ModelBadge from "@grouparoo/ui-components/components/badges/ModelBadge";
 import { NextPageContext } from "next";
+import { generateClient } from "@grouparoo/ui-components/client/client";
 
 export default function Page(props) {
   const {
-    model,
     property,
     source,
   }: {
@@ -26,7 +25,7 @@ export default function Page(props) {
         <title>Grouparoo: {property.key} Records</title>
       </Head>
 
-      <PropertyTabs property={property} source={source} model={model} />
+      <PropertyTabs property={property} source={source} />
 
       <RecordsList
         {...props}
@@ -53,13 +52,15 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { propertyId, modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { property } = await execApi("get", `/property/${propertyId}`);
-  const { source } = await execApi("get", `/source/${property.sourceId}`);
-  const { model } = await execApi<Actions.ModelView>(
+  const { propertyId } = ctx.query;
+  const client = generateClient(ctx);
+  const { property } = await client.request<Actions.PropertyView>(
     "get",
-    `/model/${modelId}`
+    `/property/${propertyId}`
+  );
+  const { source } = await client.request<Actions.SourceView>(
+    "get",
+    `/source/${property.sourceId}`
   );
   const recordListInitialProps = await RecordsList.hydrate(
     ctx,
@@ -67,5 +68,5 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     "%"
   );
 
-  return { model, property, source, ...recordListInitialProps };
+  return { property, source, ...recordListInitialProps };
 };

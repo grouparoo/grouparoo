@@ -1,11 +1,10 @@
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { Row, Col, Form, Badge, Alert, Card } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { UseApi } from "../../../../../hooks/useApi";
 import SourceTabs from "../../../../../components/tabs/Source";
 import PageHeader from "../../../../../components/PageHeader";
 import StateBadge from "../../../../../components/badges/StateBadge";
@@ -25,6 +24,10 @@ import FormMappingSelector from "../../../../../components/source/FormMappingSel
 import { createSchedule } from "../../../../../components/schedule/Add";
 import ManagedCard from "../../../../../components/lib/ManagedCard";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
+import PrimaryKeyBadge from "../../../../../components/badges/PrimaryKeyBadge";
+import { useApi } from "../../../../../contexts/api";
+import { generateClient } from "../../../../../client/client";
+import { withServerErrorHandler } from "../../../../../utils/withServerErrorHandler";
 
 interface FormData {
   mapping?: {
@@ -35,7 +38,6 @@ interface FormData {
 }
 
 interface Props {
-  model: Models.GrouparooModelType;
   environmentVariableOptions: Actions.AppOptions["environmentVariableOptions"];
   properties: Models.PropertyType[];
   propertyExamples: Record<string, string[]>;
@@ -45,14 +47,13 @@ interface Props {
 }
 
 const Page: NextPage<Props> = ({
-  model,
   environmentVariableOptions,
   scheduleCount,
   totalSources,
   ...props
 }) => {
   const router = useRouter();
-  const { execApi } = UseApi(undefined, errorHandler);
+  const { client } = useApi();
   const { handleSubmit, register } = useForm();
   const [preview, setPreview] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -71,11 +72,11 @@ const Page: NextPage<Props> = ({
   const { sourceId } = router.query;
   const mappingColumn = useMemo(
     () => Object.keys(props.source.mapping)[0] as string,
-    [source]
+    [props.source.mapping]
   );
   const mappingPropertyKey = useMemo(
     () => Object.values(props.source.mapping)[0] as string,
-    [source]
+    [props.source.mapping]
   );
   const isPrimarySource = useMemo(
     () =>
@@ -83,49 +84,65 @@ const Page: NextPage<Props> = ({
       properties.filter(
         ({ isPrimaryKey, sourceId }) => isPrimaryKey && sourceId === source.id
       ).length > 0,
-    [properties, source]
+    [properties, source.id, totalSources]
+  );
+
+  const loadPreview = useCallback(
+    async (previewAvailable: boolean = source.previewAvailable) => {
+      if (!previewAvailable) {
+        return;
+      }
+
+      setPreviewLoading(true);
+      const response: Actions.SourcePreview = await client.request(
+        "get",
+        `/source/${sourceId}/preview`,
+        {
+          options:
+            Object.keys(source.options).length > 0 ? source.options : null,
+        },
+        { useCache: false }
+      );
+      setPreviewLoading(false);
+      if (response?.preview) {
+        setPreview(response.preview);
+      }
+    },
+    [client, source.options, source.previewAvailable, sourceId]
   );
 
   const sourceBadges = useMemo(() => {
     const badges = [
-      <LockedBadge object={source} />,
-      <StateBadge state={source.state} />,
-      <ModelBadge modelName={source.modelName} modelId={source.modelId} />,
+      <LockedBadge object={source} key={source.id} />,
+      <StateBadge state={source.state} key={source.state} />,
+      <ModelBadge
+        modelName={source.modelName}
+        modelId={source.modelId}
+        key={source.modelId}
+      />,
     ];
     if (isPrimarySource) {
-      badges.unshift(<Badge variant="info">primary source</Badge>);
+      badges.unshift(<PrimaryKeyBadge isSource />);
     }
     return badges;
   }, [source, isPrimarySource]);
 
+  const loadOptions = useCallback(async () => {
+    setLoadingOptions(true);
+    const response: Actions.SourceConnectionOptions = await client.request(
+      "get",
+      `/source/${sourceId}/connectionOptions`,
+      { options: source.options },
+      { useCache: false }
+    );
+    if (response?.options) setConnectionOptions(response.options);
+    setLoadingOptions(false);
+  }, [client, source.options, sourceId]);
+
   useEffect(() => {
     loadPreview(source.previewAvailable);
     loadOptions();
-  }, []);
-
-  async function loadPreview(
-    previewAvailable: boolean = source.previewAvailable
-  ) {
-    if (!previewAvailable) {
-      return;
-    }
-
-    setPreviewLoading(true);
-    const response: Actions.SourcePreview = await execApi(
-      "get",
-      `/source/${sourceId}/preview`,
-      {
-        options: Object.keys(source.options).length > 0 ? source.options : null,
-      },
-      null,
-      null,
-      false
-    );
-    setPreviewLoading(false);
-    if (response?.preview) {
-      setPreview(response.preview);
-    }
-  }
+  }, [loadOptions, loadPreview, source.previewAvailable]);
 
   const onSubmit: SubmitHandler<FormData> = async (data, event) => {
     event.preventDefault();
@@ -141,10 +158,14 @@ const Page: NextPage<Props> = ({
     // Unique Property is being created and need to bootstrap?
     if (isBootstrappingUniqueProperty) {
       const bootstrapResponse: Actions.SourceBootstrapUniqueProperty =
-        await execApi("post", `/source/${source.id}/bootstrapUniqueProperty`, {
-          mappedColumn: data.mapping.sourceColumn,
-          sourceOptions: source.options,
-        });
+        await client.request(
+          "post",
+          `/source/${source.id}/bootstrapUniqueProperty`,
+          {
+            mappedColumn: data.mapping.sourceColumn,
+            sourceOptions: source.options,
+          }
+        );
 
       if (bootstrapResponse?.property) {
         bootstrapSuccess = true;
@@ -177,7 +198,7 @@ const Page: NextPage<Props> = ({
         ? undefined
         : "ready";
 
-    const response = await execApi<Actions.SourceEdit>(
+    const response = await client.request<Actions.SourceEdit>(
       "put",
       `/source/${sourceId}`,
       { ...source, state, mapping }
@@ -192,7 +213,7 @@ const Page: NextPage<Props> = ({
         isBootstrappingUniqueProperty &&
         response.source.state === "ready"
       ) {
-        await execApi<Actions.SourceGenerateSampleRecords>(
+        await client.request<Actions.SourceGenerateSampleRecords>(
           "post",
           `/source/${sourceId}/generateSampleRecords`,
           { id: sourceId }
@@ -203,7 +224,7 @@ const Page: NextPage<Props> = ({
       if (scheduleCount === 0 && response.source.scheduleAvailable) {
         const createdScheduleAndRedirected = await createSchedule({
           router,
-          execApi,
+          client,
           source: response.source,
           setLoading: () => {},
         });
@@ -223,16 +244,13 @@ const Page: NextPage<Props> = ({
       }
     }
 
-    const { properties, examples } = await execApi<Actions.PropertiesList>(
-      "get",
-      `/properties`,
-      {
+    const { properties, examples } =
+      await client.request<Actions.PropertiesList>("get", `/properties`, {
         unique: true,
         includeExamples: true,
         state: "ready",
         modelId: source?.modelId,
-      }
-    );
+      });
 
     setProperties(properties);
     setPropertyExamples(examples);
@@ -242,24 +260,10 @@ const Page: NextPage<Props> = ({
     setLoading(false);
   };
 
-  async function loadOptions() {
-    setLoadingOptions(true);
-    const response: Actions.SourceConnectionOptions = await execApi(
-      "get",
-      `/source/${sourceId}/connectionOptions`,
-      { options: source.options },
-      null,
-      null,
-      false
-    );
-    if (response?.options) setConnectionOptions(response.options);
-    setLoadingOptions(false);
-  }
-
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const { success }: Actions.SourceDestroy = await execApi(
+      const { success }: Actions.SourceDestroy = await client.request(
         "delete",
         `/source/${sourceId}`
       );
@@ -305,7 +309,7 @@ const Page: NextPage<Props> = ({
         <title>Grouparoo: {source.name}</title>
       </Head>
 
-      <SourceTabs source={source} model={model} />
+      <SourceTabs source={source} />
 
       <PageHeader
         icon={source.app.icon}
@@ -327,7 +331,7 @@ const Page: NextPage<Props> = ({
                   defaultValue={source.name}
                   onChange={(e) => update(e)}
                   name="source.name"
-                  ref={register}
+                  {...register("source.name")}
                 />
                 <Form.Control.Feedback type="invalid">
                   Name is required
@@ -437,7 +441,7 @@ const Page: NextPage<Props> = ({
                                 )
                               }
                               name={`source.options.${opt.key}`}
-                              ref={register}
+                              {...register(`source.options.${opt.key}`)}
                             >
                               <option value={""} disabled>
                                 Select an option
@@ -497,7 +501,7 @@ const Page: NextPage<Props> = ({
                                 )
                               }
                               name={`source.options.${opt.key}`}
-                              ref={register}
+                              {...register(`source.options.${opt.key}`)}
                             />
                             <Form.Text className="text-muted">
                               {opt.description}
@@ -622,51 +626,43 @@ const Page: NextPage<Props> = ({
 
 export default Page;
 
-export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
-  const { sourceId, modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { source } = await execApi("get", `/source/${sourceId}`);
-  ensureMatchingModel("Source", source.modelId, modelId.toString());
+export const getServerSideProps: GetServerSideProps<Props> =
+  withServerErrorHandler(async (ctx) => {
+    const { sourceId, modelId } = ctx.query;
+    const client = generateClient(ctx);
+    const { source } = await client.request("get", `/source/${sourceId}`);
+    ensureMatchingModel("Source", source.modelId, modelId.toString());
 
-  const { model } = await execApi<Actions.ModelView>(
-    "get",
-    `/model/${modelId}`
-  );
-
-  const { total: totalSources } = await execApi("get", `/sources`, {
-    modelId,
-    limit: 1,
-  });
-
-  const { environmentVariableOptions } = await execApi(
-    "get",
-    `/sources/connectionApps`
-  );
-
-  const { properties, examples: propertyExamples } =
-    await execApi<Actions.PropertiesList>("get", `/properties`, {
-      includeExamples: true,
-      state: "ready",
-      modelId: source?.modelId,
+    const { total: totalSources } = await client.request("get", `/sources`, {
+      modelId,
+      limit: 1,
     });
 
-  const { total: scheduleCount } = await execApi<Actions.SchedulesList>(
-    "get",
-    `/schedules`,
-    {
-      modelId: source?.modelId,
-    }
-  );
+    const { environmentVariableOptions } = await client.request(
+      "get",
+      `/sources/connectionApps`
+    );
 
-  return {
-    props: {
-      environmentVariableOptions,
-      model,
-      properties,
-      propertyExamples,
-      source,
-      scheduleCount,
-      totalSources,
-    },
-  };
-};
+    const { properties, examples: propertyExamples } =
+      await client.request<Actions.PropertiesList>("get", `/properties`, {
+        includeExamples: true,
+        state: "ready",
+        modelId: source?.modelId,
+      });
+
+    const { total: scheduleCount } =
+      await client.request<Actions.SchedulesList>("get", `/schedules`, {
+        modelId: source?.modelId,
+      });
+
+    return {
+      props: {
+        environmentVariableOptions,
+        properties,
+        propertyExamples,
+        source,
+        scheduleCount,
+        totalSources,
+      },
+    };
+  });

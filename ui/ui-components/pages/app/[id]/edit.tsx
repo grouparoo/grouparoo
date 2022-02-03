@@ -1,15 +1,11 @@
+import { useApi } from "../../../contexts/api";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect, Fragment, useCallback, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
-import {
-  appHandler,
-  errorHandler,
-  successHandler,
-} from "../../../eventHandlers";
-import { UseApi } from "../../../hooks/useApi";
+import { appHandler, successHandler } from "../../../eventHandlers";
 import PageHeader from "../../../components/PageHeader";
 import StateBadge from "../../../components/badges/StateBadge";
 import SourceBadge from "../../../components/badges/SourceBadge";
@@ -20,6 +16,8 @@ import LoadingButton from "../../../components/LoadingButton";
 import LockedBadge from "../../../components/badges/LockedBadge";
 import { Actions, Models } from "../../../utils/apiData";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
+import { NextPageContext } from "next";
+import { generateClient } from "../../../client/client";
 
 export default function Page(props) {
   const {
@@ -32,7 +30,7 @@ export default function Page(props) {
     pluginOptions: Actions.AppOptions["pluginOptions"];
   } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [app, setApp] = useState<Models.AppType>(props.app);
   const { register, handleSubmit, setValue, getValues, reset, watch, control } =
     useForm<Models.AppType>({
@@ -50,6 +48,28 @@ export default function Page(props) {
   }>({ success: null, error: null, message: null });
   const [ranTest, setRanTest] = useState(false);
   const { id } = router.query;
+
+  const loadOAuthRequest = useCallback(
+    async (requestId: string) => {
+      if (requestId) {
+        const response: Actions.OAuthClientView = await client.request(
+          "get",
+          `/oauth/client/request/${requestId}/view`
+        );
+
+        if (response.oAuthRequest) {
+          setValue(
+            `options.${response.oAuthRequest.appOption}`,
+            response.oAuthRequest.token
+          );
+          successHandler.set({
+            message: `Loaded app options from ${response.oAuthRequest.provider}`,
+          });
+        }
+      }
+    },
+    [client, setValue]
+  );
 
   useEffect(() => {
     if (!oAuthPopup) return;
@@ -73,15 +93,19 @@ export default function Page(props) {
       clearInterval(interval);
       globalThis.removeEventListener("message", onMessage);
     };
-  }, [oAuthPopup]);
+  }, [loadOAuthRequest, oAuthPopup]);
 
   async function edit(appData: Models.AppType) {
     const state = app.state === "ready" ? undefined : "ready";
     setLoading(true);
-    const response: Actions.AppEdit = await execApi("put", `/app/${id}`, {
-      ...appData,
-      state,
-    });
+    const response: Actions.AppEdit = await client.request(
+      "put",
+      `/app/${id}`,
+      {
+        ...appData,
+        state,
+      }
+    );
     if (response?.app) {
       if (response.app.state === "ready" && app.state === "draft") {
         router.push("/apps");
@@ -100,7 +124,7 @@ export default function Page(props) {
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const response: Actions.AppDestroy = await execApi(
+      const response: Actions.AppDestroy = await client.request(
         "delete",
         `/app/${id}`
       );
@@ -118,9 +142,13 @@ export default function Page(props) {
     setRanTest(false);
     setTestResult({ success: null, message: null, error: null });
     const { options } = getValues();
-    const response: Actions.AppTest = await execApi("put", `/app/${id}/test`, {
-      options,
-    });
+    const response: Actions.AppTest = await client.request(
+      "put",
+      `/app/${id}/test`,
+      {
+        options,
+      }
+    );
     if (response?.test) {
       setRanTest(true);
       setTestResult(response.test);
@@ -132,7 +160,7 @@ export default function Page(props) {
     const providerName = app.pluginName.replace("@grouparoo/", "");
     setLoadingOAuth(true);
 
-    const response: Actions.OAuthClientStart = await execApi(
+    const response: Actions.OAuthClientStart = await client.request(
       "post",
       `/oauth/${providerName}/client/start`,
       { type: "app", appId: id, appOption: optionKey }
@@ -148,25 +176,6 @@ export default function Page(props) {
       setOAuthPopup(oAuthPopupWindow);
     } else {
       setLoadingOAuth(false);
-    }
-  };
-
-  const loadOAuthRequest = async (requestId: string) => {
-    if (requestId) {
-      const response: Actions.OAuthClientView = await execApi(
-        "get",
-        `/oauth/client/request/${requestId}/view`
-      );
-
-      if (response.oAuthRequest) {
-        setValue(
-          `options.${response.oAuthRequest.appOption}`,
-          response.oAuthRequest.token
-        );
-        successHandler.set({
-          message: `Loaded app options from ${response.oAuthRequest.provider}`,
-        });
-      }
     }
   };
 
@@ -201,7 +210,7 @@ export default function Page(props) {
                   name="name"
                   placeholder="Name"
                   disabled={loading}
-                  ref={register}
+                  {...register("name")}
                 />
                 <Form.Control.Feedback type="invalid">
                   Name is required
@@ -241,6 +250,7 @@ export default function Page(props) {
                           <a
                             target="_blank"
                             href="https://www.grouparoo.com/docs/support/secrets"
+                            rel="noreferrer"
                           >
                             See the docs
                           </a>{" "}
@@ -268,7 +278,7 @@ export default function Page(props) {
                                   <Controller
                                     control={control}
                                     name={`options.${opt.key}`}
-                                    render={({ onChange }) => {
+                                    render={({ field: { onChange } }) => {
                                       return (
                                         <Typeahead
                                           id="typeahead"
@@ -338,7 +348,7 @@ export default function Page(props) {
                                     required={opt.required}
                                     disabled={loading}
                                     name={`options.${opt.key}`}
-                                    ref={register}
+                                    {...register(`options.${opt.key}`)}
                                   >
                                     <option value={""} disabled>
                                       Select an option
@@ -400,7 +410,7 @@ export default function Page(props) {
                                     type="password"
                                     placeholder={opt.placeholder}
                                     name={`options.${opt.key}`}
-                                    ref={register}
+                                    {...register(`options.${opt.key}`)}
                                   />
                                   <Form.Text className="text-muted">
                                     {opt.description}
@@ -420,7 +430,7 @@ export default function Page(props) {
                                     disabled={loading}
                                     placeholder={opt.placeholder}
                                     name={`options.${opt.key}`}
-                                    ref={register}
+                                    {...register(`options.${opt.key}`)}
                                   />
                                   <Form.Text className="text-muted">
                                     {opt.description}
@@ -492,15 +502,15 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
+Page.getInitialProps = async (ctx: NextPageContext) => {
   const { id } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { app } = await execApi("get", `/app/${id}`);
+  const client = generateClient(ctx);
+  const { app } = await client.request("get", `/app/${id}`);
   const {
     options,
     pluginOptions,
     environmentVariableOptions,
-  }: Actions.AppOptions = await execApi("get", `/app/${id}/options`);
+  }: Actions.AppOptions = await client.request("get", `/app/${id}/options`);
   return {
     app,
     options,

@@ -12,7 +12,7 @@ import {
   ExecuteQueryMethod,
   ValidateQueryMethod,
   validateGenericQuery,
-  GetChangedRowsMethod,
+  GetRowsMethod,
 } from "./options";
 import { GetTablesMethod } from "../table";
 import { ConnectionOptionsOption } from "@grouparoo/core";
@@ -28,7 +28,7 @@ export interface BuildConnectionMethod {
     options?: ConnectionOptionsOption[];
     executeQuery: ExecuteQueryMethod;
     validateQuery?: ValidateQueryMethod;
-    getChangedRows?: GetChangedRowsMethod;
+    getRows?: GetRowsMethod;
     getTables?: GetTablesMethod;
   }): PluginConnection;
 }
@@ -41,7 +41,7 @@ export const buildConnection: BuildConnectionMethod = ({
   tableOptionDescription = null,
   options = [],
   executeQuery,
-  getChangedRows,
+  getRows,
   validateQuery = validateGenericQuery,
   getTables,
 }) => {
@@ -56,14 +56,15 @@ export const buildConnection: BuildConnectionMethod = ({
   const scheduleOptions: ScheduleOptionsMethod = async (args) =>
     getScheduleOptions(args);
 
-  // const scheduleOptions = getChangedRows ? getScheduleOptions() : null;
-  const records = getChangedRows ? getRecordsMethod(getChangedRows) : null;
+  // const scheduleOptions = getRows ? getScheduleOptions() : null;
+  const importRecords = getRows ? getRecordsMethod(getRows) : null;
 
   const plugin: PluginConnection = {
     name,
     displayName,
     direction: "import",
     description,
+    supportIncrementalSchedule: false,
     apps,
     options,
     skipSourceMapping: true,
@@ -71,7 +72,7 @@ export const buildConnection: BuildConnectionMethod = ({
     methods: {
       sourceOptions,
       recordProperty,
-      records,
+      importRecords,
       propertyOptions,
       scheduleOptions,
     },

@@ -1,4 +1,4 @@
-import { ParamsFrom } from "actionhero";
+import { ParamsFrom, log } from "actionhero";
 import { WhereOptions } from "sequelize/types";
 import { Schedule } from "../../models/Schedule";
 import { CLSTask } from "../../classes/tasks/clsTask";
@@ -38,12 +38,26 @@ export class ScheduleEnqueueRuns extends CLSTask {
 
     const schedules = await Schedule.findAll({ where });
 
+    const enqueuedSchedules: Schedule[] = [];
     for (const schedule of schedules) {
       const shouldRun = await schedule.shouldRun({
         ignoreDeltas,
         runIfNotRecurring,
       });
-      if (shouldRun) await schedule.enqueueRun();
+
+      if (shouldRun) {
+        await schedule.enqueueRun();
+        enqueuedSchedules.push(schedule);
+      }
+    }
+
+    if (enqueuedSchedules.length) {
+      log(
+        `Enqueued Runs for Schedules: ${enqueuedSchedules
+          .map((s) => `${s.name} (${s.id})`)
+          .join(", ")}`,
+        getGrouparooRunMode() === "cli:run" ? "notice" : "info"
+      );
     }
   }
 }

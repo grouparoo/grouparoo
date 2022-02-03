@@ -1,12 +1,14 @@
 import { makeWhereClause } from "./util";
-import { validateQuery } from "../validateQuery";
 import {
   GetPropertyValueMethod,
-  DataResponse,
   AggregationMethod,
 } from "@grouparoo/app-templates/dist/source/table";
+import SQLiteQueryBuilder from "../queryBuilder";
+import { SQLiteConnection } from "../sqlite";
 
-export const getPropertyValue: GetPropertyValueMethod = async ({
+export const getPropertyValue: GetPropertyValueMethod<
+  SQLiteConnection
+> = async ({
   connection,
   tableName,
   columnName,
@@ -54,32 +56,28 @@ export const getPropertyValue: GetPropertyValueMethod = async ({
       throw new Error(`${aggregationMethod} is not a known aggregation method`);
   }
 
-  let query = `SELECT ${aggSelect} as __result FROM "${tableName}" WHERE`;
-  let addAnd = false;
+  const queryBuilder: SQLiteQueryBuilder = new SQLiteQueryBuilder(
+    `SELECT ${aggSelect} as __result FROM "${tableName}" WHERE`
+  );
 
+  let addAnd = false;
   for (const condition of matchConditions) {
-    const filterClause = makeWhereClause(condition);
-    if (addAnd) {
-      query += ` AND`;
-    }
-    query += ` ${filterClause}`;
+    if (addAnd) queryBuilder.push("AND");
+    makeWhereClause(condition, queryBuilder);
     addAnd = true;
   }
 
-  if (orderBy.length > 0) query += ` ORDER BY ${orderBy}`;
-  if (!isArray) query += ` LIMIT 1`;
+  if (orderBy.length > 0) queryBuilder.push(`ORDER BY ${orderBy}`);
+  if (!isArray) queryBuilder.push("LIMIT 1");
 
-  validateQuery(query);
+  const [query, params] = queryBuilder.build();
 
-  let response: DataResponse[];
   try {
-    const rows = await connection.asyncQuery(query);
-    response = rows.map((row) => row.__result);
+    const rows = await connection.asyncQuery(query, params);
+    return rows.map((row) => row.__result);
   } catch (error) {
     throw new Error(
-      `Error with SQLite SQL Statement: Query - \`${query}\`, Error - ${error}`
+      `Error with SQLite SQL Statement: Query - \`${query}\` [${params}], Error - ${error}`
     );
   }
-
-  return response;
 };

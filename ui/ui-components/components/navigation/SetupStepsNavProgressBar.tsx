@@ -2,15 +2,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { ProgressBar, Row, Col, Button } from "react-bootstrap";
-import { setupStepHandler } from "../../eventHandlers";
+import { Button, Col, ProgressBar, Row } from "react-bootstrap";
+import { useApi } from "../../contexts/api";
+import { setupStepsHandler } from "../../eventHandlers";
 import { Actions, Models } from "../../utils/apiData";
 
-export default function SetupStepsNavProgressBar({
-  execApi,
-}: {
-  execApi: any;
-}) {
+export default function SetupStepsNavProgressBar() {
+  const { client } = useApi();
   const [steps, setSteps] = useState<Models.SetupStepType[]>([]);
   const [initialOnBoardingState, setInitialOnBoardingState] =
     useState<boolean>(null);
@@ -22,13 +20,13 @@ export default function SetupStepsNavProgressBar({
     getSetupSteps();
     router?.events?.on("routeChangeStart", getSetupSteps);
 
-    setupStepHandler.subscribe("setup-steps-nav-progress-bar", () =>
+    setupStepsHandler.subscribe("setup-steps-nav-progress-bar", () =>
       getSetupSteps()
     );
 
     return () => {
       router?.events?.off("routeChangeStart", getSetupSteps);
-      setupStepHandler.unsubscribe("setup-steps-nav-progress-bar");
+      setupStepsHandler.unsubscribe("setup-steps-nav-progress-bar");
     };
   }, []);
 
@@ -37,7 +35,7 @@ export default function SetupStepsNavProgressBar({
     if (newUrl && newUrl.match(/^\/session\//)) return;
     if (newUrl && newUrl === "/") return;
 
-    const response: Actions.SetupStepsList = await execApi(
+    const response: Actions.SetupStepsList = await client.request(
       "get",
       `/setupSteps`
     );

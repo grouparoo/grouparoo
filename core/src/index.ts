@@ -63,6 +63,8 @@ export * from "./modules/tableSpeculation";
 
 export * from "./modules/oAuth";
 
+export type { GrouparooRunMode } from "./modules/runMode";
+
 // ensure config types are loaded
 import "./config/api";
 import "./config/batchSize";
@@ -79,3 +81,10 @@ import "./config/tasks";
 import "./config/telemetry";
 import "./config/web";
 import "./config/websocket";
+import "./initializers/plugins";
+import "./initializers/apm";
+import "./initializers/codeConfig";
+import "./initializers/next";
+import "./initializers/notifiers";
+import "./initializers/plugins";
+import "./initializers/session";

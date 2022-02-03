@@ -1,14 +1,15 @@
 import Tabs from "../Tabs";
 import { Models } from "../../utils/apiData";
+import { useGrouparooModel } from "../../contexts/grouparooModel";
 import { grouparooUiEdition } from "../../utils/uiEdition";
 
 export default function DestinationTabs({
   destination,
-  model,
 }: {
   destination: Models.DestinationType;
-  model: Models.GrouparooModelType;
 }) {
+  const { model } = useGrouparooModel();
+
   let tabs = [];
   switch (grouparooUiEdition()) {
     case "enterprise":

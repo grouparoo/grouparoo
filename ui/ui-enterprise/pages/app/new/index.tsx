@@ -1,16 +1,17 @@
+import { useApi } from "../../../../ui-components/contexts/api";
 import Head from "next/head";
-import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import { useState } from "react";
 import { Form } from "react-bootstrap";
 import { useRouter } from "next/router";
 import AppSelectorList from "@grouparoo/ui-components/components/AppSelectorList";
-import { errorHandler } from "@grouparoo/ui-components/eventHandlers";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
+import { generateClient } from "@grouparoo/ui-components/client/client";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const { plugins }: { plugins: Actions.PluginsList["plugins"] } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [plugin, setPlugin] = useState<
     Partial<Actions.PluginsList["plugins"][number]>
   >({ name: "" });
@@ -22,7 +23,7 @@ export default function Page(props) {
 
     if (plugin.apps?.length === 1) {
       setLoading(true);
-      const response: Actions.AppCreate = await execApi("post", `/app`, {
+      const response: Actions.AppCreate = await client.request("post", `/app`, {
         type: plugin.apps[0].name,
       });
       if (response?.app) {
@@ -56,13 +57,17 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
-  const { plugins }: Actions.PluginsList = await execApi("get", `/plugins`, {
-    includeInstalled: true,
-    includeAvailable: false,
-    includeVersions: false,
-  });
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
+  const { plugins }: Actions.PluginsList = await client.request(
+    "get",
+    `/plugins`,
+    {
+      includeInstalled: true,
+      includeAvailable: false,
+      includeVersions: false,
+    }
+  );
   return {
     plugins: plugins
       .filter((p) => p.apps?.length > 0)

@@ -24,6 +24,7 @@ if (
 // normal pathway
 import fs from "fs-extra";
 import path from "path";
+import { ChildProcessWithoutNullStreams, spawn } from "child_process";
 import nock from "nock";
 import prettier from "prettier";
 
@@ -51,6 +52,7 @@ import {
   SourceOptionsMethodResponse,
   DestinationOptionsMethodResponse,
   AggregationMethod,
+  GrouparooRunMode,
 } from "@grouparoo/core";
 
 const {
@@ -183,7 +185,7 @@ export namespace helper {
 
   /**
    * I am used by clients who want to start and stop their server for record snapshot testing.
-   * As an Arrow function, 'll be in the Jest namespace when used
+   * As an Arrow function, I'll be in the Jest namespace when used
    */
   export const grouparooTestServer = (
     options: {
@@ -226,6 +228,83 @@ export namespace helper {
     }, helper.setupTime);
 
     return actionhero;
+  };
+
+  /**
+   * Run a Grouparoo server "for real" in a sub-process
+   */
+  export const grouparooTestServerDetached = ({
+    port,
+    truncate = false,
+    resetSettings = false,
+    runMode = "cli:start",
+  }: {
+    port: number;
+    truncate?: boolean;
+    resetSettings?: boolean;
+    runMode?: GrouparooRunMode;
+  }) => {
+    let serverProcess: ChildProcessWithoutNullStreams;
+
+    beforeAll(async () => {
+      if (truncate || resetSettings) {
+        const dbName = `grouparoo_test-${port}.sqlite`;
+        if (fs.existsSync(dbName)) {
+          fs.unlinkSync(dbName);
+        }
+      }
+
+      await new Promise((resolve) => {
+        let resolved = false;
+        serverProcess = spawn("./bin/start", [], {
+          cwd: corePath,
+          env: {
+            ...process.env,
+            PORT: String(port),
+            WEB_URL: `http://localhost:${port}`,
+            REDIS_URL: "redis://mock",
+            DATABASE_URL: `sqlite://grouparoo_test-${port}.sqlite`,
+            JEST_WORKER_ID: undefined,
+            GROUPAROO_LOG_LEVEL: "info", // relying on the log messages to know when the server is up,
+            GROUPAROO_RUN_MODE: runMode,
+          },
+        });
+
+        serverProcess.stdout.on("data", (data) => {
+          // console.log(String(data));
+          if (!resolved && String(data).match(/@grouparoo\/core Started/)) {
+            resolve(null);
+          }
+        });
+
+        serverProcess.stderr.on("data", (data) => console.log(String(data)));
+
+        serverProcess.on("close", (code) => {
+          // console.log(`child process exited with code ${code}`);
+        });
+      });
+    }, helper.setupTime * 2);
+
+    afterAll(async () => {
+      const timeout = 60 * 1000;
+      await new Promise((resolve, reject) => {
+        let count = 0;
+        const interval = setInterval(() => {
+          try {
+            process.kill(serverProcess.pid);
+          } catch (e) {
+            clearInterval(interval);
+            resolve(null);
+          }
+          if ((count += 100) > timeout) {
+            clearInterval(interval);
+            reject(new Error("Timeout process kill"));
+          }
+        }, 100);
+      });
+    }, helper.setupTime);
+
+    return serverProcess;
   };
 
   /**
@@ -309,6 +388,7 @@ export namespace helper {
           displayName: "test-plugin-import",
           direction: "import",
           description: "import or update records from a table",
+          supportIncrementalSchedule: true,
           apps: ["test-plugin-app"],
           options: [
             { key: "table", required: true },
@@ -390,7 +470,7 @@ export namespace helper {
                 },
               ];
             },
-            records: async () => {
+            importRecords: async () => {
               return {
                 importsCount: 0,
                 highWaterMark: { col: 0 },
@@ -679,5 +759,12 @@ export namespace helper {
         setCreated ? `, "createdAt"=${sqlDate} ` : ` `
       }WHERE id IN (${instances.map((i) => `'${i.id}'`)})`
     );
+  }
+
+  export function fixedLengthFloat<Value = any>(
+    value: Value,
+    decimalDigits = 2
+  ) {
+    return parseFloat(parseFloat(value.toString()).toFixed(decimalDigits));
   }
 }

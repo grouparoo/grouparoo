@@ -17,6 +17,7 @@ export namespace Errors {
     constructor(message: string, code = "AUTHENTICATION_ERROR") {
       super(message);
       this.code = code;
+      delete this.stack;
     }
   }
 
@@ -27,6 +28,7 @@ export namespace Errors {
       const message = `Not authorized for mode "${mode}" on topic "${topic}"`;
       super(message);
       this.code = code;
+      delete this.stack;
     }
   }
 }

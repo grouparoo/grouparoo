@@ -1,3 +1,4 @@
+import { useApi } from "../contexts/api";
 import { useState } from "react";
 import { Badge } from "react-bootstrap";
 import Head from "next/head";
@@ -6,15 +7,16 @@ import Link from "next/link";
 import Pagination from "../components/Pagination";
 import LoadingTable from "../components/LoadingTable";
 import { errorHandler } from "../eventHandlers";
-import { UseApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import { Models, Actions } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
+import { generateClient } from "../client/client";
+import { NextPageContext } from "next";
 
 export default function Page(props) {
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [notifications, setNotifications] = useState<Models.NotificationType[]>(
     props.notifications
   );
@@ -32,7 +34,7 @@ export default function Page(props) {
   async function load() {
     updateURLParams(router, { offset });
     setLoading(true);
-    const response: Actions.NotificationsList = await execApi(
+    const response: Actions.NotificationsList = await client.request(
       "get",
       `/notifications`,
       {
@@ -110,12 +112,16 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { execApi } = UseApi(ctx);
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
   const { limit, offset } = ctx.query;
-  const { notifications, total } = await execApi("get", `/notifications`, {
-    limit,
-    offset,
-  });
+  const { notifications, total } = await client.request(
+    "get",
+    `/notifications`,
+    {
+      limit,
+      offset,
+    }
+  );
   return { notifications, total };
 };

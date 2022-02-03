@@ -11,7 +11,7 @@ import {
   Row,
 } from "react-bootstrap";
 import EnterpriseLink from "../../GrouparooLink";
-import { useGrouparooModelContext } from "../../../contexts/grouparooModel";
+import { useGrouparooModel } from "../../../contexts/grouparooModel";
 import { Models } from "../../../utils/apiData";
 import { formatName } from "../../../utils/formatName";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
@@ -80,7 +80,7 @@ const EntityList = function <T extends Models.EntityTypes>({
   itemType,
   renderItem,
 }: React.PropsWithChildren<Props<T>>): JSX.Element {
-  const model = useGrouparooModelContext();
+  const { model } = useGrouparooModel();
   const [expanded, setExpanded] = useState(false);
 
   if (!items?.length) return null;

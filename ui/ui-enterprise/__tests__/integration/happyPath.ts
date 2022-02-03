@@ -7,13 +7,12 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/ui-enterprise": { path: path.join(__dirname, "..", "..") },
 });
 import { helper } from "@grouparoo/spec-helper";
-import { config } from "actionhero";
-import { TeamMember, Session } from "@grouparoo/core";
 
+const port = 12345 + (parseInt(process.env.JEST_WORKER_ID) ?? 0);
 declare var browser: any;
 declare var by: any;
 declare var until: any;
-let url: string;
+const url = `http://localhost:${port}`;
 
 const firstName = "mario";
 const lastName = "mario";
@@ -22,8 +21,7 @@ const password = "P@ssw0rd";
 const companyName = "Mario Bros. Plumbing";
 
 describe("integration", () => {
-  helper.grouparooTestServer({ truncate: true });
-  beforeAll(() => (url = `http://localhost:${config.web.port}`));
+  helper.grouparooTestServerDetached({ port, truncate: true });
 
   test(
     "it renders the home page",
@@ -82,16 +80,6 @@ describe("integration", () => {
     },
     helper.mediumTime
   );
-
-  test("The new user was saved to the database and session created", async () => {
-    const teamMembers = await TeamMember.findAll();
-    expect(teamMembers.length).toBe(1);
-    expect(teamMembers[0].email).toBe(email);
-
-    const sessions = await Session.findAll();
-    expect(sessions.length).toBe(1);
-    expect(sessions[0].teamMemberId).toBe(teamMembers[0].id);
-  });
 
   test(
     "I can sign out",

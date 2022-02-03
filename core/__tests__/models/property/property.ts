@@ -742,6 +742,7 @@ describe("models/property", () => {
   describe("with plugin", () => {
     let app: App;
     let source: Source;
+    let secondarySource: Source;
     let queryCounter = 0;
 
     const propertiesToMoveKeys = Object.freeze([
@@ -857,6 +858,15 @@ describe("models/property", () => {
         propertyToMove.sourceId = source.id;
         await propertyToMove.save();
       }
+
+      secondarySource = await Source.create({
+        name: "secondary source",
+        type: "import-from-test-app",
+        appId: app.id,
+        modelId: model.id,
+      });
+
+      await secondarySource.update({ state: "ready" });
     });
 
     beforeEach(() => {
@@ -874,15 +884,74 @@ describe("models/property", () => {
       }
     });
 
-    describe("mapped though a non-unique property", () => {
-      let property: Property;
+    describe("primary key", () => {
+      let userIdProperty: Property;
+      let emailProperty: Property;
 
-      const updateUserIdPropertyUnique = async (unique: boolean) => {
-        const userIdProperty = await Property.scope(null).findOne({
+      const loadUserIdProperty = async () => {
+        userIdProperty = await Property.findOne({
           where: { key: "userId" },
         });
-        await userIdProperty.update({ unique });
       };
+
+      const loadEmailProperty = async () => {
+        emailProperty = await Property.findOne({
+          where: { key: "myEmail" },
+        });
+      };
+
+      beforeAll(async () => {
+        await loadUserIdProperty();
+        await userIdProperty.update({ unique: true });
+
+        emailProperty = await helper.factories.property(
+          source,
+          {
+            key: "myEmail",
+            unique: true,
+          },
+          { column: "email" }
+        );
+      });
+
+      afterEach(async () => {
+        await source.setMapping({});
+      });
+
+      afterAll(async () => {
+        await emailProperty.destroy();
+      });
+
+      test("primary key is set to true when primary source is mapped to property", async () => {
+        await source.setMapping({ id: "userId" });
+        expect(userIdProperty.isPrimaryKey).toBe(true);
+      });
+
+      test("primary key is updated when updating mapping", async () => {
+        await source.setMapping({ id: "userId" });
+        expect(userIdProperty.isPrimaryKey).toBe(true);
+
+        await source.setMapping({ email: "myEmail" });
+
+        await loadEmailProperty();
+        expect(emailProperty.isPrimaryKey).toBe(true);
+
+        await loadUserIdProperty();
+        expect(userIdProperty.isPrimaryKey).toBe(false);
+      });
+
+      test("property must be unique when primary key is true", async () => {
+        await source.setMapping({ id: "userId" });
+        await loadUserIdProperty();
+        await expect(userIdProperty.update({ unique: false })).rejects.toThrow(
+          /must be unique because it‘s the model‘s Primary Key/
+        );
+      });
+    });
+
+    describe("mapped though a non-unique property", () => {
+      let property: Property;
+      let secondaryProperty: Property;
 
       beforeAll(async () => {
         property = await helper.factories.property(
@@ -890,19 +959,27 @@ describe("models/property", () => {
           { key: "wordInSpanish" },
           { column: "spanishWord" }
         );
+
+        secondaryProperty = await helper.factories.property(
+          secondarySource,
+          { key: "company" },
+          { column: "company_name" }
+        );
       });
 
       beforeEach(async () => {
         await property.update({ unique: false, isArray: false });
+        await secondaryProperty.update({ unique: false, isArray: false });
       });
 
       afterEach(async () => {
         await source.setMapping({});
-        await updateUserIdPropertyUnique(true);
+        await secondarySource.setMapping({});
       });
 
       afterAll(async () => {
         await property.destroy();
+        await secondaryProperty.destroy();
       });
 
       test("properties mapped through unique properties can be unique", async () => {
@@ -918,17 +995,19 @@ describe("models/property", () => {
       });
 
       test("properties mapped through non-unique properties cannot be unique", async () => {
-        await updateUserIdPropertyUnique(false);
-        await source.setMapping({ last_name: "lastName" });
-        await expect(property.update({ unique: true })).rejects.toThrow(
+        await secondarySource.setMapping({ last_name: "lastName" });
+        await expect(
+          secondaryProperty.update({ unique: true })
+        ).rejects.toThrow(
           /Unique Property .+ cannot be mapped through a non-unique Property/
         );
       });
 
       test("properties mapped through non-unique properties cannot be arrays", async () => {
-        await updateUserIdPropertyUnique(false);
-        await source.setMapping({ last_name: "lastName" });
-        await expect(property.update({ isArray: true })).rejects.toThrow(
+        await secondarySource.setMapping({ last_name: "lastName" });
+        await expect(
+          secondaryProperty.update({ isArray: true })
+        ).rejects.toThrow(
           /Array Property .+ cannot be mapped through a non-unique Property/
         );
       });

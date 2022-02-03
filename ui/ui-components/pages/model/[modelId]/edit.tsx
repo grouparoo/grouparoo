@@ -1,13 +1,16 @@
+import { useApi } from "../../../contexts/api";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Row, Col, Form } from "react-bootstrap";
 import { useRouter } from "next/router";
-import { errorHandler, successHandler } from "../../../eventHandlers";
+import { successHandler } from "../../../eventHandlers";
 import PageHeader from "../../../components/PageHeader";
 import ModelTabs from "../../../components/tabs/Model";
 import LoadingButton from "../../../components/LoadingButton";
-import { UseApi } from "../../../hooks/useApi";
-import { Actions, Models } from "../../../utils/apiData";
+import { Actions } from "../../../utils/apiData";
+import { generateClient } from "../../../client/client";
+import { NextPageContext } from "next";
+import { useGrouparooModel } from "../../../contexts/grouparooModel";
 
 export default function Page(props) {
   const {
@@ -16,29 +19,23 @@ export default function Page(props) {
     types: Actions.ModelOptions["types"];
   } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
-  const [model, setModel] = useState<Models.GrouparooModelType>(props.model);
+  const { client } = useApi();
+  const { model: currentModel } = useGrouparooModel();
+  const [model, setModel] = useState(currentModel);
   const [loading, setLoading] = useState(false);
-  const { modelId } = router.query;
-
-  useEffect(() => {
-    setModel(props.model);
-  }, [modelId]);
 
   async function edit(event) {
     event.preventDefault();
     setLoading(true);
 
-    const response: Actions.ModelEdit = await execApi(
+    const response: Actions.ModelEdit = await client.request(
       "put",
-      `/model/${modelId}`,
+      `/model/${model.id}`,
       Object.assign({}, model)
     );
     if (response?.model) {
       setLoading(false);
       successHandler.set({ message: "Model Updated" });
-      setModel(response.model);
-
       router.replace(router.asPath);
     } else {
       setLoading(false);
@@ -48,9 +45,9 @@ export default function Page(props) {
   async function handleDelete() {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const response: Actions.ModelDestroy = await execApi(
+      const response: Actions.ModelDestroy = await client.request(
         "delete",
-        `/model/${modelId}`
+        `/model/${model.id}`
       );
       if (response?.success) {
         successHandler.set({ message: "Model Deleted" });
@@ -138,10 +135,9 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { model } = await execApi("get", `/model/${modelId}`);
-  const { types } = await execApi("get", `/modelOptions`);
-  return { model, types };
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  const client = generateClient(ctx);
+  const { types } = await client.request("get", `/modelOptions`);
+
+  return { types };
 };

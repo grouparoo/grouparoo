@@ -2,9 +2,11 @@ import { ConnectPluginAppMethod } from "@grouparoo/core";
 import { getParentPath } from "@grouparoo/core/dist/modules/pluginDetails";
 import fs from "fs";
 import path from "path";
-import { SQLite } from "./sqlite";
+import { SQLiteConnection } from "./sqlite";
 
-export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
+export const connect: ConnectPluginAppMethod<SQLiteConnection> = async ({
+  appOptions,
+}) => {
   const formattedOptions: any = Object.assign({}, appOptions);
 
   let dbPath = formattedOptions.file;
@@ -22,7 +24,7 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
     throw new Error(`Could not find SQLite database: ${dbPath}`);
   }
 
-  const connection = new SQLite({ database: dbPath });
+  const connection = new SQLiteConnection({ database: dbPath });
   await connection.asyncConnect();
 
   return connection;

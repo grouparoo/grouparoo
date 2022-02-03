@@ -1,38 +1,36 @@
-import { useEffect, useState } from "react";
-import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
-import { Typeahead } from "react-bootstrap-typeahead";
-import { useRouter } from "next/router";
 import { NextPageContext } from "next";
-import Link from "next/link";
 import Head from "next/head";
-import PageHeader from "../../../../../components/PageHeader";
-import StateBadge from "../../../../../components/badges/StateBadge";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { Alert, Badge, Col, Form, Row } from "react-bootstrap";
+import { Typeahead } from "react-bootstrap-typeahead";
+import { generateClient } from "../../../../../client/client";
 import LockedBadge from "../../../../../components/badges/LockedBadge";
-import DestinationTabs from "../../../../../components/tabs/Destination";
-import LoadingButton from "../../../../../components/LoadingButton";
+import ModelBadge from "../../../../../components/badges/ModelBadge";
+import StateBadge from "../../../../../components/badges/StateBadge";
 import Loader from "../../../../../components/Loader";
+import LoadingButton from "../../../../../components/LoadingButton";
+import PageHeader from "../../../../../components/PageHeader";
+import DestinationTabs from "../../../../../components/tabs/Destination";
+import { useApi } from "../../../../../contexts/api";
 import {
   destinationHandler,
-  errorHandler,
   successHandler,
 } from "../../../../../eventHandlers";
-import { Models, Actions } from "../../../../../utils/apiData";
-import ModelBadge from "../../../../../components/badges/ModelBadge";
-import { UseApi } from "../../../../../hooks/useApi";
+import { useDebouncedCallback } from "../../../../../hooks/useDebouncedCallback";
+import { Actions, Models } from "../../../../../utils/apiData";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
-import { useDebouncedCallback } from "../../../../../hooks/useDebouncedCallback";
 
 export default function Page(props) {
   const {
-    model,
     environmentVariableOptions,
   }: {
-    model: Models.GrouparooModelType;
     environmentVariableOptions: Actions.AppOptions["environmentVariableOptions"];
   } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
   const [destination, setDestination] = useState<Models.DestinationType>(
     props.destination
   );
@@ -58,7 +56,7 @@ export default function Page(props) {
     event.preventDefault();
 
     setLoading(true);
-    const response: Actions.DestinationEdit = await execApi(
+    const response: Actions.DestinationEdit = await client.request(
       "put",
       `/destination/${destinationId}`,
       {
@@ -90,13 +88,11 @@ export default function Page(props) {
 
   const loadOptions = useDebouncedCallback(async () => {
     setLoadingOptions(true);
-    const response: Actions.DestinationConnectionOptions = await execApi(
+    const response: Actions.DestinationConnectionOptions = await client.request(
       "get",
       `/destination/${destinationId}/connectionOptions`,
       { options: destination.options },
-      null,
-      null,
-      false
+      { useCache: false }
     );
     if (response?.options) setConnectionOptions(response.options);
     setLoadingOptions(false);
@@ -105,7 +101,7 @@ export default function Page(props) {
   async function handleDelete(force = false) {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const { success }: Actions.DestinationDestroy = await execApi(
+      const { success }: Actions.DestinationDestroy = await client.request(
         "delete",
         `/destination/${destinationId}`,
         { force }
@@ -144,7 +140,7 @@ export default function Page(props) {
         <title>Grouparoo: {destination.name}</title>
       </Head>
 
-      <DestinationTabs destination={destination} model={model} />
+      <DestinationTabs destination={destination} />
 
       <PageHeader
         icon={destination.app.icon}
@@ -440,16 +436,15 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { execApi } = UseApi(ctx);
+  const client = generateClient(ctx);
   const { destinationId, modelId } = ctx.query;
-  const { destination } = await execApi("get", `/destination/${destinationId}`);
+  const { destination } = await client.request(
+    "get",
+    `/destination/${destinationId}`
+  );
   ensureMatchingModel("Destination", destination.modelId, modelId.toString());
 
-  const { model } = await execApi<Actions.ModelView>(
-    "get",
-    `/model/${modelId}`
-  );
-  const { environmentVariableOptions } = await execApi(
+  const { environmentVariableOptions } = await client.request(
     "get",
     "/destinations/connectionApps"
   );
@@ -457,6 +452,5 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   return {
     destination,
     environmentVariableOptions,
-    model,
   };
 };

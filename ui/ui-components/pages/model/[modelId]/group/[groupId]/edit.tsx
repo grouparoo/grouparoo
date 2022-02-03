@@ -11,24 +11,20 @@ import { Models, Actions } from "../../../../../utils/apiData";
 import { formatTimestamp } from "../../../../../utils/formatTimestamp";
 import PageHeader from "../../../../../components/PageHeader";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
-import {
-  errorHandler,
-  groupHandler,
-  successHandler,
-} from "../../../../../eventHandlers";
-import { UseApi } from "../../../../../hooks/useApi";
+import { groupHandler, successHandler } from "../../../../../eventHandlers";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
+import { useApi } from "../../../../../contexts/api";
+import { generateClient } from "../../../../../client/client";
 
 interface Props {
-  model: Models.GrouparooModelType;
   group: Models.GroupType;
 }
 
 const Page: NextPage<Props> = (props) => {
   const router = useRouter();
   const [group, setGroup] = useState<Models.GroupType>(props.group);
-  const { execApi } = UseApi(undefined, errorHandler);
+  const { client } = useApi();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -44,7 +40,7 @@ const Page: NextPage<Props> = (props) => {
   async function submit(event) {
     event.preventDefault();
     setLoading(true);
-    const response: Actions.GroupEdit = await execApi(
+    const response: Actions.GroupEdit = await client.request(
       "put",
       `/group/${group.id}`,
       group
@@ -61,7 +57,7 @@ const Page: NextPage<Props> = (props) => {
   async function handleDelete(force = false) {
     if (window.confirm("are you sure?")) {
       setLoading(true);
-      const response: Actions.GroupDestroy = await execApi(
+      const response: Actions.GroupDestroy = await client.request(
         "delete",
         `/group/${group.id}`,
         { force }
@@ -92,7 +88,7 @@ const Page: NextPage<Props> = (props) => {
         <title>Grouparoo: {group.name}</title>
       </Head>
 
-      <GroupTabs group={group} model={props.model} />
+      <GroupTabs group={group} />
 
       <PageHeader
         title={group.name}
@@ -207,16 +203,11 @@ const Page: NextPage<Props> = (props) => {
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { groupId, modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { group } = await execApi("get", `/group/${groupId}`);
+  const client = generateClient(ctx);
+  const { group } = await client.request("get", `/group/${groupId}`);
   ensureMatchingModel("Group", group.modelId, modelId.toString());
 
-  const { model } = await execApi<Actions.ModelView>(
-    "get",
-    `/model/${modelId}`
-  );
-
-  return { group, model };
+  return { group };
 };
 
 export default Page;

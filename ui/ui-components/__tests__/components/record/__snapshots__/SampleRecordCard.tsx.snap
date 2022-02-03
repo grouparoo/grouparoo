@@ -1,43 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SampleRecordCard should render loading 1`] = `
-<div>
-  <div
-    class="card"
-  >
-    <div
-      class="card-header"
-    >
-      <div
-        class="row"
-      >
-        <div
-          class="col"
-        >
-          <h5
-            class="my-1"
-          >
-            Sample Record
-          </h5>
-        </div>
-      </div>
-    </div>
-    <div
-      class="card-body"
-    >
-      <div
-        class="text-center"
-      >
-        <div
-          class="spinner-border spinner-border-sm"
-          role="status"
-        />
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
 exports[`SampleRecordCard should render with 1 record 1`] = `
 <div>
   <div

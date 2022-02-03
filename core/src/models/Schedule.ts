@@ -105,6 +105,11 @@ export class Schedule extends LoggedModel<Schedule> {
   locked: string;
 
   @AllowNull(false)
+  @Default(true)
+  @Column
+  incremental: boolean;
+
+  @AllowNull(false)
   @Default(false)
   @Column
   recurring: boolean;
@@ -204,16 +209,19 @@ export class Schedule extends LoggedModel<Schedule> {
   async apiData() {
     const options = await this.getOptions(null);
     const filters = await this.getFilters();
+    const { pluginConnection } = await this.getPlugin();
 
     return {
       id: this.id,
       name: this.name,
       state: this.state,
       sourceId: this.sourceId,
+      incremental: this.incremental,
       recurring: this.recurring,
       refreshEnabled: this.refreshEnabled,
       locked: this.locked,
       confirmRecords: this.confirmRecords,
+      supportIncrementalSchedule: pluginConnection.supportIncrementalSchedule,
       options,
       filters,
       recurringFrequency: this.recurringFrequency,
@@ -273,7 +281,14 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   async getConfigObject(): Promise<ScheduleConfigurationObject> {
-    const { name, recurring, recurringFrequency, confirmRecords } = this;
+    const {
+      name,
+      recurring,
+      incremental,
+      recurringFrequency,
+      confirmRecords,
+      refreshEnabled,
+    } = this;
 
     this.source = await this.$get("source");
     const sourceId = this.source?.getConfigId();
@@ -288,9 +303,11 @@ export class Schedule extends LoggedModel<Schedule> {
       id: this.getConfigId(),
       name,
       sourceId,
+      incremental,
       recurring,
       recurringFrequency,
       confirmRecords,
+      refreshEnabled,
       options,
       filters,
     };
@@ -340,6 +357,19 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   @BeforeCreate
+  static async ensureSourceCanUseSchedule(instance: Schedule) {
+    const source = await Source.findById(instance.sourceId);
+    if (source.state !== "ready") throw new Error("source is not ready");
+
+    const scheduleAvailable = await source.scheduleAvailable();
+    if (!scheduleAvailable) {
+      throw new Error(
+        `source ${source.name} (${instance.sourceId}) cannot have a schedule`
+      );
+    }
+  }
+
+  @BeforeCreate
   static async ensureOnePerSource(instance: Schedule) {
     const existingCount = await Schedule.scope(null).count({
       where: {
@@ -352,15 +382,12 @@ export class Schedule extends LoggedModel<Schedule> {
     }
   }
 
-  @BeforeCreate
-  static async ensureSourceCanUseSchedule(instance: Schedule) {
-    const source = await Source.findById(instance.sourceId);
-    if (source.state !== "ready") throw new Error("source is not ready");
-
-    const scheduleAvailable = await source.scheduleAvailable();
-    if (!scheduleAvailable) {
+  @BeforeSave
+  static async checkIncremental(instance: Schedule) {
+    const { pluginConnection } = await instance.getPlugin();
+    if (instance.incremental && !pluginConnection.supportIncrementalSchedule) {
       throw new Error(
-        `source ${source.name} (${instance.sourceId}) cannot have a schedule`
+        `${pluginConnection.name} does not support incremental schedules`
       );
     }
   }

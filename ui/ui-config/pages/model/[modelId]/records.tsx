@@ -2,15 +2,14 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 
 import {
-  errorHandler,
   recordsHandler,
   successHandler,
 } from "@grouparoo/ui-components/eventHandlers";
 import RecordsPage from "@grouparoo/ui-components/pages/model/[modelId]/records";
 import { Actions, Models } from "@grouparoo/ui-components/utils/apiData";
-import { UseApi } from "@grouparoo/ui-components/hooks/useApi";
 import LoadingButton from "@grouparoo/ui-components/components/LoadingButton";
 import AddSampleRecordModal from "@grouparoo/ui-components/components/record/AddSampleRecordModal";
+import { useApi } from "@grouparoo/ui-components/contexts/api";
 
 export default function Page(props) {
   const {
@@ -21,7 +20,7 @@ export default function Page(props) {
     properties: Models.PropertyType[];
   } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
 
   const [importing, setImporting] = useState(false);
   const [addingRecord, setAddingRecord] = useState(false);
@@ -30,7 +29,7 @@ export default function Page(props) {
   async function importAllRecords() {
     setImporting(true);
     successHandler.set({ message: "Importing Records..." });
-    const response: Actions.RecordsImport = await execApi(
+    const response: Actions.RecordsImport = await client.request(
       "post",
       `/records/${modelId}/import`
     );
@@ -68,7 +67,6 @@ export default function Page(props) {
       <AddSampleRecordModal
         modelId={modelId}
         properties={properties}
-        execApi={execApi}
         show={addingRecord}
         onRecordCreated={() => {
           setReloading(true);

@@ -1,33 +1,32 @@
-import { NextPageContext } from "next";
+import { useApi } from "../../../../contexts/api";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Form } from "react-bootstrap";
 import LoadingButton from "../../../../components/LoadingButton";
-import { errorHandler } from "../../../../eventHandlers";
 import { Actions } from "../../../../utils/apiData";
-import { UseApi } from "../../../../hooks/useApi";
 import ModelBadge from "../../../../components/badges/ModelBadge";
+import { useGrouparooModel } from "../../../../contexts/grouparooModel";
 
 export default function NewGroup(props) {
-  const {
-    model,
-  }: {
-    model: Actions.ModelView["model"];
-  } = props;
   const router = useRouter();
-  const { execApi } = UseApi(props, errorHandler);
+  const { client } = useApi();
+  const { model } = useGrouparooModel();
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(data) {
     setLoading(true);
-    const response: Actions.GroupCreate = await execApi("post", `/group`, {
-      ...data,
-      state: "draft",
-      modelId: model.id,
-    });
+    const response: Actions.GroupCreate = await client.request(
+      "post",
+      `/group`,
+      {
+        ...data,
+        state: "draft",
+        modelId: model.id,
+      }
+    );
     if (response?.group) {
       router.push(
         `/model/${response.group.modelId}/group/${response.group.id}/rules`
@@ -54,9 +53,9 @@ export default function NewGroup(props) {
             required
             type="text"
             name="name"
-            ref={register}
             disabled={loading}
             placeholder="Group Name"
+            {...register("name")}
           />
           <Form.Control.Feedback type="invalid">
             Name is required
@@ -70,10 +69,3 @@ export default function NewGroup(props) {
     </>
   );
 }
-
-NewGroup.getInitialProps = async (ctx: NextPageContext) => {
-  const { modelId } = ctx.query;
-  const { execApi } = UseApi(ctx);
-  const { model } = await execApi("get", `/model/${modelId}`);
-  return { model };
-};

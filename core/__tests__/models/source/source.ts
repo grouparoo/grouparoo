@@ -8,6 +8,7 @@ import {
   GrouparooRecord,
   Log,
   Option,
+  plugin,
   Property,
   RecordProperty,
   RecordPropertyPluginMethod,
@@ -63,6 +64,45 @@ describe("models/source", () => {
   });
 
   describe("validations", () => {
+    describe("with additional plugin", () => {
+      beforeAll(async () => {
+        plugin.registerPlugin({
+          name: "test-other-plugin",
+          apps: [
+            {
+              name: "test-other-plugin-app",
+              displayName: "test-other-plugin-app",
+              options: [],
+              methods: {
+                test: async () => {
+                  return { success: true };
+                },
+              },
+            },
+          ],
+        });
+      });
+
+      test("the app must be of compatible type", async () => {
+        const otherApp = await App.create({
+          name: "my other app",
+          type: "test-other-plugin-app",
+        });
+        await otherApp.update({ state: "ready" });
+
+        await expect(
+          Source.create({
+            type: "test-plugin-import",
+            name: "test source",
+            appId: otherApp.id,
+            modelId: model.id,
+          })
+        ).rejects.toThrow(
+          /Source of type \"test-plugin-import\" does not support the App .* of type \"test-other-plugin-app\". Supported App types: test-plugin-app./
+        );
+      });
+    });
+
     test("the app must be in the ready state", async () => {
       const app = await App.create({
         type: "test-plugin-app",

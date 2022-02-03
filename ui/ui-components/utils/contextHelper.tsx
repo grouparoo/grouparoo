@@ -1,25 +1,25 @@
-export type ContextValue = [Context: React.Context<any>, value: any];
+import React from "react";
+
+export type ContextValue<T> = [Provider: React.FC<{ value: T }>, value: T];
 
 export const renderContextProvider = <T extends object>(
-  Context: React.Context<T>,
+  Provider: React.FC<{ value: T }>,
   value: T,
   children: React.ReactNode
-) => <Context.Provider value={value}>{children}</Context.Provider>;
+) => <Provider value={value}>{children}</Provider>;
 
-export const renderNestedContextProviders = (
-  contextValues: ContextValue[],
+export const renderNestedContextProviders = <
+  TContextValues extends ContextValue<T>[],
+  T extends object = object
+>(
+  contextValues: TContextValues,
   children: React.ReactNode
-): JSX.Element => {
-  {
-    if (contextValues?.length > 0) {
-      const [Context, value] = contextValues[0];
-      return renderContextProvider(
-        Context,
-        value,
-        renderNestedContextProviders(contextValues.slice(1), children)
-      );
-    }
-
-    return <>{children}</>;
-  }
-};
+): JSX.Element =>
+  contextValues?.length > 0 ? (
+    renderContextProvider(
+      ...contextValues[0],
+      renderNestedContextProviders(contextValues.slice(1), children)
+    )
+  ) : (
+    <>{children}</>
+  );
