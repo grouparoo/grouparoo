@@ -2,7 +2,7 @@ import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useMemo } from "react";
 import { Col, ListGroup, ListGroupItem, Row } from "react-bootstrap";
-import Cookies from "universal-cookie/es6";
+import Cookies from "universal-cookie";
 import { generateClient } from "../../../client/client";
 import ManagedCard from "../../../components/lib/ManagedCard";
 import ModelOverviewDestinations from "../../../components/model/overview/ModelOverviewDestinations";
