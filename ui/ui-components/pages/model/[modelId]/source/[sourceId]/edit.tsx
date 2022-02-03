@@ -93,11 +93,6 @@ const Page: NextPage<Props> = ({
     () => Object.values(source.mapping)[0],
     [source.mapping]
   );
-  console.log(
-    { mappingColumn, mappingPropertyKey },
-    Object.keys(source.mapping)[0],
-    previewColumns
-  );
 
   const isPrimarySource = useMemo(
     () =>
@@ -145,7 +140,6 @@ const Page: NextPage<Props> = ({
       setPreviewLoading(false);
       if (response?.preview) {
         setPreview(response.preview);
-        console.log("resetFormData(): ", resetFormData());
         reset(resetFormData());
       }
     },
@@ -201,7 +195,6 @@ const Page: NextPage<Props> = ({
     async (data, event) => {
       event.preventDefault();
       setLoading(true);
-      console.log(data);
 
       const isBootstrappingUniqueProperty =
         source.previewAvailable &&
@@ -309,7 +302,6 @@ const Page: NextPage<Props> = ({
       setProperties(properties);
       setPropertyExamples(examples);
       if (response?.source) {
-        console.log("response.source: ", response.source);
         setSource(response.source);
       }
       setLoading(false);
@@ -337,7 +329,6 @@ const Page: NextPage<Props> = ({
   }, [client, router, source.modelId, sourceId]);
 
   const update = async (event) => {
-    console.log("update: ", event.target.id, event.target.type);
     const _source = Object.assign({}, source);
     _source[event.target.id] =
       event.target.type === "checkbox"
@@ -347,7 +338,6 @@ const Page: NextPage<Props> = ({
   };
 
   const updateOption = async (optKey, optValue) => {
-    console.log("updateOption: ", optKey, optValue);
     const _source = { ...source };
     _source.options[optKey] = optValue;
     _source.mapping = {};
