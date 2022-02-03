@@ -806,7 +806,7 @@ describe("modules/configWriter", () => {
     test("properties should only humanize their ID if it matches default pattern", async () => {
       let property: Property = await helper.factories.property(
         source,
-        { key: faker.lorem.word() },
+        { key: uuid.v4() },
         { column: faker.database.column() }
       );
       expect(property.getConfigId()).toEqual(
@@ -817,7 +817,7 @@ describe("modules/configWriter", () => {
         source,
         {
           id: "hello-world",
-          key: faker.lorem.word(),
+          key: uuid.v4(),
         },
         { column: faker.database.column() }
       );
