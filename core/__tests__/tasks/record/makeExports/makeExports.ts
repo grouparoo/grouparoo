@@ -18,10 +18,11 @@ describe("tasks/record:makeExports", () => {
     enableTestPlugin: true,
     disableTestPluginImport: true,
   });
+
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
-  beforeAll(async () => await helper.factories.properties());
 
   beforeAll(async () => {
+    await helper.factories.properties();
     source = await Source.findOne();
     schedule = await helper.factories.schedule(source);
   });

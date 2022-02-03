@@ -41,8 +41,7 @@ export class RecordExport extends RetryableTask {
     );
 
     // check for explicit destinations to export to from each import
-    for (const i in imports) {
-      const _import = imports[i];
+    for (const _import of imports) {
       if (
         _import.data?._meta?.destinationId &&
         !destinations
