@@ -108,7 +108,7 @@ export namespace GroupOps {
       }
 
       if (bulkDestroyRecordIds.length > 0) {
-        await GroupMember.destroyWithLogs({
+        await GroupMember.destroy({
           where: {
             recordId: { [Op.in]: bulkDestroyRecordIds },
             groupId: group.id,

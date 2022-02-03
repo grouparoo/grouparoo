@@ -8,14 +8,14 @@ import {
   BeforeSave,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
-import { LoggedModel } from "../classes/loggedModel";
 import { Property } from "./Property";
 import { Destination } from "./Destination";
 import { Source } from "./Source";
 import { APIData } from "../modules/apiData";
+import { CommonModel } from "../classes/commonModel";
 
 @Table({ tableName: "mappings", paranoid: false })
-export class Mapping extends LoggedModel<Mapping> {
+export class Mapping extends CommonModel<Mapping> {
   idPrefix() {
     return "map";
   }

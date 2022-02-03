@@ -24,7 +24,6 @@ import {
   GroupConfigurationObject,
   GroupRuleConfigurationObject,
 } from "../classes/codeConfig";
-import { LoggedModel } from "../classes/loggedModel";
 import { APIData } from "../modules/apiData";
 import { ConfigWriter } from "../modules/configWriter";
 import { LockableHelper } from "../modules/lockableHelper";
@@ -51,6 +50,7 @@ import { Source } from "./Source";
 import { RunOps } from "../modules/ops/runs";
 import { ModelGuard } from "../modules/modelGuard";
 import { getGrouparooRunMode } from "../modules/runMode";
+import { CommonModel } from "../classes/commonModel";
 
 export const GROUP_RULE_LIMIT = 10;
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -106,7 +106,7 @@ const STATE_TRANSITIONS: StateMachine.StateTransition[] = [
   },
 }))
 @Table({ tableName: "groups", paranoid: false })
-export class Group extends LoggedModel<Group> {
+export class Group extends CommonModel<Group> {
   idPrefix() {
     return "grp";
   }

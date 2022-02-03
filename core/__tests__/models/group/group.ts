@@ -5,7 +5,6 @@ import {
   GroupMember,
   GrouparooRecord,
   Import,
-  Log,
   Run,
   GrouparooModel,
 } from "../../../src";
@@ -69,34 +68,6 @@ describe("models/group", () => {
     await group.update({ name: "abc", state: "deleted" });
     expect(group.name).toBe("abc");
     await model.update({ state: "ready" });
-  });
-
-  test("creating a group creates a log entry with a relevant message", async () => {
-    const log = await Log.findOne({
-      where: { verb: "create", topic: "group" },
-      order: [["createdAt", "desc"]],
-      limit: 1,
-    });
-
-    expect(log).toBeTruthy();
-    expect(log.message).toBe('group "test group" created');
-  });
-
-  test("deleting a group creates a log entry with a relevant message", async () => {
-    const group = await Group.create({
-      name: "doomed group",
-      modelId: model.id,
-    });
-    await group.destroy();
-
-    const log = await Log.findOne({
-      where: { verb: "destroy", topic: "group" },
-      order: [["createdAt", "desc"]],
-      limit: 1,
-    });
-
-    expect(log).toBeTruthy();
-    expect(log.message).toBe('group "doomed group" destroyed');
   });
 
   test("groups require a valid modelId", async () => {
@@ -238,22 +209,6 @@ describe("models/group", () => {
       await expect(group.save()).rejects.toThrow(
         /cannot transition group state from draft to bla/
       );
-    });
-
-    test("deleting a group creates a log entry", async () => {
-      const group = await Group.create({
-        name: "bye group",
-        modelId: model.id,
-      });
-      await group.destroy();
-
-      const latestLog = await Log.findOne({
-        where: { verb: "destroy", topic: "group" },
-        order: [["createdAt", "desc"]],
-        limit: 1,
-      });
-
-      expect(latestLog).toBeTruthy();
     });
 
     describe("with destinations", () => {
@@ -400,18 +355,8 @@ describe("models/group", () => {
         groupId: group.id,
       });
 
-      let log = await Log.findOne({
-        where: { topic: "groupMember", verb: "create" },
-      });
-      expect(log.message).toMatch(/added to group/);
-
       await groupMember.destroy();
       await GroupOps.updateRecords([record.id], "group", group.id); // make an import
-
-      log = await Log.findOne({
-        where: { topic: "groupMember", verb: "destroy" },
-      });
-      expect(log.message).toMatch(/removed from group/);
 
       const imports = await Import.findAll();
       expect(imports.length).toBe(2);

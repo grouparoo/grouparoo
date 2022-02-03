@@ -11,7 +11,6 @@ import {
   BeforeDestroy,
 } from "sequelize-typescript";
 import * as UUID from "uuid";
-import { LoggedModel } from "../classes/loggedModel";
 import {
   ActionPermissionTopic,
   ActionPermissionMode,
@@ -20,9 +19,10 @@ import {
 } from "./Permission";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
+import { CommonModel } from "../classes/commonModel";
 
 @Table({ tableName: "apiKeys", paranoid: false })
-export class ApiKey extends LoggedModel<ApiKey> {
+export class ApiKey extends CommonModel<ApiKey> {
   idPrefix() {
     return "key";
   }

@@ -15,7 +15,6 @@ import {
 } from "sequelize-typescript";
 import { api, redis } from "actionhero";
 import { Op } from "sequelize";
-import { LoggedModel } from "../classes/loggedModel";
 import { Source } from "./Source";
 import { Option } from "./Option";
 import { OptionHelper } from "./../modules/optionHelper";
@@ -27,6 +26,7 @@ import { ConfigWriter } from "../modules/configWriter";
 import { APIData } from "../modules/apiData";
 import { AppConfigurationObject } from "../classes/codeConfig";
 import { AppRefreshQuery } from "./AppRefreshQuery";
+import { CommonModel } from "../classes/commonModel";
 
 export interface SimpleAppOptions extends OptionHelper.SimpleOptions {}
 
@@ -50,7 +50,7 @@ const STATE_TRANSITIONS = [
   where: { state: "ready" },
 }))
 @Table({ tableName: "apps", paranoid: false })
-export class App extends LoggedModel<App> {
+export class App extends CommonModel<App> {
   idPrefix() {
     return "app";
   }

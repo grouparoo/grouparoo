@@ -8,13 +8,13 @@ import {
   BeforeSave,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
-import { LoggedModel } from "../classes/loggedModel";
 import { Group } from "./Group";
 import { Destination } from "./Destination";
 import { APIData } from "../modules/apiData";
+import { CommonModel } from "../classes/commonModel";
 
 @Table({ tableName: "destinationGroupMemberships", paranoid: false })
-export class DestinationGroupMembership extends LoggedModel<DestinationGroupMembership> {
+export class DestinationGroupMembership extends CommonModel<DestinationGroupMembership> {
   idPrefix() {
     return "dgm";
   }

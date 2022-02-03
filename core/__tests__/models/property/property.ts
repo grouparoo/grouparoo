@@ -4,7 +4,6 @@ import {
   App,
   Filter,
   GrouparooModel,
-  Log,
   Option,
   plugin,
   PluginOptionType,
@@ -540,27 +539,6 @@ describe("models/property", () => {
       "run:internalRun"
     );
     expect(foundInternalRunTasks.length).toBe(0);
-  });
-
-  test("creating a property creates a log entry", async () => {
-    const source = await helper.factories.source();
-    await source.setOptions({ table: "test table" });
-    await source.setMapping({ id: "userId" });
-    await source.update({ state: "ready" });
-
-    const property = await Property.create({
-      sourceId: source.id,
-      key: "thing",
-      type: "string",
-      unique: false,
-    });
-    const log = await Log.findOne({
-      where: { topic: "property", verb: "create" },
-      order: [["createdAt", "desc"]],
-    });
-    expect(log.message).toBe(`property "${property.key}" created`);
-    await property.destroy();
-    await source.destroy();
   });
 
   test("updating a property's unique property queues a task to update the record properties", async () => {

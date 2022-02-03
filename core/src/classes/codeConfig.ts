@@ -13,8 +13,8 @@ import { MustacheUtils } from "../modules/mustacheUtils";
 import { TopLevelGroupRules } from "../modules/topLevelGroupRules";
 import { Graph, topologicalSort } from "../modules/topologicalSort";
 import { GroupRuleWithKey } from "../models/Group";
-import { LoggedModel } from "./loggedModel";
 import { uniqueArrayValues } from "../modules/arrayUtils";
+import { CommonModel } from "./commonModel";
 
 export interface IdsByClass {
   model?: string[];
@@ -216,8 +216,8 @@ export function validateConfigObjectKeys(
 /**
  * Log a Sequelize Model
  */
-export function logModel(
-  instance: LoggedModel<unknown> & {
+export function logModel<T>(
+  instance: CommonModel<T> & {
     key?: string;
     email?: string;
     name?: string;

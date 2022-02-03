@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Team, TeamMember, Log, Permission } from "../../src";
+import { Team, TeamMember, Permission } from "../../src";
 
 describe("models/team", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -12,29 +12,8 @@ describe("models/team", () => {
     expect(team.id.length).toBe(40);
     expect(team.createdAt).toBeTruthy();
     expect(team.updatedAt).toBeTruthy();
-  });
 
-  test("creating a team creates a log entry", async () => {
-    const latestLog = await Log.findOne({
-      where: { verb: "create", topic: "team" },
-      order: [["createdAt", "desc"]],
-      limit: 1,
-    });
-
-    expect(latestLog).toBeTruthy();
-  });
-
-  test("destroying a team creates a log entry", async () => {
-    const team = await Team.findOne();
     await team.destroy();
-
-    const latestLog = await Log.findOne({
-      where: { verb: "destroy", topic: "team" },
-      order: [["createdAt", "desc"]],
-      limit: 1,
-    });
-
-    expect(latestLog).toBeTruthy();
   });
 
   test("teams with team members cannot be deleted", async () => {

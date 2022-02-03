@@ -1,13 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper, config } from "actionhero";
-import {
-  Log,
-  GrouparooRecord,
-  Group,
-  Run,
-  Import,
-  GroupMember,
-} from "../../../src";
+import { GrouparooRecord, Group, Run, Import, GroupMember } from "../../../src";
 import { SharedGroupTests } from "../../utils/prepareSharedGroupTest";
 import { GroupOps } from "../../../src/modules/ops/group";
 import { GroupRuleWithKey } from "../../../src/models/Group";
@@ -412,46 +405,6 @@ describe("models/group", () => {
       await mario.updateGroupMembership();
       const membersAgain = await group.$get("groupMembers");
       expect(membersAgain[0].id).toBe(groupMemberId);
-      await secondRun.destroy();
-    });
-
-    test("adding and removing members from a group produces log entries", async () => {
-      await Log.truncate();
-
-      await group.update({ matchType: "all" });
-      await group.setRules([
-        { key: "lastName", match: "Mario", operation: { op: "eq" } },
-      ]);
-      await mario.updateGroupMembership();
-      await luigi.updateGroupMembership();
-      let members = await group.$get("groupMembers");
-      expect(members.length).toBe(2);
-
-      let createCount = await Log.count({
-        where: { topic: "groupMember", verb: "create" },
-      });
-      expect(createCount).toBe(2);
-
-      await group.setRules([
-        { key: "lastName", match: "Mario", operation: { op: "eq" } },
-        { key: "firstName", match: "Mario", operation: { op: "eq" } },
-      ]);
-      const secondRun = await helper.factories.run();
-      await mario.updateGroupMembership();
-      await luigi.updateGroupMembership();
-      members = await group.$get("groupMembers");
-      expect(members.length).toBe(1);
-
-      createCount = await Log.count({
-        where: { topic: "groupMember", verb: "create" },
-      });
-      expect(createCount).toBe(2); // no change
-
-      const destroyCount = await Log.count({
-        where: { topic: "groupMember", verb: "destroy" },
-      });
-      expect(destroyCount).toBe(1);
-
       await secondRun.destroy();
     });
 

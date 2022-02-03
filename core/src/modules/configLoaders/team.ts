@@ -47,7 +47,7 @@ export async function loadTeam(
     { where: { ownerId: team.id } }
   );
 
-  logModel(team, validate ? "validated" : isNew ? "created" : "updated");
+  logModel<Team>(team, validate ? "validated" : isNew ? "created" : "updated");
 
   return { team: [team.id] };
 }
@@ -59,7 +59,7 @@ export async function deleteTeams(ids: string[]) {
 
   for (const i in teams) {
     await teams[i].destroy();
-    logModel(teams[i], "deleted");
+    logModel<Team>(teams[i], "deleted");
   }
 
   return teams.map((instance) => instance.id);

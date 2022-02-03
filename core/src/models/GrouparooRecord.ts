@@ -13,10 +13,8 @@ import {
   ForeignKey,
   BeforeCreate,
 } from "sequelize-typescript";
-import { LoggedModel } from "../classes/loggedModel";
 import { GroupMember } from "./GroupMember";
 import { Group } from "./Group";
-import { Log } from "./Log";
 import { RecordProperty } from "./RecordProperty";
 import { Import } from "./Import";
 import { Export } from "./Export";
@@ -28,6 +26,7 @@ import { RecordConfigurationObject } from "../classes/codeConfig";
 import { Source } from "./Source";
 import { GrouparooModel } from "./GrouparooModel";
 import { ModelGuard } from "../modules/modelGuard";
+import { CommonModel } from "../classes/commonModel";
 
 const STATES = ["draft", "pending", "ready", "deleted"] as const;
 
@@ -49,7 +48,7 @@ const STATE_TRANSITIONS = [
 ];
 
 @Table({ tableName: "records", paranoid: false })
-export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
+export class GrouparooRecord extends CommonModel<GrouparooRecord> {
   idPrefix() {
     return "rec";
   }
@@ -74,9 +73,6 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
 
   @HasMany(() => GroupMember)
   groupMembers: GroupMember[];
-
-  @HasMany(() => Log)
-  logs: Log[];
 
   @BelongsToMany(() => Group, () => GroupMember)
   groups: Group[];
@@ -198,24 +194,6 @@ export class GrouparooRecord extends LoggedModel<GrouparooRecord> {
       sync,
       toDelete
     );
-  }
-
-  async logMessage(verb: "create" | "update" | "destroy") {
-    let message = "";
-
-    switch (verb) {
-      case "create":
-        message = `record created`;
-        break;
-      case "update":
-        message = `record updated`;
-        break;
-      case "destroy":
-        message = `record destroyed`;
-        break;
-    }
-
-    return message;
   }
 
   async validateRecordPropertiesAreReady() {

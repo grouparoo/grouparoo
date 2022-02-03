@@ -137,7 +137,6 @@ export class NavigationList extends OptionallyAuthenticatedAction {
           "system",
           "app",
           "file",
-          "log",
           "import",
           "export",
           "run",
@@ -178,12 +177,6 @@ export class NavigationList extends OptionallyAuthenticatedAction {
         type: "link",
         title: "Settings",
         href: "/settings/core",
-      });
-
-      platformItems.push({
-        type: "link",
-        title: "Logs",
-        href: "/logs/list",
       });
 
       platformItems.push({

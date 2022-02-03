@@ -46,7 +46,10 @@ export async function loadTeamMember(
     await teamMember.updatePassword(configObject.options.password);
   }
 
-  logModel(teamMember, validate ? "validated" : isNew ? "created" : "updated");
+  logModel<TeamMember>(
+    teamMember,
+    validate ? "validated" : isNew ? "created" : "updated"
+  );
 
   return { teammember: [teamMember.id] };
 }
@@ -58,7 +61,7 @@ export async function deleteTeamMembers(ids: string[]) {
 
   for (const i in teamMembers) {
     await teamMembers[i].destroy();
-    logModel(teamMembers[i], "deleted");
+    logModel<TeamMember>(teamMembers[i], "deleted");
   }
 
   return teamMembers.map((instance) => instance.id);

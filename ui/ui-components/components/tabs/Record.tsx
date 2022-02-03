@@ -10,7 +10,7 @@ export default function RecordTabs({
   record: Models.GrouparooRecordType;
 }) {
   const { model } = useGrouparooModel();
-  const tabs = ["edit", "imports", "exports", "logs"];
+  const tabs = ["edit", "imports", "exports"];
 
   if (grouparooUiEdition() === "config") {
     tabs.splice(tabs.indexOf("imports"), 1);

@@ -106,7 +106,6 @@ export const DEFAULT = {
       startingChatRooms: {
         "system:status": {},
         "system:cli": {},
-        "model:log": {},
       },
     };
   },

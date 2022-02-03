@@ -6,7 +6,6 @@ import { Group } from "../../models/Group";
 import { Destination } from "../../models/Destination";
 import { Export } from "../../models/Export";
 import { GroupMember } from "../../models/GroupMember";
-import { Log } from "../../models/Log";
 import { api, config } from "actionhero";
 import Sequelize, {
   Op,
@@ -1016,15 +1015,6 @@ export namespace RecordOps {
       // delete other record so unique record properties will be available
       await otherRecord.destroy();
       await addOrUpdateProperties([record], [newProperties], false);
-
-      // log the merge
-      await Log.create({
-        topic: "record",
-        verb: "merge",
-        message: `merged with record ${otherRecord.id}`,
-        ownerId: record.id,
-        data: { previousProperties: properties, otherProperties },
-      });
 
       // re-import and update groups
       delete record.recordProperties;

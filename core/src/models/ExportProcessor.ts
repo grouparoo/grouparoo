@@ -18,9 +18,9 @@ import { StateMachine } from "../modules/stateMachine";
 import { Export } from "./Export";
 import { Errors } from "../modules/errors";
 import { ExportProcessorOps } from "../modules/ops/exportProcessor";
-import { LoggedModel } from "../classes/loggedModel";
 import { Mapping } from "./Mapping";
 import { Option } from "./Option";
+import { CommonModel } from "../classes/commonModel";
 
 export const ExportProcessorStates = [
   "pending", // waiting to be processed
@@ -40,7 +40,7 @@ const STATE_TRANSITIONS = [
 ];
 
 @Table({ tableName: "exportProcessors", paranoid: false })
-export class ExportProcessor extends LoggedModel<ExportProcessor> {
+export class ExportProcessor extends CommonModel<ExportProcessor> {
   idPrefix() {
     return "prc";
   }

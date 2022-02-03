@@ -111,7 +111,10 @@ export async function loadGroup(
     }
   }
 
-  logModel(group, validate ? "validated" : isNew ? "created" : "updated");
+  logModel<Group>(
+    group,
+    validate ? "validated" : isNew ? "created" : "updated"
+  );
 
   return { group: [group.id] };
 }
@@ -128,7 +131,7 @@ export async function deleteGroups(ids: string[]) {
   for (const i in groups) {
     const group = groups[i];
     await group.update({ state: "deleted", locked: null });
-    logModel(group, "deleted");
+    logModel<Group>(group, "deleted");
   }
 
   return groups.map((instance) => instance.id);

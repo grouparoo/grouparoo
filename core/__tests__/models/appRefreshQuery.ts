@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper, api } from "actionhero";
-import { App, AppRefreshQuery, Log, Run, Schedule, Source } from "../../src";
+import { App, AppRefreshQuery, Run, Schedule, Source } from "../../src";
 import { AppRefreshQueryOps } from "../../src/modules/ops/appRefreshQuery";
 
 describe("appRefreshQuery", () => {
@@ -37,24 +37,6 @@ describe("appRefreshQuery", () => {
       await expect(appRefreshQuery.save()).rejects.toThrow(
         /recurring frequency is required to be one minute or greater/
       );
-    });
-
-    test("creating an app refresh query creates a log entry", async () => {
-      const latestCreateLog = await Log.findOne({
-        where: { verb: "create", topic: "appRefreshQuery" },
-        order: [["createdAt", "desc"]],
-        limit: 1,
-      });
-      expect(latestCreateLog).toBeTruthy();
-    });
-
-    test("deleting an appRefreshQuery creates a log entry", async () => {
-      const latestDestroyLog = await Log.findOne({
-        where: { verb: "destroy", topic: "appRefreshQuery" },
-        order: [["createdAt", "desc"]],
-        limit: 1,
-      });
-      expect(latestDestroyLog).toBeTruthy();
     });
 
     test("an updated query is checked", async () => {

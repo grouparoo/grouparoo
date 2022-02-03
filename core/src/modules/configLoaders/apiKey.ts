@@ -47,7 +47,10 @@ export async function loadApiKey(
     { where: { ownerId: apiKey.id } }
   );
 
-  logModel(apiKey, validate ? "validated" : isNew ? "created" : "updated");
+  logModel<ApiKey>(
+    apiKey,
+    validate ? "validated" : isNew ? "created" : "updated"
+  );
 
   return { apikey: [apiKey.id] };
 }
@@ -59,7 +62,7 @@ export async function deleteApiKeys(ids: string[]) {
 
   for (const i in apiKeys) {
     await apiKeys[i].destroy();
-    logModel(apiKeys[i], "deleted");
+    logModel<ApiKey>(apiKeys[i], "deleted");
   }
 
   return apiKeys.map((instance) => instance.id);

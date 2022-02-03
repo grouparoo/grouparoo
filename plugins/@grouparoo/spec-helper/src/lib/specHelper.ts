@@ -28,7 +28,6 @@ import { ChildProcessWithoutNullStreams, spawn } from "child_process";
 import nock from "nock";
 import prettier from "prettier";
 
-import LogFactory from "./factories/log";
 import GroupFactory from "./factories/group";
 import ModelFactory from "./factories/model";
 import ImportFactory from "./factories/import";
@@ -75,7 +74,6 @@ const {
   Group,
   GroupMember,
   GroupRule,
-  Log,
   GrouparooModel,
   Notification,
   Permission,
@@ -106,7 +104,6 @@ const models = [
   GroupRule,
   Export,
   ExportProcessor,
-  Log,
   GrouparooModel,
   Notification,
   Permission,
@@ -137,7 +134,6 @@ export namespace helper {
     exportProcessor: ExportProcessorFactory,
     group: GroupFactory,
     import: ImportFactory,
-    log: LogFactory,
     notification: NotificationFactory,
     record: RecordFactory,
     property: PropertyFactory,
@@ -203,24 +199,29 @@ export namespace helper {
     let actionhero;
 
     beforeAll(async () => {
-      const { Process } = await import("actionhero");
-      actionhero = new Process();
-
-      await actionhero.initialize();
-      if (options.truncate) await helper.truncate();
-      await actionhero.start();
-
       try {
-        require("@grouparoo/core/dist").plugin.mountModels();
-      } catch (error) {}
+        const { Process } = await import("actionhero");
+        actionhero = new Process();
 
-      try {
-        require("@grouparoo/core/src").plugin.mountModels();
-      } catch (error) {}
+        await actionhero.initialize();
+        if (options.truncate) await helper.truncate();
+        await actionhero.start();
 
-      if (options.resetSettings) await helper.resetSettings();
-      if (options.enableTestPlugin) helper.enableTestPlugin();
-      if (options.disableTestPluginImport) helper.disableTestPluginImport();
+        try {
+          require("@grouparoo/core/dist").plugin.mountModels();
+        } catch (error) {}
+
+        try {
+          require("@grouparoo/core/src").plugin.mountModels();
+        } catch (error) {}
+
+        if (options.resetSettings) await helper.resetSettings();
+        if (options.enableTestPlugin) helper.enableTestPlugin();
+        if (options.disableTestPluginImport) helper.disableTestPluginImport();
+      } catch (e) {
+        console.error(e); // this produces better logs from sequelize
+        throw e;
+      }
     }, helper.setupTime);
 
     afterAll(async () => {
