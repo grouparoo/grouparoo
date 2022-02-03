@@ -577,7 +577,6 @@ describe("models/run", () => {
       quantizedTimeline.map((q) => {
         expect(q.steps.associate).toBeLessThanOrEqual(1);
         expect(q.steps.imported).toBeLessThanOrEqual(1);
-        expect(q.steps.processed).toBeLessThanOrEqual(1);
 
         associateTotal += q.steps.associate;
         importTotal += q.steps.imported;

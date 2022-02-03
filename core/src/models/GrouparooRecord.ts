@@ -37,8 +37,8 @@ const STATE_TRANSITIONS = [
     from: "pending",
     to: "ready",
     checks: [
-      (instance: GrouparooRecord) =>
-        instance.validateRecordPropertiesAreReady(),
+      async (instance: GrouparooRecord) =>
+        await instance.validateRecordPropertiesAreReady(),
     ],
   },
   { from: "ready", to: "pending", checks: [] },
@@ -141,8 +141,8 @@ export class GrouparooRecord extends CommonModel<GrouparooRecord> {
     return RecordOps.removeProperties(this, properties);
   }
 
-  async buildNullProperties(state: GrouparooRecord["state"] = "pending") {
-    if (state !== "deleted") {
+  async buildNullProperties(state: RecordProperty["state"] = "pending") {
+    if (this.state !== "deleted") {
       return RecordOps.buildNullProperties([this], state);
     }
   }
@@ -181,7 +181,7 @@ export class GrouparooRecord extends CommonModel<GrouparooRecord> {
 
   async export(
     force = false,
-    oldGroupsOverride?: Group[],
+    additionalGroups?: Group[],
     saveExports = true,
     sync = true,
     toDelete?: boolean
@@ -189,7 +189,7 @@ export class GrouparooRecord extends CommonModel<GrouparooRecord> {
     return RecordOps._export(
       this,
       force,
-      oldGroupsOverride,
+      additionalGroups,
       saveExports,
       sync,
       toDelete

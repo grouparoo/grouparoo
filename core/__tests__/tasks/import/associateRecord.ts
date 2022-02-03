@@ -62,21 +62,6 @@ describe("tasks/import:associateRecord", () => {
       expect(_import.recordAssociatedAt).toBeTruthy();
       expect(_import.state).toBe("importing");
 
-      expect(_import.oldRecordProperties).toEqual({
-        email: ["toad@example.com"],
-        firstName: [null],
-        isVIP: [null],
-        lastLoginAt: [null],
-        lastName: [null],
-        ltv: [null],
-        purchaseAmounts: [null],
-        purchases: [null],
-        userId: [null],
-      });
-      expect(_import.oldGroupIds).toEqual([]);
-      expect(_import.newRecordProperties).toEqual({});
-      expect(_import.newGroupIds).toEqual([]);
-
       await run.updateTotals();
 
       expect(run.importsCreated).toBe(1);

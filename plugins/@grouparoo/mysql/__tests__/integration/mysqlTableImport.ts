@@ -514,6 +514,8 @@ describe("integration/runs/mysql", () => {
   test(
     "a mysql schedule can run and update records only finding updated records",
     async () => {
+      await api.resque.queue.connection.redis.flushdb();
+
       // enqueue the run
       session.params = {
         csrfToken,
@@ -528,8 +530,8 @@ describe("integration/runs/mysql", () => {
 
       // check that the run is enqueued
       const found = await specHelper.findEnqueuedTasks("schedule:run");
-      expect(found.length).toEqual(2);
-      expect(found[1].args[0].scheduleId).toBe(schedule.id);
+      expect(found.length).toEqual(1);
+      expect(found[0].args[0].scheduleId).toBe(schedule.id);
 
       // run the schedule
       const run = await Run.findById(apiRun.id);
@@ -542,7 +544,7 @@ describe("integration/runs/mysql", () => {
       const foundAssociateTasks = await specHelper.findEnqueuedTasks(
         "import:associateRecord"
       );
-      expect(foundAssociateTasks.length).toEqual(11 + 1);
+      expect(foundAssociateTasks.length).toEqual(1); // just the latest record at the end of the schedule
 
       await Promise.all(
         foundAssociateTasks.map((t) =>
@@ -556,8 +558,7 @@ describe("integration/runs/mysql", () => {
       const foundExportTasks = await specHelper.findEnqueuedTasks(
         "record:export"
       );
-      // this count is de-duped from the previous run
-      expect(foundExportTasks.length).toEqual(10);
+      expect(foundExportTasks.length).toEqual(1);
 
       await Promise.all(
         foundExportTasks.map((t) =>
@@ -570,14 +571,12 @@ describe("integration/runs/mysql", () => {
 
       // run the export send tasks
       const foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
-      // 1 new export from last time
-      expect(foundSendTasks.length).toEqual(11);
-
+      expect(foundSendTasks.length).toEqual(1);
       await Promise.all(
         foundSendTasks.map((t) => specHelper.runTask("export:send", t.args[0]))
       );
 
-      // check the run's completion percentage (before the run is complete)
+      // check the run's completion percentage
       await run.determinePercentComplete();
       expect(run.percentComplete).toBe(100);
 

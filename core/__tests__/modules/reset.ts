@@ -61,7 +61,7 @@ describe("modules/reset", () => {
     });
 
     test("periodic tasks will be re-enqueued", async () => {
-      const found = await specHelper.findEnqueuedTasks("records:checkReady");
+      const found = await specHelper.findEnqueuedTasks("records:makeExports");
       expect(found.length).toBe(1);
     });
   }

@@ -11,7 +11,6 @@ import {
   Source,
   Property,
   GrouparooModel,
-  GroupMember,
 } from "../../../src";
 import { Op } from "sequelize";
 
@@ -194,10 +193,12 @@ describe("tasks/record:export", () => {
 
         records = await GrouparooRecord.findAll();
         expect(records.length).toBe(1);
+        expect(records[0].state).toBe("pending");
 
         await ImportWorkflow();
 
         await records[0].reload();
+        expect(records[0].state).toBe("ready");
         const properties = await records[0].simplifiedProperties();
         expect(properties.email).toEqual(["mario@example.com"]);
         expect(properties.firstName).toEqual(["Super"]);
@@ -235,9 +236,14 @@ describe("tasks/record:export", () => {
         await importA.reload();
         await importB.reload();
         expect(importA.state).toBe("complete");
-        expect(importB.state).toBe("complete");
+        expect(importA.importedAt).toBeTruthy();
         expect(importA.processedAt).toBeTruthy();
+        expect(importB.state).toBe("complete");
+        expect(importB.importedAt).toBeTruthy();
         expect(importB.processedAt).toBeTruthy();
+
+        await records[0].reload();
+        expect(records[0].state).toBe("ready");
       });
 
       test("it will append destinationIds from imports", async () => {
@@ -303,10 +309,73 @@ describe("tasks/record:export", () => {
         expect(_export.newGroups).toEqual(["test group"]);
       });
 
+      it("does not consider already complete imports", async () => {
+        const start = new Date();
+        const record = await GrouparooRecord.findOne();
+        const runA = await helper.factories.run(null, { state: "running" });
+
+        const importA = await helper.factories.import(runA, {
+          email: "mario@example.com",
+          firstName: "Mario",
+          lastName: "Mario",
+        });
+        await specHelper.runTask("import:associateRecord", {
+          importId: importA.id,
+          attempts: 0,
+        });
+
+        // import B is already completed and won't be considered
+        const importB = await helper.factories.import(runA, {
+          email: "mario@example.com",
+          firstName: "Bowser",
+          lastName: "Koopa",
+          _meta: {
+            destinationId: "bogus-destination",
+          },
+        });
+        await importB.update({ state: "importing" });
+        await importB.update({ state: "processing" });
+        await importB.update({
+          state: "complete",
+          recordId: record.id,
+          recordAssociatedAt: new Date(0),
+          processedAt: new Date(0),
+          importedAt: new Date(0),
+        });
+
+        await record.markPending();
+        await ImportWorkflow();
+
+        const foundExportTasks = await specHelper.findEnqueuedTasks(
+          "record:export"
+        );
+        expect(foundExportTasks.length).toEqual(1);
+        await specHelper.runTask("record:export", foundExportTasks[0].args[0]);
+
+        await record.reload();
+        const properties = await record.simplifiedProperties();
+        expect(properties.email).toEqual(["mario@example.com"]);
+        expect(properties.firstName).toEqual(["Mario"]);
+        expect(properties.lastName).toEqual(["Mario"]);
+
+        await importA.reload();
+        await importB.reload();
+        expect(importA.processedAt.getTime()).toBeGreaterThanOrEqual(
+          start.getTime()
+        );
+        expect(importB.processedAt.getTime()).toEqual(new Date(0).getTime());
+
+        const exports = await Export.findAll();
+        expect(exports.length).toBe(1);
+        expect(exports[0].destinationId).toBe(destination.id);
+      });
+
       describe("with exportRecord", () => {
         let counter = 0;
 
-        beforeEach(() => {
+        beforeEach(async () => {
+          await Export.truncate();
+          await record.reload();
           counter = 0;
         });
 
@@ -321,7 +390,7 @@ describe("tasks/record:export", () => {
           });
         });
 
-        it("will not records not yet in the ready state", async () => {
+        it("will not export records not yet in the ready state", async () => {
           await record.update({ state: "pending" });
 
           await specHelper.runTask("record:export", {
@@ -329,46 +398,6 @@ describe("tasks/record:export", () => {
           }); // does not throw because it did not run
 
           expect(counter).toBe(0);
-        });
-
-        it("applies errors to the imports and export", async () => {
-          const run = await helper.factories.run();
-          const _import = await Import.create({
-            state: "importing",
-            creatorType: "run",
-            creatorId: run.id,
-            recordId: record.id,
-            data: {},
-            oldGroupIds: [],
-            newGroupIds: [group.id],
-          });
-
-          await _import.update({
-            state: "processing",
-            importedAt: new Date(),
-          });
-
-          await record.import();
-          await record.updateGroupMembership();
-
-          expect(_import.errorMessage).toBeFalsy();
-
-          // I don't throw, but append the error to the Export
-          await specHelper.runTask("record:export", {
-            recordId: record.id,
-          });
-
-          expect(counter).toBe(1);
-
-          await _import.reload();
-          expect(_import.state).toBe("failed");
-          expect(_import.errorMessage).toMatch(/oh no/);
-          const errorMetadata = JSON.parse(_import.errorMetadata);
-          expect(errorMetadata.message).toMatch(/oh no/);
-          expect(errorMetadata.step).toBe("record:export");
-          expect(errorMetadata.stack).toMatch(/RecordExport/);
-
-          await _import.destroy();
         });
       });
     });

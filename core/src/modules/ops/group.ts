@@ -21,14 +21,11 @@ export namespace GroupOps {
     for (const recordId of recordIds) {
       bulkData.push({
         state: "importing",
-        rawData: destinationId ? { _meta: { destinationId } } : {},
         data: destinationId ? { _meta: { destinationId } } : {},
         creatorType,
         creatorId,
         recordId,
         recordAssociatedAt: new Date(),
-        oldRecordProperties: {},
-        oldGroupIds: [],
       });
     }
 

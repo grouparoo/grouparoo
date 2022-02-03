@@ -337,10 +337,6 @@ describe("modules/plugin", () => {
 
         expect(_import.id).toBeTruthy();
         expect(_import.data).toEqual({ firstName: ["Peach"] });
-        expect(_import.rawData).toEqual({
-          first__name: "Peach",
-          last__name: "Toadstool",
-        });
 
         const tasks = await specHelper.findEnqueuedTasks(
           "import:associateRecord"
@@ -381,16 +377,9 @@ describe("modules/plugin", () => {
         expect(peachImport.data).toEqual({
           firstName: ["Peach"],
         });
-        expect(peachImport.rawData).toEqual({
-          first__name: "Peach",
-          last__name: "Toadstool",
-        });
+
         expect(marioImport.data).toEqual({
           firstName: ["Mario"],
-        });
-        expect(marioImport.rawData).toEqual({
-          first__name: "Mario",
-          last__name: "Mario",
         });
 
         const tasks = await specHelper.findEnqueuedTasks(
