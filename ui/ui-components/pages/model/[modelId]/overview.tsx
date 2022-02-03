@@ -171,9 +171,10 @@ export const getServerSideProps: GetServerSideProps<Props> =
       ? sources.filter(({ id }) => id !== primarySource.id)
       : sources;
 
-    const sampleRecordId = cookies.get(
-      `sampleRecord:${grouparooUiEdition()}:${modelId}`
-    );
+    const sampleRecordId = cookies.get<Record<string, string>>(
+      `sampleRecord:${grouparooUiEdition()}`
+    )?.[modelId as string];
+
     const sampleRecord = sampleRecordId
       ? await client.request<Actions.RecordView>(
           "get",

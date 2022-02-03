@@ -61,23 +61,38 @@ const cookies = new Cookies();
 
 const getCachedSampleRecordId = (modelId: string): string => {
   return isBrowser()
-    ? cookies.get(`sampleRecord:${grouparooUiEdition()}:${modelId}`)
+    ? cookies.get(`sampleRecord:${grouparooUiEdition()}`)?.[modelId]
     : undefined;
 };
 
 const setCachedSampleRecordId = (modelId: string, recordId: string): void => {
   if (isBrowser() && recordId) {
-    cookies.set(`sampleRecord:${grouparooUiEdition()}:${modelId}`, recordId, {
-      path: "/",
-    });
+    const existing = cookies.get<Record<string, string>>(
+      `sampleRecord:${grouparooUiEdition()}`
+    );
+    cookies.set(
+      `sampleRecord:${grouparooUiEdition()}`,
+      { ...existing, [modelId]: recordId },
+      {
+        path: "/",
+        sameSite: "strict",
+      }
+    );
   }
 };
 
 const clearCachedSampleRecordId = (modelId: string): void => {
   if (isBrowser()) {
-    cookies.remove(`sampleRecord:${grouparooUiEdition()}:${modelId}`, {
-      path: "/",
-    });
+    const existing = cookies.get<Record<string, string>>(
+      `sampleRecord:${grouparooUiEdition()}`
+    );
+    if (existing) {
+      delete existing[modelId];
+      cookies.set(`sampleRecord:${grouparooUiEdition()}`, existing, {
+        path: "/",
+        sameSite: "strict",
+      });
+    }
   }
 };
 
@@ -99,7 +114,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   groupId,
   ...props
 }) => {
-  const prevModelId = usePrevious(modelId);
+  const previousRecord = usePrevious(props.record);
   const prevReloadKey = usePrevious(reloadKey);
   const { client } = useApi();
 
@@ -233,16 +248,16 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
 
   useEffect(() => {
     // Switched to another model
-    if (prevModelId && prevModelId !== modelId) {
+    if ((previousRecord || props.record) && previousRecord !== props.record) {
       setLoading(true);
-      setRecordId(getCachedSampleRecordId(modelId));
-      setRecord(undefined);
-      setGroups(undefined);
-      setDestinations(undefined);
+      setRecordId(props.record?.id || getCachedSampleRecordId(modelId));
+      setRecord(props.record);
+      setGroups(props.groups);
+      setDestinations(props.destinations);
       setHasRecords(true);
       setLoading(false);
     }
-  }, [record, modelId, prevModelId]);
+  }, [props.record, props.groups, props.destinations, modelId, previousRecord]);
 
   useEffect(() => {
     if (
