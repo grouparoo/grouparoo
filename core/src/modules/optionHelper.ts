@@ -258,9 +258,9 @@ export namespace OptionHelper {
     for (const k in options) {
       if (allOptions.indexOf(k) < 0) {
         throw new Error(
-          `${k} is not an option for a ${type} ${modelName<ModelWithMapping>(instance)} (${
-            instance["name"] || instance["key"]
-          }, ${instance.id})`
+          `${k} is not an option for a ${type} ${modelName<ModelWithMapping>(
+            instance
+          )} (${instance["name"] || instance["key"]}, ${instance.id})`
         );
       }
     }
