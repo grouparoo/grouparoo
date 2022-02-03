@@ -31,8 +31,8 @@ const GrouparooTabs: React.FC<Props> = ({
 }) => {
   const router = useRouter();
 
-  const parts = router.asPath.split("?")[0].split("/");
-  const pathnameParts = router.pathname?.split("?")[0].split("/");
+  const parts = router.asPath.split(/\?|\#/)[0].split("/");
+  const pathnameParts = router.pathname?.split(/\?|\#/)[0].split("/");
   const numParts = parts.length;
   const verb = parts[numParts - 1];
 

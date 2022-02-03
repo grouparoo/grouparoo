@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`managedCard will render a spinner when in the loading state: loading 1`] = `
+<div>
+  <div
+    class="card"
+  >
+    <div
+      class="card-header"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <h5
+            class="my-1"
+            id="test"
+          >
+            test
+             
+            <div
+              class="spinner-border spinner-border-sm"
+              role="status"
+              style="vertical-align: inherit;"
+            />
+          </h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`managedCard will render a spinner when in the loading state: noLoading 1`] = `
+<div>
+  <div
+    class="card"
+  >
+    <div
+      class="card-header"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <h5
+            class="my-1"
+            id="test"
+          >
+            test
+             
+          </h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
