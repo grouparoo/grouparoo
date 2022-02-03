@@ -1,7 +1,7 @@
 import type { NextPageContext } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useCallback, useEffect, useState } from "react";
 import { Badge, Button, ButtonGroup, Col, Form, Row } from "react-bootstrap";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import { generateClient } from "../../client/client";
@@ -20,14 +20,12 @@ import { useGrouparooModel } from "../../contexts/grouparooModel";
 
 type Props = Awaited<ReturnType<typeof RecordsList.hydrate>> & {
   header?: React.ReactNode;
+  searchKey?: string;
+  searchValue?: string;
 };
 
 export default function RecordsList(props: Props) {
-  const {
-    properties,
-  }: {
-    properties: Models.PropertyType[];
-  } = props;
+  const { properties } = props;
   const { client } = useApi();
   const {
     model: { name: modelName },
@@ -45,10 +43,10 @@ export default function RecordsList(props: Props) {
   const limit = 100;
   const { offset, setOffset } = useOffset();
   const [searchKey, setSearchKey] = useState<string>(
-    (router.query?.searchKey as string) || ""
+    (router.query?.searchKey as string) || props.searchKey || ""
   );
   const [searchValue, setSearchValue] = useState<string>(
-    (router.query.searchValue as string) || ""
+    (router.query.searchValue as string) || props.searchValue || ""
   );
   const [state, setState] = useState(router.query.state?.toString() || null);
   const [caseSensitive, setCaseSensitive] = useState(
@@ -62,55 +60,69 @@ export default function RecordsList(props: Props) {
     load();
   }, [offset, limit, state, modelId, caseSensitive]);
 
+  const load = useCallback(
+    async (
+      event?:
+        | Parameters<Parameters<typeof recordsHandler.subscribe>[1]>[0]
+        | FormEvent
+    ) => {
+      if (typeof (event as FormEvent)?.preventDefault == "function") {
+        (event as FormEvent).preventDefault();
+      }
+
+      setLoading(true);
+      const response: Actions.RecordsList = await client.request(
+        "get",
+        `/records`,
+        {
+          searchKey,
+          searchValue,
+          limit,
+          offset,
+          state,
+          modelId,
+          groupId,
+          caseSensitive,
+        }
+      );
+      setLoading(false);
+      if (response?.records) {
+        setRecords(response.records);
+        setTotal(response.total);
+        if (offset > response.total) {
+          setOffset(0);
+        }
+      }
+
+      updateURLParams(router, {
+        offset,
+        searchKey,
+        searchValue,
+        state,
+        caseSensitive: caseSensitive.toString(),
+      });
+    },
+    [
+      caseSensitive,
+      client,
+      groupId,
+      modelId,
+      offset,
+      router,
+      searchKey,
+      searchValue,
+      setOffset,
+      state,
+    ]
+  );
+
   useEffect(() => {
     recordsHandler.subscribe("records:list", load);
 
     return () => {
       recordsHandler.unsubscribe("records:list");
     };
-  }, []);
-
-  async function load(
-    event?:
-      | Parameters<Parameters<typeof recordsHandler.subscribe>[1]>[0]
-      | FormEvent
-  ) {
-    if (typeof (event as FormEvent)?.preventDefault == "function") {
-      (event as FormEvent).preventDefault();
-    }
-
-    setLoading(true);
-    const response: Actions.RecordsList = await client.request(
-      "get",
-      `/records`,
-      {
-        searchKey,
-        searchValue,
-        limit,
-        offset,
-        state,
-        modelId,
-        groupId,
-        caseSensitive,
-      }
-    );
-    setLoading(false);
-    if (response?.records) {
-      setRecords(response.records);
-      setTotal(response.total);
-      if (offset > response.total) {
-        setOffset(0);
-      }
-    }
-
-    updateURLParams(router, {
-      offset,
-      searchKey,
-      searchValue,
-      state,
-      caseSensitive: caseSensitive.toString(),
-    });
-  }
+  }, [load]);
 
   async function autocompleteRecordPropertySearch(
     match,
@@ -160,7 +172,7 @@ export default function RecordsList(props: Props) {
                   name="searchKey"
                   as="select"
                   value={searchKey}
-                  disabled={loading ? true : false}
+                  disabled={props.searchKey || loading ? true : false}
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     setSearchKey(event.target.value);
                     setSearchValue("");
@@ -186,7 +198,7 @@ export default function RecordsList(props: Props) {
                       key={`typeahead-search-${searchKey}`}
                       id={`typeahead-search-${searchKey}`}
                       minLength={0}
-                      disabled={loading ? true : false}
+                      disabled={props.searchValue || loading ? true : false}
                       isLoading={searchLoading}
                       allowNew={true}
                       onChange={(selected) => {
