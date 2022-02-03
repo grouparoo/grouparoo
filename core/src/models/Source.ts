@@ -83,7 +83,7 @@ const STATE_TRANSITIONS = [
   where: { state: "ready" },
 }))
 @Table({ tableName: "sources", paranoid: false })
-export class Source extends CommonModel<Source> {
+export class Source extends CommonModel {
   idPrefix() {
     return "src";
   }
@@ -373,12 +373,6 @@ export class Source extends CommonModel<Source> {
   }
 
   // --- Class Methods --- //
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
 
   @BeforeCreate
   @BeforeSave

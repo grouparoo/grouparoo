@@ -95,7 +95,7 @@ export const CachedProperties = {
   where: { state: { [Op.notIn]: ["draft"] } },
 }))
 @Table({ tableName: "properties", paranoid: false })
-export class Property extends CommonModel<Property> {
+export class Property extends CommonModel {
   idPrefix() {
     return "prp";
   }
@@ -354,12 +354,6 @@ export class Property extends CommonModel<Property> {
   }
 
   // --- Class Methods --- //
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
 
   @AfterSave
   @AfterDestroy

@@ -22,7 +22,7 @@ import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
 
 @Table({ tableName: "apiKeys", paranoid: false })
-export class ApiKey extends CommonModel<ApiKey> {
+export class ApiKey extends CommonModel {
   idPrefix() {
     return "key";
   }
@@ -118,12 +118,6 @@ export class ApiKey extends CommonModel<ApiKey> {
   }
 
   // --- Class Methods --- //
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
 
   @BeforeSave
   static async noUpdateIfLocked(instance: ApiKey) {

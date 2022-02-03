@@ -48,7 +48,7 @@ const STATE_TRANSITIONS = [
 ];
 
 @Table({ tableName: "records", paranoid: false })
-export class GrouparooRecord extends CommonModel<GrouparooRecord> {
+export class GrouparooRecord extends CommonModel {
   idPrefix() {
     return "rec";
   }
@@ -242,12 +242,6 @@ export class GrouparooRecord extends CommonModel<GrouparooRecord> {
   }
 
   // --- Class Methods --- //
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
 
   static async findOrCreateByUniqueRecordProperties(
     hash: {

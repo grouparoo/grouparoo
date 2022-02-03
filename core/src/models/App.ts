@@ -50,7 +50,7 @@ const STATE_TRANSITIONS = [
   where: { state: "ready" },
 }))
 @Table({ tableName: "apps", paranoid: false })
-export class App extends CommonModel<App> {
+export class App extends CommonModel {
   idPrefix() {
     return "app";
   }
@@ -282,12 +282,6 @@ export class App extends CommonModel<App> {
   }
 
   // --- Class Methods --- //
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
 
   // Disconnect all Apps from their persistent connections
   static async disconnect(id?: string) {

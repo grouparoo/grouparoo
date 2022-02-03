@@ -41,7 +41,7 @@ const STATE_TRANSITIONS: StateMachine.StateTransition[] = [
   where: { state: "ready" },
 }))
 @Table({ tableName: "models", paranoid: false })
-export class GrouparooModel extends CommonModel<GrouparooModel> {
+export class GrouparooModel extends CommonModel {
   idPrefix() {
     return "mod";
   }
@@ -121,12 +121,6 @@ export class GrouparooModel extends CommonModel<GrouparooModel> {
   }
 
   // --- Class Methods --- //
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
 
   @BeforeCreate
   @BeforeSave

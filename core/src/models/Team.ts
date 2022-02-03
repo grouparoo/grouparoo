@@ -22,7 +22,7 @@ import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
 
 @Table({ tableName: "teams", paranoid: false })
-export class Team extends CommonModel<Team> {
+export class Team extends CommonModel {
   idPrefix() {
     return "tea";
   }
@@ -108,12 +108,6 @@ export class Team extends CommonModel<Team> {
   }
 
   // --- Class Methods --- //
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
 
   @BeforeSave
   static async checkLockedPermissions(instance: Team) {

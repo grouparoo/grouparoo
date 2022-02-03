@@ -67,7 +67,7 @@ const STATE_TRANSITIONS: StateMachine.StateTransition[] = [
 ];
 
 @Table({ tableName: "exports", paranoid: false })
-export class Export extends CommonModel<Export> {
+export class Export extends CommonModel {
   idPrefix() {
     return "exp";
   }
@@ -274,12 +274,6 @@ export class Export extends CommonModel<Export> {
   // --- Class Methods --- //
 
   static defaultState = "pending";
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
 
   @BeforeSave
   static async updateState(instance: Export) {

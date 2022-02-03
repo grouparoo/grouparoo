@@ -16,7 +16,7 @@ import { CommonModel } from "../classes/commonModel";
 export const settingTypes = ["string", "number", "boolean"] as const;
 
 @Table({ tableName: "settings", paranoid: false })
-export class Setting extends CommonModel<Setting> {
+export class Setting extends CommonModel {
   idPrefix() {
     return "set";
   }
@@ -99,12 +99,6 @@ export class Setting extends CommonModel<Setting> {
   }
 
   // --- Class Methods --- //
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
 
   @BeforeSave
   static async validateType(instance: Setting) {

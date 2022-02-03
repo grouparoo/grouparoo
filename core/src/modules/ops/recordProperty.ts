@@ -10,7 +10,7 @@ import { Op } from "sequelize";
 import { Source } from "../../models/Source";
 import { AggregationMethod, PluginConnection } from "../../classes/plugin";
 import { Filter } from "../../models/Filter";
-import { config, log } from "actionhero";
+import { log } from "actionhero";
 
 export namespace RecordPropertyOps {
   const defaultRecordPropertyProcessingDelay = 1000 * 60 * 5;
@@ -222,7 +222,7 @@ async function preparePropertyImports(
     ? "RecordProperty"
     : null;
 
-  await RecordProperty.updateAllinBatches(pendingRecordProperties, {
+  await RecordProperty.updateAllInBatches(pendingRecordProperties, {
     startedAt: new Date(),
   });
 
@@ -244,7 +244,7 @@ async function preparePropertyImports(
     }
   } else {
     // Schedule sources don't import properties on-demand, keep old value
-    await RecordProperty.updateAllinBatches(pendingRecordProperties, {
+    await RecordProperty.updateAllInBatches(pendingRecordProperties, {
       state: "ready",
       stateChangedAt: new Date(),
       confirmedAt: new Date(),

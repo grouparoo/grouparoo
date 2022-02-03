@@ -1,14 +1,12 @@
 import {
   Table,
   Column,
-  BeforeCreate,
   AllowNull,
   ForeignKey,
   BelongsTo,
   DataType,
   Default,
 } from "sequelize-typescript";
-import * as UUID from "uuid";
 import Moment from "moment";
 import { App } from "./App";
 import { oAuthIdentity, oAuthType } from "../modules/oAuth";
@@ -16,7 +14,7 @@ import { CommonModel } from "../classes/commonModel";
 import { Op } from "sequelize";
 
 @Table({ tableName: "oAuthRequests", paranoid: false })
-export class OAuthRequest extends CommonModel<OAuthRequest> {
+export class OAuthRequest extends CommonModel {
   idPrefix() {
     return "req";
   }
@@ -72,19 +70,6 @@ export class OAuthRequest extends CommonModel<OAuthRequest> {
   }
 
   // --- Class Methods --- //
-
-  @BeforeCreate
-  static generateId(instance: OAuthRequest) {
-    if (!instance.id) {
-      instance.id = `${instance.idPrefix()}_${UUID.v4()}`;
-    }
-  }
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
 
   static async sweep(limit: number) {
     const days = 1;

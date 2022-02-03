@@ -19,7 +19,7 @@ import { CLS } from "../modules/cls";
 import { CommonModel } from "../classes/commonModel";
 
 @Table({ tableName: "teamMembers", paranoid: false })
-export class TeamMember extends CommonModel<TeamMember> {
+export class TeamMember extends CommonModel {
   idPrefix() {
     return "tem";
   }
@@ -78,12 +78,6 @@ export class TeamMember extends CommonModel<TeamMember> {
   }
 
   // --- Class Methods --- //
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
 
   @BeforeValidate
   static lowercaseEmail(instance: TeamMember) {

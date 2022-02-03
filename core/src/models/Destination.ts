@@ -130,7 +130,7 @@ const STATE_TRANSITIONS = [
   },
 }))
 @Table({ tableName: "destinations", paranoid: false })
-export class Destination extends CommonModel<Destination> {
+export class Destination extends CommonModel {
   idPrefix() {
     return "dst";
   }
@@ -616,12 +616,6 @@ export class Destination extends CommonModel<Destination> {
   }
 
   // --- Class Methods --- //
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
 
   @BeforeCreate
   @BeforeSave

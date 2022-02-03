@@ -15,7 +15,7 @@ import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
 
 @Table({ tableName: "mappings", paranoid: false })
-export class Mapping extends CommonModel<Mapping> {
+export class Mapping extends CommonModel {
   idPrefix() {
     return "map";
   }
@@ -62,12 +62,6 @@ export class Mapping extends CommonModel<Mapping> {
   }
 
   // --- Class Methods --- //
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
 
   @BeforeSave
   static async ensureOneOwnerPerProperty(instance: Mapping) {

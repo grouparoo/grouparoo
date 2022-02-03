@@ -14,7 +14,7 @@ import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
 
 @Table({ tableName: "destinationGroupMemberships", paranoid: false })
-export class DestinationGroupMembership extends CommonModel<DestinationGroupMembership> {
+export class DestinationGroupMembership extends CommonModel {
   idPrefix() {
     return "dgm";
   }
@@ -51,12 +51,6 @@ export class DestinationGroupMembership extends CommonModel<DestinationGroupMemb
   }
 
   // --- Class Methods --- //
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
 
   @BeforeSave
   static async ensureOneDestinationPerGroup(

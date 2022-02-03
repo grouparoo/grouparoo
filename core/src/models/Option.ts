@@ -17,7 +17,7 @@ import { CommonModel } from "../classes/commonModel";
 export const OptionTypes = ["boolean", "string", "number"] as const;
 
 @Table({ tableName: "options", paranoid: false })
-export class Option extends CommonModel<Option> {
+export class Option extends CommonModel {
   idPrefix() {
     return "opt";
   }
@@ -75,12 +75,6 @@ export class Option extends CommonModel<Option> {
   }
 
   // --- Class Methods --- //
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
 
   @BeforeSave
   static async ensureOneOwnerIdPerKey(instance: Option) {

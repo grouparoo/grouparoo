@@ -29,7 +29,7 @@ const STATE_TRANSITIONS: StateMachine.StateTransition[] = [
   where: { state: "ready" },
 }))
 @Table({ tableName: "appRefreshQueries", paranoid: false })
-export class AppRefreshQuery extends CommonModel<AppRefreshQuery> {
+export class AppRefreshQuery extends CommonModel {
   idPrefix() {
     return "adr";
   }
@@ -99,11 +99,6 @@ export class AppRefreshQuery extends CommonModel<AppRefreshQuery> {
 
   // --- Class Methods --- //
 
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find AppRefreshQuery ${id}`);
-    return instance;
-  }
   @BeforeCreate
   static async ensureOnePerApp(instance: AppRefreshQuery) {
     const existingCount = await AppRefreshQuery.scope(null).count({

@@ -51,7 +51,7 @@ const STATE_TRANSITIONS: StateMachine.StateTransition[] = [
 ];
 
 @Table({ tableName: "runs", paranoid: false })
-export class Run extends CommonModel<Run> {
+export class Run extends CommonModel {
   idPrefix() {
     return "run";
   }
@@ -299,12 +299,6 @@ export class Run extends CommonModel<Run> {
   }
 
   // --- Class Methods --- //
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
 
   @BeforeCreate
   static async ensureCreatorReady(instance: Run) {
