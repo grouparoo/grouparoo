@@ -11,5 +11,8 @@
     "primary id": "email",
     "secondary id": "user_id"
   },
-  "destinationGroupMemberships": {}
+  "destinationGroupMemberships": {
+    "Spanish Speakers": "spanish_speakers",
+    "High Value": "high_value"
+  }
 }
