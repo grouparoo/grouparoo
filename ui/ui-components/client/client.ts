@@ -11,6 +11,7 @@ import { getRequestContext } from "../utils/appContext";
 import type { NextContext, NextContextName } from "../utils/appContext";
 import type { ErrorHandler } from "../eventHandlers/errorHandler";
 import { isBrowser } from "../utils/isBrowser";
+import { getRedirectFromErrorCode } from "../utils/getRedirectFromErrorCode";
 
 interface ClientCacheObject<T = unknown> {
   locked: boolean;
@@ -107,55 +108,31 @@ export class Client {
   ) {}
 
   private redirectOnAccessError({ code }: { code: string }): boolean {
-    if (isBrowser()) {
-      switch (code) {
-        case "AUTHENTICATION_ERROR":
-          if (window.location.pathname !== "/session/sign-in") {
-            window.location.href = `/session/sign-in?nextPage=${window.location.pathname}`;
-          }
-          return true;
-
-        case "NO_TEAMS_ERROR":
-          window.location.href = `/`;
-          return true;
-
-        case "AUTHORIZATION_ERROR":
-        default:
-          // ok, it will be rendered on the page
-          break;
-      }
-
-      return false;
-    }
-
     const { type, req, res } = this.getRequestContext();
-    if (!req || !res || type === "GetServerSidePropsContext") {
+    if (
+      !isBrowser() &&
+      (!req || !res || type === "GetServerSidePropsContext")
+    ) {
       return false;
     }
 
-    // Only check requests from `Page.getInitialProps` or `NextApp.getInitialProps`
-    // getServerSideProps requests will be handled by `withServerErrorHandler`
-    switch (code) {
-      case "AUTHENTICATION_ERROR": {
-        const requestPath = req.url.match("^[^?]*")[0];
+    const redirect = getRedirectFromErrorCode(
+      code,
+      isBrowser() ? window.location.pathname : req.url.match("^[^?]*")[0]
+    );
+
+    if (redirect) {
+      if (isBrowser()) {
+        window.location.href = redirect.destination;
+      } else {
         res.writeHead(302, {
-          Location: `/session/sign-in?nextPage=${requestPath}`,
+          Location: redirect.destination,
         });
         res.end();
-        return true;
       }
-
-      case "NO_TEAMS_ERROR": {
-        res.writeHead(302, { Location: `/` });
-        res.end();
-        return true;
-      }
-
-      case "AUTHORIZATION_ERROR":
-      default:
-        // ok, it will be rendered on the page
-        return false;
     }
+
+    return !!redirect;
   }
 
   private csrfToken = () => {
