@@ -18,7 +18,7 @@ interface Props {
   preview: Record<string, unknown>[];
   properties: Actions.PropertiesList["properties"];
   propertyExamples: Record<string, string[]>;
-  source: Actions.SourceView["source"];
+  source: Models.SourceType;
   register: UseFormRegister<FormData>;
   watch: UseFormWatch<FormData>;
   mappingDisabled?: boolean;

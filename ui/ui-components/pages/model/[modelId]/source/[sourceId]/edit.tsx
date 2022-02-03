@@ -36,7 +36,7 @@ export interface FormData {
     sourceColumn: string;
     propertyKey: string;
   };
-  source: Pick<Actions.SourceView["source"], "name" | "options">;
+  source: Pick<Models.SourceType, "name" | "options">;
 }
 
 interface Props {
@@ -44,7 +44,7 @@ interface Props {
   properties: Actions.PropertiesList["properties"];
   propertyExamples: Record<string, string[]>;
   scheduleCount: number;
-  source: Actions.SourceView["source"];
+  source: Models.SourceType;
   totalSources: number;
   preview: SourcePreviewMethodResponseRow[];
 }
