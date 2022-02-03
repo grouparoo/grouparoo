@@ -191,7 +191,7 @@ export class Client {
     }
   }
 
-  public request = async <Response = unknown>(
+  public request = async <Response = any>(
     verb: Method = "get",
     path: string,
     data: AxiosRequestConfig["data"] = {},
