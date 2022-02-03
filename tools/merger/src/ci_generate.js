@@ -75,9 +75,6 @@ class Generator {
     });
   }
   addCommands() {
-    this.addCommand("license-checker", "./tools/license-checker/check");
-    this.addCommand("spell-checker", "./tools/spell-checker/check");
-    this.addCommand("version-checker", "./tools/version-checker/check");
     this.addCommand("linter", "pnpm run lint");
   }
 
@@ -94,6 +91,13 @@ class Generator {
         relative_path: `core`,
         name: "core",
       });
+    });
+
+    this.jobList.push({
+      type: "root",
+      job_name: `test-root`,
+      relative_path: ``,
+      name: "root",
     });
 
     this.jobList.push({
