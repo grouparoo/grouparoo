@@ -33,7 +33,7 @@ describe("tasks/records:reEnqueueStuckExportingRecords", () => {
       creatorType: "foo",
     }).then(async (i) => await i.update({ state: "processing" }));
 
-    // luigi is exporting with processing imports, but it's been a while
+    // toad is exporting with processing imports, but it's been a while
     const toad = await helper.factories.record();
     await toad.import();
     await toad.update({ state: "ready" });
