@@ -1,7 +1,7 @@
 import type { NextPageContext } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { Badge, Button, ButtonGroup, Col, Form, Row } from "react-bootstrap";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import { generateClient } from "../../client/client";
@@ -18,7 +18,11 @@ import Pagination from "../Pagination";
 import ArrayRecordPropertyList from "./ArrayRecordPropertyList";
 import { useGrouparooModel } from "../../contexts/grouparooModel";
 
-export default function RecordsList(props) {
+type Props = Awaited<ReturnType<typeof RecordsList.hydrate>> & {
+  header?: React.ReactNode;
+};
+
+export default function RecordsList(props: Props) {
   const {
     properties,
   }: {
@@ -41,10 +45,10 @@ export default function RecordsList(props) {
   const limit = 100;
   const { offset, setOffset } = useOffset();
   const [searchKey, setSearchKey] = useState<string>(
-    router.query?.searchKey || props.searchKey || ""
+    (router.query?.searchKey as string) || ""
   );
   const [searchValue, setSearchValue] = useState<string>(
-    router.query.searchValue || props.searchValue || ""
+    (router.query.searchValue as string) || ""
   );
   const [state, setState] = useState(router.query.state?.toString() || null);
   const [caseSensitive, setCaseSensitive] = useState(
@@ -156,7 +160,7 @@ export default function RecordsList(props) {
                   name="searchKey"
                   as="select"
                   value={searchKey}
-                  disabled={props.searchKey || loading ? true : false}
+                  disabled={loading ? true : false}
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     setSearchKey(event.target.value);
                     setSearchValue("");
@@ -182,7 +186,7 @@ export default function RecordsList(props) {
                       key={`typeahead-search-${searchKey}`}
                       id={`typeahead-search-${searchKey}`}
                       minLength={0}
-                      disabled={props.searchKey || loading ? true : false}
+                      disabled={loading ? true : false}
                       isLoading={searchLoading}
                       allowNew={true}
                       onChange={(selected) => {

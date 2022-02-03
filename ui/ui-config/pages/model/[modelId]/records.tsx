@@ -14,7 +14,7 @@ import { NextPageContext } from "next";
 import { useGrouparooModel } from "@grouparoo/ui-components/contexts/grouparooModel";
 
 export default function Page(
-  props: Awaited<ReturnType<typeof RecordsPage.getInitialProps>>
+  props: Awaited<ReturnType<typeof Page.getInitialProps>>
 ) {
   const { model } = useGrouparooModel();
   const router = useRouter();

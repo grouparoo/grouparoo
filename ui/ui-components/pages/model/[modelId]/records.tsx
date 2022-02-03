@@ -3,7 +3,7 @@ import Head from "next/head";
 import RecordsList from "../../../components/record/List";
 
 export default function Page(
-  props: Awaited<ReturnType<typeof RecordsList.hydrate>>
+  props: Awaited<ReturnType<typeof Page.getInitialProps>>
 ) {
   return (
     <>

@@ -58,12 +58,14 @@ const AddSampleRecordForm: React.FC<Props> = ({
   const onSubmit: Parameters<typeof handleSubmit>[0] = useCallback(
     async (data) => {
       setSubmitting(true);
-      const response = await client
-        .request<Actions.RecordCreate>("post", `/record`, {
+      const response = await client.request<Actions.RecordCreate>(
+        "post",
+        `/record`,
+        {
           modelId,
           properties: { [data.uniqueProperty]: data.value },
-        })
-        .catch(() => null);
+        }
+      );
       setSubmitting(false);
 
       if (response?.record) {
