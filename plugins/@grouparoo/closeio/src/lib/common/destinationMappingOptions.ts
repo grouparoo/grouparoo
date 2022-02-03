@@ -166,3 +166,11 @@ export const getDestinationMappingOptions: (
       },
     };
   };
+
+export function getCloseioCustomFieldKey(
+  allFields: KnownCloseioField[],
+  key: string
+) {
+  const field = allFields.find((f) => f.key === key);
+  return field ? `custom.${field.closeioKey}` : null;
+}
