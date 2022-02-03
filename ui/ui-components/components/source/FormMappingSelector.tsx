@@ -16,7 +16,7 @@ interface Props {
   columnName?: string;
   propertyKey?: string;
   preview: Record<string, unknown>[];
-  properties: Actions.PropertiesList["properties"];
+  properties: Models.PropertyType[];
   propertyExamples: Record<string, string[]>;
   source: Models.SourceType;
   register: UseFormRegister<FormData>;

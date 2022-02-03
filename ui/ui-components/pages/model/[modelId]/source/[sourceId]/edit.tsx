@@ -41,7 +41,7 @@ export interface FormData {
 
 interface Props {
   environmentVariableOptions: Actions.AppOptions["environmentVariableOptions"];
-  properties: Actions.PropertiesList["properties"];
+  properties: Models.PropertyType[];
   propertyExamples: Record<string, string[]>;
   scheduleCount: number;
   source: Models.SourceType;
