@@ -14,7 +14,6 @@ describe("tasks/record:makeExports", () => {
 
   test("batch size can be configured with a setting", async () => {
     const mario = await helper.factories.record();
-
     await mario.import();
     await mario.update({ state: "pending" });
 
@@ -28,10 +27,6 @@ describe("tasks/record:makeExports", () => {
     await luigi.reload();
 
     expect([mario.state, luigi.state].sort()).toEqual(["pending", "ready"]);
-    expect([mario.readyToExport, luigi.readyToExport].sort()).toEqual([
-      false,
-      true,
-    ]);
 
     await mario.destroy();
     await luigi.destroy();

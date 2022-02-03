@@ -1078,7 +1078,7 @@ export namespace RecordOps {
     if (!records.length) return [];
 
     await GrouparooRecord.update(
-      { state: "ready", readyToExport: true },
+      { state: "ready" },
       {
         where: {
           id: { [Op.in]: records.map((p) => p.id) },

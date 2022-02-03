@@ -74,11 +74,5 @@ export class RecordExport extends RetryableTask {
     } catch (error) {
       if (env !== "test") log(`[EXPORT ERROR] ${error}`, "alert");
     }
-
-    try {
-      await record.update({ readyToExport: false });
-    } catch (error) {
-      if (env !== "test") log(`[EXPORT ERROR] ${error}`, "alert");
-    }
   }
 }
