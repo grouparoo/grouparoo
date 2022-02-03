@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+set -e
+# set -x
+
+cd "$(dirname "$0")"
+cd ..
+
+BAD_WORDS=()
+# Typos
+BAD_WORDS+=("gropuaroo" "groparoo" "grop" "grope" "instnces")
+# Offensive CS Terms
+BAD_WORDS+=("blacklist" "whitelist" "slave")
+
+MATCHES=""
+
+echo "🦘 Checking Grouparoo for bad words"
+
+for word in "${BAD_WORDS[@]}"; do
+  printf "checking for instances of \`$word\`... "
+  MATCHES=`grep -inR \
+    --exclude=wordCheck \
+    --exclude=*-lock.* \
+    --exclude-dir=node_modules \
+    --exclude-dir=log \
+    --exclude-dir=.git \
+    --exclude-dir=dist \
+    --exclude-dir=.next \
+    --exclude-dir=spell-checker \
+    --exclude-dir=fixtures \
+    "${word}" .` || true
+  if [ -z "$MATCHES" ]; then
+    printf " ✅\n"
+  
+  else
+    echo "$word: $MATCHES" 1>&2
+  fi
+done
+
+echo "All Good!"
+exit 0

@@ -1,0 +1,23 @@
+{
+  "$id": "schemaPlugin",
+  "type": "object",
+  "title": "Plugin Package.json Schema",
+  "description": "Schema for all Plugin Package.json files in Grouparoo.",
+  "required": ["publishConfig"],
+  "allOf": [{ "$ref": "./schemaGeneric" }],
+  "properties": {
+    "publishConfig": {
+      "$id": "#/properties/publishConfig",
+      "type": "object",
+      "examples": [{ "access": "public" }],
+      "required": ["access"],
+      "properties": {
+        "access": {
+          "$id": "#/properties/publishConfig/access",
+          "type": "string",
+          "examples": ["public"]
+        }
+      }
+    }
+  }
+}
