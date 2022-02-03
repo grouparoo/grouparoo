@@ -5,20 +5,25 @@ import Axios, {
   Method,
 } from "axios";
 import type { IncomingMessage, ServerResponse } from "http";
-
-import { isBrowser } from "../utils/isBrowser";
 import PackageJSON from "../package.json";
 import { errorHandler } from "../eventHandlers";
-import type { AppContext } from "next/app";
-import type { GetServerSidePropsContext, NextPageContext } from "next";
 import { getRequestContext } from "../utils/appContext";
+import type { NextContext, NextContextName } from "../utils/appContext";
 import type { ErrorHandler } from "../eventHandlers/errorHandler";
+import { isBrowser } from "../utils/isBrowser";
+import { getRedirectFromErrorCode } from "../utils/getRedirectFromErrorCode";
 
-interface ClientCacheObject {
+interface ClientCacheObject<T = unknown> {
   locked: boolean;
-  data: any;
+  data: T;
   createdAt: number;
 }
+
+interface ClientCacheGetObject<T = unknown> {
+  cacheData: T;
+  unlock: (data?: T) => void;
+}
+
 export class ClientCache {
   cache: { [key: string]: ClientCacheObject };
   ttl: number;
@@ -34,7 +39,7 @@ export class ClientCache {
     });
   }
 
-  async get(key: string) {
+  async get<T = unknown>(key: string): Promise<ClientCacheGetObject<T>> {
     if (!this.cache[key]) {
       this.cache[key] = { locked: false, data: undefined, createdAt: 0 };
     }
@@ -55,7 +60,7 @@ export class ClientCache {
       this.cache[key] = { locked: true, data: undefined, createdAt: 0 };
     }
 
-    const unlock = (data) => {
+    const unlock = (data?: T) => {
       this.cache[key] = {
         data,
         createdAt: new Date().getTime(),
@@ -63,7 +68,7 @@ export class ClientCache {
       };
     };
 
-    return { cacheData: this.cache[key]?.data, unlock };
+    return { cacheData: this.cache[key]?.data as T, unlock };
   }
 
   clear() {
@@ -83,17 +88,52 @@ export class Client {
   private serverToken = process.env.SERVER_TOKEN;
   private cache = new ClientCache();
 
-  private static readonly optionDefaults: ClientRequestOptions = {
+  private static readonly defaultOptions: ClientRequestOptions = {
     useCache: true,
-    errorHandler,
+    errorHandler: isBrowser() ? errorHandler : undefined,
+  };
+
+  private static readonly defaultHeaders: AxiosRequestHeaders = {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+    "X-Grouparoo-Client": `${PackageJSON.name}-v${PackageJSON.version}`,
   };
 
   constructor(
     private getRequestContext: () => {
+      type?: NextContextName;
       req?: IncomingMessage;
       res?: ServerResponse;
     } = () => ({})
   ) {}
+
+  private redirectOnAccessError({ code }: { code: string }): boolean {
+    const { type, req, res } = this.getRequestContext();
+    if (
+      !isBrowser() &&
+      (!req || !res || type === "GetServerSidePropsContext")
+    ) {
+      return false;
+    }
+
+    const redirect = getRedirectFromErrorCode(
+      code,
+      isBrowser() ? window.location.pathname : req.url.match("^[^?]*")[0]
+    );
+
+    if (redirect) {
+      if (isBrowser()) {
+        window.location.href = redirect.destination;
+      } else {
+        res.writeHead(302, {
+          Location: redirect.destination,
+        });
+        res.end();
+      }
+    }
+
+    return !!redirect;
+  }
 
   private csrfToken = () => {
     if (globalThis?.localStorage) {
@@ -101,74 +141,11 @@ export class Client {
     }
   };
 
-  public request = async <Response = any>(
-    verb: Method = "get",
-    path: string,
-    data: AxiosRequestConfig["data"] = {},
-    options: Partial<ClientRequestOptions> = {}
-  ): Promise<Response> => {
-    options = { ...Client.optionDefaults, ...options };
-
-    const headers: AxiosRequestHeaders = {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      "X-Grouparoo-Client": `${PackageJSON.name}-v${PackageJSON.version}`,
-    };
-
-    const { req } = this.getRequestContext();
-    if (req?.headers?.cookie) {
-      headers["X-GROUPAROO-SERVER-TOKEN"] = this.serverToken;
-      headers["cookie"] = req?.headers?.cookie;
-      options.useCache = false; // do not ever cache responses on the server
-    }
-
-    const config: AxiosRequestConfig = {
-      params: null,
-      data: null,
-      url: `${this.webUrl}/api/${this.apiVersion}${path}`, // path comes with a leading "/"
-      withCredentials: true,
-      method: verb.toLowerCase() as Method,
-      headers,
-    };
-
-    data.csrfToken = this.csrfToken();
-
-    if (data) {
-      for (const i in data) {
-        if (data[i] === null || data[i] === undefined) {
-          delete data[i];
-        }
-      }
-
-      if (data.file || data._file) {
-        delete config.headers;
-        let dataForm = new FormData();
-        for (const i in data) {
-          dataForm.append(i, data[i]);
-        }
-        data = dataForm;
-      }
-
-      if (config.method === "get") {
-        config.params = data;
-      } else {
-        config.data = data;
-      }
-    }
-
-    let unlock: Function;
-    if (config.method === "get" && options.useCache) {
-      const { cacheData, unlock: _unlock } = await this.cache.get(
-        config.url + JSON.stringify(data)
-      );
-      unlock = _unlock;
-      if (cacheData) {
-        return cacheData;
-      }
-    } else {
-      this.cache.clear();
-    }
-
+  private async sendRequest<Response>(
+    config: AxiosRequestConfig,
+    options: Partial<ClientRequestOptions>,
+    unlock?: ClientCacheGetObject["unlock"]
+  ) {
     try {
       const response: AxiosResponse<Response & { error?: Error }> = await Axios(
         config
@@ -190,23 +167,102 @@ export class Client {
       }
 
       if (error.response && error.response.data && error.response.data.error) {
+        if (this.redirectOnAccessError(error.response.data.error)) {
+          if (options.errorHandler && error.response.data.error.message) {
+            options.errorHandler.set({
+              message: error.response.data.error.message,
+            });
+          }
+          return new Promise<Response>(() => {});
+        }
+
         const err =
           error.response?.data?.error?.message ??
           error.response?.data?.error ??
           error;
 
-        options.errorHandler.set({ message: err });
-        const newError = Error(err);
+        const newError = new Error(err);
         newError["code"] = error.response?.data?.error?.code;
+
         throw newError;
       } else {
-        options.errorHandler.set({ message: error });
         throw error;
       }
+    }
+  }
+
+  public request = async <Response = any>(
+    verb: Method = "get",
+    path: string,
+    data: AxiosRequestConfig["data"] = {},
+    options: Partial<ClientRequestOptions> = {}
+  ): Promise<Response> => {
+    options = { ...Client.defaultOptions, ...options };
+    const headers: AxiosRequestHeaders = { ...Client.defaultHeaders };
+
+    try {
+      const { req } = this.getRequestContext();
+      if (req?.headers?.cookie) {
+        headers["X-GROUPAROO-SERVER-TOKEN"] = this.serverToken;
+        headers["cookie"] = req?.headers?.cookie;
+        options.useCache = false; // do not ever cache responses on the server
+      }
+
+      const config: AxiosRequestConfig = {
+        url: `${this.webUrl}/api/${this.apiVersion}${path}`, // path comes with a leading "/"
+        withCredentials: true,
+        method: verb.toLowerCase() as Method,
+        headers,
+      };
+
+      data.csrfToken = this.csrfToken();
+
+      if (data) {
+        for (const i in data) {
+          if (data[i] === null || data[i] === undefined) {
+            delete data[i];
+          }
+        }
+
+        if (data.file || data._file) {
+          delete config.headers;
+          let dataForm = new FormData();
+          for (const i in data) {
+            dataForm.append(i, data[i]);
+          }
+          data = dataForm;
+        }
+
+        if (config.method === "get") {
+          config.params = data;
+        } else {
+          config.data = data;
+        }
+      }
+
+      let unlock: ClientCacheGetObject["unlock"];
+      if (config.method === "get" && options.useCache) {
+        const { cacheData, unlock: _unlock } = await this.cache.get<Response>(
+          config.url + JSON.stringify(data)
+        );
+        if (cacheData) {
+          return cacheData;
+        }
+        unlock = _unlock;
+      } else {
+        this.cache.clear();
+      }
+
+      return await this.sendRequest(config, options, unlock);
+    } catch (error) {
+      if (options.errorHandler) {
+        options.errorHandler.set({ message: error });
+        return {} as Response;
+      }
+      throw error;
     }
   };
 }
 
-export const generateClient = (
-  ctx: AppContext | NextPageContext | GetServerSidePropsContext
-) => new Client(getRequestContext(ctx));
+export const generateClient = (ctx: NextContext) =>
+  new Client(getRequestContext(ctx));

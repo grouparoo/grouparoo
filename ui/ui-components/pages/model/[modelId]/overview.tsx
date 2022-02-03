@@ -1,7 +1,7 @@
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useMemo } from "react";
-import { Alert, Col, ListGroup, ListGroupItem, Row } from "react-bootstrap";
+import { Col, ListGroup, ListGroupItem, Row } from "react-bootstrap";
 import { generateClient } from "../../../client/client";
 import ManagedCard from "../../../components/lib/ManagedCard";
 import ModelOverviewDestinations from "../../../components/model/overview/ModelOverviewDestinations";
@@ -49,8 +49,6 @@ const Page: NextPage<Props> = ({
     () => !!properties.find((property) => property.state === "ready"),
     [properties]
   );
-
-  if (!model) return <Alert variant="warning">Model not found</Alert>;
 
   const canCreateSecondarySource =
     !!totalSources && sources[0].state === "ready";

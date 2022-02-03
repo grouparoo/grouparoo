@@ -22,7 +22,6 @@ import { makeLocal } from "../../../../../../../utils/makeLocal";
 import { ensureMatchingModel } from "../../../../../../../utils/ensureMatchingModel";
 import PropertySampleRecord from "../../../../../../../components/property/PropertySampleRecord";
 import {
-  errorHandler,
   propertiesHandler,
   successHandler,
 } from "../../../../../../../eventHandlers";
@@ -31,21 +30,15 @@ import EnterpriseLink from "../../../../../../../components/GrouparooLink";
 import { grouparooUiEdition } from "../../../../../../../utils/uiEdition";
 import { generateClient } from "../../../../../../../client/client";
 
-export default function Page(props) {
+export default function Page(
+  props: Awaited<ReturnType<typeof Page.getInitialProps>>
+) {
   const {
     sources,
     types,
     filterOptions,
     filterOptionDescriptions,
     properties,
-    hydrationError,
-  }: {
-    sources: Models.SourceType[];
-    types: Actions.PropertiesOptions["types"];
-    filterOptions: Actions.PropertyFilterOptions["options"];
-    filterOptionDescriptions: Actions.PropertyFilterOptions["optionDescriptions"];
-    properties: Models.PropertyType[];
-    hydrationError: Error;
   } = props;
   const router = useRouter();
   const { client } = useApi();
@@ -65,8 +58,6 @@ export default function Page(props) {
 
   const { propertyId } = router.query;
   const source = sources.find((s) => s.id === property.sourceId);
-
-  if (hydrationError) errorHandler.set({ message: hydrationError });
 
   useEffect(() => {
     setProperty(props.property);
@@ -791,46 +782,51 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   const { propertyId, modelId } = ctx.query;
   const client = generateClient(ctx);
 
-  const { sources } = await client.request("get", "/sources");
-  const { types } = await client.request("get", `/propertyOptions`);
+  const { property } = await client.request<Actions.PropertyView>(
+    "get",
+    `/property/${propertyId}`
+  );
 
-  let property: Models.PropertyType = {};
-  let properties = [];
-  let pluginOptions = [];
-  let filterOptions = {};
-  let hydrationError: Error;
-  let filterOptionDescriptions = {};
+  if (!property) {
+    throw new Error(`Property ${propertyId} not found`);
+  }
 
-  try {
-    const getResponse = await client.request("get", `/property/${propertyId}`);
-    property = getResponse.property;
+  const { sources } = await client.request<Actions.SourcesList>(
+    "get",
+    "/sources"
+  );
 
-    const source = sources.find(
-      (s: Models.SourceType) => s.id === property.sourceId
-    );
-    ensureMatchingModel("Property", source.modelId, modelId.toString());
+  const source = sources.find(
+    (s: Models.SourceType) => s.id === property.sourceId
+  );
+  ensureMatchingModel("Property", source.modelId, modelId.toString());
 
-    const propertiesResponse = await client.request("get", `/properties`, {
+  const { types } = await client.request<Actions.PropertiesOptions>(
+    "get",
+    `/propertyOptions`
+  );
+
+  const { properties } = await client.request<Actions.PropertiesList>(
+    "get",
+    `/properties`,
+    {
       state: "ready",
       modelId: source.modelId,
-    });
-    properties = propertiesResponse.properties;
+    }
+  );
 
-    const pluginOptionsResponse = await client.request(
-      "get",
-      `/property/${propertyId}/pluginOptions`
-    );
-    pluginOptions = pluginOptionsResponse.pluginOptions;
+  const { pluginOptions } = await client.request<Actions.PropertyPluginOptions>(
+    "get",
+    `/property/${propertyId}/pluginOptions`
+  );
 
-    const filterResponse = await client.request(
-      "get",
-      `/property/${propertyId}/filterOptions`
-    );
-    filterOptions = filterResponse.options;
-    filterOptionDescriptions = filterResponse.optionDescriptions;
-  } catch (error) {
-    hydrationError = error.toString();
-  }
+  const {
+    options: filterOptions,
+    optionDescriptions: filterOptionDescriptions,
+  } = await client.request<Actions.PropertyFilterOptions>(
+    "get",
+    `/property/${propertyId}/filterOptions`
+  );
 
   return {
     property,
@@ -840,6 +836,5 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     types,
     filterOptions,
     filterOptionDescriptions,
-    hydrationError,
   };
 };
