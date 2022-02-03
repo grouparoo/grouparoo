@@ -70,14 +70,35 @@ const Page: NextPage<Props> = ({
     Actions.SourceConnectionOptions["options"]
   >({});
   const { sourceId } = router.query;
+
+  // not every row returned is guaranteed to have the same columns
+  const previewColumns = useMemo(() => {
+    return preview
+      .map((row) => Object.keys(row))
+      .reduce((acc, keys) => {
+        keys.forEach((key) => {
+          if (!acc.includes(key)) acc.push(key);
+        });
+
+        return acc;
+      }, [] as string[])
+      .sort();
+  }, [preview]);
+
   const mappingColumn = useMemo(
-    () => Object.keys(props.source.mapping)[0],
-    [props.source.mapping]
+    () => Object.keys(source.mapping)[0] ?? previewColumns?.[0],
+    [previewColumns, source.mapping]
   );
   const mappingPropertyKey = useMemo(
-    () => Object.values(props.source.mapping)[0],
-    [props.source.mapping]
+    () => Object.values(source.mapping)[0],
+    [source.mapping]
   );
+  console.log(
+    { mappingColumn, mappingPropertyKey },
+    Object.keys(source.mapping)[0],
+    previewColumns
+  );
+
   const isPrimarySource = useMemo(
     () =>
       totalSources === 1 ||
@@ -87,7 +108,23 @@ const Page: NextPage<Props> = ({
     [properties, source.id, totalSources]
   );
 
-  const { handleSubmit, register } = useForm<FormData>();
+  const resetFormData = useCallback<() => FormData>(
+    () => ({
+      source: {
+        name: source.name,
+        options: source.options,
+      },
+      mapping: {
+        propertyKey: mappingPropertyKey,
+        sourceColumn: mappingColumn,
+      },
+    }),
+    [mappingColumn, mappingPropertyKey, source.name, source.options]
+  );
+
+  const { handleSubmit, register, reset, watch } = useForm<FormData>({
+    defaultValues: resetFormData(),
+  });
 
   const loadPreview = useCallback(
     async (previewAvailable = source.previewAvailable) => {
@@ -108,14 +145,18 @@ const Page: NextPage<Props> = ({
       setPreviewLoading(false);
       if (response?.preview) {
         setPreview(response.preview);
-        setSource((source) => {
-          // Need to clear the mapping when a new preview is loaded
-          source.mapping = {};
-          return source;
-        });
+        console.log("resetFormData(): ", resetFormData());
+        reset(resetFormData());
       }
     },
-    [client, source.options, source.previewAvailable, sourceId]
+    [
+      client,
+      resetFormData,
+      reset,
+      source.options,
+      source.previewAvailable,
+      sourceId,
+    ]
   );
 
   const sourceBadges = useMemo(() => {
@@ -268,6 +309,7 @@ const Page: NextPage<Props> = ({
       setProperties(properties);
       setPropertyExamples(examples);
       if (response?.source) {
+        console.log("response.source: ", response.source);
         setSource(response.source);
       }
       setLoading(false);
@@ -295,6 +337,7 @@ const Page: NextPage<Props> = ({
   }, [client, router, source.modelId, sourceId]);
 
   const update = async (event) => {
+    console.log("update: ", event.target.id, event.target.type);
     const _source = Object.assign({}, source);
     _source[event.target.id] =
       event.target.type === "checkbox"
@@ -304,23 +347,13 @@ const Page: NextPage<Props> = ({
   };
 
   const updateOption = async (optKey, optValue) => {
+    console.log("updateOption: ", optKey, optValue);
     const _source = { ...source };
     _source.options[optKey] = optValue;
+    _source.mapping = {};
     setSource(_source);
     loadPreview();
   };
-
-  // not every row returned is guaranteed to have the same columns
-  const previewColumns = useMemo(
-    () =>
-      preview
-        .map((row) => Object.keys(row))
-        .reduce((acc, val) => acc.concat(val), [])
-        .filter((value, index, self) => {
-          return self.indexOf(value) === index;
-        }),
-    [preview]
-  );
 
   return (
     <>
@@ -575,6 +608,7 @@ const Page: NextPage<Props> = ({
                     properties={properties}
                     propertyExamples={propertyExamples}
                     register={register}
+                    watch={watch}
                     source={source}
                     mappingDisabled={
                       isPrimarySource && source.state !== "ready"

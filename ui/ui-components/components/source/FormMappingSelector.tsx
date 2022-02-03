@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
-import { UseFormRegister } from "react-hook-form";
+import { UseFormRegister, UseFormWatch } from "react-hook-form";
 import FormInputContainer from "../lib/form/FormInputContainer";
 import { Actions, Models } from "../../utils/apiData";
 import { FormData } from "../../pages/model/[modelId]/source/[sourceId]/edit";
@@ -20,6 +20,7 @@ interface Props {
   propertyExamples: Record<string, string[]>;
   source: Actions.SourceView["source"];
   register: UseFormRegister<FormData>;
+  watch: UseFormWatch<FormData>;
   mappingDisabled?: boolean;
 }
 
@@ -31,6 +32,7 @@ const FormMappingSelector: React.FC<Props> = ({
   properties,
   propertyExamples,
   register,
+  watch,
   source,
   mappingDisabled,
 }) => {
@@ -54,22 +56,7 @@ const FormMappingSelector: React.FC<Props> = ({
       .sort();
   }, [preview]);
 
-  const [selectedColumn, setSelectedColumn] = useState<string>(
-    columnName || previewColumns?.[0] || ""
-  );
-
-  useEffect(() => {
-    setSelectedColumn(columnName || previewColumns?.[0] || "");
-  }, [columnName, previewColumns]);
-
-  useEffect(() => {
-    // The preview changes if one of the source options has changed
-    // So we reset the selected column
-    if (!previewColumns.length) return;
-    setSelectedColumn(
-      (selectedColumn) => previewColumns.find((c) => c === selectedColumn) || ""
-    );
-  }, [previewColumns]);
+  const selectedColumn = watch("mapping.sourceColumn");
 
   const columnExample = useMemo<string>(
     () =>
@@ -126,12 +113,8 @@ const FormMappingSelector: React.FC<Props> = ({
             as="select"
             required
             disabled={disabled || !previewColumns.length}
-            value={selectedColumn}
-            {...register("mapping.sourceColumn", {
-              onChange: (e) => {
-                setSelectedColumn(e.target.value);
-              },
-            })}
+            defaultValue={columnName || previewColumns?.[0] || ""}
+            {...register("mapping.sourceColumn")}
           >
             <option value={""} disabled>
               Select an option
