@@ -28,6 +28,7 @@ import { Run } from "../../models/Run";
 import { MappingHelper } from "../mappingHelper";
 import { RecordPropertyOps } from "./recordProperty";
 import { Option } from "../../models/Option";
+import { getLock } from "../locks";
 import { RecordPropertyType } from "./record";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
@@ -902,6 +903,15 @@ export namespace DestinationOps {
     return { success, error, retryexportIds, retryDelay };
   }
 
+  async function cancelOldExport(oldExport: Export, newExport: Export) {
+    await oldExport.update({
+      state: "canceled",
+      sendAt: null,
+      errorMessage: `Replaced by more recent export ${newExport.id}`,
+      errorLevel: null,
+      completedAt: new Date(),
+    });
+  }
   export async function sendExports(
     destination: Destination,
     givenExports: Export[],
@@ -912,82 +922,115 @@ export namespace DestinationOps {
     success: boolean;
     error: Error;
   }> {
-    const _exports: Export[] = []; // only ones we are sending
-    for (const _export of givenExports) {
-      // TODO: maybe should recalcuate hasChanges and from current mostRecent
-      if (!_export.hasChanges) {
-        await _export.complete(); // do not include exports with hasChanges=false
-      } else {
-        _exports.push(_export);
-      }
-    }
-
-    const exportRecords: ExportRecordsPluginMethod = await getBatchFunction(
-      destination
-    );
-
-    const syncMode = await destination.getSyncMode();
-    const syncOperations: DestinationSyncOperations = syncMode
-      ? DestinationSyncModeData[syncMode].operations
-      : DestinationSyncModeData.sync.operations; // if destination does not support sync modes, allow all
-
-    const options = await destination.getOptions();
-    const app = await destination.$get("app", {
-      scope: null,
-      include: [Option],
-    });
-    const appOptions = await app.getOptions();
-    const connection = await app.getConnection();
-
-    // check if parallelism ok
-    const parallelismOk = await app.checkAndUpdateParallelism("incr");
-    if (!parallelismOk) {
-      const error = new Error(`parallelism limit reached for ${app.type}`);
-      if (synchronous) throw error;
-
-      const outRetryDelay = config.tasks.timeout + 1;
-      for (const _export of _exports) {
-        await _export.retry(outRetryDelay, true);
-      }
-
-      return {
-        success: false,
-        error,
-        retryDelay: outRetryDelay,
-        retryexportIds: _exports.map((e) => e.id),
-      };
-    }
-
-    let combinedError: CombinedError = null;
-    let exportResult: ExportRecordsPluginMethodResponse;
+    const _exports: Export[] = [];
+    const locks: Awaited<ReturnType<typeof getLock>>[] = [];
 
     try {
-      const exportedRecords = await buildExportedRecords(destination, _exports);
+      for (const givenExport of givenExports) {
+        if (!givenExport.hasChanges) {
+          await givenExport.complete();
+          continue;
+        }
 
-      exportResult = await exportRecords({
-        connection,
-        app,
-        appId: app.id,
-        appOptions,
-        destination,
-        destinationId: destination.id,
-        destinationOptions: options,
-        syncOperations,
-        exports: exportedRecords,
+        const mostRecentExport = await Export.findOne({
+          where: {
+            recordId: givenExport.recordId,
+            destinationId: destination.id,
+          },
+          order: [["createdAt", "DESC"]],
+        });
+
+        const isNewest = mostRecentExport.id === givenExport.id;
+        if (!isNewest) {
+          await cancelOldExport(givenExport, mostRecentExport);
+          continue;
+        }
+
+        const lock = await getLock(
+          `export:${givenExport.recordId}:${givenExport.destinationId}`
+        );
+
+        const gotLock = typeof lock === "function";
+
+        if (gotLock) {
+          locks.push(lock);
+          _exports.push(givenExport);
+        }
+      }
+
+      if (_exports.length === 0) return;
+
+      const exportRecords: ExportRecordsPluginMethod = await getBatchFunction(
+        destination
+      );
+
+      const syncMode = await destination.getSyncMode();
+      const syncOperations: DestinationSyncOperations = syncMode
+        ? DestinationSyncModeData[syncMode].operations
+        : DestinationSyncModeData.sync.operations; // if destination does not support sync modes, allow all
+
+      const options = await destination.getOptions();
+      const app = await destination.$get("app", {
+        scope: null,
+        include: [Option],
       });
-    } catch (error) {
-      combinedError = error;
-    } finally {
-      await app.checkAndUpdateParallelism("decr");
-    }
+      const appOptions = await app.getOptions();
+      const connection = await app.getConnection();
 
-    return updateExports(
-      destination,
-      _exports,
-      exportResult,
-      combinedError,
-      synchronous
-    );
+      // check if parallelism ok
+      const parallelismOk = await app.checkAndUpdateParallelism("incr");
+      if (!parallelismOk) {
+        const error = new Error(`parallelism limit reached for ${app.type}`);
+        if (synchronous) throw error;
+
+        const outRetryDelay = config.tasks.timeout + 1;
+        for (const _export of _exports) {
+          await _export.retry(outRetryDelay, true);
+        }
+
+        return {
+          success: false,
+          error,
+          retryDelay: outRetryDelay,
+          retryexportIds: _exports.map((e) => e.id),
+        };
+      }
+
+      let combinedError: CombinedError = null;
+      let exportResult: ExportRecordsPluginMethodResponse;
+
+      try {
+        const exportedRecords = await buildExportedRecords(
+          destination,
+          _exports
+        );
+
+        exportResult = await exportRecords({
+          connection,
+          app,
+          appId: app.id,
+          appOptions,
+          destination,
+          destinationId: destination.id,
+          destinationOptions: options,
+          syncOperations,
+          exports: exportedRecords,
+        });
+      } catch (error) {
+        combinedError = error;
+      } finally {
+        await app.checkAndUpdateParallelism("decr");
+      }
+      return updateExports(
+        destination,
+        _exports,
+        exportResult,
+        combinedError,
+        synchronous
+      );
+    } finally {
+      Promise.all(locks.map((releaseLock) => releaseLock()));
+    }
   }
 
   export async function sendExport(

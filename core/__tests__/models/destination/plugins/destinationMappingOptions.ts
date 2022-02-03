@@ -537,28 +537,33 @@ describe("models/destination", () => {
         await destination.updateTracking("none");
       });
 
-      test("record properties will be converted to the type requested by the plugin", async () => {
-        // int -> number OK
-        required = [{ key: "remote-id", type: "number" }];
-        await destination.setMapping({ "remote-id": "userId", email: "email" });
-        await mario.export(true);
-        expect(oldRecordProperties).toEqual({});
-        expect(newRecordProperties).toEqual({
-          "remote-id": 1,
-          email: "mario@example.com",
+      describe("record properties will be converted to the type requested by the plugin", () => {
+        test("it converts int properties to number", async () => {
+          required = [{ key: "remote-id", type: "number" }];
+          await destination.setMapping({
+            "remote-id": "userId",
+            email: "email",
+          });
+          await mario.export(true);
+          expect(oldRecordProperties).toEqual({});
+          expect(newRecordProperties).toEqual({
+            "remote-id": 1,
+            email: "mario@example.com",
+          });
         });
 
-        // int -> string OK
-        required = [{ key: "remote-id", type: "string" }];
-        await destination.setMapping({ "remote-id": "userId", email: "email" });
-        await mario.export(true);
-        expect(oldRecordProperties).toEqual({
-          "remote-id": "1",
-          email: "mario@example.com",
-        });
-        expect(newRecordProperties).toEqual({
-          "remote-id": "1",
-          email: "mario@example.com",
+        test("it converts int properties to string", async () => {
+          required = [{ key: "remote-id", type: "string" }];
+          await destination.setMapping({
+            "remote-id": "userId",
+            email: "email",
+          });
+          await mario.export(true);
+          expect(oldRecordProperties).toEqual({});
+          expect(newRecordProperties).toEqual({
+            "remote-id": "1",
+            email: "mario@example.com",
+          });
         });
       });
     });
