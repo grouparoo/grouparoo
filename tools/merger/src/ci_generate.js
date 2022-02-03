@@ -96,7 +96,7 @@ class Generator {
     this.jobList.push({
       type: "root",
       job_name: `test-root`,
-      relative_path: ``,
+      relative_path: `/`,
       name: "root",
     });
 
