@@ -7,20 +7,18 @@ import Axios, {
 import type { IncomingMessage, ServerResponse } from "http";
 import PackageJSON from "../package.json";
 import { errorHandler } from "../eventHandlers";
-import type { AppContext } from "next/app";
-import type { GetServerSidePropsContext, NextPageContext } from "next";
 import { getRequestContext } from "../utils/appContext";
-import type { NextContextType } from "../utils/appContext";
+import type { NextContext, NextContextName } from "../utils/appContext";
 import type { ErrorHandler } from "../eventHandlers/errorHandler";
 import { isBrowser } from "../utils/isBrowser";
 
-interface ClientCacheObject<T = any> {
+interface ClientCacheObject<T = unknown> {
   locked: boolean;
   data: T;
   createdAt: number;
 }
 
-interface ClientCacheGetObject<T = any> {
+interface ClientCacheGetObject<T = unknown> {
   cacheData: T;
   unlock: (data?: T) => void;
 }
@@ -40,7 +38,7 @@ export class ClientCache {
     });
   }
 
-  async get<T>(key: string): Promise<ClientCacheGetObject<T>> {
+  async get<T = unknown>(key: string): Promise<ClientCacheGetObject<T>> {
     if (!this.cache[key]) {
       this.cache[key] = { locked: false, data: undefined, createdAt: 0 };
     }
@@ -69,7 +67,7 @@ export class ClientCache {
       };
     };
 
-    return { cacheData: this.cache[key]?.data, unlock };
+    return { cacheData: this.cache[key]?.data as T, unlock };
   }
 
   clear() {
@@ -102,7 +100,7 @@ export class Client {
 
   constructor(
     private getRequestContext: () => {
-      type?: NextContextType;
+      type?: NextContextName;
       req?: IncomingMessage;
       res?: ServerResponse;
     } = () => ({})
@@ -131,7 +129,7 @@ export class Client {
     }
 
     const { type, req, res } = this.getRequestContext();
-    if (!req || !res || (type !== "AppContext" && type !== "NextPageContext")) {
+    if (!req || !res || type === "GetServerSidePropsContext") {
       return false;
     }
 
@@ -148,10 +146,7 @@ export class Client {
       }
 
       case "NO_TEAMS_ERROR": {
-        const requestPath = req.url.match("^[^?]*")[0];
-        res.writeHead(302, {
-          Location: `/session/sign-in?nextPage=${requestPath}`,
-        });
+        res.writeHead(302, { Location: `/` });
         res.end();
         return true;
       }
@@ -219,7 +214,7 @@ export class Client {
     }
   }
 
-  public request = async <Response = any>(
+  public request = async <Response = unknown>(
     verb: Method = "get",
     path: string,
     data: AxiosRequestConfig["data"] = {},
@@ -292,6 +287,5 @@ export class Client {
   };
 }
 
-export const generateClient = (
-  ctx: AppContext | NextPageContext | GetServerSidePropsContext
-) => new Client(getRequestContext(ctx));
+export const generateClient = (ctx: NextContext) =>
+  new Client(getRequestContext(ctx));
