@@ -174,10 +174,12 @@ describe("tasks/record:makeExports", () => {
     await run.updateTotals();
 
     expect(_importA.importedAt).toBeTruthy();
-    expect(_importA.state).toBe("complete");
+    expect(_importA.processedAt).toBeNull();
+    expect(_importA.state).toBe("processing");
 
     expect(_importB.importedAt).toBeTruthy();
-    expect(_importB.state).toBe("complete");
+    expect(_importB.processedAt).toBeNull();
+    expect(_importB.state).toBe("processing");
 
     expect(run.recordsCreated).toEqual(1);
     expect(run.recordsImported).toEqual(1);
@@ -209,7 +211,8 @@ describe("tasks/record:makeExports", () => {
 
     await _importA.reload();
     expect(_importA.importedAt).toBeTruthy();
-    expect(_importA.state).toBe("complete");
+    expect(_importA.processedAt).toBeNull();
+    expect(_importA.state).toBe("processing");
 
     process.env.GROUPAROO_DISABLE_EXPORTS = "false";
   });

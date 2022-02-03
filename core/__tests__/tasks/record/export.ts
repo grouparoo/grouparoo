@@ -238,7 +238,11 @@ describe("tasks/record:export", () => {
         await importA.reload();
         await importB.reload();
         expect(importA.state).toBe("complete");
+        expect(importA.importedAt).toBeTruthy();
+        expect(importA.processedAt).toBeTruthy();
         expect(importB.state).toBe("complete");
+        expect(importB.importedAt).toBeTruthy();
+        expect(importB.processedAt).toBeTruthy();
 
         await records[0].reload();
         expect(records[0].state).toBe("ready");
@@ -306,6 +310,67 @@ describe("tasks/record:export", () => {
         });
         expect(_export.oldGroups).toEqual([]);
         expect(_export.newGroups).toEqual(["test group"]);
+      });
+
+      it.only("does not consider already complete imports", async () => {
+        const start = new Date();
+        const record = await GrouparooRecord.findOne();
+        const runA = await helper.factories.run(null, { state: "running" });
+
+        const importA = await helper.factories.import(runA, {
+          email: "mario@example.com",
+          firstName: "Mario",
+          lastName: "Mario",
+        });
+        await specHelper.runTask("import:associateRecord", {
+          importId: importA.id,
+          attempts: 0,
+        });
+
+        // import B is already completed and won't be considered
+        const importB = await helper.factories.import(runA, {
+          email: "mario@example.com",
+          firstName: "Bowser",
+          lastName: "Koopa",
+          _meta: {
+            destinationId: "bogus-destination",
+          },
+        });
+        await importB.update({ state: "importing" });
+        await importB.update({ state: "processing" });
+        await importB.update({
+          state: "complete",
+          recordId: record.id,
+          recordAssociatedAt: new Date(0),
+          processedAt: new Date(0),
+          importedAt: new Date(0),
+        });
+
+        expect(record.state).toBe("pending");
+        await ImportWorkflow();
+
+        const foundExportTasks = await specHelper.findEnqueuedTasks(
+          "record:export"
+        );
+        expect(foundExportTasks.length).toEqual(1);
+        await specHelper.runTask("record:export", foundExportTasks[0].args[0]);
+
+        await record.reload();
+        const properties = await record.simplifiedProperties();
+        expect(properties.email).toEqual(["mario@example.com"]);
+        expect(properties.firstName).toEqual(["Mario"]);
+        expect(properties.lastName).toEqual(["Mario"]);
+
+        await importA.reload();
+        await importB.reload();
+        expect(importA.processedAt.getTime()).toBeGreaterThanOrEqual(
+          start.getTime()
+        );
+        expect(importB.processedAt.getTime()).toEqual(new Date(0).getTime());
+
+        const exports = await Export.findAll();
+        expect(exports.length).toBe(1);
+        expect(exports[0].destinationId).toBe(destination.id);
       });
 
       describe("with exportRecord", () => {

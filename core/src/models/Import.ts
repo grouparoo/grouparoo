@@ -32,13 +32,22 @@ export interface ImportRecordProperties {
 
 const IMPORT_CREATORS = ["run"] as const;
 
-const STATES = ["associating", "importing", "failed", "complete"] as const;
+const STATES = [
+  "associating",
+  "importing",
+  "processing",
+  "failed",
+  "complete",
+] as const;
 
 const STATE_TRANSITIONS: StateMachine.StateTransition[] = [
   { from: "associating", to: "failed", checks: [] },
   { from: "associating", to: "importing", checks: [] },
   { from: "importing", to: "failed", checks: [] },
   { from: "importing", to: "complete", checks: [] },
+  { from: "importing", to: "processing", checks: [] },
+  { from: "processing", to: "failed", checks: [] },
+  { from: "processing", to: "complete", checks: [] },
 ];
 
 @Table({ tableName: "imports", paranoid: false })
@@ -94,6 +103,9 @@ export class Import extends CommonModel<Import> {
   importedAt: Date;
 
   @Column
+  processedAt: Date;
+
+  @Column
   errorMessage: string;
 
   @Column
@@ -127,6 +139,7 @@ export class Import extends CommonModel<Import> {
       startedAt: APIData.formatDate(this.startedAt),
       recordAssociatedAt: APIData.formatDate(this.recordAssociatedAt),
       importedAt: APIData.formatDate(this.importedAt),
+      processedAt: APIData.formatDate(this.processedAt),
 
       createdRecord: this.createdRecord,
 

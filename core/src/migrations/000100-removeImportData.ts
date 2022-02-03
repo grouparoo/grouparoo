@@ -10,7 +10,6 @@ export default {
     await queryInterface.removeColumn("imports", "newRecordProperties");
     await queryInterface.removeColumn("imports", "oldGroupIds");
     await queryInterface.removeColumn("imports", "newGroupIds");
-    await queryInterface.removeColumn("imports", "processedAt");
 
     await queryInterface.sequelize.query(
       `UPDATE imports SET state='importing' where state='processing'`
@@ -32,6 +31,8 @@ export default {
     queryInterface: Sequelize.QueryInterface,
     DataTypes: typeof Sequelize
   ) => {
+    await queryInterface.removeColumn("records", "readyToExport");
+
     await queryInterface.addColumn("imports", "rawData", {
       type: DataTypes.TEXT,
       allowNull: true,
@@ -50,10 +51,6 @@ export default {
     });
     await queryInterface.addColumn("imports", "newGroupIds", {
       type: DataTypes.TEXT,
-      allowNull: true,
-    });
-    await queryInterface.addColumn("imports", "processedAt", {
-      type: DataTypes.DATE,
       allowNull: true,
     });
   },

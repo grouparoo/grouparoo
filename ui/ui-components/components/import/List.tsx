@@ -168,6 +168,10 @@ export default function ImportList(props) {
                     {_import.importedAt
                       ? formatTimestamp(_import.importedAt)
                       : "pending"}
+                    <br /> Processed:{" "}
+                    {_import.processedAt
+                      ? formatTimestamp(_import.processedAt)
+                      : "pending"}
                   </td>
                   <td>
                     {Object.keys(_import.data).map((k) => (

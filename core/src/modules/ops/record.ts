@@ -1088,7 +1088,7 @@ export namespace RecordOps {
     );
 
     await Import.update(
-      { state: "complete", importedAt: now },
+      { state: "processing", importedAt: now },
       {
         where: {
           recordId: { [Op.in]: records.map((p) => p.id) },
