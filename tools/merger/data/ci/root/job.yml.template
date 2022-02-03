@@ -25,5 +25,5 @@
           command: sudo apt update
       - run:
           name: test-root
-          command: cd {{{relative_path}}} && ./__tests__/
+          command: ./__tests__/
 {{{custom_test}}}
