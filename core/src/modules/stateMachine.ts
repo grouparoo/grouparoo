@@ -16,7 +16,7 @@ export namespace StateMachine {
     },
     transitions: StateTransition[]
   ) {
-    const klass = modelName(instance);
+    const klass = modelName<Model>(instance);
     const newState: string = instance["state"];
     const oldState: string = instance["_previousDataValues"]["state"]
       ? instance["_previousDataValues"]["state"]

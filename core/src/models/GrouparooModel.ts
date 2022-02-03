@@ -142,7 +142,7 @@ export class GrouparooModel extends CommonModel<GrouparooModel> {
 
   @AfterCreate
   static async broadcastAfterCreate(instance: GrouparooModel) {
-    return broadcastModel(instance);
+    return broadcastModel<GrouparooModel>(instance);
   }
 
   @BeforeSave

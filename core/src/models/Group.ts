@@ -720,7 +720,7 @@ export class Group extends CommonModel<Group> {
 
   @AfterCreate
   static async broadcastAfterCreate(instance: Group) {
-    return broadcastModel(instance);
+    return broadcastModel<Group>(instance);
   }
 
   @BeforeSave

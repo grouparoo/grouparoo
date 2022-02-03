@@ -267,7 +267,7 @@ export class GrouparooRecord extends CommonModel<GrouparooRecord> {
 
   @AfterCreate
   static async broadcastAfterCreate(instance: GrouparooRecord) {
-    return broadcastModel(instance);
+    return broadcastModel<GrouparooRecord>(instance);
   }
 
   @BeforeSave

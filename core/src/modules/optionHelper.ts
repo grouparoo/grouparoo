@@ -17,13 +17,15 @@ import { modelName } from "./modelName";
 
 export const ObfuscatedOptionString = "__ObfuscatedOption";
 
+type ModelWithMapping = Source | Destination | Schedule | Property | App;
+
 export namespace OptionHelper {
   export interface SimpleOptions {
     [key: string]: string | number | boolean;
   }
 
   export async function getOptions(
-    instance: Source | Destination | Schedule | Property | App,
+    instance: ModelWithMapping,
     sourceFromEnvironment = true,
     obfuscateSensitive = false
   ) {
@@ -34,7 +36,10 @@ export namespace OptionHelper {
     const options =
       instance.__options ??
       (await Option.findAll({
-        where: { ownerId: instance.id, ownerType: modelName(instance) },
+        where: {
+          ownerId: instance.id,
+          ownerType: modelName<ModelWithMapping>(instance),
+        },
       }));
 
     if (!instance.__options) instance.__options = options;
@@ -108,7 +113,10 @@ export namespace OptionHelper {
     await LockableHelper.beforeUpdateOptions(instance, hasChanges);
 
     await Option.destroy({
-      where: { ownerId: instance.id, ownerType: modelName(instance) },
+      where: {
+        ownerId: instance.id,
+        ownerType: modelName<ModelWithMapping>(instance),
+      },
     });
 
     const newOptions: Option[] = [];
@@ -117,7 +125,7 @@ export namespace OptionHelper {
       const key = keys[i];
       const option = await Option.create({
         ownerId: instance.id,
-        ownerType: modelName(instance),
+        ownerType: modelName<ModelWithMapping>(instance),
         key,
         value: sanitizedOptions[key],
         type: typeof sanitizedOptions[key],
@@ -191,7 +199,7 @@ export namespace OptionHelper {
   }
 
   export async function validateOptions(
-    instance: (Source | Destination | Schedule | Property | App) & {
+    instance: ModelWithMapping & {
       name?: string;
       key?: string;
     },
@@ -238,7 +246,7 @@ export namespace OptionHelper {
     requiredOptions.forEach((requiredOption) => {
       if (!options[requiredOption]) {
         throw new Error(
-          `${requiredOption} is required for a ${modelName(
+          `${requiredOption} is required for a ${modelName<ModelWithMapping>(
             instance
           )} of type ${type} (${instance["name"] || instance["key"]}, ${
             instance.id
@@ -250,7 +258,7 @@ export namespace OptionHelper {
     for (const k in options) {
       if (allOptions.indexOf(k) < 0) {
         throw new Error(
-          `${k} is not an option for a ${type} ${modelName(instance)} (${
+          `${k} is not an option for a ${type} ${modelName<ModelWithMapping>(instance)} (${
             instance["name"] || instance["key"]
           }, ${instance.id})`
         );
@@ -326,7 +334,7 @@ export namespace OptionHelper {
   }
 
   async function getInstanceType(
-    instance: (Source | Destination | Schedule | Property | App) & {
+    instance: ModelWithMapping & {
       type?: string;
       sourceId?: string;
     }
@@ -376,17 +384,17 @@ export namespace OptionHelper {
    * Replace all values in a bundle of SimpleOptions with those values loaded from the ENV
    */
   export function sourceEnvironmentVariableOptions(
-    instance: Source | Destination | Schedule | Property | App,
+    instance: ModelWithMapping,
     options: SimpleOptions
   ) {
     const envOptionKeys = getEnvironmentVariableOptionsForTopic(
-      modelName(instance)
+      modelName<ModelWithMapping>(instance)
     );
 
     for (const k in options) {
       if (envOptionKeys.includes(options[k].toString()))
         options[k] = getEnvironmentVariableOption(
-          modelName(instance),
+          modelName<ModelWithMapping>(instance),
           options[k].toString()
         );
     }
@@ -394,9 +402,7 @@ export namespace OptionHelper {
     return options;
   }
 
-  async function getDefaultOptionValues(
-    instance: Source | Destination | Schedule | Property | App
-  ) {
+  async function getDefaultOptionValues(instance: ModelWithMapping) {
     const plugin = await getPlugin(instance);
 
     let options: AppOptionsOption[] = [];
@@ -430,7 +436,7 @@ export namespace OptionHelper {
   }
 
   export async function getOptionsToObfuscate(
-    instance: Source | Destination | Schedule | Property | App,
+    instance: ModelWithMapping,
     obfuscateSensitive = false
   ) {
     const optionsToObfuscate: string[] = [];
@@ -464,7 +470,7 @@ export namespace OptionHelper {
   }
 
   export async function replaceObfuscatedOptions(
-    instance: Source | Destination | Schedule | Property | App,
+    instance: ModelWithMapping,
     options?: SimpleOptions,
     sourceFromEnvironment = true
   ) {

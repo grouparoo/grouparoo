@@ -415,7 +415,7 @@ export class Source extends CommonModel<Source> {
 
   @AfterCreate
   static async broadcastAfterCreate(instance: Source) {
-    return broadcastModel(instance);
+    return broadcastModel<Source>(instance);
   }
 
   @BeforeSave

@@ -129,7 +129,7 @@ export class ApiKey extends CommonModel<ApiKey> {
 
   @AfterCreate
   static async broadcastAfterCreate(instance: ApiKey) {
-    return broadcastModel(instance);
+    return broadcastModel<ApiKey>(instance);
   }
 
   @BeforeSave

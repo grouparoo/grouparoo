@@ -346,7 +346,7 @@ export class Run extends CommonModel<Run> {
       instance.changed("sourceOffset") ||
       instance.changed("percentComplete")
     ) {
-      await broadcastModel(instance, "update");
+      await broadcastModel<Run>(instance, "update");
     }
   }
 

@@ -54,6 +54,6 @@ export class Notification extends CommonModel<Notification> {
 
   @AfterCreate
   static async broadcastAfterCreate(instance: Notification) {
-    return broadcastModel(instance);
+    return broadcastModel<Notification>(instance);
   }
 }

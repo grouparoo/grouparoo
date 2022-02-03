@@ -17,7 +17,10 @@ export namespace MappingHelper {
     const mappings =
       instance.mappings ??
       (await Mapping.findAll({
-        where: { ownerId: instance.id, ownerType: modelName(instance) },
+        where: {
+          ownerId: instance.id,
+          ownerType: modelName<Source | Destination>(instance),
+        },
       }));
 
     if (!instance.mappings) instance.mappings = mappings;
@@ -69,7 +72,10 @@ export namespace MappingHelper {
     await LockableHelper.beforeUpdateOptions(instance);
 
     await Mapping.destroy({
-      where: { ownerId: instance.id, ownerType: modelName(instance) },
+      where: {
+        ownerId: instance.id,
+        ownerType: modelName<Source | Destination>(instance),
+      },
     });
 
     const otherSourcePrimaryKey =
@@ -124,7 +130,7 @@ export namespace MappingHelper {
 
       const mapping = await Mapping.create({
         ownerId: instance.id,
-        ownerType: modelName(instance),
+        ownerType: modelName<Source | Destination>(instance),
         propertyId: property.id,
         remoteKey,
       });

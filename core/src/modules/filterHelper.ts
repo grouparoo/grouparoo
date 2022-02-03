@@ -37,7 +37,10 @@ export namespace FilterHelper {
     const filters = instance.filters
       ? instance.filters.sort((a, b) => a.position - b.position)
       : await Filter.findAll({
-          where: { ownerId: instance.id, ownerType: modelName(instance) },
+          where: {
+            ownerId: instance.id,
+            ownerType: modelName<Property | Schedule>(instance),
+          },
           order: [["position", "asc"]],
         });
 
@@ -68,7 +71,7 @@ export namespace FilterHelper {
     externallyValidate = true
   ) {
     delete instance.filters;
-    const _modelName = modelName(instance);
+    const _modelName = modelName<Property | Schedule>(instance);
 
     if (externallyValidate) await validateFilters(instance, filters);
     const existingFilters = await getFilters(instance);

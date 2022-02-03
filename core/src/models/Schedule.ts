@@ -386,7 +386,7 @@ export class Schedule extends CommonModel<Schedule> {
 
   @AfterCreate
   static async broadcastAfterCreate(instance: Schedule) {
-    return broadcastModel(instance);
+    return broadcastModel<Schedule>(instance);
   }
 
   @BeforeSave

@@ -319,7 +319,7 @@ export class App extends CommonModel<App> {
 
   @AfterCreate
   static async broadcastAfterCreate(instance: App) {
-    return broadcastModel(instance);
+    return broadcastModel<App>(instance);
   }
 
   @BeforeSave

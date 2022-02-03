@@ -374,7 +374,7 @@ export class Property extends CommonModel<Property> {
 
   @AfterCreate
   static async broadcastAfterCreate(instance: Property) {
-    return broadcastModel(instance);
+    return broadcastModel<Property>(instance);
   }
 
   @BeforeSave

@@ -121,7 +121,7 @@ export class AppRefreshQuery extends CommonModel<AppRefreshQuery> {
 
   @AfterCreate
   static async broadcastAfterCreate(instance: AppRefreshQuery) {
-    return broadcastModel(instance);
+    return broadcastModel<AppRefreshQuery>(instance);
   }
 
   @BeforeSave

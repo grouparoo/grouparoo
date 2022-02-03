@@ -119,7 +119,7 @@ export class Team extends CommonModel<Team> {
 
   @AfterCreate
   static async broadcastAfterCreate(instance: Team) {
-    return broadcastModel(instance);
+    return broadcastModel<Team>(instance);
   }
 
   @BeforeSave
