@@ -27,7 +27,6 @@ import { ConfigWriter } from "./../modules/configWriter";
 import { MappingHelper } from "./../modules/mappingHelper";
 import { DestinationOps } from "./../modules/ops/destination";
 import { OptionHelper } from "./../modules/optionHelper";
-import { StateMachine } from "./../modules/stateMachine";
 import { App } from "./App";
 import { GrouparooRecord } from "./../models/GrouparooRecord";
 import { DestinationGroupMembership } from "./DestinationGroupMembership";
@@ -40,7 +39,7 @@ import { Option } from "./Option";
 import { Property } from "./Property";
 import { GrouparooModel } from "./GrouparooModel";
 import { ModelGuard } from "../modules/modelGuard";
-import { CommonModel } from "../classes/commonModel";
+import { StateMachineModel } from "../classes/stateMachineModel";
 
 export interface DestinationMapping extends MappingHelper.Mappings {}
 export interface SimpleDestinationGroupMembership {
@@ -103,22 +102,6 @@ export const DestinationSyncModeData: Record<
   },
 };
 
-const STATES = ["draft", "ready", "deleted"] as const;
-const STATE_TRANSITIONS = [
-  {
-    from: "draft",
-    to: "ready",
-    checks: [(instance: Destination) => instance.validateOptions()],
-  },
-  { from: "draft", to: "deleted", checks: [] },
-  { from: "ready", to: "deleted", checks: [] },
-  {
-    from: "deleted",
-    to: "ready",
-    checks: [(instance: Destination) => instance.validateOptions()],
-  },
-];
-
 @DefaultScope(() => ({
   where: { state: "ready" },
 }))
@@ -130,7 +113,23 @@ const STATE_TRANSITIONS = [
   },
 }))
 @Table({ tableName: "destinations", paranoid: false })
-export class Destination extends CommonModel {
+export class Destination extends StateMachineModel {
+  static STATES = ["draft", "ready", "deleted"] as const;
+  static STATE_TRANSITIONS = [
+    {
+      from: "draft",
+      to: "ready",
+      checks: [(instance: Destination) => instance.validateOptions()],
+    },
+    { from: "draft", to: "deleted", checks: [] },
+    { from: "ready", to: "deleted", checks: [] },
+    {
+      from: "deleted",
+      to: "ready",
+      checks: [(instance: Destination) => instance.validateOptions()],
+    },
+  ];
+
   idPrefix() {
     return "dst";
   }
@@ -151,11 +150,6 @@ export class Destination extends CommonModel {
 
   @Column
   locked: string;
-
-  @AllowNull(false)
-  @Default("draft")
-  @Column(DataType.ENUM(...STATES))
-  state: typeof STATES[number];
 
   @Column
   @ForeignKey(() => Group)
@@ -699,11 +693,6 @@ export class Destination extends CommonModel {
     instance: Destination
   ) {
     await instance.validateUniqueAppAndOptionsForGroup(null);
-  }
-
-  @BeforeSave
-  static async updateState(instance: Destination) {
-    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @BeforeSave

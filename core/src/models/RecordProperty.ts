@@ -11,25 +11,27 @@ import {
 import { GrouparooRecord } from "./GrouparooRecord";
 import { Property } from "./Property";
 import { RecordPropertyOps } from "../modules/ops/recordProperty";
-import { StateMachine } from "../modules/stateMachine";
 import { APIData } from "../modules/apiData";
-import { CommonModel } from "../classes/commonModel";
-
-const STATES = ["draft", "pending", "ready"] as const;
-
-const STATE_TRANSITIONS: StateMachine.StateTransition[] = [
-  { from: "draft", to: "ready", checks: [] },
-  { from: "draft", to: "pending", checks: [] },
-  { from: "pending", to: "ready", checks: [] },
-  { from: "ready", to: "pending", checks: [] },
-];
+import {
+  StateMachineModel,
+  StateTransition,
+} from "../classes/stateMachineModel";
 
 export enum InvalidReasons {
   Duplicate = "Duplicate Value",
 }
 
 @Table({ tableName: "recordProperties", paranoid: false })
-export class RecordProperty extends CommonModel {
+export class RecordProperty extends StateMachineModel {
+  static STATES = ["draft", "pending", "ready"] as const;
+
+  static STATE_TRANSITIONS: StateTransition[] = [
+    { from: "draft", to: "ready", checks: [] },
+    { from: "draft", to: "pending", checks: [] },
+    { from: "pending", to: "ready", checks: [] },
+    { from: "ready", to: "pending", checks: [] },
+  ];
+
   idPrefix() {
     return "rpr";
   }
@@ -43,11 +45,6 @@ export class RecordProperty extends CommonModel {
   @ForeignKey(() => Property)
   @Column
   propertyId: string;
-
-  @AllowNull(false)
-  @Default("pending")
-  @Column(DataType.ENUM(...STATES))
-  state: typeof STATES[number];
 
   @Column
   rawValue: string;
@@ -129,12 +126,5 @@ export class RecordProperty extends CommonModel {
       throw new Error(`property not found for propertyId ${this.propertyId}`);
     }
     return property;
-  }
-
-  // --- Class Methods --- //
-
-  @BeforeSave
-  static async updateState(instance: RecordProperty) {
-    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 }

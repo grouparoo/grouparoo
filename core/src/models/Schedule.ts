@@ -25,7 +25,6 @@ import { App, SimpleAppOptions } from "./App";
 import { Run } from "./Run";
 import { Option } from "./Option";
 import { OptionHelper } from "./../modules/optionHelper";
-import { StateMachine } from "./../modules/stateMachine";
 import { ScheduleOps } from "../modules/ops/schedule";
 import { LockableHelper } from "../modules/lockableHelper";
 import { ConfigWriter } from "../modules/configWriter";
@@ -34,7 +33,7 @@ import { APIData } from "../modules/apiData";
 import { FilterHelper } from "../modules/filterHelper";
 import { Filter } from "./Filter";
 import { ScheduleConfigurationObject } from "../classes/codeConfig";
-import { CommonModel } from "../classes/commonModel";
+import { StateMachineModel } from "../classes/stateMachineModel";
 
 /**
  * Metadata and methods to return the options a Schedule for this connection/app.
@@ -68,20 +67,20 @@ export interface ScheduleFiltersWithKey extends FilterHelper.FiltersWithKey {}
 
 export interface SimpleScheduleOptions extends OptionHelper.SimpleOptions {}
 
-const STATES = ["draft", "ready"] as const;
-const STATE_TRANSITIONS = [
-  {
-    from: "draft",
-    to: "ready",
-    checks: [(instance: Schedule) => instance.validateOptions()],
-  },
-];
-
 @DefaultScope(() => ({
   where: { state: "ready" },
 }))
 @Table({ tableName: "schedules", paranoid: false })
-export class Schedule extends CommonModel {
+export class Schedule extends StateMachineModel {
+  static STATES = ["draft", "ready"] as const;
+  static STATE_TRANSITIONS = [
+    {
+      from: "draft",
+      to: "ready",
+      checks: [(instance: Schedule) => instance.validateOptions()],
+    },
+  ];
+
   idPrefix() {
     return "sch";
   }
@@ -95,11 +94,6 @@ export class Schedule extends CommonModel {
   @Default("")
   @Column
   name: string;
-
-  @AllowNull(false)
-  @Default("draft")
-  @Column(DataType.ENUM(...STATES))
-  state: typeof STATES[number];
 
   @Column
   locked: string;
@@ -396,11 +390,6 @@ export class Schedule extends CommonModel {
       },
     });
     if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
-  }
-
-  @BeforeSave
-  static async updateState(instance: Schedule) {
-    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @AfterSave

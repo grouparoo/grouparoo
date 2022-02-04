@@ -11,25 +11,27 @@ import {
   BelongsTo,
   Default,
 } from "sequelize-typescript";
-import { StateMachine } from "../modules/stateMachine";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
 import { AppRefreshQueryOps } from "../modules/ops/appRefreshQuery";
 import { App } from "./App";
 import { CLS } from "../modules/cls";
-import { CommonModel } from "../classes/commonModel";
-
-const STATES = ["draft", "ready"] as const;
-
-const STATE_TRANSITIONS: StateMachine.StateTransition[] = [
-  { from: "draft", to: "ready", checks: [] },
-];
+import {
+  StateMachineModel,
+  StateTransition,
+} from "../classes/stateMachineModel";
 
 @DefaultScope(() => ({
   where: { state: "ready" },
 }))
 @Table({ tableName: "appRefreshQueries", paranoid: false })
-export class AppRefreshQuery extends CommonModel {
+export class AppRefreshQuery extends StateMachineModel {
+  static STATES = ["draft", "ready"] as const;
+
+  static STATE_TRANSITIONS: StateTransition[] = [
+    { from: "draft", to: "ready", checks: [] },
+  ];
+
   idPrefix() {
     return "adr";
   }
@@ -47,11 +49,6 @@ export class AppRefreshQuery extends CommonModel {
 
   @Column
   locked: string;
-
-  @AllowNull(false)
-  @Default("draft")
-  @Column(DataType.ENUM(...STATES))
-  state: typeof STATES[number];
 
   @Column
   lastChangedAt: Date;
@@ -120,11 +117,6 @@ export class AppRefreshQuery extends CommonModel {
       "lastChangedAt",
       "lastConfirmedAt",
     ]);
-  }
-
-  @BeforeSave
-  static async updateState(instance: AppRefreshQuery) {
-    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @BeforeSave

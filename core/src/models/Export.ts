@@ -20,12 +20,14 @@ import Moment from "moment";
 import { QueryTypes } from "sequelize";
 import { ExportOps } from "../modules/ops/export";
 import { APIData } from "../modules/apiData";
-import { StateMachine } from "../modules/stateMachine";
 import { ExportProcessor } from "./ExportProcessor";
 import { Errors } from "../modules/errors";
 import { PropertyTypes } from "./Property";
-import { CommonModel } from "../classes/commonModel";
 import { getParentPath } from "../modules/pluginDetails";
+import {
+  StateMachineModel,
+  StateTransition,
+} from "../classes/stateMachineModel";
 
 /**
  * The GrouparooRecord Properties in their normal data types (string, boolean, date, etc)
@@ -44,30 +46,32 @@ export interface ExportRecordPropertiesWithType {
   };
 }
 
-export const ExportStates = [
-  "draft", // not ready to send, needs manual review
-  "pending", // ready to send
-  "processing", // have been sent, waiting on the destination's OK
-  "canceled", // manually canceled
-  "failed", // something went wrong and we won't try again
-  "complete", // OK!
-] as const;
-
-const STATE_TRANSITIONS: StateMachine.StateTransition[] = [
-  { from: "draft", to: "pending", checks: [] },
-  { from: "draft", to: "canceled", checks: [] },
-  { from: "pending", to: "processing", checks: [] },
-  { from: "pending", to: "canceled", checks: [] },
-  { from: "pending", to: "failed", checks: [] },
-  { from: "pending", to: "complete", checks: [] },
-  { from: "processing", to: "canceled", checks: [] },
-  { from: "processing", to: "failed", checks: [] },
-  { from: "processing", to: "complete", checks: [] },
-  { from: "processing", to: "pending", checks: [] },
-];
-
 @Table({ tableName: "exports", paranoid: false })
-export class Export extends CommonModel {
+export class Export extends StateMachineModel {
+  static STATES = [
+    "draft", // not ready to send, needs manual review
+    "pending", // ready to send
+    "processing", // have been sent, waiting on the destination's OK
+    "canceled", // manually canceled
+    "failed", // something went wrong and we won't try again
+    "complete", // OK!
+  ] as const;
+
+  static defaultState: typeof Export.STATES[number] = "pending";
+
+  static STATE_TRANSITIONS: StateTransition[] = [
+    { from: "draft", to: "pending", checks: [] },
+    { from: "draft", to: "canceled", checks: [] },
+    { from: "pending", to: "processing", checks: [] },
+    { from: "pending", to: "canceled", checks: [] },
+    { from: "pending", to: "failed", checks: [] },
+    { from: "pending", to: "complete", checks: [] },
+    { from: "processing", to: "canceled", checks: [] },
+    { from: "processing", to: "failed", checks: [] },
+    { from: "processing", to: "complete", checks: [] },
+    { from: "processing", to: "pending", checks: [] },
+  ];
+
   idPrefix() {
     return "exp";
   }
@@ -84,11 +88,6 @@ export class Export extends CommonModel {
   @ForeignKey(() => ExportProcessor)
   @Column
   exportProcessorId: string;
-
-  @AllowNull(false)
-  @Default(Export.defaultState)
-  @Column(DataType.ENUM(...ExportStates))
-  state: typeof ExportStates[number];
 
   @AllowNull(false)
   @Default(false)
@@ -272,13 +271,6 @@ export class Export extends CommonModel {
   }
 
   // --- Class Methods --- //
-
-  static defaultState = "pending";
-
-  @BeforeSave
-  static async updateState(instance: Export) {
-    await StateMachine.transition(instance, STATE_TRANSITIONS);
-  }
 
   @BeforeSave
   static ensureErrorLevel(instance: Export) {

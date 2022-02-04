@@ -13,19 +13,21 @@ import {
   AfterCreate,
   ForeignKey,
 } from "sequelize-typescript";
-import { chatRoom, log } from "actionhero";
+import { log } from "actionhero";
 import { Schedule } from "./Schedule";
 import { Import } from "./Import";
 import { Group } from "./Group";
-import { StateMachine } from "./../modules/stateMachine";
 import { Property } from "./Property";
 import { TeamMember } from "./TeamMember";
 import { RunOps } from "../modules/ops/runs";
 import { plugin } from "../modules/plugin";
 import Moment from "moment";
 import { APIData } from "../modules/apiData";
-import { CommonModel } from "../classes/commonModel";
 import { GrouparooModel } from "./GrouparooModel";
+import {
+  StateMachineModel,
+  StateTransition,
+} from "../classes/stateMachineModel";
 
 export interface HighWaterMark {
   [key: string]: string | number | Date;
@@ -40,18 +42,18 @@ const RUN_CREATORS = [
   "teamMember",
 ] as const;
 
-const STATES = ["draft", "running", "complete", "stopped"] as const;
-// we have no checks, as those are managed by the lifecycle methods below (and tasks)
-const STATE_TRANSITIONS: StateMachine.StateTransition[] = [
-  { from: "draft", to: "running", checks: [] },
-  { from: "draft", to: "complete", checks: [] },
-  { from: "draft", to: "stopped", checks: [] },
-  { from: "running", to: "complete", checks: [] },
-  { from: "running", to: "stopped", checks: [] },
-];
-
 @Table({ tableName: "runs", paranoid: false })
-export class Run extends CommonModel {
+export class Run extends StateMachineModel {
+  static STATES = ["draft", "running", "complete", "stopped"] as const;
+  // we have no checks, as those are managed by the lifecycle methods below (and tasks)
+  static STATE_TRANSITIONS: StateTransition[] = [
+    { from: "draft", to: "running", checks: [] },
+    { from: "draft", to: "complete", checks: [] },
+    { from: "draft", to: "stopped", checks: [] },
+    { from: "running", to: "complete", checks: [] },
+    { from: "running", to: "stopped", checks: [] },
+  ];
+
   idPrefix() {
     return "run";
   }
@@ -63,10 +65,6 @@ export class Run extends CommonModel {
 
   @Column(DataType.ENUM(...RUN_CREATORS))
   creatorType: typeof RUN_CREATORS[number];
-
-  @AllowNull(false)
-  @Column(DataType.ENUM(...STATES))
-  state: typeof STATES[number];
 
   @Column
   completedAt: Date;
@@ -315,11 +313,6 @@ export class Run extends CommonModel {
     }
 
     if (!ready) throw new Error(`creator ${instance.creatorType} is not ready`);
-  }
-
-  @BeforeSave
-  static async updateState(instance: Run) {
-    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @AfterCreate

@@ -7,19 +7,19 @@ import {
   Length,
   BeforeBulkCreate,
 } from "sequelize-typescript";
+import { NonAbstract } from "sequelize-typescript/dist/shared/types";
 import validator from "validator";
 import * as uuid from "uuid";
 import { modelName } from "../modules/modelName";
 import { Op, Attributes } from "sequelize";
 import { config } from "actionhero";
 
-declare type NonAbstract<T> = {
-  [P in keyof T]: T[P];
-};
+type Columns<T> = Exclude<T, Function>;
 export type CommonModelStatic<M> = (new () => M) &
   NonAbstract<typeof CommonModel>;
 
-export abstract class CommonModel extends Model {
+// export abstract class CommonModel extends Model {
+export abstract class CommonModel<T> extends Model<T, NonAbstract<Columns<T>>> {
   /**
    * return the prefix for this type of class' id
    */
@@ -30,17 +30,17 @@ export abstract class CommonModel extends Model {
   id: string;
 
   @BeforeCreate
-  static generateId(instance: CommonModel) {
+  static generateId<T>(instance: CommonModel<T>) {
     if (!instance.id) instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
   }
 
   @BeforeBulkCreate
-  static generateIds(instances: CommonModel[]) {
+  static generateIds<T>(instances: CommonModel<T>[]) {
     instances.forEach((instance) => this.generateId(instance));
   }
 
   @BeforeCreate
-  static validateId(instance: CommonModel) {
+  static validateId<T>(instance: CommonModel<T>) {
     const id: string = instance.id;
     let failing = false;
     if (id.length > 191) failing = true;
@@ -54,7 +54,7 @@ export abstract class CommonModel extends Model {
   }
 
   @BeforeBulkCreate
-  static validateIds(instances: CommonModel[]) {
+  static validateIds<T>(instances: CommonModel<T>[]) {
     instances.forEach((instance) => this.validateId(instance));
   }
 
@@ -92,12 +92,12 @@ export abstract class CommonModel extends Model {
   }
 
   /**
-   * Update many instances at once, never exceeding a set batch size for writes
+   * Update many instances at once, never exceding a set batch size for
    */
   public static async updateAllInBatches<T extends Model>(
     this: CommonModelStatic<T>,
-    instances: CommonModel[],
-    values: { [key in keyof Attributes<T>]: any }
+    instances: CommonModel<T>[],
+    values: { [key in keyof Attributes<T>]: T }
   ) {
     const max = config.batchSize.internalWrite;
     const ids = instances.map((i) => i.id);

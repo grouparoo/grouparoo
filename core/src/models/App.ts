@@ -5,7 +5,6 @@ import {
   Length,
   AllowNull,
   BeforeSave,
-  DataType,
   BeforeDestroy,
   BeforeCreate,
   AfterDestroy,
@@ -18,7 +17,6 @@ import { Op } from "sequelize";
 import { Source } from "./Source";
 import { Option } from "./Option";
 import { OptionHelper } from "./../modules/optionHelper";
-import { StateMachine } from "./../modules/stateMachine";
 import { Destination } from "./Destination";
 import { AppOps } from "../modules/ops/app";
 import { LockableHelper } from "../modules/lockableHelper";
@@ -26,31 +24,31 @@ import { ConfigWriter } from "../modules/configWriter";
 import { APIData } from "../modules/apiData";
 import { AppConfigurationObject } from "../classes/codeConfig";
 import { AppRefreshQuery } from "./AppRefreshQuery";
-import { CommonModel } from "../classes/commonModel";
+import { StateMachineModel } from "../classes/stateMachineModel";
 
 export interface SimpleAppOptions extends OptionHelper.SimpleOptions {}
-
-const STATES = ["draft", "ready", "deleted"] as const;
-const STATE_TRANSITIONS = [
-  {
-    from: "draft",
-    to: "ready",
-    checks: [(instance: App) => instance.validateOptions()],
-  },
-  { from: "draft", to: "deleted", checks: [] },
-  { from: "ready", to: "deleted", checks: [] },
-  {
-    from: "deleted",
-    to: "ready",
-    checks: [(instance: App) => instance.validateOptions()],
-  },
-];
 
 @DefaultScope(() => ({
   where: { state: "ready" },
 }))
 @Table({ tableName: "apps", paranoid: false })
-export class App extends CommonModel {
+export class App extends StateMachineModel<App, typeof App.STATES> {
+  static STATES = ["draft", "ready", "deleted"] as const;
+  static STATE_TRANSITIONS = [
+    {
+      from: "draft",
+      to: "ready",
+      checks: [(instance: App) => instance.validateOptions()],
+    },
+    { from: "draft", to: "deleted", checks: [] },
+    { from: "ready", to: "deleted", checks: [] },
+    {
+      from: "deleted",
+      to: "ready",
+      checks: [(instance: App) => instance.validateOptions()],
+    },
+  ];
+
   idPrefix() {
     return "app";
   }
@@ -66,11 +64,6 @@ export class App extends CommonModel {
 
   @Column
   locked: string;
-
-  @AllowNull(false)
-  @Default("draft")
-  @Column(DataType.ENUM(...STATES))
-  state: typeof STATES[number];
 
   @HasOne(() => AppRefreshQuery)
   appRefreshQuery: AppRefreshQuery;
@@ -324,11 +317,6 @@ export class App extends CommonModel {
   @BeforeSave
   static async validateType(instance: App) {
     await instance.getPlugin(); // will throw if not found
-  }
-
-  @BeforeSave
-  static async updateState(instance: App) {
-    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @BeforeSave

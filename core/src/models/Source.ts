@@ -27,7 +27,6 @@ import { plugin } from "../modules/plugin";
 import { ConfigWriter } from "./../modules/configWriter";
 import { MappingHelper } from "./../modules/mappingHelper";
 import { OptionHelper } from "./../modules/optionHelper";
-import { StateMachine } from "./../modules/stateMachine";
 import { App } from "./App";
 import { Mapping } from "./Mapping";
 import { Option } from "./Option";
@@ -42,7 +41,7 @@ import {
 import { Run } from "./Run";
 import { GrouparooModel } from "./GrouparooModel";
 import { ModelGuard } from "../modules/modelGuard";
-import { CommonModel } from "../classes/commonModel";
+import { StateMachineModel } from "../classes/stateMachineModel";
 
 export interface BootstrapUniquePropertyParams {
   mappedColumn: string;
@@ -57,33 +56,33 @@ export interface BootstrapUniquePropertyParams {
 export interface SimpleSourceOptions extends OptionHelper.SimpleOptions {}
 export interface SourceMapping extends MappingHelper.Mappings {}
 
-const STATES = ["draft", "ready", "deleted"] as const;
-const STATE_TRANSITIONS = [
-  {
-    from: "draft",
-    to: "ready",
-    checks: [
-      (instance: Source) => instance.validateOptions(),
-      (instance: Source) => instance.validateMapping(),
-    ],
-  },
-  { from: "draft", to: "deleted", checks: [] },
-  { from: "ready", to: "deleted", checks: [] },
-  {
-    from: "deleted",
-    to: "ready",
-    checks: [
-      (instance: Source) => instance.validateOptions(),
-      (instance: Source) => instance.validateMapping(),
-    ],
-  },
-];
-
 @DefaultScope(() => ({
   where: { state: "ready" },
 }))
 @Table({ tableName: "sources", paranoid: false })
-export class Source extends CommonModel {
+export class Source extends StateMachineModel {
+  static STATES = ["draft", "ready", "deleted"] as const;
+  static STATE_TRANSITIONS = [
+    {
+      from: "draft",
+      to: "ready",
+      checks: [
+        (instance: Source) => instance.validateOptions(),
+        (instance: Source) => instance.validateMapping(),
+      ],
+    },
+    { from: "draft", to: "deleted", checks: [] },
+    { from: "ready", to: "deleted", checks: [] },
+    {
+      from: "deleted",
+      to: "ready",
+      checks: [
+        (instance: Source) => instance.validateOptions(),
+        (instance: Source) => instance.validateMapping(),
+      ],
+    },
+  ];
+
   idPrefix() {
     return "src";
   }
@@ -101,11 +100,6 @@ export class Source extends CommonModel {
   @AllowNull(false)
   @Column
   type: string;
-
-  @AllowNull(false)
-  @Default("draft")
-  @Column(DataType.ENUM(...STATES))
-  state: typeof STATES[number];
 
   @Column
   locked: string;
@@ -415,11 +409,6 @@ export class Source extends CommonModel {
       },
     });
     if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
-  }
-
-  @BeforeSave
-  static async updateState(instance: Source) {
-    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @BeforeSave
