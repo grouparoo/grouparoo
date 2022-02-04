@@ -92,7 +92,7 @@ export abstract class CommonModel<T> extends Model<T, NonAbstract<Columns<T>>> {
   }
 
   /**
-   * Update many instances at once, never exceding a set batch size for
+   * Update many instances at once, never exceeding a set batch size for
    */
   public static async updateAllInBatches<T extends Model>(
     this: CommonModelStatic<T>,

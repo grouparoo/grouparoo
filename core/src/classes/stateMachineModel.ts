@@ -9,9 +9,11 @@ import { NonAbstract } from "sequelize-typescript/dist/shared/types";
 import { modelName } from "../modules/modelName";
 import { CommonModel } from "./commonModel";
 
-export interface StateTransition<S = any> {
-  from: S;
-  to: S;
+export interface StateTransition<
+  S extends readonly string[] = readonly string[]
+> {
+  from: S[number];
+  to: S[number];
   checks: ((instance: any) => Promise<any>)[];
 }
 
@@ -20,7 +22,7 @@ export type StateMachineModelStatic<M> = (new () => M) &
 
 export abstract class StateMachineModel<
   T extends StateMachineModel<T, S>,
-  S extends readonly string[]
+  S extends readonly string[] = readonly string[]
 > extends CommonModel<T> {
   static defaultState: string;
   static STATE_TRANSITIONS: StateTransition[];
@@ -32,27 +34,23 @@ export abstract class StateMachineModel<
   state: S[number];
 
   @BeforeSave
-  static async confirmStateTransition<
-    T extends StateMachineModel<T, S>,
-    S extends readonly string[]
-  >(instance: StateMachineModel<T, S>) {
-    await validateStateTransition<T, S>(
+  static async confirmStateTransition<T extends StateMachineModel<T>>(
+    instance: StateMachineModel<T>
+  ) {
+    await validateStateTransition<T>(
       instance,
       StateMachineModel.STATE_TRANSITIONS
     );
   }
 }
 
-async function validateStateTransition<
-  T extends StateMachineModel<T, S>,
-  S extends readonly string[]
->(
-  instance: StateMachineModel<T, S> & {
+async function validateStateTransition<T extends StateMachineModel<T>>(
+  instance: StateMachineModel<T> & {
     _previousDataValues?: { state?: T["state"][number] };
   },
   transitions: StateTransition[]
 ) {
-  const klass = modelName<StateMachineModel<T, S>>(instance);
+  const klass = modelName(instance);
   const newState = instance["state"];
   const oldState = instance["_previousDataValues"]["state"]
     ? instance["_previousDataValues"]["state"]
@@ -75,6 +73,10 @@ async function validateStateTransition<
   }
 }
 
-function findTransition<S>(from: S, to: S, transitions: StateTransition[]) {
+function findTransition(
+  from: string,
+  to: string,
+  transitions: StateTransition[]
+) {
   return transitions.find((t) => t.from === from && t.to === to);
 }
