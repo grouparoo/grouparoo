@@ -25,5 +25,5 @@
           command: sudo apt update
       - run:
           name: test-root
-          command: ./__tests__/
+          command: cd {{{relative_path}}} && ./node_modules/.bin/jest --ci --maxWorkers 2 --passWithNoTests
 {{{custom_test}}}
