@@ -83,7 +83,7 @@ const matchTypes = ["any", "all"] as const;
   },
 }))
 @Table({ tableName: "groups", paranoid: false })
-export class Group extends StateMachineModel {
+export class Group extends StateMachineModel<Group, typeof Group.STATES> {
   static STATES = [
     "draft",
     "ready",

@@ -120,15 +120,13 @@ export namespace OptionHelper {
     });
 
     const newOptions: Option[] = [];
-    const keys = Object.keys(sanitizedOptions);
-    for (const i in keys) {
-      const key = keys[i];
+    for (const [key, value] of Object.entries(sanitizedOptions)) {
       const option = await Option.create({
         ownerId: instance.id,
         ownerType: modelName<ModelWithMapping>(instance),
         key,
-        value: sanitizedOptions[key],
-        type: typeof sanitizedOptions[key],
+        value: String(value),
+        type: typeof value as "string" | "number" | "boolean",
       });
       newOptions.push(option);
     }

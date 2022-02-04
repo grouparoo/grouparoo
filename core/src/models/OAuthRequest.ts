@@ -14,7 +14,7 @@ import { CommonModel } from "../classes/commonModel";
 import { Op } from "sequelize";
 
 @Table({ tableName: "oAuthRequests", paranoid: false })
-export class OAuthRequest extends CommonModel {
+export class OAuthRequest extends CommonModel<OAuthRequest> {
   idPrefix() {
     return "req";
   }

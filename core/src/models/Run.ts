@@ -43,7 +43,7 @@ const RUN_CREATORS = [
 ] as const;
 
 @Table({ tableName: "runs", paranoid: false })
-export class Run extends StateMachineModel {
+export class Run extends StateMachineModel<Run, typeof Run.STATES> {
   static STATES = ["draft", "running", "complete", "stopped"] as const;
   // we have no checks, as those are managed by the lifecycle methods below (and tasks)
   static STATE_TRANSITIONS: StateTransition[] = [
@@ -99,7 +99,7 @@ export class Run extends StateMachineModel {
 
   // this is likely to always be a number, but in the case of a scrollId or other token, we'll store this as a string
   @Column
-  sourceOffset: string;
+  sourceOffset: string | number;
 
   @Default(0)
   @Column
@@ -135,7 +135,7 @@ export class Run extends StateMachineModel {
     return percentComplete;
   }
 
-  async afterBatch(newSate?: string) {
+  async afterBatch(newSate?: Run["state"]) {
     await this.reload();
 
     if (

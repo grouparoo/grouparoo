@@ -5,8 +5,6 @@ import {
   Default,
   ForeignKey,
   BelongsTo,
-  BeforeSave,
-  DataType,
 } from "sequelize-typescript";
 import { GrouparooRecord } from "./GrouparooRecord";
 import { Property } from "./Property";
@@ -22,7 +20,10 @@ export enum InvalidReasons {
 }
 
 @Table({ tableName: "recordProperties", paranoid: false })
-export class RecordProperty extends StateMachineModel {
+export class RecordProperty extends StateMachineModel<
+  RecordProperty,
+  typeof RecordProperty.STATES
+> {
   static STATES = ["draft", "pending", "ready"] as const;
 
   static STATE_TRANSITIONS: StateTransition[] = [

@@ -1,9 +1,9 @@
-import { Table, Column, AllowNull } from "sequelize-typescript";
+import { Table, Column, AllowNull, Not } from "sequelize-typescript";
 import { CommonModel } from "../classes/commonModel";
 import { APIData } from "../modules/apiData";
 
 @Table({ tableName: "notifications", paranoid: false })
-export class Notification extends CommonModel {
+export class Notification extends CommonModel<Notification> {
   idPrefix() {
     return "not";
   }

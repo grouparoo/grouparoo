@@ -25,7 +25,10 @@ import {
 } from "../classes/stateMachineModel";
 
 @Table({ tableName: "exportProcessors", paranoid: false })
-export class ExportProcessor extends StateMachineModel {
+export class ExportProcessor extends StateMachineModel<
+  ExportProcessor,
+  typeof ExportProcessor.STATES
+> {
   static STATES = [
     "pending", // waiting to be processed
     "failed", // something went wrong and we won't try again

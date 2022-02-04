@@ -18,8 +18,12 @@ type Columns<T> = Exclude<T, Function>;
 export type CommonModelStatic<M> = (new () => M) &
   NonAbstract<typeof CommonModel>;
 
-// export abstract class CommonModel extends Model {
-export abstract class CommonModel<T> extends Model<T, NonAbstract<Columns<T>>> {
+// This tighter type is not yet in use because it would require all places where we make a new instance to typecheck.
+//  For example, an action that takes state:string would need to coerce that to state: typeof App['state'].
+//  That is out of scope for now.
+//
+// export abstract class CommonModel<T> extends Model<T, NonAbstract<Columns<T>>> {
+export abstract class CommonModel<T> extends Model {
   /**
    * return the prefix for this type of class' id
    */
@@ -97,7 +101,7 @@ export abstract class CommonModel<T> extends Model<T, NonAbstract<Columns<T>>> {
   public static async updateAllInBatches<T extends Model>(
     this: CommonModelStatic<T>,
     instances: CommonModel<T>[],
-    values: { [key in keyof Attributes<T>]: T }
+    values: Partial<{ [key in keyof Attributes<T>]: T[key] }>
   ) {
     const max = config.batchSize.internalWrite;
     const ids = instances.map((i) => i.id);

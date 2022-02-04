@@ -13,7 +13,7 @@ import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
 
 @Table({ tableName: "setupSteps", paranoid: false })
-export class SetupStep extends CommonModel {
+export class SetupStep extends CommonModel<SetupStep> {
   idPrefix() {
     return "sus";
   }

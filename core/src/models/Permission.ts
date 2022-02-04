@@ -44,7 +44,7 @@ export type ActionPermission = {
 };
 
 @Table({ tableName: "permissions", paranoid: false })
-export class Permission extends CommonModel {
+export class Permission extends CommonModel<Permission> {
   idPrefix() {
     return "prm";
   }

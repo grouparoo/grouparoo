@@ -81,7 +81,10 @@ export const CachedProperties = {
   where: { state: { [Op.notIn]: ["draft"] } },
 }))
 @Table({ tableName: "properties", paranoid: false })
-export class Property extends StateMachineModel {
+export class Property extends StateMachineModel<
+  Property,
+  typeof Property.STATES
+> {
   static STATES = ["draft", "ready", "deleted"] as const;
   static STATE_TRANSITIONS: StateTransition[] = [
     {

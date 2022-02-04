@@ -1,6 +1,6 @@
 import Moment from "moment";
 import { config, cache, log } from "actionhero";
-import { Op } from "sequelize";
+import { Op, CreationAttributes } from "sequelize";
 import { deepStrictEqual } from "assert";
 import {
   Destination,
@@ -470,7 +470,7 @@ export namespace DestinationOps {
     }
 
     let _export: Export;
-    const exportArgs = {
+    const exportArgs: CreationAttributes<Export> = {
       destinationId: destination.id,
       recordId: record.id,
       startedAt: synchronous ? new Date() : undefined,

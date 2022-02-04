@@ -25,7 +25,10 @@ import {
   where: { state: "ready" },
 }))
 @Table({ tableName: "appRefreshQueries", paranoid: false })
-export class AppRefreshQuery extends StateMachineModel {
+export class AppRefreshQuery extends StateMachineModel<
+  AppRefreshQuery,
+  typeof AppRefreshQuery.STATES
+> {
   static STATES = ["draft", "ready"] as const;
 
   static STATE_TRANSITIONS: StateTransition[] = [

@@ -9,7 +9,6 @@ import {
   BeforeSave,
   BeforeDestroy,
   DefaultScope,
-  Default,
 } from "sequelize-typescript";
 import { Source } from "./Source";
 import { ModelConfigurationObject } from "../classes/codeConfig";
@@ -32,7 +31,10 @@ export type ModelType = typeof ModelTypes[number];
   where: { state: "ready" },
 }))
 @Table({ tableName: "models", paranoid: false })
-export class GrouparooModel extends StateMachineModel {
+export class GrouparooModel extends StateMachineModel<
+  GrouparooModel,
+  typeof GrouparooModel.STATES
+> {
   static STATES = ["ready", "deleted"] as const;
   static STATE_TRANSITIONS: StateTransition[] = [
     { from: "draft", to: "ready", checks: [] },

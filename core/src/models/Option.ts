@@ -17,7 +17,7 @@ import { CommonModel } from "../classes/commonModel";
 export const OptionTypes = ["boolean", "string", "number"] as const;
 
 @Table({ tableName: "options", paranoid: false })
-export class Option extends CommonModel {
+export class Option extends CommonModel<Option> {
   idPrefix() {
     return "opt";
   }

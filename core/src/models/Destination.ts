@@ -113,7 +113,10 @@ export const DestinationSyncModeData: Record<
   },
 }))
 @Table({ tableName: "destinations", paranoid: false })
-export class Destination extends StateMachineModel {
+export class Destination extends StateMachineModel<
+  Destination,
+  typeof Destination.STATES
+> {
   static STATES = ["draft", "ready", "deleted"] as const;
   static STATE_TRANSITIONS = [
     {

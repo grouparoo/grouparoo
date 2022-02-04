@@ -6,7 +6,7 @@ import { api } from "actionhero";
 import { CommonModel } from "../classes/commonModel";
 
 @Table({ tableName: "sessions", paranoid: false })
-export class Session extends CommonModel {
+export class Session extends CommonModel<Session> {
   idPrefix() {
     return "ses";
   }

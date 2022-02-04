@@ -47,7 +47,7 @@ export interface ExportRecordPropertiesWithType {
 }
 
 @Table({ tableName: "exports", paranoid: false })
-export class Export extends StateMachineModel {
+export class Export extends StateMachineModel<Export, typeof Export.STATES> {
   static STATES = [
     "draft", // not ready to send, needs manual review
     "pending", // ready to send

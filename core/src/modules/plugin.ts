@@ -32,6 +32,7 @@ import { Notification } from "../models/Notification";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
 import { ExportProcessor } from "../models/ExportProcessor";
+import { CreationAttributes } from "sequelize";
 
 // the order matters here - the children need to come before the parents (destinationGroup -> destination)
 const models = [
@@ -189,7 +190,7 @@ export namespace plugin {
       data: mappedRecordProperties,
       creatorType: "run",
       creatorId: run.id,
-    });
+    } as CreationAttributes<Import>);
 
     return _import;
   }
@@ -220,7 +221,7 @@ export namespace plugin {
         data: mappedRecordProperties,
         creatorType: "run",
         creatorId: run.id,
-      });
+      } as CreationAttributes<Import>);
     }
 
     const _imports =

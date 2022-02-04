@@ -19,7 +19,7 @@ import { CLS } from "../modules/cls";
 import { CommonModel } from "../classes/commonModel";
 
 @Table({ tableName: "teamMembers", paranoid: false })
-export class TeamMember extends CommonModel {
+export class TeamMember extends CommonModel<TeamMember> {
   idPrefix() {
     return "tem";
   }

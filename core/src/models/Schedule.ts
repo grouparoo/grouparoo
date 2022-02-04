@@ -71,7 +71,10 @@ export interface SimpleScheduleOptions extends OptionHelper.SimpleOptions {}
   where: { state: "ready" },
 }))
 @Table({ tableName: "schedules", paranoid: false })
-export class Schedule extends StateMachineModel {
+export class Schedule extends StateMachineModel<
+  Schedule,
+  typeof Schedule.STATES
+> {
   static STATES = ["draft", "ready"] as const;
   static STATE_TRANSITIONS = [
     {

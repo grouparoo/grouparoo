@@ -14,7 +14,7 @@ import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
 
 @Table({ tableName: "destinationGroupMemberships", paranoid: false })
-export class DestinationGroupMembership extends CommonModel {
+export class DestinationGroupMembership extends CommonModel<DestinationGroupMembership> {
   idPrefix() {
     return "dgm";
   }

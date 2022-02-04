@@ -15,7 +15,7 @@ import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
 
 @Table({ tableName: "mappings", paranoid: false })
-export class Mapping extends CommonModel {
+export class Mapping extends CommonModel<Mapping> {
   idPrefix() {
     return "map";
   }

@@ -35,7 +35,7 @@ export interface ImportRecordProperties {
 const IMPORT_CREATORS = ["run"] as const;
 
 @Table({ tableName: "imports", paranoid: false })
-export class Import extends StateMachineModel {
+export class Import extends StateMachineModel<Import, typeof Import.STATES> {
   static STATES = [
     "associating",
     "importing",

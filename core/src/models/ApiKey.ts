@@ -22,7 +22,7 @@ import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
 
 @Table({ tableName: "apiKeys", paranoid: false })
-export class ApiKey extends CommonModel {
+export class ApiKey extends CommonModel<ApiKey> {
   idPrefix() {
     return "key";
   }

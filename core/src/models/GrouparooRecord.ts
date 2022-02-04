@@ -28,7 +28,10 @@ import { ModelGuard } from "../modules/modelGuard";
 import { StateMachineModel } from "../classes/stateMachineModel";
 
 @Table({ tableName: "records", paranoid: false })
-export class GrouparooRecord extends StateMachineModel {
+export class GrouparooRecord extends StateMachineModel<
+  GrouparooRecord,
+  typeof GrouparooRecord.STATES
+> {
   static STATES = ["draft", "pending", "ready", "deleted"] as const;
 
   static STATE_TRANSITIONS = [

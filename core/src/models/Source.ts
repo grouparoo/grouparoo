@@ -60,7 +60,7 @@ export interface SourceMapping extends MappingHelper.Mappings {}
   where: { state: "ready" },
 }))
 @Table({ tableName: "sources", paranoid: false })
-export class Source extends StateMachineModel {
+export class Source extends StateMachineModel<Source, typeof Source.STATES> {
   static STATES = ["draft", "ready", "deleted"] as const;
   static STATE_TRANSITIONS = [
     {

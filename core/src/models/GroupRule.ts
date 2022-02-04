@@ -18,7 +18,7 @@ import {
 } from "../modules/ruleOpsDictionary";
 
 @Table({ tableName: "groupRules", paranoid: false })
-export class GroupRule extends CommonModel {
+export class GroupRule extends CommonModel<GroupRule> {
   idPrefix() {
     return "grr";
   }
