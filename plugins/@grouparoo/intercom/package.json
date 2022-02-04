@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@grouparoo/app-templates": "0.8.1-alpha.1",
-    "intercom-client": "2.11.2"
+    "intercom-client": "3.0.1"
   },
   "devDependencies": {
     "@grouparoo/core": "0.8.1-alpha.1",
