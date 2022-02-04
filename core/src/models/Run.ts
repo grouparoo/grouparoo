@@ -98,7 +98,7 @@ export class Run extends StateMachineModel<Run, typeof Run.STATES> {
   }
 
   // this is likely to always be a number, but in the case of a scrollId or other token, we'll store this as a string
-  @Column
+  @Column(DataType.STRING)
   sourceOffset: string | number;
 
   @Default(0)

@@ -30,7 +30,7 @@ export abstract class StateMachineModel<
 
   @AllowNull(false)
   @Default(StateMachineModel.defaultState ?? "draft")
-  @Column(DataType.ENUM())
+  @Column(DataType.STRING)
   state: S[number];
 
   @BeforeSave
