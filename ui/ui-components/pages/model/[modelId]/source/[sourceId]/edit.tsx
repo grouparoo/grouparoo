@@ -338,7 +338,6 @@ const Page: NextPage<Props> = ({
   };
 
   const updateOption = async (optKey, optValue) => {
-    console.log("update option", optKey, optValue);
     const _source = { ...source };
     _source.options[optKey] = optValue;
     _source.mapping = {};
@@ -424,6 +423,7 @@ const Page: NextPage<Props> = ({
                                     id="typeahead"
                                     labelKey="key"
                                     disabled={loading || loadingOptions}
+                                    inputProps={{ required: opt.required }}
                                     options={connectionOptions[
                                       opt.key
                                     ]?.options.map((k, idx) => {
@@ -551,6 +551,7 @@ const Page: NextPage<Props> = ({
                               placeholder={opt.placeholder}
                               name={`source.options.${opt.key}`}
                               {...register(`source.options.${opt.key}`, {
+                                shouldUnregister: true,
                                 onChange: (e) =>
                                   updateOption(
                                     e.target.id.replace("_opt~", ""),
