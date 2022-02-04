@@ -738,8 +738,8 @@ describe("models/destination - with custom exportRecords plugin", () => {
         errorLevel: null,
       });
 
-      helper.changeTimestamps([exportOne], true, new Date());
-      helper.changeTimestamps(
+      await helper.changeTimestamps([exportOne], true, new Date());
+      await helper.changeTimestamps(
         [exportTwo],
         true,
         new Date(new Date().valueOf() - 100000)
