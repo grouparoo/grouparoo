@@ -47,6 +47,5 @@ async function getStuckImports(limit: number, offset: number) {
     },
     limit,
     offset,
-    logging: true,
   });
 }
