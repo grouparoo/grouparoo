@@ -770,7 +770,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       expect(exportTwo.state).toEqual("canceled");
     });
 
-    test.only("If multiple exports exist for a single record/destination pair, the newest is sent and all older ones are canceled", async () => {
+    test("If multiple exports exist for a single record/destination pair, the newest is sent and all older ones are canceled", async () => {
       const record = await helper.factories.record();
       const group = await helper.factories.group();
       await GroupMember.create({ recordId: record.id, groupId: group.id });
