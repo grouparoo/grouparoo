@@ -940,10 +940,13 @@ export namespace DestinationOps {
             "exports"
           WHERE
             "exports"."destinationId" = ?
-            AND "exports"."id" IN (?)) AS __ranked
+            AND "exports"."recordId" IN (?)) AS __ranked
         WHERE
           "__ranked"."__rownum" = 1;`,
-            values: [destination.id, givenExports.map(({ id }) => id)],
+            values: [
+              destination.id,
+              givenExports.map(({ recordId }) => recordId),
+            ],
           },
           undefined
         )
