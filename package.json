@@ -30,9 +30,6 @@
   },
   "scripts": {
     "preinstall": "./bin/preinstall",
-    "license-checker": "./tools/license-checker/check",
-    "spell-checker": "./tools/spell-checker/check",
-    "version-checker": "./tools/version-checker/check",
     "version-fixer": "./tools/version-checker/fix",
     "lint": "pnpm run --stream -r lint --workspace-concurrency=2 --filter !'@grouparoo/grouparoo'",
     "test": "pnpm run test --stream --workspace-concurrency=1 --filter !'@grouparoo/grouparoo'",
