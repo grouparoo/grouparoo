@@ -41,6 +41,7 @@ export class GrouparooModel extends StateMachineModel<
     { from: "ready", to: "deleted", checks: [] },
     { from: "deleted", to: "ready", checks: [] },
   ];
+  static defaultState: typeof GrouparooModel.STATES[number] = "ready";
 
   idPrefix() {
     return "mod";

@@ -3,7 +3,8 @@ import {
   BeforeSave,
   DataType,
   Column,
-  Default,
+  BeforeValidate,
+  BeforeBulkCreate,
 } from "sequelize-typescript";
 import { NonAbstract } from "sequelize-typescript/dist/shared/types";
 import { modelName } from "../modules/modelName";
@@ -29,41 +30,63 @@ export abstract class StateMachineModel<
   static STATES: readonly string[];
 
   @AllowNull(false)
-  @Default(StateMachineModel.defaultState ?? "draft")
   @Column(DataType.STRING)
   state: S[number];
+
+  getDefaultSate() {
+    const defaultState: T["state"][number] =
+      // @ts-expect-error TODO: this is messy
+      instance.constructor.defaultState ?? "draft";
+    return defaultState;
+  }
+
+  getStateTransitions() {
+    const transitions: StateTransition[] =
+      // @ts-expect-error TODO: this is messy
+      instance.constructor.STATE_TRANSITIONS;
+    return transitions;
+  }
+
+  @BeforeValidate
+  static async applyDefaultState<T extends StateMachineModel<T>>(
+    instance: StateMachineModel<T>
+  ) {
+    // this can't be done via an @Default decorator because we don't have access to the instance, just the Type
+    const defaultState = instance.getDefaultSate();
+    if (!instance.state) instance.state = defaultState;
+  }
+
+  @BeforeBulkCreate
+  static async appleDefaultStates<T extends StateMachineModel<T>>(
+    instances: StateMachineModel<T>[]
+  ) {
+    for (const instance of instances) {
+      StateMachineModel.applyDefaultState(instance);
+    }
+  }
 
   @BeforeSave
   static async confirmStateTransition<T extends StateMachineModel<T>>(
     instance: StateMachineModel<T>
   ) {
-    await validateStateTransition<T>(
-      instance,
-      StateMachineModel.STATE_TRANSITIONS
-    );
+    await validateStateTransition<T>(instance);
   }
 }
 
 async function validateStateTransition<T extends StateMachineModel<T>>(
   instance: StateMachineModel<T> & {
     _previousDataValues?: { state?: T["state"][number] };
-  },
-  transitions: StateTransition[]
+  }
 ) {
   const klass = modelName(instance);
-  const newState = instance["state"];
-  const oldState = instance["_previousDataValues"]["state"]
-    ? instance["_previousDataValues"]["state"]
-    : StateMachineModel.defaultState
-    ? StateMachineModel.defaultState
-    : "draft";
+  const oldState = instance["_previousDataValues"]["state"];
+  if (!oldState || instance.state === oldState) return;
 
-  if (!newState || newState === oldState) return;
-
-  const transition = findTransition(oldState, newState, transitions);
+  const transitions = instance.getStateTransitions();
+  const transition = findTransition(oldState, instance.state, transitions);
   if (!transition) {
     throw new Error(
-      `cannot transition ${klass} state from ${oldState} to ${newState}`
+      `cannot transition ${klass} state from ${oldState} to ${instance.state}`
     );
   }
 

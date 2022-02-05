@@ -58,7 +58,7 @@ export async function loadApp(
     }
   }
 
-  await app.update({ state: "ready" }, {});
+  await app.update({ state: "ready" });
 
   logModel<App>(app, validate ? "validated" : isNew ? "created" : "updated");
 
