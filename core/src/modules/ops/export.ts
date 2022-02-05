@@ -4,7 +4,7 @@ import {
   ExportRecordPropertiesWithType,
 } from "../../models/Export";
 import { RecordPropertyOps } from "../../modules/ops/recordProperty";
-import { Export } from "../../models/Export";
+import { Export, ExportStates } from "../../models/Export";
 import { Destination } from "../../models/Destination";
 import { CLS } from "../../modules/cls";
 import { Option } from "../../models/Option";
@@ -16,7 +16,7 @@ export namespace ExportOps {
   export async function totals(
     where: { recordId?: string; destinationId?: string } = {}
   ) {
-    const totals: { [k in typeof Export.STATES[number]]: number } = {
+    const totals: { [k in typeof ExportStates[number]]: number } = {
       draft: 0,
       pending: 0,
       processing: 0,
@@ -25,7 +25,7 @@ export namespace ExportOps {
       complete: 0,
     };
 
-    for (const state of Export.STATES) {
+    for (const state of ExportStates) {
       totals[state] = await Export.count({
         where: Object.assign({}, where, { state }),
       });
