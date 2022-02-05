@@ -5,34 +5,33 @@ import {
   Default,
   ForeignKey,
   BelongsTo,
+  BeforeSave,
+  DataType,
 } from "sequelize-typescript";
+import { Op } from "sequelize";
 import { GrouparooRecord } from "./GrouparooRecord";
 import { Property } from "./Property";
 import { RecordPropertyOps } from "../modules/ops/recordProperty";
+import { StateMachine } from "../modules/stateMachine";
 import { APIData } from "../modules/apiData";
-import {
-  StateMachineModel,
-  StateTransition,
-} from "../classes/stateMachineModel";
+import { CommonModel } from "../classes/commonModel";
+import { config } from "actionhero";
+
+const STATES = ["draft", "pending", "ready"] as const;
+
+const STATE_TRANSITIONS: StateMachine.StateTransition[] = [
+  { from: "draft", to: "ready", checks: [] },
+  { from: "draft", to: "pending", checks: [] },
+  { from: "pending", to: "ready", checks: [] },
+  { from: "ready", to: "pending", checks: [] },
+];
 
 export enum InvalidReasons {
   Duplicate = "Duplicate Value",
 }
 
 @Table({ tableName: "recordProperties", paranoid: false })
-export class RecordProperty extends StateMachineModel<
-  RecordProperty,
-  typeof RecordProperty.STATES
-> {
-  static STATES = ["draft", "pending", "ready"] as const;
-
-  static STATE_TRANSITIONS: StateTransition[] = [
-    { from: "draft", to: "ready", checks: [] },
-    { from: "draft", to: "pending", checks: [] },
-    { from: "pending", to: "ready", checks: [] },
-    { from: "ready", to: "pending", checks: [] },
-  ];
-
+export class RecordProperty extends CommonModel<RecordProperty> {
   idPrefix() {
     return "rpr";
   }
@@ -46,6 +45,11 @@ export class RecordProperty extends StateMachineModel<
   @ForeignKey(() => Property)
   @Column
   propertyId: string;
+
+  @AllowNull(false)
+  @Default("pending")
+  @Column(DataType.ENUM(...STATES))
+  state: typeof STATES[number];
 
   @Column
   rawValue: string;

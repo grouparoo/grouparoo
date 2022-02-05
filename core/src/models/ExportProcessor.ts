@@ -14,40 +14,33 @@ import { Op, QueryTypes } from "sequelize";
 import { api, config } from "actionhero";
 import { Destination } from "./Destination";
 import { APIData } from "../modules/apiData";
+import { StateMachine } from "../modules/stateMachine";
 import { Export } from "./Export";
 import { Errors } from "../modules/errors";
 import { ExportProcessorOps } from "../modules/ops/exportProcessor";
 import { Mapping } from "./Mapping";
 import { Option } from "./Option";
-import {
-  StateMachineModel,
-  StateTransition,
-} from "../classes/stateMachineModel";
+import { CommonModel } from "../classes/commonModel";
+
+export const ExportProcessorStates = [
+  "pending", // waiting to be processed
+  "failed", // something went wrong and we won't try again
+  "complete", // OK!
+] as const;
+
+const STATE_TRANSITIONS = [
+  { from: "pending", to: "failed", checks: [] },
+  {
+    from: "pending",
+    to: "complete",
+    checks: [
+      (instance: ExportProcessor) => instance.ensureAllExportsProcessed(),
+    ],
+  },
+];
 
 @Table({ tableName: "exportProcessors", paranoid: false })
-export class ExportProcessor extends StateMachineModel<
-  ExportProcessor,
-  typeof ExportProcessor.STATES
-> {
-  static STATES = [
-    "pending", // waiting to be processed
-    "failed", // something went wrong and we won't try again
-    "complete", // OK!
-  ] as const;
-
-  static defaultState: typeof ExportProcessor.STATES[number] = "pending";
-
-  static STATE_TRANSITIONS: StateTransition[] = [
-    { from: "pending", to: "failed", checks: [] },
-    {
-      from: "pending",
-      to: "complete",
-      checks: [
-        (instance: ExportProcessor) => instance.ensureAllExportsProcessed(),
-      ],
-    },
-  ];
-
+export class ExportProcessor extends CommonModel<ExportProcessor> {
   idPrefix() {
     return "prc";
   }
@@ -62,6 +55,11 @@ export class ExportProcessor extends StateMachineModel<
 
   @Column(DataType.TEXT)
   remoteKey: string;
+
+  @AllowNull(false)
+  @Default(ExportProcessor.defaultState)
+  @Column(DataType.ENUM(...ExportProcessorStates))
+  state: typeof ExportProcessorStates[number];
 
   @Column
   startedAt: Date;
@@ -158,6 +156,13 @@ export class ExportProcessor extends StateMachineModel<
   }
 
   // --- Class Methods --- //
+
+  static defaultState = "pending";
+
+  @BeforeSave
+  static async updateState(instance: ExportProcessor) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
+  }
 
   @BeforeSave
   static ensureErrorLevel(instance: ExportProcessor) {

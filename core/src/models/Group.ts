@@ -35,6 +35,7 @@ import {
   RelativeMatchUnitType,
 } from "../modules/ruleOpsDictionary";
 import { TopLevelGroupRules } from "../modules/topLevelGroupRules";
+import { StateMachine } from "./../modules/stateMachine";
 import { Destination } from "./Destination";
 import { DestinationGroupMembership } from "./DestinationGroupMembership";
 import { GroupMember } from "./GroupMember";
@@ -49,10 +50,7 @@ import { Source } from "./Source";
 import { RunOps } from "../modules/ops/runs";
 import { ModelGuard } from "../modules/modelGuard";
 import { getGrouparooRunMode } from "../modules/runMode";
-import {
-  StateMachineModel,
-  StateTransition,
-} from "../classes/stateMachineModel";
+import { CommonModel } from "../classes/commonModel";
 
 export const GROUP_RULE_LIMIT = 10;
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -70,6 +68,31 @@ export interface GroupRuleWithKey {
 
 const matchTypes = ["any", "all"] as const;
 
+const STATES = [
+  "draft",
+  "ready",
+  "initializing",
+  "updating",
+  "deleted",
+] as const;
+// we have no checks, as those are managed by the lifecycle methods below (and tasks)
+const STATE_TRANSITIONS: StateMachine.StateTransition[] = [
+  { from: "draft", to: "ready", checks: [] },
+  { from: "draft", to: "initializing", checks: [] },
+  { from: "draft", to: "deleted", checks: [] },
+  { from: "draft", to: "updating", checks: [] },
+  { from: "ready", to: "initializing", checks: [] },
+  { from: "initializing", to: "ready", checks: [] },
+  { from: "initializing", to: "updating", checks: [] },
+  { from: "initializing", to: "deleted", checks: [] },
+  { from: "ready", to: "updating", checks: [] },
+  { from: "updating", to: "ready", checks: [] },
+  { from: "updating", to: "initializing", checks: [] },
+  { from: "updating", to: "deleted", checks: [] },
+  { from: "ready", to: "deleted", checks: [] },
+  { from: "deleted", to: "ready", checks: [] },
+];
+
 @DefaultScope(() => ({
   where: {
     state: { [Op.notIn]: ["draft", "deleted"] },
@@ -83,32 +106,7 @@ const matchTypes = ["any", "all"] as const;
   },
 }))
 @Table({ tableName: "groups", paranoid: false })
-export class Group extends StateMachineModel<Group, typeof Group.STATES> {
-  static STATES = [
-    "draft",
-    "ready",
-    "initializing",
-    "updating",
-    "deleted",
-  ] as const;
-
-  static STATE_TRANSITIONS: StateTransition[] = [
-    { from: "draft", to: "ready", checks: [] },
-    { from: "draft", to: "initializing", checks: [] },
-    { from: "draft", to: "deleted", checks: [] },
-    { from: "draft", to: "updating", checks: [] },
-    { from: "ready", to: "initializing", checks: [] },
-    { from: "initializing", to: "ready", checks: [] },
-    { from: "initializing", to: "updating", checks: [] },
-    { from: "initializing", to: "deleted", checks: [] },
-    { from: "ready", to: "updating", checks: [] },
-    { from: "updating", to: "ready", checks: [] },
-    { from: "updating", to: "initializing", checks: [] },
-    { from: "updating", to: "deleted", checks: [] },
-    { from: "ready", to: "deleted", checks: [] },
-    { from: "deleted", to: "ready", checks: [] },
-  ];
-
+export class Group extends CommonModel<Group> {
   idPrefix() {
     return "grp";
   }
@@ -127,6 +125,11 @@ export class Group extends StateMachineModel<Group, typeof Group.STATES> {
   })
   @Column(DataType.ENUM(...matchTypes))
   matchType: typeof matchTypes[number];
+
+  @AllowNull(false)
+  @Default("draft")
+  @Column(DataType.ENUM(...STATES))
+  state: typeof STATES[number];
 
   @Column
   locked: string;
@@ -717,6 +720,11 @@ export class Group extends StateMachineModel<Group, typeof Group.STATES> {
       },
     });
     if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
+  }
+
+  @BeforeSave
+  static async updateState(instance: Group) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @BeforeSave

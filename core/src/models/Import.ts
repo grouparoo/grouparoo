@@ -19,10 +19,8 @@ import { Run } from "./Run";
 import { plugin } from "../modules/plugin";
 import { ImportOps } from "../modules/ops/import";
 import { APIData } from "../modules/apiData";
-import {
-  StateMachineModel,
-  StateTransition,
-} from "../classes/stateMachineModel";
+import { CommonModel } from "../classes/commonModel";
+import { StateMachine } from "../modules/stateMachine";
 
 export interface ImportData {
   [key: string]: any;
@@ -34,31 +32,34 @@ export interface ImportRecordProperties {
 
 const IMPORT_CREATORS = ["run"] as const;
 
+const STATES = [
+  "associating",
+  "importing",
+  "processing",
+  "failed",
+  "complete",
+] as const;
+
+const STATE_TRANSITIONS: StateMachine.StateTransition[] = [
+  { from: "associating", to: "failed", checks: [] },
+  { from: "associating", to: "importing", checks: [] },
+  { from: "importing", to: "failed", checks: [] },
+  { from: "importing", to: "complete", checks: [] },
+  { from: "importing", to: "processing", checks: [] },
+  { from: "processing", to: "failed", checks: [] },
+  { from: "processing", to: "complete", checks: [] },
+];
+
 @Table({ tableName: "imports", paranoid: false })
-export class Import extends StateMachineModel<Import, typeof Import.STATES> {
-  static STATES = [
-    "associating",
-    "importing",
-    "processing",
-    "failed",
-    "complete",
-  ] as const;
-
-  static STATE_TRANSITIONS: StateTransition[] = [
-    { from: "associating", to: "failed", checks: [] },
-    { from: "associating", to: "importing", checks: [] },
-    { from: "importing", to: "failed", checks: [] },
-    { from: "importing", to: "complete", checks: [] },
-    { from: "importing", to: "processing", checks: [] },
-    { from: "processing", to: "failed", checks: [] },
-    { from: "processing", to: "complete", checks: [] },
-  ];
-
-  static defaultState: typeof Import.STATES[number] = "associating";
-
+export class Import extends CommonModel<Import> {
   idPrefix() {
     return "imp";
   }
+
+  @AllowNull(false)
+  @Default("associating")
+  @Column(DataType.ENUM(...STATES))
+  state: typeof STATES[number];
 
   @AllowNull(false)
   @Column(DataType.ENUM(...IMPORT_CREATORS))
@@ -170,6 +171,12 @@ export class Import extends StateMachineModel<Import, typeof Import.STATES> {
   }
 
   // --- Class Methods --- //
+  static defaultState: typeof STATES[number] = "associating";
+
+  @BeforeSave
+  static async updateState(instance: Import) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
+  }
 
   @AfterCreate
   static async enqueueTask(instance: Import) {

@@ -26,6 +26,7 @@ import { LockableHelper } from "../modules/lockableHelper";
 import { PropertyOps } from "../modules/ops/property";
 import { OptionHelper } from "../modules/optionHelper";
 import { plugin } from "../modules/plugin";
+import { StateMachine } from "../modules/stateMachine";
 import { TopLevelGroupRules } from "../modules/topLevelGroupRules";
 import { Filter } from "./Filter";
 import { Group } from "./Group";
@@ -37,10 +38,7 @@ import { RecordProperty } from "./RecordProperty";
 import { Run } from "./Run";
 import { Source } from "./Source";
 import { getGrouparooRunMode } from "../modules/runMode";
-import {
-  StateMachineModel,
-  StateTransition,
-} from "../classes/stateMachineModel";
+import { CommonModel } from "../classes/commonModel";
 
 const jsMap = {
   boolean: config?.sequelize?.dialect === "sqlite" ? "text" : "boolean", // there is no boolean type in SQLite
@@ -69,6 +67,22 @@ export const PropertyTypes = [
 
 export interface SimplePropertyOptions extends OptionHelper.SimpleOptions {}
 
+const STATES = ["draft", "ready", "deleted"] as const;
+const STATE_TRANSITIONS = [
+  {
+    from: "draft",
+    to: "ready",
+    checks: [(instance: Property) => instance.validateOptions()],
+  },
+  { from: "draft", to: "deleted", checks: [] },
+  { from: "ready", to: "deleted", checks: [] },
+  {
+    from: "deleted",
+    to: "ready",
+    checks: [(instance: Property) => instance.validateOptions()],
+  },
+];
+
 export interface PropertyFiltersWithKey extends FilterHelper.FiltersWithKey {}
 
 export const CachedProperties = {
@@ -81,26 +95,7 @@ export const CachedProperties = {
   where: { state: { [Op.notIn]: ["draft"] } },
 }))
 @Table({ tableName: "properties", paranoid: false })
-export class Property extends StateMachineModel<
-  Property,
-  typeof Property.STATES
-> {
-  static STATES = ["draft", "ready", "deleted"] as const;
-  static STATE_TRANSITIONS: StateTransition[] = [
-    {
-      from: "draft",
-      to: "ready",
-      checks: [(instance: Property) => instance.validateOptions()],
-    },
-    { from: "draft", to: "deleted", checks: [] },
-    { from: "ready", to: "deleted", checks: [] },
-    {
-      from: "deleted",
-      to: "ready",
-      checks: [(instance: Property) => instance.validateOptions()],
-    },
-  ];
-
+export class Property extends CommonModel<Property> {
   idPrefix() {
     return "prp";
   }
@@ -128,6 +123,11 @@ export class Property extends StateMachineModel<
   @ForeignKey(() => Source)
   @Column
   sourceId: string;
+
+  @AllowNull(false)
+  @Default("draft")
+  @Column(DataType.ENUM(...STATES))
+  state: typeof STATES[number];
 
   @Column
   locked: string;
@@ -395,6 +395,11 @@ export class Property extends StateMachineModel<
   static async ensureOptions(instance: Property) {
     const source = await Source.findById(instance.sourceId);
     await source.validateOptions(null);
+  }
+
+  @BeforeSave
+  static async updateState(instance: Property) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @BeforeSave

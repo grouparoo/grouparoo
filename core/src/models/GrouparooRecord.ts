@@ -18,6 +18,7 @@ import { Group } from "./Group";
 import { RecordProperty } from "./RecordProperty";
 import { Import } from "./Import";
 import { Export } from "./Export";
+import { StateMachine } from "../modules/stateMachine";
 import { RecordOps } from "../modules/ops/record";
 import { APIData } from "../modules/apiData";
 import { GroupRule } from "./GroupRule";
@@ -25,35 +26,37 @@ import { RecordConfigurationObject } from "../classes/codeConfig";
 import { Source } from "./Source";
 import { GrouparooModel } from "./GrouparooModel";
 import { ModelGuard } from "../modules/modelGuard";
-import { StateMachineModel } from "../classes/stateMachineModel";
+import { CommonModel } from "../classes/commonModel";
+
+const STATES = ["draft", "pending", "ready", "deleted"] as const;
+
+const STATE_TRANSITIONS = [
+  { from: "draft", to: "pending", checks: [] },
+  { from: "draft", to: "ready", checks: [] },
+  {
+    from: "pending",
+    to: "ready",
+    checks: [
+      async (instance: GrouparooRecord) =>
+        await instance.validateRecordPropertiesAreReady(),
+    ],
+  },
+  { from: "ready", to: "pending", checks: [] },
+  { from: "draft", to: "deleted", checks: [] },
+  { from: "pending", to: "deleted", checks: [] },
+  { from: "ready", to: "deleted", checks: [] },
+];
 
 @Table({ tableName: "records", paranoid: false })
-export class GrouparooRecord extends StateMachineModel<
-  GrouparooRecord,
-  typeof GrouparooRecord.STATES
-> {
-  static STATES = ["draft", "pending", "ready", "deleted"] as const;
-
-  static STATE_TRANSITIONS = [
-    { from: "draft", to: "pending", checks: [] },
-    { from: "draft", to: "ready", checks: [] },
-    {
-      from: "pending",
-      to: "ready",
-      checks: [
-        async (instance: GrouparooRecord) =>
-          await instance.validateRecordPropertiesAreReady(),
-      ],
-    },
-    { from: "ready", to: "pending", checks: [] },
-    { from: "draft", to: "deleted", checks: [] },
-    { from: "pending", to: "deleted", checks: [] },
-    { from: "ready", to: "deleted", checks: [] },
-  ];
-
+export class GrouparooRecord extends CommonModel<GrouparooRecord> {
   idPrefix() {
     return "rec";
   }
+
+  @AllowNull(false)
+  @Default("pending")
+  @Column(DataType.ENUM(...STATES))
+  state: typeof STATES[number];
 
   @AllowNull(false)
   @Default(false)
@@ -253,6 +256,11 @@ export class GrouparooRecord extends StateMachineModel<
   @BeforeSave
   static async ensureModel(instance: GrouparooRecord) {
     return ModelGuard.check(instance);
+  }
+
+  @BeforeSave
+  static async updateState(instance: GrouparooRecord) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @AfterCreate

@@ -1,4 +1,4 @@
-import { Table, Column, AllowNull, Not } from "sequelize-typescript";
+import { Table, Column, AllowNull } from "sequelize-typescript";
 import { CommonModel } from "../classes/commonModel";
 import { APIData } from "../modules/apiData";
 

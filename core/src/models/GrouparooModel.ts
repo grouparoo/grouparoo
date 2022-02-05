@@ -9,6 +9,7 @@ import {
   BeforeSave,
   BeforeDestroy,
   DefaultScope,
+  Default,
 } from "sequelize-typescript";
 import { Source } from "./Source";
 import { ModelConfigurationObject } from "../classes/codeConfig";
@@ -19,30 +20,28 @@ import { Destination } from "./Destination";
 import { Group } from "./Group";
 import { GrouparooRecord } from "./GrouparooRecord";
 import { RunOps } from "../modules/ops/runs";
-import {
-  StateMachineModel,
-  StateTransition,
-} from "../classes/stateMachineModel";
+import { StateMachine } from "../modules/stateMachine";
+import { CommonModel } from "../classes/commonModel";
 
 export const ModelTypes = ["profile", "account", "custom"] as const;
 export type ModelType = typeof ModelTypes[number];
+
+const STATES = ["ready", "deleted"] as const;
+const STATE_TRANSITIONS: StateMachine.StateTransition[] = [
+  { from: "draft", to: "ready", checks: [] },
+  { from: "ready", to: "deleted", checks: [] },
+  {
+    from: "deleted",
+    to: "ready",
+    checks: [],
+  },
+];
 
 @DefaultScope(() => ({
   where: { state: "ready" },
 }))
 @Table({ tableName: "models", paranoid: false })
-export class GrouparooModel extends StateMachineModel<
-  GrouparooModel,
-  typeof GrouparooModel.STATES
-> {
-  static STATES = ["ready", "deleted"] as const;
-  static STATE_TRANSITIONS: StateTransition[] = [
-    { from: "draft", to: "ready", checks: [] },
-    { from: "ready", to: "deleted", checks: [] },
-    { from: "deleted", to: "ready", checks: [] },
-  ];
-  static defaultState: typeof GrouparooModel.STATES[number] = "ready";
-
+export class GrouparooModel extends CommonModel<GrouparooModel> {
   idPrefix() {
     return "mod";
   }
@@ -66,6 +65,11 @@ export class GrouparooModel extends StateMachineModel<
 
   @Column
   locked: string;
+
+  @AllowNull(false)
+  @Default("ready")
+  @Column(DataType.ENUM(...STATES))
+  state: typeof STATES[number];
 
   getIcon() {
     switch (this.type) {
@@ -131,6 +135,11 @@ export class GrouparooModel extends StateMachineModel<
   @BeforeSave
   static async noUpdateIfLocked(instance: GrouparooModel) {
     await LockableHelper.beforeSave(instance);
+  }
+
+  @BeforeSave
+  static async updateState(instance: GrouparooModel) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @BeforeDestroy
