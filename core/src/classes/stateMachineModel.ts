@@ -36,14 +36,14 @@ export abstract class StateMachineModel<
   getDefaultSate() {
     const defaultState: T["state"][number] =
       // @ts-expect-error TODO: this is messy
-      instance.constructor.defaultState ?? "draft";
+      this.constructor.defaultState ?? "draft";
     return defaultState;
   }
 
   getStateTransitions() {
     const transitions: StateTransition[] =
       // @ts-expect-error TODO: this is messy
-      instance.constructor.STATE_TRANSITIONS;
+      this.constructor.STATE_TRANSITIONS;
     return transitions;
   }
 
