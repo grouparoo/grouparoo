@@ -1,7 +1,7 @@
 import { HubspotClient } from "./client";
 import { utils } from "actionhero";
 
-export default class Contact {
+export default class Objects {
   client: HubspotClient;
 
   constructor(client: HubspotClient) {
@@ -106,5 +106,39 @@ export default class Contact {
       method: "POST",
       url: `/crm/v3/objects/${schemaId}/batch/archive`,
     });
+  }
+
+  async associate(fromObjectId: string, toObjectId: string) {
+    return this.client._request({
+      data: {
+        fromObjectId,
+        toObjectId,
+        category: "HUBSPOT_DEFINED",
+        definitionId: 1,
+      },
+      method: "PUT",
+      url: `/crm-associations/v1/associations`,
+    });
+  }
+
+  async disassociate(fromObjectId: string, toObjectId: string) {
+    return this.client._request({
+      data: {
+        fromObjectId,
+        toObjectId,
+        category: "HUBSPOT_DEFINED",
+        definitionId: 1,
+      },
+      method: "PUT",
+      url: `/crm-associations/v1/associations/delete`,
+    });
+  }
+
+  async getAssociation(contactId: string) {
+    const response = await this.client._request({
+      method: "GET",
+      url: `/crm-associations/v1/associations/${contactId}/HUBSPOT_DEFINED/1`,
+    });
+    return response?.results || [];
   }
 }

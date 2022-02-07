@@ -187,7 +187,7 @@ describe("integration/runs/hubspot", () => {
     expect(test.error).toBeUndefined();
   });
 
-  test("there are no destination options to read", async () => {
+  test("we can read the destination options", async () => {
     session.params = {
       csrfToken,
       id: destination.id,
@@ -198,7 +198,8 @@ describe("integration/runs/hubspot", () => {
         session
       );
     expect(error).toBeUndefined();
-    expect(options).toEqual({});
+    expect(options.companyKey).not.toBe(undefined);
+    expect(options.companyKey.type).toBe("list");
   });
 
   test("we can read the hubspot mapping options", async () => {

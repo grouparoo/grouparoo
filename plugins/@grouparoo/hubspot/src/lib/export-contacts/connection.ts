@@ -20,7 +20,14 @@ export const contactsDestinationConnection: PluginConnection = {
   apps: ["hubspot"],
   syncModes: contactsSupportedSyncModes,
   defaultSyncMode: "sync",
-  options: [],
+  options: [
+    {
+      key: "companyKey",
+      displayName: "Company Key",
+      required: false,
+      description: "Which field in the Company uniquely represents it?",
+    },
+  ],
   methods: {
     exportRecord,
     destinationOptions,

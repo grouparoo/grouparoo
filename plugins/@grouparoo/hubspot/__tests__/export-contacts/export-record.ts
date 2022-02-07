@@ -9,6 +9,9 @@ const appId = "app_ds789a789gdf789jh.m678rt90-90-3k";
 
 let apiClient: HubspotClient;
 let user: any;
+const companyKey = "domain";
+const domain = "tempsoft.com";
+const newDomain = "transcof.com";
 const phoneNumber = "+5583999999999";
 const newPhoneNumber = "+5583999999998";
 const otherPhoneNumber = "+5583999999997";
@@ -98,6 +101,7 @@ async function cleanUp(suppressErrors) {
 
 async function runExport({
   syncOperations = DestinationSyncModeData.sync.operations,
+  destinationOptions = null,
   oldRecordProperties,
   newRecordProperties,
   oldGroups,
@@ -111,7 +115,7 @@ async function runExport({
     app: null,
     destination: null,
     destinationId: null,
-    destinationOptions: null,
+    destinationOptions,
     syncOperations,
     export: {
       record: null,
@@ -157,7 +161,10 @@ describe("hubspot/exportRecord", () => {
 
     await runExport({
       oldRecordProperties: {},
-      newRecordProperties: { email, firstname: firstName },
+      newRecordProperties: {
+        email,
+        firstname: firstName,
+      },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -186,6 +193,95 @@ describe("hubspot/exportRecord", () => {
     expect(user["properties"]["firstname"]["value"]).toBe(firstName);
     expect(user["properties"]["lastname"]["value"]).toBe(lastName);
     expect(user["properties"]["mobilephone"]["value"]).toBe(phoneNumber);
+  });
+
+  test("can associate a user to a company", async () => {
+    user = await apiClient.getContactByEmail(email);
+    let association = await apiClient.objects.getAssociation(user.vid);
+    expect(association.map((id) => id.toString())).toEqual([]); //7319167530
+
+    await runExport({
+      destinationOptions: { companyKey },
+      oldRecordProperties: {
+        email,
+        firstname: firstName,
+        lastname: lastName,
+        mobilephone: phoneNumber,
+      },
+      newRecordProperties: {
+        email,
+        firstname: firstName,
+        lastname: lastName,
+        mobilephone: phoneNumber,
+        "Company.domain": domain,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+    });
+    user = await apiClient.getContactByEmail(email);
+    expect(user["properties"]["email"]["value"]).toBe(email);
+    expect(user["properties"]["firstname"]["value"]).toBe(firstName);
+    expect(user["properties"]["lastname"]["value"]).toBe(lastName);
+    expect(user["properties"]["mobilephone"]["value"]).toBe(phoneNumber);
+
+    const company = (
+      await apiClient.objects.searchObjects("COMPANY", companyKey, [domain])
+    )[0];
+    expect(company["properties"]["domain"]).toBe(domain);
+    association = await apiClient.objects.getAssociation(user.vid);
+    expect(association.map((id) => id.toString())).toEqual(
+      expect.arrayContaining([company.id])
+    ); //7319167530
+  });
+
+  test("can change associated company", async () => {
+    user = await apiClient.getContactByEmail(email);
+    let company = (
+      await apiClient.objects.searchObjects("COMPANY", companyKey, [domain])
+    )[0];
+    expect(company["properties"]["domain"]).toBe(domain);
+    let association = await apiClient.objects.getAssociation(user.vid);
+    expect(association.length).toBe(1);
+    expect(association.map((id) => id.toString())).toEqual(
+      expect.arrayContaining([company.id])
+    );
+
+    await runExport({
+      destinationOptions: { companyKey },
+      oldRecordProperties: {
+        email,
+        firstname: firstName,
+        lastname: lastName,
+        mobilephone: phoneNumber,
+        "Company.domain": domain,
+      },
+      newRecordProperties: {
+        email,
+        firstname: firstName,
+        lastname: lastName,
+        mobilephone: phoneNumber,
+        "Company.domain": newDomain,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+    });
+    user = await apiClient.getContactByEmail(email);
+    expect(user["properties"]["email"]["value"]).toBe(email);
+    expect(user["properties"]["firstname"]["value"]).toBe(firstName);
+    expect(user["properties"]["lastname"]["value"]).toBe(lastName);
+    expect(user["properties"]["mobilephone"]["value"]).toBe(phoneNumber);
+
+    company = (
+      await apiClient.objects.searchObjects("COMPANY", companyKey, [newDomain])
+    )[0];
+    expect(company["properties"]["domain"]).toBe(newDomain);
+    association = await apiClient.objects.getAssociation(user.vid);
+    expect(association.length).toBe(1);
+    expect(association.map((id) => id.toString())).toEqual(
+      expect.arrayContaining([company.id])
+    );
   });
 
   test("cannot update existing record if sync mode does not allow it", async () => {

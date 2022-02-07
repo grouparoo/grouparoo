@@ -3,6 +3,7 @@ import {
   Errors,
   SimpleAppOptions,
   DestinationSyncOperations,
+  SimpleDestinationOptions,
 } from "@grouparoo/core";
 import { HubspotClient } from "../client/client";
 import { connect } from "../connect";
@@ -32,6 +33,7 @@ const deleteContactOrClearGroups = async (
 export const exportRecord: ExportRecordPluginMethod = async ({
   appId,
   appOptions,
+  destinationOptions,
   syncOperations,
   export: {
     toDelete,
@@ -50,8 +52,15 @@ export const exportRecord: ExportRecordPluginMethod = async ({
 
   const email = newRecordProperties["email"]; // this is how we will identify records
   const oldEmail = oldRecordProperties["email"];
+  const companyKey = destinationOptions?.companyKey;
+  const companyMappingKey = companyKey ? `Company.${companyKey}` : null;
   if (!email) {
     throw new Error(`newRecordProperties[email] is a required mapping`);
+  }
+  if (companyKey && !newRecordProperties[companyMappingKey]) {
+    throw new Error(
+      `newRecordProperties[${companyMappingKey}] is a required mapping`
+    );
   }
 
   try {
@@ -88,6 +97,9 @@ export const exportRecord: ExportRecordPluginMethod = async ({
       );
       const formattedDataFields = {};
       for (const key of Object.keys(payload)) {
+        if (companyMappingKey && key === companyMappingKey) {
+          continue;
+        }
         formattedDataFields[key] = formatVar(payload[key]);
       }
 
@@ -124,6 +136,22 @@ export const exportRecord: ExportRecordPluginMethod = async ({
 
       await client.createOrUpdateContact(sortedDataFields);
 
+      // handle associations.
+      if (companyKey) {
+        const oldCompanyKeyValue = oldRecordProperties[companyMappingKey];
+        const newCompanyKeyValue = newRecordProperties[companyMappingKey];
+        if (!contact) {
+          contact = await client.getContactByEmail(email);
+        }
+        await syncAssociations(
+          client,
+          contact,
+          companyKey.toString(),
+          oldCompanyKeyValue,
+          newCompanyKeyValue
+        );
+      }
+
       // add to lists
       for (const i in newGroups) {
         const group = newGroups[i];
@@ -147,6 +175,39 @@ export const exportRecord: ExportRecordPluginMethod = async ({
     }
   }
 };
+
+async function syncAssociations(
+  client: HubspotClient,
+  contact: any,
+  companyKey: string,
+  oldCompanyKeyValue: string,
+  newCompanyKeyValue: string
+) {
+  if (oldCompanyKeyValue && newCompanyKeyValue !== oldCompanyKeyValue) {
+    const oldCompanyId = await getCompanyId(
+      client,
+      companyKey,
+      oldCompanyKeyValue
+    );
+    if (oldCompanyId) {
+      await client.objects.disassociate(contact.vid, oldCompanyId);
+    }
+  }
+  const companyId = await getCompanyId(client, companyKey, newCompanyKeyValue);
+  if (companyId) {
+    await client.objects.associate(contact.vid, companyId);
+  }
+}
+
+async function getCompanyId(client, companyKey, companyKeyValue) {
+  if (companyKey === "hs_object_id") {
+    return companyKeyValue;
+  }
+  const company = (
+    await client.objects.searchObjects("COMPANY", companyKey, [companyKeyValue])
+  )[0];
+  return company?.id.toString();
+}
 
 function formatVar(value) {
   if (value === undefined || value === null) {
