@@ -14,6 +14,7 @@ import React from "react";
 
 type PluginWithVersion = Actions.PluginsList["plugins"][number];
 
+// TODO: Can we find an alternative to not customizing the error handler?
 class CustomErrorHandler extends EventDispatcher<{ message: string }> {
   message: Error | string | any = null;
 
@@ -174,7 +175,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
         "get",
         "/status/public",
         undefined,
-        { useCache: false, errorHandler: new CustomErrorHandler() }
+        { useCache: false }
       );
 
       if (response["status"] !== "ok") {
