@@ -10,7 +10,7 @@ type FindOneWithCache<T> = (
 
 export class ModelCache<T> {
   TTL = env === "test" ? -1 : 1000 * 30;
-  expires: number;
+  expires: number = 0;
   instances: T[];
   findAllWithCache: FindAllWithCache<T>;
   findOneWithCache: FindOneWithCache<T>;
