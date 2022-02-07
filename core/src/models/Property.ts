@@ -39,6 +39,7 @@ import { Run } from "./Run";
 import { Source } from "./Source";
 import { getGrouparooRunMode } from "../modules/runMode";
 import { CommonModel } from "../classes/commonModel";
+import { ModelCache } from "../modules/modelCache";
 
 const jsMap = {
   boolean: config?.sequelize?.dialect === "sqlite" ? "text" : "boolean", // there is no boolean type in SQLite
@@ -85,11 +86,11 @@ const STATE_TRANSITIONS = [
 
 export interface PropertyFiltersWithKey extends FilterHelper.FiltersWithKey {}
 
-export const CachedProperties = {
-  expires: 0,
-  TTL: env === "test" ? -1 : 1000 * 30,
-  properties: [] as Property[],
-};
+// export const CachedProperties = {
+//   expires: 0,
+//   TTL: env === "test" ? -1 : 1000 * 30,
+//   properties: [] as Property[],
+// };
 
 @DefaultScope(() => ({
   where: { state: { [Op.notIn]: ["draft"] } },
@@ -306,63 +307,63 @@ export class Property extends CommonModel<Property> {
 
   // --- Cache Methods --- //
 
-  static async findAllWithCache(modelId?: string): Promise<Property[]> {
-    const now = new Date().getTime();
-    if (
-      CachedProperties.expires > now &&
-      CachedProperties.properties.length > 0
-    ) {
-      return modelId
-        ? CachedProperties.properties.filter(
-            (p) => p?.source?.modelId === modelId
-          )
-        : CachedProperties.properties;
-    }
+  // static async findAllWithCache(modelId?: string): Promise<Property[]> {
+  //   const now = new Date().getTime();
+  //   if (
+  //     CachedProperties.expires > now &&
+  //     CachedProperties.properties.length > 0
+  //   ) {
+  //     return modelId
+  //       ? CachedProperties.properties.filter(
+  //           (p) => p?.source?.modelId === modelId
+  //         )
+  //       : CachedProperties.properties;
+  //   }
 
-    CachedProperties.properties = await Property.findAll({
-      include: [{ model: Source.unscoped(), required: false }],
-    });
-    CachedProperties.expires = now + CachedProperties.TTL;
-    return modelId
-      ? CachedProperties.properties.filter(
-          (p) => p?.source?.modelId === modelId
-        )
-      : CachedProperties.properties;
-  }
+  //   CachedProperties.properties = await Property.findAll({
+  //     include: [{ model: Source.unscoped(), required: false }],
+  //   });
+  //   CachedProperties.expires = now + CachedProperties.TTL;
+  //   return modelId
+  //     ? CachedProperties.properties.filter(
+  //         (p) => p?.source?.modelId === modelId
+  //       )
+  //     : CachedProperties.properties;
+  // }
 
-  static async findOneWithCache(
-    value: string,
-    modelId?: string,
-    lookupKey: keyof Property = "id"
-  ) {
-    const properties = await Property.findAllWithCache(modelId);
-    let property = properties.find((p) => p[lookupKey] === value);
+  // static async findOneWithCache(
+  //   value: string,
+  //   modelId?: string,
+  //   lookupKey: keyof Property = "id"
+  // ) {
+  //   const properties = await Property.findAllWithCache(modelId);
+  //   let property = properties.find((p) => p[lookupKey] === value);
 
-    if (!property) {
-      property = await Property.findOne({
-        where: { [lookupKey]: value },
-        include: [{ model: Source.unscoped(), required: false }],
-      });
-      if (!property) await Property.invalidateCache();
-    }
+  //   if (!property) {
+  //     property = await Property.findOne({
+  //       where: { [lookupKey]: value },
+  //       include: [{ model: Source.unscoped(), required: false }],
+  //     });
+  //     if (!property) await Property.invalidateCache();
+  //   }
 
-    return property;
-  }
+  //   return property;
+  // }
 
-  static invalidateLocalCache() {
-    CachedProperties.expires = 0;
-  }
+  // static invalidateLocalCache() {
+  //   CachedProperties.expires = 0;
+  // }
 
   // --- Class Methods --- //
 
-  @AfterSave
-  @AfterDestroy
-  static async invalidateCache() {
-    Property.invalidateLocalCache();
-    await CLS.afterCommit(
-      async () => await redis.doCluster("api.rpc.property.invalidateCache")
-    );
-  }
+  // @AfterSave
+  // @AfterDestroy
+  // static async invalidateCache() {
+  //   Property.invalidateLocalCache();
+  //   await CLS.afterCommit(
+  //     async () => await redis.doCluster("api.rpc.property.invalidateCache")
+  //   );
+  // }
 
   @BeforeSave
   static async ensureUniqueKey(instance: Property) {
