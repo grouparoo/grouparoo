@@ -106,8 +106,9 @@ export class Client {
       }
 
       return response.data;
-    } catch (error) {
+    } catch (e) {
       unlock?.();
+      let error = e;
 
       if (error.response && error.response.data && error.response.data.error) {
         const err =
@@ -115,8 +116,10 @@ export class Client {
           error.response?.data?.error ??
           error;
 
+        const code = error.response?.data?.error?.code;
+
         error = new Error(err);
-        error["code"] = error.response?.data?.error?.code;
+        error["code"] = code;
       }
 
       if (isBrowser()) {
