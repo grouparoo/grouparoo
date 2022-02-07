@@ -13,7 +13,7 @@ interface ClientRequestOptions {
   useCache: boolean;
 }
 
-const API_VERSION = process.env.API_VERSION || "v1";
+export const API_VERSION = process.env.API_VERSION || "v1";
 const WEB_URL = process.env.WEB_URL ?? "";
 const SERVER_TOKEN = process.env.SERVER_TOKEN;
 
