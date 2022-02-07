@@ -1,80 +1,34 @@
-import axios, { AxiosRequestConfig, AxiosRequestHeaders, Method } from "axios";
+import axios, {
+  AxiosRequestConfig,
+  AxiosRequestHeaders,
+  AxiosResponse,
+  Method,
+} from "axios";
 import type { IncomingMessage, ServerResponse } from "http";
 import PackageJSON from "../package.json";
 import { getRequestContext } from "../utils/appContext";
 import type { NextContext, NextContextName } from "../utils/appContext";
-import { errorHandler } from "../eventHandlers";
-import { getRedirectFromErrorCode } from "../utils/getRedirectFromErrorCode";
-import { isBrowser } from "../utils/isBrowser";
 
 import { ClientCache, ClientCacheGetObject } from "./clientCache";
-
-interface ClientRequestOptions {
-  useCache: boolean;
-}
+import "./clientBrowserErrorHandling";
 
 export const API_VERSION = process.env.API_VERSION || "v1";
 const WEB_URL = process.env.WEB_URL ?? "";
 const SERVER_TOKEN = process.env.SERVER_TOKEN;
+const DEFAULT_HEADERS = {
+  Accept: "application/json",
+  "Content-Type": "application/json",
+  "X-Grouparoo-Client": `${PackageJSON.name}-v${PackageJSON.version}`,
+};
+const BASE_URL = `${WEB_URL}/api/${API_VERSION}`;
 
 const getCsrfToken = () =>
   globalThis?.localStorage
     ? window.localStorage.getItem("session:csrfToken")
     : undefined;
 
-const apiInstance = axios.create({
-  baseURL: `${WEB_URL}/api/${API_VERSION}`,
-  withCredentials: true,
-  headers: {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-    "X-Grouparoo-Client": `${PackageJSON.name}-v${PackageJSON.version}`,
-  },
-});
-
-apiInstance.interceptors.response.use(
-  (response) => {
-    if (response.data && response.data.error) {
-      const error = response.data.error.message
-        ? response.data.error.message
-        : response.data.error;
-
-      throw error;
-    }
-    return response;
-  },
-  (error) => {
-    if (error.response && error.response.data && error.response.data.error) {
-      const err =
-        error.response?.data?.error?.message ??
-        error.response?.data?.error ??
-        error;
-
-      const newError = new Error(err);
-      newError["code"] = error.response?.data?.error?.code;
-      throw newError;
-    } else {
-      throw error;
-    }
-  }
-);
-
-if (isBrowser()) {
-  apiInstance.interceptors.response.use(undefined, (error) => {
-    errorHandler.set({ message: error });
-
-    const redirect = getRedirectFromErrorCode(
-      error.code,
-      window.location.pathname
-    );
-
-    if (redirect) {
-      window.location.href = redirect.destination;
-      return new Promise(() => {});
-    }
-
-    return {};
-  });
+interface ClientRequestOptions {
+  useCache: boolean;
 }
 
 export class Client {
@@ -95,7 +49,7 @@ export class Client {
     options: Partial<ClientRequestOptions> = {}
   ): Promise<Response> {
     options = { useCache: true, ...options };
-    const headers: AxiosRequestHeaders = {};
+    const headers: AxiosRequestHeaders = { ...DEFAULT_HEADERS };
 
     const { req } = this.getRequestContext();
     if (req?.headers?.cookie) {
@@ -105,8 +59,9 @@ export class Client {
     }
 
     const config: AxiosRequestConfig = {
-      url: path,
+      url: BASE_URL + path,
       method: verb.toLowerCase() as Method,
+      withCredentials: true,
       headers,
     };
 
@@ -140,12 +95,35 @@ export class Client {
     }
 
     try {
-      const response = await apiInstance.request<Response>(config);
+      const response: AxiosResponse<Response & { error?: Error }> = await axios(
+        config
+      );
       unlock?.(response.data);
+
+      if (response.data && response.data.error) {
+        const error = response.data.error.message
+          ? response.data.error.message
+          : response.data.error;
+
+        throw error;
+      }
+
       return response.data;
     } catch (error) {
       unlock?.();
-      throw error;
+
+      if (error.response && error.response.data && error.response.data.error) {
+        const err =
+          error.response?.data?.error?.message ??
+          error.response?.data?.error ??
+          error;
+
+        const newError = new Error(err);
+        newError["code"] = error.response?.data?.error?.code;
+        throw newError;
+      } else {
+        throw error;
+      }
     }
   }
 }
