@@ -860,8 +860,8 @@ describe("models/destination - with custom exportRecords plugin", () => {
       const foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
       expect(foundTasks.length).toBe(1);
       expect(foundTasks[0].args[0].exportIds).toEqual([
-        exportTwo.id,
         exportOne.id,
+        exportTwo.id,
       ]);
 
       await specHelper.runTask("export:sendBatch", foundTasks[0].args[0]);
