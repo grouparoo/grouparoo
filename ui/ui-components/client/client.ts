@@ -66,20 +66,16 @@ export class Client {
       headers,
     };
 
-    data.csrfToken = getCsrfToken();
-
     if (data) {
+      data.csrfToken = getCsrfToken();
+
       for (const i in data) {
         if (data[i] === null || data[i] === undefined) {
           delete data[i];
         }
       }
 
-      if (config.method === "get") {
-        config.params = data;
-      } else {
-        config.data = data;
-      }
+      config[config.method === "get" ? "params" : "data"] = data;
     }
 
     let unlock: ClientCacheGetObject["unlock"];
