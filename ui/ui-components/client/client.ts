@@ -8,9 +8,10 @@ import type { IncomingMessage, ServerResponse } from "http";
 import PackageJSON from "../package.json";
 import { getRequestContext } from "../utils/appContext";
 import type { NextContext, NextContextName } from "../utils/appContext";
+import { isBrowser } from "../utils/isBrowser";
 
 import { ClientCache, ClientCacheGetObject } from "./clientCache";
-import "./clientBrowserErrorHandling";
+import { handleBrowserClientError } from "./handleBrowserClientError";
 
 export const API_VERSION = process.env.API_VERSION || "v1";
 const WEB_URL = process.env.WEB_URL ?? "";
@@ -118,12 +119,15 @@ export class Client {
           error.response?.data?.error ??
           error;
 
-        const newError = new Error(err);
-        newError["code"] = error.response?.data?.error?.code;
-        throw newError;
-      } else {
-        throw error;
+        error = new Error(err);
+        error["code"] = error.response?.data?.error?.code;
       }
+
+      if (isBrowser()) {
+        return handleBrowserClientError<Response>(error);
+      }
+
+      throw error;
     }
   }
 }
