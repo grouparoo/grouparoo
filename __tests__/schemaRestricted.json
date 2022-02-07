@@ -1,21 +1,20 @@
 {
-  "$id": "schemaPlugin",
+  "$id": "schemaRestricted",
   "type": "object",
-  "title": "Plugin Package.json Schema",
-  "description": "Schema for all Plugin Package.json files in Grouparoo.",
+  "title": "Package.json Schema with Restricted puglishConfig access",
+  "description": "Schema for packages with restricted publishConfig access",
   "required": ["publishConfig"],
   "allOf": [{ "$ref": "./schemaGeneric" }],
   "properties": {
     "publishConfig": {
       "$id": "#/properties/publishConfig",
       "type": "object",
-      "examples": [{ "access": "public" }],
       "required": ["access"],
       "properties": {
         "access": {
           "$id": "#/properties/publishConfig/access",
           "type": "string",
-          "examples": ["public"]
+          "pattern": "restricted"
         }
       }
     }

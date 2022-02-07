@@ -13,8 +13,6 @@
     "url": "git+https://github.com/grouparoo/grouparoo.git"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.8.1-alpha.0",
-    "@grouparoo/spec-helper": "0.8.1-alpha.0",
     "@types/jest": "*",
     "@types/jest-json-schema": "6.1.0",
     "glob": "7.2.0",

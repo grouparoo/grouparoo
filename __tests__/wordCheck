@@ -34,6 +34,7 @@ for word in "${BAD_WORDS[@]}"; do
   
   else
     echo "$word: $MATCHES" 1>&2
+    exit 1
   fi
 done
 

@@ -14,49 +14,37 @@
   "properties": {
     "author": {
       "$id": "#/properties/author",
-      "type": "string",
-      "examples": ["Grouparoo Inc <hello@grouparoo.com>"]
+      "type": "string"
     },
     "name": {
       "$id": "#/properties/name",
-      "type": "string",
-      "examples": ["@grouparoo/core"]
+      "type": "string"
     },
     "description": {
       "$id": "#/properties/description",
-      "type": "string",
-      "examples": ["The Grouparoo Core"]
+      "type": "string"
     },
     "version": {
       "$id": "#/properties/version",
-      "type": "string",
-      "examples": ["0.8.1-alpha.0"]
+      "type": "string"
     },
     "license": {
       "$id": "#/properties/license",
       "type": "string",
-      "title": "The license schema",
-      "examples": ["MPL-2.0"]
+      "title": "The license schema"
     },
     "private": {
       "$id": "#/properties/private",
-      "type": "boolean",
-      "examples": [false]
+      "type": "boolean"
     },
     "publishConfig": {
       "$id": "#/properties/publishConfig",
       "type": "object",
-      "examples": [
-        {
-          "access": "public"
-        }
-      ],
       "required": ["access"],
       "properties": {
         "access": {
           "$id": "#/properties/publishConfig/properties/access",
-          "type": "string",
-          "examples": ["public"]
+          "type": "string"
         }
       },
       "additionalProperties": true
