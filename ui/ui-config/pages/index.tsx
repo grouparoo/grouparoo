@@ -40,13 +40,16 @@ export default function Page(props) {
           target: null,
         });
       } else if (navigationMode === "config:authenticated" && !currentStep) {
-        const {
-          models: [model],
-        } = await client.request<Actions.ModelsList>("get", "/models", {
-          limit: 1,
-          order: [["name", "asc"]],
-        });
-        if (model) {
+        const { models } = await client.request<Actions.ModelsList>(
+          "get",
+          "/models",
+          {
+            limit: 1,
+            order: [["name", "asc"]],
+          }
+        );
+        if (models?.length > 0) {
+          const [model] = models;
           router.replace(`/model/${model.id}/overview`);
           return;
         }

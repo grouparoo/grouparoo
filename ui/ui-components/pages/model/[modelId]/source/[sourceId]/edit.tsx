@@ -299,8 +299,10 @@ const Page: NextPage<Props> = ({
           modelId: source?.modelId,
         });
 
-      setProperties(properties);
-      setPropertyExamples(examples);
+      if (properties) {
+        setProperties(properties);
+        setPropertyExamples(examples);
+      }
       if (response?.source) {
         setSource(response.source);
       }

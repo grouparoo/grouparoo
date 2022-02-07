@@ -48,8 +48,10 @@ const RunAllSchedulesButton: React.FC<Props> = ({
         `/schedules/run`,
         { modelId }
       );
-      successHandler.set({ message: `${runs.length} runs enqueued` });
-      onSuccess?.();
+      if (runs) {
+        successHandler.set({ message: `${runs.length} runs enqueued` });
+        onSuccess?.();
+      }
     } finally {
       setLoading(false);
       onComplete?.();

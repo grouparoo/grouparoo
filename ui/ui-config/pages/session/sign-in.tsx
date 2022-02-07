@@ -34,13 +34,15 @@ export default function SignInPage(props) {
         const { setupSteps } = await getSetupSteps();
         const isSetupComplete = setupSteps.every((step) => step.complete);
         if (isSetupComplete) {
-          const {
-            models: [model],
-          } = await client.request<Actions.ModelsList>("get", "/models", {
-            limit: 1,
-            order: [["name", "asc"]],
-          });
-          router.push(model ? `/model/${model.id}/overview` : "/");
+          const { models } = await client.request<Actions.ModelsList>(
+            "get",
+            "/models",
+            {
+              limit: 1,
+              order: [["name", "asc"]],
+            }
+          );
+          router.push(models.length ? `/model/${models[0].id}/overview` : "/");
         } else {
           router.push("/setup");
         }
