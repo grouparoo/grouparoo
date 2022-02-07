@@ -86,8 +86,8 @@ const Page: NextPage<Props> = ({
   }, [preview]);
 
   const mappingColumn = useMemo(
-    () => Object.keys(source.mapping)[0] ?? previewColumns?.[0],
-    [previewColumns, source.mapping]
+    () => Object.keys(source.mapping)[0],
+    [source.mapping]
   );
   const mappingPropertyKey = useMemo(
     () => Object.values(source.mapping)[0],
@@ -700,14 +700,18 @@ export const getServerSideProps: GetServerSideProps<Props> =
         modelId: source?.modelId,
       });
 
-    const { preview = [] } = await client.request<Actions.SourcePreview>(
-      "get",
-      `/source/${sourceId}/preview`,
-      {
-        options: Object.keys(source.options).length > 0 ? source.options : null,
-      },
-      { useCache: false }
-    );
+    let preview: Actions.SourcePreview["preview"] = null;
+    if (source.previewAvailable) {
+      ({ preview } = await client.request<Actions.SourcePreview>(
+        "get",
+        `/source/${sourceId}/preview`,
+        {
+          options:
+            Object.keys(source.options).length > 0 ? source.options : null,
+        },
+        { useCache: false }
+      ));
+    }
 
     return {
       props: {
