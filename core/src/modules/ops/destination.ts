@@ -30,6 +30,7 @@ import { RecordPropertyOps } from "./recordProperty";
 import { Option } from "../../models/Option";
 import { getLock } from "../locks";
 import { ExportOps } from "./export";
+import { PropertiesCache } from "../caches/propertiesCache";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -325,7 +326,7 @@ export namespace DestinationOps {
     });
     const appOptions = await app.getOptions();
     await app.validateOptions(appOptions);
-    const properties = await Property.findAllWithCache(record.modelId);
+    const properties = await PropertiesCache.findAllWithCache(record.modelId);
     const destinationGroupMemberships =
       await destination.getDestinationGroupMemberships();
     const mapping = await destination.getMapping();

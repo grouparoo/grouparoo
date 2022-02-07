@@ -51,6 +51,7 @@ import { RunOps } from "../modules/ops/runs";
 import { ModelGuard } from "../modules/modelGuard";
 import { getGrouparooRunMode } from "../modules/runMode";
 import { CommonModel } from "../classes/commonModel";
+import { PropertiesCache } from "../modules/caches/propertiesCache";
 
 export const GROUP_RULE_LIMIT = 10;
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -180,7 +181,7 @@ export class Group extends CommonModel<Group> {
 
     for (const i in rules) {
       const rule: GroupRule = rules[i];
-      const property = await Property.findOneWithCache(
+      const property = await PropertiesCache.findOneWithCache(
         rule.propertyId,
         this.modelId
       );
@@ -670,7 +671,7 @@ export class Group extends CommonModel<Group> {
     const convenientRules = this.toConvenientRules(groupRules);
 
     for (const rule of convenientRules) {
-      const property = await Property.findOneWithCache(
+      const property = await PropertiesCache.findOneWithCache(
         rule.key,
         modelId,
         "key"

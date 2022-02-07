@@ -24,6 +24,7 @@ import { SourceOps } from "./source";
 import { GrouparooModel } from "../../models/GrouparooModel";
 import { CLS } from "../cls";
 import { DestinationOps } from "./destination";
+import { PropertiesCache } from "../caches/propertiesCache";
 
 export interface RecordPropertyValue {
   id: RecordProperty["id"];
@@ -61,7 +62,7 @@ export namespace RecordOps {
         order: [["position", "ASC"]],
       }));
 
-    const properties = await Property.findAllWithCache(record.modelId);
+    const properties = await PropertiesCache.findAllWithCache(record.modelId);
 
     const hash: RecordPropertyType = {};
 
@@ -161,7 +162,7 @@ export namespace RecordOps {
       include.push(RecordProperty);
       countRequiresIncludes = true;
 
-      const property = await Property.findOneWithCache(
+      const property = await PropertiesCache.findOneWithCache(
         `${searchKey}`,
         undefined,
         "key"
@@ -293,7 +294,9 @@ export namespace RecordOps {
     try {
       let recordOffset = 0;
       for (const record of records) {
-        const properties = await Property.findAllWithCache(record.modelId);
+        const properties = await PropertiesCache.findAllWithCache(
+          record.modelId
+        );
 
         if (toLock) {
           const response = await waitForLock(`record:${record.id}`);
@@ -454,7 +457,7 @@ export namespace RecordOps {
 
     const clearRecordPropertyIds = [];
     for (let recordProperty of pendingProperties) {
-      const property = await Property.findOneWithCache(
+      const property = await PropertiesCache.findOneWithCache(
         recordProperty.propertyId,
         record.modelId
       );
@@ -507,7 +510,7 @@ export namespace RecordOps {
     const now = new Date();
 
     for (const record of records) {
-      const properties = await Property.findAllWithCache(record.modelId);
+      const properties = await PropertiesCache.findAllWithCache(record.modelId);
       const recordProperties = await record.getProperties();
 
       for (const key in properties) {
@@ -747,7 +750,7 @@ export namespace RecordOps {
     let isNew = false;
     let recordProperty: RecordProperty;
     const uniqueProperties = (
-      await Property.findAllWithCache(
+      await PropertiesCache.findAllWithCache(
         source instanceof Source ? source.modelId : undefined
       )
     ).filter((p) => p.unique === true);
@@ -808,7 +811,7 @@ export namespace RecordOps {
           typeof source === "boolean"
             ? source
             : source instanceof Source
-            ? (await Property.findAllWithCache(source.modelId))
+            ? (await PropertiesCache.findAllWithCache(source.modelId))
                 .filter((p) => p.unique === true && p.sourceId === source.id)
                 .map((p) => p.key)
                 .filter((key) => !!hash[key]).length > 0
@@ -878,9 +881,8 @@ export namespace RecordOps {
     let modelIdsToClear: string[] = [];
 
     for (const model of models) {
-      const propertiesByModel: Property[] = await Property.findAllWithCache(
-        model.id
-      );
+      const propertiesByModel: Property[] =
+        await PropertiesCache.findAllWithCache(model.id);
 
       const primaryKeyProperties = propertiesByModel.filter((property) => {
         return property.isPrimaryKey == true;

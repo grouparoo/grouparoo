@@ -5,6 +5,7 @@ import { Source } from "./../models/Source";
 import { Destination } from "./../models/Destination";
 import { LockableHelper } from "./lockableHelper";
 import { modelName } from "./modelName";
+import { PropertiesCache } from "./caches/propertiesCache";
 
 export namespace MappingHelper {
   export type Mappings = Record<string, string>;
@@ -27,7 +28,7 @@ export namespace MappingHelper {
 
     for (const i in mappings) {
       const mapping = mappings[i];
-      const property = await Property.findOneWithCache(
+      const property = await PropertiesCache.findOneWithCache(
         mapping.propertyId,
         instance.modelId
       );

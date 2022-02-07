@@ -9,6 +9,7 @@ import { internalRun } from "../internalRun";
 import { PluginOptionType } from "../../classes/plugin";
 import { getGrouparooRunMode } from "../runMode";
 import Mustache from "mustache";
+import { PropertiesCache } from "../caches/propertiesCache";
 
 export namespace PropertyOps {
   /**
@@ -135,7 +136,7 @@ export namespace PropertyOps {
     });
     const sourceMapping = await source.getMapping();
     const ruleOptions = await property.getOptions();
-    const properties = await Property.findAllWithCache(source.modelId);
+    const properties = await PropertiesCache.findAllWithCache(source.modelId);
 
     // does our source depend on another property to be mapped?
     const remoteMappingKeys: string[] = Object.values(sourceMapping);

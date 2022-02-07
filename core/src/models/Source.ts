@@ -1,6 +1,7 @@
 import { Op } from "sequelize";
 import {
   AfterDestroy,
+  AfterSave,
   AllowNull,
   BeforeCreate,
   BeforeDestroy,
@@ -43,6 +44,10 @@ import { Run } from "./Run";
 import { GrouparooModel } from "./GrouparooModel";
 import { ModelGuard } from "../modules/modelGuard";
 import { CommonModel } from "../classes/commonModel";
+import { PropertiesCache } from "../modules/caches/propertiesCache";
+import { SourcesCache } from "../modules/caches/sourcesCache";
+import { CLS } from "../modules/cls";
+import { redis } from "actionhero";
 
 export interface BootstrapUniquePropertyParams {
   mappedColumn: string;
@@ -246,9 +251,9 @@ export class Source extends CommonModel<Source> {
       return true;
     } else {
       const propertyMappingKey = Object.values(mapping)[0];
-      const property = (await Property.findAllWithCache(this.modelId)).find(
-        (p) => p.key === propertyMappingKey
-      );
+      const property = (
+        await PropertiesCache.findAllWithCache(this.modelId)
+      ).find((p) => p.key === propertyMappingKey);
       if (!property) return false;
       if (!property.unique) return false;
       return true;
@@ -522,5 +527,14 @@ export class Source extends CommonModel<Source> {
     if (primaryKeyProperty) {
       await primaryKeyProperty.destroy();
     }
+  }
+
+  @AfterSave
+  @AfterDestroy
+  static async invalidateCache() {
+    SourcesCache.invalidate();
+    await CLS.afterCommit(
+      async () => await redis.doCluster("api.rpc.property.invalidateCache")
+    );
   }
 }

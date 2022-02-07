@@ -11,6 +11,7 @@ import { PropertyOps } from "../../modules/ops/property";
 import { ImportOps } from "../../modules/ops/import";
 import { RecordOps } from "../../modules/ops/record";
 import { APIData } from "../../modules/apiData";
+import { PropertiesCache } from "../../modules/caches/propertiesCache";
 
 export class ImportRecordProperties extends RetryableTask {
   name = "recordProperty:importRecordProperties";
@@ -32,7 +33,7 @@ export class ImportRecordProperties extends RetryableTask {
     });
     if (records.length === 0) return;
 
-    const allProperties = await Property.findAllWithCache();
+    const allProperties = await PropertiesCache.findAllWithCache();
     const properties = allProperties.filter((p) => propertyIds.includes(p.id));
     if (properties.length === 0) return;
     const sourceIds = properties

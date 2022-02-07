@@ -5,17 +5,15 @@ import {
   Default,
   ForeignKey,
   BelongsTo,
-  BeforeSave,
   DataType,
 } from "sequelize-typescript";
-import { Op } from "sequelize";
 import { GrouparooRecord } from "./GrouparooRecord";
 import { Property } from "./Property";
 import { RecordPropertyOps } from "../modules/ops/recordProperty";
 import { StateMachine } from "../modules/stateMachine";
 import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
-import { config } from "actionhero";
+import { PropertiesCache } from "../modules/caches/propertiesCache";
 
 const STATES = ["draft", "pending", "ready"] as const;
 
@@ -126,7 +124,7 @@ export class RecordProperty extends CommonModel<RecordProperty> {
   }
 
   async ensureProperty() {
-    const property = await Property.findOneWithCache(this.propertyId);
+    const property = await PropertiesCache.findOneWithCache(this.propertyId);
     if (!property) {
       throw new Error(`property not found for propertyId ${this.propertyId}`);
     }

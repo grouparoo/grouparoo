@@ -1,12 +1,12 @@
 import { RetryableTask } from "../../classes/tasks/retryableTask";
 import { GrouparooRecord } from "../../models/GrouparooRecord";
-import { Property } from "../../models/Property";
 import { RecordProperty } from "../../models/RecordProperty";
 import { Mapping } from "../../models/Mapping";
 import { Option } from "../../models/Option";
 import { PropertyOps } from "../../modules/ops/property";
 import { ImportOps } from "../../modules/ops/import";
 import { ParamsFrom } from "actionhero";
+import { PropertiesCache } from "../../modules/caches/propertiesCache";
 
 export class ImportRecordProperty extends RetryableTask {
   name = "recordProperty:importRecordProperty";
@@ -31,7 +31,7 @@ export class ImportRecordProperty extends RetryableTask {
       });
     }
 
-    const property = await Property.findOneWithCache(
+    const property = await PropertiesCache.findOneWithCache(
       propertyId,
       record.modelId
     );

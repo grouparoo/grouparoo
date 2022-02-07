@@ -12,6 +12,7 @@ import {
   HasMany,
   HasOne,
   DefaultScope,
+  AfterSave,
 } from "sequelize-typescript";
 import { api, redis } from "actionhero";
 import { Op } from "sequelize";
@@ -27,6 +28,8 @@ import { APIData } from "../modules/apiData";
 import { AppConfigurationObject } from "../classes/codeConfig";
 import { AppRefreshQuery } from "./AppRefreshQuery";
 import { CommonModel } from "../classes/commonModel";
+import { AppsCache } from "../modules/caches/appsCache";
+import { CLS } from "../modules/cls";
 
 export interface SimpleAppOptions extends OptionHelper.SimpleOptions {}
 
@@ -403,5 +406,14 @@ export class App extends CommonModel<App> {
     const key = instance.parallelismKey();
     const redis = api.redis.clients.client;
     return redis.del(key);
+  }
+
+  @AfterSave
+  @AfterDestroy
+  static async invalidateCache() {
+    AppsCache.invalidate();
+    await CLS.afterCommit(
+      async () => await redis.doCluster("api.rpc.property.invalidateCache")
+    );
   }
 }
