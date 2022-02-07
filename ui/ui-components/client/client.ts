@@ -55,28 +55,14 @@ export class Client {
   ) {}
 
   private redirectOnAccessError({ code }: { code: string }): boolean {
-    const { type, req, res } = this.getRequestContext();
-    if (
-      !isBrowser() &&
-      (!req || !res || type === "GetServerSidePropsContext")
-    ) {
+    if (!isBrowser()) {
       return false;
     }
 
-    const redirect = getRedirectFromErrorCode(
-      code,
-      isBrowser() ? window.location.pathname : req.url.match("^[^?]*")[0]
-    );
+    const redirect = getRedirectFromErrorCode(code, window.location.pathname);
 
     if (redirect) {
-      if (isBrowser()) {
-        window.location.href = redirect.destination;
-      } else {
-        res.writeHead(302, {
-          Location: redirect.destination,
-        });
-        res.end();
-      }
+      window.location.href = redirect.destination;
     }
 
     return !!redirect;
