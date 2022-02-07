@@ -86,8 +86,8 @@ const Page: NextPage<Props> = ({
   }, [preview]);
 
   const mappingColumn = useMemo(
-    () => Object.keys(source.mapping)[0],
-    [source.mapping]
+    () => Object.keys(source.mapping)[0] ?? previewColumns?.[0],
+    [previewColumns, source.mapping]
   );
   const mappingPropertyKey = useMemo(
     () => Object.values(source.mapping)[0],
