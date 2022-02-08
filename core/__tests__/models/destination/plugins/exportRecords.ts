@@ -738,8 +738,8 @@ describe("models/destination - with custom exportRecords plugin", () => {
         errorLevel: null,
       });
 
-      helper.changeTimestamps([exportOne], true, new Date());
-      helper.changeTimestamps(
+      await helper.changeTimestamps([exportOne], true, new Date());
+      await helper.changeTimestamps(
         [exportTwo],
         true,
         new Date(new Date().valueOf() - 100000)
@@ -768,6 +768,115 @@ describe("models/destination - with custom exportRecords plugin", () => {
       );
       expect(exportOne.state).toEqual("complete");
       expect(exportTwo.state).toEqual("canceled");
+    });
+
+    test("If multiple exports exist for a single record/destination pair, the newest is sent and all older ones are canceled", async () => {
+      const record = await helper.factories.record();
+      const group = await helper.factories.group();
+      await GroupMember.create({ recordId: record.id, groupId: group.id });
+      await destination.updateTracking("group", group.id);
+
+      const exportOne = await Export.create({
+        retryCount: 0,
+        destinationId: destination.id,
+        recordId: record.id,
+        startedAt: null,
+        oldRecordProperties: "{}",
+        newRecordProperties: "{}",
+        oldGroups: "[]",
+        newGroups: "[]",
+        state: "pending",
+        sendAt: new Date(),
+        hasChanges: true,
+        toDelete: false,
+        force: true,
+        exportProcessorId: null,
+        completedAt: null,
+        errorMessage: null,
+        errorLevel: null,
+      });
+
+      const exportTwo = await Export.create({
+        retryCount: 0,
+        destinationId: destination.id,
+        recordId: record.id,
+        startedAt: null,
+        oldRecordProperties: "{}",
+        newRecordProperties: "{}",
+        oldGroups: "[]",
+        newGroups: "[]",
+        state: "pending",
+        sendAt: new Date(),
+        hasChanges: true,
+        toDelete: false,
+        force: true,
+        exportProcessorId: null,
+        completedAt: null,
+        errorMessage: null,
+        errorLevel: null,
+      });
+
+      await helper.changeTimestamps([exportOne], true, new Date());
+      await helper.changeTimestamps(
+        [exportTwo],
+        true,
+        new Date(new Date().valueOf() - 100000)
+      );
+
+      expect(exportOne.toDelete).toBe(false);
+      expect(exportOne.hasChanges).toBe(true);
+      expect(exportOne.force).toBe(true);
+      expect(exportTwo.toDelete).toBe(false);
+      expect(exportTwo.hasChanges).toBe(true);
+      expect(exportTwo.force).toBe(true);
+
+      await specHelper.runTask("export:enqueue", {});
+
+      const exportThree = await Export.create({
+        retryCount: 0,
+        destinationId: destination.id,
+        recordId: record.id,
+        startedAt: null,
+        oldRecordProperties: "{}",
+        newRecordProperties: "{}",
+        oldGroups: "[]",
+        newGroups: "[]",
+        state: "pending",
+        sendAt: new Date(),
+        hasChanges: true,
+        toDelete: false,
+        force: true,
+        exportProcessorId: null,
+        completedAt: null,
+        errorMessage: null,
+        errorLevel: null,
+      });
+      await helper.changeTimestamps(
+        [exportThree],
+        true,
+        new Date(new Date().valueOf() + 100000)
+      );
+
+      const foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
+      expect(foundTasks.length).toBe(1);
+      expect(foundTasks[0].args[0].exportIds.sort()).toEqual(
+        [exportOne.id, exportTwo.id].sort()
+      );
+
+      await specHelper.runTask("export:sendBatch", foundTasks[0].args[0]);
+
+      expect(exportArgs.exports.length).toBe(0); // plugin#exportRecord was not called
+      await exportOne.reload();
+      await exportTwo.reload();
+      await exportThree.reload();
+
+      expect(exportOne.createdAt.valueOf()).toBeGreaterThan(
+        exportTwo.createdAt.valueOf()
+      );
+      expect(exportOne.state).toEqual("canceled");
+      expect(exportTwo.state).toEqual("canceled");
+      expect(exportThree.state).toEqual("pending");
+      await exportThree.update({ state: "complete" }); // Cleanup
     });
 
     test("if there is no previous export, it will be sent to the destination and all data will be new", async () => {

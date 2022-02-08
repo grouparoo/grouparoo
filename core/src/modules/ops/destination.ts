@@ -29,7 +29,6 @@ import { MappingHelper } from "../mappingHelper";
 import { RecordPropertyOps } from "./recordProperty";
 import { Option } from "../../models/Option";
 import { getLock } from "../locks";
-import { RecordPropertyType } from "./record";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -903,15 +902,16 @@ export namespace DestinationOps {
     return { success, error, retryexportIds, retryDelay };
   }
 
-  async function cancelOldExport(oldExport: Export, newExport: Export) {
+  async function cancelOldExport(oldExport: Export) {
     await oldExport.update({
       state: "canceled",
       sendAt: null,
-      errorMessage: `Replaced by more recent export ${newExport.id}`,
+      errorMessage: `Replaced by more recent export`,
       errorLevel: null,
       completedAt: new Date(),
     });
   }
+
   export async function sendExports(
     destination: Destination,
     givenExports: Export[],
@@ -926,23 +926,43 @@ export namespace DestinationOps {
     const locks: Awaited<ReturnType<typeof getLock>>[] = [];
 
     try {
+      const mostRecentExportIds = await Export.sequelize
+        .query(
+          {
+            query: `
+        SELECT
+          "id"
+        FROM (
+          SELECT
+            "id",
+            ROW_NUMBER() OVER (PARTITION BY "exports"."recordId" ORDER BY "exports"."createdAt" DESC) AS __rownum
+          FROM
+            "exports"
+          WHERE
+            "exports"."destinationId" = ?
+            AND "exports"."recordId" IN (?)) AS __ranked
+        WHERE
+          "__ranked"."__rownum" = 1;`,
+            values: [
+              destination.id,
+              givenExports.map(({ recordId }) => recordId),
+            ],
+          },
+          {
+            type: "SELECT",
+            model: Export,
+          }
+        )
+        .then((exports) => exports.map((e) => e.id));
+
       for (const givenExport of givenExports) {
         if (!givenExport.hasChanges) {
           await givenExport.complete();
           continue;
         }
 
-        const mostRecentExport = await Export.findOne({
-          where: {
-            recordId: givenExport.recordId,
-            destinationId: destination.id,
-          },
-          order: [["createdAt", "DESC"]],
-        });
-
-        const isNewest = mostRecentExport.id === givenExport.id;
-        if (!isNewest) {
-          await cancelOldExport(givenExport, mostRecentExport);
+        if (!mostRecentExportIds.includes(givenExport.id)) {
+          await cancelOldExport(givenExport);
           continue;
         }
 
