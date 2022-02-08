@@ -935,10 +935,12 @@ export namespace DestinationOps {
 
     await ExportOps.completeBatch(exportsWithoutChanges);
 
-    const mostRecentExportIds = await Export.sequelize
-      .query(
-        {
-          query: `
+    const mostRecentExportIds =
+      exportsWithChanges.length > 0
+        ? await Export.sequelize
+            .query(
+              {
+                query: `
     SELECT
       "id"
     FROM (
@@ -952,17 +954,18 @@ export namespace DestinationOps {
         AND "exports"."recordId" IN (?)) AS __ranked
     WHERE
       "__ranked"."__rownum" = 1;`,
-          values: [
-            destination.id,
-            exportsWithChanges.map(({ recordId }) => recordId),
-          ],
-        },
-        {
-          type: "SELECT",
-          model: Export,
-        }
-      )
-      .then((exports) => exports.map((e) => e.id));
+                values: [
+                  destination.id,
+                  exportsWithChanges.map(({ recordId }) => recordId),
+                ],
+              },
+              {
+                type: "SELECT",
+                model: Export,
+              }
+            )
+            .then((exports) => exports.map((e) => e.id))
+        : [];
 
     try {
       for (const consideredExport of exportsWithChanges) {
