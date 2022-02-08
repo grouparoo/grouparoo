@@ -144,11 +144,12 @@ export namespace ExportOps {
   export async function completeBatch(_exports: Export[]) {
     if (_exports.length === 0) return;
 
+    const now = new Date();
     await Export.update(
       {
         errorMessage: null,
         errorLevel: null,
-        completedAt: new Date(),
+        completedAt: now,
         state: "complete",
       },
       {
@@ -158,7 +159,8 @@ export namespace ExportOps {
     );
 
     for (const _export of _exports) {
-      _export.changed("state", true);
+      _export.state = "complete";
+      _export.completedAt = now;
       await Export.logExport(_export);
     }
   }
