@@ -20,6 +20,7 @@ export interface NavigationItem {
   href?: string;
   mainPathSectionIdx?: number;
   small?: boolean;
+  children?: NavigationItem[];
 }
 
 export class NavigationList extends OptionallyAuthenticatedAction {
@@ -107,6 +108,40 @@ export class NavigationList extends OptionallyAuthenticatedAction {
           icon: model.getIcon(),
           href: `/model/${model.id}/overview`,
           mainPathSectionIdx: 2,
+          children: [
+            {
+              type: "link",
+              title: "Model Data",
+              icon: "file-import",
+              href: `/model/${model.id}/overview#model-data`,
+              mainPathSectionIdx: 3,
+              small: true,
+            },
+            {
+              type: "link",
+              title: "Sample Record",
+              icon: "flask",
+              href: `/model/${model.id}/overview#sample-record`,
+              mainPathSectionIdx: 3,
+              small: true,
+            },
+            {
+              type: "link",
+              title: "Records",
+              icon: "file-alt",
+              href: `/model/${model.id}/records`,
+              mainPathSectionIdx: 3,
+              small: true,
+            },
+            {
+              type: "link",
+              title: "Destinations",
+              icon: "file-export",
+              href: `/model/${model.id}/overview#destinations`,
+              mainPathSectionIdx: 3,
+              small: true,
+            },
+          ],
         });
       });
     }

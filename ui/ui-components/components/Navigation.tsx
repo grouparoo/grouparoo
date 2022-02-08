@@ -207,6 +207,7 @@ export default function Navigation(props) {
                         }
                         icon={nav.icon}
                         small={nav.small}
+                        navChildItems={nav.children}
                       />
                     </li>
                   );
