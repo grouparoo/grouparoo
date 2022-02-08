@@ -1,0 +1,22 @@
+{
+  "$id": "schemaRestricted",
+  "type": "object",
+  "title": "Package.json Schema with Restricted puglishConfig access",
+  "description": "Schema for packages with restricted publishConfig access",
+  "required": ["publishConfig"],
+  "allOf": [{ "$ref": "./schemaGeneric" }],
+  "properties": {
+    "publishConfig": {
+      "$id": "#/properties/publishConfig",
+      "type": "object",
+      "required": ["access"],
+      "properties": {
+        "access": {
+          "$id": "#/properties/publishConfig/access",
+          "type": "string",
+          "pattern": "restricted"
+        }
+      }
+    }
+  }
+}

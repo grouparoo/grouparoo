@@ -1,0 +1,132 @@
+{
+  "$id": "schemaGeneric",
+  "type": "object",
+  "title": "Generic Schema for Package.json files",
+  "description": "Schema for all Package.json files in Grouparoo.",
+  "required": [
+    "author",
+    "name",
+    "description",
+    "version",
+    "license",
+    "private"
+  ],
+  "properties": {
+    "author": {
+      "$id": "#/properties/author",
+      "type": "string"
+    },
+    "name": {
+      "$id": "#/properties/name",
+      "type": "string"
+    },
+    "description": {
+      "$id": "#/properties/description",
+      "type": "string"
+    },
+    "version": {
+      "$id": "#/properties/version",
+      "type": "string"
+    },
+    "license": {
+      "$id": "#/properties/license",
+      "type": "string",
+      "title": "The license schema"
+    },
+    "private": {
+      "$id": "#/properties/private",
+      "type": "boolean"
+    },
+    "publishConfig": {
+      "$id": "#/properties/publishConfig",
+      "type": "object",
+      "required": ["access"],
+      "properties": {
+        "access": {
+          "$id": "#/properties/publishConfig/properties/access",
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "engines": {
+      "$id": "#/properties/engines",
+      "type": "object",
+      "required": ["node"],
+      "properties": {
+        "node": {
+          "$id": "#/properties/engines/properties/node",
+          "type": "string",
+          "pattern": ">=12.0.0 <17.0.0"
+        }
+      }
+    },
+    "homepage": {
+      "$id": "#/properties/homepage",
+      "type": "string"
+    },
+    "bugs": {
+      "$id": "#/properties/bugs",
+      "type": "object",
+      "required": ["url"],
+      "properties": {
+        "url": {
+          "$id": "#/properties/bugs/properties/url",
+          "examples": ["https://github.com/grouparoo/grouparoo/issues"]
+        }
+      },
+      "additionalProperties": true
+    },
+    "repository": {
+      "$id": "#/properties/repository",
+      "type": "object",
+      "required": ["type", "url"],
+      "properties": {
+        "type": {
+          "$id": "#/properties/repository/properties/type",
+          "type": "string",
+          "examples": ["git"]
+        },
+        "url": {
+          "$id": "#/properties/repository/properties/url",
+          "type": "string"
+        },
+        "directory": {
+          "$id": "#/properties/repository/properties/directory",
+          "type": "string",
+          "examples": ["core"]
+        }
+      },
+      "additionalProperties": true
+    },
+    "main": {
+      "$id": "#/properties/main",
+      "type": "string"
+    },
+    "types": {
+      "$id": "#/properties/types",
+      "type": "string"
+    },
+    "scripts": {
+      "$id": "#/properties/scripts",
+      "type": "object",
+      "properties": {},
+      "additionalProperties": true
+    },
+    "dependencies": {
+      "$id": "#/properties/dependencies",
+      "type": "object",
+      "properties": {},
+      "additionalProperties": true,
+      "pattern": "[^^~]"
+    },
+    "devDependencies": {
+      "$id": "#/properties/devDependencies",
+      "type": "object",
+      "properties": {},
+      "additionalProperties": true,
+      "pattern": "[^^~]"
+    }
+  },
+  "additionalProperties": true
+}

@@ -179,114 +179,6 @@ jobs:
             - ui/ui-community/.next
             - ui/ui-config/.next
             - ui/ui-enterprise/.next
-  license-checker:
-    environment:
-      GROUPAROO_TELEMETRY_ENABLED: "false"
-    docker:
-      - image: circleci/node:16.8.0
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
-    steps:
-      - checkout
-      - restore_cache:
-          <<: *module-other-cache
-      - restore_cache:
-          <<: *plugin-1-cache
-      - restore_cache:
-          <<: *plugin-2-cache
-      - restore_cache:
-          <<: *plugin-3-cache
-      - restore_cache:
-          <<: *plugin-4-cache
-      - restore_cache:
-          <<: *dist-1-cache
-      - restore_cache:
-          <<: *dist-2-cache
-      - restore_cache:
-          <<: *dist-3-cache
-      - restore_cache:
-          <<: *dist-4-cache
-      - restore_cache:
-          <<: *core-cache
-      - run:
-          name: install pnpm
-          command: sudo npm install -g pnpm
-      - run:
-          name: license-checker
-          command: ./tools/license-checker/check
-  spell-checker:
-    environment:
-      GROUPAROO_TELEMETRY_ENABLED: "false"
-    docker:
-      - image: circleci/node:16.8.0
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
-    steps:
-      - checkout
-      - restore_cache:
-          <<: *module-other-cache
-      - restore_cache:
-          <<: *plugin-1-cache
-      - restore_cache:
-          <<: *plugin-2-cache
-      - restore_cache:
-          <<: *plugin-3-cache
-      - restore_cache:
-          <<: *plugin-4-cache
-      - restore_cache:
-          <<: *dist-1-cache
-      - restore_cache:
-          <<: *dist-2-cache
-      - restore_cache:
-          <<: *dist-3-cache
-      - restore_cache:
-          <<: *dist-4-cache
-      - restore_cache:
-          <<: *core-cache
-      - run:
-          name: install pnpm
-          command: sudo npm install -g pnpm
-      - run:
-          name: spell-checker
-          command: ./tools/spell-checker/check
-  version-checker:
-    environment:
-      GROUPAROO_TELEMETRY_ENABLED: "false"
-    docker:
-      - image: circleci/node:16.8.0
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
-    steps:
-      - checkout
-      - restore_cache:
-          <<: *module-other-cache
-      - restore_cache:
-          <<: *plugin-1-cache
-      - restore_cache:
-          <<: *plugin-2-cache
-      - restore_cache:
-          <<: *plugin-3-cache
-      - restore_cache:
-          <<: *plugin-4-cache
-      - restore_cache:
-          <<: *dist-1-cache
-      - restore_cache:
-          <<: *dist-2-cache
-      - restore_cache:
-          <<: *dist-3-cache
-      - restore_cache:
-          <<: *dist-4-cache
-      - restore_cache:
-          <<: *core-cache
-      - run:
-          name: install pnpm
-          command: sudo npm install -g pnpm
-      - run:
-          name: version-checker
-          command: ./tools/version-checker/check
   linter:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
@@ -873,6 +765,42 @@ jobs:
       - run:
           name: test
           command: cd core && ./node_modules/.bin/jest __tests__/tasks --ci --maxWorkers 2
+  test-root:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: circleci/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: test-root
+          command: cd . && ./node_modules/.bin/jest ./__tests__/packages --ci --maxWorkers 2 --passWithNoTests
   test-core-local-models:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
@@ -3753,21 +3681,6 @@ workflows:
       - build:
           filters:
             <<: *ignored-branches
-      - license-checker:
-          filters:
-            <<: *ignored-branches
-          requires:
-            - build
-      - spell-checker:
-          filters:
-            <<: *ignored-branches
-          requires:
-            - build
-      - version-checker:
-          filters:
-            <<: *ignored-branches
-          requires:
-            - build
       - linter:
           filters:
             <<: *ignored-branches
@@ -3819,6 +3732,11 @@ workflows:
           requires:
             - build
       - test-core-tasks:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-root:
           filters:
             <<: *ignored-branches
           requires:
@@ -4087,9 +4005,6 @@ workflows:
           filters:
             <<: *ignored-branches
           requires:
-            - license-checker
-            - spell-checker
-            - version-checker
             - linter
             - test-core-actions
             - test-core-bin
@@ -4101,6 +4016,7 @@ workflows:
             - test-core-notifiers
             - test-core-snapshots
             - test-core-tasks
+            - test-root
             - test-core-local-models
             - test-core-local-actions
             - test-core-local-tasks
