@@ -52,8 +52,6 @@ describe("package.json validation", () => {
     excludedPackages.push(nameAndVersion);
   });
 
-  const pkgFile =
-    "/Users/teal/workspace/grouparoo/grouparoo/plugins/@grouparoo/customerio/package.json";
   describe.each(packageFiles)(`%s`, (pkgFile) => {
     const pkgJson = JSON.parse(fs.readFileSync(pkgFile, "utf-8"));
     test("it follows Grouparoo's package json schema rules", () => {
