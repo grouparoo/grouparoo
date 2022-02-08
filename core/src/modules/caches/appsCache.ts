@@ -15,7 +15,7 @@ async function findAllWithCache(this: ModelCache<App>) {
   } else {
     this.instances = await App.findAll({ include: getInclude() });
     this.expires = now + this.TTL;
-    return this.findAllWithCache();
+    return this.instances;
   }
 }
 

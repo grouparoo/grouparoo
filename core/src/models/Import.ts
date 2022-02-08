@@ -30,7 +30,7 @@ export interface ImportRecordProperties {
   [key: string]: any;
 }
 
-const IMPORT_CREATORS = ["run"] as const;
+const IMPORT_CREATORS = ["run", "group"] as const;
 
 const STATES = [
   "associating",

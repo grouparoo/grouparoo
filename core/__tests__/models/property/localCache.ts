@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { Property, Source } from "../../../src";
-import { CachedProperties } from "../../../src/models/Property";
+import { PropertiesCache } from "../../../src/modules/caches/propertiesCache";
 
 describe("models/property", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -8,8 +8,8 @@ describe("models/property", () => {
   let source: Source;
   let originalPropertyCount: number;
 
-  beforeEach(() => (CachedProperties.TTL = 30 * 1000));
-  afterAll(() => (CachedProperties.expires = 0));
+  beforeEach(() => (PropertiesCache.TTL = 30 * 1000));
+  afterAll(() => (PropertiesCache.expires = 0));
 
   beforeAll(async () => {
     await helper.factories.properties();
@@ -29,7 +29,7 @@ describe("models/property", () => {
 
   describe("#findAllWithCache", () => {
     test("it returns all the instances", async () => {
-      const instances = await Property.findAllWithCache();
+      const instances = await PropertiesCache.findAllWithCache();
       expect(instances.length).toBe(originalPropertyCount);
     });
 
@@ -40,7 +40,7 @@ describe("models/property", () => {
       });
       expect(property.state).toBe("draft");
 
-      const instances = await Property.findAllWithCache();
+      const instances = await PropertiesCache.findAllWithCache();
       expect(instances.length).toBe(originalPropertyCount);
 
       await property.destroy();
@@ -65,42 +65,42 @@ describe("models/property", () => {
       });
 
       test("creating a property signals RPC", async () => {
-        CachedProperties.expires = new Date().getTime();
+        PropertiesCache.expires = new Date().getTime();
         await makeProperty();
         await helper.sleep(10);
-        expect(CachedProperties.expires).toBe(0);
+        expect(PropertiesCache.expires).toBe(0);
       });
 
       test("updating a property signals RPC", async () => {
         await makeProperty();
-        CachedProperties.expires = new Date().getTime();
+        PropertiesCache.expires = new Date().getTime();
         await property.update({ key: "new key" });
         await helper.sleep(10);
-        expect(CachedProperties.expires).toBe(0);
+        expect(PropertiesCache.expires).toBe(0);
       });
 
       test("calling setOptions signals RPC", async () => {
         await makeProperty();
-        CachedProperties.expires = new Date().getTime();
+        PropertiesCache.expires = new Date().getTime();
         await property.setOptions({ column: "test other column" });
         await helper.sleep(10);
-        expect(CachedProperties.expires).toBe(0);
+        expect(PropertiesCache.expires).toBe(0);
       });
 
       test("calling setFilter signals RPC", async () => {
         await makeProperty();
-        CachedProperties.expires = new Date().getTime();
+        PropertiesCache.expires = new Date().getTime();
         await property.setFilters([{ op: "gt", match: 1, key: "id" }]);
         await helper.sleep(10);
-        expect(CachedProperties.expires).toBe(0);
+        expect(PropertiesCache.expires).toBe(0);
       });
 
       test("destroying a property signals RPC", async () => {
         await makeProperty();
-        CachedProperties.expires = new Date().getTime();
+        PropertiesCache.expires = new Date().getTime();
         await property.destroy();
         await helper.sleep(10);
-        expect(CachedProperties.expires).toBe(0);
+        expect(PropertiesCache.expires).toBe(0);
       });
     });
   });
@@ -113,49 +113,57 @@ describe("models/property", () => {
         where: { id: "firstName" },
       });
       await firstNameProperty.update({ key: "FIRST NAME" });
-      expect(CachedProperties.expires).toEqual(0);
+      expect(PropertiesCache.expires).toEqual(0);
     });
 
     test("after a Property is updated, the local cache should be invalid", async () => {
-      CachedProperties.expires = new Date().getTime() + 1000 * 30;
+      PropertiesCache.expires = new Date().getTime() + 1000 * 30;
       const lastNameProperty = await Property.findOne({
         where: { key: "lastName" },
       });
       await lastNameProperty.update({ key: "LAST NAME" });
-      expect(CachedProperties.expires).toEqual(0);
+      expect(PropertiesCache.expires).toEqual(0);
     });
 
     test("it will find by id by default", async () => {
-      const found = await Property.findOneWithCache(firstNameProperty.id);
+      const found = await PropertiesCache.findOneWithCache(
+        firstNameProperty.id
+      );
       expect(found.id).toBe("firstName");
       expect(found.key).toBe("FIRST NAME");
     });
 
     test("it will avoid using SQL when a cached property exists", async () => {
-      const cachedFirstName = CachedProperties.properties.find(
+      const cachedFirstName = PropertiesCache.instances.find(
         (p) => p.id === firstNameProperty.id
       );
       // @ts-ignore
       cachedFirstName.__isCached = true;
-      const found = await Property.findOneWithCache(firstNameProperty.id);
+      const found = await PropertiesCache.findOneWithCache(
+        firstNameProperty.id
+      );
       // @ts-ignore
       expect(found.__isCached).toBe(true);
       expect(found.id).toBe("firstName");
       expect(found.key).toBe("FIRST NAME");
-      expect(CachedProperties.expires).toBeGreaterThan(0);
+      expect(PropertiesCache.expires).toBeGreaterThan(0);
     });
 
     test("it can find by other keys", async () => {
-      const found = await Property.findOneWithCache("FIRST NAME", null, "key");
+      const found = await PropertiesCache.findOneWithCache(
+        "FIRST NAME",
+        null,
+        "key"
+      );
       expect(found.id).toBe("firstName");
       expect(found.key).toBe("FIRST NAME");
     });
 
     test("a cache miss will invalidate the cache", async () => {
-      CachedProperties.expires = new Date().getTime();
-      const found = await Property.findOneWithCache("missing");
+      PropertiesCache.expires = new Date().getTime();
+      const found = await PropertiesCache.findOneWithCache("missing");
       expect(found).toBeNull();
-      expect(CachedProperties.expires).toBe(0);
+      expect(PropertiesCache.expires).toBe(0);
     });
   });
 });

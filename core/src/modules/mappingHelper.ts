@@ -103,9 +103,7 @@ export namespace MappingHelper {
     for (const i in keys) {
       const remoteKey = keys[i];
       const key = mappings[remoteKey];
-      const property = await Property.scope(null).findOne({
-        where: { key },
-      });
+      const property = await PropertiesCache.findOneWithCache(key, null, "key");
 
       if (!property) throw new Error(`cannot find property ${key}`);
       if (instance instanceof Source && property.isArray) {

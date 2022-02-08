@@ -21,7 +21,9 @@ async function findAllWithCache(this: ModelCache<Source>, modelId?: string) {
   } else {
     this.instances = await Source.findAll({ include: getInclude() });
     this.expires = now + this.TTL;
-    return this.findAllWithCache(modelId);
+    return modelId
+      ? this.instances.filter((s) => s?.modelId === modelId)
+      : this.instances;
   }
 }
 
