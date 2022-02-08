@@ -1,5 +1,5 @@
 const nock = require("nock");
-process.env.GOOGLE_SHEETS_JEST_TIMESTAMP = "1643812775022";
+process.env.GOOGLE_SHEETS_JEST_TIMESTAMP = "1644343685491";
 
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
   .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
@@ -19,11 +19,16 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "ed",
       "d4",
-      "41",
+      "4b",
       "72",
       "82",
       "30",
-      "0000c0bfe4ec3801d492dec0805a858020162f4e205111853404053bfd7b9d5efb05f711fb0d689ef3a6d9abbae41578073dd5d1301f66d0fabcc147ecdfebc0ae5267d48645288c58a789ef12b2d2d4ba2da6bd49fb79028925ae67d1c5fa1d859e68e53c2114fb5f5845b369554e88ee9e15ea4297d1b6bf5d96d226370debf93262ebfa189bb97d626c3257f8519bc5431730d670554d46661ab48ea7192e6c25f9a0796695e6f668c1911605dbd8f736de94945b4731f78d299cd255bf768ce5ec64a2856a506a3338769ce692ece801875170d8655719a519dbecae7c317c7979f9070c00ef442179b32f9e1f18638406e02f87bdea057f0e61732ab9043fbf786d89df3b040000",
+      "00",
+      "00",
+      "d0",
+      "bb",
+      "64",
+      "2d0e06c5d09d41ad16284501091b864f14a42411a8029ddebd4eb7bd02ef10ef1bc4694a9b266a79491978017d0cb5693a4de455709707d786c8bb9dba725f5624944d137dd18580d82dd54a9a1d79b214785ff0f4615d4b981d50915ef40ddcc26e93c53877a1590c8e8bc373d0bf71ce3a7d98dd5f9d78b64b0516ad7547a7805995a11b52ae36d987768c88b4332dc5227e4c94476e38db8af9675c29b795c11ae8e5befdee6778eb23d59a2f0ba3997314d230796c54ea28abb344f1e7dad3196192d75d73d64ac41884e6f4dc46366275b8f61617e2fa3d9a8e46a37fc004d04e14356da2e2f981b2d0b409f8cb216a7b419f43601ad7b4063fbfcc4185eb3b040000",
     ],
     [
       "Content-Type",
@@ -37,7 +42,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Wed, 02 Feb 2022 14:39:38 GMT",
+      "Tue, 08 Feb 2022 18:08:08 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -50,120 +55,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "nosniff",
       "Alt-Svc",
       'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Connection",
-      "close",
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
-  .get("/v4/spreadsheets/11zccS101c27B9mYLMJiaAPfDgoj2chOq39n3MZrcKTk/")
-  .once()
-  .reply(
-    429,
-    {
-      error: {
-        code: 429,
-        message:
-          "Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:172856096362'.",
-        status: "RESOURCE_EXHAUSTED",
-        details: [
-          {
-            "@type": "type.googleapis.com/google.rpc.ErrorInfo",
-            reason: "RATE_LIMIT_EXCEEDED",
-            domain: "googleapis.com",
-            metadata: {
-              service: "sheets.googleapis.com",
-              quota_metric: "sheets.googleapis.com/read_requests",
-              quota_limit: "ReadRequestsPerMinutePerUser",
-              consumer: "projects/172856096362",
-            },
-          },
-        ],
-      },
-    },
-    [
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Date",
-      "Wed, 02 Feb 2022 14:39:39 GMT",
-      "Server",
-      "ESF",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Accept-Ranges",
-      "none",
-      "Vary",
-      "Origin,Accept-Encoding",
-      "Connection",
-      "close",
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
-  .get("/v4/spreadsheets/11zccS101c27B9mYLMJiaAPfDgoj2chOq39n3MZrcKTk/")
-  .once()
-  .reply(
-    429,
-    {
-      error: {
-        code: 429,
-        message:
-          "Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:172856096362'.",
-        status: "RESOURCE_EXHAUSTED",
-        details: [
-          {
-            "@type": "type.googleapis.com/google.rpc.ErrorInfo",
-            reason: "RATE_LIMIT_EXCEEDED",
-            domain: "googleapis.com",
-            metadata: {
-              service: "sheets.googleapis.com",
-              quota_metric: "sheets.googleapis.com/read_requests",
-              quota_limit: "ReadRequestsPerMinutePerUser",
-              consumer: "projects/172856096362",
-            },
-          },
-        ],
-      },
-    },
-    [
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Date",
-      "Wed, 02 Feb 2022 14:39:59 GMT",
-      "Server",
-      "ESF",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Accept-Ranges",
-      "none",
-      "Vary",
-      "Origin,Accept-Encoding",
       "Connection",
       "close",
       "Transfer-Encoding",
@@ -330,7 +221,7 @@ nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
       "Vary",
       "Referer",
       "Date",
-      "Wed, 02 Feb 2022 14:40:20 GMT",
+      "Tue, 08 Feb 2022 18:08:09 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -386,7 +277,7 @@ nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
       "Vary",
       "Referer",
       "Date",
-      "Wed, 02 Feb 2022 14:40:20 GMT",
+      "Tue, 08 Feb 2022 18:08:09 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -442,7 +333,7 @@ nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
       "Vary",
       "Referer",
       "Date",
-      "Wed, 02 Feb 2022 14:40:21 GMT",
+      "Tue, 08 Feb 2022 18:08:10 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -606,7 +497,7 @@ nock("https://sheets.googleapis.com:443", { encodedQueryParams: true })
       "Vary",
       "Referer",
       "Date",
-      "Wed, 02 Feb 2022 14:40:21 GMT",
+      "Tue, 08 Feb 2022 18:08:10 GMT",
       "Server",
       "ESF",
       "Cache-Control",
