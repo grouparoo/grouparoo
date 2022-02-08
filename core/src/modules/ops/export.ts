@@ -139,6 +139,23 @@ export namespace ExportOps {
   }
 
   /**
+   * Mark an array of Exports complete
+   */
+  export async function completeBatch(_exports: Export[]) {
+    if (_exports.length === 0) return;
+
+    await Export.update(
+      {
+        errorMessage: null,
+        errorLevel: null,
+        completedAt: new Date(),
+        state: "complete",
+      },
+      { where: { id: { [Op.in]: _exports.map((e) => e.id) } } }
+    );
+  }
+
+  /**
    * Finds failed exports within a time range and sets them back to pending
    */
   export async function retryFailedExports(

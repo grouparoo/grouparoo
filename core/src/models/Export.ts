@@ -281,20 +281,6 @@ export class Export extends CommonModel<Export> {
     return instance;
   }
 
-  static async completeBatch(_exports: Export[]) {
-    if (_exports.length === 0) return;
-
-    await Export.update(
-      {
-        errorMessage: null,
-        errorLevel: null,
-        completedAt: new Date(),
-        state: "complete",
-      },
-      { where: { id: { [Op.in]: _exports.map((e) => e.id) } } }
-    );
-  }
-
   @BeforeSave
   static async updateState(instance: Export) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);

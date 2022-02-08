@@ -29,6 +29,7 @@ import { MappingHelper } from "../mappingHelper";
 import { RecordPropertyOps } from "./recordProperty";
 import { Option } from "../../models/Option";
 import { getLock } from "../locks";
+import { ExportOps } from "./export";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -716,7 +717,7 @@ export namespace DestinationOps {
     // they were all correct!
     if (exportResult?.success) {
       const processExports = exportResult?.processExports;
-      await Export.completeBatch(
+      await ExportOps.completeBatch(
         _exports.filter(
           (e) =>
             !processExports || !processExports.recordIds.includes(e.recordId)
@@ -770,7 +771,7 @@ export namespace DestinationOps {
       }
     }
 
-    await Export.completeBatch(
+    await ExportOps.completeBatch(
       _exports.filter((e) => !recordsWithErrors[e.recordId])
     );
 
@@ -932,7 +933,7 @@ export namespace DestinationOps {
       }
     }
 
-    await Export.completeBatch(exportsWithoutChanges);
+    await ExportOps.completeBatch(exportsWithoutChanges);
 
     const mostRecentExportIds = await Export.sequelize
       .query(
