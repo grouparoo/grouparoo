@@ -60,23 +60,9 @@ export const isConfigUI = grouparooUiEdition() === "config";
 const cookies = new Cookies();
 
 const getCachedSampleRecordId = (modelId: string): string => {
-  if (isBrowser()) {
-    // Migrate existing localstorage data into cookie
-    // TODO: remove the migration in a later release
-    const localStorageRecordId = globalThis.localStorage?.getItem(
-      `sampleRecord:${grouparooUiEdition()}:${modelId}`
-    );
-    if (localStorageRecordId) {
-      setCachedSampleRecordId(modelId, localStorageRecordId);
-      globalThis.localStorage?.removeItem(
-        `sampleRecord:${grouparooUiEdition()}:${modelId}`
-      );
-      return localStorageRecordId;
-    } else {
-      return cookies.get(`sampleRecord:${grouparooUiEdition()}`)?.[modelId];
-    }
-  }
-  return undefined;
+  return isBrowser()
+    ? cookies.get(`sampleRecord:${grouparooUiEdition()}`)?.[modelId]
+    : undefined;
 };
 
 const setCachedSampleRecordId = (modelId: string, recordId: string): void => {
@@ -90,7 +76,7 @@ const setCachedSampleRecordId = (modelId: string, recordId: string): void => {
       {
         path: "/",
         sameSite: "strict",
-        maxAge: 60 * 60 * 24 * 14, // two weeks
+        maxAge: 60 * 60 * 24 * 30, // 1 month
       }
     );
   }
@@ -106,6 +92,7 @@ const clearCachedSampleRecordId = (modelId: string): void => {
       cookies.set(`sampleRecord:${grouparooUiEdition()}`, existing, {
         path: "/",
         sameSite: "strict",
+        maxAge: 60 * 60 * 24 * 30, // 1 month
       });
     }
   }
