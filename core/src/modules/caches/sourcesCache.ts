@@ -4,10 +4,13 @@ import { Option } from "../../models/Option";
 import { Filter } from "../../models/Filter";
 import { Includeable } from "sequelize";
 
-const include: Includeable[] = [
-  { model: Option, required: false },
-  { model: Filter, required: false },
-];
+function getInclude() {
+  const include: Includeable[] = [
+    { model: Option, required: false },
+    { model: Filter, required: false },
+  ];
+  return include;
+}
 
 async function findAllWithCache(this: ModelCache<Source>, modelId?: string) {
   const now = new Date().getTime();
@@ -16,7 +19,7 @@ async function findAllWithCache(this: ModelCache<Source>, modelId?: string) {
       ? this.instances.filter((s) => s?.modelId === modelId)
       : this.instances;
   } else {
-    this.instances = await Source.findAll({ include });
+    this.instances = await Source.findAll({ include: getInclude() });
     this.expires = now + this.TTL;
     return this.findAllWithCache(modelId);
   }
@@ -34,7 +37,7 @@ async function findOneWithCache(
   if (!instance) {
     instance = await Source.findOne({
       where: { [lookupKey]: value },
-      include,
+      include: getInclude(),
     });
     if (!instance) this.invalidate();
   }
