@@ -10,7 +10,6 @@ import {
 import { NonAbstract } from "sequelize-typescript/dist/shared/types";
 import validator from "validator";
 import * as uuid from "uuid";
-import { modelName } from "../modules/modelName";
 import { Op, Attributes } from "sequelize";
 import { config } from "actionhero";
 
@@ -91,7 +90,8 @@ export abstract class CommonModel<T> extends Model {
     id: string
   ): Promise<T> {
     const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${modelName(this)} ${id}`);
+    const modelName = String(this).match(/class\s(.+)\sextends/)?.[1] ?? "item"; // TODO: It looks like at this point `this` is the stringified representation of the constructor function, literally "class Group extends CommonModel..."
+    if (!instance) throw new Error(`cannot find ${modelName} ${id}`);
     return instance;
   }
 
