@@ -144,7 +144,7 @@ export namespace ExportOps {
   export async function completeBatch(_exports: Export[]) {
     if (_exports.length === 0) return;
 
-    const [_, updatedExports] = await Export.update(
+    await Export.update(
       {
         errorMessage: null,
         errorLevel: null,
@@ -157,7 +157,7 @@ export namespace ExportOps {
       }
     );
 
-    for (const _export of updatedExports) {
+    for (const _export of _exports) {
       _export.changed("state", true);
       await Export.logExport(_export);
     }
