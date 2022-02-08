@@ -1,6 +1,5 @@
 import { matchersWithOptions } from "jest-json-schema";
 import glob from "glob";
-import checker from "license-checker";
 import fs from "fs";
 import path from "path";
 import { allPackageFiles } from "../tools/shared/packages";
@@ -55,7 +54,6 @@ describe("package.json validation", () => {
 
   const pkgFile =
     "/Users/teal/workspace/grouparoo/grouparoo/plugins/@grouparoo/customerio/package.json";
-  // packageFiles.forEach((pkgFile) => {
   describe.each(packageFiles)(`%s`, (pkgFile) => {
     const pkgJson = JSON.parse(fs.readFileSync(pkgFile, "utf-8"));
     test("it follows Grouparoo's package json schema rules", () => {
