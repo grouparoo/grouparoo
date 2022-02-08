@@ -2,6 +2,7 @@ import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useMemo } from "react";
 import { Col, ListGroup, ListGroupItem, Row } from "react-bootstrap";
+import Cookies from "universal-cookie";
 import { generateClient } from "../../../client/client";
 import ManagedCard from "../../../components/lib/ManagedCard";
 import ModelOverviewDestinations from "../../../components/model/overview/ModelOverviewDestinations";
@@ -14,6 +15,7 @@ import PageHeader from "../../../components/PageHeader";
 import ModelTabs from "../../../components/tabs/Model";
 import { useGrouparooModel } from "../../../contexts/grouparooModel";
 import { Actions, Models } from "../../../utils/apiData";
+import { grouparooUiEdition } from "../../../utils/uiEdition";
 import { withServerErrorHandler } from "../../../utils/withServerErrorHandler";
 
 interface Props {
@@ -24,6 +26,7 @@ interface Props {
   groups: Models.GroupType[];
   schedules: Models.ScheduleType[];
   destinations?: Models.DestinationType[];
+  sampleRecord?: Actions.RecordView;
 }
 
 const Page: NextPage<Props> = ({
@@ -34,6 +37,7 @@ const Page: NextPage<Props> = ({
   groups,
   schedules,
   destinations,
+  sampleRecord,
 }) => {
   const { model } = useGrouparooModel();
   const sources = useMemo(() => {
@@ -108,6 +112,9 @@ const Page: NextPage<Props> = ({
             modelId={model.id}
             properties={properties}
             disabled={!sources.length}
+            record={sampleRecord?.record}
+            groups={sampleRecord?.groups}
+            destinations={sampleRecord?.destinations}
           />
         </Col>
       </Row>
@@ -125,6 +132,8 @@ const Page: NextPage<Props> = ({
 
 export const getServerSideProps: GetServerSideProps<Props> =
   withServerErrorHandler(async (context) => {
+    const cookies = new Cookies(context.req.headers.cookie);
+
     const { modelId, limit, offset } = context.query;
     const client = generateClient(context);
 
@@ -159,6 +168,17 @@ export const getServerSideProps: GetServerSideProps<Props> =
       ? sources.filter(({ id }) => id !== primarySource.id)
       : sources;
 
+    const sampleRecordId = cookies.get<Record<string, string>>(
+      `sampleRecord:${grouparooUiEdition()}`
+    )?.[modelId as string];
+
+    const sampleRecord = sampleRecordId
+      ? await client.request<Actions.RecordView>(
+          "get",
+          `/record/${sampleRecordId}`
+        )
+      : null;
+
     return {
       props: {
         primarySource,
@@ -168,6 +188,7 @@ export const getServerSideProps: GetServerSideProps<Props> =
         groups,
         schedules,
         destinations,
+        sampleRecord,
       },
     };
   });
