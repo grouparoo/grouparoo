@@ -14,7 +14,11 @@ import {
   buildBatchExports,
   exportRecordsInBatch,
 } from "@grouparoo/app-templates/dist/destination/batch";
-import { ExportRecordsPluginMethod } from "@grouparoo/core";
+import {
+  ExportRecordsPluginMethod,
+  makeBaseCacheKey,
+  waitForLock,
+} from "@grouparoo/core";
 import Spreadsheet from "../shared/Spreadsheet";
 
 const GOOGLE_SHEETS_ROWS_LIMIT = 10000;
@@ -105,17 +109,26 @@ const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async ({
 
 // usually this is creating them. ideally upsert. set the destinationId on each when done
 const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSetDestinationIds =
-  async ({ client, users, config }) => {
-    for (const user of users) {
-      try {
-        const payload = buildPayload(config, user);
-        const destinationId = await client.addRowAtTheEnd(payload);
-        if (destinationId) {
-          user.destinationId = destinationId;
-        }
-      } catch (error) {
-        user.error = error;
+  async ({ client, users, config, getByForeignKey }) => {
+    const { destinationId, destinationOptions } = config.data.cacheData;
+    const cacheKey = makeBaseCacheKey({
+      objectId: destinationId,
+      cacheKey: destinationOptions,
+    });
+    const { releaseLock } = await waitForLock(`${cacheKey}:append`);
+    const rows = users.map((u) => buildPayload(config, u));
+    const destinationIdsMapping = await client.addRowsAtTheEnd(
+      rows,
+      destinationOptions.primaryKey
+    );
+    for (const mapping of destinationIdsMapping) {
+      const user = await getByForeignKey(mapping.primaryKey);
+      if (user) {
+        user.destinationId = mapping.destinationId;
       }
+    }
+    if (releaseLock) {
+      await releaseLock();
     }
   };
 
@@ -190,6 +203,7 @@ export async function exportBatch({
   appOptions,
   syncOperations,
   destinationOptions,
+  destinationId,
   exports,
 }) {
   const batchSize = 1000000;
@@ -206,6 +220,7 @@ export async function exportBatch({
       appOptions,
       destinationOptions,
       foreignKey: destinationOptions["primaryKey"],
+      data: { cacheData: { destinationId, destinationOptions } },
     },
 
     {
@@ -225,6 +240,7 @@ export async function exportBatch({
 export const exportRecords: ExportRecordsPluginMethod = async ({
   appOptions,
   syncOperations,
+  destinationId,
   destinationOptions,
   exports: recordsToExport,
 }) => {
@@ -233,6 +249,7 @@ export const exportRecords: ExportRecordsPluginMethod = async ({
     appOptions,
     syncOperations,
     destinationOptions,
+    destinationId,
     exports: batchExports,
   });
 };

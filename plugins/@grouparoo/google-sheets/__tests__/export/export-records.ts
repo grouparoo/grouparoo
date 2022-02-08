@@ -8,6 +8,7 @@ const url =
   "https://docs.google.com/spreadsheets/d/11zccS101c27B9mYLMJiaAPfDgoj2chOq39n3MZrcKTk/edit#gid=107110394";
 const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions();
+const destinationId = "APfDgoj2chOq39n-3039";
 const destinationOptions = {
   sheet_url: url,
   primaryKey: "id",
@@ -32,21 +33,6 @@ let user3 = null;
 
 const list1 = "(test) High Value";
 const list2 = "(test) Churned";
-
-async function deleteUsers(primaryKeysValues: string[], suppressErrors) {
-  try {
-    for (const primaryKeyValue of primaryKeysValues) {
-      await client.cleanRowByPrimaryKey(
-        destinationOptions["primaryKey"],
-        primaryKeyValue
-      );
-    }
-  } catch (err) {
-    if (!suppressErrors) {
-      throw err;
-    }
-  }
-}
 
 function generateLongRecords(count: number): Record<string, any>[] {
   const records = [];
@@ -74,11 +60,18 @@ function makeExports(records: Record<string, any>[]) {
 }
 
 async function cleanUp(suppressErrors: boolean) {
-  const emails = [userId1, userId2, userId3, newuserId1];
-  await deleteUsers(emails, suppressErrors);
+  try {
+    await client._cleanSheet();
+  } catch (e) {
+    if (!suppressErrors) {
+      throw e;
+    }
+  }
 }
 
 describe("google-sheets/exportRecords", () => {
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+
   beforeAll(async () => {
     client = await new Spreadsheet(appOptions, url);
     client.setBypassSleep(!newNock); //bypass sleep off when using nock.
@@ -86,7 +79,7 @@ describe("google-sheets/exportRecords", () => {
   }, helper.longTime);
 
   afterAll(async () => {
-    await client._cleanSheet();
+    await cleanUp(false);
   }, helper.longTime);
 
   test(
@@ -100,6 +93,7 @@ describe("google-sheets/exportRecords", () => {
 
       const { success, errors } = await exportBatch({
         appOptions,
+        destinationId,
         syncOperations: DestinationSyncModeData.enrich.operations,
         destinationOptions,
         exports: [
@@ -146,6 +140,7 @@ describe("google-sheets/exportRecords", () => {
 
       const { success, errors } = await exportBatch({
         appOptions,
+        destinationId,
         syncOperations: DestinationSyncModeData.sync.operations,
         destinationOptions,
         exports: [
@@ -183,6 +178,7 @@ describe("google-sheets/exportRecords", () => {
     async () => {
       const { success, errors } = await exportBatch({
         appOptions,
+        destinationId,
         destinationOptions,
         syncOperations: { create: true, update: false, delete: true },
         exports: [
@@ -236,6 +232,7 @@ describe("google-sheets/exportRecords", () => {
 
       const { success, errors } = await exportBatch({
         appOptions,
+        destinationId,
         destinationOptions,
         syncOperations: DestinationSyncModeData.sync.operations,
         exports: [
@@ -298,6 +295,7 @@ describe("google-sheets/exportRecords", () => {
     async () => {
       const { success, errors } = await exportBatch({
         appOptions,
+        destinationId,
         destinationOptions,
         syncOperations: DestinationSyncModeData.sync.operations,
         exports: [
@@ -339,6 +337,7 @@ describe("google-sheets/exportRecords", () => {
     async () => {
       const { success, errors } = await exportBatch({
         appOptions,
+        destinationId,
         destinationOptions,
         syncOperations: DestinationSyncModeData.sync.operations,
         exports: [
@@ -381,6 +380,7 @@ describe("google-sheets/exportRecords", () => {
     async () => {
       const { success, errors } = await exportBatch({
         appOptions,
+        destinationId,
         destinationOptions,
         syncOperations: DestinationSyncModeData.sync.operations,
         exports: [
@@ -449,6 +449,7 @@ describe("google-sheets/exportRecords", () => {
     async () => {
       const { success, errors } = await exportBatch({
         appOptions,
+        destinationId,
         destinationOptions,
         syncOperations: DestinationSyncModeData.sync.operations,
         exports: [
@@ -517,6 +518,7 @@ describe("google-sheets/exportRecords", () => {
     async () => {
       const { success, errors } = await exportBatch({
         appOptions,
+        destinationId,
         destinationOptions,
         syncOperations: DestinationSyncModeData.sync.operations,
         exports: [
@@ -592,6 +594,7 @@ describe("google-sheets/exportRecords", () => {
     async () => {
       const { success, errors } = await exportBatch({
         appOptions,
+        destinationId,
         destinationOptions,
         syncOperations: DestinationSyncModeData.additive.operations,
         exports: [
@@ -636,6 +639,7 @@ describe("google-sheets/exportRecords", () => {
     async () => {
       const { success, errors } = await exportBatch({
         appOptions,
+        destinationId,
         destinationOptions,
         syncOperations: DestinationSyncModeData.sync.operations,
         exports: [
@@ -710,6 +714,7 @@ describe("google-sheets/exportRecords", () => {
     async () => {
       const { success, errors } = await exportBatch({
         appOptions,
+        destinationId,
         destinationOptions,
         syncOperations: DestinationSyncModeData.sync.operations,
         exports: [
@@ -755,6 +760,7 @@ describe("google-sheets/exportRecords", () => {
     async () => {
       const { success, errors } = await exportBatch({
         appOptions,
+        destinationId,
         destinationOptions,
         syncOperations: DestinationSyncModeData.sync.operations,
         exports: [
@@ -795,6 +801,7 @@ describe("google-sheets/exportRecords", () => {
     async () => {
       const { success, errors } = await exportBatch({
         appOptions,
+        destinationId,
         destinationOptions,
         syncOperations: DestinationSyncModeData.sync.operations,
         exports: [
@@ -861,6 +868,7 @@ describe("google-sheets/exportRecords", () => {
 
       const { success, errors } = await exportBatch({
         appOptions,
+        destinationId,
         destinationOptions,
         syncOperations: DestinationSyncModeData.sync.operations,
         exports: [
@@ -954,11 +962,11 @@ describe("google-sheets/exportRecords", () => {
       const exports = makeExports(records);
       const { success, errors } = await exportBatch({
         appOptions,
+        destinationId,
         destinationOptions,
         syncOperations: DestinationSyncModeData.sync.operations,
         exports,
       });
-
       expect(success).toBe(true);
       expect(errors).toBeNull();
 
