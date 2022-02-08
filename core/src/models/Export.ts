@@ -17,7 +17,7 @@ import { Destination } from "./Destination";
 import { GrouparooRecord } from "./GrouparooRecord";
 import { plugin } from "../modules/plugin";
 import Moment from "moment";
-import { QueryTypes } from "sequelize";
+import { QueryTypes, Op } from "sequelize";
 import { ExportOps } from "../modules/ops/export";
 import { APIData } from "../modules/apiData";
 import { StateMachine } from "../modules/stateMachine";
@@ -231,14 +231,6 @@ export class Export extends CommonModel<Export> {
     return this.save();
   }
 
-  async complete() {
-    this.errorMessage = null;
-    this.errorLevel = null;
-    this.completedAt = new Date();
-    this.state = "complete";
-    await this.save();
-  }
-
   async apiData(includeDestination = true) {
     const destination =
       this.destination ?? (await this.$get("destination", { scope: null }));
@@ -287,6 +279,20 @@ export class Export extends CommonModel<Export> {
     const instance = await this.scope(null).findOne({ where: { id } });
     if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
+  }
+
+  static async completeBatch(_exports: Export[]) {
+    if (_exports.length === 0) return;
+
+    await Export.update(
+      {
+        errorMessage: null,
+        errorLevel: null,
+        completedAt: new Date(),
+        state: "complete",
+      },
+      { where: { id: { [Op.in]: _exports.map((e) => e.id) } } }
+    );
   }
 
   @BeforeSave
