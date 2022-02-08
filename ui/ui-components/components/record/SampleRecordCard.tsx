@@ -90,6 +90,7 @@ const setCachedSampleRecordId = (modelId: string, recordId: string): void => {
       {
         path: "/",
         sameSite: "strict",
+        maxAge: 60 * 60 * 24 * 14, // two weeks
       }
     );
   }
