@@ -4,8 +4,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { Row, Col, Form, Badge, Alert, Card } from "react-bootstrap";
-import { Typeahead } from "react-bootstrap-typeahead";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import SourceTabs from "../../../../../components/tabs/Source";
 import PageHeader from "../../../../../components/PageHeader";
 import StateBadge from "../../../../../components/badges/StateBadge";
@@ -30,6 +29,7 @@ import { useApi } from "../../../../../contexts/api";
 import { generateClient } from "../../../../../client/client";
 import { withServerErrorHandler } from "../../../../../utils/withServerErrorHandler";
 import { SourcePreviewMethodResponseRow } from "@grouparoo/core/src/classes/plugin";
+import { FormTypeahead } from "../../../../../components/Typeahead";
 
 export interface FormData {
   mapping?: {
@@ -414,64 +414,21 @@ const Page: NextPage<Props> = ({
                       if (connectionOptions[opt.key]?.type === "typeahead") {
                         return (
                           <>
-                            <Controller
+                            <FormTypeahead
                               control={control}
                               name={`source.options.${opt.key}`}
-                              render={({ field: { onChange } }) => {
-                                return (
-                                  <Typeahead
-                                    id="typeahead"
-                                    labelKey="key"
-                                    disabled={loading || loadingOptions}
-                                    inputProps={{ required: opt.required }}
-                                    options={connectionOptions[
-                                      opt.key
-                                    ]?.options.map((k, idx) => {
-                                      return {
-                                        key: k,
-                                        descriptions:
-                                          connectionOptions[k]?.descriptions[
-                                            idx
-                                          ],
-                                      };
-                                    })}
-                                    placeholder={
-                                      opt.placeholder || `Select ${opt.key}`
-                                    }
-                                    renderMenuItemChildren={(
-                                      opt,
-                                      props,
-                                      idx
-                                    ) => {
-                                      return [
-                                        <span key={`opt-${idx}-key`}>
-                                          {opt.key}
-                                          <br />
-                                        </span>,
-                                        <small
-                                          key={`opt-${idx}-descriptions`}
-                                          className="text-small"
-                                        >
-                                          {opt.descriptions ? (
-                                            <em>
-                                              Descriptions:{" "}
-                                              {opt.descriptions.join(", ")}
-                                            </em>
-                                          ) : null}
-                                        </small>,
-                                      ];
-                                    }}
-                                    defaultSelected={
-                                      source.options[opt.key]
-                                        ? [source.options[opt.key]]
-                                        : undefined
-                                    }
-                                    onChange={(selected) => {
-                                      onChange(selected[0]?.key);
-                                      updateOption(opt.key, selected[0]?.key);
-                                    }}
-                                  />
-                                );
+                              option={connectionOptions[opt.key]}
+                              disabled={loading || loadingOptions}
+                              placeholder={
+                                opt.placeholder || `Select ${opt.key}`
+                              }
+                              defaultSelected={
+                                source.options[opt.key]
+                                  ? [source.options[opt.key]]
+                                  : undefined
+                              }
+                              onChange={(selected) => {
+                                updateOption(opt.key, selected[0]?.key);
                               }}
                             />
                             <Form.Text className="text-muted">
