@@ -144,15 +144,23 @@ export namespace ExportOps {
   export async function completeBatch(_exports: Export[]) {
     if (_exports.length === 0) return;
 
-    await Export.update(
+    const [_, updatedExports] = await Export.update(
       {
         errorMessage: null,
         errorLevel: null,
         completedAt: new Date(),
         state: "complete",
       },
-      { where: { id: { [Op.in]: _exports.map((e) => e.id) } } }
+      {
+        where: { id: { [Op.in]: _exports.map((e) => e.id) } },
+        returning: true,
+      }
     );
+
+    for (const _export of updatedExports) {
+      _export.changed("state", true);
+      await Export.logExport(_export);
+    }
   }
 
   /**

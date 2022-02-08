@@ -14,6 +14,7 @@ import {
   GroupMember,
   Group,
 } from "../../src";
+import { ExportOps } from "../../src/modules/ops/export";
 
 describe("models/export", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -862,7 +863,8 @@ describe("models/export", () => {
     });
 
     test("Exports will be logged to file when successfully completed", async () => {
-      await _export.complete();
+      _export = await helper.factories.export();
+      await ExportOps.completeBatch([_export]);
 
       expect(fs.existsSync(logPath)).toBe(true);
 
@@ -923,7 +925,7 @@ describe("models/export", () => {
       fs.rmSync(logPath);
 
       _export = await helper.factories.export();
-      await _export.complete();
+      await ExportOps.completeBatch([_export]);
 
       expect(fs.existsSync(logPath)).toBe(false);
       expect(logMsgs.join(" ")).not.toContain("[ export ]");
@@ -933,7 +935,7 @@ describe("models/export", () => {
       process.env.GROUPAROO_EXPORT_LOG = "stdout";
 
       _export = await helper.factories.export();
-      await _export.complete();
+      await ExportOps.completeBatch([_export]);
 
       expect(fs.existsSync(logPath)).toBe(false);
       const logMsg = logMsgs.find((m) => m.startsWith("[ export ]"));

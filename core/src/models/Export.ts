@@ -17,7 +17,7 @@ import { Destination } from "./Destination";
 import { GrouparooRecord } from "./GrouparooRecord";
 import { plugin } from "../modules/plugin";
 import Moment from "moment";
-import { QueryTypes, Op } from "sequelize";
+import { QueryTypes } from "sequelize";
 import { ExportOps } from "../modules/ops/export";
 import { APIData } from "../modules/apiData";
 import { StateMachine } from "../modules/stateMachine";

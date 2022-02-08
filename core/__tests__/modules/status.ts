@@ -14,6 +14,7 @@ import {
 } from "../../src";
 import Moment from "moment";
 import { StatusReporters } from "../../dist/modules/statusReporters";
+import { ExportOps } from "../../src/modules/ops/export";
 
 describe("modules/status", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -604,7 +605,7 @@ describe("modules/status", () => {
               destination
             );
             await helper.changeTimestamps([_export], true, new Date(0));
-            await _export.complete();
+            await ExportOps.completeBatch([_export]);
 
             await destination.update({ state: destinationState });
 
