@@ -9,7 +9,6 @@
     "publishConfig": {
       "$id": "#/properties/publishConfig",
       "type": "object",
-      "examples": [{ "access": "public" }],
       "required": ["access"],
       "properties": {
         "access": {
