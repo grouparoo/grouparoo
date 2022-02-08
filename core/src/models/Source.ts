@@ -20,7 +20,6 @@ import {
   ScheduleConfigurationObject,
   SourceConfigurationObject,
 } from "../classes/codeConfig";
-import { LoggedModel } from "../classes/loggedModel";
 import { APIData } from "../modules/apiData";
 import { LockableHelper } from "../modules/lockableHelper";
 import { SourceOps } from "../modules/ops/source";
@@ -43,6 +42,7 @@ import {
 import { Run } from "./Run";
 import { GrouparooModel } from "./GrouparooModel";
 import { ModelGuard } from "../modules/modelGuard";
+import { CommonModel } from "../classes/commonModel";
 
 export interface BootstrapUniquePropertyParams {
   mappedColumn: string;
@@ -83,7 +83,7 @@ const STATE_TRANSITIONS = [
   where: { state: "ready" },
 }))
 @Table({ tableName: "sources", paranoid: false })
-export class Source extends LoggedModel<Source> {
+export class Source extends CommonModel<Source> {
   idPrefix() {
     return "src";
   }

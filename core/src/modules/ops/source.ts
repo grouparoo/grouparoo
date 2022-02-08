@@ -18,7 +18,6 @@ import { Option } from "../../models/Option";
 import { OptionHelper } from "../optionHelper";
 import { MappingHelper } from "../mappingHelper";
 import { log, utils, api } from "actionhero";
-import { LoggedModel } from "../../classes/loggedModel";
 import { FilterHelper } from "../filterHelper";
 import { topologicalSort } from "../topologicalSort";
 import { ConfigWriter } from "../configWriter";
@@ -570,7 +569,6 @@ export namespace SourceOps {
         await Property.ensureNonArrayAndUnique(property);
 
         // danger zone!
-        await LoggedModel.logCreate(property);
         await property.save({ hooks: false });
 
         // build the default options

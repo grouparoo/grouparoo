@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { ApiKey, Log, Permission } from "../../src";
+import { ApiKey, Permission } from "../../src";
 
 describe("models/apiKey", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -11,29 +11,8 @@ describe("models/apiKey", () => {
     expect(apiKey.id.length).toBe(40);
     expect(apiKey.createdAt).toBeTruthy();
     expect(apiKey.updatedAt).toBeTruthy();
-  });
 
-  test("creating an apiKey creates a log entry", async () => {
-    const latestLog = await Log.findOne({
-      where: { verb: "create", topic: "apiKey" },
-      order: [["createdAt", "desc"]],
-      limit: 1,
-    });
-
-    expect(latestLog).toBeTruthy();
-  });
-
-  test("destroying an apiKey creates a log entry", async () => {
-    const apiKey = await ApiKey.findOne();
     await apiKey.destroy();
-
-    const latestLog = await Log.findOne({
-      where: { verb: "destroy", topic: "apiKey" },
-      order: [["createdAt", "desc"]],
-      limit: 1,
-    });
-
-    expect(latestLog).toBeTruthy();
   });
 
   test("apiKeys are created with neither read no write permissions for each topic", async () => {

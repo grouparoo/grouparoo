@@ -39,7 +39,10 @@ export async function loadModel(
     locked: ConfigWriter.getLockKey(configObject),
   });
 
-  logModel(model, validate ? "validated" : isNew ? "created" : "updated");
+  logModel<GrouparooModel>(
+    model,
+    validate ? "validated" : isNew ? "created" : "updated"
+  );
 
   return { model: [model.id] };
 }
@@ -54,7 +57,7 @@ export async function deleteModels(ids: string[]) {
 
   for (const i in models) {
     await models[i].update({ state: "deleted", locked: null });
-    logModel(models[i], "deleted");
+    logModel<GrouparooModel>(models[i], "deleted");
   }
 
   return models.map((instance) => instance.id);

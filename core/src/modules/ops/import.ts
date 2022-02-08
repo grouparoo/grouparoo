@@ -86,20 +86,10 @@ export namespace ImportOps {
         source
       );
 
-    const oldRecordProperties = await record.simplifiedProperties();
-    const oldGroups = await record.$get("groups");
-
     _import.state = "importing";
     _import.createdRecord = isNew;
     _import.recordId = record.id;
     _import.recordAssociatedAt = new Date();
-
-    _import.oldRecordProperties =
-      Object.keys(_import.oldRecordProperties).length === 0
-        ? oldRecordProperties
-        : {};
-
-    _import.oldGroupIds = oldGroups.map((group) => group.id);
 
     await _import.save();
 

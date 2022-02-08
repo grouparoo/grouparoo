@@ -2,7 +2,6 @@ import { api } from "actionhero";
 import { GrouparooPlugin } from "../classes/plugin";
 import { MustacheUtils } from "./mustacheUtils";
 import { APMWrap } from "./apm";
-
 import { App } from "../models/App";
 import { AppRefreshQuery } from "../models/AppRefreshQuery";
 import { ApiKey } from "../models/ApiKey";
@@ -13,7 +12,6 @@ import { Group } from "../models/Group";
 import { GroupMember } from "../models/GroupMember";
 import { GroupRule } from "../models/GroupRule";
 import { Import } from "../models/Import";
-import { Log } from "../models/Log";
 import { Mapping } from "../models/Mapping";
 import { Option } from "../models/Option";
 import { OAuthRequest } from "../models/OAuthRequest";
@@ -54,7 +52,6 @@ const models = [
   GroupMember,
   Group,
   GroupRule,
-  Log,
   Permission,
   GrouparooModel,
   GrouparooRecord,

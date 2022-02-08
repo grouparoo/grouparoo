@@ -60,7 +60,7 @@ export async function loadApp(
 
   await app.update({ state: "ready" }, {});
 
-  logModel(app, validate ? "validated" : isNew ? "created" : "updated");
+  logModel<App>(app, validate ? "validated" : isNew ? "created" : "updated");
 
   if (configObject.refresh?.query.length > 1) {
     let appRefreshQuery: AppRefreshQuery;
@@ -90,7 +90,7 @@ export async function loadApp(
       });
     }
 
-    logModel(
+    logModel<App>(
       appRefreshQuery,
       validate ? "validated" : isNew ? "created" : "updated"
     );
@@ -106,7 +106,7 @@ export async function deleteApps(ids: string[]) {
 
   for (const i in apps) {
     await apps[i].update({ state: "deleted", locked: null });
-    logModel(apps[i], "deleted");
+    logModel<App>(apps[i], "deleted");
   }
 
   return apps.map((instance) => instance.id);

@@ -8,7 +8,6 @@ import {
   SetupStep,
   Team,
   TeamMember,
-  Log,
 } from "../../src";
 
 describe("modules/reset", () => {
@@ -62,7 +61,7 @@ describe("modules/reset", () => {
     });
 
     test("periodic tasks will be re-enqueued", async () => {
-      const found = await specHelper.findEnqueuedTasks("records:checkReady");
+      const found = await specHelper.findEnqueuedTasks("records:makeExports");
       expect(found.length).toBe(1);
     });
   }
@@ -112,16 +111,6 @@ describe("modules/reset", () => {
       expect(await Team.count()).toBe(1);
       expect(await TeamMember.count()).toBe(1);
     });
-
-    test("log messages were created", async () => {
-      const log = await Log.findOne({
-        order: [["createdAt", "desc"]],
-      });
-
-      expect(log.message).toEqual("Reset cluster by test");
-      expect(log.topic).toEqual("cluster");
-      expect(log.verb).toEqual("reset");
-    });
   });
 
   describe("reset:data", () => {
@@ -160,16 +149,6 @@ describe("modules/reset", () => {
       expect(await Team.count()).toBe(1);
       expect(await TeamMember.count()).toBe(1);
     });
-
-    test("log messages were created", async () => {
-      const log = await Log.findOne({
-        order: [["createdAt", "desc"]],
-      });
-
-      expect(log.message).toEqual("Reset data by test");
-      expect(log.topic).toEqual("data");
-      expect(log.verb).toEqual("reset");
-    });
   });
 
   describe("reset:cache", () => {
@@ -180,15 +159,5 @@ describe("modules/reset", () => {
     });
 
     testResqueAndCache();
-
-    test("log messages were created", async () => {
-      const log = await Log.findOne({
-        order: [["createdAt", "desc"]],
-      });
-
-      expect(log.message).toEqual("Reset cache by test");
-      expect(log.topic).toEqual("cache");
-      expect(log.verb).toEqual("reset");
-    });
   });
 });

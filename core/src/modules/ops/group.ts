@@ -21,14 +21,11 @@ export namespace GroupOps {
     for (const recordId of recordIds) {
       bulkData.push({
         state: "importing",
-        rawData: destinationId ? { _meta: { destinationId } } : {},
         data: destinationId ? { _meta: { destinationId } } : {},
         creatorType,
         creatorId,
         recordId,
         recordAssociatedAt: new Date(),
-        oldRecordProperties: {},
-        oldGroupIds: [],
       });
     }
 
@@ -108,7 +105,7 @@ export namespace GroupOps {
       }
 
       if (bulkDestroyRecordIds.length > 0) {
-        await GroupMember.destroyWithLogs({
+        await GroupMember.destroy({
           where: {
             recordId: { [Op.in]: bulkDestroyRecordIds },
             groupId: group.id,

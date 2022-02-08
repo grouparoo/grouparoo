@@ -16,8 +16,10 @@ exports[`SampleRecordCard should render with 1 record 1`] = `
         >
           <h5
             class="my-1"
+            id="sample-record"
           >
-            Sample Record 
+            Sample Record
+             
           </h5>
         </div>
         <div
@@ -168,8 +170,10 @@ exports[`SampleRecordCard should render with 1 record in config mode 1`] = `
         >
           <h5
             class="my-1"
+            id="sample-record"
           >
-            Sample Record 
+            Sample Record
+             
           </h5>
         </div>
         <div
@@ -332,8 +336,10 @@ exports[`SampleRecordCard should render with no records 1`] = `
         >
           <h5
             class="my-1"
+            id="sample-record"
           >
-            Sample Record 
+            Sample Record
+             
           </h5>
         </div>
         <div
@@ -400,8 +406,10 @@ exports[`SampleRecordCard should render with no records in 'config mode' 1`] = `
         >
           <h5
             class="my-1"
+            id="sample-record"
           >
-            Sample Record 
+            Sample Record
+             
           </h5>
         </div>
         <div

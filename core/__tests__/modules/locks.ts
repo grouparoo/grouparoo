@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api } from "actionhero";
-import { waitForLock } from "../../src/modules/locks";
+import { getLock, waitForLock } from "../../src/modules/locks";
 
 describe("modules/locks", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -13,7 +13,7 @@ describe("modules/locks", () => {
     await api.resque.queue.connection.redis.flushdb();
   });
 
-  describe("locks", () => {
+  describe("waitForLock", () => {
     const key = "testKey";
 
     test("a lock can be obtained when it is not taken", async () => {
@@ -57,6 +57,33 @@ describe("modules/locks", () => {
       const secondLock = await waitForLock(key);
       // the lock should be obtained in less than 5s, which is this test's time limit
       expect(secondLock.attempts).toBeGreaterThan(1);
+    });
+  });
+  describe("getLock", () => {
+    const key = "testKey";
+
+    test("a lock can be obtained when it is not taken", async () => {
+      const releaseLock = await getLock(key);
+      expect(releaseLock).toBeInstanceOf(Function);
+      await releaseLock();
+    });
+
+    test("a lock cannot be obtained when it is already taken", async () => {
+      const releaseLock = await getLock(key);
+      expect(releaseLock).toBeInstanceOf(Function);
+      const notReleaseLock = await getLock(key);
+      expect(notReleaseLock).toBeFalsy();
+      await releaseLock();
+    });
+
+    test("a lock will time out if it is not unlocked", async () => {
+      const releaseLock = await getLock(key, 1000);
+      expect(releaseLock).toBeInstanceOf(Function);
+      await helper.sleep(2000);
+      const secondReleaseLock = await getLock(key, 1000);
+      await releaseLock();
+      expect(secondReleaseLock).toBeInstanceOf(Function);
+      await secondReleaseLock();
     });
   });
 });

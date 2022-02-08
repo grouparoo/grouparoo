@@ -2,7 +2,7 @@ import fetch, { enableFetchMocks } from "jest-fetch-mock";
 enableFetchMocks();
 
 import { helper } from "@grouparoo/spec-helper";
-import { plugin, Log } from "../../../src";
+import { plugin } from "../../../src";
 import { api, specHelper, config } from "actionhero";
 
 describe("tasks/telemetry", () => {
@@ -17,7 +17,6 @@ describe("tasks/telemetry", () => {
   describe("telemetry", () => {
     beforeAll(async () => {
       await helper.factories.properties();
-      await Log.truncate();
     });
 
     test("settings are loaded at boot", async () => {

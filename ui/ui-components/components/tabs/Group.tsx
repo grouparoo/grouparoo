@@ -18,7 +18,7 @@ export default function GroupTabs({ group }: { group: Models.GroupType }) {
       tabs = ["edit", "rules"];
       break;
     case "enterprise":
-      tabs = ["edit", "rules", "members", "destinations", "runs", "logs"];
+      tabs = ["edit", "rules", "members", "destinations", "runs"];
       break;
   }
 

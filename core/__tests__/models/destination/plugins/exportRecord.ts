@@ -996,7 +996,6 @@ describe("models/destination - with custom exportRecord plugin", () => {
       expect(_export.state).toBe("pending");
       expect(_export.retryCount).toBe(0);
 
-      // when the response is back to success
       exportProfileResponse = {
         success: true,
         error: undefined,

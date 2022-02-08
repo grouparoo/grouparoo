@@ -103,7 +103,7 @@ export const getSetupStepDescriptions = (modelId?: string) => {
       title: "Create a Destination",
       description:
         "Create a Destination to sync your Records and Group Memberships.  Grouparoo will automatically send all new information to the Destinations relevant to each Record.",
-      href: modelId ? `/model/${modelId}/overview` : "/model/new",
+      href: modelId ? `/model/${modelId}/overview#destinations` : "/model/new",
       cta: "Add a Destination",
       helpLink: `${configURL}/destinations`,
       check: async () => {

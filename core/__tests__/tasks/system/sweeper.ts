@@ -1,7 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import {
   Run,
-  Log,
   Import,
   Export,
   ExportProcessor,
@@ -18,7 +17,6 @@ describe("tasks/sweeper", () => {
   describe("sweeper", () => {
     beforeAll(async () => {
       await helper.factories.properties();
-      await Log.truncate();
     });
 
     test("settings are loaded at boot", async () => {
@@ -58,7 +56,6 @@ describe("tasks/sweeper", () => {
     });
 
     test("it will delete old imports", async () => {
-      await helper.factories.log();
       const oldImport = await helper.factories.import();
 
       oldImport.set({ createdAt: new Date(0) }, { raw: true });
@@ -179,27 +176,6 @@ describe("tasks/sweeper", () => {
           failedWithExports.id,
         ].sort()
       );
-    });
-
-    test("it will delete old logs", async () => {
-      await Log.truncate();
-      await helper.factories.log();
-      const oldLog = await helper.factories.log();
-
-      oldLog.set({ createdAt: new Date(0) }, { raw: true });
-      oldLog.changed("createdAt", true);
-      await oldLog.save({
-        silent: true,
-        fields: ["createdAt"],
-      });
-
-      let count = await Log.count();
-      expect(count).toBe(2);
-
-      await specHelper.runTask("sweeper", {});
-
-      count = await Log.count();
-      expect(count).toBe(1);
     });
 
     test("it will delete old sessions", async () => {

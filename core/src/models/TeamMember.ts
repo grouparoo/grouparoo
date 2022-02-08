@@ -11,15 +11,15 @@ import {
   BeforeDestroy,
   AfterCreate,
 } from "sequelize-typescript";
-import { LoggedModel } from "../classes/loggedModel";
 import { Team } from "./Team";
 import { TeamMemberOps } from "../modules/ops/teamMember";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
 import { CLS } from "../modules/cls";
+import { CommonModel } from "../classes/commonModel";
 
 @Table({ tableName: "teamMembers", paranoid: false })
-export class TeamMember extends LoggedModel<TeamMember> {
+export class TeamMember extends CommonModel<TeamMember> {
   idPrefix() {
     return "tem";
   }

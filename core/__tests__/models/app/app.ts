@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, redis, utils } from "actionhero";
-import { App, Log, Option, plugin, PluginOptionType } from "../../../src";
+import { App, Option, plugin, PluginOptionType } from "../../../src";
 import { ObfuscatedOptionString } from "../../../src/modules/optionHelper";
 
 describe("models/app", () => {
@@ -153,35 +153,6 @@ describe("models/app", () => {
     await foreignOption.destroy();
   });
 
-  test("creating an app creates a log entry", async () => {
-    const latestLog = await Log.findOne({
-      where: { verb: "create", topic: "app" },
-      order: [["createdAt", "desc"]],
-      limit: 1,
-    });
-
-    expect(latestLog).toBeTruthy();
-  });
-
-  test("the app options will not be logged", async () => {
-    const app = await App.create({
-      name: "test log app",
-      type: "test-plugin-app",
-    });
-
-    await Log.truncate();
-    await app.setOptions({ fileId: "abc123" });
-
-    let log = await Log.findOne({
-      where: { verb: "update", topic: "app" },
-    });
-
-    expect(log.data.options).toBe("** filtered **");
-    expect(log.message).toMatch(/app "test log app" updated/);
-
-    await app.destroy();
-  });
-
   test("apps can determine if they will provide a source or destination", async () => {
     const app = await App.create({
       name: "test log app",
@@ -191,24 +162,6 @@ describe("models/app", () => {
     const provides = app.provides();
     expect(provides).toEqual({ source: true, destination: true });
     await app.destroy();
-  });
-
-  test("deleting a app creates a log entry", async () => {
-    const app = await App.create({
-      name: "bye app",
-      type: "test-plugin-app",
-      options: { fileId: "abc123" },
-    });
-
-    await app.destroy();
-
-    const latestLog = await Log.findOne({
-      where: { verb: "create", topic: "app" },
-      order: [["createdAt", "desc"]],
-      limit: 1,
-    });
-
-    expect(latestLog).toBeTruthy();
   });
 
   describe("options from environment variables", () => {

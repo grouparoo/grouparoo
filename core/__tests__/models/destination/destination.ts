@@ -9,7 +9,6 @@ import {
   Group,
   GrouparooModel,
   GroupMember,
-  Log,
   Mapping,
   Option,
   plugin,
@@ -175,16 +174,6 @@ describe("models/destination", () => {
       await destination.update({ name: "abc", state: "deleted" });
       expect(destination.name).toBe("abc");
       await model.update({ state: "ready" });
-    });
-
-    test("creating a destination creates a log entry", async () => {
-      const latestLog = await Log.findOne({
-        where: { verb: "create", topic: "destination" },
-        order: [["createdAt", "desc"]],
-        limit: 1,
-      });
-
-      expect(latestLog).toBeTruthy();
     });
 
     test("deleting a destination deletes related models", async () => {

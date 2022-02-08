@@ -93,6 +93,9 @@ describe("integration/runs/internalRun", () => {
       expect(run.importsCreated).toBe(1);
       expect(run.recordsCreated).toBe(0);
       expect(run.recordsImported).toBe(1);
+
+      await record.reload();
+      expect(record.state).toBe("ready");
     });
   });
 

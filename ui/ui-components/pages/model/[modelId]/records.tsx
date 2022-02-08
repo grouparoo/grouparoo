@@ -1,7 +1,10 @@
+import { NextPageContext } from "next";
 import Head from "next/head";
 import RecordsList from "../../../components/record/List";
 
-export default function Page(props) {
+export default function Page(
+  props: Awaited<ReturnType<typeof Page.getInitialProps>>
+) {
   return (
     <>
       <Head>
@@ -13,6 +16,6 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  return RecordsList.hydrate(ctx);
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  return await RecordsList.hydrate(ctx);
 };

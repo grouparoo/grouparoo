@@ -77,7 +77,10 @@ export async function loadSchedule(
 
   await schedule.update({ state: "ready" });
 
-  logModel(schedule, validate ? "validated" : isNew ? "created" : "updated");
+  logModel<Schedule>(
+    schedule,
+    validate ? "validated" : isNew ? "created" : "updated"
+  );
 
   return { schedule: [schedule.id] };
 }
@@ -89,7 +92,7 @@ export async function deleteSchedules(ids: string[]) {
 
   for (const i in schedules) {
     await schedules[i].destroy();
-    logModel(schedules[i], "deleted");
+    logModel<Schedule>(schedules[i], "deleted");
   }
 
   return schedules.map((instance) => instance.id);

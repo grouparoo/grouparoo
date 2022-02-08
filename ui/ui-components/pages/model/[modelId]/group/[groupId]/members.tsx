@@ -13,7 +13,9 @@ import LockedBadge from "../../../../../components/badges/LockedBadge";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { generateClient } from "../../../../../client/client";
 
-export default function Page(props) {
+export default function Page(
+  props: Awaited<ReturnType<typeof Page.getInitialProps>>
+) {
   const {
     group,
   }: {

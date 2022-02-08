@@ -6,7 +6,6 @@ import {
   Destination,
   GrouparooModel,
   GrouparooRecord,
-  Log,
   Option,
   plugin,
   Property,
@@ -45,13 +44,6 @@ describe("models/source", () => {
 
     afterAll(async () => {
       await source.destroy();
-    });
-
-    test("creating a source creates a log entry", async () => {
-      const log = await Log.findOne({
-        where: { topic: "source", verb: "create", ownerId: source.id },
-      });
-      expect(log.message).toBe(`source "${source.name}" created`);
     });
 
     test("scheduleAvailable", async () => {

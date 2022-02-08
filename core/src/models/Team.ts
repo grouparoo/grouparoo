@@ -10,7 +10,6 @@ import {
   BeforeSave,
 } from "sequelize-typescript";
 import { api } from "actionhero";
-import { LoggedModel } from "../classes/loggedModel";
 import { TeamMember } from "./TeamMember";
 import {
   ActionPermissionTopic,
@@ -20,9 +19,10 @@ import {
 } from "./Permission";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
+import { CommonModel } from "../classes/commonModel";
 
 @Table({ tableName: "teams", paranoid: false })
-export class Team extends LoggedModel<Team> {
+export class Team extends CommonModel<Team> {
   idPrefix() {
     return "tea";
   }

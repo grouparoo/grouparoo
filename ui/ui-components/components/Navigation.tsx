@@ -156,7 +156,7 @@ export default function Navigation(props) {
               </a>
             </Link>
             <br />
-            {navigationMode.includes("config") ? (
+            {navigationMode?.includes("config") ? (
               <Badge variant="secondary">
                 {truncate(clusterName.value, 30)}
               </Badge>
@@ -177,7 +177,7 @@ export default function Navigation(props) {
           </span>
         </div>
 
-        {!navigationMode.includes("unauthenticated") && (
+        {!navigationMode?.includes("unauthenticated") && (
           <SetupStepsNavProgressBar />
         )}
 

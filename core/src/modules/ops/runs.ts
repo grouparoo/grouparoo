@@ -8,7 +8,6 @@ import { GrouparooModel } from "../../models/GrouparooModel";
 import { Property } from "../../models/Property";
 import { Import } from "../../models/Import";
 import { Op } from "sequelize";
-import { Log } from "../../models/Log";
 import { TaskInputs } from "actionhero/dist/classes/task";
 import { getGrouparooRunMode } from "../runMode";
 
@@ -77,16 +76,9 @@ export namespace RunOps {
       steps: {
         associate: number;
         imported: number;
-        processed: number;
       };
     }[] = [];
     const start = run.createdAt.getTime();
-
-    const lastProcessedImport = await Import.findOne({
-      where: { creatorId: run.id },
-      order: [["processedAt", "desc"]],
-      limit: 1,
-    });
 
     const lastImportedImport = await Import.findOne({
       where: { creatorId: run.id },
@@ -95,8 +87,7 @@ export namespace RunOps {
     });
 
     const end =
-      lastProcessedImport?.processedAt?.getTime() ||
-      lastImportedImport?.processedAt?.getTime() ||
+      lastImportedImport?.importedAt?.getTime() ||
       run?.completedAt?.getTime() ||
       new Date().getTime();
 
@@ -123,14 +114,6 @@ export namespace RunOps {
           imported: await run.$count("imports", {
             where: {
               importedAt: {
-                [Op.gte]: lastBoundary,
-                [Op.lt]: nextBoundary,
-              },
-            },
-          }),
-          processed: await run.$count("imports", {
-            where: {
-              processedAt: {
                 [Op.gte]: lastBoundary,
                 [Op.lt]: nextBoundary,
               },
@@ -196,37 +179,22 @@ export namespace RunOps {
       });
 
       if (totalGroupMembers === 0 && membersAlreadyUpdated === 0) return 0;
+      if (group.state === "deleted") return 99;
 
-      if (group.state === "deleted") {
-        totalGroupMembers = await group.$count("groupMembers");
+      // there are 3 phases to group runs, but only 2 really could have work, so we attribute 1/2 to each phase
+      let percentComplete = Math.floor(
+        100 *
+          (membersAlreadyUpdated /
+            (totalGroupMembers > 0 ? totalGroupMembers : 1))
+      );
 
-        const latestLogEntry = await Log.findOne({
-          where: { ownerId: group.id },
-          order: [["createdAt", "desc"]],
-        });
-
-        let latestRecordsCount = latestLogEntry?.data?.recordsCount ?? 0;
-        if (latestRecordsCount === 0) latestRecordsCount = 1;
-
-        return Math.floor(
-          100 * ((latestRecordsCount - totalGroupMembers) / latestRecordsCount)
-        );
+      if (!run.method.match(/remove/i)) {
+        percentComplete = Math.floor(percentComplete / 2);
       } else {
-        // there are 3 phases to group runs, but only 2 really could have work, so we attribute 1/2 to each phase
-        let percentComplete = Math.floor(
-          100 *
-            (membersAlreadyUpdated /
-              (totalGroupMembers > 0 ? totalGroupMembers : 1))
-        );
-
-        if (!run.method.match(/remove/i)) {
-          percentComplete = Math.floor(percentComplete / 2);
-        } else {
-          percentComplete = 49 + Math.floor(percentComplete / 2);
-        }
-
-        return percentComplete;
+        percentComplete = 49 + Math.floor(percentComplete / 2);
       }
+
+      return percentComplete;
     } else if (run.creatorType === "schedule") {
       const schedule = await Schedule.findById(run.creatorId);
       try {

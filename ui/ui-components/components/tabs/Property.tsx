@@ -14,7 +14,7 @@ const PropertyTabs: React.FC<Props> = ({ property, source }) => {
   let tabs = ["edit"];
 
   if (grouparooUiEdition() === "enterprise") {
-    tabs.push("records", "groups", "runs", "logs");
+    tabs.push("records", "groups", "runs");
   }
 
   return (

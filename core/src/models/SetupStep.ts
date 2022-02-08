@@ -5,15 +5,15 @@ import {
   Default,
   Length,
 } from "sequelize-typescript";
-import { LoggedModel } from "../classes/loggedModel";
 import {
   SetupStepDescription,
   getSetupStepDescriptions,
 } from "../modules/ops/setupSteps";
 import { APIData } from "../modules/apiData";
+import { CommonModel } from "../classes/commonModel";
 
 @Table({ tableName: "setupSteps", paranoid: false })
-export class SetupStep extends LoggedModel<SetupStep> {
+export class SetupStep extends CommonModel<SetupStep> {
   idPrefix() {
     return "sus";
   }

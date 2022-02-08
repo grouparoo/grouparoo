@@ -84,7 +84,10 @@ export async function loadProperty(
 
   await property.update({ state: "ready" });
 
-  logModel(property, validate ? "validated" : isNew ? "created" : "updated");
+  logModel<Property>(
+    property,
+    validate ? "validated" : isNew ? "created" : "updated"
+  );
 
   return { property: [property.id] };
 }
@@ -97,7 +100,7 @@ export async function deleteProperties(ids: string[]) {
   for (const i in properties) {
     const property = properties[i];
     await property.update({ state: "deleted", locked: null });
-    logModel(property, "deleted");
+    logModel<Property>(property, "deleted");
   }
 
   return properties.map((instance) => instance.id);

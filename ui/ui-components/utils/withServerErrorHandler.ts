@@ -1,32 +1,16 @@
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { getRedirectFromErrorCode } from "./getRedirectFromErrorCode";
 
-export function withServerErrorHandler<T>(
-  getServerSideProps: GetServerSideProps<T>
-) {
-  const func: GetServerSideProps<T> = async (ctx) => {
+export const withServerErrorHandler =
+  <T>(getServerSideProps: GetServerSideProps<T>) =>
+  async (ctx: GetServerSidePropsContext) => {
     try {
       return await getServerSideProps(ctx);
     } catch (error) {
       const requestPath = ctx?.req?.url?.match("^[^?]*")[0];
-
-      if (error.code === "NO_TEAMS_ERROR") {
-        return {
-          redirect: {
-            destination: `/`,
-            permanent: false,
-          },
-        };
-      }
-      if (
-        error.code === "AUTHENTICATION_ERROR" &&
-        requestPath !== "/session/sign-in"
-      ) {
-        return {
-          redirect: {
-            destination: `/session/sign-in?nextPage=${requestPath}`,
-            permanent: false,
-          },
-        };
+      const redirect = getRedirectFromErrorCode(error.code, requestPath);
+      if (redirect) {
+        return { redirect };
       }
 
       const message = error?.message;
@@ -34,6 +18,3 @@ export function withServerErrorHandler<T>(
       return { props: { hydrationError: message } } as { props: T };
     }
   };
-
-  return func;
-}

@@ -81,17 +81,6 @@ export class Import extends CommonModel<Import> {
     this.setDataValue("data", JSON.stringify(value));
   }
 
-  @Column(DataType.TEXT)
-  // rawData: string;
-  get rawData(): ImportData {
-    //@ts-ignore
-    return JSON.parse(this.getDataValue("rawData") || "{}");
-  }
-  set rawData(value: ImportData) {
-    //@ts-ignore
-    this.setDataValue("rawData", JSON.stringify(value));
-  }
-
   @ForeignKey(() => GrouparooRecord)
   @Column
   recordId: string;
@@ -103,50 +92,6 @@ export class Import extends CommonModel<Import> {
   @Default(false)
   @Column
   createdRecord: boolean;
-
-  @Column(DataType.TEXT)
-  // oldRecordProperties: string;
-  get oldRecordProperties(): ImportRecordProperties {
-    //@ts-ignore
-    return JSON.parse(this.getDataValue("oldRecordProperties") || "{}");
-  }
-  set oldRecordProperties(value: ImportRecordProperties) {
-    //@ts-ignore
-    this.setDataValue("oldRecordProperties", JSON.stringify(value));
-  }
-
-  @Column(DataType.TEXT)
-  // newRecordProperties: string;
-  get newRecordProperties(): ImportRecordProperties {
-    //@ts-ignore
-    return JSON.parse(this.getDataValue("newRecordProperties") || "{}");
-  }
-  set newRecordProperties(value: ImportRecordProperties) {
-    //@ts-ignore
-    this.setDataValue("newRecordProperties", JSON.stringify(value));
-  }
-
-  @Column(DataType.TEXT)
-  // oldGroupIds: string;
-  get oldGroupIds(): string[] {
-    //@ts-ignore
-    return JSON.parse(this.getDataValue("oldGroupIds") || "[]");
-  }
-  set oldGroupIds(value: string[]) {
-    //@ts-ignore
-    this.setDataValue("oldGroupIds", JSON.stringify(value));
-  }
-
-  @Column(DataType.TEXT)
-  // newGroupIds: string;
-  get newGroupIds(): string[] {
-    //@ts-ignore
-    return JSON.parse(this.getDataValue("newGroupIds") || "[]");
-  }
-  set newGroupIds(value: string[]) {
-    //@ts-ignore
-    this.setDataValue("newGroupIds", JSON.stringify(value));
-  }
 
   @Column
   startedAt: Date;
@@ -171,10 +116,8 @@ export class Import extends CommonModel<Import> {
 
   async apiData() {
     const data = this.data || {};
-    const rawData = this.rawData || {};
 
     delete data._meta;
-    delete rawData._meta;
 
     const record = await this.$get("record");
 
@@ -190,7 +133,6 @@ export class Import extends CommonModel<Import> {
 
       //data
       data,
-      rawData,
 
       // lifecycle timestamps
       createdAt: APIData.formatDate(this.createdAt),
@@ -199,12 +141,7 @@ export class Import extends CommonModel<Import> {
       importedAt: APIData.formatDate(this.importedAt),
       processedAt: APIData.formatDate(this.processedAt),
 
-      // data before and after
       createdRecord: this.createdRecord,
-      oldRecordProperties: this.oldRecordProperties,
-      newRecordProperties: this.newRecordProperties,
-      oldGroupIds: this.oldGroupIds,
-      newGroupIds: this.newGroupIds,
 
       // errors
       errorMessage: this.errorMessage,
