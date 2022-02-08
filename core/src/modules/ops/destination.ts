@@ -920,9 +920,9 @@ export namespace DestinationOps {
     success: boolean;
     error: Error;
   }> {
-    const _exports: Export[] = [];
-    const exportsWithChanges = givenExports.filter((e) => e.hasChanges);
-    const exportsWithoutChanges = givenExports.filter((e) => !e.hasChanges);
+    const _exports: Export[] = []; // those exports with changes + locks acquired
+    const exportsWithChanges: Export[] = [];
+    const exportsWithoutChanges: Export[] = [];
     const locks: Awaited<ReturnType<typeof getLock>>[] = [];
 
     for (const givenExport of givenExports) {
