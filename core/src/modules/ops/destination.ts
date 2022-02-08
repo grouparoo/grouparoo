@@ -29,6 +29,7 @@ import { MappingHelper } from "../mappingHelper";
 import { RecordPropertyOps } from "./recordProperty";
 import { Option } from "../../models/Option";
 import { getLock } from "../locks";
+import { QueryTypes } from "sequelize/types";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -926,8 +927,8 @@ export namespace DestinationOps {
     const locks: Awaited<ReturnType<typeof getLock>>[] = [];
 
     try {
-      const exportIds = await Export.sequelize
-        .query<[[{ id: string }]]>(
+      const mostRecentExportIds = await Export.sequelize
+        .query(
           {
             query: `
         SELECT
@@ -948,9 +949,12 @@ export namespace DestinationOps {
               givenExports.map(({ recordId }) => recordId),
             ],
           },
-          undefined
+          {
+            type: QueryTypes.SELECT,
+            model: Export,
+          }
         )
-        .then((exports) => exports[0].map((e) => e.id));
+        .then((exports) => exports.map((e) => e.id));
 
       for (const givenExport of givenExports) {
         if (!givenExport.hasChanges) {
@@ -958,7 +962,7 @@ export namespace DestinationOps {
           continue;
         }
 
-        if (!exportIds.includes(givenExport.id)) {
+        if (!mostRecentExportIds.includes(givenExport.id)) {
           await cancelOldExport(givenExport);
           continue;
         }
