@@ -53,6 +53,8 @@ describe("package.json validation", () => {
     excludedPackages.push(nameAndVersion);
   });
 
+  const pkgFile =
+    "/Users/teal/workspace/grouparoo/grouparoo/plugins/@grouparoo/customerio/package.json";
   // packageFiles.forEach((pkgFile) => {
   describe.each(packageFiles)(`%s`, (pkgFile) => {
     const pkgJson = JSON.parse(fs.readFileSync(pkgFile, "utf-8"));
@@ -75,8 +77,7 @@ describe("package.json validation", () => {
       expect(pkgJson).toMatchSchema(schema);
     });
 
-    test.only("Dependencies use a permitted license", async (done) => {
-      jest.setTimeout(100000);
+    test("Dependencies use a permitted license", (done) => {
       const allowedLicenses = [
         "MPL-2.0",
         "MIT",
@@ -93,25 +94,19 @@ describe("package.json validation", () => {
         "Unlicense",
         "WTFPL",
       ];
-      const options = {
-        start: path.dirname(pkgFile),
-        excludePackages: excludedPackages.join(";"),
-        onlyAllow: allowedLicenses.join(";"),
-      };
 
-      try {
-        await checker.init(options, (error, packages) => {
-          if (error) {
-            done(error);
-          }
-          console.info(packages);
-          return packages;
-        });
-      } catch (error) {
-        done(error);
-      }
+      childProcess.exec(
+        `./node_modules/.bin/license-checker --excludePackages '${excludedPackages.join(
+          ";"
+        )}'  --start '${path.dirname(
+          pkgFile
+        )}' --onlyAllow '${allowedLicenses.join(";")}'`,
+        { cwd: path.resolve(__dirname + "/../") },
 
-      // expect(checkLicenses).toBe(true);
+        (err, stdout, stderr) => {
+          done(stderr);
+        }
+      );
     });
   });
 
