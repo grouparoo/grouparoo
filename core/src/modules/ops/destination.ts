@@ -29,7 +29,6 @@ import { MappingHelper } from "../mappingHelper";
 import { RecordPropertyOps } from "./recordProperty";
 import { Option } from "../../models/Option";
 import { getLock } from "../locks";
-import { QueryTypes } from "sequelize/types";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -950,7 +949,7 @@ export namespace DestinationOps {
             ],
           },
           {
-            type: QueryTypes.SELECT,
+            type: "SELECT",
             model: Export,
           }
         )
