@@ -27,6 +27,7 @@ importers:
       '@grouparoo/braze': 0.8.1-alpha.1
       '@grouparoo/calculated-property': 0.8.1-alpha.1
       '@grouparoo/clickhouse': 0.8.1-alpha.1
+      '@grouparoo/closeio': 0.8.1-alpha.1
       '@grouparoo/core': 0.8.1-alpha.1
       '@grouparoo/csv': 0.8.1-alpha.1
       '@grouparoo/customerio': 0.8.1-alpha.1
@@ -69,6 +70,7 @@ importers:
       '@grouparoo/braze': link:../../plugins/@grouparoo/braze
       '@grouparoo/calculated-property': link:../../plugins/@grouparoo/calculated-property
       '@grouparoo/clickhouse': link:../../plugins/@grouparoo/clickhouse
+      '@grouparoo/closeio': link:../../plugins/@grouparoo/closeio
       '@grouparoo/core': link:../../core
       '@grouparoo/csv': link:../../plugins/@grouparoo/csv
       '@grouparoo/customerio': link:../../plugins/@grouparoo/customerio
@@ -137,6 +139,7 @@ importers:
       '@grouparoo/braze': 0.8.1-alpha.1
       '@grouparoo/calculated-property': 0.8.1-alpha.1
       '@grouparoo/clickhouse': 0.8.1-alpha.1
+      '@grouparoo/closeio': 0.8.1-alpha.1
       '@grouparoo/core': 0.8.1-alpha.1
       '@grouparoo/csv': 0.8.1-alpha.1
       '@grouparoo/customerio': 0.8.1-alpha.1
@@ -178,6 +181,7 @@ importers:
       '@grouparoo/braze': link:../../plugins/@grouparoo/braze
       '@grouparoo/calculated-property': link:../../plugins/@grouparoo/calculated-property
       '@grouparoo/clickhouse': link:../../plugins/@grouparoo/clickhouse
+      '@grouparoo/closeio': link:../../plugins/@grouparoo/closeio
       '@grouparoo/core': link:../../core
       '@grouparoo/csv': link:../../plugins/@grouparoo/csv
       '@grouparoo/customerio': link:../../plugins/@grouparoo/customerio
@@ -565,6 +569,47 @@ importers:
       actionhero: 28.1.7
       csv-parse: 4.16.3
       jest: 27.4.5
+      prettier: 2.5.1
+      sequelize: 6.15.0
+      ts-jest: 27.1.3_2bbca1cabebf3b65a1d857755c03321e
+      typescript: 4.5.5
+
+  plugins/@grouparoo/closeio:
+    specifiers:
+      '@grouparoo/app-templates': 0.8.1-alpha.1
+      '@grouparoo/core': 0.8.1-alpha.1
+      '@grouparoo/spec-helper': 0.8.1-alpha.1
+      '@types/dot-object': ^2.1.2
+      '@types/jest': '*'
+      '@types/node': 16.*.*
+      actionhero: 28.1.7
+      axios: 0.24.0
+      close.io: ^1.3.0
+      dot-object: ^2.1.4
+      dotenv: 15.0.0
+      fs-extra: 10.0.0
+      jest: 27.4.5
+      nock: 13.2.2
+      prettier: 2.5.1
+      sequelize: 6.15.0
+      ts-jest: 27.1.3
+      typescript: 4.5.5
+    dependencies:
+      '@grouparoo/app-templates': link:../app-templates
+      axios: 0.24.0
+      close.io: 1.3.0
+      dot-object: 2.1.4
+    devDependencies:
+      '@grouparoo/core': link:../../../core
+      '@grouparoo/spec-helper': link:../spec-helper
+      '@types/dot-object': 2.1.2
+      '@types/jest': 27.4.0
+      '@types/node': 16.11.21
+      actionhero: 28.1.7
+      dotenv: 15.0.0
+      fs-extra: 10.0.0
+      jest: 27.4.5
+      nock: 13.2.2
       prettier: 2.5.1
       sequelize: 6.15.0
       ts-jest: 27.1.3_2bbca1cabebf3b65a1d857755c03321e
@@ -4301,6 +4346,10 @@ packages:
     dependencies:
       '@types/ms': 0.7.31
 
+  /@types/dot-object/2.1.2:
+    resolution: {integrity: sha512-mARrpJofLNe6yhlukeBcznBe8ssZo5ZJ/CJWc3JKmG9L9151s0OHK+mealnkqSgO6cSn1219vND2wgL67Cuqiw==}
+    dev: true
+
   /@types/fs-extra/9.0.13:
     resolution: {integrity: sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==}
     dependencies:
@@ -4885,6 +4934,15 @@ packages:
       node-fetch: 2.6.7
     transitivePeerDependencies:
       - encoding
+    dev: false
+
+  /ajv/5.5.2:
+    resolution: {integrity: sha1-c7Xuyj+rZT49P5Qis0GtQiBdyWU=}
+    dependencies:
+      co: 4.6.0
+      fast-deep-equal: 1.1.0
+      fast-json-stable-stringify: 2.1.0
+      json-schema-traverse: 0.3.1
     dev: false
 
   /ajv/6.12.6:
@@ -5803,6 +5861,13 @@ packages:
     resolution: {integrity: sha1-2jCcwmPfFZlMaIypAheco8fNfH4=}
     engines: {node: '>=0.8'}
 
+  /close.io/1.3.0:
+    resolution: {integrity: sha512-XSMEIlgWhbOLVEK58+aP+SEjNRQCU9E0wyECU8V2n5HHJwgc0lT5kTmPeP2waG9u4kb7aS5G4paJG51CzeExLg==}
+    dependencies:
+      node-promise: 0.5.13
+      request: 2.87.0
+    dev: false
+
   /cls-hooked/4.2.2:
     resolution: {integrity: sha512-J4Xj5f5wq/4jAvcdgoGsL3G103BtWpZrMo8NEinRltN+xpTZdI+M38pyQqhuFU/P792xkMFvnKSf+Lm81U1bxw==}
     engines: {node: ^4.7 || >=6.9 || >=7.3 || >=8.2.1}
@@ -5921,6 +5986,11 @@ packages:
 
   /commander/2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
+
+  /commander/4.1.1:
+    resolution: {integrity: sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==}
+    engines: {node: '>= 6'}
+    dev: false
 
   /commander/8.3.0:
     resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==}
@@ -6626,6 +6696,14 @@ packages:
       domhandler: 4.3.0
     dev: true
 
+  /dot-object/2.1.4:
+    resolution: {integrity: sha512-7FXnyyCLFawNYJ+NhkqyP9Wd2yzuo+7n9pGiYpkmXCTYa8Ci2U0eUNDVg5OuO5Pm6aFXI2SWN8/N/w7SJWu1WA==}
+    hasBin: true
+    dependencies:
+      commander: 4.1.1
+      glob: 7.2.0
+    dev: false
+
   /dot-prop/5.3.0:
     resolution: {integrity: sha512-QM8q3zDe58hqUqjraQOmzZ1LIH9SWQJTlEKCH4kJ2oQvLZk7RbQXvtDM2XEq3fwkV9CCvvH4LA0AV+ogFsBM2Q==}
     engines: {node: '>=8'}
@@ -7231,7 +7309,6 @@ packages:
   /extsprintf/1.4.1:
     resolution: {integrity: sha512-Wrk35e8ydCKDj/ArClo1VrPVmN8zph5V4AtHwIuHhvMXsKf73UT3BOD+azBIW+3wOJ4FhEH7zyaJCFvChjYvMA==}
     engines: {'0': node >=0.6.0}
-    dev: false
 
   /facebook-nodejs-business-sdk/12.0.1:
     resolution: {integrity: sha512-MFVHpDhNuhzMLaSeMmhVfuMN9CCvQpWfq74jxL8pBvm8F/gJySKVqnIKgCjZkPJx0BPtY0KPJJ1ygyOYlhjbKA==}
@@ -7242,6 +7319,10 @@ packages:
       mixwith: 0.1.1
       request: 2.88.2
       request-promise: 4.1.1_request@2.88.2
+    dev: false
+
+  /fast-deep-equal/1.1.0:
+    resolution: {integrity: sha1-wFNHeBfIa1HaqFPIHgWbcz0CNhQ=}
     dev: false
 
   /fast-deep-equal/3.1.3:
@@ -8061,6 +8142,15 @@ packages:
   /har-schema/2.0.0:
     resolution: {integrity: sha1-qUwiJOvKwEeCoNkDVSHyRzW37JI=}
     engines: {node: '>=4'}
+
+  /har-validator/5.0.3:
+    resolution: {integrity: sha1-ukAsJmGU8VlW7xXg/PJCmT9qff0=}
+    engines: {node: '>=4'}
+    deprecated: this library is no longer supported
+    dependencies:
+      ajv: 5.5.2
+      har-schema: 2.0.0
+    dev: false
 
   /har-validator/5.1.5:
     resolution: {integrity: sha512-nmT2T0lljbxdQZfspsno9hgrG3Uir6Ks5afism62poxqBM6sDnMEuPmzTq8XN0OEwqKLLdh1jQI3qyE66Nzb3w==}
@@ -9573,6 +9663,10 @@ packages:
     resolution: {integrity: sha1-E/FM4C7tTpgSl7ZOueO5MuLdE9w=}
     dependencies:
       jju: 1.4.0
+
+  /json-schema-traverse/0.3.1:
+    resolution: {integrity: sha1-NJptRMU6Ud6JtAgFxdXlm0F9M0A=}
+    dev: false
 
   /json-schema-traverse/0.4.1:
     resolution: {integrity: sha512-xbbCH5dCYU5T8LcEhhuh7HJ88HXuW3qsI3Y0zOZFKfZEHcpWiHU/Jxzk629Brsab/mMiHQti9wMP+845RPe3Vg==}
@@ -11125,6 +11219,10 @@ packages:
       tar: 4.4.19
     dev: false
 
+  /node-promise/0.5.13:
+    resolution: {integrity: sha512-A64rZckErQ2/4knGPOlfv5EfA8L/RpdsYSDjnrtCBIEKKmkDcP4OrbiYUPAtaPAx9mUTy4yUdTqWVVzYGKmH7g==}
+    dev: false
+
   /node-releases/2.0.1:
     resolution: {integrity: sha512-CqyzN6z7Q6aMeF/ktcMVTzhAHCEpf8SOarwpzpf8pNBY2k5/oM34UHldUwp8VKI7uxct2HxSRdJjBaZeESzcxA==}
 
@@ -11433,6 +11531,10 @@ packages:
   /nwsapi/2.2.0:
     resolution: {integrity: sha512-h2AatdwYH+JHiZpv7pt/gSX1XoRGb7L/qSIeuqA6GwYoF9w1vP1cw42TO0aI2pNyshRK5893hNSl+1//vHK7hQ==}
     dev: true
+
+  /oauth-sign/0.8.2:
+    resolution: {integrity: sha1-Rqarfwrq2N6unsBWV4C31O/rnUM=}
+    dev: false
 
   /oauth-sign/0.9.0:
     resolution: {integrity: sha512-fexhUFFPTGV8ybAtSIGbV6gOkSv8UtRbDBnAyLQw4QPKkgNlsH2ByPGtMUqdWkos6YCRmAqViwgZrJc/mRDzZQ==}
@@ -13011,6 +13113,33 @@ packages:
       tough-cookie: 2.5.0
     dev: false
 
+  /request/2.87.0:
+    resolution: {integrity: sha512-fcogkm7Az5bsS6Sl0sibkbhcKsnyon/jV1kF3ajGmF0c8HrttdKTPRT9hieOaQHA5HEq6r8OyWOo/o781C1tNw==}
+    engines: {node: '>= 4'}
+    deprecated: request has been deprecated, see https://github.com/request/request/issues/3142
+    dependencies:
+      aws-sign2: 0.7.0
+      aws4: 1.11.0
+      caseless: 0.12.0
+      combined-stream: 1.0.8
+      extend: 3.0.2
+      forever-agent: 0.6.1
+      form-data: 2.3.3
+      har-validator: 5.0.3
+      http-signature: 1.2.0
+      is-typedarray: 1.0.0
+      isstream: 0.1.2
+      json-stringify-safe: 5.0.1
+      mime-types: 2.1.34
+      oauth-sign: 0.8.2
+      performance-now: 2.1.0
+      qs: 6.5.3
+      safe-buffer: 5.2.1
+      tough-cookie: 2.3.4
+      tunnel-agent: 0.6.0
+      uuid: 3.4.0
+    dev: false
+
   /request/2.88.0:
     resolution: {integrity: sha512-NAqBSrijGLZdM0WZNsInLJpkJokL72XYjUpnB0iwsRgxh7dB6COrHnTBNwN0E+lHDAJzu7kLAkDeY08z2/A0hg==}
     engines: {node: '>= 4'}
@@ -14544,6 +14673,13 @@ packages:
       nopt: 1.0.10
     dev: false
 
+  /tough-cookie/2.3.4:
+    resolution: {integrity: sha512-TZ6TTfI5NtZnuyy/Kecv+CnoROnyXn2DN97LontgQpCwsX2XyLYCC0ENhYkehSOwAp8rTQKc/NUIF7BkQ5rKLA==}
+    engines: {node: '>=0.8'}
+    dependencies:
+      punycode: 1.4.1
+    dev: false
+
   /tough-cookie/2.4.3:
     resolution: {integrity: sha512-Q5srk/4vDM54WJsJio3XNn6K2sCG+CQ8G5Wz6bZhRZoAe/+TxjWB/GlFAnYEbkYVlON9FMk/fE3h2RLpPXo4lQ==}
     engines: {node: '>=0.8'}
@@ -15115,7 +15251,7 @@ packages:
     dependencies:
       assert-plus: 1.0.0
       core-util-is: 1.0.2
-      extsprintf: 1.3.0
+      extsprintf: 1.4.1
 
   /verror/1.10.1:
     resolution: {integrity: sha512-veufcmxri4e3XSrT0xwfUR7kguIkaxBeosDg00yDWhk49wdwkSUrvvsm7nc75e1PUyvIeZj6nS8VQRYz2/S4Xg==}
