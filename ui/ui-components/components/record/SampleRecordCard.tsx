@@ -61,6 +61,8 @@ const cookies = new Cookies();
 
 const getCachedSampleRecordId = (modelId: string): string => {
   if (isBrowser()) {
+    // Migrate existing localstorage data into cookie
+    // TODO: remove the migration in a later release
     const localStorageRecordId = globalThis.localStorage?.getItem(
       `sampleRecord:${grouparooUiEdition()}:${modelId}`
     );
