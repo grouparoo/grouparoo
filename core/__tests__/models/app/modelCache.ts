@@ -123,11 +123,19 @@ describe("models/appsCache", () => {
       expect(found.name).toBe("NEW NAME");
     });
 
-    test("a cache miss will invalidate the cache", async () => {
-      AppsCache.expires = new Date().getTime();
+    test("a cache miss with a secondary find will invalidate the cache", async () => {
+      AppsCache.instances = [await helper.factories.app()];
+      AppsCache.expires = new Date().getTime() + 1000 * 30;
+      const found = await AppsCache.findOneWithCache(app.id);
+      expect(found.id).toEqual(app.id);
+      expect(AppsCache.expires).toBe(0);
+    });
+
+    test("a cache miss without a secondary find will not invalidate the cache", async () => {
+      AppsCache.expires = new Date().getTime() + 1000 * 30;
       const found = await AppsCache.findOneWithCache("missing");
       expect(found).toBeNull();
-      expect(AppsCache.expires).toBe(0);
+      expect(AppsCache.expires).not.toBe(0);
     });
   });
 });

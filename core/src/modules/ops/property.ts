@@ -131,10 +131,7 @@ export namespace PropertyOps {
    */
   export async function dependencies(property: Property) {
     const dependencies: Property[] = [];
-    const source = await SourcesCache.findOneWithCache(
-      property.sourceId,
-      undefined
-    );
+    const source = await SourcesCache.findOneWithCache(property.sourceId);
     const sourceMapping = await source.getMapping();
     const ruleOptions = await property.getOptions();
     const properties = await PropertiesCache.findAllWithCache(source.modelId);

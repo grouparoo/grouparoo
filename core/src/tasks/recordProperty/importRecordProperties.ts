@@ -2,8 +2,6 @@ import { RetryableTask } from "../../classes/tasks/retryableTask";
 import { GrouparooRecord } from "../../models/GrouparooRecord";
 import { RecordProperty } from "../../models/RecordProperty";
 import { Property } from "../../models/Property";
-import { Mapping } from "../../models/Mapping";
-import { Option } from "../../models/Option";
 import { Op } from "sequelize";
 import { log, ParamsFrom } from "actionhero";
 import { CLS } from "../../modules/cls";
@@ -12,6 +10,7 @@ import { ImportOps } from "../../modules/ops/import";
 import { RecordOps } from "../../modules/ops/record";
 import { APIData } from "../../modules/apiData";
 import { PropertiesCache } from "../../modules/caches/propertiesCache";
+import { SourcesCache } from "../../modules/caches/sourcesCache";
 
 export class ImportRecordProperties extends RetryableTask {
   name = "recordProperty:importRecordProperties";
@@ -48,11 +47,7 @@ export class ImportRecordProperties extends RetryableTask {
       );
     }
 
-    const source = await properties[0].$get("source", {
-      include: [Option, Mapping],
-      scope: null,
-    });
-
+    const source = await SourcesCache.findOneWithCache(properties[0].sourceId);
     const recordsToImport: GrouparooRecord[] = [];
     const recordsNotReady: GrouparooRecord[] = [];
     const dependencies: { [key: string]: Property[] } = {};

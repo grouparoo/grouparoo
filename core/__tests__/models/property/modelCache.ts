@@ -165,11 +165,27 @@ describe("models/propertiesCache", () => {
       expect(found.key).toBe("FIRST NAME");
     });
 
-    test("a cache miss will invalidate the cache", async () => {
-      PropertiesCache.expires = new Date().getTime();
+    test("a cache miss with a secondary find will invalidate the cache", async () => {
+      PropertiesCache.instances = [
+        await helper.factories.property(
+          source,
+          { key: "random" },
+          { column: "foo" }
+        ),
+      ];
+      PropertiesCache.expires = new Date().getTime() + 1000 * 30;
+      const found = await PropertiesCache.findOneWithCache(
+        firstNameProperty.id
+      );
+      expect(found.id).toEqual(firstNameProperty.id);
+      expect(PropertiesCache.expires).toBe(0);
+    });
+
+    test("a cache miss without a secondary find will not invalidate the cache", async () => {
+      PropertiesCache.expires = new Date().getTime() + 1000 * 30;
       const found = await PropertiesCache.findOneWithCache("missing");
       expect(found).toBeNull();
-      expect(PropertiesCache.expires).toBe(0);
+      expect(PropertiesCache.expires).not.toBe(0);
     });
   });
 });

@@ -2,7 +2,7 @@ import { ModelCache } from "../modelCache";
 import { Source } from "../../models/Source";
 import { Option } from "../../models/Option";
 import { Mapping } from "../../models/Mapping";
-import { Includeable } from "sequelize";
+import { Includeable, WhereAttributeHash } from "sequelize";
 
 function getInclude() {
   const include: Includeable[] = [
@@ -39,18 +39,20 @@ async function findOneWithCache(
   this: ModelCache<Source>,
   value: string,
   modelId?: string,
-  state: Source["state"] = null,
+  state?: Source["state"],
   lookupKey: keyof Source = "id"
 ) {
   const instances = await this.findAllWithCache(modelId);
   let instance = instances.find((i) => i[lookupKey] === value);
 
   if (!instance) {
+    const where: WhereAttributeHash = { [lookupKey]: value };
+    if (state) where.state = state;
     instance = await Source.unscoped().findOne({
-      where: { [lookupKey]: value, state },
+      where,
       include: getInclude(),
     });
-    if (!instance) this.invalidate();
+    if (instance) this.invalidate();
   }
 
   return instance;
