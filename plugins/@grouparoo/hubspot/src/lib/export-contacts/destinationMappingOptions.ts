@@ -13,7 +13,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod =
     const required = getRequiredFields();
 
     if (destinationOptions?.companyKey) {
-      let type = "string";
+      let type: DestinationMappingOptionsResponseType = "string";
       switch (destinationOptions.companyKey) {
         case "hs_object_id":
           type = "integer";
