@@ -22,6 +22,53 @@ describe("FormTypeahead", () => {
     expect(container).toMatchSnapshot("basic");
   });
 
+  it("should render with options", async () => {
+    const Component = () => {
+      const { control } = useForm();
+      return (
+        <FormTypeahead
+          control={control}
+          name="city"
+          option={{
+            type: "typeahead",
+            options: ["Austin", "London", "Santo Domingo"],
+          }}
+        />
+      );
+    };
+
+    const { container, getByRole } = render(<Component />);
+
+    const input = getByRole("combobox");
+    fireEvent.click(input);
+
+    expect(container).toMatchSnapshot();
+  });
+
+  it("should render with options and descriptions", async () => {
+    const Component = () => {
+      const { control } = useForm();
+      return (
+        <FormTypeahead
+          control={control}
+          name="city"
+          option={{
+            type: "typeahead",
+            options: ["Austin", "London", "Santo Domingo"],
+            descriptions: ["One", "Two", "Three"],
+          }}
+        />
+      );
+    };
+
+    const { container, getByRole } = render(<Component />);
+
+    const input = getByRole("combobox");
+    fireEvent.click(input);
+
+    expect(container).toMatchSnapshot();
+  });
+
   it("can have a default value", async () => {
     const Component = () => {
       const { control } = useForm();

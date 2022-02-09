@@ -1,5 +1,200 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`FormTypeahead should render with options 1`] = `
+<div>
+  <div
+    class="rbt"
+    style="outline: none; position: relative;"
+    tabindex="-1"
+  >
+    <div
+      style="display: flex; flex: 1; height: 100%; position: relative;"
+    >
+      <input
+        aria-autocomplete="both"
+        aria-expanded="true"
+        aria-haspopup="listbox"
+        aria-owns="typeahead"
+        autocomplete="off"
+        class="rbt-input-main form-control rbt-input  focus"
+        role="combobox"
+        type="text"
+        value=""
+      />
+      <input
+        aria-hidden="true"
+        class="rbt-input-hint"
+        readonly=""
+        style="background-color: transparent; border-color: transparent; box-shadow: none; color: rgba(0, 0, 0, 0.54); left: 0px; pointer-events: none; position: absolute; top: 0px; width: 100%; border-style: inset inset inset inset; border-width: 2px 2px 2px 2px; line-height: normal; padding: 1px 1px 1px 1px;"
+        tabindex="-1"
+        value=""
+      />
+    </div>
+    <div
+      aria-label="menu-options"
+      class="rbt-menu dropdown-menu show"
+      id="typeahead"
+      role="listbox"
+      style="position: absolute; top: 0px; left: 0px; opacity: 0; pointer-events: none; display: block; max-height: 300px; overflow: auto;"
+    >
+      <a
+        aria-label="Austin"
+        aria-selected="false"
+        class="dropdown-item"
+        href="#"
+        id="typeahead-item-0"
+        role="option"
+      >
+        <span>
+          Austin
+          <br />
+        </span>
+        <small
+          class="text-small"
+        />
+      </a>
+      <a
+        aria-label="London"
+        aria-selected="false"
+        class="dropdown-item"
+        href="#"
+        id="typeahead-item-1"
+        role="option"
+      >
+        <span>
+          London
+          <br />
+        </span>
+        <small
+          class="text-small"
+        />
+      </a>
+      <a
+        aria-label="Santo Domingo"
+        aria-selected="false"
+        class="dropdown-item"
+        href="#"
+        id="typeahead-item-2"
+        role="option"
+      >
+        <span>
+          Santo Domingo
+          <br />
+        </span>
+        <small
+          class="text-small"
+        />
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`FormTypeahead should render with options and descriptions 1`] = `
+<div>
+  <div
+    class="rbt"
+    style="outline: none; position: relative;"
+    tabindex="-1"
+  >
+    <div
+      style="display: flex; flex: 1; height: 100%; position: relative;"
+    >
+      <input
+        aria-autocomplete="both"
+        aria-expanded="true"
+        aria-haspopup="listbox"
+        aria-owns="typeahead"
+        autocomplete="off"
+        class="rbt-input-main form-control rbt-input  focus"
+        role="combobox"
+        type="text"
+        value=""
+      />
+      <input
+        aria-hidden="true"
+        class="rbt-input-hint"
+        readonly=""
+        style="background-color: transparent; border-color: transparent; box-shadow: none; color: rgba(0, 0, 0, 0.54); left: 0px; pointer-events: none; position: absolute; top: 0px; width: 100%; border-style: inset inset inset inset; border-width: 2px 2px 2px 2px; line-height: normal; padding: 1px 1px 1px 1px;"
+        tabindex="-1"
+        value=""
+      />
+    </div>
+    <div
+      aria-label="menu-options"
+      class="rbt-menu dropdown-menu show"
+      id="typeahead"
+      role="listbox"
+      style="position: absolute; top: 0px; left: 0px; opacity: 0; pointer-events: none; display: block; max-height: 300px; overflow: auto;"
+    >
+      <a
+        aria-label="Austin"
+        aria-selected="false"
+        class="dropdown-item"
+        href="#"
+        id="typeahead-item-0"
+        role="option"
+      >
+        <span>
+          Austin
+          <br />
+        </span>
+        <small
+          class="text-small"
+        >
+          <em>
+            Description: 
+            One
+          </em>
+        </small>
+      </a>
+      <a
+        aria-label="London"
+        aria-selected="false"
+        class="dropdown-item"
+        href="#"
+        id="typeahead-item-1"
+        role="option"
+      >
+        <span>
+          London
+          <br />
+        </span>
+        <small
+          class="text-small"
+        >
+          <em>
+            Description: 
+            Two
+          </em>
+        </small>
+      </a>
+      <a
+        aria-label="Santo Domingo"
+        aria-selected="false"
+        class="dropdown-item"
+        href="#"
+        id="typeahead-item-2"
+        role="option"
+      >
+        <span>
+          Santo Domingo
+          <br />
+        </span>
+        <small
+          class="text-small"
+        >
+          <em>
+            Description: 
+            Three
+          </em>
+        </small>
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`FormTypeahead should render: basic 1`] = `
 <div>
   <div

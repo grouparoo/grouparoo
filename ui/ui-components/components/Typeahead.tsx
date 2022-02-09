@@ -1,3 +1,4 @@
+import { string } from "prop-types";
 import { Typeahead as BootstrapTypeahead } from "react-bootstrap-typeahead";
 import { Controller, Control, Path } from "react-hook-form";
 import { Actions } from "../utils/apiData";
@@ -22,7 +23,12 @@ interface Props<T> {
   placeholder?: string;
   disabled?: boolean;
   required?: boolean;
-  onChange?: (selected?: { key: string }[]) => void;
+  onChange?: (selected: TypeaheadOption[]) => void;
+}
+
+interface TypeaheadOption {
+  key: string;
+  description?: string;
 }
 
 export const FormTypeahead = <T,>({
@@ -49,25 +55,29 @@ export const FormTypeahead = <T,>({
             options={option?.options.map((k, idx) => {
               return {
                 key: k,
-                descriptions: option?.descriptions?.[idx],
-              };
+                description: option?.descriptions?.[idx],
+              } as TypeaheadOption;
             })}
             placeholder={placeholder}
-            renderMenuItemChildren={(opt, _props, idx) => {
+            renderMenuItemChildren={(
+              opt: TypeaheadOption,
+              _props,
+              idx: number
+            ) => {
               return [
                 <span key={`opt-${idx}-key`}>
                   {opt.key}
                   <br />
                 </span>,
-                <small key={`opt-${idx}-descriptions`} className="text-small">
-                  {opt.descriptions ? (
-                    <em>Descriptions: {opt.descriptions.join(", ")}</em>
+                <small key={`opt-${idx}-description`} className="text-small">
+                  {opt.description ? (
+                    <em>Description: {opt.description}</em>
                   ) : null}
                 </small>,
               ];
             }}
             defaultSelected={defaultSelected}
-            onChange={(selected) => {
+            onChange={(selected: TypeaheadOption[]) => {
               reactHookFormOnChange(selected[0]?.key);
               onChange?.(selected);
             }}
