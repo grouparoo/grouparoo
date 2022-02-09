@@ -105,8 +105,8 @@ describe("Close.io / Contacts / destinationMappingOptions", () => {
     expect(required.length).toBe(2);
 
     // Required
-    const name = required.find((f) => f.key === "Name");
-    expect(name.type).toBe("string");
+    const email = required.find((f) => f.key === "Email");
+    expect(email.type).toBe("email");
 
     const lead = required.find((f) => f.key === "Lead");
     expect(lead.type).toBe("string");
@@ -115,8 +115,8 @@ describe("Close.io / Contacts / destinationMappingOptions", () => {
     const title = known.find((f) => f.key === "Title");
     expect(title.type).toBe("string");
 
-    const email = known.find((f) => f.key === "Email");
-    expect(email.type).toBe("email");
+    const name = known.find((f) => f.key === "Name");
+    expect(name.type).toBe("string");
 
     const url = known.find((f) => f.key === "URL");
     expect(url.type).toBe("url");

@@ -56,8 +56,9 @@ export const configMapping = {
   contact: <EntityConfig>{
     fields: [
       {
-        key: "Name",
-        closeioKey: "name",
+        key: "Email",
+        closeioKey: "emails[0].email",
+        type: "email",
         required: true,
       },
       {
@@ -66,9 +67,8 @@ export const configMapping = {
         required: true,
       },
       {
-        key: "Email",
-        closeioKey: "emails[0].email",
-        type: "email",
+        key: "Name",
+        closeioKey: "name",
         important: true,
       },
       {

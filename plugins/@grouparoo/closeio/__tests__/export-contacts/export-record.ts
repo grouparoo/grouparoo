@@ -12,10 +12,10 @@ import { getCloseioCustomFieldKey } from "../../src/lib/common/destinationMappin
 
 let client: CloseioClient;
 
-const name1 = "Test Contact 1";
-const name2 = "Test Contact 2";
-const name3 = "Test Contact 3";
-const nameX = "Test Contact X";
+const email1 = "test-contact1@grouparoo.com";
+const email2 = "test-contact2@grouparoo.com";
+const email3 = "test-contact3@grouparoo.com";
+const emailX = "test-contactX@grouparoo.com";
 
 const lead1 = "Test Contact Lead 1";
 const lead2 = "Test Contact Lead 2";
@@ -36,8 +36,8 @@ const appOptions = loadAppOptions(newNock);
 const appId = "app_a1bb05e8-0a4e-49c5-ad42-545f2e8762f9";
 
 async function cleanUp() {
-  for (const name of [name1, name2, name3, nameX]) {
-    const id = await client.findContactIdByName(name);
+  for (const email of [email1, email2, email3, emailX]) {
+    const id = await client.findContactIdByEmail(email);
     if (id) {
       await client.closeio.contact.delete(id);
     }
@@ -113,7 +113,7 @@ describe("Close.io / Contacts / exportRecord / Regarding PK field and required f
   test("Can create a record including all required fields", async () => {
     await runExport({
       oldRecordProperties: {},
-      newRecordProperties: { Name: name1, Lead: lead1 },
+      newRecordProperties: { Email: email1, Lead: lead1 },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -121,30 +121,27 @@ describe("Close.io / Contacts / exportRecord / Regarding PK field and required f
 
     await indexUsers(newNock);
 
-    const contact1 = await client.findContactByName(name1);
+    const contact1 = await client.findContactByEmail(email1);
     expect(contact1).toBeTruthy();
   });
 
-  test("Can't create a record without one of the required fields (Name)", async () => {
+  test("Can't create a record without one of the required fields (Email)", async () => {
     await expect(
       runExport({
         oldRecordProperties: {},
-        newRecordProperties: { Email: "example@grouparoo.com" },
+        newRecordProperties: { Lead: lead1 },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
       })
-    ).rejects.toThrow(/Name/);
+    ).rejects.toThrow(/Email/);
   });
 
   test("Can't create a record without one of the required fields (Lead)", async () => {
     await expect(
       runExport({
         oldRecordProperties: {},
-        newRecordProperties: {
-          Name: name1,
-          Email: "example@grouparoo.com",
-        },
+        newRecordProperties: { Email: email1 },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
@@ -152,26 +149,23 @@ describe("Close.io / Contacts / exportRecord / Regarding PK field and required f
     ).rejects.toThrow(/Lead/);
   });
 
-  test("Can't update a record without one of the required fields (Name)", async () => {
+  test("Can't update a record without one of the required fields (Email)", async () => {
     await expect(
       runExport({
-        oldRecordProperties: { Name: name1, Lead: lead1 },
-        newRecordProperties: { Email: "example@grouparoo.com" },
+        oldRecordProperties: { Email: email1, Lead: lead1 },
+        newRecordProperties: { Lead: lead1, Name: "Test contact" },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
       })
-    ).rejects.toThrow(/Name/);
+    ).rejects.toThrow(/Email/);
   });
 
   test("Can't update a record without one of the required fields (Lead)", async () => {
     await expect(
       runExport({
-        oldRecordProperties: { Name: name1, Lead: lead1 },
-        newRecordProperties: {
-          Name: name1,
-          Email: "example@grouparoo.com",
-        },
+        oldRecordProperties: { Email: email1, Lead: lead1 },
+        newRecordProperties: { Email: email1, Name: "Test contact" },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
@@ -181,8 +175,8 @@ describe("Close.io / Contacts / exportRecord / Regarding PK field and required f
 
   test("Can change the value of the PK field", async () => {
     await runExport({
-      oldRecordProperties: { Name: name1, Lead: lead1 },
-      newRecordProperties: { Name: name2, Lead: lead1 },
+      oldRecordProperties: { Email: email1, Lead: lead1 },
+      newRecordProperties: { Email: email2, Lead: lead1 },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -190,18 +184,18 @@ describe("Close.io / Contacts / exportRecord / Regarding PK field and required f
 
     await indexUsers(newNock);
 
-    const contact1 = await client.findContactByName(name1);
+    const contact1 = await client.findContactByEmail(email1);
     expect(contact1).toBeFalsy();
 
-    const contact2 = await client.findContactByName(name2);
+    const contact2 = await client.findContactByEmail(email2);
     expect(contact2).toBeTruthy();
   });
 
   test("[SPECIAL CASE] Can't change the value of lead field", async () => {
     await expect(
       runExport({
-        oldRecordProperties: { Name: name2, Lead: lead1 },
-        newRecordProperties: { Name: name2, Lead: lead2 },
+        oldRecordProperties: { Email: email2, Lead: lead1 },
+        newRecordProperties: { Email: email2, Lead: lead2 },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
@@ -212,7 +206,7 @@ describe("Close.io / Contacts / exportRecord / Regarding PK field and required f
   test("[SPECIAL CASE] Can create a contact for created lead without creating another one", async () => {
     await runExport({
       oldRecordProperties: {},
-      newRecordProperties: { Name: name1, Lead: lead1 },
+      newRecordProperties: { Email: email1, Lead: lead1 },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -220,8 +214,8 @@ describe("Close.io / Contacts / exportRecord / Regarding PK field and required f
 
     await indexUsers(newNock);
 
-    const contact1 = await client.findContactByName(name1);
-    const contact2 = await client.findContactByName(name2);
+    const contact1 = await client.findContactByEmail(email1);
+    const contact2 = await client.findContactByEmail(email2);
 
     expect(contact1.lead_id).toBe(contact2.lead_id);
   });
@@ -237,7 +231,7 @@ describe("Close.io / Contacts / exportRecord / Sync modes", () => {
           delete: true,
         },
         oldRecordProperties: {},
-        newRecordProperties: { Name: name3, Lead: lead3 },
+        newRecordProperties: { Email: email3, Lead: lead3 },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
@@ -253,8 +247,8 @@ describe("Close.io / Contacts / exportRecord / Sync modes", () => {
           update: false,
           delete: true,
         },
-        oldRecordProperties: { Name: name2, Lead: lead1 },
-        newRecordProperties: { Name: name3, Lead: lead1 },
+        oldRecordProperties: { Email: email2, Lead: lead1 },
+        newRecordProperties: { Email: email3, Lead: lead1 },
         oldGroups: [],
         newGroups: [],
         toDelete: false,
@@ -270,8 +264,8 @@ describe("Close.io / Contacts / exportRecord / Sync modes", () => {
           update: true,
           delete: false,
         },
-        oldRecordProperties: { Name: name2, Lead: lead2 },
-        newRecordProperties: { Name: name2, Lead: lead2 },
+        oldRecordProperties: { Email: email2, Lead: lead2 },
+        newRecordProperties: { Email: email2, Lead: lead2 },
         oldGroups: [],
         newGroups: [],
         toDelete: true,
@@ -283,9 +277,9 @@ describe("Close.io / Contacts / exportRecord / Sync modes", () => {
 describe("Close.io / Contacts / exportRecord / PK conflicts handling", () => {
   test("Can create a record with passing nonexistent PK field value in the oldRecordProperties", async () => {
     await runExport({
-      oldRecordProperties: { Name: nameX, Lead: lead3 },
+      oldRecordProperties: { Name: emailX, Lead: lead3 },
       newRecordProperties: {
-        Name: name3,
+        Email: email3,
         Lead: lead3,
         Title: "Title form contact 3",
       },
@@ -296,10 +290,10 @@ describe("Close.io / Contacts / exportRecord / PK conflicts handling", () => {
 
     await indexUsers(newNock);
 
-    const contactX = await client.findContactByName(nameX);
+    const contactX = await client.findContactByEmail(emailX);
     expect(contactX).toBeFalsy();
 
-    const contact3 = await client.findContactByName(name3);
+    const contact3 = await client.findContactByEmail(email3);
     expect(contact3).toBeTruthy();
     expect(contact3.title).toBe("Title form contact 3");
 
@@ -309,9 +303,9 @@ describe("Close.io / Contacts / exportRecord / PK conflicts handling", () => {
 
   test("Can update the correct record on PK field value change if both values exist", async () => {
     await runExport({
-      oldRecordProperties: { Name: name3, Lead: lead3 },
+      oldRecordProperties: { Email: email3, Lead: lead3 },
       newRecordProperties: {
-        Name: name2,
+        Email: email2,
         Lead: lead1,
         Title: "Title form contact 2",
       },
@@ -322,32 +316,35 @@ describe("Close.io / Contacts / exportRecord / PK conflicts handling", () => {
 
     await indexUsers(newNock);
 
-    const contact3 = await client.findContactByName(name3);
-    const contact2 = await client.findContactByName(name2);
+    const contact3 = await client.findContactByEmail(email3);
+    const contact2 = await client.findContactByEmail(email2);
 
     expect(contact3).toBeTruthy();
-    expect(contact3.name).toBe(name3);
+    expect(contact3.emails?.length).toBe(1);
+    expect(contact3.emails[0].email).toBe(email3);
     expect(contact3.title).toBe("Title form contact 3");
 
     expect(contact2).toBeTruthy();
-    expect(contact2.name).toBe(name2);
+    expect(contact2.emails?.length).toBe(1);
+    expect(contact2.emails[0].email).toBe(email2);
     expect(contact2.title).toBe("Title form contact 2");
   });
 
   test("Can delete the correct record if both PK field values exist", async () => {
     await runExport({
-      oldRecordProperties: { Name: name2, Lead: lead1 },
-      newRecordProperties: { Name: name3, Lead: lead3 },
+      oldRecordProperties: { Email: email2, Lead: lead1 },
+      newRecordProperties: { Email: email3, Lead: lead3 },
       oldGroups: [],
       newGroups: [],
       toDelete: true,
     });
 
-    const contact2 = await client.findContactByName(name2);
-    const contact3 = await client.findContactByName(name3);
+    const contact2 = await client.findContactByEmail(email2);
+    const contact3 = await client.findContactByEmail(email3);
 
     expect(contact2).toBeTruthy();
-    expect(contact2.name).toBe(name2);
+    expect(contact2.emails?.length).toBe(1);
+    expect(contact2.emails[0].email).toBe(email2);
     expect(contact2.title).toBe("Title form contact 2");
 
     expect(contact3).toBeFalsy();
@@ -357,13 +354,13 @@ describe("Close.io / Contacts / exportRecord / PK conflicts handling", () => {
 describe("Close.io / Contacts / exportRecord / Field values", () => {
   test("Can update a record and change field values and set values for other non-required fields", async () => {
     await runExport({
-      oldRecordProperties: { Name: name1, Lead: lead1 },
+      oldRecordProperties: { Name: email1, Lead: lead1 },
       newRecordProperties: {
-        Name: name1,
+        Email: email1,
         Lead: lead1,
         URL: "http://example.grouparoo.com/",
         Title: "Title Value",
-        Email: "example@grouparoo.com",
+        Name: "Name value",
         Phone: "+201234567891",
 
         test_text: "Test Text Value",
@@ -379,14 +376,14 @@ describe("Close.io / Contacts / exportRecord / Field values", () => {
 
     await indexUsers(newNock);
 
-    const contact1 = await client.findContactByName(name1);
+    const contact1 = await client.findContactByEmail(email1);
     expect(contact1).toBeTruthy();
 
-    expect(contact1.name).toBe(name1);
+    expect(contact1.name).toBe("Name value");
     expect(contact1.title).toBe("Title Value");
 
     expect(contact1.emails?.length).toBe(1);
-    expect(contact1.emails[0].email).toBe("example@grouparoo.com");
+    expect(contact1.emails[0].email).toBe(email1);
 
     expect(contact1.urls?.length).toBe(1);
     expect(contact1.urls[0].url).toBe("http://example.grouparoo.com/");
@@ -423,11 +420,11 @@ describe("Close.io / Contacts / exportRecord / Field values", () => {
   test("Can update a record and reset/clear old values (which set on the previous test)", async () => {
     await runExport({
       oldRecordProperties: {
-        Name: name1,
+        Email: email1,
         Lead: lead1,
         URL: "http://example.grouparoo.com/",
         Title: "Title Value",
-        Email: "example@grouparoo.com",
+        Name: "Name value",
         Phone: "+201234567891",
 
         test_text: "Test Text Value",
@@ -436,7 +433,7 @@ describe("Close.io / Contacts / exportRecord / Field values", () => {
         test_date: new Date(1234567890000),
         test_date_time: new Date(1234567890000),
       },
-      newRecordProperties: { Name: name1, Lead: lead1 },
+      newRecordProperties: { Email: email1, Lead: lead1 },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -444,13 +441,15 @@ describe("Close.io / Contacts / exportRecord / Field values", () => {
 
     await indexUsers(newNock);
 
-    const contact1 = await client.findContactByName(name1);
+    const contact1 = await client.findContactByEmail(email1);
     expect(contact1).toBeTruthy();
 
-    expect(contact1.name).toBe(name1);
+    expect(contact1.name).toBe("");
     expect(contact1.title).toBe("");
 
-    expect(contact1.emails?.length).toBe(0);
+    expect(contact1.emails?.length).toBe(1);
+    expect(contact1.emails[0].email).toBe(email1);
+
     expect(contact1.urls?.length).toBe(0);
     expect(contact1.phones?.length).toBe(0);
 
@@ -484,8 +483,8 @@ describe("Close.io / Contacts / exportRecord / Field values", () => {
 describe("Close.io / Contacts / exportRecord / Group functionality", () => {
   test("Can assign a record to a group", async () => {
     await runExport({
-      oldRecordProperties: { Name: name1, Lead: lead1 },
-      newRecordProperties: { Name: name1, Lead: lead1 },
+      oldRecordProperties: { Email: email1, Lead: lead1 },
+      newRecordProperties: { Email: email1, Lead: lead1 },
       oldGroups: [],
       newGroups: [group1, group2],
       toDelete: false,
@@ -493,7 +492,7 @@ describe("Close.io / Contacts / exportRecord / Group functionality", () => {
 
     await indexUsers(newNock);
 
-    const contact1 = await client.findContactByName(name1);
+    const contact1 = await client.findContactByEmail(email1);
     expect(contact1).toBeTruthy();
 
     const fields = await getAllFields(
@@ -514,8 +513,8 @@ describe("Close.io / Contacts / exportRecord / Group functionality", () => {
 
   test("Can remove a group membership from a record and assign it to a new group on the same request", async () => {
     await runExport({
-      oldRecordProperties: { Name: name1, Lead: lead1 },
-      newRecordProperties: { Name: name1, Lead: lead1 },
+      oldRecordProperties: { Email: email1, Lead: lead1 },
+      newRecordProperties: { Email: email1, Lead: lead1 },
       oldGroups: [group1, group2],
       newGroups: [group1, group3],
       toDelete: false,
@@ -523,7 +522,7 @@ describe("Close.io / Contacts / exportRecord / Group functionality", () => {
 
     await indexUsers(newNock);
 
-    const contact1 = await client.findContactByName(name1);
+    const contact1 = await client.findContactByEmail(email1);
     expect(contact1).toBeTruthy();
 
     const fields = await getAllFields(
@@ -549,7 +548,7 @@ describe("Close.io / Contacts / exportRecord / Group functionality", () => {
   test("Can add a new record with a new group at the same time", async () => {
     await runExport({
       oldRecordProperties: {},
-      newRecordProperties: { Name: name3, Lead: lead3 },
+      newRecordProperties: { Email: email3, Lead: lead3 },
       oldGroups: [],
       newGroups: [group2, group3],
       toDelete: false,
@@ -557,7 +556,7 @@ describe("Close.io / Contacts / exportRecord / Group functionality", () => {
 
     await indexUsers(newNock);
 
-    const contact3 = await client.findContactByName(name3);
+    const contact3 = await client.findContactByEmail(email3);
     expect(contact3).toBeTruthy();
 
     const fields = await getAllFields(
@@ -578,8 +577,8 @@ describe("Close.io / Contacts / exportRecord / Group functionality", () => {
 
   test("Can remove a record from a nonexistent group without creating it", async () => {
     await runExport({
-      oldRecordProperties: { Name: name3, Lead: lead3 },
-      newRecordProperties: { Name: name3, Lead: lead3 },
+      oldRecordProperties: { Email: email3, Lead: lead3 },
+      newRecordProperties: { Email: email3, Lead: lead3 },
       oldGroups: [group2, groupX],
       newGroups: [group1, group2],
       toDelete: false,
@@ -587,7 +586,7 @@ describe("Close.io / Contacts / exportRecord / Group functionality", () => {
 
     await indexUsers(newNock);
 
-    const contact3 = await client.findContactByName(name3);
+    const contact3 = await client.findContactByEmail(email3);
     expect(contact3).toBeTruthy();
 
     const fields = await getAllFields(
@@ -613,8 +612,8 @@ describe("Close.io / Contacts / exportRecord / Group functionality", () => {
 describe("Close.io / Contacts / exportRecord / Deleting records", () => {
   test("Can delete a record", async () => {
     await runExport({
-      oldRecordProperties: { Name: name1, Lead: lead1 },
-      newRecordProperties: { Name: name1, Lead: lead1 },
+      oldRecordProperties: { Email: email1, Lead: lead1 },
+      newRecordProperties: { Email: email1, Lead: lead1 },
       oldGroups: [],
       newGroups: [],
       toDelete: true,
@@ -622,15 +621,15 @@ describe("Close.io / Contacts / exportRecord / Deleting records", () => {
 
     await indexUsers(newNock);
 
-    const contact1 = await client.findContactByName(name1);
+    const contact1 = await client.findContactByEmail(email1);
     expect(contact1).toBeFalsy();
   });
 
   test("Can delete a record while changing field values", async () => {
     await runExport({
-      oldRecordProperties: { Name: name2, Lead: lead1 },
+      oldRecordProperties: { Email: email2, Lead: lead1 },
       newRecordProperties: {
-        Name: name2,
+        Email: email2,
         Lead: lead1,
         Title: "New Title",
       },
@@ -641,14 +640,14 @@ describe("Close.io / Contacts / exportRecord / Deleting records", () => {
 
     await indexUsers(newNock);
 
-    const contact2 = await client.findContactByName(name2);
+    const contact2 = await client.findContactByEmail(email2);
     expect(contact2).toBeFalsy();
   });
 
   test("Can delete a record while changing PK field value", async () => {
     await runExport({
-      oldRecordProperties: { Name: name3, Lead: lead3 },
-      newRecordProperties: { Name: nameX, Lead: lead3 },
+      oldRecordProperties: { Email: email3, Lead: lead3 },
+      newRecordProperties: { Email: emailX, Lead: lead3 },
       oldGroups: [],
       newGroups: [],
       toDelete: true,
@@ -656,14 +655,14 @@ describe("Close.io / Contacts / exportRecord / Deleting records", () => {
 
     await indexUsers(newNock);
 
-    const contactX = await client.findContactByName(nameX);
+    const contactX = await client.findContactByEmail(emailX);
     expect(contactX).toBeFalsy();
   });
 
   test("Can delete a nonexistent record", async () => {
     await runExport({
-      oldRecordProperties: { Name: nameX, Lead: lead1 },
-      newRecordProperties: { Name: nameX, Lead: lead1 },
+      oldRecordProperties: { Email: emailX, Lead: lead1 },
+      newRecordProperties: { Email: emailX, Lead: lead1 },
       oldGroups: [],
       newGroups: [],
       toDelete: true,
@@ -671,7 +670,7 @@ describe("Close.io / Contacts / exportRecord / Deleting records", () => {
 
     await indexUsers(newNock);
 
-    const contactX = await client.findContactByName(nameX);
+    const contactX = await client.findContactByEmail(emailX);
     expect(contactX).toBeFalsy();
   });
 });

@@ -26,8 +26,8 @@ const handleContactChanges: ExportRecordPluginMethod = async ({
     return { success: true };
   }
 
-  if (!newRecordProperties["Name"]) {
-    throw new Error(`newRecordProperties[Name] is a required mapping`);
+  if (!newRecordProperties["Email"]) {
+    throw new Error(`newRecordProperties[Email] is a required mapping`);
   }
 
   if (!newRecordProperties["Lead"]) {
@@ -37,14 +37,14 @@ const handleContactChanges: ExportRecordPluginMethod = async ({
   const client = await connect(appOptions);
   const cacheData: CloseioCacheData = { appId, appOptions };
 
-  const newName = newRecordProperties["Name"];
-  const oldName = oldRecordProperties["Name"];
+  const newEmail = newRecordProperties["Email"];
+  const oldEmail = oldRecordProperties["Email"];
 
-  const newFoundId = await client.findContactIdByName(newName);
+  const newFoundId = await client.findContactIdByEmail(newEmail);
 
   let oldFoundId = null;
-  if (oldName && oldName !== newName) {
-    oldFoundId = await client.findContactIdByName(oldName);
+  if (oldEmail && oldEmail !== newEmail) {
+    oldFoundId = await client.findContactIdByEmail(oldEmail);
   }
 
   const foundId = newFoundId || oldFoundId;
@@ -64,7 +64,7 @@ const handleContactChanges: ExportRecordPluginMethod = async ({
 
   if (
     foundId &&
-    oldName == newName &&
+    oldEmail == newEmail &&
     oldRecordProperties["Lead"] !== newRecordProperties["Lead"]
   ) {
     throw new Errors.InfoError("Can not change the lead once it is set.");

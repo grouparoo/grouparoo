@@ -25,8 +25,8 @@ export class CloseioClient {
     return response.data[0];
   }
 
-  async findContactByName(name: string) {
-    const id = await this.findContactIdByName(name);
+  async findContactByEmail(email: string) {
+    const id = await this.findContactIdByEmail(email);
     if (!id) {
       return null;
     }
@@ -38,7 +38,7 @@ export class CloseioClient {
     return lead?.id;
   }
 
-  async findContactIdByName(name: string) {
+  async findContactIdByEmail(email: string) {
     const response = await this.closeio._post("/data/search/", {
       query: {
         queries: [
@@ -47,17 +47,27 @@ export class CloseioClient {
             type: "object_type",
           },
           {
-            condition: {
-              mode: "full_words",
-              type: "text",
-              value: name,
+            related_object_type: "contact_email",
+            related_query: {
+              queries: [
+                {
+                  condition: {
+                    mode: "full_words",
+                    type: "text",
+                    value: email,
+                  },
+                  field: {
+                    field_name: "email",
+                    object_type: "contact_email",
+                    type: "regular_field",
+                  },
+                  type: "field_condition",
+                },
+              ],
+              type: "and",
             },
-            field: {
-              field_name: "name",
-              object_type: "contact",
-              type: "regular_field",
-            },
-            type: "field_condition",
+            this_object_type: "contact",
+            type: "has_related",
           },
         ],
         type: "and",
@@ -68,10 +78,6 @@ export class CloseioClient {
     });
 
     if (response.data.length === 0) {
-      return null;
-    }
-
-    if (response.data[0].name !== name) {
       return null;
     }
 
