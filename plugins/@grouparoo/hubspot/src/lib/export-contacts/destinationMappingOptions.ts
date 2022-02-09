@@ -8,9 +8,22 @@ import { connect } from "../connect";
 const importantFields = ["firstname", "lastname", "company"];
 
 export const destinationMappingOptions: DestinationMappingOptionsMethod =
-  async ({ appOptions }) => {
+  async ({ appOptions, destinationOptions }) => {
     const client = await connect(appOptions);
     const required = getRequiredFields();
+
+    if (destinationOptions?.companyKey) {
+      let type: DestinationMappingOptionsResponseType = "string";
+      switch (destinationOptions.companyKey) {
+        case "hs_object_id":
+          type = "integer";
+          break;
+        case "phone":
+          type = "phoneNumber";
+          break;
+      }
+      required.push({ key: `Company.${destinationOptions.companyKey}`, type });
+    }
     const known = await getUserFields(client, appOptions);
     return {
       labels: {

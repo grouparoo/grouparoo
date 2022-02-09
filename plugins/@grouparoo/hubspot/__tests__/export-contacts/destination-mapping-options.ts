@@ -10,7 +10,7 @@ const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
 const appId = "app_78189023490-231123231231123-90-3k";
 
-async function runDestinationMappingOptions({}) {
+async function runDestinationMappingOptions({ destinationOptions }) {
   return destinationMappingOptions({
     appOptions,
     app: null,
@@ -18,7 +18,7 @@ async function runDestinationMappingOptions({}) {
     connection: null,
     destination: null,
     destinationId: null,
-    destinationOptions: null,
+    destinationOptions,
   });
 }
 
@@ -67,7 +67,9 @@ describe("hubspot/destinationMappingOptions", () => {
   });
 
   test("can load all destinationMappingOptions", async () => {
-    const options = await runDestinationMappingOptions({});
+    const options = await runDestinationMappingOptions({
+      destinationOptions: null,
+    });
     const { properties } = options;
     const { required, known } = properties;
 
@@ -76,6 +78,39 @@ describe("hubspot/destinationMappingOptions", () => {
     const requiredFieldEmail = required.find((f) => f.key === "email");
     expect(requiredFieldEmail.key).toBe("email");
     expect(requiredFieldEmail.type).toBe("email");
+
+    const knownFieldPhoneNumber = known.find((f) => f.key === "phone");
+    expect(knownFieldPhoneNumber.type).toBe("phoneNumber");
+    expect(knownFieldPhoneNumber.important).toBe(false);
+
+    const knownFieldMobilePhoneNumber = known.find(
+      (f) => f.key === "mobilephone"
+    );
+    expect(knownFieldMobilePhoneNumber.type).toBe("phoneNumber");
+    expect(knownFieldMobilePhoneNumber.important).toBe(false);
+
+    const readOnlyField = known.find((f) => f.key === "days_to_close");
+    expect(readOnlyField).toBe(undefined);
+  });
+
+  test("can load all destinationMappingOptions giving destination options", async () => {
+    const options = await runDestinationMappingOptions({
+      destinationOptions: { companyKey: "domain" },
+    });
+    const { properties } = options;
+    const { required, known } = properties;
+
+    expect(required.length).toBe(2);
+
+    const requiredFieldEmail = required.find((f) => f.key === "email");
+    expect(requiredFieldEmail.key).toBe("email");
+    expect(requiredFieldEmail.type).toBe("email");
+
+    const requiredFieldDomain = required.find(
+      (f) => f.key === "Company.domain"
+    );
+    expect(requiredFieldDomain.key).toBe("Company.domain");
+    expect(requiredFieldDomain.type).toBe("string");
 
     const knownFieldPhoneNumber = known.find((f) => f.key === "phone");
     expect(knownFieldPhoneNumber.type).toBe("phoneNumber");

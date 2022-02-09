@@ -20,7 +20,15 @@ export const contactsDestinationConnection: PluginConnection = {
   apps: ["hubspot"],
   syncModes: contactsSupportedSyncModes,
   defaultSyncMode: "sync",
-  options: [],
+  options: [
+    {
+      key: "companyKey",
+      displayName: "Company Key",
+      required: false,
+      description:
+        "Links a Contact to a company by something other than the Hubspot default (email domain).",
+    },
+  ],
   methods: {
     exportRecord,
     destinationOptions,

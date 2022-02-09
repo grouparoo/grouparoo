@@ -253,7 +253,7 @@ describe("models/recordProperty", () => {
           propertyId: urlProperty.id,
         });
 
-        recordProperty.setValue("not a url");
+        await recordProperty.setValue("not a url");
         const response = await recordProperty.getValue();
         expect(response).toBe(null);
         expect(recordProperty.invalidValue).toBe("not a url");
