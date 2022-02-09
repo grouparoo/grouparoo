@@ -22,8 +22,8 @@ describe("models/appsCache", () => {
     });
 
     test("it can filter to state", async () => {
-      const draftApp = await helper.factories.app({ state: "draft" });
-      expect(draftApp.state).toBe("draft");
+      const draftApp = await helper.factories.app();
+      await draftApp.update({ state: "draft" }, { hooks: false });
 
       const instances = await AppsCache.findAllWithCache(undefined, "draft");
 

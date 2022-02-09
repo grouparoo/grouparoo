@@ -628,13 +628,13 @@ export class Destination extends CommonModel<Destination> {
 
   @BeforeCreate
   static async ensureAppReady(instance: Destination) {
-    const app = await instance.$get("app");
+    const app = await App.findById(instance.appId);
     if (app.state !== "ready") throw new Error(`app ${app.id} is not ready`);
   }
 
   @BeforeCreate
   static async ensureSupportedAppType(instance: Destination) {
-    const app = await instance.$get("app");
+    const app = await App.findById(instance.appId);
     const { pluginConnection } = await instance.getPlugin();
     if (!pluginConnection.apps.includes(app.type))
       throw new Error(
