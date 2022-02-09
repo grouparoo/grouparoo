@@ -4,6 +4,7 @@ import axios, {
   AxiosResponse,
   Method,
 } from "axios";
+import stringify from "fast-json-stable-stringify";
 import type { IncomingMessage, ServerResponse } from "http";
 import PackageJSON from "../package.json";
 import { getRequestContext } from "../utils/appContext";
@@ -81,7 +82,7 @@ export class Client {
     let unlock: ClientCacheGetObject["unlock"];
     if (config.method === "get" && options.useCache) {
       const { cacheData, unlock: _unlock } = await this.cache.get<Response>(
-        config.url + JSON.stringify(data)
+        config.url + stringify(data)
       );
       if (cacheData) {
         return cacheData;

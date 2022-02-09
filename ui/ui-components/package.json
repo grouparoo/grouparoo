@@ -65,6 +65,7 @@
   },
   "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a",
   "dependencies": {
+    "fast-json-stable-stringify": "^2.1.0",
     "universal-cookie": "4.0.4"
   }
 }
