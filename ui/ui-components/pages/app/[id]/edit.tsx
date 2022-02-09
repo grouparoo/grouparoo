@@ -2,9 +2,8 @@ import { useApi } from "../../../contexts/api";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState, useEffect, Fragment, useCallback, useMemo } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
-import { Typeahead } from "react-bootstrap-typeahead";
 import { appHandler, successHandler } from "../../../eventHandlers";
 import PageHeader from "../../../components/PageHeader";
 import StateBadge from "../../../components/badges/StateBadge";
@@ -18,6 +17,7 @@ import { Actions, Models } from "../../../utils/apiData";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
 import { NextPageContext } from "next";
 import { generateClient } from "../../../client/client";
+import { FormTypeahead } from "../../../components/Typeahead";
 
 export default function Page(
   props: Awaited<ReturnType<typeof Page.getInitialProps>>
@@ -269,66 +269,19 @@ export default function Page(
                             if (options[opt.key]?.type === "typeahead") {
                               return (
                                 <>
-                                  <Controller
+                                  <FormTypeahead
                                     control={control}
                                     name={`options.${opt.key}`}
-                                    render={({ field: { onChange } }) => {
-                                      return (
-                                        <Typeahead
-                                          id="typeahead"
-                                          labelKey="key"
-                                          disabled={loading}
-                                          onChange={(selected) => {
-                                            onChange(selected[0]?.key);
-                                          }}
-                                          options={options[
-                                            opt.key
-                                          ]?.options.map((k, idx) => {
-                                            return {
-                                              key: k,
-                                              descriptions:
-                                                options[k]?.descriptions[idx],
-                                            };
-                                          })}
-                                          placeholder={
-                                            opt.placeholder ||
-                                            `Select ${opt.key}`
-                                          }
-                                          renderMenuItemChildren={(
-                                            opt,
-                                            props,
-                                            idx
-                                          ) => {
-                                            return [
-                                              <span key={`opt-${idx}-key`}>
-                                                {opt.key}
-                                                <br />
-                                              </span>,
-                                              <small
-                                                key={`opt-${idx}-descriptions`}
-                                                className="text-small"
-                                              >
-                                                <em>
-                                                  Descriptions:{" "}
-                                                  {opt.descriptions
-                                                    ? opt.descriptions.join(
-                                                        ", "
-                                                      )
-                                                    : "None"}
-                                                </em>
-                                              </small>,
-                                            ];
-                                          }}
-                                          defaultSelected={
-                                            app.options[opt.key]
-                                              ? [app.options[opt.key]]
-                                              : undefined
-                                          }
-                                        />
-                                      );
-                                    }}
+                                    option={options[opt.key]}
+                                    placeholder={
+                                      opt.placeholder || `Select ${opt.key}`
+                                    }
+                                    defaultSelected={
+                                      app.options[opt.key]
+                                        ? [app.options[opt.key]]
+                                        : undefined
+                                    }
                                   />
-
                                   <Form.Text className="text-muted">
                                     {opt.description}
                                   </Form.Text>
