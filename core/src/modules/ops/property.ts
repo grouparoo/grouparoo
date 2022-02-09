@@ -10,6 +10,7 @@ import { PluginOptionType } from "../../classes/plugin";
 import { getGrouparooRunMode } from "../runMode";
 import Mustache from "mustache";
 import { PropertiesCache } from "../caches/propertiesCache";
+import { SourcesCache } from "../../modules/caches/sourcesCache";
 
 export namespace PropertyOps {
   /**
@@ -130,10 +131,10 @@ export namespace PropertyOps {
    */
   export async function dependencies(property: Property) {
     const dependencies: Property[] = [];
-    const source = await property.$get("source", {
-      scope: null,
-      include: [Option, Mapping],
-    });
+    const source = await SourcesCache.findOneWithCache(
+      property.sourceId,
+      undefined
+    );
     const sourceMapping = await source.getMapping();
     const ruleOptions = await property.getOptions();
     const properties = await PropertiesCache.findAllWithCache(source.modelId);

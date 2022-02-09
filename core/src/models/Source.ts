@@ -149,6 +149,10 @@ export class Source extends CommonModel<Source> {
     return OptionHelper.setOptions(this, options);
   }
 
+  async afterSetOptions(hasChanges: boolean) {
+    if (hasChanges) SourcesCache.invalidate();
+  }
+
   async validateOptions(options?: SimpleSourceOptions) {
     if (!options) options = await this.getOptions(true);
     return OptionHelper.validateOptions(this, options);
@@ -179,6 +183,11 @@ export class Source extends CommonModel<Source> {
 
   async setMapping(mappings: SourceMapping) {
     return MappingHelper.setMapping(this, mappings);
+  }
+
+  async afterSetMapping() {
+    SourcesCache.invalidate();
+    await Source.determinePrimaryKeyProperty(this);
   }
 
   async validateMapping() {
@@ -252,7 +261,7 @@ export class Source extends CommonModel<Source> {
     } else {
       const propertyMappingKey = Object.values(mapping)[0];
       const property = (
-        await PropertiesCache.findAllWithCache(this.modelId)
+        await PropertiesCache.findAllWithCache(this.modelId, "ready")
       ).find((p) => p.key === propertyMappingKey);
       if (!property) return false;
       if (!property.unique) return false;
@@ -272,23 +281,14 @@ export class Source extends CommonModel<Source> {
     record: GrouparooRecord,
     property: Property,
     propertyOptionsOverride?: OptionHelper.SimpleOptions,
-    propertyFiltersOverride?: PropertyFiltersWithKey[],
-    preloadedArgs: {
-      app?: App;
-      connection?: any;
-      appOptions?: OptionHelper.SimpleOptions;
-      sourceOptions?: OptionHelper.SimpleOptions;
-      sourceMapping?: MappingHelper.Mappings;
-      recordProperties?: {};
-    } = {}
+    propertyFiltersOverride?: PropertyFiltersWithKey[]
   ) {
     return SourceOps.importRecordProperty(
       this,
       record,
       property,
       propertyOptionsOverride,
-      propertyFiltersOverride,
-      preloadedArgs
+      propertyFiltersOverride
     );
   }
 
@@ -296,23 +296,14 @@ export class Source extends CommonModel<Source> {
     records: GrouparooRecord[],
     properties: Property[],
     propertyOptionsOverride?: { [key: string]: SimplePropertyOptions },
-    propertyFiltersOverride?: { [key: string]: PropertyFiltersWithKey[] },
-    preloadedArgs: {
-      app?: App;
-      connection?: any;
-      appOptions?: OptionHelper.SimpleOptions;
-      sourceOptions?: OptionHelper.SimpleOptions;
-      sourceMapping?: MappingHelper.Mappings;
-      recordProperties?: {};
-    } = {}
+    propertyFiltersOverride?: { [key: string]: PropertyFiltersWithKey[] }
   ) {
     return SourceOps.importRecordProperties(
       this,
       records,
       properties,
       propertyOptionsOverride,
-      propertyFiltersOverride,
-      preloadedArgs
+      propertyFiltersOverride
     );
   }
 
@@ -371,10 +362,6 @@ export class Source extends CommonModel<Source> {
     await setSchedule();
 
     return configObject;
-  }
-
-  async afterSetMapping() {
-    await Source.determinePrimaryKeyProperty(this);
   }
 
   // --- Class Methods --- //
@@ -534,7 +521,7 @@ export class Source extends CommonModel<Source> {
   static async invalidateCache() {
     SourcesCache.invalidate();
     await CLS.afterCommit(
-      async () => await redis.doCluster("api.rpc.property.invalidateCache")
+      async () => await redis.doCluster("api.rpc.source.invalidateCache")
     );
   }
 }

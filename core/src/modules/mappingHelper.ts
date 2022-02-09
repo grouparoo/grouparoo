@@ -30,7 +30,8 @@ export namespace MappingHelper {
       const mapping = mappings[i];
       const property = await PropertiesCache.findOneWithCache(
         mapping.propertyId,
-        instance.modelId
+        instance.modelId,
+        "ready"
       );
 
       if (!property) {
@@ -103,7 +104,12 @@ export namespace MappingHelper {
     for (const i in keys) {
       const remoteKey = keys[i];
       const key = mappings[remoteKey];
-      const property = await PropertiesCache.findOneWithCache(key, null, "key");
+      const property = await PropertiesCache.findOneWithCache(
+        key,
+        undefined,
+        "ready",
+        "key"
+      );
 
       if (!property) throw new Error(`cannot find property ${key}`);
       if (instance instanceof Source && property.isArray) {

@@ -6,6 +6,7 @@ const data = async (props = {}) => {
   const defaultProps = {
     name: `app ${faker.name.jobDescriptor()} - ${Math.random()}`,
     type: "test-plugin-app",
+    state: "draft",
     options: { fileId: faker.finance.bitcoinAddress() },
 
     createdAt: new Date(),
@@ -24,7 +25,7 @@ export default async (props = {}) => {
     await instance.setOptions(mergedProps.options);
   }
 
-  await instance.update({ state: "ready" });
+  await instance.update({ state: props["state"] ?? "ready" });
 
   return instance;
 };

@@ -14,18 +14,28 @@ function getInclude() {
   return include;
 }
 
-async function findAllWithCache(this: ModelCache<Property>, modelId?: string) {
+async function findAllWithCache(
+  this: ModelCache<Property>,
+  modelId?: string,
+  state?: Property["state"]
+) {
   const now = new Date().getTime();
   if (this.expires > now && this.instances.length > 0) {
     return modelId
-      ? this.instances.filter((p) => p?.source?.modelId === modelId)
-      : this.instances;
+      ? this.instances.filter(
+          (p) => p?.source?.modelId === modelId && (!state || p.state === state)
+        )
+      : this.instances.filter((p) => !state || p.state === state);
   } else {
-    this.instances = await Property.findAll({ include: getInclude() });
+    this.instances = await Property.unscoped().findAll({
+      include: getInclude(),
+    });
     this.expires = now + this.TTL;
     return modelId
-      ? this.instances.filter((p) => p?.source?.modelId === modelId)
-      : this.instances;
+      ? this.instances.filter(
+          (p) => p?.source?.modelId === modelId && (!state || p.state === state)
+        )
+      : this.instances.filter((p) => !state || p.state === state);
   }
 }
 
@@ -33,14 +43,15 @@ async function findOneWithCache(
   this: ModelCache<Property>,
   value: string,
   modelId?: string,
+  state: Property["state"] = null,
   lookupKey: keyof Property = "id"
 ) {
   const instances = await this.findAllWithCache(modelId);
   let instance = instances.find((i) => i[lookupKey] === value);
 
   if (!instance) {
-    instance = await Property.findOne({
-      where: { [lookupKey]: value },
+    instance = await Property.unscoped().findOne({
+      where: { [lookupKey]: value, state },
       include: getInclude(),
     });
     if (!instance) this.invalidate();

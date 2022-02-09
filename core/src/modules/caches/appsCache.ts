@@ -8,28 +8,34 @@ function getInclude() {
   return include;
 }
 
-async function findAllWithCache(this: ModelCache<App>) {
+async function findAllWithCache(
+  this: ModelCache<App>,
+  modelId?: string,
+  state?: App["state"]
+) {
   const now = new Date().getTime();
   if (this.expires > now && this.instances.length > 0) {
-    return this.instances;
+    return this.instances.filter((a) => !state || a.state === state);
   } else {
-    this.instances = await App.findAll({ include: getInclude() });
+    this.instances = await App.unscoped().findAll({ include: getInclude() });
     this.expires = now + this.TTL;
-    return this.instances;
+    return this.instances.filter((a) => !state || a.state === state);
   }
 }
 
 async function findOneWithCache(
   this: ModelCache<App>,
   value: string,
+  modelId?: string,
+  state: App["state"] = null,
   lookupKey: keyof App = "id"
 ) {
   const instances = await this.findAllWithCache();
   let instance = instances.find((i) => i[lookupKey] === value);
 
   if (!instance) {
-    instance = await App.findOne({
-      where: { [lookupKey]: value },
+    instance = await App.unscoped().findOne({
+      where: { [lookupKey]: value, state },
       include: getInclude(),
     });
     if (!instance) this.invalidate();

@@ -6,6 +6,7 @@ import {
   ForeignKey,
   BelongsTo,
   DataType,
+  BeforeSave,
 } from "sequelize-typescript";
 import { GrouparooRecord } from "./GrouparooRecord";
 import { Property } from "./Property";
@@ -124,10 +125,21 @@ export class RecordProperty extends CommonModel<RecordProperty> {
   }
 
   async ensureProperty() {
-    const property = await PropertiesCache.findOneWithCache(this.propertyId);
+    const property = await PropertiesCache.findOneWithCache(
+      this.propertyId,
+      undefined,
+      "ready"
+    );
     if (!property) {
       throw new Error(`property not found for propertyId ${this.propertyId}`);
     }
     return property;
+  }
+
+  // --- Class Methods --- //
+
+  @BeforeSave
+  static async updateState(instance: RecordProperty) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 }

@@ -464,8 +464,12 @@ describe("tasks/recordProperty:importRecordProperties", () => {
                   // only returns data for the first record
                   return {
                     [records[0].id]: {
-                      [properties[0].id]: ["foo"],
-                      [properties[1].id]: ["bar"],
+                      [properties.find((p) => p.key === "wordInSpanish").id]: [
+                        "foo",
+                      ],
+                      [properties.find((p) => p.key === "wordInFrench").id]: [
+                        "bar",
+                      ],
                     },
                   };
                 },
@@ -489,14 +493,14 @@ describe("tasks/recordProperty:importRecordProperties", () => {
         await otherSource.setMapping({ word: "lastName" });
         await otherSource.update({ state: "ready" });
 
-        const newPropertyA = await helper.factories.property(otherSource, {
+        const spanishProperty = await helper.factories.property(otherSource, {
           key: "wordInSpanish",
         });
-        const newPropertyB = await helper.factories.property(otherSource, {
+        const frenchProperty = await helper.factories.property(otherSource, {
           key: "wordInFrench",
         });
-        await newPropertyA.update({ state: "ready" });
-        await newPropertyB.update({ state: "ready" });
+        await spanishProperty.update({ state: "ready" });
+        await frenchProperty.update({ state: "ready" });
         await recordA.buildNullProperties();
         await recordB.buildNullProperties();
         await recordC.buildNullProperties();
@@ -506,8 +510,8 @@ describe("tasks/recordProperty:importRecordProperties", () => {
           {
             where: {
               [Op.and]: [
-                { propertyId: { [Op.ne]: newPropertyA.id } },
-                { propertyId: { [Op.ne]: newPropertyB.id } },
+                { propertyId: { [Op.ne]: spanishProperty.id } },
+                { propertyId: { [Op.ne]: frenchProperty.id } },
               ],
             },
           }
@@ -520,22 +524,22 @@ describe("tasks/recordProperty:importRecordProperties", () => {
         // import
         await specHelper.runTask("recordProperty:importRecordProperties", {
           recordIds: [recordA.id, recordB.id, recordC.id],
-          propertyIds: [newPropertyA.id, newPropertyB.id],
+          propertyIds: [spanishProperty.id, frenchProperty.id],
         });
 
         const recordPropertiesA = await recordA.getProperties();
         const recordPropertiesB = await recordB.getProperties();
         const recordPropertiesC = await recordC.getProperties();
-        expect(recordPropertiesA[newPropertyA.id].values).toEqual(["foo"]);
-        expect(recordPropertiesB[newPropertyA.id].values).toEqual(["foo"]);
-        expect(recordPropertiesC[newPropertyA.id].values).toEqual(["foo"]);
-        expect(recordPropertiesA[newPropertyB.id].values).toEqual(["bar"]);
-        expect(recordPropertiesB[newPropertyB.id].values).toEqual(["bar"]);
-        expect(recordPropertiesC[newPropertyB.id].values).toEqual(["bar"]);
+        expect(recordPropertiesA[spanishProperty.id].values).toEqual(["foo"]);
+        expect(recordPropertiesB[spanishProperty.id].values).toEqual(["foo"]);
+        expect(recordPropertiesC[spanishProperty.id].values).toEqual(["foo"]);
+        expect(recordPropertiesA[frenchProperty.id].values).toEqual(["bar"]);
+        expect(recordPropertiesB[frenchProperty.id].values).toEqual(["bar"]);
+        expect(recordPropertiesC[frenchProperty.id].values).toEqual(["bar"]);
 
         // cleanup
-        await newPropertyA.destroy();
-        await newPropertyB.destroy();
+        await spanishProperty.destroy();
+        await frenchProperty.destroy();
         await otherSource.destroy();
         await app.destroy();
       });

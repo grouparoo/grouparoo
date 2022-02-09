@@ -165,6 +165,7 @@ export namespace RecordOps {
       const property = await PropertiesCache.findOneWithCache(
         `${searchKey}`,
         undefined,
+        "ready",
         "key"
       );
       if (!property) throw new Error(`cannot find a property for ${searchKey}`);
@@ -459,7 +460,8 @@ export namespace RecordOps {
     for (let recordProperty of pendingProperties) {
       const property = await PropertiesCache.findOneWithCache(
         recordProperty.propertyId,
-        record.modelId
+        record.modelId,
+        "ready"
       );
       if (!sourceId || property.sourceId === sourceId) {
         clearRecordPropertyIds.push(recordProperty.id);
@@ -510,7 +512,10 @@ export namespace RecordOps {
     const now = new Date();
 
     for (const record of records) {
-      const properties = await PropertiesCache.findAllWithCache(record.modelId);
+      const properties = await PropertiesCache.findAllWithCache(
+        record.modelId,
+        "ready"
+      );
       const recordProperties = await record.getProperties();
 
       for (const key in properties) {
@@ -751,7 +756,8 @@ export namespace RecordOps {
     let recordProperty: RecordProperty;
     const uniqueProperties = (
       await PropertiesCache.findAllWithCache(
-        source instanceof Source ? source.modelId : undefined
+        source instanceof Source ? source.modelId : undefined,
+        "ready"
       )
     ).filter((p) => p.unique === true);
     const uniquePropertiesHash: Record<
@@ -811,7 +817,7 @@ export namespace RecordOps {
           typeof source === "boolean"
             ? source
             : source instanceof Source
-            ? (await PropertiesCache.findAllWithCache(source.modelId))
+            ? (await PropertiesCache.findAllWithCache(source.modelId, "ready"))
                 .filter((p) => p.unique === true && p.sourceId === source.id)
                 .map((p) => p.key)
                 .filter((key) => !!hash[key]).length > 0
@@ -882,7 +888,7 @@ export namespace RecordOps {
 
     for (const model of models) {
       const propertiesByModel: Property[] =
-        await PropertiesCache.findAllWithCache(model.id);
+        await PropertiesCache.findAllWithCache(model.id, "ready");
 
       const primaryKeyProperties = propertiesByModel.filter((property) => {
         return property.isPrimaryKey == true;

@@ -1,29 +1,37 @@
 import { ModelCache } from "../modelCache";
 import { Source } from "../../models/Source";
 import { Option } from "../../models/Option";
-import { Filter } from "../../models/Filter";
+import { Mapping } from "../../models/Mapping";
 import { Includeable } from "sequelize";
 
 function getInclude() {
   const include: Includeable[] = [
     { model: Option, required: false },
-    { model: Filter, required: false },
+    { model: Mapping, required: false },
   ];
   return include;
 }
 
-async function findAllWithCache(this: ModelCache<Source>, modelId?: string) {
+async function findAllWithCache(
+  this: ModelCache<Source>,
+  modelId?: string,
+  state?: Source["state"]
+) {
   const now = new Date().getTime();
   if (this.expires > now && this.instances.length > 0) {
     return modelId
-      ? this.instances.filter((s) => s?.modelId === modelId)
-      : this.instances;
+      ? this.instances.filter(
+          (s) => s?.modelId === modelId && (!state || s.state === state)
+        )
+      : this.instances.filter((s) => !state || s.state === state);
   } else {
-    this.instances = await Source.findAll({ include: getInclude() });
+    this.instances = await Source.unscoped().findAll({ include: getInclude() });
     this.expires = now + this.TTL;
     return modelId
-      ? this.instances.filter((s) => s?.modelId === modelId)
-      : this.instances;
+      ? this.instances.filter(
+          (s) => s?.modelId === modelId && (!state || s.state === state)
+        )
+      : this.instances.filter((s) => !state || s.state === state);
   }
 }
 
@@ -31,14 +39,15 @@ async function findOneWithCache(
   this: ModelCache<Source>,
   value: string,
   modelId?: string,
+  state: Source["state"] = null,
   lookupKey: keyof Source = "id"
 ) {
   const instances = await this.findAllWithCache(modelId);
   let instance = instances.find((i) => i[lookupKey] === value);
 
   if (!instance) {
-    instance = await Source.findOne({
-      where: { [lookupKey]: value },
+    instance = await Source.unscoped().findOne({
+      where: { [lookupKey]: value, state },
       include: getInclude(),
     });
     if (!instance) this.invalidate();

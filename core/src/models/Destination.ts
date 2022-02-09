@@ -396,7 +396,10 @@ export class Destination extends CommonModel<Destination> {
       false,
       saveCache
     );
-    const properties = await PropertiesCache.findAllWithCache(this.modelId);
+    const properties = await PropertiesCache.findAllWithCache(
+      this.modelId,
+      "ready"
+    );
     const exportArrayProperties = await this.getExportArrayProperties();
 
     // check for array properties
@@ -625,13 +628,13 @@ export class Destination extends CommonModel<Destination> {
 
   @BeforeCreate
   static async ensureAppReady(instance: Destination) {
-    const app = await App.findById(instance.appId);
+    const app = await instance.$get("app");
     if (app.state !== "ready") throw new Error(`app ${app.id} is not ready`);
   }
 
   @BeforeCreate
   static async ensureSupportedAppType(instance: Destination) {
-    const app = await App.findById(instance.appId);
+    const app = await instance.$get("app");
     const { pluginConnection } = await instance.getPlugin();
     if (!pluginConnection.apps.includes(app.type))
       throw new Error(

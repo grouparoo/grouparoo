@@ -33,7 +33,10 @@ export class ImportRecordProperties extends RetryableTask {
     });
     if (records.length === 0) return;
 
-    const allProperties = await PropertiesCache.findAllWithCache();
+    const allProperties = await PropertiesCache.findAllWithCache(
+      undefined,
+      "ready"
+    );
     const properties = allProperties.filter((p) => propertyIds.includes(p.id));
     if (properties.length === 0) return;
     const sourceIds = properties

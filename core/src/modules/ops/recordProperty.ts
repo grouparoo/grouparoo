@@ -3,14 +3,13 @@ import { plugin } from "../plugin";
 import isEmail from "../validators/isEmail";
 import isURL from "validator/lib/isURL";
 import { RecordProperty } from "../../models/RecordProperty";
-import { Option } from "../../models/Option";
 import { Property, PropertyTypes } from "../../models/Property";
 import { CLS } from "../cls";
 import { Op } from "sequelize";
 import { Source } from "../../models/Source";
 import { AggregationMethod, PluginConnection } from "../../classes/plugin";
-import { Filter } from "../../models/Filter";
 import { log } from "actionhero";
+import { PropertiesCache } from "../../modules/caches/propertiesCache";
 
 export namespace RecordPropertyOps {
   const defaultRecordPropertyProcessingDelay = 1000 * 60 * 5;
@@ -118,10 +117,9 @@ export namespace RecordPropertyOps {
     }
     if (source.state !== "ready") return [];
     const { pluginConnection } = await source.getPlugin();
-    const properties = await source.$get("properties", {
-      where: { state: "ready" },
-      include: [Option, Filter],
-    });
+    const properties = (
+      await PropertiesCache.findAllWithCache(undefined, "ready")
+    ).filter((p) => p.sourceId === source.id);
 
     const pendingRecordPropertyIds: string[] = [];
     const unGroupedProperties: Property[] = [];

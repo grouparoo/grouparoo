@@ -35,7 +35,7 @@ export async function loadRecord(
   const nonNullProperties = extractNonNullParts(configObject, "properties");
 
   const primaryKeyProperties = (
-    await PropertiesCache.findAllWithCache(record.modelId)
+    await PropertiesCache.findAllWithCache(record.modelId, "ready")
   )
     .filter((p) => p.isPrimaryKey === true)
     .map((p) => p.id);

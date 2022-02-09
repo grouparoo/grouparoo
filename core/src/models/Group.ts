@@ -183,7 +183,8 @@ export class Group extends CommonModel<Group> {
       const rule: GroupRule = rules[i];
       const property = await PropertiesCache.findOneWithCache(
         rule.propertyId,
-        this.modelId
+        this.modelId,
+        "ready"
       );
       const type = property
         ? property.type
@@ -674,6 +675,7 @@ export class Group extends CommonModel<Group> {
       const property = await PropertiesCache.findOneWithCache(
         rule.key,
         modelId,
+        "ready",
         "key"
       );
       rules.push({

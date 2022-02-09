@@ -14,6 +14,7 @@ import { App } from "./../models/App";
 import { LockableHelper } from "./lockableHelper";
 import { plural } from "pluralize";
 import { modelName } from "./modelName";
+import { SourcesCache } from "../modules/caches/sourcesCache";
 
 export const ObfuscatedOptionString = "__ObfuscatedOption";
 
@@ -341,9 +342,9 @@ export namespace OptionHelper {
 
     if (!type || instance instanceof Property) {
       if (instance["sourceId"]) {
-        const source = await Source.scope(null).findOne({
-          where: { id: instance["sourceId"] },
-        });
+        const source = await SourcesCache.findOneWithCache(
+          instance["sourceId"]
+        );
         if (source) type = source.type;
       }
     }

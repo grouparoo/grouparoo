@@ -354,9 +354,9 @@ export namespace plugin {
     //though we default to 3 brackets, if someone inputs the double bracket notation, we should accept it
     if (string.indexOf("{{") < 0) return string;
 
-    const properties = (await PropertiesCache.findAllWithCache(modelId)).filter(
-      (p) => p.isArray === false
-    );
+    const properties = (
+      await PropertiesCache.findAllWithCache(modelId, "ready")
+    ).filter((p) => p.isArray === false);
 
     const data: Record<string, string> = {};
     properties.forEach((rule) => {
@@ -377,7 +377,7 @@ export namespace plugin {
     //though we default to 3 brackets, if someone inputs the double bracket notation, we should accept it
     if (string.indexOf("{{") < 0) return string;
 
-    const properties = await PropertiesCache.findAllWithCache(modelId);
+    const properties = await PropertiesCache.findAllWithCache(modelId, "ready");
 
     const data: Record<string, string> = {};
     properties.forEach((rule) => {

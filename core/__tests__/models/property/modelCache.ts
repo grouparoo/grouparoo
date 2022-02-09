@@ -2,7 +2,7 @@ import { helper } from "@grouparoo/spec-helper";
 import { Property, Source } from "../../../src";
 import { PropertiesCache } from "../../../src/modules/caches/propertiesCache";
 
-describe("models/property", () => {
+describe("models/propertiesCache", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   let source: Source;
@@ -33,15 +33,20 @@ describe("models/property", () => {
       expect(instances.length).toBe(originalPropertyCount);
     });
 
-    test("it only includes ready and deleted properties", async () => {
+    test("it can filter to state", async () => {
       const property = await Property.create({
         type: "string",
         sourceId: source.id,
       });
       expect(property.state).toBe("draft");
 
-      const instances = await PropertiesCache.findAllWithCache();
-      expect(instances.length).toBe(originalPropertyCount);
+      const instances = await PropertiesCache.findAllWithCache(
+        undefined,
+        "draft"
+      );
+
+      expect(instances.length).toBe(1);
+      expect(instances[0].id).toBe(property.id);
 
       await property.destroy();
     });
@@ -152,7 +157,8 @@ describe("models/property", () => {
     test("it can find by other keys", async () => {
       const found = await PropertiesCache.findOneWithCache(
         "FIRST NAME",
-        null,
+        undefined,
+        undefined,
         "key"
       );
       expect(found.id).toBe("firstName");
