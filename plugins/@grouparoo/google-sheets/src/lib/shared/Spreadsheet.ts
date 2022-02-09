@@ -289,7 +289,7 @@ export default class Spreadsheet {
     } catch (error) {
       if (error?.response?.status === 429) {
         await this.sleep(WAIT_TIME);
-        return this.addRowAtTheEnd(payload);
+        return this.addRowsAtTheEnd(payload, primaryKey);
       } else {
         throw error;
       }

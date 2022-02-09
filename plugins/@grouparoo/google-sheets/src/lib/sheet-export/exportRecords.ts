@@ -117,18 +117,23 @@ const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSe
     });
     const { releaseLock } = await waitForLock(`${cacheKey}:append`);
     const rows = users.map((u) => buildPayload(config, u));
-    const destinationIdsMapping = await client.addRowsAtTheEnd(
-      rows,
-      destinationOptions.primaryKey
-    );
-    for (const mapping of destinationIdsMapping) {
-      const user = await getByForeignKey(mapping.primaryKey);
-      if (user) {
-        user.destinationId = mapping.destinationId;
+    try {
+      const destinationIdsMapping = await client.addRowsAtTheEnd(
+        rows,
+        destinationOptions.primaryKey
+      );
+      for (const mapping of destinationIdsMapping) {
+        const user = await getByForeignKey(mapping.primaryKey);
+        if (user) {
+          user.destinationId = mapping.destinationId;
+        }
       }
-    }
-    if (releaseLock) {
-      await releaseLock();
+    } catch (e) {
+      users.map((user) => (user.error = e));
+    } finally {
+      if (releaseLock) {
+        await releaseLock();
+      }
     }
   };
 
