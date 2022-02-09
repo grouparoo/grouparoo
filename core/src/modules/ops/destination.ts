@@ -587,19 +587,27 @@ export namespace DestinationOps {
     _exports: Export[]
   ): Promise<ExportedRecord[]> {
     const exportedRecords: ExportedRecord[] = [];
+    const destinationMappingOptions =
+      await destination.destinationMappingOptions();
+    const records = await GrouparooRecord.findAll({
+      where: { id: _exports.map((e) => e.recordId) },
+    });
+
     for (const _export of _exports) {
-      const record = await _export.$get("record"); // PERFORMANCE: get all records at once
+      const record = records.find((r) => (r.id = _export.recordId));
       exportedRecords.push({
         record,
         recordId: record?.id,
-        oldRecordProperties: await formatRecordPropertiesForDestination(
+        oldRecordProperties: formatRecordPropertiesForDestination(
           _export,
           destination,
+          destinationMappingOptions,
           "oldRecordProperties"
         ),
-        newRecordProperties: await formatRecordPropertiesForDestination(
+        newRecordProperties: formatRecordPropertiesForDestination(
           _export,
           destination,
+          destinationMappingOptions,
           "newRecordProperties"
         ),
         oldGroups: _export.oldGroups,
@@ -607,6 +615,7 @@ export namespace DestinationOps {
         toDelete: _export.toDelete,
       });
     }
+
     return exportedRecords;
   }
 
@@ -1067,9 +1076,10 @@ export namespace DestinationOps {
     return sendExports(destination, [_export], synchronous);
   }
 
-  async function formatRecordPropertiesForDestination(
+  function formatRecordPropertiesForDestination(
     _export: Export,
     destination: Destination,
+    destinationMappingOptions: DestinationMappingOptionsMethodResponse,
     key: "oldRecordProperties" | "newRecordProperties"
   ) {
     const response: { [key: string]: any } = {};
@@ -1077,8 +1087,6 @@ export namespace DestinationOps {
       //@ts-ignore
       _export["dataValues"][key]
     );
-    const destinationMappingOptions =
-      await destination.destinationMappingOptions();
     for (const k in rawProperties) {
       const type: Property["type"] = rawProperties[k].type;
       const value = _export[key][k];
