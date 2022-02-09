@@ -98,11 +98,9 @@ export class Client {
       unlock?.(response.data);
 
       if (response.data && response.data.error) {
-        const error = response.data.error.message
+        throw response.data.error.message
           ? response.data.error.message
           : response.data.error;
-
-        throw error;
       }
 
       return response.data;

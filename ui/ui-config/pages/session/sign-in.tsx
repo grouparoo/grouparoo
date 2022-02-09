@@ -42,7 +42,8 @@ export default function SignInPage(props) {
               order: [["name", "asc"]],
             }
           );
-          router.push(models.length ? `/model/${models[0].id}/overview` : "/");
+          const modelId = models?.[0]?.id;
+          router.push(modelId ? `/model/${modelId}/overview` : "/");
         } else {
           router.push("/setup");
         }

@@ -48,9 +48,10 @@ export default function Page(props) {
             order: [["name", "asc"]],
           }
         );
-        if (models?.length > 0) {
-          const [model] = models;
-          router.replace(`/model/${model.id}/overview`);
+
+        const modelId = models?.[0]?.id;
+        if (modelId) {
+          router.replace(`/model/${modelId}/overview`);
           return;
         }
 
