@@ -6,13 +6,14 @@ import axios, {
 } from "axios";
 import stringify from "fast-json-stable-stringify";
 import type { IncomingMessage, ServerResponse } from "http";
+import { errorHandler as globalErrorHandler } from "../eventHandlers";
 import PackageJSON from "../package.json";
 import { getRequestContext } from "../utils/appContext";
 import type { NextContext, NextContextName } from "../utils/appContext";
 import { isBrowser } from "../utils/isBrowser";
-
 import { ClientCache, ClientCacheGetObject } from "./clientCache";
-import { handleBrowserClientError } from "./handleBrowserClientError";
+import { ErrorHandler } from "../eventHandlers/errorHandler";
+import { getRedirectFromErrorCode } from "../utils/getRedirectFromErrorCode";
 
 export const API_VERSION = process.env.API_VERSION || "v1";
 const WEB_URL = process.env.WEB_URL ?? "";
@@ -29,8 +30,27 @@ const getCsrfToken = () =>
     ? window.localStorage.getItem("session:csrfToken")
     : undefined;
 
+const handleBrowserClientError = async <Response>(
+  error: Error & { code?: string },
+  errorHandler = globalErrorHandler
+): Promise<Response> => {
+  errorHandler.set({ message: error });
+
+  const redirect = getRedirectFromErrorCode(
+    error.code,
+    window.location.pathname
+  );
+
+  if (redirect) {
+    window.location.href = redirect.destination;
+  }
+
+  return {} as Response;
+};
+
 interface ClientRequestOptions {
   useCache: boolean;
+  errorHandler: ErrorHandler;
 }
 
 export class Client {
@@ -122,7 +142,7 @@ export class Client {
       }
 
       if (isBrowser()) {
-        return handleBrowserClientError<Response>(error);
+        return handleBrowserClientError<Response>(error, options.errorHandler);
       }
 
       throw error;

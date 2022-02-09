@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext } from "next";
 import Head from "next/head";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Form, Modal, Spinner, Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
 import AppSelectorList from "@grouparoo/ui-components/components/AppSelectorList";
@@ -14,7 +14,6 @@ import React from "react";
 
 type PluginWithVersion = Actions.PluginsList["plugins"][number];
 
-// TODO: Can we find an alternative to not customizing the error handler?
 class CustomErrorHandler extends EventDispatcher<{ message: string }> {
   message: Error | string | any = null;
 
@@ -54,6 +53,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
 }) => {
   const router = useRouter();
   const { client } = useApi();
+  const customErrorHandler = useMemo(() => new CustomErrorHandler(), []);
   const [plugin, setPlugin] = useState<Partial<PluginWithVersion>>(() => ({
     name: "",
   }));
@@ -175,7 +175,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
         "get",
         "/status/public",
         undefined,
-        { useCache: false }
+        { useCache: false, errorHandler: customErrorHandler }
       );
 
       if (response["status"] !== "ok") {
