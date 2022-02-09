@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext } from "next";
 import Head from "next/head";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Form, Modal, Spinner, Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
 import AppSelectorList from "@grouparoo/ui-components/components/AppSelectorList";
@@ -53,6 +53,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
 }) => {
   const router = useRouter();
   const { client } = useApi();
+  const customErrorHandler = useMemo(() => new CustomErrorHandler(), []);
   const [plugin, setPlugin] = useState<Partial<PluginWithVersion>>(() => ({
     name: "",
   }));
@@ -174,7 +175,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
         "get",
         "/status/public",
         undefined,
-        { useCache: false, errorHandler: new CustomErrorHandler() }
+        { useCache: false, errorHandler: customErrorHandler }
       );
 
       if (response["status"] !== "ok") {

@@ -11,6 +11,7 @@ import { GrouparooModelContext } from "../contexts/grouparooModel";
 import { WebAppContext } from "../contexts/webApp";
 import { Actions, Models } from "../utils/apiData";
 import { renderNestedContextProviders } from "../utils/contextHelper";
+import { getRedirectFromErrorCode } from "../utils/getRedirectFromErrorCode";
 
 import "../components/Icons";
 import "../eventHandlers";
@@ -103,6 +104,17 @@ GrouparooNextApp.getInitialProps = async (appContext: AppContext) => {
     try {
       appProps = await App.getInitialProps(appContext);
     } catch (_error) {
+      const { req, res } = appContext.ctx;
+      const requestPath = req.url.match("^[^?]*")[0];
+      const redirect = getRedirectFromErrorCode(_error.code, requestPath);
+      if (redirect) {
+        res.writeHead(302, {
+          Location: redirect.destination,
+        });
+        res.end();
+        return {};
+      }
+
       try {
         const { formattedErrorMessage, formattedErrorObject } =
           renderError(_error);

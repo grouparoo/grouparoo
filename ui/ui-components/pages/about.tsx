@@ -1,7 +1,7 @@
 import { NextPageContext } from "next";
 import Head from "next/head";
 import { Alert, Badge, Table } from "react-bootstrap";
-import { generateClient } from "../client/client";
+import { API_VERSION, generateClient } from "../client/client";
 import LinkButton from "../components/LinkButton";
 import { useApi } from "../contexts/api";
 import { Actions } from "../utils/apiData";
@@ -49,7 +49,7 @@ export default function Page({
         <strong>
           Connected to{" "}
           <Badge variant="info" data-testid="apiVersion">
-            {client.apiVersion}
+            {API_VERSION}
           </Badge>{" "}
           of the Grouparoo API.
         </strong>

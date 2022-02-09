@@ -1905,6 +1905,7 @@ importers:
       '@types/react-dom': '*'
       axios: 0.24.0
       bootstrap: 4.6.0
+      fast-json-stable-stringify: ^2.1.0
       isomorphic-fetch: 3.0.0
       jest: 27.4.5
       jest-mock-axios: 4.5.0
@@ -1931,6 +1932,7 @@ importers:
       typescript: 4.5.5
       universal-cookie: 4.0.4
     dependencies:
+      fast-json-stable-stringify: 2.1.0
       universal-cookie: 4.0.4
     devDependencies:
       '@fortawesome/fontawesome-svg-core': 1.2.36
@@ -14793,7 +14795,7 @@ packages:
       '@types/jest': 27.4.0
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
-      jest: 27.4.5_ts-node@10.4.0
+      jest: 27.4.5
       jest-util: 27.5.1
       json5: 2.2.0
       lodash.memoize: 4.1.2
