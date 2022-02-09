@@ -3,6 +3,7 @@ import {
   objectCacheInvalidate,
   SimpleAppOptions,
 } from "@grouparoo/core";
+import { getCodeConfigLockKey } from "@grouparoo/core/dist/classes/codeConfig";
 
 const { GoogleSpreadsheet } = require("google-spreadsheet");
 
@@ -250,7 +251,7 @@ export default class Spreadsheet {
     }
   }
 
-  async addRowAtTheEnd(payload) {
+  async addRowAtTheEnd(payload: any) {
     await this.load();
     await this.ensureHeaders(payload);
     try {
@@ -263,6 +264,32 @@ export default class Spreadsheet {
       if (error?.response?.status === 429) {
         await this.sleep(WAIT_TIME);
         return this.addRowAtTheEnd(payload);
+      } else {
+        throw error;
+      }
+    }
+  }
+
+  async addRowsAtTheEnd(payload: any[], primaryKey) {
+    await this.load();
+    let objectWithAllKeys = {};
+    for (const entry of payload) {
+      objectWithAllKeys = Object.assign(objectWithAllKeys, entry);
+    }
+    await this.ensureHeaders(objectWithAllKeys);
+    try {
+      const addedRows = await this.sheet.addRows(payload);
+      if (addedRows) {
+        return addedRows.map((row) => ({
+          primaryKey: row[primaryKey],
+          destinationId: row._rowNumber,
+        }));
+      }
+      return null;
+    } catch (error) {
+      if (error?.response?.status === 429) {
+        await this.sleep(WAIT_TIME);
+        return this.addRowsAtTheEnd(payload, primaryKey);
       } else {
         throw error;
       }
@@ -308,10 +335,8 @@ export default class Spreadsheet {
   async _cleanSheet() {
     try {
       const rows = await this.getAllRows();
-      for (const row of rows) {
-        if (row?._rowObject) {
-          await row._rowObject.delete();
-        }
+      for (let i = rows.length - 1; i >= 0; i--) {
+        await rows[i]?._rowObject.delete();
       }
     } catch (error) {
       if (error?.response?.status === 429) {
