@@ -17,6 +17,7 @@ apps/*/config/*
 apps/*/*.log
 apps/*/.local
 .pnpm-debug.log
+package-lock.json
 
 # API
 log

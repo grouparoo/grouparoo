@@ -31,7 +31,6 @@ function allPackageFiles(glob) {
   const packageFiles = [].concat(
     appPackageFiles(glob),
     allUiFiles(glob),
-    glob.sync(path.join(rootPath, "internal", "*", "package.json")),
     glob.sync(path.join(rootPath, "tools", "*", "package.json"))
   );
   return packageFiles;

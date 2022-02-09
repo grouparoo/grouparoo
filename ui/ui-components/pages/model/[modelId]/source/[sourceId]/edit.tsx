@@ -627,40 +627,44 @@ const Page: NextPage<Props> = ({
             </fieldset>
           </Form>
         </Col>
-        <Col xl="7">
-          <ManagedCard title="Example Data">
-            <Card.Body>
-              {previewColumns.length === 0 && !loading ? <>No preview</> : null}
-              {previewColumns.length === 0 && loading ? <Loader /> : null}
-              <div style={{ overflow: "auto" }}>
-                <LoadingTable loading={previewLoading} size="sm">
-                  <thead>
-                    <tr>
-                      {previewColumns.map((col) => (
-                        <th key={`head-${col}`}>{col}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {preview.map((row, i) => (
-                      <tr key={`row-${i}`}>
-                        {previewColumns.map((col, j) => (
-                          <td key={`table-${i}-${j}`}>
-                            {row[col] && typeof row[col] === "object" ? (
-                              <code>{JSON.stringify(row[col])}</code>
-                            ) : (
-                              row[col]?.toString()
-                            )}
-                          </td>
+        {source.previewAvailable && (
+          <Col xl="7">
+            <ManagedCard title="Example Data">
+              <Card.Body>
+                {previewColumns.length === 0 && !loading ? (
+                  <>No preview</>
+                ) : null}
+                {previewColumns.length === 0 && loading ? <Loader /> : null}
+                <div style={{ overflow: "auto" }}>
+                  <LoadingTable loading={previewLoading} size="sm">
+                    <thead>
+                      <tr>
+                        {previewColumns.map((col) => (
+                          <th key={`head-${col}`}>{col}</th>
                         ))}
                       </tr>
-                    ))}
-                  </tbody>
-                </LoadingTable>
-              </div>
-            </Card.Body>
-          </ManagedCard>
-        </Col>
+                    </thead>
+                    <tbody>
+                      {preview.map((row, i) => (
+                        <tr key={`row-${i}`}>
+                          {previewColumns.map((col, j) => (
+                            <td key={`table-${i}-${j}`}>
+                              {row[col] && typeof row[col] === "object" ? (
+                                <code>{JSON.stringify(row[col])}</code>
+                              ) : (
+                                row[col]?.toString()
+                              )}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </LoadingTable>
+                </div>
+              </Card.Body>
+            </ManagedCard>
+          </Col>
+        )}
       </Row>
     </>
   );
@@ -700,14 +704,18 @@ export const getServerSideProps: GetServerSideProps<Props> =
         modelId: source?.modelId,
       });
 
-    const { preview = [] } = await client.request<Actions.SourcePreview>(
-      "get",
-      `/source/${sourceId}/preview`,
-      {
-        options: Object.keys(source.options).length > 0 ? source.options : null,
-      },
-      { useCache: false }
-    );
+    let preview: Actions.SourcePreview["preview"] = null;
+    if (source.previewAvailable) {
+      ({ preview } = await client.request<Actions.SourcePreview>(
+        "get",
+        `/source/${sourceId}/preview`,
+        {
+          options:
+            Object.keys(source.options).length > 0 ? source.options : null,
+        },
+        { useCache: false }
+      ));
+    }
 
     return {
       props: {

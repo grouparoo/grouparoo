@@ -28,7 +28,8 @@ export interface GrouparooNextAppProps {
 export default function GrouparooNextApp(
   props: AppProps & GrouparooNextAppProps & { err: any }
 ) {
-  const { Component, pageProps, err, hydrationError, model } = props;
+  const { Component, pageProps, err, model } = props;
+  const hydrationError = pageProps.hydrationError ?? props.hydrationError;
 
   const combinedProps = {
     ...pageProps,

@@ -4,7 +4,7 @@ set -e
 # set -x
 
 cd "$(dirname "$0")"
-cd ../..
+cd ..
 
 BAD_WORDS=()
 # Typos
@@ -19,6 +19,7 @@ echo "🦘 Checking Grouparoo for bad words"
 for word in "${BAD_WORDS[@]}"; do
   printf "checking for instances of \`$word\`... "
   MATCHES=`grep -inR \
+    --exclude=wordCheck \
     --exclude=*-lock.* \
     --exclude-dir=node_modules \
     --exclude-dir=log \
@@ -30,12 +31,9 @@ for word in "${BAD_WORDS[@]}"; do
     "${word}" .` || true
   if [ -z "$MATCHES" ]; then
     printf " ✅\n"
+  
   else
-    printf "🚫\n"
-    echo "> instances of $word found:"
-    echo "---------------"
-    echo "$MATCHES"
-    echo "---------------"
+    echo "$word: $MATCHES" 1>&2
     exit 1
   fi
 done
