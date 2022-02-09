@@ -97,7 +97,7 @@ export const exportRecord: ExportRecordPluginMethod = async ({
       );
       const formattedDataFields = {};
       for (const key of Object.keys(payload)) {
-        if (companyMappingKey && key === companyMappingKey) {
+        if (key.startsWith("Company.")) {
           continue;
         }
         formattedDataFields[key] = formatVar(payload[key]);

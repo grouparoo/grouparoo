@@ -25,7 +25,8 @@ export const contactsDestinationConnection: PluginConnection = {
       key: "companyKey",
       displayName: "Company Key",
       required: false,
-      description: "Which field in the Company uniquely represents it?",
+      description:
+        "Links a Contact to a company by something other than the Hubspot default (email domain).",
     },
   ],
   methods: {

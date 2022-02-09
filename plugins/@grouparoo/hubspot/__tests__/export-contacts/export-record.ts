@@ -10,8 +10,8 @@ const appId = "app_ds789a789gdf789jh.m678rt90-90-3k";
 let apiClient: HubspotClient;
 let user: any;
 const companyKey = "domain";
-const domain = "tempsoft.com";
-const newDomain = "transcof.com";
+const company1 = { name: "bossa", domain: "bossa.grouparoo.com" };
+const company2 = { name: "samba", domain: "samba.grouparoo.com" };
 const phoneNumber = "+5583999999999";
 const newPhoneNumber = "+5583999999998";
 const otherPhoneNumber = "+5583999999997";
@@ -58,7 +58,7 @@ async function getListId(listName): Promise<any> {
   return null;
 }
 
-async function deleteUsers(suppressErrors) {
+async function deleteUsers(suppressErrors: boolean) {
   try {
     for (const emailToDelete of [
       email,
@@ -79,7 +79,33 @@ async function deleteUsers(suppressErrors) {
   }
 }
 
-async function deleteLists(suppressErrors) {
+async function createCompanies() {
+  const payload = [{ properties: company1 }, { properties: company2 }];
+  await apiClient.objects.create("COMPANY", payload);
+}
+
+async function deleteCompanies(suppressErrors: boolean) {
+  try {
+    const payload = [company1.domain, company2.domain];
+    const companies = await apiClient.objects.searchObjects(
+      "COMPANY",
+      "domain",
+      payload
+    );
+    if (companies.length > 0) {
+      await apiClient.objects.delete(
+        "COMPANY",
+        companies.map((company) => company.id.toString())
+      );
+    }
+  } catch (err) {
+    if (!suppressErrors) {
+      throw err;
+    }
+  }
+}
+
+async function deleteLists(suppressErrors: boolean) {
   try {
     for (const groupToDelete of [listOne, listTwo, listThree, listFour]) {
       const listId = await getListId(groupToDelete);
@@ -94,9 +120,10 @@ async function deleteLists(suppressErrors) {
   }
 }
 
-async function cleanUp(suppressErrors) {
+async function cleanUp(suppressErrors: boolean) {
   await deleteUsers(suppressErrors);
   await deleteLists(suppressErrors);
+  await deleteCompanies(suppressErrors);
 }
 
 async function runExport({
@@ -133,6 +160,7 @@ describe("hubspot/exportRecord", () => {
   beforeAll(async () => {
     apiClient = await connect(appOptions);
     await cleanUp(false);
+    await createCompanies();
   }, helper.setupTime);
 
   afterAll(async () => {
@@ -213,7 +241,7 @@ describe("hubspot/exportRecord", () => {
         firstname: firstName,
         lastname: lastName,
         mobilephone: phoneNumber,
-        "Company.domain": domain,
+        "Company.domain": company1.domain,
       },
       oldGroups: [],
       newGroups: [],
@@ -226,9 +254,11 @@ describe("hubspot/exportRecord", () => {
     expect(user["properties"]["mobilephone"]["value"]).toBe(phoneNumber);
 
     const company = (
-      await apiClient.objects.searchObjects("COMPANY", companyKey, [domain])
+      await apiClient.objects.searchObjects("COMPANY", companyKey, [
+        company1.domain,
+      ])
     )[0];
-    expect(company["properties"]["domain"]).toBe(domain);
+    expect(company["properties"]["domain"]).toBe(company1.domain);
     association = await apiClient.objects.getAssociation(user.vid);
     expect(association.map((id) => id.toString())).toEqual(
       expect.arrayContaining([company.id])
@@ -238,9 +268,11 @@ describe("hubspot/exportRecord", () => {
   test("can change associated company", async () => {
     user = await apiClient.getContactByEmail(email);
     let company = (
-      await apiClient.objects.searchObjects("COMPANY", companyKey, [domain])
+      await apiClient.objects.searchObjects("COMPANY", companyKey, [
+        company1.domain,
+      ])
     )[0];
-    expect(company["properties"]["domain"]).toBe(domain);
+    expect(company["properties"]["domain"]).toBe(company1.domain);
     let association = await apiClient.objects.getAssociation(user.vid);
     expect(association.length).toBe(1);
     expect(association.map((id) => id.toString())).toEqual(
@@ -254,14 +286,14 @@ describe("hubspot/exportRecord", () => {
         firstname: firstName,
         lastname: lastName,
         mobilephone: phoneNumber,
-        "Company.domain": domain,
+        "Company.domain": company1.domain,
       },
       newRecordProperties: {
         email,
         firstname: firstName,
         lastname: lastName,
         mobilephone: phoneNumber,
-        "Company.domain": newDomain,
+        "Company.domain": company2.domain,
       },
       oldGroups: [],
       newGroups: [],
@@ -274,9 +306,11 @@ describe("hubspot/exportRecord", () => {
     expect(user["properties"]["mobilephone"]["value"]).toBe(phoneNumber);
 
     company = (
-      await apiClient.objects.searchObjects("COMPANY", companyKey, [newDomain])
+      await apiClient.objects.searchObjects("COMPANY", companyKey, [
+        company2.domain,
+      ])
     )[0];
-    expect(company["properties"]["domain"]).toBe(newDomain);
+    expect(company["properties"]["domain"]).toBe(company2.domain);
     association = await apiClient.objects.getAssociation(user.vid);
     expect(association.length).toBe(1);
     expect(association.map((id) => id.toString())).toEqual(

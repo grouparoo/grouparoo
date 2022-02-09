@@ -13,8 +13,15 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod =
     const required = getRequiredFields();
 
     if (destinationOptions?.companyKey) {
-      const type =
-        destinationOptions.companyKey === "phone" ? "phoneNumber" : "string";
+      let type = "string";
+      switch (destinationOptions.companyKey) {
+        case "hs_object_id":
+          type = "integer";
+          break;
+        case "phone":
+          type = "phoneNumber";
+          break;
+      }
       required.push({ key: `Company.${destinationOptions.companyKey}`, type });
     }
     const known = await getUserFields(client, appOptions);
