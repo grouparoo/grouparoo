@@ -4,7 +4,12 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState, useEffect, useMemo, useCallback, ChangeEvent } from "react";
 import { Row, Col, Form, Badge, Alert, Card } from "react-bootstrap";
-import { SubmitHandler, useForm } from "react-hook-form";
+import {
+  Control,
+  SubmitHandler,
+  useForm,
+  UseFormRegister,
+} from "react-hook-form";
 import SourceTabs from "../../../../../components/tabs/Source";
 import PageHeader from "../../../../../components/PageHeader";
 import StateBadge from "../../../../../components/badges/StateBadge";
@@ -28,7 +33,11 @@ import PrimaryKeyBadge from "../../../../../components/badges/PrimaryKeyBadge";
 import { useApi } from "../../../../../contexts/api";
 import { generateClient } from "../../../../../client/client";
 import { withServerErrorHandler } from "../../../../../utils/withServerErrorHandler";
-import { SourcePreviewMethodResponseRow } from "@grouparoo/core/src/classes/plugin";
+import {
+  ConnectionOptionsOption,
+  SourceOptionsMethodResponse,
+  SourcePreviewMethodResponseRow,
+} from "@grouparoo/core/src/classes/plugin";
 import { FormTypeahead } from "../../../../../components/Typeahead";
 export interface FormData {
   mapping?: {
@@ -48,6 +57,17 @@ interface Props {
   preview: SourcePreviewMethodResponseRow[];
 }
 
+interface TypeaheadProps {
+  control: Control<FormData, object>;
+  opt: ConnectionOptionsOption;
+  connectionOptions: SourceOptionsMethodResponse;
+  loading: boolean;
+  loadingOptions: boolean;
+  source: Pick<Models.SourceType, "name" | "options">;
+  updateOption: (optKey: string, optValue: string) => void;
+  register: UseFormRegister<FormData>;
+}
+
 const TypeaheadDeterminer = ({
   control,
   opt,
@@ -57,11 +77,11 @@ const TypeaheadDeterminer = ({
   source,
   updateOption,
   register,
-}) => {
+}: TypeaheadProps) => {
   if (connectionOptions[opt.key]?.type === "typeahead") {
     return (
       <>
-        <FormTypeahead<"source.options">
+        <FormTypeahead<FormData>
           control={control}
           name={`source.options.${opt.key}`}
           option={connectionOptions[opt.key]}
