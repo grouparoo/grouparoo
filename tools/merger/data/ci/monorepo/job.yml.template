@@ -14,6 +14,6 @@
           name: update apt
           command: sudo apt update
       - run:
-          name: test-root
-          command: cd {{{relative_path}}} && ./node_modules/.bin/jest ./__tests__/packages --ci --maxWorkers 2 --passWithNoTests
+          name: test-monorepo
+          command: cd {{{relative_path}}} && ./node_modules/.bin/jest ./__tests__/packages --ci --runInBand
 {{{custom_test}}}

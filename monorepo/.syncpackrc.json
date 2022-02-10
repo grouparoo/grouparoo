@@ -9,11 +9,12 @@
   "semverGroups": [],
   "semverRange": "",
   "source": [
+    "../package.json",
     "package.json",
-    "core/package.json",
-    "cli/package.json",
-    "apps/*/package.json",
-    "plugins/*/*/package.json",
-    "ui/*/package.json"
+    "../core/package.json",
+    "../cli/package.json",
+    "../apps/*/package.json",
+    "../plugins/*/*/package.json",
+    "../ui/*/package.json"
   ]
 }

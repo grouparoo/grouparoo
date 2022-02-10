@@ -4,31 +4,13 @@ importers:
 
   .:
     specifiers:
-      '@types/jest': '*'
-      '@types/jest-json-schema': 6.1.0
-      glob: 7.2.0
-      jest: 27.5.1
-      jest-json-schema: 6.1.0
       lerna: 4.0.0
       lerna-changelog: 2.2.0
-      license-checker: github:grouparoo/license-checker
       npm-check-updates: 12.2.1
-      prettier: 2.5.1
-      syncpack: 6.2.0
-      ts-jest: 27.1.3
     devDependencies:
-      '@types/jest': 27.4.0
-      '@types/jest-json-schema': 6.1.0
-      glob: 7.2.0
-      jest: 27.5.1
-      jest-json-schema: 6.1.0
       lerna: 4.0.0
       lerna-changelog: 2.2.0
-      license-checker: github.com/grouparoo/license-checker/1054593024d6f7e50ad47feb3b61d52c9506c274
       npm-check-updates: 12.2.1
-      prettier: 2.5.1
-      syncpack: 6.2.0
-      ts-jest: 27.1.3_@types+jest@27.4.0+jest@27.5.1
 
   apps/staging-community:
     specifiers:
@@ -382,6 +364,28 @@ importers:
       type-fest: 2.11.1
       typedoc: 0.22.11_typescript@4.5.5
       typescript: 4.5.5
+
+  monorepo:
+    specifiers:
+      '@types/jest': '*'
+      '@types/jest-json-schema': 6.1.0
+      glob: 7.2.0
+      jest: 27.5.1
+      jest-json-schema: 6.1.0
+      license-checker: github:grouparoo/license-checker
+      prettier: 2.5.1
+      syncpack: 6.2.0
+      ts-jest: 27.1.3
+    devDependencies:
+      '@types/jest': 27.4.0
+      '@types/jest-json-schema': 6.1.0
+      glob: 7.2.0
+      jest: 27.5.1
+      jest-json-schema: 6.1.0
+      license-checker: github.com/grouparoo/license-checker/1054593024d6f7e50ad47feb3b61d52c9506c274
+      prettier: 2.5.1
+      syncpack: 6.2.0
+      ts-jest: 27.1.3_@types+jest@27.4.0+jest@27.5.1
 
   plugins/@grouparoo/airtable:
     specifiers:
@@ -5431,7 +5435,7 @@ packages:
   /axios/0.24.0:
     resolution: {integrity: sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==}
     dependencies:
-      follow-redirects: 1.14.8
+      follow-redirects: 1.14.8_debug@4.3.3
     transitivePeerDependencies:
       - debug
 
@@ -7664,6 +7668,7 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+    dev: false
 
   /follow-redirects/1.14.8_debug@3.2.7:
     resolution: {integrity: sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==}
@@ -7687,7 +7692,6 @@ packages:
         optional: true
     dependencies:
       debug: 4.3.3
-    dev: false
 
   /follow-redirects/1.5.10:
     resolution: {integrity: sha512-0V5l4Cizzvqt5D44aTXbFZz+FtyXV1vrDN6qrelxtfYQKW0KO0W2T/hkE8xvGa/540LkZlkaUjO4ailYTFtHVQ==}
