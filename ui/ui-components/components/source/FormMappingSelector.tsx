@@ -101,8 +101,6 @@ const FormMappingSelector: React.FC<Props> = ({
 
   const hasAvailableProperties = !!availableProperties.length;
 
-  const [columnIsSelected, setColumnIsSelected] = useState(false);
-
   return (
     <Row>
       <Col md={!mappingDisabled && hasAvailableProperties ? 6 : 12} xl={12}>
