@@ -105,7 +105,9 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
     props.group.rules.map((rule) => {
       _autocompleteResults[rule.key] = [rule.match];
     });
+
     setAutoCompleteResults(_autocompleteResults);
+
     didLoad.current = true;
   }, [autocompleteResults, getCounts, props.group.rules]);
 
@@ -227,25 +229,15 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
 
             <tbody>
               {localRules.map((rule, idx) => {
-                let type: string;
-                propertiesAndTopLevelGroupRules.forEach((r) => {
-                  if (rule.key === r.key) {
-                    type = r.type;
-                  }
-                });
+                const type: string = propertiesAndTopLevelGroupRules.find(
+                  (r) => rule.key === r.key
+                )?.type;
 
-                if (
+                const opValue =
                   rule.operation.op &&
-                  ops[type]?.indexOf(rule.operation.op) < 0
-                ) {
-                  rule = {
-                    ...rule,
-                    operation: {
-                      ...rule.operation,
-                      op: ops[type][0],
-                    },
-                  };
-                }
+                  !ops[type]?.find(({ op }) => op === rule.operation.op)
+                    ? ops[type]?.[0].op
+                    : rule.operation.op;
 
                 let rowChanged = false;
                 if (!rulesAreEqual(group.rules[idx], localRules[idx])) {
@@ -312,7 +304,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
                       <Form.Group controlId={`${rule.key}-op-${idx}`}>
                         <Form.Control
                           as="select"
-                          value={rule.operation.op}
+                          value={opValue}
                           disabled={loading}
                           onChange={(e) => {
                             const op = e.target
