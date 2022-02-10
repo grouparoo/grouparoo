@@ -316,13 +316,99 @@ describe("models/schedule", () => {
         await expect(
           Schedule.create({
             name: "test schedule",
-            type: "test-plugin-import",
+            type: "test-plugin-source-no-schedule",
             sourceId: source.id,
           })
         ).rejects.toThrow(/cannot have a schedule/);
 
         await source.destroy();
         await app.destroy();
+      });
+    });
+
+    describe("with plugin that does not support incremental schedules", () => {
+      let app: App, source: Source;
+
+      beforeAll(async () => {
+        plugin.registerPlugin({
+          name: "test-plugin-no-incremental-schedule",
+          apps: [
+            {
+              name: "test-plugin-app-no-incremental-schedule",
+              displayName: "test-plugin-app-no-incremental-schedule",
+              options: [],
+              methods: {
+                test: async () => {
+                  return { success: true };
+                },
+              },
+            },
+          ],
+          connections: [
+            {
+              name: "test-plugin-source-no-incremental-schedule",
+              displayName: "test-plugin-source-no-incremental-schedule",
+              description: "a test connection",
+              apps: ["test-plugin-app-no-incremental-schedule"],
+              supportIncrementalSchedule: false,
+              direction: "import",
+              options: [],
+              methods: {
+                propertyOptions: async () => {
+                  return null;
+                },
+                recordProperty: async () => {
+                  return [];
+                },
+                importRecords: async () => ({
+                  highWaterMark: {},
+                  importsCount: 0,
+                  sourceOffset: 0,
+                }),
+              },
+            },
+          ],
+        });
+
+        app = await App.create({
+          type: "test-plugin-app-no-incremental-schedule",
+          name: "test app",
+        });
+        await app.update({ state: "ready" });
+        source = await Source.create({
+          type: "test-plugin-source-no-incremental-schedule",
+          appId: app.id,
+          modelId: model.id,
+        });
+        await source.update({ state: "ready" });
+      });
+
+      afterAll(async () => {
+        await source.destroy();
+        await app.destroy();
+      });
+
+      test("an incremental schedule cannot be created if the source does not support incremental schedules", async () => {
+        await expect(
+          Schedule.create({
+            name: "test schedule",
+            type: source.type,
+            sourceId: source.id,
+            incremental: true,
+          })
+        ).rejects.toThrow(/does not support incremental schedules/);
+      });
+
+      test("`incremental` defaults to false for schedules on plugins that don't support it", async () => {
+        const schedule = await Schedule.create({
+          name: "test schedule",
+          type: source.type,
+          sourceId: source.id,
+        });
+
+        expect(schedule.incremental).toBe(false);
+
+        await schedule.destroy();
       });
     });
 
@@ -712,6 +798,18 @@ describe("models/schedule", () => {
       });
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
+    });
+
+    test("`incremental` defaults to true for schedules on plugins that support it", async () => {
+      const schedule = await Schedule.create({
+        name: "test schedule",
+        type: source.type,
+        sourceId: source.id,
+      });
+
+      expect(schedule.incremental).toBe(true);
+
+      await schedule.destroy();
     });
 
     test.each(["ready", "deleted"])(
