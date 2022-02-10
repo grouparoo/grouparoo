@@ -320,6 +320,175 @@ exports[`SampleRecordCard should render with 1 record in config mode 1`] = `
 </div>
 `;
 
+exports[`SampleRecordCard should render with 1 record that has a group in config mode 1`] = `
+<div>
+  <div
+    class="card"
+  >
+    <div
+      class="card-header"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <h5
+            class="my-1"
+            id="sample-record"
+          >
+            Sample Record
+             
+          </h5>
+        </div>
+        <div
+          class="text-right col-lg-6 col-md-7 col-sm-12"
+        >
+          <a
+            href="/model/test-model/record/test-record/edit"
+          >
+            <button
+              class="btn btn-outline-primary btn-sm"
+              type="button"
+            >
+              View Record
+            </button>
+          </a>
+            
+          <a
+            href="/model/test-model/records"
+          >
+            <button
+              class="btn btn-outline-primary btn-sm"
+              type="button"
+            >
+              View All 
+              1
+               Records
+            </button>
+          </a>
+          
+        </div>
+      </div>
+    </div>
+    <div
+      class="card-body"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+          style="min-width: 75%;"
+        >
+          <table
+            class="table table-bordered"
+          >
+            <colgroup>
+              <col
+                span="1"
+                style="width: 35%;"
+              />
+              <col
+                span="1"
+                style="width: 65%;"
+              />
+            </colgroup>
+            <tbody>
+              <tr>
+                <th
+                  scope="row"
+                >
+                  <span>
+                    <a>
+                      asdf
+                    </a>
+                  </span>
+                  <span
+                    class="badge badge-warning"
+                    style="margin-left: 3px; margin-right: 3px; margin-bottom: 0px;"
+                  >
+                    pending
+                  </span>
+                </th>
+                <td>
+                  2
+                  <br />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div
+          class="text-center col-md col order-md-last order-first"
+        >
+          <h6>
+            Groups
+          </h6>
+          <p>
+            <span>
+              test-group
+            </span>
+            <br />
+          </p>
+          <h6>
+            Destinations
+          </h6>
+          <p>
+            None
+          </p>
+        </div>
+      </div>
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <button
+            class="btn btn-outline-success btn-sm"
+            style="display: inline-flex; align-items: center; justify-content: center;"
+            type="button"
+          >
+            <span
+              style="opacity: 1;"
+            >
+              Import Record Data
+            </span>
+          </button>
+            
+          <button
+            class="btn btn-outline-primary btn-sm"
+            style="display: inline-flex; align-items: center; justify-content: center;"
+            type="button"
+          >
+            <span
+              style="opacity: 1;"
+            >
+              Switch to random Record
+            </span>
+          </button>
+            
+          <button
+            class="btn btn-outline-primary btn-sm"
+            style="display: inline-flex; align-items: center; justify-content: center;"
+            type="button"
+          >
+            <span
+              style="opacity: 1;"
+            >
+              Add Sample Record
+            </span>
+          </button>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`SampleRecordCard should render with no records 1`] = `
 <div>
   <div

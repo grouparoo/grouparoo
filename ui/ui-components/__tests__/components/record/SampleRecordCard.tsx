@@ -183,4 +183,70 @@ describe("SampleRecordCard", () => {
     });
     expect(card.container).toMatchSnapshot();
   });
+
+  it("should render with 1 record that has a group in config mode", async () => {
+    require("../../../components/record/SampleRecordCard").isConfigUI = true;
+    const modelId = "test-model";
+    const record: RecordType = {
+      id: "test-record",
+      modelId,
+      properties: {
+        asdf: {
+          id: "fake-property",
+          sourceId: "some-source",
+          configId: "fake-config-id",
+          state: "pending",
+          values: [2],
+          type: "integer",
+          unique: false,
+          isPrimaryKey: true,
+          isArray: false,
+          confirmedAt: new Date(1000),
+          valueChangedAt: new Date(1000),
+          updatedAt: new Date(1000),
+          stateChangedAt: new Date(1000),
+          startedAt: new Date(1000),
+          invalidValue: null,
+          invalidReason: null,
+          createdAt: new Date(1000),
+        },
+      },
+    };
+    const group: Models.GroupType = {
+      id: "test-group-id",
+      modelId,
+      name: "test-group",
+    };
+    const fetchRecord: (recordId?: string) => Promise<{
+      record?: RecordType;
+      groups?: Models.GroupType[];
+      destinations?: Models.DestinationType[];
+    }> = async () => {
+      return {
+        record,
+        groups: [group],
+        destinations: [],
+      };
+    };
+    cardProps.fetchRecord = fetchRecord;
+
+    let card: ReturnType<typeof render>;
+    await act(async () => {
+      card = render(
+        <ApiContext.Provider
+          value={{
+            client: {
+              request: async () => ({
+                records: [record],
+                total: 1,
+              }),
+            } as any,
+          }}
+        >
+          <SampleRecordCard {...cardProps} />
+        </ApiContext.Provider>
+      );
+    });
+    expect(card.container).toMatchSnapshot();
+  });
 });
