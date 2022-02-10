@@ -803,7 +803,7 @@ jobs:
           command: sudo apt update
       - run:
           name: test-monorepo
-          command: cd . && ./node_modules/.bin/jest ./__tests__/packages --ci --runInBand
+          command: cd monorepo && ./node_modules/.bin/jest ./__tests__/packages --ci --runInBand
   test-core-local-models:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"

@@ -97,7 +97,7 @@ class Generator {
     this.jobList.push({
       type: "monorepo",
       job_name: `test-monorepo`,
-      relative_path: `.`,
+      relative_path: `monorepo`,
       name: "monorepo",
     });
 
