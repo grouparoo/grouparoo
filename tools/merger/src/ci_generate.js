@@ -74,8 +74,9 @@ class Generator {
       command,
     });
   }
+
   addCommands() {
-    this.addCommand("linter", "pnpm run lint");
+    this.addCommand("linter", "cd monorepo && pnpm run lint");
   }
 
   addCore() {

@@ -217,7 +217,7 @@ jobs:
           command: sudo npm install -g pnpm
       - run:
           name: linter
-          command: pnpm run lint
+          command: cd monorepo && pnpm run lint
   test-core-actions:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"

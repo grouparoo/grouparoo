@@ -64,7 +64,8 @@ describe("package.json validation", () => {
       const schema =
         pkgFile.includes("apps") ||
         pkgFile.includes("tools") ||
-        pkgJson.name === "@grouparoo/grouparoo"
+        pkgJson.name === "@grouparoo/grouparoo" ||
+        pkgJson.name === "@grouparoo/monorepo"
           ? genericSchema
           : pkgJson.name === "@grouparoo/ui-enterprise"
           ? restrictedSchema
@@ -100,7 +101,12 @@ describe("package.json validation", () => {
         { cwd: path.resolve(__dirname + "/../") },
 
         (err, stdout, stderr) => {
-          done(stderr);
+          // console.log("[license-checker]: " + stdout); // (too verbose)
+          if (err || stderr) {
+            console.error(err || stderr);
+            throw new Error("license-checker error");
+          }
+          done();
         }
       );
     });
@@ -110,8 +116,13 @@ describe("package.json validation", () => {
     childProcess.exec(
       `./node_modules/.bin/syncpack list-mismatches`,
       { cwd: path.resolve(__dirname + "/../") },
-      (err, stdout) => {
-        done(stdout);
+      (err, stdout, stderr) => {
+        console.log("[syncpack]: " + stdout);
+        if (err || stderr) {
+          console.error(err || stderr);
+          throw new Error("syncpack error");
+        }
+        done();
       }
     );
   });
