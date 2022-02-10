@@ -5,6 +5,7 @@ import SampleRecordCard, {
 import { Actions, Models } from "../../utils/apiData";
 import { useDebouncedValue } from "../../hooks/useDebouncedValue";
 import { useApi } from "../../contexts/api";
+import { useGrouparooModel } from "../../contexts/grouparooModel";
 
 interface Props {
   destination: Models.DestinationType;
@@ -30,7 +31,9 @@ const DestinationSampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
   collection,
   ...props
 }) => {
-  const { modelId } = props;
+  const {
+    model: { id: modelId },
+  } = useGrouparooModel();
   const { client } = useApi();
   const debouncedDestination = useDebouncedValue(destination, 1000);
   const [warning, setWarning] = useState<string>();

@@ -63,7 +63,6 @@ export default function Page(
         Import All Records
       </LoadingButton>
       <AddSampleRecordModal
-        modelId={model.id}
         properties={props.properties}
         show={addingRecord}
         onRecordCreated={() => {
