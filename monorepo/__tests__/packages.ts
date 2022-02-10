@@ -2,7 +2,7 @@ import { matchersWithOptions } from "jest-json-schema";
 import glob from "glob";
 import fs from "fs";
 import path from "path";
-import { allPackageFiles } from "../tools/shared/packages";
+import { allPackageFiles } from "../../tools/shared/packages";
 import childProcess from "child_process";
 
 describe("monorepo content validation", () => {

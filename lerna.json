@@ -1,5 +1,6 @@
 {
   "packages": [
+    "monorepo",
     "cli",
     "apps/*",
     "core",
@@ -12,9 +13,7 @@
       "ignore": "@grouparoo/app-local*"
     },
     "version": {
-      "allowBranch": [
-        "main"
-      ],
+      "allowBranch": ["main"],
       "message": "chore(release): publish %s [ci skip]"
     }
   }

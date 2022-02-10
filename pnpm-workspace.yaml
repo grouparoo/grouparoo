@@ -1,4 +1,5 @@
 packages:
+  - "monorepo"
   - "core"
   - "cli"
   - "ui/**"

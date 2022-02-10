@@ -94,10 +94,10 @@ class Generator {
     });
 
     this.jobList.push({
-      type: "root",
-      job_name: `test-root`,
+      type: "monorepo",
+      job_name: `test-monorepo`,
       relative_path: `.`,
-      name: "root",
+      name: "monorepo",
     });
 
     this.jobList.push({
