@@ -320,7 +320,7 @@ exports[`SampleRecordCard should render with 1 record in config mode 1`] = `
 </div>
 `;
 
-exports[`SampleRecordCard should render with 1 record that has a group in config mode 1`] = `
+exports[`SampleRecordCard should render with 1 record that has a group and destination, in config mode 1`] = `
 <div>
   <div
     class="card"
@@ -436,7 +436,8 @@ exports[`SampleRecordCard should render with 1 record that has a group in config
             Destinations
           </h6>
           <p>
-            None
+            test-destination
+            <br />
           </p>
         </div>
       </div>

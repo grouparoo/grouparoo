@@ -4,14 +4,15 @@ import SampleRecordCard, {
   SampleRecordCardProps,
 } from "../../../components/record/SampleRecordCard";
 import { ApiContext } from "../../../contexts/api";
+import { GrouparooModelContext } from "../../../contexts/grouparooModel";
 import { Models } from "../../../utils/apiData";
 
 describe("SampleRecordCard", () => {
   let cardProps: SampleRecordCardProps;
+  const modelId = "test-model";
 
   beforeEach(() => {
     cardProps = {
-      modelId: "test-model",
       fetchRecord: async () => ({}),
       properties: [],
     };
@@ -24,18 +25,20 @@ describe("SampleRecordCard", () => {
     let card: ReturnType<typeof render>;
     await act(async () => {
       card = render(
-        <ApiContext.Provider
-          value={{
-            client: {
-              request: async () => ({
-                records: [],
-                total: 0,
-              }),
-            } as any,
-          }}
-        >
-          <SampleRecordCard {...cardProps} />
-        </ApiContext.Provider>
+        <GrouparooModelContext.Provider value={{ model: { id: modelId } }}>
+          <ApiContext.Provider
+            value={{
+              client: {
+                request: async () => ({
+                  records: [],
+                  total: 0,
+                }),
+              } as any,
+            }}
+          >
+            <SampleRecordCard {...cardProps} />
+          </ApiContext.Provider>
+        </GrouparooModelContext.Provider>
       );
     });
     expect(card.container).toMatchSnapshot();
@@ -48,18 +51,20 @@ describe("SampleRecordCard", () => {
     let card: ReturnType<typeof render>;
     await act(async () => {
       card = render(
-        <ApiContext.Provider
-          value={{
-            client: {
-              request: async () => ({
-                records: [],
-                total: 0,
-              }),
-            } as any,
-          }}
-        >
-          <SampleRecordCard {...cardProps} />
-        </ApiContext.Provider>
+        <GrouparooModelContext.Provider value={{ model: { id: modelId } }}>
+          <ApiContext.Provider
+            value={{
+              client: {
+                request: async () => ({
+                  records: [],
+                  total: 0,
+                }),
+              } as any,
+            }}
+          >
+            <SampleRecordCard {...cardProps} />
+          </ApiContext.Provider>
+        </GrouparooModelContext.Provider>
       );
     });
     expect(card.container).toMatchSnapshot();
@@ -68,7 +73,7 @@ describe("SampleRecordCard", () => {
   it("should render with 1 record", async () => {
     const record: RecordType = {
       id: "test-record",
-      modelId: "test-model",
+      modelId,
       properties: {
         asdf: {
           id: "fake-property",
@@ -107,18 +112,20 @@ describe("SampleRecordCard", () => {
     let card: ReturnType<typeof render>;
     await act(async () => {
       card = render(
-        <ApiContext.Provider
-          value={{
-            client: {
-              request: async () => ({
-                records: [record],
-                total: 1,
-              }),
-            } as any,
-          }}
-        >
-          <SampleRecordCard {...cardProps} />
-        </ApiContext.Provider>
+        <GrouparooModelContext.Provider value={{ model: { id: modelId } }}>
+          <ApiContext.Provider
+            value={{
+              client: {
+                request: async () => ({
+                  records: [record],
+                  total: 1,
+                }),
+              } as any,
+            }}
+          >
+            <SampleRecordCard {...cardProps} />
+          </ApiContext.Provider>
+        </GrouparooModelContext.Provider>
       );
     });
     expect(card.container).toMatchSnapshot();
@@ -128,7 +135,7 @@ describe("SampleRecordCard", () => {
     require("../../../components/record/SampleRecordCard").isConfigUI = true;
     const record: RecordType = {
       id: "test-record",
-      modelId: "test-model",
+      modelId,
       properties: {
         asdf: {
           id: "fake-property",
@@ -167,26 +174,27 @@ describe("SampleRecordCard", () => {
     let card: ReturnType<typeof render>;
     await act(async () => {
       card = render(
-        <ApiContext.Provider
-          value={{
-            client: {
-              request: async () => ({
-                records: [record],
-                total: 1,
-              }),
-            } as any,
-          }}
-        >
-          <SampleRecordCard {...cardProps} />
-        </ApiContext.Provider>
+        <GrouparooModelContext.Provider value={{ model: { id: modelId } }}>
+          <ApiContext.Provider
+            value={{
+              client: {
+                request: async () => ({
+                  records: [record],
+                  total: 1,
+                }),
+              } as any,
+            }}
+          >
+            <SampleRecordCard {...cardProps} />
+          </ApiContext.Provider>
+        </GrouparooModelContext.Provider>
       );
     });
     expect(card.container).toMatchSnapshot();
   });
 
-  it("should render with 1 record that has a group in config mode", async () => {
+  it("should render with 1 record that has a group and destination, in config mode", async () => {
     require("../../../components/record/SampleRecordCard").isConfigUI = true;
-    const modelId = "test-model";
     const record: RecordType = {
       id: "test-record",
       modelId,
@@ -217,6 +225,11 @@ describe("SampleRecordCard", () => {
       modelId,
       name: "test-group",
     };
+    const destination: Models.DestinationType = {
+      id: "test-destination-id",
+      modelId,
+      name: "test-destination",
+    };
     const fetchRecord: (recordId?: string) => Promise<{
       record?: RecordType;
       groups?: Models.GroupType[];
@@ -225,7 +238,7 @@ describe("SampleRecordCard", () => {
       return {
         record,
         groups: [group],
-        destinations: [],
+        destinations: [destination],
       };
     };
     cardProps.fetchRecord = fetchRecord;
@@ -233,18 +246,20 @@ describe("SampleRecordCard", () => {
     let card: ReturnType<typeof render>;
     await act(async () => {
       card = render(
-        <ApiContext.Provider
-          value={{
-            client: {
-              request: async () => ({
-                records: [record],
-                total: 1,
-              }),
-            } as any,
-          }}
-        >
-          <SampleRecordCard {...cardProps} />
-        </ApiContext.Provider>
+        <GrouparooModelContext.Provider value={{ model: { id: modelId } }}>
+          <ApiContext.Provider
+            value={{
+              client: {
+                request: async () => ({
+                  records: [record],
+                  total: 1,
+                }),
+              } as any,
+            }}
+          >
+            <SampleRecordCard {...cardProps} />
+          </ApiContext.Provider>
+        </GrouparooModelContext.Provider>
       );
     });
     expect(card.container).toMatchSnapshot();
