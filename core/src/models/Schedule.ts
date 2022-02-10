@@ -105,7 +105,6 @@ export class Schedule extends CommonModel<Schedule> {
   locked: string;
 
   @AllowNull(false)
-  @Default(true)
   @Column
   incremental: boolean;
 
@@ -353,6 +352,16 @@ export class Schedule extends CommonModel<Schedule> {
     if (!instance.name) {
       const source = await Source.findById(instance.sourceId);
       instance.name = `${source.name} schedule`;
+    }
+  }
+
+  @BeforeValidate
+  static async ensureSetIncremental(instance: Schedule) {
+    if (typeof instance.incremental === "undefined") {
+      const { pluginConnection } = await instance.getPlugin();
+      instance.incremental = Boolean(
+        pluginConnection.supportIncrementalSchedule
+      );
     }
   }
 
