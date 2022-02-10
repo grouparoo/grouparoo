@@ -1,11 +1,5 @@
 import Head from "next/head";
-import {
-  ChangeEventHandler,
-  Fragment,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { Form, Table, Badge, Button } from "react-bootstrap";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import { successHandler } from "../../../../../eventHandlers";
@@ -59,11 +53,14 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
 }) => {
   const [group, setGroup] = useState<Models.GroupType>(props.group);
   const { client } = useApi();
-  const [loading, setLoading] = useState(false);
-  const [localRules, setLocalRules] = useState(makeLocal(props.group.rules));
+  const [loading, setLoading] = useState(true);
+  const [localRules, setLocalRules] = useState(() =>
+    makeLocal(props.group.rules)
+  );
   const [countPotentialMembers, setCountPotentialMembers] = useState(0);
   const [componentCounts, setComponentCounts] = useState({});
   const [autocompleteResults, setAutoCompleteResults] = useState({});
+  const didLoad = useRef(false);
   // const [funnelCounts, setFunnelCounts] = useState([]);
 
   const getCounts = useCallback(
@@ -99,6 +96,8 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
   );
 
   useEffect(() => {
+    if (didLoad.current) return;
+
     getCounts();
 
     // seed typeahead responses
@@ -107,6 +106,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
       _autocompleteResults[rule.key] = [rule.match];
     });
     setAutoCompleteResults(_autocompleteResults);
+    didLoad.current = true;
   }, [autocompleteResults, getCounts, props.group.rules]);
 
   function addRule() {
