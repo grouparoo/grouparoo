@@ -487,7 +487,6 @@ const Page: NextPage<Props> = ({
                   placeholder="Source Name"
                   defaultValue={source.name}
                   name="source.name"
-                  onChange={(d) => d}
                   {...register("source.name", {
                     onChange: update,
                   })}
