@@ -14,6 +14,7 @@ import {
   plugin,
   Run,
 } from "../../../src";
+import { ExportOps } from "../../../src/modules/ops/export";
 
 describe("models/destination", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -222,7 +223,7 @@ describe("models/destination", () => {
       });
 
       const _export = await helper.factories.export(null, destination);
-      await _export.complete();
+      await ExportOps.completeBatch([_export]);
       expect(_export.destinationId).toBe(destination.id);
 
       await destination.destroy();

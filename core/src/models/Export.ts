@@ -231,14 +231,6 @@ export class Export extends CommonModel<Export> {
     return this.save();
   }
 
-  async complete() {
-    this.errorMessage = null;
-    this.errorLevel = null;
-    this.completedAt = new Date();
-    this.state = "complete";
-    await this.save();
-  }
-
   async apiData(includeDestination = true) {
     const destination =
       this.destination ?? (await this.$get("destination", { scope: null }));
