@@ -4,7 +4,7 @@ import { NextPageWithInferredProps } from "../utils/pageHelper";
 import { withServerErrorHandler } from "../utils/withServerErrorHandler";
 
 export const getServerSideProps = withServerErrorHandler(async (ctx) => {
-  return { props: RunsList.hydrate(ctx) };
+  return { props: await RunsList.hydrate(ctx) };
 });
 
 const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {

@@ -302,8 +302,9 @@ export default function RunsList(props) {
 
 RunsList.hydrate = async (
   ctx: GetServerSidePropsContext,
-  options: { topic?: string } = {}
+  options?: { topic?: string }
 ) => {
+  const { topic = null } = options ?? {};
   const { sourceId, groupId, propertyId, limit, offset, stateFilter, error } =
     ctx.query;
   const client = generateClient(ctx);
@@ -312,12 +313,12 @@ RunsList.hydrate = async (
     `/runs`,
     {
       creatorId: sourceId ?? groupId ?? propertyId,
-      topic: options.topic,
+      topic,
       limit,
       offset,
       state: stateFilter,
       hasError: error,
     }
   );
-  return { runs, total, topic: options.topic };
+  return { runs, total, topic };
 };
