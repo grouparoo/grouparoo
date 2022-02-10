@@ -6,15 +6,26 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import Pagination from "../components/Pagination";
 import LoadingTable from "../components/LoadingTable";
-import { errorHandler } from "../eventHandlers";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import { Models, Actions } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
 import { generateClient } from "../client/client";
-import { NextPageContext } from "next";
+import { NextPageWithInferredProps } from "../utils/pageHelper";
+import { withServerErrorHandler } from "../utils/withServerErrorHandler";
 
-export default function Page(props) {
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const client = generateClient(ctx);
+  const { limit, offset } = ctx.query;
+  const { notifications, total } =
+    await client.request<Actions.NotificationsList>("get", `/notifications`, {
+      limit,
+      offset,
+    });
+  return { props: { notifications, total } };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   const router = useRouter();
   const { client } = useApi();
   const [notifications, setNotifications] = useState<Models.NotificationType[]>(
@@ -110,18 +121,6 @@ export default function Page(props) {
       />
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const client = generateClient(ctx);
-  const { limit, offset } = ctx.query;
-  const { notifications, total } = await client.request(
-    "get",
-    `/notifications`,
-    {
-      limit,
-      offset,
-    }
-  );
-  return { notifications, total };
 };
+
+export default Page;

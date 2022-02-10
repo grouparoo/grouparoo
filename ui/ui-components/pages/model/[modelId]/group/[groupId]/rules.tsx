@@ -1,6 +1,11 @@
-import { NextPageContext } from "next";
 import Head from "next/head";
-import { Fragment, useEffect, useState } from "react";
+import {
+  ChangeEventHandler,
+  Fragment,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { Form, Table, Badge, Button } from "react-bootstrap";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import { successHandler } from "../../../../../eventHandlers";
@@ -17,19 +22,41 @@ import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 import { useApi } from "../../../../../contexts/api";
 import { generateClient } from "../../../../../client/client";
+import { withServerErrorHandler } from "../../../../../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../../../../../utils/pageHelper";
 
-export default function Page(props) {
-  const {
-    properties,
-    ruleLimit,
-    ops,
-    topLevelGroupRules,
-  }: {
-    properties: Models.PropertyType[];
-    ruleLimit: Actions.GroupsRuleOptions["ruleLimit"];
-    ops: Actions.GroupsRuleOptions["ops"];
-    topLevelGroupRules: Actions.GroupsRuleOptions["topLevelGroupRules"];
-  } = props;
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const { groupId, modelId } = ctx.query;
+  const client = generateClient(ctx);
+  const { group } = await client.request<Actions.GroupView>(
+    "get",
+    `/group/${groupId}`
+  );
+  ensureMatchingModel("Group", group.modelId, modelId.toString());
+
+  const { properties } = await client.request<Actions.PropertiesList>(
+    "get",
+    `/properties`,
+    {
+      state: "ready",
+      modelId: group?.modelId,
+    }
+  );
+  const { ruleLimit, ops, topLevelGroupRules } =
+    await client.request<Actions.GroupsRuleOptions>(
+      "get",
+      `/groups/ruleOptions`
+    );
+  return { props: { group, properties, ruleLimit, ops, topLevelGroupRules } };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  properties,
+  ruleLimit,
+  ops,
+  topLevelGroupRules,
+  ...props
+}) => {
   const [group, setGroup] = useState<Models.GroupType>(props.group);
   const { client } = useApi();
   const [loading, setLoading] = useState(false);
@@ -38,6 +65,38 @@ export default function Page(props) {
   const [componentCounts, setComponentCounts] = useState({});
   const [autocompleteResults, setAutoCompleteResults] = useState({});
   // const [funnelCounts, setFunnelCounts] = useState([]);
+
+  const getCounts = useCallback(
+    async (useCache = true) => {
+      setLoading(true);
+      const componentMembersResponse: Actions.GroupCountComponentMembers =
+        await client.request(
+          "get",
+          `/group/${group.id}/countComponentMembers`,
+          { rules: localRules },
+          { useCache }
+        );
+
+      if (componentMembersResponse?.componentCounts) {
+        setComponentCounts(componentMembersResponse.componentCounts);
+        // setFunnelCounts(response.funnelCounts);
+      }
+
+      const potentialMembersResponse: Actions.GroupCountPotentialMembers =
+        await client.request(
+          "get",
+          `/group/${group.id}/countPotentialMembers`,
+          { rules: localRules },
+          { useCache }
+        );
+      if (potentialMembersResponse) {
+        setCountPotentialMembers(potentialMembersResponse.count);
+      }
+
+      setLoading(false);
+    },
+    [client, group.id, localRules]
+  );
 
   useEffect(() => {
     getCounts();
@@ -48,36 +107,7 @@ export default function Page(props) {
       _autocompleteResults[rule.key] = [rule.match];
     });
     setAutoCompleteResults(_autocompleteResults);
-  }, []);
-
-  async function getCounts(useCache = true) {
-    setLoading(true);
-    const componentMembersResponse: Actions.GroupCountComponentMembers =
-      await client.request(
-        "get",
-        `/group/${group.id}/countComponentMembers`,
-        { rules: localRules },
-        { useCache }
-      );
-
-    if (componentMembersResponse?.componentCounts) {
-      setComponentCounts(componentMembersResponse.componentCounts);
-      // setFunnelCounts(response.funnelCounts);
-    }
-
-    const potentialMembersResponse: Actions.GroupCountPotentialMembers =
-      await client.request(
-        "get",
-        `/group/${group.id}/countPotentialMembers`,
-        { rules: localRules },
-        { useCache }
-      );
-    if (potentialMembersResponse) {
-      setCountPotentialMembers(potentialMembersResponse.count);
-    }
-
-    setLoading(false);
-  }
+  }, [autocompleteResults, getCounts, props.group.rules]);
 
   function addRule() {
     const _rules = [...localRules];
@@ -204,10 +234,17 @@ export default function Page(props) {
                   }
                 });
 
-                if (ops[type] && rule.op) {
-                  if (ops[type].indexOf(rule.op) < 0) {
-                    rule.op = ops[type][0];
-                  }
+                if (
+                  rule.operation.op &&
+                  ops[type]?.indexOf(rule.operation.op) < 0
+                ) {
+                  rule = {
+                    ...rule,
+                    operation: {
+                      ...rule.operation,
+                      op: ops[type][0],
+                    },
+                  };
                 }
 
                 let rowChanged = false;
@@ -215,6 +252,14 @@ export default function Page(props) {
                   rowChanged = true;
                   rowChanges = true;
                 }
+
+                const updateRuleProps = (
+                  updatedProps: Partial<typeof rule>
+                ) => {
+                  const _rules = [...localRules];
+                  _rules[idx] = { ...rule, ...updatedProps };
+                  setLocalRules(_rules);
+                };
 
                 return (
                   <tr key={`rule-${rule.key}-${idx}`}>
@@ -231,23 +276,19 @@ export default function Page(props) {
                           as="select"
                           value={rule.key}
                           disabled={loading}
-                          onChange={(e: any) => {
-                            const _rules = [...localRules];
-                            rule.key = e.target.value;
-                            rule.operation.op = "exists"; // every type has an existence check
-                            rule.match = undefined;
-                            rule.relativeMatchNumber = undefined;
-                            rule.relativeMatchUnit = undefined;
-                            rule.relativeMatchDirection = undefined;
-                            rule.topLevel = topLevelGroupRules
-                              .map((tlgr) => tlgr.key)
+                          onChange={(e) => {
+                            const key = e.target.value;
+                            const topLevel = topLevelGroupRules
+                              .map((tlgr) => tlgr.key as string)
                               .includes(rule.key);
-                            _rules[idx] = rule;
-                            setLocalRules(_rules);
-                            autocompleteRecordPropertySearch(
-                              { key: e.target.value },
-                              "%"
-                            );
+                            updateRuleProps({
+                              key,
+                              match: undefined,
+                              relativeMatchUnit: undefined,
+                              relativeMatchDirection: undefined,
+                              topLevel,
+                            });
+                            autocompleteRecordPropertySearch({ key }, "%");
                           }}
                         >
                           {propertiesAndTopLevelGroupRules.map((rule, idx) => (
@@ -273,24 +314,28 @@ export default function Page(props) {
                           as="select"
                           value={rule.operation.op}
                           disabled={loading}
-                          onChange={(e: any) => {
-                            const _rules = [...localRules];
-                            rule.operation.op = e.target.value;
-                            _rules[idx] = rule;
-                            setLocalRules(_rules);
+                          onChange={(e) => {
+                            const op = e.target
+                              .value as typeof rule.operation.op;
+                            updateRuleProps({
+                              operation: {
+                                ...rule.operation,
+                                op,
+                              },
+                            });
                           }}
                         >
                           <option disabled>(operation)</option>
-                          {ops[type]
-                            ? ops[type].map((operation) => (
-                                <option
-                                  value={operation.op}
-                                  key={`ruleKeyOpt-${rule.key}-${idx}-${operation.op}`}
-                                >
-                                  {operation.description}
-                                </option>
-                              ))
-                            : null}
+                          {ops[type]?.map(
+                            (operation: typeof rule["operation"]) => (
+                              <option
+                                value={operation.op}
+                                key={`ruleKeyOpt-${rule.key}-${idx}-${operation.op}`}
+                              >
+                                {operation.description}
+                              </option>
+                            )
+                          )}
                         </Form.Control>
                         <span>&nbsp;</span>
 
@@ -307,14 +352,15 @@ export default function Page(props) {
                             <DatePicker
                               selected={
                                 rule.match && rule.match !== "null"
-                                  ? new Date(parseInt(rule.match))
+                                  ? new Date(
+                                      parseInt(rule.match.toString(), 10)
+                                    )
                                   : null
                               }
                               onChange={(d: Date) => {
-                                const _rules = [...localRules];
-                                rule.match = d.getTime();
-                                _rules[idx] = rule;
-                                setLocalRules(_rules);
+                                updateRuleProps({
+                                  match: d.getTime(),
+                                });
                               }}
                             />
                           </>
@@ -330,12 +376,15 @@ export default function Page(props) {
                               disabled={loading}
                               placeholder="(number)"
                               value={rule.relativeMatchNumber?.toString() || ""}
-                              onChange={(e: any) => {
-                                const _rules = [...localRules];
-                                rule.relativeMatchNumber = e.target.value;
-                                delete rule.match;
-                                _rules[idx] = rule;
-                                setLocalRules(_rules);
+                              onChange={(e) => {
+                                const relativeMatchNumber = parseInt(
+                                  e.target.value,
+                                  10
+                                );
+                                updateRuleProps({
+                                  relativeMatchNumber,
+                                  match: undefined,
+                                });
                               }}
                             />
 
@@ -345,11 +394,12 @@ export default function Page(props) {
                               as="select"
                               disabled={loading}
                               value={rule.relativeMatchUnit || ""}
-                              onChange={(e: any) => {
-                                const _rules = [...localRules];
-                                rule.relativeMatchUnit = e.target.value;
-                                _rules[idx] = rule;
-                                setLocalRules(_rules);
+                              onChange={(e) => {
+                                const relativeMatchUnit = e.target
+                                  .value as typeof rule["relativeMatchUnit"];
+                                updateRuleProps({
+                                  relativeMatchUnit,
+                                });
                               }}
                             >
                               <option disabled value="">
@@ -379,11 +429,10 @@ export default function Page(props) {
                               disabled={loading}
                               placeholder="(number)"
                               value={rule.match?.toString() || ""}
-                              onChange={(e: any) => {
-                                const _rules = [...localRules];
-                                rule.match = e.target.value;
-                                _rules[idx] = rule;
-                                setLocalRules(_rules);
+                              onChange={(e) => {
+                                updateRuleProps({
+                                  match: e.target.value,
+                                });
                               }}
                             />
                           </div>
@@ -405,24 +454,22 @@ export default function Page(props) {
                               isLoading={loading}
                               allowNew={true}
                               onChange={(selected) => {
-                                if (!selected[0]) {
-                                  return;
-                                }
+                                if (!selected[0]) return;
 
-                                const _rules = [...localRules];
-                                rule.match = selected[0].key
+                                const match = selected[0].key
                                   ? selected[0].key // when a new custom option is set
                                   : selected[0]; // when a list option is chosen
-                                _rules[idx] = rule;
-                                setLocalRules(_rules);
+
+                                updateRuleProps({
+                                  match,
+                                });
                               }}
                               onBlur={(e) => {
                                 const value = e.target.value;
-                                if (value && value.length > 0) {
-                                  const _rules = [...localRules];
-                                  rule.match = value;
-                                  _rules[idx] = rule;
-                                  setLocalRules(_rules);
+                                if (value?.length > 0) {
+                                  updateRuleProps({
+                                    match: value,
+                                  });
                                 }
                               }}
                               options={
@@ -504,24 +551,9 @@ export default function Page(props) {
       </Form>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { groupId, modelId } = ctx.query;
-  const client = generateClient(ctx);
-  const { group } = await client.request("get", `/group/${groupId}`);
-  ensureMatchingModel("Group", group.modelId, modelId.toString());
-
-  const { properties } = await client.request("get", `/properties`, {
-    state: "ready",
-    modelId: group?.modelId,
-  });
-  const { ruleLimit, ops, topLevelGroupRules } = await client.request(
-    "get",
-    `/groups/ruleOptions`
-  );
-  return { group, properties, ruleLimit, ops, topLevelGroupRules };
 };
+
+export default Page;
 
 function rulesAreEqual(a, b) {
   if (!a || !b) return false;

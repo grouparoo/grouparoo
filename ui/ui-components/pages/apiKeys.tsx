@@ -2,7 +2,6 @@ import { useApi } from "../contexts/api";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { errorHandler } from "../eventHandlers";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import GrouparooLink from "../components/GrouparooLink";
@@ -12,8 +11,24 @@ import { Models, Actions } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
 import LinkButton from "../components/LinkButton";
 import { generateClient } from "../client/client";
+import { NextPageWithInferredProps } from "../utils/pageHelper";
+import { withServerErrorHandler } from "../utils/withServerErrorHandler";
 
-export default function Page(props) {
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const client = generateClient(ctx);
+  const { limit, offset } = ctx.query;
+  const { apiKeys, total }: Actions.ApiKeysList = await client.request(
+    "get",
+    `/apiKeys`,
+    {
+      limit,
+      offset,
+    }
+  );
+  return { props: { apiKeys, total } };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   const router = useRouter();
   const { client } = useApi();
   const [apiKeys, setApiKeys] = useState<Models.ApiKeyType[]>(props.apiKeys);
@@ -108,18 +123,6 @@ export default function Page(props) {
       </LinkButton>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx) => {
-  const client = generateClient(ctx);
-  const { limit, offset } = ctx.query;
-  const { apiKeys, total }: Actions.ApiKeysList = await client.request(
-    "get",
-    `/apiKeys`,
-    {
-      limit,
-      offset,
-    }
-  );
-  return { apiKeys, total };
 };
+
+export default Page;

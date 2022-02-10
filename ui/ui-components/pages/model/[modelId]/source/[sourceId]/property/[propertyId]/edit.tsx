@@ -1,6 +1,5 @@
 import { useApi } from "../../../../../../../contexts/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { NextPageContext } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -29,17 +28,80 @@ import PrimaryKeyBadge from "../../../../../../../components/badges/PrimaryKeyBa
 import EnterpriseLink from "../../../../../../../components/GrouparooLink";
 import { grouparooUiEdition } from "../../../../../../../utils/uiEdition";
 import { generateClient } from "../../../../../../../client/client";
+import { withServerErrorHandler } from "../../../../../../../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../../../../../../../utils/pageHelper";
 
-export default function Page(
-  props: Awaited<ReturnType<typeof Page.getInitialProps>>
-) {
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const { propertyId, modelId } = ctx.query;
+  const client = generateClient(ctx);
+
+  const { property } = await client.request<Actions.PropertyView>(
+    "get",
+    `/property/${propertyId}`
+  );
+
+  if (!property) {
+    throw new Error(`Property ${propertyId} not found`);
+  }
+
+  const { sources } = await client.request<Actions.SourcesList>(
+    "get",
+    "/sources"
+  );
+
+  const source = sources.find(
+    (s: Models.SourceType) => s.id === property.sourceId
+  );
+  ensureMatchingModel("Property", source.modelId, modelId.toString());
+
+  const { types } = await client.request<Actions.PropertiesOptions>(
+    "get",
+    `/propertyOptions`
+  );
+
+  const { properties } = await client.request<Actions.PropertiesList>(
+    "get",
+    `/properties`,
+    {
+      state: "ready",
+      modelId: source.modelId,
+    }
+  );
+
+  const { pluginOptions } = await client.request<Actions.PropertyPluginOptions>(
+    "get",
+    `/property/${propertyId}/pluginOptions`
+  );
+
   const {
-    sources,
-    types,
-    filterOptions,
-    filterOptionDescriptions,
-    properties,
-  } = props;
+    options: filterOptions,
+    optionDescriptions: filterOptionDescriptions,
+  } = await client.request<Actions.PropertyFilterOptions>(
+    "get",
+    `/property/${propertyId}/filterOptions`
+  );
+
+  return {
+    props: {
+      property,
+      properties,
+      sources,
+      pluginOptions,
+      types,
+      filterOptions,
+      filterOptionDescriptions,
+    },
+  };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  sources,
+  types,
+  filterOptions,
+  filterOptionDescriptions,
+  properties,
+  ...props
+}) => {
   const router = useRouter();
   const { client } = useApi();
   const [property, setProperty] = useState<Models.PropertyType>(props.property);
@@ -775,65 +837,6 @@ export default function Page(
       </Row>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { propertyId, modelId } = ctx.query;
-  const client = generateClient(ctx);
-
-  const { property } = await client.request<Actions.PropertyView>(
-    "get",
-    `/property/${propertyId}`
-  );
-
-  if (!property) {
-    throw new Error(`Property ${propertyId} not found`);
-  }
-
-  const { sources } = await client.request<Actions.SourcesList>(
-    "get",
-    "/sources"
-  );
-
-  const source = sources.find(
-    (s: Models.SourceType) => s.id === property.sourceId
-  );
-  ensureMatchingModel("Property", source.modelId, modelId.toString());
-
-  const { types } = await client.request<Actions.PropertiesOptions>(
-    "get",
-    `/propertyOptions`
-  );
-
-  const { properties } = await client.request<Actions.PropertiesList>(
-    "get",
-    `/properties`,
-    {
-      state: "ready",
-      modelId: source.modelId,
-    }
-  );
-
-  const { pluginOptions } = await client.request<Actions.PropertyPluginOptions>(
-    "get",
-    `/property/${propertyId}/pluginOptions`
-  );
-
-  const {
-    options: filterOptions,
-    optionDescriptions: filterOptionDescriptions,
-  } = await client.request<Actions.PropertyFilterOptions>(
-    "get",
-    `/property/${propertyId}/filterOptions`
-  );
-
-  return {
-    property,
-    properties,
-    sources,
-    pluginOptions,
-    types,
-    filterOptions,
-    filterOptionDescriptions,
-  };
 };
+
+export default Page;

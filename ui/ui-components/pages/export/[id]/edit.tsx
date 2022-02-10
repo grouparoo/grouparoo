@@ -3,7 +3,7 @@ import Link from "next/link";
 import EnterpriseLink from "../../../components/GrouparooLink";
 import Head from "next/head";
 import ExportTabs from "../../../components/tabs/Export";
-import { Models } from "../../../utils/apiData";
+import { Actions } from "../../../utils/apiData";
 import {
   ExportGroupsDiff,
   ExportRecordPropertiesDiff,
@@ -12,15 +12,24 @@ import StateBadge from "../../../components/badges/StateBadge";
 import { DurationTime } from "../../../components/DurationTime";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { generateClient } from "../../../client/client";
-import { NextPageContext } from "next";
+import { withServerErrorHandler } from "../../../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../../../utils/pageHelper";
 
-export default function Page({
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const { id } = ctx.query;
+  const client = generateClient(ctx);
+  const { export: _export } = await client.request<Actions.ExportView>(
+    "get",
+    `/export/${id}`
+  );
+  const { groups } = await client.request<Actions.GroupsList>("get", `/groups`);
+  return { props: { _export, groups } };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
   _export,
   groups,
-}: {
-  _export: Models.ExportType;
-  groups: Models.GroupType[];
-}) {
+}) => {
   return (
     <>
       <Head>
@@ -196,12 +205,6 @@ export default function Page({
       </Card>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { id } = ctx.query;
-  const client = generateClient(ctx);
-  const { export: _export } = await client.request("get", `/export/${id}`);
-  const { groups } = await client.request("get", `/groups`);
-  return { _export, groups };
 };
+
+export default Page;

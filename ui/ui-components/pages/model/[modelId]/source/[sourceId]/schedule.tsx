@@ -17,10 +17,11 @@ import { formatTimestamp } from "../../../../../utils/formatTimestamp";
 import { filtersAreEqual } from "../../../../../utils/filtersAreEqual";
 import { makeLocal } from "../../../../../utils/makeLocal";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
-import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 import { generateClient } from "../../../../../client/client";
+import { withServerErrorHandler } from "../../../../../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../../../../../utils/pageHelper";
 
 const renderCheckboxLabel = (
   label: string,
@@ -31,24 +32,68 @@ const renderCheckboxLabel = (
   </>
 );
 
-export default function Page(props) {
-  const {
-    source,
-    run,
-    pluginOptions,
-    filterOptions,
-    filterOptionDescriptions,
-    totalProperties,
-    totalSources,
-  }: {
-    source: Models.SourceType;
-    run: Models.RunType;
-    pluginOptions: Actions.ScheduleView["pluginOptions"];
-    filterOptions: Actions.ScheduleFilterOptions["options"];
-    filterOptionDescriptions: Actions.ScheduleFilterOptions["optionDescriptions"];
-    totalProperties: number;
-    totalSources: number;
-  } = props;
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const { sourceId, modelId } = ctx.query;
+  const client = generateClient(ctx);
+  const { source } = await client.request<Actions.SourceView>(
+    "get",
+    `/source/${sourceId}`
+  );
+  ensureMatchingModel("Source", source.modelId, modelId.toString());
+
+  const { schedule, pluginOptions } =
+    await client.request<Actions.ScheduleView>(
+      "get",
+      `/schedule/${source.schedule.id}`
+    );
+  const filterResponse = await client.request<Actions.ScheduleFilterOptions>(
+    "get",
+    `/schedule/${source.schedule.id}/filterOptions`
+  );
+  const filterOptions = filterResponse.options;
+  const filterOptionDescriptions = filterResponse.optionDescriptions;
+
+  const { runs } = await client.request<Actions.RunsList>("get", `/runs`, {
+    id: source.schedule.id,
+    limit: 1,
+  });
+
+  const { total: totalSources } = await client.request<Actions.SourcesList>(
+    "get",
+    "/sources",
+    { modelId, limit: 1 }
+  );
+  const { total: totalProperties } =
+    await client.request<Actions.PropertiesList>("get", `/properties`, {
+      sourceId,
+      modelId,
+      limit: 1,
+    });
+
+  return {
+    props: {
+      source,
+      schedule,
+      pluginOptions,
+      filterOptions,
+      filterOptionDescriptions,
+      run: runs ? runs[0] : null,
+      totalSources,
+      totalProperties,
+    },
+  };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  source,
+  run,
+  pluginOptions,
+  filterOptions,
+  filterOptionDescriptions,
+  totalProperties,
+  totalSources,
+  ...props
+}) => {
   const router = useRouter();
   const { client } = useApi();
   const [loading, setLoading] = useState(false);
@@ -637,52 +682,6 @@ export default function Page(props) {
       </Form>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { sourceId, modelId } = ctx.query;
-  const client = generateClient(ctx);
-  const { source } = await client.request("get", `/source/${sourceId}`);
-  let filterOptions = {};
-  let filterOptionDescriptions = {};
-  ensureMatchingModel("Source", source.modelId, modelId.toString());
-
-  const { schedule, pluginOptions } = await client.request(
-    "get",
-    `/schedule/${source.schedule.id}`
-  );
-  const filterResponse = await client.request(
-    "get",
-    `/schedule/${source.schedule.id}/filterOptions`
-  );
-  filterOptions = filterResponse.options;
-  filterOptionDescriptions = filterResponse.optionDescriptions;
-
-  const { runs } = await client.request("get", `/runs`, {
-    id: source.schedule.id,
-    limit: 1,
-  });
-
-  const { total: totalSources } = await client.request<Actions.SourcesList>(
-    "get",
-    "/sources",
-    { modelId, limit: 1 }
-  );
-  const { total: totalProperties } =
-    await client.request<Actions.PropertiesList>("get", `/properties`, {
-      sourceId,
-      modelId,
-      limit: 1,
-    });
-
-  return {
-    source,
-    schedule,
-    pluginOptions,
-    filterOptions,
-    filterOptionDescriptions,
-    run: runs ? runs[0] : null,
-    totalSources,
-    totalProperties,
-  };
 };
+
+export default Page;

@@ -9,15 +9,23 @@ import ModelTabs from "../../../components/tabs/Model";
 import LoadingButton from "../../../components/LoadingButton";
 import { Actions } from "../../../utils/apiData";
 import { generateClient } from "../../../client/client";
-import { NextPageContext } from "next";
 import { useGrouparooModel } from "../../../contexts/grouparooModel";
+import { withServerErrorHandler } from "../../../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../../../utils/pageHelper";
 
-export default function Page(props) {
-  const {
-    types,
-  }: {
-    types: Actions.ModelOptions["types"];
-  } = props;
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const client = generateClient(ctx);
+  const { types } = await client.request<Actions.ModelOptions>(
+    "get",
+    `/modelOptions`
+  );
+
+  return { props: { types } };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  types,
+}) => {
   const router = useRouter();
   const { client } = useApi();
   const { model: currentModel } = useGrouparooModel();
@@ -133,11 +141,6 @@ export default function Page(props) {
       </Row>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const client = generateClient(ctx);
-  const { types } = await client.request("get", `/modelOptions`);
-
-  return { types };
 };
+
+export default Page;

@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { NextPageContext } from "next";
 import { useForm } from "react-hook-form";
 import { Badge, Form } from "react-bootstrap";
 import { useState } from "react";
@@ -9,25 +8,34 @@ import StateBadge from "../../../../../components/badges/StateBadge";
 import LockedBadge from "../../../../../components/badges/LockedBadge";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
-import { Actions, Models } from "../../../../../utils/apiData";
+import { Actions } from "../../../../../utils/apiData";
 import { successHandler } from "../../../../../eventHandlers";
 import LoadingButton from "../../../../../components/LoadingButton";
 import { useApi } from "../../../../../contexts/api";
 import { generateClient } from "../../../../../client/client";
+import { withServerErrorHandler } from "../../../../../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../../../../../utils/pageHelper";
 
-type RetryFormValues = {
+interface RetryFormValues {
   fromDate: Date;
   toDate: Date;
-};
+}
 
-export default function Page(props) {
-  const {
-    destination,
-    model,
-  }: {
-    model: Models.GrouparooModelType;
-    destination: Models.DestinationType;
-  } = props;
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const client = generateClient(ctx);
+  const { destinationId, modelId } = ctx.query;
+  const { destination } = await client.request<Actions.DestinationView>(
+    "get",
+    `/destination/${destinationId}`
+  );
+  ensureMatchingModel("Destination", destination.modelId, modelId.toString());
+
+  return { props: { destination } };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  destination,
+}) => {
   const [loading, setLoading] = useState(false);
   const [previewCount, setPreviewCount] = useState(0);
   const { client } = useApi();
@@ -152,21 +160,6 @@ export default function Page(props) {
       </Form>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const client = generateClient(ctx);
-  const { destinationId, modelId } = ctx.query;
-  const { destination } = await client.request(
-    "get",
-    `/destination/${destinationId}`
-  );
-  ensureMatchingModel("Destination", destination.modelId, modelId.toString());
-
-  const { model } = await client.request<Actions.ModelView>(
-    "get",
-    `/model/${modelId}`
-  );
-
-  return { destination, model };
 };
+
+export default Page;

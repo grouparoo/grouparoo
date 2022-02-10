@@ -1,10 +1,13 @@
-import { NextPageContext } from "next";
 import Head from "next/head";
 import RecordsList from "../../../components/record/List";
+import { NextPageWithInferredProps } from "../../../utils/pageHelper";
+import { withServerErrorHandler } from "../../../utils/withServerErrorHandler";
 
-export default function Page(
-  props: Awaited<ReturnType<typeof Page.getInitialProps>>
-) {
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  return { props: await RecordsList.hydrate(ctx) };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   return (
     <>
       <Head>
@@ -14,8 +17,6 @@ export default function Page(
       <RecordsList {...props} />
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  return await RecordsList.hydrate(ctx);
 };
+
+export default Page;

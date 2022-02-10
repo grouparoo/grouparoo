@@ -10,12 +10,13 @@ import { Actions, Models } from "@grouparoo/ui-components/utils/apiData";
 import LoadingButton from "@grouparoo/ui-components/components/LoadingButton";
 import AddSampleRecordModal from "@grouparoo/ui-components/components/record/AddSampleRecordModal";
 import { useApi } from "@grouparoo/ui-components/contexts/api";
-import { NextPageContext } from "next";
 import { useGrouparooModel } from "@grouparoo/ui-components/contexts/grouparooModel";
+import { NextPageWithInferredProps } from "@grouparoo/ui-components/utils/pageHelper";
+import { getServerSideProps } from "@grouparoo/ui-components/pages/model/[modelId]/records";
 
-export default function Page(
-  props: Awaited<ReturnType<typeof Page.getInitialProps>>
-) {
+export { getServerSideProps };
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   const { model } = useGrouparooModel();
   const router = useRouter();
   const { client } = useApi();
@@ -75,8 +76,6 @@ export default function Page(
       />
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  return await RecordsPage.getInitialProps(ctx);
 };
+
+export default Page;

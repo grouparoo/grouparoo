@@ -10,20 +10,28 @@ import {
 import Head from "next/head";
 import ResqueTabs from "../../components/tabs/Resque";
 import { generateClient } from "../../client/client";
-import { NextPageContext } from "next";
+import { withServerErrorHandler } from "../../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../../utils/pageHelper";
 
 const maxSampleLength = 30;
 const DELAY = 1000 * 3;
 
-export default function ResqueOverview(props) {
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const client = generateClient(ctx);
+  const { resqueDetails, failedCount } =
+    await client.request<Actions.ResqueResqueDetails>(
+      "get",
+      "/resque/resqueDetails"
+    );
+
+  return { props: { resqueDetails, failedCount } };
+});
+
+export const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  resqueDetails,
+  failedCount: _failedCount,
+}) => {
   const { client } = useApi();
-  const {
-    resqueDetails,
-    failedCount: _failedCount,
-  }: {
-    resqueDetails: Actions.ResqueResqueDetails["resqueDetails"];
-    failedCount: Actions.ResqueResqueDetails["failedCount"];
-  } = props;
   const [queues, setQueues] = useState(resqueDetails.queues);
   const [workers, setWorkers] = useState(
     formatWorkersForDisplay(resqueDetails.workers)
@@ -252,15 +260,9 @@ export default function ResqueOverview(props) {
       </Row>
     </>
   );
-}
-
-ResqueOverview.getInitialProps = async function (ctx: NextPageContext) {
-  const client = generateClient(ctx);
-  const { resqueDetails, failedCount }: Actions.ResqueResqueDetails =
-    await client.request("get", "/resque/resqueDetails");
-
-  return { resqueDetails, failedCount };
 };
+
+export default Page;
 
 function formatWorkersForDisplay(
   _workers: Actions.ResqueResqueDetails["resqueDetails"]["workers"]

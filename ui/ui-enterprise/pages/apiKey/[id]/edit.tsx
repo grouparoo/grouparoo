@@ -10,9 +10,20 @@ import LockedBadge from "@grouparoo/ui-components/components/badges/LockedBadge"
 import { successHandler } from "@grouparoo/ui-components/eventHandlers";
 import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
 import { generateClient } from "@grouparoo/ui-components/client/client";
-import { NextPageContext } from "next";
+import { withServerErrorHandler } from "@grouparoo/ui-components/utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "@grouparoo/ui-components/utils/pageHelper";
 
-export default function Page(props) {
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const client = generateClient(ctx);
+  const { id } = ctx.query;
+  const { apiKey } = await client.request<Actions.ApiKeyView>(
+    "get",
+    `/apiKey/${id}`
+  );
+  return { props: { apiKey } };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   const router = useRouter();
   const { client } = useApi();
   const [loading, setLoading] = useState(false);
@@ -155,14 +166,6 @@ export default function Page(props) {
       </Form>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const client = generateClient(ctx);
-  const { id } = ctx.query;
-  const { apiKey }: Actions.ApiKeyView = await client.request(
-    "get",
-    `/apiKey/${id}`
-  );
-  return { apiKey };
 };
+
+export default Page;

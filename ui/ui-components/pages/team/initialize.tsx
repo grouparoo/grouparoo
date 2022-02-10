@@ -8,14 +8,25 @@ import LoadingButton from "../../components/LoadingButton";
 import { Actions } from "../../utils/apiData";
 import { sessionHandler, successHandler } from "../../eventHandlers";
 import { generateClient } from "../../client/client";
-import { NextPageContext } from "next";
+import { withServerErrorHandler } from "../../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../../utils/pageHelper";
 
-export default function TeamInitializePage(props) {
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const client = generateClient(ctx);
+  const { setting } = await client.request<Actions.SettingCoreClusterName>(
+    "get",
+    `/setting/core/cluster-name`
+  );
+  return { props: { setting } };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  setting,
+}) => {
   const router = useRouter();
   const { client } = useApi();
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
-  const setting: Actions.SettingCoreClusterName["setting"] = props.setting;
 
   async function onSubmit(data) {
     setLoading(true);
@@ -173,10 +184,6 @@ export default function TeamInitializePage(props) {
       </Form>
     </>
   );
-}
-
-TeamInitializePage.getInitialProps = async (ctx: NextPageContext) => {
-  const client = generateClient(ctx);
-  const { setting } = await client.request("get", `/setting/core/cluster-name`);
-  return { setting };
 };
+
+export default Page;

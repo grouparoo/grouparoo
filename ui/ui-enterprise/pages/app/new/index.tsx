@@ -6,10 +6,35 @@ import { useRouter } from "next/router";
 import AppSelectorList from "@grouparoo/ui-components/components/AppSelectorList";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
 import { generateClient } from "@grouparoo/ui-components/client/client";
-import { NextPageContext } from "next";
+import { withServerErrorHandler } from "@grouparoo/ui-components/utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "@grouparoo/ui-components/utils/pageHelper";
 
-export default function Page(props) {
-  const { plugins }: { plugins: Actions.PluginsList["plugins"] } = props;
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const client = generateClient(ctx);
+  let { plugins } = await client.request<Actions.PluginsList>(
+    "get",
+    `/plugins`,
+    {
+      includeInstalled: true,
+      includeAvailable: false,
+      includeVersions: false,
+    }
+  );
+
+  plugins = plugins
+    .filter((p) => p.apps?.length > 0)
+    .sort((a, b) => (a.name > b.name ? 1 : -1));
+
+  return {
+    props: {
+      plugins,
+    },
+  };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  plugins,
+}) => {
   const router = useRouter();
   const { client } = useApi();
   const [plugin, setPlugin] = useState<
@@ -55,22 +80,6 @@ export default function Page(props) {
       </Form>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const client = generateClient(ctx);
-  const { plugins }: Actions.PluginsList = await client.request(
-    "get",
-    `/plugins`,
-    {
-      includeInstalled: true,
-      includeAvailable: false,
-      includeVersions: false,
-    }
-  );
-  return {
-    plugins: plugins
-      .filter((p) => p.apps?.length > 0)
-      .sort((a, b) => (a.name > b.name ? 1 : -1)),
-  };
 };
+
+export default Page;

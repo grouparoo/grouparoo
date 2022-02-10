@@ -5,11 +5,28 @@ import PageHeader from "@grouparoo/ui-components/components/PageHeader";
 import LockedBadge from "@grouparoo/ui-components/components/badges/LockedBadge";
 import StateBadge from "@grouparoo/ui-components/components/badges/StateBadge";
 import ModelBadge from "@grouparoo/ui-components/components/badges/ModelBadge";
-import { NextPageContext } from "next";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
 import { generateClient } from "@grouparoo/ui-components/client/client";
+import { withServerErrorHandler } from "@grouparoo/ui-components/utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "@grouparoo/ui-components/utils/pageHelper";
 
-export default function Page(props) {
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const { groupId } = ctx.query;
+  const client = generateClient(ctx);
+  const { group } = await client.request<Actions.GroupView>(
+    "get",
+    `/group/${groupId}`
+  );
+  const runsListInitialProps = await RunsList.hydrate(ctx, { topic: "group" });
+  return {
+    props: {
+      group,
+      ...runsListInitialProps,
+    },
+  };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   const { group } = props;
 
   return (
@@ -40,15 +57,6 @@ export default function Page(props) {
       />
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { groupId } = ctx.query;
-  const client = generateClient(ctx);
-  const { group } = await client.request<Actions.GroupView>(
-    "get",
-    `/group/${groupId}`
-  );
-  const runsListInitialProps = await RunsList.hydrate(ctx, { topic: "group" });
-  return { group, ...runsListInitialProps };
 };
+
+export default Page;

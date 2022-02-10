@@ -10,14 +10,24 @@ import TeamTabs from "../../../components/tabs/Team";
 import { successHandler } from "../../../eventHandlers";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { generateClient } from "../../../client/client";
-import { NextPageContext } from "next";
+import { withServerErrorHandler } from "../../../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../../../utils/pageHelper";
 
-export default function Page(props) {
-  const {
-    team,
-  }: {
-    team: Models.TeamType;
-  } = props;
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const client = generateClient(ctx);
+  const { id } = ctx.query;
+  const { team } = await client.request<Actions.TeamView>("get", `/team/${id}`);
+  const { teamMembers } = await client.request<Actions.TeamMembersList>(
+    "get",
+    `/team/${id}/members`
+  );
+  return { props: { team, teamMembers } };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  team,
+  ...props
+}) => {
   const router = useRouter();
   const { client } = useApi();
   const [loading, setLoading] = useState(false);
@@ -114,12 +124,6 @@ export default function Page(props) {
       </LoadingButton>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const client = generateClient(ctx);
-  const { id } = ctx.query;
-  const { team } = await client.request("get", `/team/${id}`);
-  const { teamMembers } = await client.request("get", `/team/${id}/members`);
-  return { team, teamMembers };
 };
+
+export default Page;

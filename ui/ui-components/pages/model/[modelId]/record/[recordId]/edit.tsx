@@ -9,32 +9,61 @@ import LoadingButton from "../../../../../components/LoadingButton";
 import LoadingTable from "../../../../../components/LoadingTable";
 import { getRecordDisplayName } from "../../../../../components/record/GetRecordDisplayName";
 import ArrayRecordPropertyList from "../../../../../components/record/ArrayRecordPropertyList";
-import {
-  errorHandler,
-  recordHandler,
-  successHandler,
-} from "../../../../../eventHandlers";
+import { recordHandler, successHandler } from "../../../../../eventHandlers";
 import { Models, Actions } from "../../../../../utils/apiData";
 import StateBadge from "../../../../../components/badges/StateBadge";
 import { formatTimestamp } from "../../../../../utils/formatTimestamp";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import PageHeader from "../../../../../components/PageHeader";
-import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import LinkButton from "../../../../../components/LinkButton";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 import { generateClient } from "../../../../../client/client";
+import { withServerErrorHandler } from "../../../../../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../../../../../utils/pageHelper";
 
-export default function Page(props) {
-  const {
-    properties,
-    allGroups,
-  }: {
-    properties: Models.PropertyType[];
-    allGroups: Models.GroupType[];
-    apps: Models.AppType[];
-    sources: Models.SourceType[];
-  } = props;
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const { recordId, modelId } = ctx.query;
+  const client = generateClient(ctx);
+  const { record, groups, destinations } =
+    await client.request<Actions.RecordView>("get", `/record/${recordId}`);
+  ensureMatchingModel("Record", record?.modelId, modelId.toString());
+
+  const { properties } = await client.request<Actions.PropertiesList>(
+    "get",
+    `/properties`,
+    {
+      modelId: record?.modelId,
+    }
+  );
+  const { groups: allGroups } = await client.request<Actions.GroupsList>(
+    "get",
+    `/groups`
+  );
+  const { apps } = await client.request<Actions.AppsList>("get", `/apps`);
+  const { sources } = await client.request<Actions.SourcesList>(
+    "get",
+    `/sources`
+  );
+
+  return {
+    props: {
+      record,
+      properties,
+      groups,
+      allGroups,
+      destinations,
+      sources,
+      apps,
+    },
+  };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  properties,
+  allGroups,
+  ...props
+}) => {
   const router = useRouter();
   const { client } = useApi();
   const [loading, setLoading] = useState(false);
@@ -363,31 +392,6 @@ export default function Page(props) {
       </Row>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { recordId, modelId } = ctx.query;
-  const client = generateClient(ctx);
-  const { record, groups, destinations } = await client.request(
-    "get",
-    `/record/${recordId}`
-  );
-  ensureMatchingModel("Record", record?.modelId, modelId.toString());
-
-  const { properties } = await client.request("get", `/properties`, {
-    modelId: record?.modelId,
-  });
-  const { groups: allGroups } = await client.request("get", `/groups`);
-  const { apps } = await client.request("get", `/apps`);
-  const { sources } = await client.request("get", `/sources`);
-
-  return {
-    record,
-    properties,
-    groups,
-    allGroups,
-    destinations,
-    sources,
-    apps,
-  };
 };
+
+export default Page;

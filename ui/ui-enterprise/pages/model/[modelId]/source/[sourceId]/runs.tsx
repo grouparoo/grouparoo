@@ -1,7 +1,7 @@
-import { useApi } from "../../../../../../ui-components/contexts/api";
 import Head from "next/head";
 import { useState } from "react";
 import { Row, Col } from "react-bootstrap";
+import { useApi } from "@grouparoo/ui-components/contexts/api";
 import RunsList from "@grouparoo/ui-components/components/runs/List";
 import SourceTabs from "@grouparoo/ui-components/components/tabs/Source";
 import PageHeader from "@grouparoo/ui-components/components/PageHeader";
@@ -12,18 +12,29 @@ import {
   runsHandler,
   successHandler,
 } from "@grouparoo/ui-components/eventHandlers";
-import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
+import { Actions } from "@grouparoo/ui-components/utils/apiData";
 import LoadingButton from "@grouparoo/ui-components/components/LoadingButton";
 import { ensureMatchingModel } from "@grouparoo/ui-components/utils/ensureMatchingModel";
-import { NextPageContext } from "next";
 import { generateClient } from "@grouparoo/ui-components/client/client";
+import { withServerErrorHandler } from "@grouparoo/ui-components/utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "@grouparoo/ui-components/utils/pageHelper";
 
-export default function Page(props) {
-  const {
-    source,
-  }: {
-    source: Models.SourceType;
-  } = props;
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const { sourceId, modelId } = ctx.query;
+  const client = generateClient(ctx);
+  const { source } = await client.request<Actions.SourceView>(
+    "get",
+    `/source/${sourceId}`
+  );
+  ensureMatchingModel("Source", source.modelId, modelId.toString());
+
+  const runsListInitialProps = await RunsList.hydrate(ctx, { topic: "source" });
+
+  return { props: { source, ...runsListInitialProps } };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
+  const { source } = props;
   const { client } = useApi();
   const [loading, setLoading] = useState(false);
 
@@ -90,15 +101,6 @@ export default function Page(props) {
       />
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { sourceId, modelId } = ctx.query;
-  const client = generateClient(ctx);
-  const { source } = await client.request("get", `/source/${sourceId}`);
-  ensureMatchingModel("Source", source.modelId, modelId.toString());
-
-  const runsListInitialProps = await RunsList.hydrate(ctx, { topic: "source" });
-
-  return { source, ...runsListInitialProps };
 };
+
+export default Page;

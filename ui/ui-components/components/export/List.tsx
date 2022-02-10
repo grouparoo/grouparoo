@@ -15,7 +15,7 @@ import StateBadge from "../badges/StateBadge";
 import { DurationTime } from "../DurationTime";
 import { useApi } from "../../contexts/api";
 import { generateClient } from "../../client/client";
-import { NextPageContext } from "next";
+import { GetServerSidePropsContext } from "next";
 
 const states = [
   "all",
@@ -26,7 +26,11 @@ const states = [
   "complete",
 ];
 
-export default function ExportsList(props) {
+interface Props extends Awaited<ReturnType<typeof ExportsList.hydrate>> {
+  header?: React.ReactNode;
+}
+
+export default function ExportsList(props: Props) {
   const { groups }: { groups: Models.GroupType[] } = props;
   const router = useRouter();
   const { client } = useApi();
@@ -274,26 +278,26 @@ export default function ExportsList(props) {
   );
 }
 
-ExportsList.hydrate = async (appContext: NextPageContext) => {
-  const client = generateClient(appContext);
+ExportsList.hydrate = async (ctx: GetServerSidePropsContext) => {
+  const client = generateClient(ctx);
 
-  const { id, limit, offset, state, recordId, destinationId } =
-    appContext.query;
-  const { groups } = await client.request("get", `/groups`);
+  const { id, limit, offset, state, recordId, destinationId } = ctx.query;
+  const { groups } = await client.request<Actions.GroupsList>("get", `/groups`);
 
   let exportProcessorId: string;
-  if (id && appContext.pathname.match("/exportProcessor/")) {
+  if (id && ctx.req.url.match("/exportProcessor/")) {
     exportProcessorId = String(id);
   }
 
-  const { exports: _exports, total } = await client.request("get", `/exports`, {
-    limit,
-    offset,
-    state: state === "all" ? undefined : state,
-    destinationId,
-    exportProcessorId,
-    recordId,
-  });
+  const { exports: _exports, total } =
+    await client.request<Actions.ExportsList>("get", `/exports`, {
+      limit,
+      offset,
+      state: state === "all" ? undefined : state,
+      destinationId,
+      exportProcessorId,
+      recordId,
+    });
 
   return { groups, _exports, total };
 };

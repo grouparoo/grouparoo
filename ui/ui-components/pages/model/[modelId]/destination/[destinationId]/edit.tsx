@@ -1,4 +1,3 @@
-import { NextPageContext } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -21,14 +20,34 @@ import {
 import { useDebouncedCallback } from "../../../../../hooks/useDebouncedCallback";
 import { Actions, Models } from "../../../../../utils/apiData";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
+import { NextPageWithInferredProps } from "../../../../../utils/pageHelper";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
+import { withServerErrorHandler } from "../../../../../utils/withServerErrorHandler";
 
-export default function Page(props) {
-  const {
-    environmentVariableOptions,
-  }: {
-    environmentVariableOptions: Actions.AppOptions["environmentVariableOptions"];
-  } = props;
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const client = generateClient(ctx);
+  const { destinationId, modelId } = ctx.query;
+  const { destination } = await client.request<Actions.DestinationView>(
+    "get",
+    `/destination/${destinationId}`
+  );
+  ensureMatchingModel("Destination", destination.modelId, modelId.toString());
+
+  const { environmentVariableOptions } =
+    await client.request<Actions.DestinationConnectionApps>(
+      "get",
+      "/destinations/connectionApps"
+    );
+
+  return {
+    props: { destination, environmentVariableOptions },
+  };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  environmentVariableOptions,
+  ...props
+}) => {
   const router = useRouter();
   const { client } = useApi();
   const [destination, setDestination] = useState<Models.DestinationType>(
@@ -433,24 +452,6 @@ export default function Page(props) {
       </Row>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const client = generateClient(ctx);
-  const { destinationId, modelId } = ctx.query;
-  const { destination } = await client.request(
-    "get",
-    `/destination/${destinationId}`
-  );
-  ensureMatchingModel("Destination", destination.modelId, modelId.toString());
-
-  const { environmentVariableOptions } = await client.request(
-    "get",
-    "/destinations/connectionApps"
-  );
-
-  return {
-    destination,
-    environmentVariableOptions,
-  };
 };
+
+export default Page;

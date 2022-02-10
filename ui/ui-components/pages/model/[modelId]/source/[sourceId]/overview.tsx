@@ -13,24 +13,57 @@ import Head from "next/head";
 import { Actions, Models } from "../../../../../utils/apiData";
 import { formatTimestamp } from "../../../../../utils/formatTimestamp";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
-import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 import ManagedCard from "../../../../../components/lib/ManagedCard";
 import PrimaryKeyBadge from "../../../../../components/badges/PrimaryKeyBadge";
 import { generateClient } from "../../../../../client/client";
+import { NextPageWithInferredProps } from "../../../../../utils/pageHelper";
+import { withServerErrorHandler } from "../../../../../utils/withServerErrorHandler";
 
-export default function Page({
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const { sourceId, modelId } = ctx.query;
+  const client = generateClient(ctx);
+  const { source } = await client.request<Actions.SourceView>(
+    "get",
+    `/source/${sourceId}`
+  );
+  ensureMatchingModel("Source", source.modelId, modelId.toString());
+
+  const { total: totalSources } = await client.request<Actions.SourcesList>(
+    "get",
+    `/sources`,
+    {
+      modelId,
+      limit: 1,
+    }
+  );
+  const { properties } = await client.request<Actions.PropertiesList>(
+    "get",
+    `/properties`,
+    {
+      sourceId,
+    }
+  );
+
+  let run: Models.RunType;
+  if (source?.schedule?.id) {
+    const { runs } = await client.request<Actions.RunsList>("get", `/runs`, {
+      id: source.schedule.id,
+      limit: 1,
+    });
+    run = runs[0];
+  }
+
+  return { props: { source, totalSources, run, properties } };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
   source,
   totalSources,
   run,
   properties,
-}: {
-  source: Models.SourceType;
-  totalSources: number;
-  run: Models.RunType;
-  properties: Models.PropertyType[];
-}) {
+}) => {
   const recurringFrequencyMinutes = source?.schedule?.recurringFrequency
     ? Math.round(source.schedule.recurringFrequency / 1000 / 60)
     : null;
@@ -39,7 +72,7 @@ export default function Page({
     () =>
       (totalSources === 1 && source.state !== "ready") ||
       !!properties.find((property) => property.isPrimaryKey),
-    [properties]
+    [properties, totalSources, source.state]
   );
 
   const sourceBadges = useMemo(() => {
@@ -317,30 +350,6 @@ export default function Page({
       </Row>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { sourceId, modelId } = ctx.query;
-  const client = generateClient(ctx);
-  const { source } = await client.request("get", `/source/${sourceId}`);
-  ensureMatchingModel("Source", source.modelId, modelId.toString());
-
-  const { total: totalSources } = await client.request("get", `/sources`, {
-    modelId,
-    limit: 1,
-  });
-  const { properties } = await client.request("get", `/properties`, {
-    sourceId,
-  });
-
-  let run;
-  if (source?.schedule?.id) {
-    const { runs } = await client.request("get", `/runs`, {
-      id: source.schedule.id,
-      limit: 1,
-    });
-    run = runs[0];
-  }
-
-  return { source, totalSources, run, properties };
 };
+
+export default Page;

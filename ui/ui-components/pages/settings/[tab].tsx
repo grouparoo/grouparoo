@@ -1,4 +1,3 @@
-import { NextPageContext } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -13,15 +12,30 @@ import { useApi } from "../../contexts/api";
 import { errorHandler, successHandler } from "../../eventHandlers";
 import { Actions, Models } from "../../utils/apiData";
 import { capitalize } from "../../utils/languageHelper";
+import { NextPageWithInferredProps } from "../../utils/pageHelper";
+import { withServerErrorHandler } from "../../utils/withServerErrorHandler";
 
 const settingsWhichTriggerInterfaceReload = [["core", "cluster-name"]];
 
-export default function Page(props) {
-  const {
-    tab,
-  }: {
-    tab: string;
-  } = props;
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const { tab } = ctx.query;
+  const client = generateClient(ctx);
+  const { settings } = await client.request<Actions.SettingsList>(
+    "get",
+    `/settings`
+  );
+  return {
+    props: {
+      settings,
+      tab: tab as string,
+    },
+  };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  tab,
+  ...props
+}) => {
   const router = useRouter();
   const { client } = useApi();
   const [loading, setLoading] = useState(false);
@@ -115,17 +129,9 @@ export default function Page(props) {
       </Tabs>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { tab } = ctx.query;
-  const client = generateClient(ctx);
-  const { settings }: Actions.SettingsList = await client.request(
-    "get",
-    `/settings`
-  );
-  return { settings, tab };
 };
+
+export default Page;
 
 function ActionsTab({ errorHandler, successHandler }) {
   return (

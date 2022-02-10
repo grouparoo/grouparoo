@@ -5,20 +5,42 @@ import PageHeader from "@grouparoo/ui-components/components/PageHeader";
 import StateBadge from "@grouparoo/ui-components/components/badges/StateBadge";
 import LockedBadge from "@grouparoo/ui-components/components/badges/LockedBadge";
 import PropertyTabs from "@grouparoo/ui-components/components/tabs/Property";
-import { Actions, Models } from "@grouparoo/ui-components/utils/apiData";
+import { Actions } from "@grouparoo/ui-components/utils/apiData";
 import ModelBadge from "@grouparoo/ui-components/components/badges/ModelBadge";
-import { NextPageContext } from "next";
 import { generateClient } from "@grouparoo/ui-components/client/client";
+import { withServerErrorHandler } from "@grouparoo/ui-components/utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "@grouparoo/ui-components/utils/pageHelper";
 
-export default function Page({
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const { propertyId } = ctx.query;
+  const client = generateClient(ctx);
+  const { property } = await client.request<Actions.PropertyView>(
+    "get",
+    `/property/${propertyId}`
+  );
+  const { source } = await client.request<Actions.SourceView>(
+    "get",
+    `/source/${property.sourceId}`
+  );
+  const { groups } = await client.request<Actions.PropertyGroups>(
+    "get",
+    `/property/${propertyId}/groups`
+  );
+
+  return {
+    props: {
+      property,
+      source,
+      groups,
+    },
+  };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
   property,
   groups,
   source,
-}: {
-  property: Models.PropertyType;
-  groups: Models.GroupType[];
-  source: Models.SourceType;
-}) {
+}) => {
   return (
     <>
       <Head>
@@ -81,23 +103,6 @@ export default function Page({
       </LoadingTable>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { propertyId } = ctx.query;
-  const client = generateClient(ctx);
-  const { property } = await client.request<Actions.PropertyView>(
-    "get",
-    `/property/${propertyId}`
-  );
-  const { source } = await client.request<Actions.SourceView>(
-    "get",
-    `/source/${property.sourceId}`
-  );
-  const { groups } = await client.request<Actions.PropertyGroups>(
-    "get",
-    `/property/${propertyId}/groups`
-  );
-
-  return { property, source, groups };
 };
+
+export default Page;

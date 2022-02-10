@@ -3,19 +3,30 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 import { Alert, Badge, Card } from "react-bootstrap";
-import { errorHandler } from "../../../eventHandlers";
 import { Actions } from "../../../utils/apiData";
 import LoadingButton from "../../../components/LoadingButton";
 import PageHeader from "../../../components/PageHeader";
 import { generateClient } from "../../../client/client";
-import { NextPageContext } from "next";
+import { withServerErrorHandler } from "../../../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../../../utils/pageHelper";
 
-export default function Page(props) {
-  const {
-    plugins,
-  }: {
-    plugins: Actions.PluginsList["plugins"];
-  } = props;
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const client = generateClient(ctx);
+  const { plugins } = await client.request<Actions.PluginsList>(
+    "get",
+    `/plugins`,
+    {
+      includeInstalled: true,
+      includeAvailable: false,
+      includeVersions: false,
+    }
+  );
+  return { props: { plugins } };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  plugins,
+}) => {
   const router = useRouter();
   const pluginName = router.asPath.replace(`/app/new/`, "");
   const { client } = useApi();
@@ -107,18 +118,6 @@ export default function Page(props) {
       ))}
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const client = generateClient(ctx);
-  const { plugins }: Actions.PluginsList = await client.request(
-    "get",
-    `/plugins`,
-    {
-      includeInstalled: true,
-      includeAvailable: false,
-      includeVersions: false,
-    }
-  );
-  return { plugins };
 };
+
+export default Page;

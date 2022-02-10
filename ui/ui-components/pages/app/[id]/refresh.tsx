@@ -1,9 +1,9 @@
 import { useApi } from "../../../contexts/api";
 import Head from "next/head";
 import { useMemo, useState } from "react";
-import { Row, Col, Form, Alert, Button, Container } from "react-bootstrap";
+import { Row, Col, Form, Alert, Button } from "react-bootstrap";
 import { useRouter } from "next/router";
-import { errorHandler, successHandler } from "../../../eventHandlers";
+import { successHandler } from "../../../eventHandlers";
 import PageHeader from "../../../components/PageHeader";
 import AppTabs from "../../../components/tabs/App";
 import Loader from "../../../components/Loader";
@@ -15,10 +15,62 @@ import AppRefreshQueryScheduleList from "../../../components/app/AppRefreshSched
 import AppRefreshQueryStats from "../../../components/app/AppRefreshQueryStats";
 import { Actions, Models } from "../../../utils/apiData";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
-import { NextPageContext } from "next";
 import { generateClient } from "../../../client/client";
+import { withServerErrorHandler } from "../../../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../../../utils/pageHelper";
 
-export default function Page(props) {
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const { id } = ctx.query;
+  const client = generateClient(ctx);
+  const { app } = await client.request<Actions.AppView>("get", `/app/${id}`);
+
+  let foundAppRefreshQuery: Models.AppRefreshQueryType;
+
+  if (app.appRefreshQuery !== null) {
+    const { appRefreshQuery } =
+      await client.request<Actions.AppRefreshQueryView>(
+        "get",
+        `/appRefreshQuery/${app.appRefreshQuery.id}`
+      );
+    foundAppRefreshQuery = appRefreshQuery;
+  }
+
+  const { sources } = await client.request<Actions.SourcesList>(
+    "get",
+    `/sources`
+  );
+
+  let scheduleRuns = [];
+  let schedules = [];
+
+  if (sources) {
+    schedules = sources
+      .filter(
+        (source) => source.appId === app.id && source.schedule?.refreshEnabled
+      )
+      .map((source) => source.schedule);
+
+    for (const schedule of schedules) {
+      const { runs } = await client.request("get", `/runs`, {
+        creatorId: schedule.id,
+        limit: 1,
+      });
+      scheduleRuns.push(runs[0]);
+    }
+  }
+
+  return {
+    props: {
+      app,
+      appRefreshQuery: foundAppRefreshQuery || null,
+      sources: sources || null,
+      schedules: schedules || null,
+      runs: scheduleRuns || null,
+    },
+  };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   const router = useRouter();
   const { client } = useApi();
   const [app, setApp] = useState<Models.AppType>(props.app);
@@ -417,50 +469,6 @@ export default function Page(props) {
       </>
     );
   }
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { id } = ctx.query;
-  const client = generateClient(ctx);
-  const { app } = await client.request("get", `/app/${id}`);
-
-  let foundAppRefreshQuery;
-
-  if (app.appRefreshQuery !== null) {
-    const { appRefreshQuery } = await client.request(
-      "get",
-      `/appRefreshQuery/${app.appRefreshQuery.id}`
-    );
-    foundAppRefreshQuery = appRefreshQuery;
-  }
-
-  const { sources } = await client.request("get", `/sources`);
-
-  let scheduleRuns = [];
-  let schedules = [];
-
-  if (sources) {
-    schedules = sources
-      .filter(
-        (source) =>
-          (source.appId = app.id && source.schedule?.refreshEnabled == true)
-      )
-      .map((source) => source.schedule);
-
-    for (const schedule of schedules) {
-      const { runs } = await client.request("get", `/runs`, {
-        creatorId: schedule.id,
-        limit: 1,
-      });
-      scheduleRuns.push(runs[0]);
-    }
-  }
-
-  return {
-    app,
-    appRefreshQuery: foundAppRefreshQuery || null,
-    sources: sources || null,
-    schedules: schedules || null,
-    runs: scheduleRuns || null,
-  };
 };
+
+export default Page;

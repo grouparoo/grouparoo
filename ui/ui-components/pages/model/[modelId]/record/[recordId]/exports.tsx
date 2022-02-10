@@ -2,23 +2,39 @@ import Head from "next/head";
 import ExportsList from "../../../../../components/export/List";
 import { getRecordDisplayName } from "../../../../../components/record/GetRecordDisplayName";
 import RecordTabs from "../../../../../components/tabs/Record";
-import { Actions, Models } from "../../../../../utils/apiData";
+import { Actions } from "../../../../../utils/apiData";
 import PageHeader from "../../../../../components/PageHeader";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import StateBadge from "../../../../../components/badges/StateBadge";
-import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { generateClient } from "../../../../../client/client";
+import { withServerErrorHandler } from "../../../../../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../../../../../utils/pageHelper";
 
-export default function Page(props) {
-  const {
-    record,
-    properties,
-  }: {
-    record: Models.GrouparooRecordType;
-    properties: Models.PropertyType[];
-  } = props;
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const client = generateClient(ctx);
+  const { recordId, modelId } = ctx.query;
+  const { record } = await client.request<Actions.RecordView>(
+    "get",
+    `/record/${recordId}`
+  );
+  ensureMatchingModel("Record", record?.modelId, modelId.toString());
+  const { properties } = await client.request<Actions.PropertiesList>(
+    "get",
+    `/properties`,
+    {
+      modelId,
+    }
+  );
+  const exportListInitialProps = await ExportsList.hydrate(ctx);
+  return { props: { record, properties, ...exportListInitialProps } };
+});
 
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  record,
+  properties,
+  ...props
+}) => {
   const uniqueRecordProperties = [];
   let email: string;
   properties.forEach((rule) => {
@@ -58,16 +74,6 @@ export default function Page(props) {
       />
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const client = generateClient(ctx);
-  const { recordId, modelId } = ctx.query;
-  const { record } = await client.request("get", `/record/${recordId}`);
-  ensureMatchingModel("Record", record?.modelId, modelId.toString());
-  const { properties } = await client.request("get", `/properties`, {
-    modelId,
-  });
-  const exportListInitialProps = await ExportsList.hydrate(ctx);
-  return { record, properties, ...exportListInitialProps };
 };
+
+export default Page;
