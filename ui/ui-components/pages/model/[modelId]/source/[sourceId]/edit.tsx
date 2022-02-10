@@ -2,7 +2,7 @@
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback, ChangeEvent } from "react";
 import { Row, Col, Form, Badge, Alert, Card } from "react-bootstrap";
 import { SubmitHandler, useForm } from "react-hook-form";
 import SourceTabs from "../../../../../components/tabs/Source";
@@ -30,7 +30,6 @@ import { generateClient } from "../../../../../client/client";
 import { withServerErrorHandler } from "../../../../../utils/withServerErrorHandler";
 import { SourcePreviewMethodResponseRow } from "@grouparoo/core/src/classes/plugin";
 import { FormTypeahead } from "../../../../../components/Typeahead";
-
 export interface FormData {
   mapping?: {
     sourceColumn: string;
@@ -48,6 +47,102 @@ interface Props {
   totalSources: number;
   preview: SourcePreviewMethodResponseRow[];
 }
+
+const TypeaheadDeterminer = ({
+  control,
+  opt,
+  connectionOptions,
+  loading,
+  loadingOptions,
+  source,
+  updateOption,
+  register,
+}) => {
+  if (connectionOptions[opt.key]?.type === "typeahead") {
+    return (
+      <>
+        <FormTypeahead<"source.options">
+          control={control}
+          name={`source.options.${opt.key}`}
+          option={connectionOptions[opt.key]}
+          disabled={loading || loadingOptions}
+          placeholder={opt.placeholder || `Select ${opt.key}`}
+          defaultSelected={
+            source.options[opt.key] ? [source.options[opt.key]] : undefined
+          }
+          onChange={(selected) => {
+            updateOption(opt.key, selected[0]?.key);
+          }}
+        />
+        <Form.Text className="text-muted">{opt.description}</Form.Text>
+      </>
+    );
+  } else if (connectionOptions[opt.key]?.type === "list") {
+    return (
+      <>
+        <Form.Control
+          as="select"
+          required={opt.required}
+          disabled={loading || loadingOptions}
+          defaultValue={source.options[opt.key]?.toString() || ""}
+          name={`source.options.${opt.key}`}
+          {...register(`source.options.${opt.key}`, {
+            onChange: (e) =>
+              updateOption(e.target.id.replace("_opt~", ""), e.target.value),
+          })}
+        >
+          <option value={""} disabled>
+            Select an option
+          </option>
+          {connectionOptions[opt.key].options.map((o, idx) => (
+            <option key={`opt~${opt.key}-${o}`} value={o}>
+              {o}{" "}
+              {connectionOptions[opt.key]?.descriptions &&
+              connectionOptions[opt.key]?.descriptions[idx]
+                ? ` | ${connectionOptions[opt.key]?.descriptions[idx]}`
+                : null}
+            </option>
+          ))}
+        </Form.Control>
+        <Form.Text className="text-muted">{opt.description}</Form.Text>
+      </>
+    );
+  } else if (connectionOptions[opt.key]?.type === "pending") {
+    return (
+      <>
+        <Form.Control
+          size="sm"
+          disabled
+          type="text"
+          value="pending another selection"
+        ></Form.Control>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <Form.Control
+          required={opt.required}
+          type={
+            connectionOptions[opt.key]?.type === "password"
+              ? "password"
+              : "text" // textarea not supported here
+          }
+          disabled={loading || loadingOptions}
+          defaultValue={source.options[opt.key]?.toString()}
+          placeholder={opt.placeholder}
+          name={`source.options.${opt.key}`}
+          {...register(`source.options.${opt.key}`, {
+            shouldUnregister: true,
+            onChange: (e) =>
+              updateOption(e.target.id.replace("_opt~", ""), e.target.value),
+          })}
+        />
+        <Form.Text className="text-muted">{opt.description}</Form.Text>
+      </>
+    );
+  }
+};
 
 const Page: NextPage<Props> = ({
   environmentVariableOptions,
@@ -103,8 +198,8 @@ const Page: NextPage<Props> = ({
     [properties, source.id, totalSources]
   );
 
-  const resetFormData = useCallback<() => FormData>(
-    () => ({
+  const resetFormData = useCallback<(source: Models.SourceType) => FormData>(
+    (source: Models.SourceType) => ({
       source: {
         name: source.name,
         options: source.options,
@@ -114,15 +209,15 @@ const Page: NextPage<Props> = ({
         sourceColumn: mappingColumn,
       },
     }),
-    [mappingColumn, mappingPropertyKey, source.name, source.options]
+    [mappingColumn, mappingPropertyKey]
   );
 
   const { handleSubmit, register, reset, watch, control } = useForm<FormData>({
-    defaultValues: resetFormData(),
+    defaultValues: resetFormData(source),
   });
 
   const loadPreview = useCallback(
-    async (previewAvailable = source.previewAvailable) => {
+    async (previewAvailable: boolean) => {
       if (!previewAvailable) {
         return;
       }
@@ -140,17 +235,10 @@ const Page: NextPage<Props> = ({
       setPreviewLoading(false);
       if (response?.preview) {
         setPreview(response.preview);
-        reset(resetFormData());
+        reset(resetFormData(source));
       }
     },
-    [
-      client,
-      resetFormData,
-      reset,
-      source.options,
-      source.previewAvailable,
-      sourceId,
-    ]
+    [client, resetFormData, reset, source, sourceId]
   );
 
   const sourceBadges = useMemo(() => {
@@ -185,7 +273,7 @@ const Page: NextPage<Props> = ({
 
   useEffect(() => {
     loadPreview(source.previewAvailable);
-  }, [loadPreview, source]);
+  }, [loadPreview, source.previewAvailable]);
 
   useEffect(() => {
     loadOptions();
@@ -330,22 +418,27 @@ const Page: NextPage<Props> = ({
     }
   }, [client, router, source.modelId, sourceId]);
 
-  const update = async (event) => {
-    const _source = Object.assign({}, source);
-    _source[event.target.id] =
-      event.target.type === "checkbox"
-        ? event.target.checked
-        : event.target.value;
-    setSource(_source);
-  };
+  const update = useCallback(
+    (event: ChangeEvent<HTMLSelectElement>) => {
+      setSource((src) => {
+        src[event.target.id] = event.target.value;
+        return src;
+      });
+    },
+    [setSource]
+  );
 
-  const updateOption = async (optKey, optValue) => {
-    const _source = { ...source };
-    _source.options[optKey] = optValue;
-    _source.mapping = {};
-    setSource(_source);
-    loadPreview();
-  };
+  const updateOption = useCallback(
+    (optKey: string, optValue: string) => {
+      setSource((src) => {
+        src.options[optKey] = optValue;
+        src.mapping = {};
+        return src;
+      });
+      loadPreview(source.previewAvailable);
+    },
+    [loadPreview, source.previewAvailable]
+  );
 
   return (
     <>
@@ -357,7 +450,7 @@ const Page: NextPage<Props> = ({
 
       <PageHeader
         icon={source.app.icon}
-        title={source.name}
+        title={watch("source.name")}
         badges={sourceBadges}
       />
 
@@ -374,7 +467,10 @@ const Page: NextPage<Props> = ({
                   placeholder="Source Name"
                   defaultValue={source.name}
                   name="source.name"
-                  {...register("source.name", { onChange: (e) => update(e) })}
+                  onChange={(d) => d}
+                  {...register("source.name", {
+                    onChange: update,
+                  })}
                 />
                 <Form.Control.Feedback type="invalid">
                   Name is required
@@ -412,119 +508,16 @@ const Page: NextPage<Props> = ({
                       ) : null}
                     </Form.Label>
 
-                    {(() => {
-                      if (connectionOptions[opt.key]?.type === "typeahead") {
-                        return (
-                          <>
-                            <FormTypeahead
-                              control={control}
-                              name={`source.options.${opt.key}`}
-                              option={connectionOptions[opt.key]}
-                              disabled={loading || loadingOptions}
-                              placeholder={
-                                opt.placeholder || `Select ${opt.key}`
-                              }
-                              defaultSelected={
-                                source.options[opt.key]
-                                  ? [source.options[opt.key]]
-                                  : undefined
-                              }
-                              onChange={(selected) => {
-                                updateOption(opt.key, selected[0]?.key);
-                              }}
-                            />
-                            <Form.Text className="text-muted">
-                              {opt.description}
-                            </Form.Text>
-                          </>
-                        );
-                      } else if (connectionOptions[opt.key]?.type === "list") {
-                        return (
-                          <>
-                            <Form.Control
-                              as="select"
-                              required={opt.required}
-                              disabled={loading || loadingOptions}
-                              defaultValue={
-                                source.options[opt.key]?.toString() || ""
-                              }
-                              name={`source.options.${opt.key}`}
-                              {...register(`source.options.${opt.key}`, {
-                                onChange: (e) =>
-                                  updateOption(
-                                    e.target.id.replace("_opt~", ""),
-                                    e.target.value
-                                  ),
-                              })}
-                            >
-                              <option value={""} disabled>
-                                Select an option
-                              </option>
-                              {connectionOptions[opt.key].options.map(
-                                (o, idx) => (
-                                  <option key={`opt~${opt.key}-${o}`} value={o}>
-                                    {o}{" "}
-                                    {connectionOptions[opt.key]?.descriptions &&
-                                    connectionOptions[opt.key]?.descriptions[
-                                      idx
-                                    ]
-                                      ? ` | ${
-                                          connectionOptions[opt.key]
-                                            ?.descriptions[idx]
-                                        }`
-                                      : null}
-                                  </option>
-                                )
-                              )}
-                            </Form.Control>
-                            <Form.Text className="text-muted">
-                              {opt.description}
-                            </Form.Text>
-                          </>
-                        );
-                      } else if (
-                        connectionOptions[opt.key]?.type === "pending"
-                      ) {
-                        return (
-                          <>
-                            <Form.Control
-                              size="sm"
-                              disabled
-                              type="text"
-                              value="pending another selection"
-                            ></Form.Control>
-                          </>
-                        );
-                      } else {
-                        return (
-                          <>
-                            <Form.Control
-                              required={opt.required}
-                              type={
-                                connectionOptions[opt.key]?.type === "password"
-                                  ? "password"
-                                  : "text" // textarea not supported here
-                              }
-                              disabled={loading || loadingOptions}
-                              defaultValue={source.options[opt.key]?.toString()}
-                              placeholder={opt.placeholder}
-                              name={`source.options.${opt.key}`}
-                              {...register(`source.options.${opt.key}`, {
-                                shouldUnregister: true,
-                                onChange: (e) =>
-                                  updateOption(
-                                    e.target.id.replace("_opt~", ""),
-                                    e.target.value
-                                  ),
-                              })}
-                            />
-                            <Form.Text className="text-muted">
-                              {opt.description}
-                            </Form.Text>
-                          </>
-                        );
-                      }
-                    })()}
+                    <TypeaheadDeterminer
+                      connectionOptions={connectionOptions}
+                      control={control}
+                      loading={loading}
+                      loadingOptions={loadingOptions}
+                      opt={opt}
+                      register={register}
+                      source={source}
+                      updateOption={updateOption}
+                    />
 
                     {/* list-type options */}
                   </Form.Group>
