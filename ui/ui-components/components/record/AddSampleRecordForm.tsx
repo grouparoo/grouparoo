@@ -72,7 +72,6 @@ const AddSampleRecordForm: React.FC<Props> = ({
       );
       setSubmitting(false);
 
-      console.log("asdf: ", response);
       if (response?.record) {
         onSubmitComplete(
           response.record,
