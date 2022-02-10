@@ -3,7 +3,7 @@ import { CommonModel } from "../classes/commonModel";
 import { modelName } from "../modules/modelName";
 
 export async function broadcastModel<T>(
-  instance: CommonModel<unknown>,
+  instance: CommonModel<T>,
   verb = "create"
 ) {
   try {

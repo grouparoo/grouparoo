@@ -9,8 +9,8 @@ export namespace StateMachine {
     checks: ((instance: any) => Promise<any>)[];
   }
 
-  export async function transition(
-    instance: CommonModel<any> & {
+  export async function transition<T = any>(
+    instance: CommonModel<T> & {
       state: string;
       _previousDataValues?: { state?: string };
       constructor?: { defaultState?: string };
