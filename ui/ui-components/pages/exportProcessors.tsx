@@ -24,15 +24,16 @@ export const getServerSideProps = withServerErrorHandler(async (ctx) => {
   const client = generateClient(ctx);
   const { limit, offset, state } = ctx.query;
 
-  const { exportProcessors, total } = await client.request(
-    "get",
-    `/exportProcessors`,
-    {
-      limit,
-      offset,
-      state: state === "all" ? undefined : state,
-    }
-  );
+  const { exportProcessors, total } =
+    await client.request<Actions.ExportProcessorsList>(
+      "get",
+      `/exportProcessors`,
+      {
+        limit,
+        offset,
+        state: state === "all" ? undefined : state,
+      }
+    );
 
   return { props: { exportProcessors, total } };
 });

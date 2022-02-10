@@ -17,7 +17,10 @@ import { withServerErrorHandler } from "../../../../../utils/withServerErrorHand
 export const getServerSideProps = withServerErrorHandler(async (ctx) => {
   const { groupId } = ctx.query;
   const client = generateClient(ctx);
-  const { group } = await client.request("get", `/group/${groupId}`);
+  const { group } = await client.request<Actions.GroupView>(
+    "get",
+    `/group/${groupId}`
+  );
   const recordListInitialProps = await RecordsList.hydrate(ctx);
 
   return { props: { group, ...recordListInitialProps } };
