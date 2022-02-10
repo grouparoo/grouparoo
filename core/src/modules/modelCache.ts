@@ -1,4 +1,5 @@
 import { env } from "actionhero";
+import { Includeable } from "sequelize";
 
 type StatefulCachedModel = { state: string };
 
@@ -20,13 +21,17 @@ export class ModelCache<T extends StatefulCachedModel> {
   instances: T[];
   findAllWithCache: FindAllWithCache<T>;
   findOneWithCache: FindOneWithCache<T>;
+  // The include constructor needs to be a method rather than static or else the caches will create circular dependencies.  This is not-unlike how Sequelize-Typescript handles relationships.
+  include: () => Includeable[];
 
   constructor(
     findAllWithCache: FindAllWithCache<T>,
-    findOneWithCache: FindOneWithCache<T>
+    findOneWithCache: FindOneWithCache<T>,
+    include: () => Includeable[]
   ) {
     this.findAllWithCache = findAllWithCache.bind(this);
     this.findOneWithCache = findOneWithCache.bind(this);
+    this.include = include;
   }
 
   invalidate() {

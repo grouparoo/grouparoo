@@ -42,9 +42,7 @@ describe("models/appsCache", () => {
       }
 
       afterEach(async () => {
-        try {
-          await app.destroy();
-        } catch {}
+        await app.destroy().catch(() => null);
       });
 
       test("creating an app signals RPC", async () => {
@@ -102,11 +100,9 @@ describe("models/appsCache", () => {
 
     test("it will avoid using SQL when a cached app exists", async () => {
       const cachedApp = AppsCache.instances.find((a) => a.id === app.id);
-      // @ts-ignore
-      cachedApp.__isCached = true;
+      (cachedApp as any).__isCached = true;
       const found = await AppsCache.findOneWithCache(app.id);
-      // @ts-ignore
-      expect(found.__isCached).toBe(true);
+      expect((cachedApp as any).__isCached).toBe(true);
       expect(found.id).toBe(app.id);
       expect(found.name).toBe("NEW NAME");
       expect(AppsCache.expires).toBeGreaterThan(0);

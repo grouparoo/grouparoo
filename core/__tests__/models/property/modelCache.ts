@@ -142,13 +142,11 @@ describe("models/propertiesCache", () => {
       const cachedFirstName = PropertiesCache.instances.find(
         (p) => p.id === firstNameProperty.id
       );
-      // @ts-ignore
-      cachedFirstName.__isCached = true;
+      (cachedFirstName as any).__isCached = true;
       const found = await PropertiesCache.findOneWithCache(
         firstNameProperty.id
       );
-      // @ts-ignore
-      expect(found.__isCached).toBe(true);
+      expect((found as any).__isCached).toBe(true);
       expect(found.id).toBe("firstName");
       expect(found.key).toBe("FIRST NAME");
       expect(PropertiesCache.expires).toBeGreaterThan(0);

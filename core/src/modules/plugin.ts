@@ -191,7 +191,7 @@ export namespace plugin {
       data: mappedRecordProperties,
       creatorType: "run",
       creatorId: run.id,
-    } as CreationAttributes<Import>);
+    });
 
     return _import;
   }

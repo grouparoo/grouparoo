@@ -42,9 +42,7 @@ describe("models/sourcesCache", () => {
       }
 
       afterEach(async () => {
-        try {
-          await source.destroy();
-        } catch {}
+        await source.destroy().catch(() => null);
       });
 
       test("creating a source signals RPC", async () => {
@@ -113,11 +111,9 @@ describe("models/sourcesCache", () => {
       const cachedSource = SourcesCache.instances.find(
         (s) => s.id === source.id
       );
-      // @ts-ignore
-      cachedSource.__isCached = true;
+      (cachedSource as any).__isCached = true;
       const found = await SourcesCache.findOneWithCache(cachedSource.id);
-      // @ts-ignore
-      expect(found.__isCached).toBe(true);
+      expect((found as any).__isCached).toBe(true);
       expect(found.id).toBe(source.id);
       expect(found.name).toBe("NEW NAME");
       expect(SourcesCache.expires).toBeGreaterThan(0);

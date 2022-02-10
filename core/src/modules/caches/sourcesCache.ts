@@ -2,15 +2,7 @@ import { ModelCache } from "../modelCache";
 import { Source } from "../../models/Source";
 import { Option } from "../../models/Option";
 import { Mapping } from "../../models/Mapping";
-import { Includeable, WhereAttributeHash } from "sequelize";
-
-function getInclude() {
-  const include: Includeable[] = [
-    { model: Option, required: false },
-    { model: Mapping, required: false },
-  ];
-  return include;
-}
+import { WhereAttributeHash } from "sequelize";
 
 async function findAllWithCache(
   this: ModelCache<Source>,
@@ -25,7 +17,9 @@ async function findAllWithCache(
         )
       : this.instances.filter((s) => !state || s.state === state);
   } else {
-    this.instances = await Source.unscoped().findAll({ include: getInclude() });
+    this.instances = await Source.unscoped().findAll({
+      include: this.include(),
+    });
     this.expires = now + this.TTL;
     return modelId
       ? this.instances.filter(
@@ -50,7 +44,7 @@ async function findOneWithCache(
     if (state) where.state = state;
     instance = await Source.unscoped().findOne({
       where,
-      include: getInclude(),
+      include: this.include(),
     });
     if (instance) this.invalidate();
   }
@@ -60,5 +54,9 @@ async function findOneWithCache(
 
 export const SourcesCache = new ModelCache<Source>(
   findAllWithCache,
-  findOneWithCache
+  findOneWithCache,
+  () => [
+    { model: Option, required: false },
+    { model: Mapping, required: false },
+  ]
 );
