@@ -46,7 +46,7 @@ export const getServerSideProps = withServerErrorHandler(async (ctx) => {
     }
   );
 
-  let run: Models.RunType;
+  let run: Models.RunType = null;
   if (source?.schedule?.id) {
     const { runs } = await client.request<Actions.RunsList>("get", `/runs`, {
       id: source.schedule.id,
