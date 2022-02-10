@@ -1,1 +1,4 @@
-export { default } from "@grouparoo/ui-components/pages/model/[modelId]/destination/[destinationId]/retry";
+export {
+  default,
+  getServerSideProps,
+} from "@grouparoo/ui-components/pages/model/[modelId]/destination/[destinationId]/retry";

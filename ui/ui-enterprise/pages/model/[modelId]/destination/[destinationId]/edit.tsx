@@ -1,1 +1,4 @@
-export { default } from "@grouparoo/ui-components/pages/model/[modelId]/destination/[destinationId]/edit";
+export {
+  default,
+  getServerSideProps,
+} from "@grouparoo/ui-components/pages/model/[modelId]/destination/[destinationId]/edit";

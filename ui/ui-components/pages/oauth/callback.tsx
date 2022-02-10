@@ -10,32 +10,31 @@ export default function OauthCallbackPage() {
   const { client } = useApi();
   const requestId = String(router.query?.requestId ?? "");
 
-  const updateOAuthRequest = async () => {
-    const response: Actions.OAuthClientEdit = await client.request(
-      "put",
-      `/oauth/client/request/${requestId}/edit`
-    );
-    if (response.oAuthRequest) {
-      if (
-        response.oAuthRequest.type === "user" &&
-        grouparooUiEdition() !== "config"
-      ) {
-        router.replace(`/session/sign-in?requestId=${requestId}`);
-      } else if (
-        response.oAuthRequest.type === "app" &&
-        typeof window?.opener !== "undefined"
-      ) {
-        window.opener?.postMessage({ requestId });
-        window.close();
-      } else {
-        throw new Error("OAuth Request could not be handled.");
-      }
-    }
-  };
-
   useEffect(() => {
+    const updateOAuthRequest = async () => {
+      const response: Actions.OAuthClientEdit = await client.request(
+        "put",
+        `/oauth/client/request/${requestId}/edit`
+      );
+      if (response.oAuthRequest) {
+        if (
+          response.oAuthRequest.type === "user" &&
+          grouparooUiEdition() !== "config"
+        ) {
+          router.replace(`/session/sign-in?requestId=${requestId}`);
+        } else if (
+          response.oAuthRequest.type === "app" &&
+          typeof window?.opener !== "undefined"
+        ) {
+          window.opener?.postMessage({ requestId });
+          window.close();
+        } else {
+          throw new Error("OAuth Request could not be handled.");
+        }
+      }
+    };
     updateOAuthRequest();
-  }, []);
+  }, [client, requestId, router]);
 
   return <Loader />;
 }
