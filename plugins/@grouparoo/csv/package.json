@@ -38,7 +38,7 @@
     "@types/jest": "*",
     "@types/node": "16.*.*",
     "actionhero": "28.1.7",
-    "jest": "27.4.5",
+    "jest": "27.5.1",
     "prettier": "2.5.1",
     "sequelize": "6.15.0",
     "ts-jest": "27.1.3",
