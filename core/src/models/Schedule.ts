@@ -357,7 +357,7 @@ export class Schedule extends CommonModel<Schedule> {
 
   @BeforeValidate
   static async ensureSetIncremental(instance: Schedule) {
-    if (typeof instance.incremental === "undefined") {
+    if (instance.isNewRecord && typeof instance.incremental === "undefined") {
       const { pluginConnection } = await instance.getPlugin();
       instance.incremental = Boolean(
         pluginConnection.supportIncrementalSchedule
