@@ -29,6 +29,7 @@ import { MappingHelper } from "../mappingHelper";
 import { RecordPropertyOps } from "./recordProperty";
 import { Option } from "../../models/Option";
 import { getLock } from "../locks";
+import { ExportOps } from "./export";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -716,16 +717,12 @@ export namespace DestinationOps {
     // they were all correct!
     if (exportResult?.success) {
       const processExports = exportResult?.processExports;
-
-      for (const _export of _exports) {
-        if (
-          !processExports ||
-          !processExports.recordIds.includes(_export.recordId)
-        ) {
-          // only mark complete if we don't have to process the export later
-          await _export.complete();
-        }
-      }
+      await ExportOps.completeBatch(
+        _exports.filter(
+          (e) =>
+            !processExports || !processExports.recordIds.includes(e.recordId)
+        )
+      );
 
       if (processExports) {
         await handleProcessExports(
@@ -759,23 +756,24 @@ export namespace DestinationOps {
     const remainingRecordsWithErrors = Object.assign({}, recordsWithErrors);
 
     const retryexportIds: string[] = [];
-    for (const _export of _exports) {
+    for (const _export of _exports.filter(
+      (e) => recordsWithErrors[e.recordId]
+    )) {
       const { recordId } = _export;
       const errorWithId = recordsWithErrors[recordId];
-      if (errorWithId) {
-        await _export.setError(errorWithId, exportResult?.retryDelay);
-        delete remainingRecordsWithErrors[recordId]; // used
+      await _export.setError(errorWithId, exportResult?.retryDelay);
+      delete remainingRecordsWithErrors[recordId]; // used
 
-        // "info" means that it's actually ok. for example, skipped.
-        // we don't need to retry it.
-        if (_export.errorLevel != "info") {
-          retryexportIds.push(_export.id);
-        }
-      } else {
-        // this one was a success!
-        await _export.complete();
+      // "info" means that it's actually ok. for example, skipped.
+      // we don't need to retry it.
+      if (_export.errorLevel != "info") {
+        retryexportIds.push(_export.id);
       }
     }
+
+    await ExportOps.completeBatch(
+      _exports.filter((e) => !recordsWithErrors[e.recordId])
+    );
 
     const recordsNotUsed = Object.keys(remainingRecordsWithErrors);
     if (recordsNotUsed.length > 0) {
@@ -922,59 +920,66 @@ export namespace DestinationOps {
     success: boolean;
     error: Error;
   }> {
-    const _exports: Export[] = [];
+    const _exports: Export[] = []; // those exports with changes + locks acquired
+    const exportsWithChanges: Export[] = [];
+    const exportsWithoutChanges: Export[] = [];
     const locks: Awaited<ReturnType<typeof getLock>>[] = [];
 
-    try {
-      const mostRecentExportIds = await Export.sequelize
-        .query(
-          {
-            query: `
-        SELECT
-          "id"
-        FROM (
-          SELECT
-            "id",
-            ROW_NUMBER() OVER (PARTITION BY "exports"."recordId" ORDER BY "exports"."createdAt" DESC) AS __rownum
-          FROM
-            "exports"
-          WHERE
-            "exports"."destinationId" = ?
-            AND "exports"."recordId" IN (?)) AS __ranked
-        WHERE
-          "__ranked"."__rownum" = 1;`,
-            values: [
-              destination.id,
-              givenExports.map(({ recordId }) => recordId),
-            ],
-          },
-          {
-            type: "SELECT",
-            model: Export,
-          }
-        )
-        .then((exports) => exports.map((e) => e.id));
+    for (const givenExport of givenExports) {
+      if (givenExport.hasChanges) {
+        exportsWithChanges.push(givenExport);
+      } else {
+        exportsWithoutChanges.push(givenExport);
+      }
+    }
 
-      for (const givenExport of givenExports) {
-        if (!givenExport.hasChanges) {
-          await givenExport.complete();
-          continue;
+    await ExportOps.completeBatch(exportsWithoutChanges);
+    if (exportsWithChanges.length === 0) return;
+
+    const mostRecentExportIds = await Export.sequelize
+      .query(
+        {
+          query: `
+    SELECT
+      "id"
+    FROM (
+      SELECT
+        "id",
+        ROW_NUMBER() OVER (PARTITION BY "exports"."recordId" ORDER BY "exports"."createdAt" DESC) AS __rownum
+      FROM
+        "exports"
+      WHERE
+        "exports"."destinationId" = ?
+        AND "exports"."recordId" IN (?)) AS __ranked
+    WHERE
+      "__ranked"."__rownum" = 1;`,
+          values: [
+            destination.id,
+            exportsWithChanges.map(({ recordId }) => recordId),
+          ],
+        },
+        {
+          type: "SELECT",
+          model: Export,
         }
-
-        if (!mostRecentExportIds.includes(givenExport.id)) {
-          await cancelOldExport(givenExport);
+      )
+      .then((exports) => exports.map((e) => e.id));
+    try {
+      for (const consideredExport of exportsWithChanges) {
+        if (!mostRecentExportIds.includes(consideredExport.id)) {
+          await cancelOldExport(consideredExport);
           continue;
         }
 
         const lock = await getLock(
-          `export:${givenExport.recordId}:${givenExport.destinationId}`
+          `export:${consideredExport.recordId}:${consideredExport.destinationId}`
         );
 
         const gotLock = typeof lock === "function";
 
         if (gotLock) {
           locks.push(lock);
-          _exports.push(givenExport);
+          _exports.push(consideredExport);
         }
       }
 

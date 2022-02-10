@@ -16,7 +16,7 @@
     "@types/jest": "*",
     "@types/jest-json-schema": "6.1.0",
     "glob": "7.2.0",
-    "jest": "27.4.5",
+    "jest": "27.5.1",
     "jest-json-schema": "6.1.0",
     "lerna": "4.0.0",
     "lerna-changelog": "2.2.0",
@@ -33,7 +33,7 @@
     "test": "pnpm run test --stream --workspace-concurrency=1 --filter !'@grouparoo/grouparoo'",
     "nuke": "rm -rf pnpm-lock.yaml && rm -rf node_modules && rm -rf core/node_modules rm -rf ui/*/node_modules && rm -rf cli/node_modules && rm -rf plugins/*/*/node_modules && rm -rf apps/*/node_modules && rm -rf core/dist && rm -rf cli/dist && rm -rf plugins/*/*/dist && rm -rf ui/*/.next",
     "update": "npm-check-updates -u && pnpm exec -- npm-check-updates -u && npm run nuke && pnpm install",
-    "heroku-prebuild": "npm install -g pnpm && pnpm --version",
-    "heroku-postbuild": "pnpm install && rm -rf ui/*/.next/cache/*"
+    "heroku-prebuild": "npm install -g pnpm && pnpm --version && pnpm install",
+    "heroku-postbuild": "rm -rf ui/*/.next/cache/*"
   }
 }

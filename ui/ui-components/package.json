@@ -39,7 +39,7 @@
     "axios": "0.24.0",
     "bootstrap": "4.6.0",
     "isomorphic-fetch": "3.0.0",
-    "jest": "27.4.5",
+    "jest": "27.5.1",
     "jest-mock-axios": "4.5.0",
     "md5": "2.3.0",
     "moment": "2.29.1",
@@ -65,6 +65,7 @@
   },
   "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a",
   "dependencies": {
+    "fast-json-stable-stringify": "^2.1.0",
     "universal-cookie": "4.0.4"
   }
 }
