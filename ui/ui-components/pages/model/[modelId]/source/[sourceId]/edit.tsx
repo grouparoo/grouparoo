@@ -217,7 +217,7 @@ const Page: NextPage<Props> = ({
   });
 
   const loadPreview = useCallback(
-    async (previewAvailable: boolean) => {
+    async (previewAvailable = source.previewAvailable) => {
       if (!previewAvailable) {
         return;
       }
@@ -272,8 +272,8 @@ const Page: NextPage<Props> = ({
   }, [client, source.options, sourceId]);
 
   useEffect(() => {
-    loadPreview(source.previewAvailable);
-  }, [loadPreview, source.previewAvailable]);
+    loadPreview();
+  }, [loadPreview]);
 
   useEffect(() => {
     loadOptions();
@@ -435,9 +435,9 @@ const Page: NextPage<Props> = ({
         src.mapping = {};
         return src;
       });
-      loadPreview(source.previewAvailable);
+      loadPreview();
     },
-    [loadPreview, source.previewAvailable]
+    [loadPreview]
   );
 
   return (
