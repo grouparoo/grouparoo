@@ -1255,7 +1255,7 @@ importers:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 27.4.0
-      '@types/mysql': 2.15.20
+      '@types/mysql': 2.15.21
       '@types/node': 16.11.22
       actionhero: 28.1.7
       csv-parse: 4.16.3
@@ -2082,7 +2082,7 @@ packages:
     resolution: {integrity: sha512-d5RysTlJ7hmw5Tw4UxgxcY3lkMe92n8sXCcuLPAyIAHK6j8DefDwtGnVVDgOnv+RnEosulDJ9NPKQL27bDId0g==}
     engines: {node: '>=6.0.0'}
     dependencies:
-      '@jridgewell/trace-mapping': 0.3.2
+      '@jridgewell/trace-mapping': 0.3.4
 
   /@azure/abort-controller/1.0.4:
     resolution: {integrity: sha512-lNUmDRVGpanCsiUN3NWxFTdwmdFI53xwhkTFfHDGTYk46ca7Ind3nanJc+U6Zj9Tv+9nTCWRBscWEW1DyKOpTw==}
@@ -2091,8 +2091,9 @@ packages:
       tslib: 2.3.1
     dev: false
 
-  /@azure/core-asynciterator-polyfill/1.0.0:
-    resolution: {integrity: sha512-kmv8CGrPfN9SwMwrkiBK9VTQYxdFQEGe0BmQk+M8io56P9KNzpAxcWE/1fxJj7uouwN4kXF0BHW8DNlgx+wtCg==}
+  /@azure/core-asynciterator-polyfill/1.0.2:
+    resolution: {integrity: sha512-3rkP4LnnlWawl0LZptJOdXNrT/fHp2eQMadoasa6afspXdpGrtPZuAQc2PD0cpgyuoXtUWyC3tv7xfntjGS5Dw==}
+    engines: {node: '>=12.0.0'}
     dev: false
 
   /@azure/core-auth/1.3.2:
@@ -2108,7 +2109,7 @@ packages:
     engines: {node: '>=12.0.0'}
     dependencies:
       '@azure/abort-controller': 1.0.4
-      '@azure/core-asynciterator-polyfill': 1.0.0
+      '@azure/core-asynciterator-polyfill': 1.0.2
       '@azure/core-auth': 1.3.2
       '@azure/core-tracing': 1.0.0-preview.13
       '@azure/logger': 1.0.3
@@ -2140,7 +2141,7 @@ packages:
     resolution: {integrity: sha512-UtH5iMlYsvg+nQYIl4UHlvvSrsBjOlRF4fs0j7mxd3rWdAStrKYrh2durOpHs5C9yZbVhsVDaisoyaf/lL1EVA==}
     engines: {node: '>=12.0.0'}
     dependencies:
-      '@azure/core-asynciterator-polyfill': 1.0.0
+      '@azure/core-asynciterator-polyfill': 1.0.2
       tslib: 2.3.1
     dev: false
 
@@ -2603,7 +2604,7 @@ packages:
       duplexify: 4.1.2
       ent: 2.2.0
       extend: 3.0.2
-      google-auth-library: 7.11.0
+      google-auth-library: 7.12.0
       retry-request: 4.2.2
       teeny-request: 7.1.3
     transitivePeerDependencies:
@@ -2961,8 +2962,8 @@ packages:
   /@jridgewell/sourcemap-codec/1.4.10:
     resolution: {integrity: sha512-Ht8wIW5v165atIX1p+JvKR5ONzUyF4Ac8DZIQ5kZs9zrb6M8SJNXpx1zn04rn65VjBMygRoMXcyYwNK0fT7bEg==}
 
-  /@jridgewell/trace-mapping/0.3.2:
-    resolution: {integrity: sha512-9KzzH4kMjA2XmBRHfqG2/Vtl7s92l6uNDd0wW7frDE+EUvQFGqNXhWp0UGJjSkt3v2AYjzOZn1QO9XaTNJIt1Q==}
+  /@jridgewell/trace-mapping/0.3.4:
+    resolution: {integrity: sha512-vFv9ttIedivx0ux3QSjhgtCVjPZd5l46ZOMDSCwnH1yUO2e964gO8LZGyv2QkqcgR6TnBU1v+1IFqmeoG+0UJQ==}
     dependencies:
       '@jridgewell/resolve-uri': 3.0.4
       '@jridgewell/sourcemap-codec': 1.4.10
@@ -4445,8 +4446,8 @@ packages:
     resolution: {integrity: sha512-c4OVMMcyodKQ9dpwBwh3ofK9P6U9ZktKU9S+p33UqwMNN1vlv2P0zJZUScTshnx7OEoIIRcCFNQ904sYxZz8kg==}
     dev: true
 
-  /@types/mysql/2.15.20:
-    resolution: {integrity: sha512-QyOqSRhe540jmdg3AqiS8AbCDvSwDgxAJcsBkMqDQw0y87OQla7y8RFW/MYcUUHBFi1AZrRYkjzSAL/bfCKMuQ==}
+  /@types/mysql/2.15.21:
+    resolution: {integrity: sha512-NPotx5CVful7yB+qZbWtXL2fA4e7aEHkihHLjklc6ID8aq7bhguHgeIoC1EmSNTAuCgI6ZXrjt2ZSaXnYX0EUg==}
     dependencies:
       '@types/node': 16.11.22
     dev: true
@@ -4519,8 +4520,8 @@ packages:
     resolution: {integrity: sha512-BYOID+l2Aco2nBik+iYS4SZX0Lf20KPILP5RGmM1IgzdwNdTs0eebiFriOPcej1sX9mLnSoiNte5zcFxssgpGA==}
     dev: true
 
-  /@types/prettier/2.4.3:
-    resolution: {integrity: sha512-QzSuZMBuG5u8HqYz01qtMdg/Jfctlnvj1z/lYnIDXs/golxw0fxtRAHd9KrzjR7Yxz1qVeI00o0kiO3PmVdJ9w==}
+  /@types/prettier/2.4.4:
+    resolution: {integrity: sha512-ReVR2rLTV1kvtlWFyuot+d1pkpG2Fw/XKE3PDAdj57rbM97ttSp9JZ2UsP+2EHTylra9cUf6JA7tGwW1INzUrA==}
     dev: true
 
   /@types/prop-types/15.7.4:
@@ -5082,9 +5083,9 @@ packages:
       delegates: 1.0.0
       readable-stream: 2.3.7
 
-  /are-we-there-yet/2.0.0:
-    resolution: {integrity: sha512-Ci/qENmwHnsYo9xKIcUJN5LeDKdJ6R1Z1j9V/J5wyq8nh/mYPEpIKJbBZXtZjG04HiK7zV/p6Vs9952MrMeUIw==}
-    engines: {node: '>=10'}
+  /are-we-there-yet/3.0.0:
+    resolution: {integrity: sha512-0GWpv50YSOcLXaN6/FAKY3vfRbllXWV2xvfA/oKJF8pzFhWXPV+yjhJXDBbjscDYowv7Yw1A3uigpzn5iEGTyw==}
+    engines: {node: ^12.13.0 || ^14.15.0 || >=16}
     dependencies:
       delegates: 1.0.0
       readable-stream: 3.6.0
@@ -5313,8 +5314,8 @@ packages:
       xml2js: 0.4.19
     dev: false
 
-  /aws-sdk/2.1070.0:
-    resolution: {integrity: sha512-tkmuycoJ9k0qF1iq03iqyhevxP3l0OlrnUxjd0x8nZ9Ko1TGjyj0yJS4Vbd4r5RBpKUwRqedB7TAyZ/71mcZKw==}
+  /aws-sdk/2.1072.0:
+    resolution: {integrity: sha512-b0gEHuC6xTGduPTS+ZCScurw9RTyOned9gf6H0rDagW8hdSMebsFQy84ZreeiZHHChyKyWrNUbUFugOYdw+WXw==}
     engines: {node: '>= 10.0.0'}
     dependencies:
       buffer: 4.9.2
@@ -5605,8 +5606,8 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001309
-      electron-to-chromium: 1.4.67
+      caniuse-lite: 1.0.30001310
+      electron-to-chromium: 1.4.68
       escalade: 3.1.1
       node-releases: 2.0.2
       picocolors: 1.0.0
@@ -5748,8 +5749,8 @@ packages:
     resolution: {integrity: sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==}
     engines: {node: '>=10'}
 
-  /caniuse-lite/1.0.30001309:
-    resolution: {integrity: sha512-Pl8vfigmBXXq+/yUz1jUwULeq9xhMJznzdc/xwl4WclDAuebcTHVefpz8lE/bMI+UN7TOkSSe7B7RnZd6+dzjA==}
+  /caniuse-lite/1.0.30001310:
+    resolution: {integrity: sha512-cb9xTV8k9HTIUA3GnPUJCk0meUnrHL5gy5QePfDjxHyNBcnzPzrHFv5GqfP7ue5b1ZyzZL0RJboD6hQlPXjhjg==}
 
   /caseless/0.12.0:
     resolution: {integrity: sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=}
@@ -6807,8 +6808,8 @@ packages:
       safe-buffer: 5.2.1
     dev: false
 
-  /electron-to-chromium/1.4.67:
-    resolution: {integrity: sha512-A6a2jEPLueEDfb7kvh7/E94RKKnIb01qL+4I7RFxtajmo+G9F5Ei7HgY5PRbQ4RDrh6DGDW66P0hD5XI2nRAcg==}
+  /electron-to-chromium/1.4.68:
+    resolution: {integrity: sha512-cId+QwWrV8R1UawO6b9BR1hnkJ4EJPCPAr4h315vliHUtVUJDk39Sg1PMNnaWKfj5x+93ssjeJ9LKL6r8LaMiA==}
 
   /emits/3.0.0:
     resolution: {integrity: sha1-MnUrupXhcHshlWI4Srm7ix/WL3A=}
@@ -8088,8 +8089,8 @@ packages:
       - supports-color
     dev: false
 
-  /google-auth-library/7.11.0:
-    resolution: {integrity: sha512-3S5jn2quRumvh9F/Ubf7GFrIq71HZ5a6vqosgdIu105kkk0WtSqc2jGCRqtWWOLRS8SX3AHACMOEDxhyWAQIcg==}
+  /google-auth-library/7.12.0:
+    resolution: {integrity: sha512-RS/whvFPMoF1hQNxnoVET3DWKPBt1Xgqe2rY0k+Jn7TNhoHlwdnSe7Rlcbo2Nub3Mt2lUVz26X65aDQrWp6x8w==}
     engines: {node: '>=10'}
     dependencies:
       arrify: 2.0.1
@@ -9493,7 +9494,7 @@ packages:
       '@jest/transform': 27.5.1
       '@jest/types': 27.5.1
       '@types/babel__traverse': 7.14.2
-      '@types/prettier': 2.4.3
+      '@types/prettier': 2.4.4
       babel-preset-current-node-syntax: 1.0.1_@babel+core@7.17.2
       chalk: 4.1.2
       expect: 27.5.1
@@ -10252,6 +10253,10 @@ packages:
     dependencies:
       yallist: 4.0.0
 
+  /lru-cache/7.3.1:
+    resolution: {integrity: sha512-nX1x4qUrKqwbIAhv4s9et4FIUVzNOpeY07bsjGUy8gwJrXH/wScImSQqXErmo/b2jZY2r0mohbLA9zVj7u1cNw==}
+    engines: {node: '>=12'}
+
   /lru_map/0.3.3:
     resolution: {integrity: sha1-tcg1G5Rky9dQM1p5ZQoOwOVhGN0=}
     dev: false
@@ -10291,8 +10296,8 @@ packages:
   /make-error/1.3.6:
     resolution: {integrity: sha512-s8UhlNe7vPKomQhC1qFelMokr/Sc3AgNbso3n74mVPA5LTZwkB9NlXf4XPamLxJE8h0gh73rM94xvwRT2CVInw==}
 
-  /make-fetch-happen/10.0.0:
-    resolution: {integrity: sha512-CREcDkbKZZ64g5MN1FT+u58mDHX9FQFFtFyio5HonX44BdQdytqPZBXUz+6ibi2w/6ncji59f2phyXGSMGpgzA==}
+  /make-fetch-happen/10.0.1:
+    resolution: {integrity: sha512-xJVRzemKMb9r2gZ5DJfkvbeSGbBKOtwI4G8hJ1Ak/2jIFJFveyQxN3d2OhXlAk7rLzAL/O+Ge8u+nb6/Zrrd9w==}
     engines: {node: ^12.13.0 || ^14.15.0 || >=16}
     dependencies:
       agentkeepalive: 4.2.0
@@ -10301,7 +10306,7 @@ packages:
       http-proxy-agent: 5.0.0
       https-proxy-agent: 5.0.0
       is-lambda: 1.0.1
-      lru-cache: 6.0.0
+      lru-cache: 7.3.1
       minipass: 3.1.6
       minipass-collect: 1.0.2
       minipass-fetch: 1.4.1
@@ -11064,7 +11069,7 @@ packages:
         optional: true
     dependencies:
       '@next/env': 12.0.10
-      caniuse-lite: 1.0.30001309
+      caniuse-lite: 1.0.30001310
       postcss: 8.4.5
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -11107,7 +11112,7 @@ packages:
         optional: true
     dependencies:
       '@next/env': 12.0.10
-      caniuse-lite: 1.0.30001309
+      caniuse-lite: 1.0.30001310
       postcss: 8.4.5
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -11227,7 +11232,7 @@ packages:
       graceful-fs: 4.2.9
       make-fetch-happen: 9.1.0
       nopt: 5.0.0
-      npmlog: 6.0.0
+      npmlog: 6.0.1
       rimraf: 3.0.2
       semver: 7.3.5
       tar: 6.1.11
@@ -11516,11 +11521,11 @@ packages:
       - supports-color
     dev: true
 
-  /npm-registry-fetch/12.0.1:
-    resolution: {integrity: sha512-ricy4ezH3Uv0d4am6RSwHjCYTWJI74NJjurIigWMAG7Vs3PFyd0TUlkrez5L0AgaPzDLRsEzqb5cOZ/Ue01bmA==}
+  /npm-registry-fetch/12.0.2:
+    resolution: {integrity: sha512-Df5QT3RaJnXYuOwtXBXS9BWs+tHH2olvkCLh6jcR/b/u3DvPMlp3J0TvvYwplPKxHMOwfg287PYih9QqaVFoKA==}
     engines: {node: ^12.13.0 || ^14.15.0 || >=16}
     dependencies:
-      make-fetch-happen: 10.0.0
+      make-fetch-happen: 10.0.1
       minipass: 3.1.6
       minipass-fetch: 1.4.1
       minipass-json-stream: 1.0.1
@@ -11560,11 +11565,11 @@ packages:
       gauge: 2.7.4
       set-blocking: 2.0.0
 
-  /npmlog/6.0.0:
-    resolution: {integrity: sha512-03ppFRGlsyUaQFbGC2C8QWJN/C/K7PsfyD9aQdhVKAQIH4sQBc8WASqFBP7O+Ut4d2oo5LoeoboB3cGdBZSp6Q==}
+  /npmlog/6.0.1:
+    resolution: {integrity: sha512-BTHDvY6nrRHuRfyjt1MAufLxYdVXZfd099H4+i1f0lPywNQyI4foeNXJRObB/uy+TYqUW0vAD9gbdSOXPst7Eg==}
     engines: {node: ^12.13.0 || ^14.15.0 || >=16}
     dependencies:
-      are-we-there-yet: 2.0.0
+      are-we-there-yet: 3.0.0
       console-control-strings: 1.1.0
       gauge: 4.0.0
       set-blocking: 2.0.0
@@ -12009,7 +12014,7 @@ packages:
       npm-package-arg: 8.1.5
       npm-packlist: 3.0.0
       npm-pick-manifest: 6.1.1
-      npm-registry-fetch: 12.0.1
+      npm-registry-fetch: 12.0.2
       promise-retry: 2.0.1
       read-package-json-fast: 2.0.3
       rimraf: 3.0.2
@@ -13945,7 +13950,7 @@ packages:
       agent-base: 4.3.0
       asn1.js-rfc2560: 5.0.1
       asn1.js-rfc5280: 3.0.0
-      aws-sdk: 2.1070.0
+      aws-sdk: 2.1072.0
       axios: 0.21.4_debug@3.2.7
       big-integer: 1.6.51
       bignumber.js: 2.4.0
@@ -14795,7 +14800,7 @@ packages:
       '@types/jest': 27.4.0
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
-      jest: 27.4.5
+      jest: 27.4.5_ts-node@10.4.0
       jest-util: 27.5.1
       json5: 2.2.0
       lodash.memoize: 4.1.2
