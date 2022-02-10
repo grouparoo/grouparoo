@@ -1,17 +1,10 @@
-import path from "path";
 import { Initializer } from "actionhero";
 import { DestinationSyncMode, plugin } from "@grouparoo/core";
-
 import { test } from "../lib/test";
-import { AppTemplate } from "@grouparoo/app-templates/dist/app";
-import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
-
 import { destinationOptions } from "../lib/export/destinationOptions";
 import { exportArrayProperties } from "../lib/export/exportArrayProperties";
 import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
 import { exportRecord } from "../lib/export/exportRecord";
-
-const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
 
 const packageJSON = require("./../../package.json");
 
@@ -28,17 +21,6 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/klaviyo/klaviyo.png",
-      templates: [
-        new AppTemplate("klaviyo", [
-          path.join(templateRoot, "app", "*.template"),
-        ]),
-        new DestinationTemplate(
-          "klaviyo",
-          [path.join(templateRoot, "destination", "*.template")],
-          syncModes,
-          defaultSyncMode
-        ),
-      ],
       apps: [
         {
           name: "klaviyo",

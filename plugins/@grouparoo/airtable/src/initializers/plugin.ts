@@ -1,6 +1,5 @@
 import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
-
 import { appTest } from "../lib/appTest";
 import { connect } from "../lib/connect";
 import { AirtableAppOptionsOptions } from "../lib/appOptions";

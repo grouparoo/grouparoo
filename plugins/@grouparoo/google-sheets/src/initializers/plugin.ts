@@ -1,13 +1,6 @@
 import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
-
 import { test } from "../lib/test";
-
-import {
-  GoogleSheetAppTemplate,
-  GoogleSheetPropertyTemplate,
-  GoogleSheetSourceTemplate,
-} from "../lib/sheet-import/templates";
 import { sourceConnection } from "../lib/sheet-import/connection";
 import { destinationConnection } from "../lib/sheet-export/connection";
 
@@ -23,11 +16,6 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/google-sheets/google-sheets.png",
-      templates: [
-        GoogleSheetAppTemplate,
-        GoogleSheetSourceTemplate,
-        GoogleSheetPropertyTemplate,
-      ],
       apps: [
         {
           name: "google-sheets",

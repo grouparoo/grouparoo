@@ -1,28 +1,12 @@
-import path from "path";
 import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
-
 import { connect } from "./../lib/connect";
 import { disconnect } from "./../lib/disconnect";
 import { test } from "./../lib/test";
-
 import { getConnection as getTableConnection } from "../lib/table-import/connection";
 import { getConnection as getQueryConnection } from "../lib/query-import/connection";
-import { AppTemplate } from "@grouparoo/app-templates/dist/app";
-import {
-  TablePropertyTemplate,
-  TableSourceTemplate,
-} from "@grouparoo/app-templates/dist/source/table";
-import { getTables } from "../lib/table-import/getTables";
-import { getColumns } from "../lib/table-import/getColumns";
-
-import {
-  QueryPropertyTemplate,
-  QuerySourceTemplate,
-} from "@grouparoo/app-templates/dist/source/query";
 
 const packageJSON = require("./../../package.json");
-const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
 
 export class Plugins extends Initializer {
   constructor() {
@@ -34,19 +18,6 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/mongo/mongo.png",
-      templates: [
-        new AppTemplate("mongo", [
-          path.join(templateRoot, "app", "*.template"),
-        ]),
-        new TableSourceTemplate("mongo", { getTables, getColumns }),
-        new TablePropertyTemplate("mongo"),
-        new QueryPropertyTemplate("mongo", [
-          path.join(templateRoot, "query-property", "*.template"),
-        ]),
-        new QuerySourceTemplate("mongo", [
-          path.join(templateRoot, "query-source", "*.template"),
-        ]),
-      ],
       apps: [
         {
           name: "mongo",

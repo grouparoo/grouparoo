@@ -1,26 +1,10 @@
-import path from "path";
 import { Initializer } from "actionhero";
-import { DestinationSyncMode, plugin } from "@grouparoo/core";
-
+import { plugin } from "@grouparoo/core";
 import { test } from "./../lib/test";
 import { parallelism } from "./../lib/parallelism";
-
-import {
-  contactsDestinationConnection,
-  contactsSupportedSyncModes,
-} from "../lib/export-contacts/connection";
-import {
-  objectsDestinationConnection,
-  objectsSupportedSyncModes,
-} from "../lib/export-objects/connection";
-import {
-  accountsDestinationConnection,
-  accountsSupportedSyncModes,
-} from "../lib/export-account/connection";
-
-const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
-import { AppTemplate } from "@grouparoo/app-templates/dist/app";
-import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
+import { contactsDestinationConnection } from "../lib/export-contacts/connection";
+import { objectsDestinationConnection } from "../lib/export-objects/connection";
+import { accountsDestinationConnection } from "../lib/export-account/connection";
 
 const packageJSON = require("./../../package.json");
 
@@ -34,26 +18,6 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/salesforce/salesforce.png",
-      templates: [
-        new AppTemplate("salesforce", [
-          path.join(templateRoot, "app", "*.template"),
-        ]),
-        new DestinationTemplate(
-          "salesforce:objects",
-          [path.join(templateRoot, "destination", "objects", "*.template")],
-          objectsSupportedSyncModes
-        ),
-        new DestinationTemplate(
-          "salesforce:contacts",
-          [path.join(templateRoot, "destination", "contacts", "*.template")],
-          contactsSupportedSyncModes
-        ),
-        new DestinationTemplate(
-          "salesforce:accounts",
-          [path.join(templateRoot, "destination", "accounts", "*.template")],
-          accountsSupportedSyncModes
-        ),
-      ],
       apps: [
         {
           name: "salesforce",
