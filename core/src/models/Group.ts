@@ -474,9 +474,13 @@ export class Group extends CommonModel<Group> {
       const localWhereGroup: WhereAttributeHash = {};
       let rawValueMatch: WhereAttributeHash = {};
 
-      const property = await Property.findOne({
-        where: { key },
-      });
+      const property = await PropertiesCache.findOneWithCache(
+        key,
+        this.modelId,
+        "ready",
+        "key"
+      );
+
       if (!property && !topLevel) {
         throw new Error(`cannot find type for Property ${key}`);
       }

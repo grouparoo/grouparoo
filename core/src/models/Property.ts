@@ -40,6 +40,7 @@ import { Source } from "./Source";
 import { getGrouparooRunMode } from "../modules/runMode";
 import { CommonModel } from "../classes/commonModel";
 import { PropertiesCache } from "../modules/caches/propertiesCache";
+import { SourcesCache } from "../modules/caches/sourcesCache";
 
 const jsMap = {
   boolean: config?.sequelize?.dialect === "sqlite" ? "text" : "boolean", // there is no boolean type in SQLite
@@ -171,7 +172,7 @@ export class Property extends CommonModel<Property> {
 
   async getOptions(sourceFromEnvironment = true) {
     const options = await OptionHelper.getOptions(this, sourceFromEnvironment);
-    const source = await this.$get("source", { scope: null });
+    const source = await SourcesCache.findOneWithCache(this.sourceId);
 
     for (const i in options) {
       options[i] =
@@ -186,7 +187,7 @@ export class Property extends CommonModel<Property> {
 
   async setOptions(options: SimplePropertyOptions, test = true) {
     if (test) await this.test(options);
-    const source = await this.$get("source", { scope: null });
+    const source = await SourcesCache.findOneWithCache(this.sourceId);
 
     for (const i in options) {
       options[i] =
