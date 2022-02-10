@@ -1,3 +1,6 @@
+import { GroupRuleWithKey } from "@grouparoo/core";
+import { GroupRuleOpType } from "@grouparoo/core/dist/modules/ruleOpsDictionary";
+import { GroupRuleOperation } from "@grouparoo/core/dist/models/Group";
 import Head from "next/head";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { Form, Table, Badge, Button } from "react-bootstrap";
@@ -54,7 +57,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
   const [group, setGroup] = useState<Models.GroupType>(props.group);
   const { client } = useApi();
   const [loading, setLoading] = useState(true);
-  const [localRules, setLocalRules] = useState(() =>
+  const [localRules, setLocalRules] = useState<GroupRuleWithKey[]>(() =>
     makeLocal(props.group.rules)
   );
   const [countPotentialMembers, setCountPotentialMembers] = useState(0);
@@ -149,21 +152,25 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
     setLoading(false);
   }
 
-  async function autocompleteRecordPropertySearch(localRule, match) {
-    const propertyId = properties.filter((r) => r.key === localRule.key)[0]?.id;
+  async function autocompleteRecordPropertySearch(key: string, match: string) {
+    const propertyId = properties.filter((r) => r.key === key)[0]?.id;
 
     // we are dealing with a topLevelGroupRule
     if (!propertyId) return;
 
     setLoading(true);
     const response: Actions.RecordAutocompleteRecordProperty =
-      await client.request("get", `/records/autocompleteRecordProperty`, {
-        propertyId,
-        match,
-      });
+      await client.request<Actions.RecordAutocompleteRecordProperty>(
+        "get",
+        `/records/autocompleteRecordProperty`,
+        {
+          propertyId,
+          match,
+        }
+      );
     if (response.recordProperties) {
       const _autocompleteResults = Object.assign({}, autocompleteResults);
-      _autocompleteResults[localRule.key] = response.recordProperties;
+      _autocompleteResults[key] = response.recordProperties;
       setAutoCompleteResults(_autocompleteResults);
     }
     setLoading(false);
@@ -246,7 +253,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
                 }
 
                 const updateRuleProps = (
-                  updatedProps: Partial<typeof rule>
+                  updatedProps: Partial<GroupRuleWithKey>
                 ) => {
                   const _rules = [...localRules];
                   _rules[idx] = { ...rule, ...updatedProps };
@@ -280,7 +287,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
                               relativeMatchDirection: undefined,
                               topLevel,
                             });
-                            autocompleteRecordPropertySearch({ key }, "%");
+                            autocompleteRecordPropertySearch(key, "%");
                           }}
                         >
                           {propertiesAndTopLevelGroupRules.map((rule, idx) => (
@@ -307,8 +314,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
                           value={opValue}
                           disabled={loading}
                           onChange={(e) => {
-                            const op = e.target
-                              .value as typeof rule.operation.op;
+                            const op = e.target.value as GroupRuleOpType;
                             updateRuleProps({
                               operation: {
                                 ...rule.operation,
@@ -318,16 +324,14 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
                           }}
                         >
                           <option disabled>(operation)</option>
-                          {ops[type]?.map(
-                            (operation: typeof rule["operation"]) => (
-                              <option
-                                value={operation.op}
-                                key={`ruleKeyOpt-${rule.key}-${idx}-${operation.op}`}
-                              >
-                                {operation.description}
-                              </option>
-                            )
-                          )}
+                          {ops[type]?.map((operation: GroupRuleOperation) => (
+                            <option
+                              value={operation.op}
+                              key={`ruleKeyOpt-${rule.key}-${idx}-${operation.op}`}
+                            >
+                              {operation.description}
+                            </option>
+                          ))}
                         </Form.Control>
                         <span>&nbsp;</span>
 
@@ -388,7 +392,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
                               value={rule.relativeMatchUnit || ""}
                               onChange={(e) => {
                                 const relativeMatchUnit = e.target
-                                  .value as typeof rule["relativeMatchUnit"];
+                                  .value as GroupRuleWithKey["relativeMatchUnit"];
                                 updateRuleProps({
                                   relativeMatchUnit,
                                 });
@@ -470,7 +474,10 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
                                 ) || []
                               }
                               onSearch={(_match) => {
-                                autocompleteRecordPropertySearch(rule, _match);
+                                autocompleteRecordPropertySearch(
+                                  rule.key,
+                                  _match
+                                );
                               }}
                               placeholder={`match (% is wildcard)`}
                               defaultSelected={
