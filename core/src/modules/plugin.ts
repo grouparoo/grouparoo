@@ -222,7 +222,7 @@ export namespace plugin {
         data: mappedRecordProperties,
         creatorType: "run",
         creatorId: run.id,
-      } as CreationAttributes<Import>);
+      });
     }
 
     const _imports =
