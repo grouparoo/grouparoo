@@ -151,9 +151,7 @@ const FormMappingSelector: React.FC<Props> = ({
                   },
                 })}
               >
-                <option value={""} disabled>
-                  Select an option
-                </option>
+                <option value={""}>Select an option</option>
                 {availableProperties.map((property) => (
                   <option
                     key={`mapping-property-${property.key}`}
