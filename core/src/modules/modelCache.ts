@@ -38,5 +38,3 @@ export class ModelCache<T extends StatefulCachedModel> {
     this.expires = 0;
   }
 }
-
-export const TTL = env === "test" ? -1 : 1000 * 30;
