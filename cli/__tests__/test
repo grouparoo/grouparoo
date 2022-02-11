@@ -88,13 +88,6 @@ else
     exit 1
 fi
 
-if [ -f "$WORKDIR/config/README.md" ]; then
-    echo "✅ config/README exists."
-else
-    echo "🚫 config/README does not exist."
-    exit 1
-fi
-
 ## replace dependencies with packed dependencies
 # Note: with quotes and slashes, sed and awk don't work so well
 

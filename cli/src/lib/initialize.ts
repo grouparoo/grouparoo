@@ -62,22 +62,6 @@ export default async function Initialize(
 
   safelyCreateFile("gitignore", ".gitignore"); // we need to call the source file something other than `.gitignore` so it's not ignored by NPM
 
-  /**
-   * Copy Code Config README templates into the work directory. This also
-   * results in a skeleton structure representing the directories in which Code
-   * Config files will be generated.
-   */
-  const templates = Templates.getConfigTemplates();
-  templates.map(({ absoluteFilePath, relativeFilePath }) => {
-    const destDir = path.join(workDir, path.dirname(relativeFilePath)); // Create directory for file if it doesn't exist.
-    if (!fs.existsSync(destDir)) fs.mkdirpSync(destDir);
-    const destFilePath = path.join(workDir, relativeFilePath); // Copy the file into the working project's config directory.
-    if (!fs.existsSync(destFilePath)) {
-      fs.copyFileSync(absoluteFilePath, destFilePath);
-    }
-  });
-  logger.succeed("Created directories for config objects.");
-
   await NPM.install(logger, workDir);
 
   logger.succeed("Grouparoo project created!");
