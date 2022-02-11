@@ -23,13 +23,13 @@ import ArrayRecordPropertyList from "./ArrayRecordPropertyList";
 import { useApi } from "../../contexts/api";
 import Cookies from "universal-cookie";
 import { isBrowser } from "../../utils/isBrowser";
+import { useGrouparooModel } from "../../contexts/grouparooModel";
 
 export type RecordType =
   | Models.GrouparooRecordType
   | Models.DestinationRecordPreviewType;
 
 export interface SampleRecordCardProps {
-  modelId: string;
   fetchRecord: (recordId?: string) => Promise<{
     record?: RecordType;
     groups?: Models.GroupType[];
@@ -99,7 +99,6 @@ const clearCachedSampleRecordId = (modelId: string): void => {
 };
 
 const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
-  modelId,
   properties,
   propertiesTitle,
   fetchRecord,
@@ -119,6 +118,9 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   const previousRecord = usePrevious(props.record);
   const prevReloadKey = usePrevious(reloadKey);
   const { client } = useApi();
+  const {
+    model: { id: modelId },
+  } = useGrouparooModel();
 
   const [loading, setLoading] = useState(false);
   const [importing, setImporting] = useState(false);
@@ -135,7 +137,11 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   );
 
   const saveRecord = useCallback(
-    (record, groups = undefined, destinations = undefined) => {
+    (
+      record: RecordType,
+      groups: Models.GroupType[],
+      destinations: Models.DestinationType[]
+    ) => {
       setLoading(true);
       setRecord(record);
       setGroups(groups);
@@ -561,7 +567,6 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
       </Card.Body>
       {isConfigUI && (
         <AddSampleRecordModal
-          modelId={modelId}
           properties={properties}
           show={addingRecord}
           onRecordCreated={saveRecord}

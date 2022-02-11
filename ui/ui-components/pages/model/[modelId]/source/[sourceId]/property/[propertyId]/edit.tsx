@@ -767,7 +767,6 @@ export default function Page(
         <Col xl={5}>
           <PropertySampleRecord
             localFilters={localFilters}
-            modelId={source.modelId}
             property={property}
             properties={properties}
             hideViewAllRecords

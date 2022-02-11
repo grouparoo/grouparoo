@@ -109,7 +109,6 @@ const Page: NextPage<Props> = ({
       <Row className="mb-4">
         <Col>
           <ModelOverviewSampleRecord
-            modelId={model.id}
             properties={properties}
             disabled={!sources.length}
             record={sampleRecord?.record}

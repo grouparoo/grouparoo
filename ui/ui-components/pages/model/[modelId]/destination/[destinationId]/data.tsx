@@ -833,7 +833,6 @@ export default function Page(
         </Col>
         <Col xl={5}>
           <DestinationSampleRecord
-            modelId={destination.modelId}
             groupId={groupId}
             collection={collection}
             mappingOptions={mappingOptions}

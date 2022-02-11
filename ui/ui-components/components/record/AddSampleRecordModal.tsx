@@ -1,17 +1,20 @@
 import { Modal } from "react-bootstrap";
 import { Models } from "../../utils/apiData";
 import AddSampleRecordForm from "./AddSampleRecordForm";
+import type { RecordType } from "./SampleRecordCard";
 
 interface Props {
-  modelId: string;
   show: boolean;
-  onRecordCreated: (record: Models.GrouparooRecordType) => void;
+  onRecordCreated: (
+    record: RecordType,
+    groups: Models.GroupType[],
+    destinations: Models.DestinationType[]
+  ) => void;
   onHide: () => void;
   properties: Models.PropertyType[];
 }
 
 const AddSampleRecordModal: React.FC<Props> = ({
-  modelId,
   properties,
   show,
   onHide,
@@ -24,10 +27,9 @@ const AddSampleRecordModal: React.FC<Props> = ({
       </Modal.Header>
       <Modal.Body>
         <AddSampleRecordForm
-          modelId={modelId}
           properties={properties}
-          onSubmitComplete={(record) => {
-            onRecordCreated(record);
+          onSubmitComplete={(record, groups, destinations) => {
+            onRecordCreated(record, groups, destinations);
             onHide();
           }}
         />
