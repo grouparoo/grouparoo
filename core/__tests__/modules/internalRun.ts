@@ -13,7 +13,7 @@ describe("modules/internalRun", () => {
   });
 
   test("an internal run is created and enqueued", async () => {
-    await internalRun("creator", "abc123");
+    await internalRun("teamMember", "abc123");
 
     const runs = await Run.findAll();
     expect(runs.length).toBe(1);
@@ -22,12 +22,12 @@ describe("modules/internalRun", () => {
 
   test("adding a new internal run will stop other internal runs for the same creator type", async () => {
     const previousRuns = await Run.findAll({
-      where: { creatorType: "creator" },
+      where: { creatorType: "teamMember" },
     });
     expect(previousRuns.length).toBe(1);
     expect(previousRuns[0].state).toBe("running");
 
-    const run = await internalRun("creator", "something else");
+    const run = await internalRun("teamMember", "something else");
     expect(run.state).toBe("running");
     await previousRuns[0].reload();
     expect(previousRuns[0].state).toBe("stopped");

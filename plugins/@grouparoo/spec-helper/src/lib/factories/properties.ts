@@ -22,7 +22,7 @@ export default async (
     (await GrouparooModel.findOne(
       modelId ? { where: { id: modelId } } : undefined
     )) ?? ((await ModelFactory({ id: modelId })) as GrouparooModel);
-  const source = (await SourceFactory(null, { modelId: model.id })) as Source;
+  const source = await SourceFactory(null, { modelId: model.id });
 
   await source.setOptions({ table: "__test_table" });
   await source.bootstrapUniqueProperty({

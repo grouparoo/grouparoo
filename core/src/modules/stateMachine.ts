@@ -1,4 +1,5 @@
 import { Model } from "sequelize-typescript";
+import { CommonModel } from "../classes/commonModel";
 import { modelName } from "./modelName";
 
 export namespace StateMachine {
@@ -8,8 +9,8 @@ export namespace StateMachine {
     checks: ((instance: any) => Promise<any>)[];
   }
 
-  export async function transition(
-    instance: Model & {
+  export async function transition<T = any>(
+    instance: CommonModel<T> & {
       state: string;
       _previousDataValues?: { state?: string };
       constructor?: { defaultState?: string };

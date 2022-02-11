@@ -1,6 +1,18 @@
 import { Initializer, api, utils, log } from "actionhero";
 import { App } from "../models/App";
-import { Property } from "../models/Property";
+import { AppsCache } from "../modules/caches/appsCache";
+import { SourcesCache } from "../modules/caches/sourcesCache";
+import { PropertiesCache } from "../modules/caches/propertiesCache";
+
+declare module "actionhero" {
+  export interface Api {
+    rpc: {
+      app: Record<string, (arg: any) => void | Promise<void>>;
+      source: Record<string, (arg: any) => void | Promise<void>>;
+      property: Record<string, (arg: any) => void | Promise<void>>;
+    };
+  }
+}
 
 export class GrouparooRPC extends Initializer {
   constructor() {
@@ -16,6 +28,7 @@ export class GrouparooRPC extends Initializer {
      */
     api.rpc = {
       app: {},
+      source: {},
       property: {},
     };
 
@@ -36,10 +49,10 @@ export class GrouparooRPC extends Initializer {
     };
 
     /**
-     * Clear the per-instance Property cache
+     * Clear the caches
      */
-    api.rpc.property.invalidateCache = async () => {
-      Property.invalidateLocalCache();
-    };
+    api.rpc.app.invalidateCache = () => AppsCache.invalidate();
+    api.rpc.source.invalidateCache = () => SourcesCache.invalidate();
+    api.rpc.property.invalidateCache = () => PropertiesCache.invalidate();
   }
 }

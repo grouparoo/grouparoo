@@ -1,12 +1,12 @@
+import { ParamsFrom } from "actionhero";
 import { RetryableTask } from "../../classes/tasks/retryableTask";
 import { GrouparooRecord } from "../../models/GrouparooRecord";
-import { Property } from "../../models/Property";
 import { RecordProperty } from "../../models/RecordProperty";
 import { Mapping } from "../../models/Mapping";
 import { Option } from "../../models/Option";
 import { PropertyOps } from "../../modules/ops/property";
 import { ImportOps } from "../../modules/ops/import";
-import { ParamsFrom } from "actionhero";
+import { PropertiesCache } from "../../modules/caches/propertiesCache";
 
 export class ImportRecordProperty extends RetryableTask {
   name = "recordProperty:importRecordProperty";
@@ -22,7 +22,10 @@ export class ImportRecordProperty extends RetryableTask {
     recordId,
     propertyId,
   }: ParamsFrom<ImportRecordProperty>) {
-    const record = await GrouparooRecord.findOne({ where: { id: recordId } });
+    const record = await GrouparooRecord.findOne({
+      where: { id: recordId },
+      include: RecordProperty,
+    });
 
     // has this record been removed since we enqueued the import task?
     if (!record) {
@@ -31,9 +34,10 @@ export class ImportRecordProperty extends RetryableTask {
       });
     }
 
-    const property = await Property.findOneWithCache(
+    const property = await PropertiesCache.findOneWithCache(
       propertyId,
-      record.modelId
+      record.modelId,
+      "ready"
     );
     if (!property) return;
     const recordProperties = await record.getProperties();

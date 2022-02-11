@@ -32,6 +32,8 @@ import { Notification } from "../models/Notification";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
 import { ExportProcessor } from "../models/ExportProcessor";
+import { CreationAttributes } from "sequelize";
+import { PropertiesCache } from "./caches/propertiesCache";
 
 // the order matters here - the children need to come before the parents (destinationGroup -> destination)
 const models = [
@@ -352,9 +354,9 @@ export namespace plugin {
     //though we default to 3 brackets, if someone inputs the double bracket notation, we should accept it
     if (string.indexOf("{{") < 0) return string;
 
-    const properties = (await Property.findAllWithCache(modelId)).filter(
-      (p) => p.isArray === false
-    );
+    const properties = (
+      await PropertiesCache.findAllWithCache(modelId, "ready")
+    ).filter((p) => p.isArray === false);
 
     const data: Record<string, string> = {};
     properties.forEach((rule) => {
@@ -375,7 +377,7 @@ export namespace plugin {
     //though we default to 3 brackets, if someone inputs the double bracket notation, we should accept it
     if (string.indexOf("{{") < 0) return string;
 
-    const properties = await Property.findAllWithCache(modelId);
+    const properties = await PropertiesCache.findAllWithCache(modelId, "ready");
 
     const data: Record<string, string> = {};
     properties.forEach((rule) => {

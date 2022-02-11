@@ -7,7 +7,7 @@ export async function broadcastModel<T>(
   verb = "create"
 ) {
   try {
-    await chatRoom.broadcast({}, `model:${modelName<T>(instance)}`, {
+    await chatRoom.broadcast({}, `model:${modelName(instance)}`, {
       model: await instance.apiData(),
       verb,
     });

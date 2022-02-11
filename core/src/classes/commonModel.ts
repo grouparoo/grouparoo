@@ -7,9 +7,21 @@ import {
   Length,
   BeforeBulkCreate,
 } from "sequelize-typescript";
+import { NonAbstract } from "sequelize-typescript/dist/shared/types";
 import validator from "validator";
 import * as uuid from "uuid";
+import { Op, Attributes } from "sequelize";
+import { config } from "actionhero";
 
+type Columns<T> = Exclude<T, Function>;
+export type CommonModelStatic<M> = (new () => M) &
+  NonAbstract<typeof CommonModel>;
+
+// This tighter type is not yet in use because it would require all places where we make a new instance to typecheck.
+//  For example, an action that takes state:string would need to coerce that to state: typeof App['state'].
+//  That is out of scope for now.
+//
+// export abstract class CommonModel<T> extends Model<T, NonAbstract<Columns<T>>> {
 export abstract class CommonModel<T> extends Model {
   /**
    * return the prefix for this type of class' id
@@ -21,17 +33,17 @@ export abstract class CommonModel<T> extends Model {
   id: string;
 
   @BeforeCreate
-  static generateId(instance: CommonModel<any>) {
+  static generateId<T>(instance: CommonModel<T>) {
     if (!instance.id) instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
   }
 
   @BeforeBulkCreate
-  static generateIds(instances: CommonModel<any>[]) {
+  static generateIds<T>(instances: CommonModel<T>[]) {
     instances.forEach((instance) => this.generateId(instance));
   }
 
   @BeforeCreate
-  static validateId(instance: CommonModel<any>) {
+  static validateId<T>(instance: CommonModel<T>) {
     const id: string = instance.id;
     let failing = false;
     if (id.length > 191) failing = true;
@@ -45,7 +57,7 @@ export abstract class CommonModel<T> extends Model {
   }
 
   @BeforeBulkCreate
-  static validateIds(instances: CommonModel<any>[]) {
+  static validateIds<T>(instances: CommonModel<T>[]) {
     instances.forEach((instance) => this.validateId(instance));
   }
 
@@ -70,22 +82,34 @@ export abstract class CommonModel<T> extends Model {
   // --- Class Methods --- //
 
   /**
-   * Find an instance of this class, regardless of scope
+   * Find an instance of this class, regardless of scope.
+   * Throw if the instance cannot be found.
    */
-  static async findById(id: string): Promise<any> {
-    // static class definitions or type defining are not yet available in TS.  See:
-    // * https://github.com/microsoft/TypeScript/issues/14600
-    // * https://github.com/microsoft/TypeScript/issues/34516
-    // * https://github.com/microsoft/TypeScript/issues/33892
+  public static async findById<T extends Model>(
+    this: CommonModelStatic<T>,
+    id: string
+  ): Promise<T> {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    const modelName = String(this).match(/class\s(.+)\sextends/)?.[1] ?? "item"; // TODO: It looks like at this point `this` is the stringified representation of the constructor function, literally "class Group extends CommonModel..."
+    if (!instance) throw new Error(`cannot find ${modelName} ${id}`);
+    return instance;
+  }
 
-    // So, each model will implement this method
-
-    throw new Error("not implemented");
-
-    // const instance: T = await this.scope(null).findOne({ where: { id } });
-    // if (!instance) {
-    //   throw new Error(`cannot find ${this.name} ${id}`);
-    // }
-    // return instance;
+  /**
+   * Update many instances at once, never exceeding a set batch size for
+   */
+  public static async updateAllInBatches<T extends Model>(
+    this: CommonModelStatic<T>,
+    instances: CommonModel<T>[],
+    values: Partial<{ [key in keyof Attributes<T>]: T[key] }>
+  ) {
+    const max = config.batchSize.internalWrite;
+    const ids = instances.map((i) => i.id);
+    const queue = [...ids];
+    while (queue.length > 0) {
+      await this.update(values, {
+        where: { id: { [Op.in]: queue.splice(0, max) } },
+      });
+    }
   }
 }

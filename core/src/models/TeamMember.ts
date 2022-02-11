@@ -79,12 +79,6 @@ export class TeamMember extends CommonModel<TeamMember> {
 
   // --- Class Methods --- //
 
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
-
   @BeforeValidate
   static lowercaseEmail(instance: TeamMember) {
     if (instance.email) instance.email = instance.email.toLocaleLowerCase();

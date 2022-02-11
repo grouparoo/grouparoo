@@ -12,12 +12,10 @@ import {
   SimplePropertyOptions,
 } from "../../models/Property";
 import { GrouparooRecord } from "../../models/GrouparooRecord";
-import { App } from "../../models/App";
 import { GrouparooModel } from "../../models/GrouparooModel";
 import { Option } from "../../models/Option";
 import { OptionHelper } from "../optionHelper";
-import { MappingHelper } from "../mappingHelper";
-import { log, utils, api } from "actionhero";
+import { log, utils } from "actionhero";
 import { FilterHelper } from "../filterHelper";
 import { topologicalSort } from "../topologicalSort";
 import { ConfigWriter } from "../configWriter";
@@ -26,7 +24,7 @@ import {
   RecordPropertyPluginMethodResponse,
 } from "../../classes/plugin";
 import { TableSpeculation } from "../tableSpeculation";
-import { RecordPropertyType } from "./record";
+import { AppsCache } from "../../modules/caches/appsCache";
 
 export namespace SourceOps {
   /**
@@ -95,15 +93,7 @@ export namespace SourceOps {
     record: GrouparooRecord,
     property: Property,
     propertyOptionsOverride?: OptionHelper.SimpleOptions,
-    propertyFiltersOverride?: PropertyFiltersWithKey[],
-    preloadedArgs: {
-      app?: App;
-      connection?: any;
-      appOptions?: OptionHelper.SimpleOptions;
-      sourceOptions?: OptionHelper.SimpleOptions;
-      sourceMapping?: MappingHelper.Mappings;
-      recordProperties?: RecordPropertyType;
-    } = {}
+    propertyFiltersOverride?: PropertyFiltersWithKey[]
   ) {
     if (property.state !== "ready" && !propertyOptionsOverride) return;
 
@@ -121,24 +111,21 @@ export namespace SourceOps {
     const method = pluginConnection.methods.recordProperty;
     if (!method) return;
 
-    const app =
-      preloadedArgs.app ||
-      (await source.$get("app", { scope: null, include: [Option] }));
-    const connection = preloadedArgs.connection || (await app.getConnection());
-    const appOptions = preloadedArgs.appOptions || (await app.getOptions());
-    const sourceOptions =
-      preloadedArgs.sourceOptions || (await source.getOptions());
-    const sourceMapping =
-      preloadedArgs.sourceMapping || (await source.getMapping());
+    const app = await AppsCache.findOneWithCache(
+      source.appId,
+      undefined,
+      "ready"
+    );
+    const connection = await app.getConnection();
+    const appOptions = await app.getOptions();
+    const sourceOptions = await source.getOptions();
+    const sourceMapping = await source.getMapping();
 
     // we may not have the record property needed to make the mapping (ie: userId is not set on this anonymous record)
     if (Object.values(sourceMapping).length > 0) {
       const propertyMappingKey = Object.values(sourceMapping)[0];
-      const recordProperties =
-        preloadedArgs.recordProperties || (await record.getProperties());
-      if (!recordProperties[propertyMappingKey]) {
-        return;
-      }
+      const recordProperties = await record.getProperties();
+      if (!recordProperties[propertyMappingKey]) return;
     }
 
     while ((await app.checkAndUpdateParallelism("incr")) === false) {
@@ -184,15 +171,7 @@ export namespace SourceOps {
     records: GrouparooRecord[],
     properties: Property[],
     propertyOptionsOverride?: { [key: string]: SimplePropertyOptions },
-    propertyFiltersOverride?: { [key: string]: PropertyFiltersWithKey[] },
-    preloadedArgs: {
-      app?: App;
-      connection?: any;
-      appOptions?: OptionHelper.SimpleOptions;
-      sourceOptions?: OptionHelper.SimpleOptions;
-      sourceMapping?: MappingHelper.Mappings;
-      recordProperties?: {};
-    } = {}
+    propertyFiltersOverride?: { [key: string]: PropertyFiltersWithKey[] }
   ) {
     if (
       properties.find((p) => p.state !== "ready") &&
@@ -216,14 +195,15 @@ export namespace SourceOps {
     const method = pluginConnection.methods.recordProperties;
     if (!method) return;
 
-    const app =
-      preloadedArgs.app || (await source.$get("app", { include: [Option] }));
-    const connection = preloadedArgs.connection || (await app.getConnection());
-    const appOptions = preloadedArgs.appOptions || (await app.getOptions());
-    const sourceOptions =
-      preloadedArgs.sourceOptions || (await source.getOptions());
-    const sourceMapping =
-      preloadedArgs.sourceMapping || (await source.getMapping());
+    const app = await AppsCache.findOneWithCache(
+      source.appId,
+      undefined,
+      "ready"
+    );
+    const connection = await app.getConnection();
+    const appOptions = await app.getOptions();
+    const sourceOptions = await source.getOptions();
+    const sourceMapping = await source.getMapping();
 
     while ((await app.checkAndUpdateParallelism("incr")) === false) {
       log(`parallelism limit reached for ${app.type}, sleeping...`);
@@ -353,22 +333,6 @@ export namespace SourceOps {
       where: { state: "ready" },
     });
 
-    const recordProperties = await record.getProperties();
-    const app = await source.$get("app", { scope: null, include: [Option] });
-    const appOptions = await app.getOptions();
-    const connection = await app.getConnection();
-    const sourceOptions = await source.getOptions();
-    const sourceMapping = await source.getMapping();
-
-    const preloadedArgs = {
-      app,
-      connection,
-      appOptions,
-      sourceOptions,
-      sourceMapping,
-      recordProperties,
-    };
-
     const { pluginConnection } = await source.getPlugin();
     if (!pluginConnection) {
       throw new Error(
@@ -389,8 +353,7 @@ export namespace SourceOps {
         record,
         property,
         null,
-        null,
-        preloadedArgs
+        null
       );
     }
 

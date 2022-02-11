@@ -80,12 +80,6 @@ export class GroupRule extends CommonModel<GroupRule> {
 
   // --- Class Methods --- //
 
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
-
   @BeforeSave
   static async ensureEitherPropertyOrRecordColumn(instance: GroupRule) {
     if (

@@ -37,10 +37,10 @@ import { Group } from "./Group";
 import { GroupRule } from "./GroupRule";
 import { Mapping } from "./Mapping";
 import { Option } from "./Option";
-import { Property } from "./Property";
 import { GrouparooModel } from "./GrouparooModel";
 import { ModelGuard } from "../modules/modelGuard";
 import { CommonModel } from "../classes/commonModel";
+import { PropertiesCache } from "../modules/caches/propertiesCache";
 
 export interface DestinationMapping extends MappingHelper.Mappings {}
 export interface SimpleDestinationGroupMembership {
@@ -396,7 +396,10 @@ export class Destination extends CommonModel<Destination> {
       false,
       saveCache
     );
-    const properties = await Property.findAllWithCache(this.modelId);
+    const properties = await PropertiesCache.findAllWithCache(
+      this.modelId,
+      "ready"
+    );
     const exportArrayProperties = await this.getExportArrayProperties();
 
     // check for array properties
@@ -616,12 +619,6 @@ export class Destination extends CommonModel<Destination> {
   }
 
   // --- Class Methods --- //
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
 
   @BeforeCreate
   @BeforeSave

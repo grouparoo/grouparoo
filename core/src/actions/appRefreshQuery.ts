@@ -3,6 +3,7 @@ import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { AppRefreshQuery } from "../models/AppRefreshQuery";
 import { ActionPermission } from "../models/Permission";
 import { Run } from "../models/Run";
+import { APIData } from "../modules/apiData";
 import { ConfigWriter } from "../modules/configWriter";
 
 export class AppRefreshQueryRun extends AuthenticatedAction {
@@ -54,7 +55,7 @@ export class AppRefreshQueryCreate extends AuthenticatedAction {
   inputs = {
     appId: { required: true },
     refreshQuery: { required: false },
-    recurringFrequency: { required: false },
+    recurringFrequency: { required: false, formatter: APIData.ensureNumber },
     state: { required: false },
   };
 
