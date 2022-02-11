@@ -73,10 +73,10 @@ export default async function Initialize(
     " * Ensure that Postgres and Redis are running if you have enabled them in .env or your environment."
   );
   console.info(
-    " * You can now configure your Sources and Destinations via our local UI by running the `grouparoo config` command."
+    " * You can run `grouparoo config` to get started configuring your Model definitions, Sources, and Destinations."
   );
   console.info(
-    " * Visit www.grouparoo.com/docs to learn about configuring your Grouparoo application."
+    " * Visit www.grouparoo.com/docs/config to learn about configuring your Grouparoo application."
   );
   console.info("");
 }
