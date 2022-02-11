@@ -57,7 +57,7 @@ interface Props {
   preview: SourcePreviewMethodResponseRow[];
 }
 
-interface TypeaheadProps {
+interface FormFieldProps {
   control: Control<FormData, object>;
   opt: ConnectionOptionsOption;
   connectionOptions: SourceOptionsMethodResponse;
@@ -68,7 +68,7 @@ interface TypeaheadProps {
   register: UseFormRegister<FormData>;
 }
 
-const TypeaheadDeterminer = ({
+const FormFieldGenerator = ({
   control,
   opt,
   connectionOptions,
@@ -77,7 +77,7 @@ const TypeaheadDeterminer = ({
   source,
   updateOption,
   register,
-}: TypeaheadProps) => {
+}: FormFieldProps) => {
   if (connectionOptions[opt.key]?.type === "typeahead") {
     return (
       <>
@@ -527,7 +527,7 @@ const Page: NextPage<Props> = ({
                       ) : null}
                     </Form.Label>
 
-                    <TypeaheadDeterminer
+                    <FormFieldGenerator
                       connectionOptions={connectionOptions}
                       control={control}
                       loading={loading}
