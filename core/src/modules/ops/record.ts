@@ -25,6 +25,7 @@ import { GrouparooModel } from "../../models/GrouparooModel";
 import { CLS } from "../cls";
 import { DestinationOps } from "./destination";
 import { PropertiesCache } from "../caches/propertiesCache";
+import { ModelsCache } from "../caches/modelsCache";
 
 export interface RecordPropertyValue {
   id: RecordProperty["id"];
@@ -835,7 +836,7 @@ export namespace RecordOps {
         if (source instanceof Source) {
           modelId = source.modelId;
         } else {
-          const models = await GrouparooModel.findAll();
+          const models = await ModelsCache.findAllWithCache();
           if (models.length > 1) throw new Error(`indeterminate model`);
           modelId = models[0].id;
         }

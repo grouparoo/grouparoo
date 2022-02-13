@@ -150,7 +150,7 @@ export class Source extends CommonModel<Source> {
   }
 
   async afterSetOptions(hasChanges: boolean) {
-    if (hasChanges) SourcesCache.invalidate();
+    if (hasChanges) await Source.invalidateCache();
   }
 
   async validateOptions(options?: SimpleSourceOptions) {
@@ -186,8 +186,8 @@ export class Source extends CommonModel<Source> {
   }
 
   async afterSetMapping() {
-    SourcesCache.invalidate();
     await Source.determinePrimaryKeyProperty(this);
+    await Source.invalidateCache();
   }
 
   async validateMapping() {
