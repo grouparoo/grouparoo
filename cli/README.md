@@ -23,7 +23,6 @@ Options:
   -h, --help       display help for command
 
 Commands:
-  config [options]                 Interactively configure Grouparoo.
   init [options] <path>            Initialize a new Grouparoo project.  Use "." for this directory.
   update                           Upgrade the NPM packages in this Grouparoo project
   install [package]                Install a grouparoo plugin (via npm install) and enable it.  Use package@version for a specific version or tag
@@ -34,13 +33,6 @@ Commands:
 ## Commands
 
 In addition to the commands included with this package, the `grouparoo` command line interface will load commands from `@grouparoo/core` and any plugins you have installed. The list of available commands will vary based on your plugins and Grouparoo version.
-
-### Config
-
-Example: `npx grouparoo config`
-
-- This will start the Grouparoo Config UI and launch a browser for you to configure your instance.
-- For more information on Config UI, see http://www.grouparoo.com/docs/config
 
 ### Init
 
