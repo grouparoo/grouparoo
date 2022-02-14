@@ -202,7 +202,7 @@ export class Property extends CommonModel<Property> {
 
   async afterSetOptions(hasChanges: boolean) {
     if (hasChanges) {
-      PropertiesCache.invalidate();
+      await Property.invalidateCache();
       await PropertyOps.enqueueRuns(this);
     }
   }
@@ -236,7 +236,7 @@ export class Property extends CommonModel<Property> {
 
   async afterSetFilters(hasChanges: boolean) {
     if (hasChanges) {
-      PropertiesCache.invalidate();
+      await Property.invalidateCache();
       return PropertyOps.enqueueRuns(this);
     }
   }

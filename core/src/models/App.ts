@@ -117,7 +117,7 @@ export class App extends CommonModel<App> {
   }
 
   async afterSetOptions(hasChanges: boolean) {
-    if (hasChanges) AppsCache.invalidate();
+    if (hasChanges) await App.invalidateCache();
     if (hasChanges && this.state !== "draft" && !this.isNewRecord) {
       await redis.doCluster(
         "api.rpc.app.disconnect",

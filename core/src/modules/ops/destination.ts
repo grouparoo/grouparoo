@@ -31,6 +31,7 @@ import { Option } from "../../models/Option";
 import { getLock } from "../locks";
 import { ExportOps } from "./export";
 import { PropertiesCache } from "../caches/propertiesCache";
+import { DestinationsCache } from "../caches/destinationsCache";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -1155,20 +1156,16 @@ export namespace DestinationOps {
     record: GrouparooRecord,
     groups: Group[] = []
   ) {
+    const destinations = await DestinationsCache.findAllWithCache(
+      record.modelId,
+      "ready"
+    );
     const combinedGroupIds = groups.map((g) => g.id);
-    const relevantDestinations =
-      combinedGroupIds.length > 0
-        ? await Destination.findAll({
-            where: {
-              [Op.or]: [
-                { collection: "model", modelId: record.modelId },
-                { collection: "group", groupId: { [Op.in]: combinedGroupIds } },
-              ],
-            },
-          })
-        : await Destination.findAll({
-            where: { collection: "model", modelId: record.modelId },
-          });
+    const relevantDestinations = destinations.filter(
+      (d) =>
+        (d.collection === "model" && d.modelId === record.modelId) ||
+        (d.collection === "group" && combinedGroupIds.includes(d.groupId))
+    );
 
     return relevantDestinations;
   }

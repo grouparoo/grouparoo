@@ -1,4 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
+import { api } from "actionhero";
 import { Property, Source } from "../../../src";
 import { PropertiesCache } from "../../../src/modules/caches/propertiesCache";
 
@@ -50,63 +51,69 @@ describe("models/propertiesCache", () => {
 
       await property.destroy();
     });
+  });
 
-    describe("rpc", () => {
-      let property: Property;
+  describe("rpc", () => {
+    let property: Property;
+    let RPCMethod: (arg: any) => void | Promise<void>;
 
-      async function makeProperty() {
-        property = await helper.factories.property(
-          source,
-          {},
-          { column: "foo" }
-        );
-        await helper.sleep(100); // wait for delayed RPC calls
-      }
+    async function makeProperty() {
+      property = await helper.factories.property(source, {}, { column: "foo" });
+      await helper.sleep(100); // wait for delayed RPC calls
+    }
 
-      afterEach(async () => {
-        try {
-          await property.destroy();
-        } catch {}
-      });
+    beforeEach(() => (RPCMethod = api.rpc.property.invalidateCache));
 
-      test("creating a property signals RPC", async () => {
-        PropertiesCache.expires = new Date().getTime();
-        await makeProperty();
-        await helper.sleep(10);
-        expect(PropertiesCache.expires).toBe(0);
-      });
+    afterEach(async () => {
+      api.rpc.property.invalidateCache = RPCMethod;
+      await property.destroy().catch(() => null);
+    });
 
-      test("updating a property signals RPC", async () => {
-        await makeProperty();
-        PropertiesCache.expires = new Date().getTime();
-        await property.update({ key: "new key" });
-        await helper.sleep(10);
-        expect(PropertiesCache.expires).toBe(0);
-      });
+    test("creating a property signals RPC", async () => {
+      PropertiesCache.expires = new Date().getTime();
+      await makeProperty();
+      await helper.sleep(10);
+      expect(PropertiesCache.expires).toBe(0);
+    });
 
-      test("calling setOptions signals RPC", async () => {
-        await makeProperty();
-        PropertiesCache.expires = new Date().getTime();
-        await property.setOptions({ column: "test other column" });
-        await helper.sleep(10);
-        expect(PropertiesCache.expires).toBe(0);
-      });
+    test("updating a property signals RPC", async () => {
+      await makeProperty();
+      PropertiesCache.expires = new Date().getTime();
+      await property.update({ key: "new key" });
+      await helper.sleep(10);
+      expect(PropertiesCache.expires).toBe(0);
+    });
 
-      test("calling setFilter signals RPC", async () => {
-        await makeProperty();
-        PropertiesCache.expires = new Date().getTime();
-        await property.setFilters([{ op: "gt", match: 1, key: "id" }]);
-        await helper.sleep(10);
-        expect(PropertiesCache.expires).toBe(0);
-      });
+    test("remote methods are called", async () => {
+      const mock = jest.fn();
+      api.rpc.property.invalidateCache = mock;
+      await makeProperty();
+      await helper.sleep(10);
+      expect(mock).toHaveBeenCalled();
+    });
 
-      test("destroying a property signals RPC", async () => {
-        await makeProperty();
-        PropertiesCache.expires = new Date().getTime();
-        await property.destroy();
-        await helper.sleep(10);
-        expect(PropertiesCache.expires).toBe(0);
-      });
+    test("calling setOptions signals RPC", async () => {
+      await makeProperty();
+      PropertiesCache.expires = new Date().getTime();
+      await property.setOptions({ column: "test other column" });
+      await helper.sleep(10);
+      expect(PropertiesCache.expires).toBe(0);
+    });
+
+    test("calling setFilter signals RPC", async () => {
+      await makeProperty();
+      PropertiesCache.expires = new Date().getTime();
+      await property.setFilters([{ op: "gt", match: 1, key: "id" }]);
+      await helper.sleep(10);
+      expect(PropertiesCache.expires).toBe(0);
+    });
+
+    test("destroying a property signals RPC", async () => {
+      await makeProperty();
+      PropertiesCache.expires = new Date().getTime();
+      await property.destroy();
+      await helper.sleep(10);
+      expect(PropertiesCache.expires).toBe(0);
     });
   });
 

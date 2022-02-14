@@ -1,7 +1,8 @@
-import { log } from "actionhero";
+import { log, redis } from "actionhero";
 import { Op } from "sequelize";
 import {
   AfterDestroy,
+  AfterSave,
   AllowNull,
   BeforeCreate,
   BeforeDestroy,
@@ -41,6 +42,8 @@ import { GrouparooModel } from "./GrouparooModel";
 import { ModelGuard } from "../modules/modelGuard";
 import { CommonModel } from "../classes/commonModel";
 import { PropertiesCache } from "../modules/caches/propertiesCache";
+import { DestinationsCache } from "../modules/caches/destinationsCache";
+import { CLS } from "../modules/cls";
 
 export interface DestinationMapping extends MappingHelper.Mappings {}
 export interface SimpleDestinationGroupMembership {
@@ -258,7 +261,8 @@ export class Destination extends CommonModel<Destination> {
     saveCache = true
   ) {
     if (externallyValidate) await this.validateMappings(mappings, saveCache);
-    return MappingHelper.setMapping(this, mappings);
+    await MappingHelper.setMapping(this, mappings);
+    await Destination.invalidateCache();
   }
 
   async getOptions(sourceFromEnvironment = true) {
@@ -271,7 +275,10 @@ export class Destination extends CommonModel<Destination> {
   }
 
   async afterSetOptions(hasChanges: boolean) {
-    if (hasChanges) return this.exportMembers();
+    if (hasChanges) {
+      await Destination.invalidateCache();
+      return this.exportMembers();
+    }
   }
 
   async getExportArrayProperties() {
@@ -757,6 +764,15 @@ export class Destination extends CommonModel<Destination> {
     return Export.update(
       { destinationId: null },
       { where: { destinationId: instance.id } }
+    );
+  }
+
+  @AfterSave
+  @AfterDestroy
+  static async invalidateCache() {
+    DestinationsCache.invalidate();
+    await CLS.afterCommit(
+      async () => await redis.doCluster("api.rpc.destination.invalidateCache")
     );
   }
 }

@@ -1,3 +1,4 @@
+import { redis } from "actionhero";
 import {
   Table,
   Column,
@@ -10,6 +11,8 @@ import {
   BeforeDestroy,
   DefaultScope,
   Default,
+  AfterSave,
+  AfterDestroy,
 } from "sequelize-typescript";
 import { Source } from "./Source";
 import { ModelConfigurationObject } from "../classes/codeConfig";
@@ -22,6 +25,8 @@ import { GrouparooRecord } from "./GrouparooRecord";
 import { RunOps } from "../modules/ops/runs";
 import { StateMachine } from "../modules/stateMachine";
 import { CommonModel } from "../classes/commonModel";
+import { CLS } from "../modules/cls";
+import { ModelsCache } from "../modules/caches/modelsCache";
 
 export const ModelTypes = ["profile", "account", "custom"] as const;
 export type ModelType = typeof ModelTypes[number];
@@ -181,5 +186,14 @@ export class GrouparooModel extends CommonModel<GrouparooModel> {
         `cannot delete this model, ${records} records rely on it`
       );
     }
+  }
+
+  @AfterSave
+  @AfterDestroy
+  static async invalidateCache() {
+    ModelsCache.invalidate();
+    await CLS.afterCommit(
+      async () => await redis.doCluster("api.rpc.model.invalidateCache")
+    );
   }
 }
