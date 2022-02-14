@@ -28,7 +28,6 @@ export namespace ConfigUser {
     email: string,
     subscribed: boolean = true
   ): Promise<void> {
-    if (!subscribed) return;
     await GrouparooSubscription({ email, subscribed });
   }
 
@@ -55,7 +54,7 @@ export namespace ConfigUser {
   }) {
     if (getGrouparooRunMode() !== "cli:config") return;
     await store();
-    if (subscribed) await subscribe(email, subscribed);
+    await subscribe(email, subscribed);
     await storeCompanyName(company);
   }
 
