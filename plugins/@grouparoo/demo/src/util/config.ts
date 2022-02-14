@@ -8,8 +8,10 @@ import MySQL from "../connections/mysql";
 import SQLite from "../connections/sqlite";
 import Connection from "./connection";
 
+type DB = Postgres | Mongo | BigQuery | Redshift | Snowflake | MySQL | SQLite;
+
 class Config {
-  db: any;
+  db: DB;
   dbName: string;
   sources: string[];
   destinations: string[];
@@ -61,13 +63,13 @@ class Config {
     this.dbName = name;
   }
 
-  addSource(name) {
+  addSource(name: string) {
     if (!this.sources.includes(name)) this.sources.push(name);
   }
-  addDestination(name) {
+  addDestination(name: string) {
     if (!this.destinations.includes(name)) this.destinations.push(name);
   }
-  addOther(name) {
+  addOther(name: string) {
     if (!this.others.includes(name)) this.others.push(name);
   }
 
@@ -130,10 +132,8 @@ class Config {
       // otherwise setting up anyway
     }
 
-    let db = this.db;
-    if (!db) {
-      db = new Postgres();
-    }
+    let db = this.db ?? new Postgres();
+
     if (this.sources.length === 0) {
       this.add("models");
     }

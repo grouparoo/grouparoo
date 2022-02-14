@@ -104,6 +104,6 @@ class Replacer {
   }
 }
 
-function readEnv(filePath) {
+function readEnv(filePath: string) {
   return dotenv.parse(fs.readFileSync(filePath));
 }

@@ -122,7 +122,7 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   validateQuery(query);
 
   try {
-    const rows: { [column: string]: DataResponse }[] = await connection.execute(
+    const rows: Record<string, DataResponse>[] = await connection.execute(
       query,
       params
     );
