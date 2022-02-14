@@ -1,11 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ReactChild, ReactFragment, ReactPortal, useMemo } from "react";
+import { useMemo } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { navIconStyle, iconConstrainedStyle, navLiStyle } from "../Navigation";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { NavigationItem } from "@grouparoo/core/src/actions/navigation";
-import RunningRunsBadge from "./RunningRunsBadge";
 
 interface Properties {
   href: string;

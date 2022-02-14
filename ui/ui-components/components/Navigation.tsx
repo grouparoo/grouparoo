@@ -15,7 +15,7 @@ import { truncate } from "../utils/truncate";
 import LinkButton from "./LinkButton";
 import { grouparooUiEdition } from "../utils/uiEdition";
 import { useWebAppContext } from "../contexts/webApp";
-import { errorHandler, sessionHandler } from "../eventHandlers";
+import { sessionHandler } from "../eventHandlers";
 
 export const navLiStyle: React.CSSProperties = {
   marginTop: 16,
