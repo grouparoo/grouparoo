@@ -29,7 +29,7 @@ describe("navigation", () => {
           title: "Accounts",
           href: "/model/accounts/overview",
           mainPathSectionIdx: 2,
-          children: [
+          subNavItems: [
             {
               type: "link",
               title: "Model Data",

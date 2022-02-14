@@ -20,7 +20,7 @@ export interface NavigationItem {
   href?: string;
   mainPathSectionIdx?: number;
   small?: boolean;
-  children?: NavigationItem[];
+  subNavItems?: NavigationItem[];
 }
 
 export class NavigationList extends OptionallyAuthenticatedAction {
@@ -108,7 +108,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
           icon: model.getIcon(),
           href: `/model/${model.id}/overview`,
           mainPathSectionIdx: 2,
-          children: [
+          subNavItems: [
             {
               type: "link",
               title: "Model Data",

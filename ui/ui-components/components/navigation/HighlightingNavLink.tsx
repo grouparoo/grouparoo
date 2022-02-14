@@ -13,7 +13,7 @@ interface Properties {
   icon: string;
   mainPathSectionIdx: number;
   small: boolean;
-  navChildItems?: NavigationItem[];
+  subNavItems?: NavigationItem[];
 }
 
 export default function HighlightingNavLink({
@@ -22,7 +22,7 @@ export default function HighlightingNavLink({
   icon,
   mainPathSectionIdx,
   small,
-  navChildItems,
+  subNavItems,
 }: Properties) {
   const router = useRouter();
   const active = useMemo(() => {
@@ -82,22 +82,12 @@ export default function HighlightingNavLink({
         </a>
       </Link>
       {active &&
-        navChildItems?.map((childNav) => (
+        subNavItems?.map((childNav) => (
           <div key={childNav.href} className="ml-3">
             <HighlightingNavLink
               href={childNav.href}
               mainPathSectionIdx={childNav.mainPathSectionIdx ?? 1}
-              text={
-                <>
-                  {childNav.title}
-                  {childNav.title === "Runs" ? (
-                    <>
-                      {" "}
-                      <RunningRunsBadge />
-                    </>
-                  ) : null}
-                </>
-              }
+              text={childNav.title}
               icon={childNav.icon}
               small={childNav.small}
             />
