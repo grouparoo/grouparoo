@@ -288,7 +288,7 @@ function formatURL(v: string) {
 function formatEmail(v: string) {
   // We do light validation on the email to ensure that it has an "@" and a "."
   if (!isEmail(v)) throw new Error(`email "${v}" is not valid`);
-  return v.toLocaleLowerCase();
+  return v;
 }
 
 async function formatPhoneNumber(v: string) {
