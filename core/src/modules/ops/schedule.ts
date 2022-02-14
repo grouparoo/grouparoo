@@ -84,7 +84,7 @@ export namespace ScheduleOps {
 
     return {
       importsCount,
-      highWaterMark: nextHighWaterMark,
+      highWaterMark: schedule.incremental ? nextHighWaterMark : {},
       sourceOffset: nextSourceOffset,
     };
   }

@@ -895,13 +895,13 @@ describe("models/schedule", () => {
       const firstRun = await schedule.enqueueRun();
       await specHelper.runTask("schedule:run", { runId: firstRun.id });
       await firstRun.reload();
-      expect(firstRun.highWaterMark).toEqual({ updated_at: 100 });
+      expect(firstRun.highWaterMark).toEqual({});
       await firstRun.update({ state: "complete", importsCreated: 100 });
 
       const secondRun = await schedule.enqueueRun();
       await specHelper.runTask("schedule:run", { runId: secondRun.id });
       await secondRun.reload();
-      expect(secondRun.highWaterMark).toEqual({ updated_at: 100 }); // starts over
+      expect(secondRun.highWaterMark).toEqual({});
 
       await schedule.destroy();
     });

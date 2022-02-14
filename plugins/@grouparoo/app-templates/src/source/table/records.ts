@@ -86,7 +86,6 @@ export const getRecords: GetRecordsMethod = ({ getRows }) => {
 
       if (!schedule.incremental) {
         nextSourceOffset = sourceOffset + limit;
-        nextHighWaterMark[highWaterMarkAndSortColumnASC] = newValue;
       } else if (currentValue && newValue === currentValue) {
         nextSourceOffset = sourceOffset + limit;
       } else {
