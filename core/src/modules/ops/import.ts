@@ -1,11 +1,11 @@
+import { config, env, log } from "actionhero";
 import { Import } from "../../models/Import";
 import { Run } from "../../models/Run";
-import { RecordOps } from "./record";
-import { CLS } from "../../modules/cls";
-import { Op } from "sequelize";
-import { config } from "actionhero";
-import { Schedule } from "../../models/Schedule";
 import { Source } from "../../models/Source";
+import { RecordOps } from "./record";
+import { Op } from "sequelize";
+import { Schedule } from "../../models/Schedule";
+import { SourcesCache } from "../../modules/caches/sourcesCache";
 
 export namespace ImportOps {
   const defaultImportProcessingDelay = 1000 * 60 * 5;
@@ -32,22 +32,17 @@ export namespace ImportOps {
       limit,
     });
 
-    if (imports.length > 0) {
-      await Import.update(
-        { startedAt: new Date() },
-        {
-          where: { id: { [Op.in]: imports.map((i) => i.id) } },
-        }
-      );
-    }
+    if (imports.length === 0) return [];
+
+    await Import.update(
+      { startedAt: new Date() },
+      {
+        where: { id: imports.map((i) => i.id) },
+      }
+    );
 
     const runIds: string[] = [];
-    for (const i in imports) {
-      const _import = imports[i];
-      await CLS.enqueueTask("import:associateRecord", {
-        importId: _import.id,
-      });
-
+    for (const _import of imports) {
       if (
         _import.creatorType === "run" &&
         !runIds.includes(_import.creatorId)
@@ -56,43 +51,84 @@ export namespace ImportOps {
       }
     }
 
-    if (runIds.length > 0) {
+    const sources = await SourcesCache.findAllWithCache();
+    const runs = await Run.findAll({ where: { id: runIds } });
+    const schedules = await Schedule.findAll({
+      where: {
+        id: runs
+          .filter((r) => r.creatorType === "schedule")
+          .map((r) => r.creatorId),
+      },
+    });
+
+    const bulkCreates: {
+      id: Import["id"];
+      state: Import["state"];
+      creatorType: Import["creatorType"];
+      creatorId: Import["creatorId"];
+      createdRecord: Import["createdRecord"];
+      recordId: Import["recordId"];
+      data: Import["data"];
+      recordAssociatedAt: Import["recordAssociatedAt"];
+      startedAt: Import["startedAt"];
+      createdAt: Import["createdAt"];
+      updatedAt: Import["updatedAt"];
+    }[] = [];
+
+    for (const _import of imports) {
+      let source: Source;
+      if (runIds.includes(_import.creatorId)) {
+        const run = runs.find((r) => r.id === _import.creatorId);
+        const schedule = schedules.find((s) => s.id === run.creatorId);
+        source = sources.find((s) => s.id === schedule.sourceId);
+      }
+
+      try {
+        const { record, isNew } =
+          await RecordOps.findOrCreateByUniqueRecordProperties(
+            _import.data,
+            source
+          );
+
+        const now = new Date();
+        bulkCreates.push({
+          id: _import.id,
+          state: "importing",
+          creatorType: _import.creatorType,
+          creatorId: _import.creatorId,
+          createdRecord: isNew,
+          recordId: record.id,
+          data: _import.data,
+          recordAssociatedAt: now,
+          startedAt: _import.startedAt,
+          createdAt: _import.createdAt,
+          updatedAt: now,
+        });
+
+        await record.addOrUpdateProperties(_import.data, undefined, true);
+      } catch (error) {
+        if (env !== "test") log(`[ASSOCIATE RECORD ERROR] ${error}`, "alert");
+        if (_import) await _import.setError(error, this.name);
+      }
+
+      await RecordOps.markPendingByIds(bulkCreates.map((i) => i.recordId));
+
       await Run.update(
         { state: "running", completedAt: null },
-        { where: { state: "complete", id: { [Op.in]: runIds } } }
+        { where: { state: "complete", id: runIds } }
       );
+
+      await Import.bulkCreate(bulkCreates, {
+        updateOnDuplicate: [
+          "state",
+          "createdRecord",
+          "recordId",
+          "recordAssociatedAt",
+          "updatedAt",
+        ],
+      });
+
+      return imports;
     }
-
-    return imports;
-  }
-
-  export async function associateRecord(_import: Import) {
-    let run: Run;
-    let schedule: Schedule;
-    let source: Source;
-
-    run = await Run.findOne({
-      where: { id: _import.creatorId, creatorType: "schedule" },
-    });
-    if (run && run.creatorType === "schedule")
-      schedule = await Schedule.findOne({ where: { id: run.creatorId } });
-    if (schedule)
-      source = await Source.findOne({ where: { id: schedule.sourceId } });
-
-    // will throw if there are no unique record properties
-    const { record, isNew } =
-      await RecordOps.findOrCreateByUniqueRecordProperties(
-        _import.data,
-        source
-      );
-
-    _import.state = "importing";
-    _import.createdRecord = isNew;
-    _import.recordId = record.id;
-    _import.recordAssociatedAt = new Date();
-
-    await _import.save();
-
-    return { record, isNew };
   }
 }

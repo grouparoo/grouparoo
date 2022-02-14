@@ -25,7 +25,7 @@ import { GrouparooModel } from "../../models/GrouparooModel";
 import { CLS } from "../cls";
 import { DestinationOps } from "./destination";
 import { PropertiesCache } from "../caches/propertiesCache";
-import { ModelsCache } from "../caches/modelsCache";
+import { DestinationsCache } from "../caches/destinationsCache";
 
 export interface RecordPropertyValue {
   id: RecordProperty["id"];
@@ -786,75 +786,63 @@ export namespace RecordOps {
     }
 
     const uniquePropertyIds = Object.keys(uniquePropertiesHash);
-    const lockReleases = [];
 
-    try {
-      for (const i in uniquePropertyIds) {
-        const id = uniquePropertyIds[i];
-        const value = uniquePropertiesHash[id];
-        const property = uniqueProperties.find((r) => r.id === id);
+    for (const i in uniquePropertyIds) {
+      const id = uniquePropertyIds[i];
+      const value = uniquePropertiesHash[id];
+      const property = uniqueProperties.find((r) => r.id === id);
 
-        const { releaseLock } = await waitForLock(
-          `recordProperty:${id}:${value}`
-        );
-        lockReleases.push(releaseLock);
+      recordProperty = await RecordProperty.findOne({
+        where: {
+          propertyId: property.id,
+          rawValue: String(value),
+        },
+      });
 
-        recordProperty = await RecordProperty.findOne({
-          where: {
-            propertyId: property.id,
-            rawValue: String(value),
-          },
-        });
-
-        if (recordProperty) break;
-      }
-
-      if (recordProperty) {
-        record = await GrouparooRecord.findOne({
-          where: { id: recordProperty.recordId },
-        });
-      } else {
-        const canCreateNewRecord =
-          typeof source === "boolean"
-            ? source
-            : source instanceof Source
-            ? (await PropertiesCache.findAllWithCache(source.modelId, "ready"))
-                .filter((p) => p.unique === true && p.sourceId === source.id)
-                .map((p) => p.key)
-                .filter((key) => !!hash[key]).length > 0
-            : false;
-
-        if (!canCreateNewRecord) {
-          throw new Error(
-            `could not create a new record because no record property in ${JSON.stringify(
-              hash
-            )} is unique and owned by the source`
-          );
-        }
-
-        let modelId: string;
-        if (source instanceof Source) {
-          modelId = source.modelId;
-        } else {
-          const models = await ModelsCache.findAllWithCache();
-          if (models.length > 1) throw new Error(`indeterminate model`);
-          modelId = models[0].id;
-        }
-
-        record = await GrouparooRecord.create({ modelId });
-        record = await record.reload();
-        const { releaseLock } = await waitForLock(`record:${record.id}`);
-        lockReleases.push(releaseLock);
-        await addOrUpdateProperties([record], [uniquePropertiesHash], false);
-        await buildNullProperties([record]);
-
-        isNew = true;
-      }
-
-      return { record, isNew };
-    } finally {
-      await Promise.all(lockReleases.map((releaseLock) => releaseLock()));
+      if (recordProperty) break;
     }
+
+    if (recordProperty) {
+      record = await GrouparooRecord.findOne({
+        where: { id: recordProperty.recordId },
+      });
+    } else {
+      const canCreateNewRecord =
+        typeof source === "boolean"
+          ? source
+          : source instanceof Source
+          ? (await PropertiesCache.findAllWithCache(source.modelId, "ready"))
+              .filter((p) => p.unique === true && p.sourceId === source.id)
+              .map((p) => p.key)
+              .filter((key) => !!hash[key]).length > 0
+          : false;
+
+      if (!canCreateNewRecord) {
+        throw new Error(
+          `could not create a new record because no record property in ${JSON.stringify(
+            hash
+          )} is unique and owned by the source`
+        );
+      }
+
+      let modelId: string;
+      if (source instanceof Source) {
+        modelId = source.modelId;
+      } else {
+        const models = await GrouparooModel.findAll();
+        if (models.length > 1) throw new Error(`indeterminate model`);
+        modelId = models[0].id;
+      }
+
+      record = await GrouparooRecord.create({ modelId });
+      record = await record.reload();
+      await addOrUpdateProperties([record], [uniquePropertiesHash], false);
+      await buildNullProperties([record]);
+
+      isNew = true;
+    }
+
+    return { record, isNew };
   }
 
   /**
@@ -864,17 +852,17 @@ export namespace RecordOps {
     recordIds: string[],
     includeProperties = true
   ) {
+    await GrouparooRecord.update(
+      { state: "pending" },
+      { where: { id: { [Op.in]: recordIds } } }
+    );
+
     if (includeProperties) {
       await RecordProperty.update(
         { state: "pending", startedAt: null },
         { where: { recordId: { [Op.in]: recordIds } } }
       );
     }
-
-    await GrouparooRecord.update(
-      { state: "pending" },
-      { where: { id: { [Op.in]: recordIds } } }
-    );
   }
 
   /**
@@ -1059,9 +1047,8 @@ export namespace RecordOps {
    * Find records that are not ready but whose properties are and make them ready.
    * Then, process the related imports.
    */
-  export async function makeExports(limit = 100) {
-    const now = new Date();
-    const records: GrouparooRecord[] = await api.sequelize.query(
+  export async function makeReady(limit = 100) {
+    const partialRecords: GrouparooRecord[] = await api.sequelize.query(
       `
       SELECT id from "records" where "state" = 'pending'
       EXCEPT
@@ -1074,31 +1061,78 @@ export namespace RecordOps {
       }
     );
 
-    if (!records.length) return [];
+    if (!partialRecords.length) return [];
 
     await GrouparooRecord.update(
       { state: "ready" },
       {
         where: {
-          id: { [Op.in]: records.map((p) => p.id) },
+          id: { [Op.in]: partialRecords.map((p) => p.id) },
           state: "pending",
         },
       }
     );
 
-    await Import.update(
-      { state: "processing", importedAt: now },
-      {
-        where: {
-          recordId: { [Op.in]: records.map((p) => p.id) },
-          state: "importing",
-          recordAssociatedAt: { [Op.lt]: now },
-        },
-      }
-    );
+    await RecordOps.updateGroupMemberships(partialRecords);
+    await computeRecordsValidity(partialRecords);
 
-    await RecordOps.updateGroupMemberships(records);
-    await computeRecordsValidity(records);
+    return partialRecords;
+  }
+
+  export async function makeExports(
+    recordIds: string[],
+    toExport: boolean,
+    force: boolean
+  ) {
+    const records = await GrouparooRecord.findAll({
+      where: { id: recordIds, state: "ready" },
+      include: [RecordProperty, { model: GroupMember, include: [Group] }],
+    });
+    const imports = await Import.findAll({
+      where: {
+        state: "importing",
+        recordId: recordIds,
+      },
+    });
+
+    if (toExport) {
+      for (const record of records) {
+        const destinations = await DestinationOps.relevantFor(
+          record,
+          record.groupMembers.map((gm) => gm.group)
+        );
+
+        // check for explicit destinations to export to from each import
+        for (const _import of imports) {
+          if (
+            _import.recordId === record.id &&
+            _import.data?._meta?.destinationId &&
+            !destinations
+              .map((d) => d.id)
+              .includes(_import.data?._meta?.destinationId)
+          ) {
+            const destination = await DestinationsCache.findOneWithCache(
+              _import.data._meta.destinationId
+            );
+            if (destination) destinations.push(destination);
+          }
+        }
+
+        // make the exports
+        for (const destination of destinations) {
+          await destination.exportRecord(
+            record,
+            false,
+            force ? force : undefined
+          );
+        }
+      }
+    }
+
+    await Import.update(
+      { processedAt: new Date(), state: "complete" },
+      { where: { id: imports.map((i) => i.id) } }
+    );
 
     return records;
   }
