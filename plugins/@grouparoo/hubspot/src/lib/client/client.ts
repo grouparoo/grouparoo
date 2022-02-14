@@ -4,7 +4,6 @@ import HubspotObjects from "./objects";
 import axios, { AxiosRequestConfig } from "axios";
 
 class HubspotClient {
-  private _client: Client;
   private hapikey: string;
   private accessTokenGetter: oAuthAccessTokenGetter;
 
@@ -30,13 +29,10 @@ class HubspotClient {
     return { hapikey: this.hapikey };
   }
 
-  async getClient(): Promise<Client> {
-    if (!this._client) {
-      const options = await this.getClientOptions();
-      this._client = new Client(options);
-    }
-
-    return this._client;
+  withClient<T>(callback: (client: Client) => Promise<T>): Promise<T> {
+    return this.getClientOptions().then((options) =>
+      callback(new Client(options))
+    );
   }
 
   async getLists(): Promise<any> {
@@ -57,7 +53,7 @@ class HubspotClient {
     });
   }
 
-  async addContactToList(listId, email) {
+  async addContactToList(listId: string, email: string) {
     try {
       await this.request({
         method: "POST",
@@ -73,7 +69,7 @@ class HubspotClient {
     }
   }
 
-  async removeContactFromList(listId, email) {
+  async removeContactFromList(listId: string, email: string) {
     await this.request({
       method: "POST",
       url: `/contacts/v1/lists/${listId}/remove`,
@@ -84,16 +80,12 @@ class HubspotClient {
   }
 
   async getAccountDetails(): Promise<any> {
-    return this.getClient().then((client) => {
-      return client.account.getAccountDetails();
-    });
+    return this.withClient((client) => client.account.getAccountDetails());
   }
 
   async getContactByEmail(email: string): Promise<any> {
     try {
-      return this.getClient().then((client) =>
-        client.contacts.getByEmail(email)
-      );
+      return this.withClient((client) => client.contacts.getByEmail(email));
     } catch (error) {
       if (error?.response?.data?.category === "OBJECT_NOT_FOUND") {
         // ok
@@ -105,19 +97,19 @@ class HubspotClient {
   }
 
   async deleteContact(contactId: string): Promise<any> {
-    return await this.getClient().then((client) =>
+    return this.withClient((client) =>
       client.contacts.deleteContact(contactId)
     );
   }
 
   async createOrUpdateContact(payload: any): Promise<any> {
-    return await this.getClient().then((client) =>
+    return this.withClient((client) =>
       client.contacts.createOrUpdateContact(payload)
     );
   }
 
   async getAllContactsProperties(): Promise<any> {
-    return await this.getClient().then((client) =>
+    return this.withClient((client) =>
       client.contactsProperties.getAllContactsProperties()
     );
   }
