@@ -1,7 +1,7 @@
 import { TestPluginMethod } from "@grouparoo/core";
 import { connect } from "./connect";
 
-export const test: TestPluginMethod = async ({ appOptions, connection }) => {
+export const test: TestPluginMethod = async ({ appOptions }) => {
   const client = await connect(appOptions);
   const { portalId } = await client.getAccountDetails();
   const success = portalId > 0;
