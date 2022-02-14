@@ -85,7 +85,9 @@ class HubspotClient {
 
   async getContactByEmail(email: string): Promise<any> {
     try {
-      return this.withClient((client) => client.contacts.getByEmail(email));
+      return await this.withClient((client) =>
+        client.contacts.getByEmail(email)
+      );
     } catch (error) {
       if (error?.response?.data?.category === "OBJECT_NOT_FOUND") {
         // ok
