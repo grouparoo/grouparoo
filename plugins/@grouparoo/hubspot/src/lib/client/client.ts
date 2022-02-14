@@ -1,68 +1,18 @@
 import Client, { IHubSpotClientProps } from "hubspot-api";
-import { SimpleAppOptions } from "@grouparoo/core";
+import { oAuthAccessTokenFetcher, SimpleAppOptions } from "@grouparoo/core";
 import HubspotObjects from "./objects";
 import axios, { AxiosRequestConfig } from "axios";
-
-class AccessTokenFetcher {
-  private accessToken: string;
-  private expirationDate: number = Date.now();
-
-  constructor(
-    private oAuthProviderName: string,
-    private refreshToken: string
-  ) {}
-
-  private async isAccessTokenExpired() {
-    return !this.accessToken || this.expirationDate <= Date.now();
-  }
-
-  private async refreshAccessToken() {
-    try {
-      for (
-        let retries = 3;
-        retries > 0 && this.isAccessTokenExpired();
-        retries--
-      ) {
-        const {
-          data: { token, expirationSeconds },
-        } = await axios.post(
-          `http://localhost:8080/api/v1/oauth/${this.oAuthProviderName}/client/refresh`,
-          {
-            refreshToken: this.refreshToken,
-          }
-        );
-
-        const expirationMs = Math.max(0, (expirationSeconds - 60) * 1000);
-
-        this.accessToken = token;
-        this.expirationDate = Date.now() + expirationMs;
-      }
-      // TODO: Throw error if access token is still expired
-    } catch (e) {
-      // TODO: Something's up and we need to figure out why
-      throw e;
-    }
-  }
-
-  public async fetchAccessToken(): Promise<string> {
-    if (this.isAccessTokenExpired()) {
-      await this.refreshAccessToken();
-    }
-
-    return this.accessToken;
-  }
-}
 
 class HubspotClient {
   private _client: Client;
   private hapikey: string;
-  private accessTokenFetcher: AccessTokenFetcher;
+  private accessTokenFetcher: oAuthAccessTokenFetcher;
 
   readonly objects = new HubspotObjects(this);
 
   constructor(appOptions: SimpleAppOptions) {
     if (appOptions.refreshToken) {
-      this.accessTokenFetcher = new AccessTokenFetcher(
+      this.accessTokenFetcher = new oAuthAccessTokenFetcher(
         "hubspot",
         appOptions.refreshToken as string
       );
