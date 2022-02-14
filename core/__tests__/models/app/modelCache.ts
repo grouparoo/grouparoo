@@ -1,4 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
+import { api } from "actionhero";
 import { App } from "../../../src";
 import { AppsCache } from "../../../src/modules/caches/appsCache";
 
@@ -32,49 +33,61 @@ describe("models/appsCache", () => {
 
       await draftApp.destroy();
     });
+  });
 
-    describe("rpc", () => {
-      let app: App;
+  describe("rpc", () => {
+    let app: App;
+    let RPCMethod: (arg: any) => void | Promise<void>;
 
-      async function makeApp() {
-        app = await helper.factories.app();
-        await helper.sleep(100); // wait for delayed RPC calls
-      }
+    async function makeApp() {
+      app = await helper.factories.app();
+      await helper.sleep(100); // wait for delayed RPC calls
+    }
 
-      afterEach(async () => {
-        await app.destroy().catch(() => null);
-      });
+    beforeEach(() => (RPCMethod = api.rpc.app.invalidateCache));
 
-      test("creating an app signals RPC", async () => {
-        AppsCache.expires = new Date().getTime();
-        await makeApp();
-        await helper.sleep(10);
-        expect(AppsCache.expires).toBe(0);
-      });
+    afterEach(async () => {
+      api.rpc.app.invalidateCache = RPCMethod;
+      await app.destroy().catch(() => null);
+    });
 
-      test("updating an app signals RPC", async () => {
-        await makeApp();
-        AppsCache.expires = new Date().getTime();
-        await app.update({ name: "new name" });
-        await helper.sleep(10);
-        expect(AppsCache.expires).toBe(0);
-      });
+    test("creating an app signals RPC", async () => {
+      AppsCache.expires = new Date().getTime();
+      await makeApp();
+      await helper.sleep(10);
+      expect(AppsCache.expires).toBe(0);
+    });
 
-      test("calling setOptions signals RPC", async () => {
-        await makeApp();
-        AppsCache.expires = new Date().getTime();
-        await app.setOptions({ fileId: "foo" });
-        await helper.sleep(10);
-        expect(AppsCache.expires).toBe(0);
-      });
+    test("remote methods are called", async () => {
+      const mock = jest.fn();
+      api.rpc.app.invalidateCache = mock;
+      await makeApp();
+      await helper.sleep(10);
+      expect(mock).toHaveBeenCalled();
+    });
 
-      test("destroying an app signals RPC", async () => {
-        await makeApp();
-        AppsCache.expires = new Date().getTime();
-        await app.destroy();
-        await helper.sleep(10);
-        expect(AppsCache.expires).toBe(0);
-      });
+    test("updating an app signals RPC", async () => {
+      await makeApp();
+      AppsCache.expires = new Date().getTime();
+      await app.update({ name: "new name" });
+      await helper.sleep(10);
+      expect(AppsCache.expires).toBe(0);
+    });
+
+    test("calling setOptions signals RPC", async () => {
+      await makeApp();
+      AppsCache.expires = new Date().getTime();
+      await app.setOptions({ fileId: "foo" });
+      await helper.sleep(10);
+      expect(AppsCache.expires).toBe(0);
+    });
+
+    test("destroying an app signals RPC", async () => {
+      await makeApp();
+      AppsCache.expires = new Date().getTime();
+      await app.destroy();
+      await helper.sleep(10);
+      expect(AppsCache.expires).toBe(0);
     });
   });
 

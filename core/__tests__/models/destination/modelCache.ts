@@ -1,4 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
+import { api } from "actionhero";
 import { Destination } from "../../../src";
 import { DestinationsCache } from "../../../src/modules/caches/destinationsCache";
 
@@ -34,57 +35,69 @@ describe("models/destinationsCache", () => {
 
       await destination.destroy();
     });
+  });
 
-    describe("rpc", () => {
-      let destination: Destination;
+  describe("rpc", () => {
+    let destination: Destination;
+    let RPCMethod: (arg: any) => void | Promise<void>;
 
-      async function makeDestination() {
-        destination = await helper.factories.destination();
-        await helper.sleep(100); // wait for delayed RPC calls
-      }
+    async function makeDestination() {
+      destination = await helper.factories.destination();
+      await helper.sleep(100); // wait for delayed RPC calls
+    }
 
-      afterEach(async () => {
-        await destination.destroy().catch(() => null);
-      });
+    beforeEach(() => (RPCMethod = api.rpc.destination.invalidateCache));
 
-      test("creating a destination signals RPC", async () => {
-        DestinationsCache.expires = new Date().getTime();
-        await makeDestination();
-        await helper.sleep(10);
-        expect(DestinationsCache.expires).toBe(0);
-      });
+    afterEach(async () => {
+      api.rpc.destination.invalidateCache = RPCMethod;
+      await destination.destroy().catch(() => null);
+    });
 
-      test("updating a destination signals RPC", async () => {
-        await makeDestination();
-        DestinationsCache.expires = new Date().getTime();
-        await destination.update({ name: "new name" });
-        await helper.sleep(10);
-        expect(DestinationsCache.expires).toBe(0);
-      });
+    test("creating a destination signals RPC", async () => {
+      DestinationsCache.expires = new Date().getTime();
+      await makeDestination();
+      await helper.sleep(10);
+      expect(DestinationsCache.expires).toBe(0);
+    });
 
-      test("calling setOptions signals RPC", async () => {
-        await makeDestination();
-        DestinationsCache.expires = new Date().getTime();
-        await destination.setOptions({ table: "foo" });
-        await helper.sleep(10);
-        expect(DestinationsCache.expires).toBe(0);
-      });
+    test("remote methods are called", async () => {
+      const mock = jest.fn();
+      api.rpc.destination.invalidateCache = mock;
+      await makeDestination();
+      await helper.sleep(10);
+      expect(mock).toHaveBeenCalled();
+    });
 
-      test("calling setMapping signals RPC", async () => {
-        await makeDestination();
-        DestinationsCache.expires = new Date().getTime();
-        await destination.setMapping({ "primary-id": "userId" });
-        await helper.sleep(10);
-        expect(DestinationsCache.expires).toBe(0);
-      });
+    test("updating a destination signals RPC", async () => {
+      await makeDestination();
+      DestinationsCache.expires = new Date().getTime();
+      await destination.update({ name: "new name" });
+      await helper.sleep(10);
+      expect(DestinationsCache.expires).toBe(0);
+    });
 
-      test("destroying a destination signals RPC", async () => {
-        await makeDestination();
-        DestinationsCache.expires = new Date().getTime();
-        await destination.destroy();
-        await helper.sleep(10);
-        expect(DestinationsCache.expires).toBe(0);
-      });
+    test("calling setOptions signals RPC", async () => {
+      await makeDestination();
+      DestinationsCache.expires = new Date().getTime();
+      await destination.setOptions({ table: "foo" });
+      await helper.sleep(10);
+      expect(DestinationsCache.expires).toBe(0);
+    });
+
+    test("calling setMapping signals RPC", async () => {
+      await makeDestination();
+      DestinationsCache.expires = new Date().getTime();
+      await destination.setMapping({ "primary-id": "userId" });
+      await helper.sleep(10);
+      expect(DestinationsCache.expires).toBe(0);
+    });
+
+    test("destroying a destination signals RPC", async () => {
+      await makeDestination();
+      DestinationsCache.expires = new Date().getTime();
+      await destination.destroy();
+      await helper.sleep(10);
+      expect(DestinationsCache.expires).toBe(0);
     });
   });
 

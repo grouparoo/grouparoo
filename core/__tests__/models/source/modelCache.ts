@@ -1,4 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
+import { api } from "actionhero";
 import { Source } from "../../../src";
 import { SourcesCache } from "../../../src/modules/caches/sourcesCache";
 
@@ -32,57 +33,69 @@ describe("models/sourcesCache", () => {
 
       await source.destroy();
     });
+  });
 
-    describe("rpc", () => {
-      let source: Source;
+  describe("rpc", () => {
+    let source: Source;
+    let RPCMethod: (arg: any) => void | Promise<void>;
 
-      async function makeSource() {
-        source = await helper.factories.source();
-        await helper.sleep(100); // wait for delayed RPC calls
-      }
+    async function makeSource() {
+      source = await helper.factories.source();
+      await helper.sleep(100); // wait for delayed RPC calls
+    }
 
-      afterEach(async () => {
-        await source.destroy().catch(() => null);
-      });
+    beforeEach(() => (RPCMethod = api.rpc.source.invalidateCache));
 
-      test("creating a source signals RPC", async () => {
-        SourcesCache.expires = new Date().getTime();
-        await makeSource();
-        await helper.sleep(10);
-        expect(SourcesCache.expires).toBe(0);
-      });
+    afterEach(async () => {
+      api.rpc.source.invalidateCache = RPCMethod;
+      await source.destroy().catch(() => null);
+    });
 
-      test("updating a source signals RPC", async () => {
-        await makeSource();
-        SourcesCache.expires = new Date().getTime();
-        await source.update({ name: "new name" });
-        await helper.sleep(10);
-        expect(SourcesCache.expires).toBe(0);
-      });
+    test("creating a source signals RPC", async () => {
+      SourcesCache.expires = new Date().getTime();
+      await makeSource();
+      await helper.sleep(10);
+      expect(SourcesCache.expires).toBe(0);
+    });
 
-      test("calling setOptions signals RPC", async () => {
-        await makeSource();
-        SourcesCache.expires = new Date().getTime();
-        await source.setOptions({ table: "foo" });
-        await helper.sleep(10);
-        expect(SourcesCache.expires).toBe(0);
-      });
+    test("remote methods are called", async () => {
+      const mock = jest.fn();
+      api.rpc.source.invalidateCache = mock;
+      await makeSource();
+      await helper.sleep(10);
+      expect(mock).toHaveBeenCalled();
+    });
 
-      test("calling setMapping signals RPC", async () => {
-        await makeSource();
-        SourcesCache.expires = new Date().getTime();
-        await source.setMapping({ email: "email" });
-        await helper.sleep(10);
-        expect(SourcesCache.expires).toBe(0);
-      });
+    test("updating a source signals RPC", async () => {
+      await makeSource();
+      SourcesCache.expires = new Date().getTime();
+      await source.update({ name: "new name" });
+      await helper.sleep(10);
+      expect(SourcesCache.expires).toBe(0);
+    });
 
-      test("destroying a source signals RPC", async () => {
-        await makeSource();
-        SourcesCache.expires = new Date().getTime();
-        await source.destroy();
-        await helper.sleep(10);
-        expect(SourcesCache.expires).toBe(0);
-      });
+    test("calling setOptions signals RPC", async () => {
+      await makeSource();
+      SourcesCache.expires = new Date().getTime();
+      await source.setOptions({ table: "foo" });
+      await helper.sleep(10);
+      expect(SourcesCache.expires).toBe(0);
+    });
+
+    test("calling setMapping signals RPC", async () => {
+      await makeSource();
+      SourcesCache.expires = new Date().getTime();
+      await source.setMapping({ email: "email" });
+      await helper.sleep(10);
+      expect(SourcesCache.expires).toBe(0);
+    });
+
+    test("destroying a source signals RPC", async () => {
+      await makeSource();
+      SourcesCache.expires = new Date().getTime();
+      await source.destroy();
+      await helper.sleep(10);
+      expect(SourcesCache.expires).toBe(0);
     });
   });
 

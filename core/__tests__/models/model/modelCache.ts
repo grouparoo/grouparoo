@@ -1,4 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
+import { api } from "actionhero";
 import { GrouparooModel } from "../../../src";
 import { ModelsCache } from "../../../src/modules/caches/modelsCache";
 
@@ -30,41 +31,53 @@ describe("models/modelsCache", () => {
 
       await newModel.destroy();
     });
+  });
 
-    describe("rpc", () => {
-      let model: GrouparooModel;
+  describe("rpc", () => {
+    let model: GrouparooModel;
+    let RPCMethod: (arg: any) => void | Promise<void>;
 
-      async function makeModel() {
-        model = await helper.factories.model({ name: "foo" });
-        await helper.sleep(100); // wait for delayed RPC calls
-      }
+    async function makeModel() {
+      model = await helper.factories.model({ name: "foo" });
+      await helper.sleep(100); // wait for delayed RPC calls
+    }
 
-      afterEach(async () => {
-        await model.destroy().catch(() => null);
-      });
+    beforeEach(() => (RPCMethod = api.rpc.model.invalidateCache));
 
-      test("creating a model signals RPC", async () => {
-        ModelsCache.expires = new Date().getTime();
-        await makeModel();
-        await helper.sleep(10);
-        expect(ModelsCache.expires).toBe(0);
-      });
+    afterEach(async () => {
+      api.rpc.model.invalidateCache = RPCMethod;
+      await model.destroy().catch(() => null);
+    });
 
-      test("updating a model signals RPC", async () => {
-        await makeModel();
-        ModelsCache.expires = new Date().getTime();
-        await model.update({ name: "new name" });
-        await helper.sleep(10);
-        expect(ModelsCache.expires).toBe(0);
-      });
+    test("creating a model signals RPC", async () => {
+      ModelsCache.expires = new Date().getTime();
+      await makeModel();
+      await helper.sleep(10);
+      expect(ModelsCache.expires).toBe(0);
+    });
 
-      test("destroying a model signals RPC", async () => {
-        await makeModel();
-        ModelsCache.expires = new Date().getTime();
-        await model.destroy();
-        await helper.sleep(10);
-        expect(ModelsCache.expires).toBe(0);
-      });
+    test("remote methods are called", async () => {
+      const mock = jest.fn();
+      api.rpc.model.invalidateCache = mock;
+      await makeModel();
+      await helper.sleep(10);
+      expect(mock).toHaveBeenCalled();
+    });
+
+    test("updating a model signals RPC", async () => {
+      await makeModel();
+      ModelsCache.expires = new Date().getTime();
+      await model.update({ name: "new name" });
+      await helper.sleep(10);
+      expect(ModelsCache.expires).toBe(0);
+    });
+
+    test("destroying a model signals RPC", async () => {
+      await makeModel();
+      ModelsCache.expires = new Date().getTime();
+      await model.destroy();
+      await helper.sleep(10);
+      expect(ModelsCache.expires).toBe(0);
     });
   });
 
