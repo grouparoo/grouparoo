@@ -1,4 +1,3 @@
-import { plugin } from "../plugin";
 import isEmail from "../validators/isEmail";
 import isURL from "validator/lib/isURL";
 import { RecordProperty } from "../../models/RecordProperty";
@@ -287,6 +286,7 @@ function formatURL(v: string) {
 function formatEmail(v: string) {
   // We do light validation on the email to ensure that it has an "@" and a "."
   if (!isEmail(v)) throw new Error(`email "${v}" is not valid`);
+  console.log("asdf: ", v, v.toLocaleLowerCase(), v.toLowerCase());
   return v;
 }
 
