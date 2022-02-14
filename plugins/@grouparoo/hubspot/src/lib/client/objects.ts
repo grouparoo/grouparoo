@@ -1,7 +1,7 @@
 import { HubspotClient } from "./client";
 import { utils } from "actionhero";
 
-export default class Objects {
+export default class HubspotObjects {
   client: HubspotClient;
 
   constructor(client: HubspotClient) {
@@ -9,7 +9,7 @@ export default class Objects {
   }
 
   async getSchemas() {
-    const response = await this.client._request({
+    const response = await this.client.request({
       method: "GET",
       url: `/crm/v3/schemas`,
     });
@@ -17,7 +17,7 @@ export default class Objects {
   }
 
   async getSchema(objectTypeId) {
-    return await this.client._request({
+    return await this.client.request({
       method: "GET",
       url: `/crm/v3/schemas/${objectTypeId}`,
     });
@@ -57,7 +57,7 @@ export default class Objects {
     while (attempt < 8) {
       attempt++;
       try {
-        const response = await this.client._request({
+        const response = await this.client.request({
           data,
           method: "POST",
           url: `/crm/v3/objects/${schemaId}/search`,
@@ -77,7 +77,7 @@ export default class Objects {
   }
 
   async create(schemaId: string, inputs: any[]) {
-    return this.client._request({
+    return this.client.request({
       data: { inputs },
       method: "POST",
       url: `/crm/v3/objects/${schemaId}/batch/create`,
@@ -85,7 +85,7 @@ export default class Objects {
   }
 
   async update(schemaId: string, inputs: any[]) {
-    return this.client._request({
+    return this.client.request({
       data: { inputs },
       method: "POST",
       url: `/crm/v3/objects/${schemaId}/batch/update`,
@@ -101,7 +101,7 @@ export default class Objects {
     const data = {
       inputs,
     };
-    return this.client._request({
+    return this.client.request({
       data,
       method: "POST",
       url: `/crm/v3/objects/${schemaId}/batch/archive`,
@@ -109,7 +109,7 @@ export default class Objects {
   }
 
   async associate(fromObjectId: string, toObjectId: string) {
-    return this.client._request({
+    return this.client.request({
       data: {
         fromObjectId,
         toObjectId,
@@ -122,7 +122,7 @@ export default class Objects {
   }
 
   async disassociate(fromObjectId: string, toObjectId: string) {
-    return this.client._request({
+    return this.client.request({
       data: {
         fromObjectId,
         toObjectId,
@@ -135,7 +135,7 @@ export default class Objects {
   }
 
   async getAssociation(contactId: string) {
-    const response = await this.client._request({
+    const response = await this.client.request({
       method: "GET",
       url: `/crm-associations/v1/associations/${contactId}/HUBSPOT_DEFINED/1`,
     });
