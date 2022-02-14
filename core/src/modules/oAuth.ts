@@ -17,7 +17,7 @@ export interface oAuthIdentity {
   description: string;
 }
 
-export class oAuthAccessTokenFetcher {
+export class oAuthAccessTokenGetter {
   private accessToken: string;
   private expirationDate: number = Date.now();
 
@@ -30,7 +30,7 @@ export class oAuthAccessTokenFetcher {
     return !this.accessToken || this.expirationDate <= Date.now();
   }
 
-  private async refreshAccessToken() {
+  private async requestAccessToken() {
     try {
       for (
         let retries = 3;
@@ -68,9 +68,9 @@ export class oAuthAccessTokenFetcher {
     }
   }
 
-  public async fetchAccessToken(): Promise<string> {
+  public async getAccessToken(): Promise<string> {
     if (this.isAccessTokenExpired()) {
-      await this.refreshAccessToken();
+      await this.requestAccessToken();
     }
 
     return this.accessToken;

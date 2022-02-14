@@ -55,7 +55,7 @@ export { AppsCache } from "./modules/caches/appsCache";
 export { SourcesCache } from "./modules/caches/sourcesCache";
 export { PropertiesCache } from "./modules/caches/propertiesCache";
 
-export { oAuthAccessTokenFetcher } from "./modules/oAuth";
+export { oAuthAccessTokenGetter } from "./modules/oAuth";
 
 export { Status } from "./modules/status";
 export { StatusMetric } from "./modules/statusReporters";
