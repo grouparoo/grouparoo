@@ -1,0 +1,624 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`navigation recognizes that we are in #destinations 1`] = `
+<div>
+  <div
+    class="position-fixed bg-dark slide-out"
+    data-testid="navigation"
+    id="navigation"
+    style="z-index: 10; display: flex; justify-content: space-between; flex-direction: column; width: 235px; overflow-y: auto; overflow-x: hidden; height: 100%;"
+  >
+    <div>
+      <div
+        id="navTopSection"
+        style="padding-left: 20px; padding-right: 20px;"
+      >
+        <div
+          style="justify-content: normal; align-self: flex-start;"
+        >
+          <button
+            class="navbar-toggler"
+            style="position: absolute; left: 190px;"
+            type="button"
+          >
+            <span
+              class="navbar-toggler-icon"
+              style="color: lightgray;"
+            >
+              <svg
+                aria-hidden="true"
+                class="svg-inline--fa fa-caret-square-left fa-w-14 fa-xs "
+                data-icon="caret-square-left"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                viewBox="0 0 448 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M400 480H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48v352c0 26.51-21.49 48-48 48zM259.515 124.485l-123.03 123.03c-4.686 4.686-4.686 12.284 0 16.971l123.029 123.029c7.56 7.56 20.485 2.206 20.485-8.485V132.971c.001-10.691-12.925-16.045-20.484-8.486z"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
+          </button>
+          <a
+            href="/dashboard"
+          >
+            <img
+              alt="Grouparoo Logo"
+              class=""
+              src="/public/images/logo/logo.svg"
+              style="max-height: 32px; margin-top: 16px; margin-bottom: 16px;"
+            />
+          </a>
+          <br />
+          <a
+            href="/settings/core"
+          >
+            <span
+              class="badge badge-secondary"
+            />
+          </a>
+        </div>
+        <span
+          style="color: lightgray; padding-left: 3px; font-size: 10px;"
+        >
+          @grouparoo/ui-undefined
+        </span>
+      </div>
+      <div
+        id="navBottomSection"
+        style="padding-left: 20px; padding-right: 20px;"
+      >
+        <ul
+          style="padding: 0px; margin: 0px; list-style-type: none;"
+        >
+          <li
+            style="margin-top: 16px; margin-bottom: 16px;"
+          >
+            <a
+              aria-selected="false"
+              href="/dashboard"
+              role="tab"
+              style="font-size: 18px; font-weight: 300; padding-left: 0px; margin-left: 0px; color: white; text-decoration: none;"
+            >
+               
+            </a>
+             
+            <a
+              aria-selected="false"
+              href="/dashboard"
+              role="tab"
+              style="font-size: 18px; padding-left: 0px; margin-left: 4px; color: white; margin-top: 16px; margin-bottom: 16px;"
+            >
+              <span>
+                Dashboard
+              </span>
+            </a>
+          </li>
+          <li
+            style="margin-top: 16px; margin-bottom: 16px;"
+          >
+            <a
+              aria-selected="true"
+              href="/model/accounts/overview"
+              role="tab"
+              style="font-size: 18px; font-weight: 300; padding-left: 0px; margin-left: 0px; color: white; text-decoration: none;"
+            >
+               
+            </a>
+             
+            <a
+              aria-selected="true"
+              href="/model/accounts/overview"
+              role="tab"
+              style="font-size: 18px; padding-left: 0px; margin-left: 4px; color: white; margin-top: 16px; margin-bottom: 16px;"
+            >
+              <span
+                style="font-weight: bold;"
+              >
+                Accounts
+              </span>
+            </a>
+            <div
+              class="ml-3"
+            >
+              <a
+                aria-selected="false"
+                href="/model/accounts/overview#model-data"
+                role="tab"
+                style="font-size: 18px; font-weight: 300; padding-left: 0px; margin-left: 0px; color: white; text-decoration: none;"
+              >
+                 
+              </a>
+               
+              <a
+                aria-selected="false"
+                href="/model/accounts/overview#model-data"
+                role="tab"
+                style="font-size: 18px; padding-left: 0px; margin-left: 0px; color: white; margin-top: 16px; margin-bottom: 16px;"
+              >
+                <span
+                  class="small"
+                >
+                  Model Data
+                </span>
+              </a>
+            </div>
+            <div
+              class="ml-3"
+            >
+              <a
+                aria-selected="true"
+                href="/model/accounts/overview#destinations"
+                role="tab"
+                style="font-size: 18px; font-weight: 300; padding-left: 0px; margin-left: 0px; color: white; text-decoration: none;"
+              >
+                 
+              </a>
+               
+              <a
+                aria-selected="true"
+                href="/model/accounts/overview#destinations"
+                role="tab"
+                style="font-size: 18px; padding-left: 0px; margin-left: 0px; color: white; margin-top: 16px; margin-bottom: 16px;"
+              >
+                <span
+                  class="small"
+                  style="font-weight: bold;"
+                >
+                  Destinations
+                </span>
+              </a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div
+        class="mx-auto px-3"
+        id="bottomNavigationMenuCTA"
+        style="align-self: flex-end; justify-content: normal; width: 100%;"
+      >
+        <a
+          href="https://www.grouparoo.com/chat"
+          target="_blank"
+        >
+          <button
+            class="col-12 mx-auto font-weight-light btn btn-outline-light btn-sm"
+            style="color: white;"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-slack fa-w-14 fa-1x "
+              data-icon="slack"
+              data-prefix="fab"
+              focusable="false"
+              role="img"
+              style="width: 20px;"
+              viewBox="0 0 448 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M94.12 315.1c0 25.9-21.16 47.06-47.06 47.06S0 341 0 315.1c0-25.9 21.16-47.06 47.06-47.06h47.06v47.06zm23.72 0c0-25.9 21.16-47.06 47.06-47.06s47.06 21.16 47.06 47.06v117.84c0 25.9-21.16 47.06-47.06 47.06s-47.06-21.16-47.06-47.06V315.1zm47.06-188.98c-25.9 0-47.06-21.16-47.06-47.06S139 32 164.9 32s47.06 21.16 47.06 47.06v47.06H164.9zm0 23.72c25.9 0 47.06 21.16 47.06 47.06s-21.16 47.06-47.06 47.06H47.06C21.16 243.96 0 222.8 0 196.9s21.16-47.06 47.06-47.06H164.9zm188.98 47.06c0-25.9 21.16-47.06 47.06-47.06 25.9 0 47.06 21.16 47.06 47.06s-21.16 47.06-47.06 47.06h-47.06V196.9zm-23.72 0c0 25.9-21.16 47.06-47.06 47.06-25.9 0-47.06-21.16-47.06-47.06V79.06c0-25.9 21.16-47.06 47.06-47.06 25.9 0 47.06 21.16 47.06 47.06V196.9zM283.1 385.88c25.9 0 47.06 21.16 47.06 47.06 0 25.9-21.16 47.06-47.06 47.06-25.9 0-47.06-21.16-47.06-47.06v-47.06h47.06zm0-23.72c-25.9 0-47.06-21.16-47.06-47.06 0-25.9 21.16-47.06 47.06-47.06h117.84c25.9 0 47.06 21.16 47.06 47.06 0 25.9-21.16 47.06-47.06 47.06H283.1z"
+                fill="currentColor"
+              />
+            </svg>
+             
+            Join us on Slack
+          </button>
+        </a>
+      </div>
+      <div
+        id="bottomNavigationMenu"
+        style="align-self: flex-end; justify-content: normal; width: 100%; margin: 20px; padding-right: 20px;"
+      >
+        <div
+          class="accordion"
+        >
+          <button
+            class="btn btn-link"
+            type="button"
+          >
+            <span
+              id="navigation-greeting"
+              style="margin-left: -13px; color: white; font-size: 16px; width: 100%; text-align: left; text-transform: none; font-weight: 300;"
+            >
+              Hello 
+              mario
+               
+              <svg
+                aria-hidden="true"
+                class="svg-inline--fa fa-caret-down fa-w-10 "
+                data-icon="caret-down"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                viewBox="0 0 320 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
+          </button>
+          <div
+            class="collapse"
+          >
+            <div
+              style="margin-left: 15px;"
+            >
+              <ul
+                class="pl-0"
+              >
+                <li>
+                  <a
+                    aria-selected="false"
+                    href="/something/cool"
+                    role="tab"
+                    style="font-size: 18px; font-weight: 300; padding-left: 0px; margin-left: 0px; color: white; text-decoration: none;"
+                  >
+                     
+                  </a>
+                   
+                  <a
+                    aria-selected="false"
+                    href="/something/cool"
+                    role="tab"
+                    style="font-size: 18px; padding-left: 0px; margin-left: 0px; color: white; margin-top: 16px; margin-bottom: 16px;"
+                  >
+                    <span
+                      class="small"
+                    >
+                      Something Cool
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    aria-selected="false"
+                    href="/session/sign-out"
+                    role="tab"
+                    style="font-size: 18px; font-weight: 300; padding-left: 0px; margin-left: 0px; color: white; text-decoration: none;"
+                  >
+                     
+                  </a>
+                   
+                  <a
+                    aria-selected="false"
+                    href="/session/sign-out"
+                    role="tab"
+                    style="font-size: 18px; padding-left: 0px; margin-left: 0px; color: white; margin-top: 16px; margin-bottom: 16px;"
+                  >
+                    <span
+                      class="small"
+                    >
+                      Sign Out
+                    </span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`navigation renders children correctly 1`] = `
+<div>
+  <div
+    class="position-fixed bg-dark slide-out"
+    data-testid="navigation"
+    id="navigation"
+    style="z-index: 10; display: flex; justify-content: space-between; flex-direction: column; width: 235px; overflow-y: auto; overflow-x: hidden; height: 100%;"
+  >
+    <div>
+      <div
+        id="navTopSection"
+        style="padding-left: 20px; padding-right: 20px;"
+      >
+        <div
+          style="justify-content: normal; align-self: flex-start;"
+        >
+          <button
+            class="navbar-toggler"
+            style="position: absolute; left: 190px;"
+            type="button"
+          >
+            <span
+              class="navbar-toggler-icon"
+              style="color: lightgray;"
+            >
+              <svg
+                aria-hidden="true"
+                class="svg-inline--fa fa-caret-square-left fa-w-14 fa-xs "
+                data-icon="caret-square-left"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                viewBox="0 0 448 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M400 480H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48v352c0 26.51-21.49 48-48 48zM259.515 124.485l-123.03 123.03c-4.686 4.686-4.686 12.284 0 16.971l123.029 123.029c7.56 7.56 20.485 2.206 20.485-8.485V132.971c.001-10.691-12.925-16.045-20.484-8.486z"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
+          </button>
+          <a
+            href="/dashboard"
+          >
+            <img
+              alt="Grouparoo Logo"
+              class=""
+              src="/public/images/logo/logo.svg"
+              style="max-height: 32px; margin-top: 16px; margin-bottom: 16px;"
+            />
+          </a>
+          <br />
+          <a
+            href="/settings/core"
+          >
+            <span
+              class="badge badge-secondary"
+            />
+          </a>
+        </div>
+        <span
+          style="color: lightgray; padding-left: 3px; font-size: 10px;"
+        >
+          @grouparoo/ui-undefined
+        </span>
+      </div>
+      <div
+        id="navBottomSection"
+        style="padding-left: 20px; padding-right: 20px;"
+      >
+        <ul
+          style="padding: 0px; margin: 0px; list-style-type: none;"
+        >
+          <li
+            style="margin-top: 16px; margin-bottom: 16px;"
+          >
+            <a
+              aria-selected="false"
+              href="/dashboard"
+              role="tab"
+              style="font-size: 18px; font-weight: 300; padding-left: 0px; margin-left: 0px; color: white; text-decoration: none;"
+            >
+               
+            </a>
+             
+            <a
+              aria-selected="false"
+              href="/dashboard"
+              role="tab"
+              style="font-size: 18px; padding-left: 0px; margin-left: 4px; color: white; margin-top: 16px; margin-bottom: 16px;"
+            >
+              <span>
+                Dashboard
+              </span>
+            </a>
+          </li>
+          <li
+            style="margin-top: 16px; margin-bottom: 16px;"
+          >
+            <a
+              aria-selected="true"
+              href="/model/accounts/overview"
+              role="tab"
+              style="font-size: 18px; font-weight: 300; padding-left: 0px; margin-left: 0px; color: white; text-decoration: none;"
+            >
+               
+            </a>
+             
+            <a
+              aria-selected="true"
+              href="/model/accounts/overview"
+              role="tab"
+              style="font-size: 18px; padding-left: 0px; margin-left: 4px; color: white; margin-top: 16px; margin-bottom: 16px;"
+            >
+              <span
+                style="font-weight: bold;"
+              >
+                Accounts
+              </span>
+            </a>
+            <div
+              class="ml-3"
+            >
+              <a
+                aria-selected="false"
+                href="/model/accounts/overview#model-data"
+                role="tab"
+                style="font-size: 18px; font-weight: 300; padding-left: 0px; margin-left: 0px; color: white; text-decoration: none;"
+              >
+                 
+              </a>
+               
+              <a
+                aria-selected="false"
+                href="/model/accounts/overview#model-data"
+                role="tab"
+                style="font-size: 18px; padding-left: 0px; margin-left: 0px; color: white; margin-top: 16px; margin-bottom: 16px;"
+              >
+                <span
+                  class="small"
+                >
+                  Model Data
+                </span>
+              </a>
+            </div>
+            <div
+              class="ml-3"
+            >
+              <a
+                aria-selected="false"
+                href="/model/accounts/overview#destinations"
+                role="tab"
+                style="font-size: 18px; font-weight: 300; padding-left: 0px; margin-left: 0px; color: white; text-decoration: none;"
+              >
+                 
+              </a>
+               
+              <a
+                aria-selected="false"
+                href="/model/accounts/overview#destinations"
+                role="tab"
+                style="font-size: 18px; padding-left: 0px; margin-left: 0px; color: white; margin-top: 16px; margin-bottom: 16px;"
+              >
+                <span
+                  class="small"
+                >
+                  Destinations
+                </span>
+              </a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div
+        class="mx-auto px-3"
+        id="bottomNavigationMenuCTA"
+        style="align-self: flex-end; justify-content: normal; width: 100%;"
+      >
+        <a
+          href="https://www.grouparoo.com/chat"
+          target="_blank"
+        >
+          <button
+            class="col-12 mx-auto font-weight-light btn btn-outline-light btn-sm"
+            style="color: white;"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-slack fa-w-14 fa-1x "
+              data-icon="slack"
+              data-prefix="fab"
+              focusable="false"
+              role="img"
+              style="width: 20px;"
+              viewBox="0 0 448 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M94.12 315.1c0 25.9-21.16 47.06-47.06 47.06S0 341 0 315.1c0-25.9 21.16-47.06 47.06-47.06h47.06v47.06zm23.72 0c0-25.9 21.16-47.06 47.06-47.06s47.06 21.16 47.06 47.06v117.84c0 25.9-21.16 47.06-47.06 47.06s-47.06-21.16-47.06-47.06V315.1zm47.06-188.98c-25.9 0-47.06-21.16-47.06-47.06S139 32 164.9 32s47.06 21.16 47.06 47.06v47.06H164.9zm0 23.72c25.9 0 47.06 21.16 47.06 47.06s-21.16 47.06-47.06 47.06H47.06C21.16 243.96 0 222.8 0 196.9s21.16-47.06 47.06-47.06H164.9zm188.98 47.06c0-25.9 21.16-47.06 47.06-47.06 25.9 0 47.06 21.16 47.06 47.06s-21.16 47.06-47.06 47.06h-47.06V196.9zm-23.72 0c0 25.9-21.16 47.06-47.06 47.06-25.9 0-47.06-21.16-47.06-47.06V79.06c0-25.9 21.16-47.06 47.06-47.06 25.9 0 47.06 21.16 47.06 47.06V196.9zM283.1 385.88c25.9 0 47.06 21.16 47.06 47.06 0 25.9-21.16 47.06-47.06 47.06-25.9 0-47.06-21.16-47.06-47.06v-47.06h47.06zm0-23.72c-25.9 0-47.06-21.16-47.06-47.06 0-25.9 21.16-47.06 47.06-47.06h117.84c25.9 0 47.06 21.16 47.06 47.06 0 25.9-21.16 47.06-47.06 47.06H283.1z"
+                fill="currentColor"
+              />
+            </svg>
+             
+            Join us on Slack
+          </button>
+        </a>
+      </div>
+      <div
+        id="bottomNavigationMenu"
+        style="align-self: flex-end; justify-content: normal; width: 100%; margin: 20px; padding-right: 20px;"
+      >
+        <div
+          class="accordion"
+        >
+          <button
+            class="btn btn-link"
+            type="button"
+          >
+            <span
+              id="navigation-greeting"
+              style="margin-left: -13px; color: white; font-size: 16px; width: 100%; text-align: left; text-transform: none; font-weight: 300;"
+            >
+              Hello 
+              mario
+               
+              <svg
+                aria-hidden="true"
+                class="svg-inline--fa fa-caret-down fa-w-10 "
+                data-icon="caret-down"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                viewBox="0 0 320 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
+          </button>
+          <div
+            class="collapse"
+          >
+            <div
+              style="margin-left: 15px;"
+            >
+              <ul
+                class="pl-0"
+              >
+                <li>
+                  <a
+                    aria-selected="false"
+                    href="/something/cool"
+                    role="tab"
+                    style="font-size: 18px; font-weight: 300; padding-left: 0px; margin-left: 0px; color: white; text-decoration: none;"
+                  >
+                     
+                  </a>
+                   
+                  <a
+                    aria-selected="false"
+                    href="/something/cool"
+                    role="tab"
+                    style="font-size: 18px; padding-left: 0px; margin-left: 0px; color: white; margin-top: 16px; margin-bottom: 16px;"
+                  >
+                    <span
+                      class="small"
+                    >
+                      Something Cool
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    aria-selected="false"
+                    href="/session/sign-out"
+                    role="tab"
+                    style="font-size: 18px; font-weight: 300; padding-left: 0px; margin-left: 0px; color: white; text-decoration: none;"
+                  >
+                     
+                  </a>
+                   
+                  <a
+                    aria-selected="false"
+                    href="/session/sign-out"
+                    role="tab"
+                    style="font-size: 18px; padding-left: 0px; margin-left: 0px; color: white; margin-top: 16px; margin-bottom: 16px;"
+                  >
+                    <span
+                      class="small"
+                    >
+                      Sign Out
+                    </span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

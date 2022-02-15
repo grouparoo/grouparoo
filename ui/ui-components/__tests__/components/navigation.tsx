@@ -10,42 +10,60 @@ import { Client } from "../../client/client";
 const useRouter = jest.spyOn(require("next/router"), "useRouter");
 
 describe("navigation", () => {
+  const webAppContext: WebAppContext = {
+    currentTeamMember: {
+      firstName: "mario",
+      id: "abc123",
+    },
+    navigationMode: "authenticated",
+    navigation: {
+      navigationItems: [
+        {
+          type: "link",
+          title: "Dashboard",
+          href: "/dashboard",
+          mainPathSectionIdx: 1,
+        },
+        {
+          type: "link",
+          title: "Accounts",
+          href: "/model/accounts/overview",
+          mainPathSectionIdx: 2,
+          subNavItems: [
+            {
+              type: "link",
+              title: "Model Data",
+              href: "/model/accounts/overview#model-data",
+              small: true,
+              mainPathSectionIdx: 3,
+            },
+            {
+              type: "link",
+              title: "Destinations",
+              href: "/model/accounts/overview#destinations",
+              small: true,
+              mainPathSectionIdx: 3,
+            },
+          ],
+        },
+      ],
+      platformItems: [],
+      bottomMenuItems: [
+        {
+          type: "link",
+          title: "Something Cool",
+          href: "/something/cool",
+        },
+        { type: "link", title: "Sign Out", href: "/session/sign-out" },
+      ],
+    },
+    clusterName: { default: false, value: "" },
+  };
   beforeEach(() => {
     useRouter.mockImplementation(() => ({
       pathname: "/",
       asPath: "/",
     }));
-
-    const webAppContext: WebAppContext = {
-      currentTeamMember: {
-        firstName: "mario",
-        id: "abc123",
-      },
-      navigationMode: "authenticated",
-      navigation: {
-        navigationItems: [
-          { type: "link", title: "Dashboard", href: "/dashboard" },
-        ],
-        platformItems: [],
-        bottomMenuItems: [
-          {
-            type: "link",
-            title: "Something Cool",
-            href: "/something/cool",
-          },
-          { type: "link", title: "Sign Out", href: "/session/sign-out" },
-        ],
-      },
-      clusterName: { default: false, value: "" },
-    };
-
-    render(
-      <ApiContext.Provider value={{ client: new Client() }}>
-        <WebAppContext.Provider value={webAppContext}>
-          <Component {...commonProps} />
-        </WebAppContext.Provider>
-      </ApiContext.Provider>
-    );
   });
 
   afterEach(() => {
@@ -53,9 +71,46 @@ describe("navigation", () => {
   });
 
   test("shows the nav returned from the server", async () => {
+    render(
+      <ApiContext.Provider value={{ client: new Client() }}>
+        <WebAppContext.Provider value={webAppContext}>
+          <Component {...commonProps} />
+        </WebAppContext.Provider>
+      </ApiContext.Provider>
+    );
     const navigation = screen.getByTestId("navigation");
     expect(navigation.outerHTML).toContain("<span>Dashboard</span>");
     expect(navigation.outerHTML).toContain("Something Cool</span>");
     expect(navigation.outerHTML).toContain("Sign Out</span>");
+  });
+
+  test("renders children correctly", async () => {
+    useRouter.mockImplementation(() => ({
+      pathname: "/",
+      asPath: "/model/accounts/overview",
+    }));
+    const component = render(
+      <ApiContext.Provider value={{ client: new Client() }}>
+        <WebAppContext.Provider value={webAppContext}>
+          <Component {...commonProps} />
+        </WebAppContext.Provider>
+      </ApiContext.Provider>
+    );
+    expect(component.container).toMatchSnapshot();
+  });
+
+  test("recognizes that we are in #destinations", async () => {
+    useRouter.mockImplementation(() => ({
+      pathname: "/",
+      asPath: "/model/accounts/overview#destinations",
+    }));
+    const component = render(
+      <ApiContext.Provider value={{ client: new Client() }}>
+        <WebAppContext.Provider value={webAppContext}>
+          <Component {...commonProps} />
+        </WebAppContext.Provider>
+      </ApiContext.Provider>
+    );
+    expect(component.container).toMatchSnapshot();
   });
 });

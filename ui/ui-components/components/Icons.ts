@@ -22,6 +22,8 @@ import {
   faTimes,
   faUser,
   faUsers,
+  faFlask,
+  faFileAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { faSlack } from "@fortawesome/free-brands-svg-icons";
@@ -47,5 +49,7 @@ library.add(
   faThLarge,
   faTimes,
   faUser,
-  faUsers
+  faUsers,
+  faFlask,
+  faFileAlt
 );
