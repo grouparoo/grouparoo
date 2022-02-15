@@ -13,11 +13,9 @@ export class TelemetryInitializer extends CLSInitializer {
   async initializeWithinTransaction() {}
 
   async startWithinTransaction() {
-    if (env === "development") {
+    if (getGrouparooRunMode() === "cli:config") {
       await ConfigUser.loadOrStoreCustomerId();
-      if (getGrouparooRunMode() === "cli:config") {
-        await Telemetry.send("cli_config");
-      }
+      await Telemetry.send("cli_config");
     }
   }
 
