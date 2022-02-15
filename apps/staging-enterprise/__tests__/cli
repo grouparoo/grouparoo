@@ -57,38 +57,3 @@ else
     printf " 🚫\r\n"
     exit 1
 fi
-
-printf "*** Testing Generators ***\r\n"
-
-TEST_GENERATOR(){
-  OUTPUT_GENERATE=`$CLI generate $i $i --parent foo`
-  if [[ "$OUTPUT_GENERATE" == *"wrote /"*  ]]; then
-      printf " - generate $i ✅\r\n"
-  else
-      printf " - generate $i 🚫\r\n"
-      exit 1
-  fi
-
-  # cleanup
-  FILENAME=`echo "$OUTPUT_GENERATE" | grep wrote | awk '{print $3}'`
-  rm $FILENAME
-}
-
-GENERATE_TEMPLATES=`$CLI generate --list | grep "(id" | awk '{print $1}' | perl -pe 's/\e\[[0-9;]*m(?:\e\[K)?//g'` # the perl part is to remove the underline and bold escape chars
-for i in $GENERATE_TEMPLATES; do
-  MAX_BG_PROCS 5
-  TEST_GENERATOR $i & # The "&" backgrounds the function
-done
-
-FAIL=0
-for PID in `jobs -p`; do
-  wait $PID || let "FAIL+=1"
-done
-
-if [ "$FAIL" == "0" ]; then
-  printf "*** Done! ***\r\n"
-else
-  printf "*** Test Failed ***\r\n"
-  exit 1
-fi
-

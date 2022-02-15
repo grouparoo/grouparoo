@@ -1,18 +1,12 @@
-import path from "path";
 import { Initializer } from "actionhero";
 import { DestinationSyncMode, plugin } from "@grouparoo/core";
-
 import { test } from "../lib/test";
-import { AppTemplate } from "@grouparoo/app-templates/dist/app";
-import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
 import { exportLeadRecord } from "../lib/export-leads/exportRecord";
 import { destinationOptions } from "../lib/common/destinationOptions";
 import { exportArrayProperties } from "../lib/common/exportArrayProperties";
 import { leadDestinationMappingOptions } from "../lib/export-leads/destinationMappingOptions";
 import { exportContactRecord } from "../lib/export-contacts/exportRecord";
 import { contactDestinationMappingOptions } from "../lib/export-contacts/destinationMappingOptions";
-
-const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
 
 const packageJSON = require("./../../package.json");
 
@@ -29,17 +23,6 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/closeio/closeio.png",
-      templates: [
-        new AppTemplate("closeio", [
-          path.join(templateRoot, "app", "*.template"),
-        ]),
-        new DestinationTemplate(
-          "closeio",
-          [path.join(templateRoot, "destination", "*.template")],
-          syncModes,
-          defaultSyncMode
-        ),
-      ],
       apps: [
         {
           name: "closeio",

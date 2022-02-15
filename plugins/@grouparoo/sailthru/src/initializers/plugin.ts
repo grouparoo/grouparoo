@@ -1,19 +1,12 @@
-import path from "path";
 import { Initializer } from "actionhero";
 import { DestinationSyncMode, plugin } from "@grouparoo/core";
-
 import { test } from "./../lib/test";
-
 import { exportRecord } from "../lib/export/exportRecord";
 import { destinationOptions } from "../lib/export/destinationOptions";
 import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
 import { exportArrayProperties } from "../lib/export/exportArrayProperties";
 
 const packageJSON = require("./../../package.json");
-
-const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
-import { AppTemplate } from "@grouparoo/app-templates/dist/app";
-import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
 
 export class Plugins extends Initializer {
   constructor() {
@@ -27,17 +20,6 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/sailthru/sailthru.png",
-      templates: [
-        new AppTemplate("sailthru", [
-          path.join(templateRoot, "app", "*.template"),
-        ]),
-        new DestinationTemplate(
-          "sailthru",
-          [path.join(templateRoot, "destination", "*.template")],
-          syncModes,
-          defaultSyncMode
-        ),
-      ],
       apps: [
         {
           name: "sailthru",

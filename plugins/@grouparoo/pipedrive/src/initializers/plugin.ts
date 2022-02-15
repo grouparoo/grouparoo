@@ -1,19 +1,12 @@
-import path from "path";
 import { Initializer } from "actionhero";
 import { DestinationSyncMode, plugin } from "@grouparoo/core";
-
 import { test } from "../lib/test";
 import { parallelism } from "../lib/parallelism";
-import { AppTemplate } from "@grouparoo/app-templates/dist/app";
-import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
-
 import { destinationOptions } from "../lib/common/destinationOptions";
 import { exportArrayProperties } from "../lib/common/exportArrayProperties";
 import { getDestinationMappingOptions } from "../lib/common/destinationMappingOptions";
 import { exportPersonRecord } from "../lib/export-persons/exportRecord";
 import { exportOrganizationRecord } from "../lib/export-organizations/exportRecord";
-
-const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
 
 const packageJSON = require("./../../package.json");
 
@@ -30,17 +23,6 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/pipedrive/pipedrive.png",
-      templates: [
-        new AppTemplate("pipedrive", [
-          path.join(templateRoot, "app", "*.template"),
-        ]),
-        new DestinationTemplate(
-          "pipedrive",
-          [path.join(templateRoot, "destination", "*.template")],
-          syncModes,
-          defaultSyncMode
-        ),
-      ],
       apps: [
         {
           name: "pipedrive",

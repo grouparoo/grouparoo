@@ -98,7 +98,6 @@ export const DEFAULT: { [namespace]: () => RoutesConfig } = {
         { path: "/v:apiVersion/appRefreshQuery", action: "appRefreshQuery:create" },
         { path: "/v:apiVersion/appRefreshQuery/:id/run", action: "appRefreshQuery:run" },
         { path: "/v:apiVersion/config/apply", action: "config:apply" },
-        { path: "/v:apiVersion/config/generate", action: "config:generate" },
         { path: "/v:apiVersion/config/user", action: "config:user:create" },
         { path: "/v:apiVersion/config/validate", action: "config:validate" },
         { path: "/v:apiVersion/destination", action: "destination:create" },

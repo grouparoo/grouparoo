@@ -194,7 +194,6 @@ import {
 import {
   ConfigValidate,
   ConfigApply,
-  ConfigGenerate,
   ConfigUserCreate,
 } from "@grouparoo/core/src/actions/config";
 import {
@@ -517,9 +516,6 @@ export namespace Actions {
   >;
   export type ConfigApply = AsyncReturnType<
     typeof ConfigApply.prototype.runWithinTransaction
-  >;
-  export type ConfigGenerate = AsyncReturnType<
-    typeof ConfigGenerate.prototype.runWithinTransaction
   >;
   export type ConfigUserCreate = AsyncReturnType<
     typeof ConfigUserCreate.prototype.runWithinTransaction

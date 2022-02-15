@@ -1,17 +1,10 @@
-import path from "path";
 import { Initializer } from "actionhero";
 import { plugin, DestinationSyncMode } from "@grouparoo/core";
-
 import { test } from "./../lib/test";
-
 import { exportRecord } from "../lib/export-contacts/exportRecord";
 import { destinationOptions } from "../lib/export-contacts/destinationOptions";
 import { destinationMappingOptions } from "../lib/export-contacts/destinationMappingOptions";
 import { exportArrayProperties } from "../lib/export-contacts/exportArrayProperties";
-
-const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
-import { AppTemplate } from "@grouparoo/app-templates/dist/app";
-import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
 
 const packageJSON = require("./../../package.json");
 
@@ -27,16 +20,6 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/intercom/intercom.png",
-      templates: [
-        new AppTemplate("intercom", [
-          path.join(templateRoot, "app", "*.template"),
-        ]),
-        new DestinationTemplate(
-          "intercom",
-          [path.join(templateRoot, "destination", "*.template")],
-          syncModes
-        ),
-      ],
       apps: [
         {
           name: "intercom",

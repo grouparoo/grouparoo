@@ -3,13 +3,6 @@ import { GrouparooPlugin } from "../classes/plugin";
 import { plugin } from "../modules/plugin";
 import { App } from "../models/App";
 import { getPluginManifest } from "../modules/pluginDetails";
-import { ConfigTemplate } from "../classes/configTemplate";
-import { GroupTemplate } from "../templates/group";
-import { ApiKeyTemplate } from "../templates/apiKey";
-import { ModelTemplate } from "../templates/model";
-import { TeamTemplate } from "../templates/team";
-import { TeamMemberTemplate } from "../templates/teamMember";
-import { SettingTemplate } from "../templates/setting";
 import { CLS } from "../modules/cls";
 import { getGrouparooRunMode } from "../modules/runMode";
 
@@ -20,7 +13,6 @@ declare module "actionhero" {
       validate: (plugin: GrouparooPlugin) => boolean;
       register: (plugin: GrouparooPlugin, validate: boolean) => void;
       announcePlugins: () => void;
-      templates: () => ConfigTemplate[];
       persistentConnections: {
         [id: string]: any;
       };
@@ -44,7 +36,6 @@ export class Plugins extends Initializer {
       validate: this.validatePlugin,
       register: this.registerPlugin,
       announcePlugins: this.announcePlugins,
-      templates: this.templates,
     };
 
     this.checkPluginEnvironmentVariables();
@@ -54,14 +45,6 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: "@grouparoo/core",
       icon: "/public/@grouparoo/logo.png",
-      templates: [
-        SettingTemplate,
-        ModelTemplate,
-        GroupTemplate,
-        ApiKeyTemplate,
-        TeamTemplate,
-        TeamMemberTemplate,
-      ],
     });
 
     // --- Add the UI pLugin --- //
@@ -236,19 +219,6 @@ export class Plugins extends Initializer {
 
   announcePlugins() {
     log(`active plugins: ${api.plugins.plugins.map((p) => p.name).join(", ")}`);
-  }
-
-  templates() {
-    return api.plugins.plugins
-      .filter((p) => p.templates?.length > 0)
-      .map((p) => p.templates)
-      .flat()
-      .map((T) => (typeof T === "function" ? new T() : T))
-      .sort((a, b) => {
-        if (a.name > b.name) return 1;
-        if (a.name < b.name) return -1;
-        return 0;
-      });
   }
 
   /*

@@ -1,27 +1,11 @@
-import path from "path";
 import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
-
 import { connect } from "./../lib/connect";
 import { disconnect } from "./../lib/disconnect";
 import { test } from "./../lib/test";
-
 import { getConnection as getTableConnection } from "../lib/table-import/connection";
 import { getConnection as getQueryConnection } from "../lib/query-import/connection";
 
-import { getTables } from "../lib/table-import/getTables";
-import { getColumns } from "../lib/table-import/getColumns";
-
-const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
-import { AppTemplate } from "@grouparoo/app-templates/dist/app";
-import {
-  TableSourceTemplate,
-  TablePropertyTemplate,
-} from "@grouparoo/app-templates/dist/source/table";
-import {
-  QuerySourceTemplate,
-  QueryPropertyTemplate,
-} from "@grouparoo/app-templates/dist/source/query";
 import { appQuery } from "../lib/appQuery";
 
 const packageJSON = require("./../../package.json");
@@ -36,15 +20,6 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/bigquery/bigquery.png",
-      templates: [
-        new AppTemplate("bigquery", [
-          path.join(templateRoot, "app", "*.template"),
-        ]),
-        new TableSourceTemplate("bigquery", { getTables, getColumns }),
-        new TablePropertyTemplate("bigquery"),
-        new QuerySourceTemplate("bigquery"),
-        new QueryPropertyTemplate("bigquery"),
-      ],
       apps: [
         {
           name: "bigquery",

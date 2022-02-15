@@ -52,28 +52,6 @@ export class ConfigApply extends AuthenticatedAction {
   }
 }
 
-export class ConfigGenerate extends AuthenticatedAction {
-  name = "config:generate";
-  description = "I generate a new config file";
-  permission: ActionPermission = { topic: "system", mode: "write" };
-  inputs = {
-    id: { required: true },
-    parentId: { required: false },
-  };
-
-  async runWithinTransaction({
-    params,
-  }: {
-    params: ParamsFrom<ConfigGenerate>;
-  }) {
-    return spawnPromise("./node_modules/.bin/grouparoo", [
-      "generate",
-      params.id,
-      params.parentId,
-    ]);
-  }
-}
-
 export class ConfigUserCreate extends OptionallyAuthenticatedAction {
   name = "config:user:create";
   description = "I write user details to a .local file.";

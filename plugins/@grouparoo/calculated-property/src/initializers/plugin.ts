@@ -1,12 +1,6 @@
 import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
-import {
-  CalculatedPropertyAppTemplate,
-  CalculatedPropertyPropertyTemplate,
-  CalculatedPropertySourceTemplate,
-} from "../lib/templates";
 import { recordProperty } from "../lib/recordProperty";
-
 import { test } from "../lib/test";
 import { propertyOptions } from "../lib/propertyOptions";
 
@@ -23,11 +17,6 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/calculated-property/calculated-property.png",
-      templates: [
-        CalculatedPropertyAppTemplate,
-        CalculatedPropertySourceTemplate,
-        CalculatedPropertyPropertyTemplate,
-      ],
       apps: [
         {
           name: "calculated-property",
