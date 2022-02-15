@@ -269,19 +269,19 @@ describe("models/recordProperty", () => {
         });
         await recordProperty.setValue("4128889999");
         const response = await recordProperty.getValue();
-        expect(response).toBe("+1 412 888 9999");
+        expect(response).toBe("4128889999");
       });
 
-      test("invalid numbers are stored", async () => {
+      test("invalid phone numbers are stored without change", async () => {
         const recordProperty = new RecordProperty({
           recordId: record.id,
           propertyId: phoneNumberProperty.id,
         });
         await recordProperty.setValue("5");
         const response = await recordProperty.getValue();
-        expect(response).toBe(null);
-        expect(recordProperty.invalidValue).toBe("5");
-        expect(recordProperty.invalidReason).toBe("Invalid phoneNumber value");
+        expect(response).toBe("5");
+        expect(recordProperty.invalidValue).toBe(null);
+        expect(recordProperty.invalidReason).toBe(null);
       });
     });
 
