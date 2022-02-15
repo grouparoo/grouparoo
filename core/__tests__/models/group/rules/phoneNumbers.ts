@@ -56,7 +56,7 @@ describe("model/group", () => {
         await group.setRules([
           {
             key: "phoneNumber",
-            match: "+1 412 888 0001",
+            match: "412 888 0001",
             operation: { op: "eq" },
           },
         ]);
@@ -65,14 +65,14 @@ describe("model/group", () => {
 
       test("partial matches", async () => {
         await group.setRules([
-          { key: "phoneNumber", match: "+1 412%", operation: { op: "like" } },
+          { key: "phoneNumber", match: "412%", operation: { op: "like" } },
         ]);
         expect(await group.countPotentialMembers()).toBe(3);
       });
 
       test("multiple rules with same key", async () => {
         await group.setRules([
-          { key: "phoneNumber", match: "+1 412%", operation: { op: "like" } },
+          { key: "phoneNumber", match: "412%", operation: { op: "like" } },
           { key: "phoneNumber", match: "%000%", operation: { op: "like" } },
         ]);
         expect(await group.countPotentialMembers()).toBe(3);
