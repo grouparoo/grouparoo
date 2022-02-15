@@ -197,7 +197,7 @@ describe("models/recordProperty", () => {
         });
         await recordProperty.setValue("MARIO@example.com");
         const response = await recordProperty.getValue();
-        expect(response).toBe("mario@example.com");
+        expect(response).toBe("MARIO@example.com");
       });
 
       test("invalid emails set invalidValue", async () => {
@@ -232,7 +232,7 @@ describe("models/recordProperty", () => {
           "Deleted-user-id-19430-Team-5051deleted-user-id-19430-team-5051XXXXXX@example.com";
         await recordProperty.setValue(value);
         const response = await recordProperty.getValue();
-        expect(response).toBe(value.toLowerCase());
+        expect(response).toBe(value);
       });
     });
 
