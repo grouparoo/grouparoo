@@ -6,13 +6,29 @@ import StateBadge from "../../../../../components/badges/StateBadge";
 import LockedBadge from "../../../../../components/badges/LockedBadge";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
-import { NextPageContext } from "next";
 import { Actions } from "../../../../../utils/apiData";
 import { generateClient } from "../../../../../client/client";
+import { withServerErrorHandler } from "../../../../../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../../../../../utils/pageHelper";
 
-export default function Page(props) {
-  const { destination } = props;
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const client = generateClient(ctx);
+  const { destinationId, modelId } = ctx.query;
+  const { destination } = await client.request<Actions.DestinationView>(
+    "get",
+    `/destination/${destinationId}`
+  );
+  ensureMatchingModel("Destination", destination.modelId, modelId.toString());
 
+  const exportListInitialProps = await ExportsList.hydrate(ctx);
+
+  return { props: { destination, ...exportListInitialProps } };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  destination,
+  ...props
+}) => {
   return (
     <>
       <Head>
@@ -40,18 +56,6 @@ export default function Page(props) {
       />
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const client = generateClient(ctx);
-  const { destinationId, modelId } = ctx.query;
-  const { destination } = await client.request(
-    "get",
-    `/destination/${destinationId}`
-  );
-  ensureMatchingModel("Destination", destination.modelId, modelId.toString());
-
-  const exportListInitialProps = await ExportsList.hydrate(ctx);
-
-  return { destination, ...exportListInitialProps };
 };
+
+export default Page;

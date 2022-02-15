@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 import { Alert, Button, ButtonGroup, Col, Row } from "react-bootstrap";
-import { errorHandler } from "../eventHandlers";
 import StateBadge from "../components/badges/StateBadge";
 import LoadingTable from "../components/LoadingTable";
 import Pagination from "../components/Pagination";
@@ -16,11 +15,30 @@ import { capitalize } from "../utils/languageHelper";
 import { formatTimestamp } from "../utils/formatTimestamp";
 import { DurationTime } from "../components/DurationTime";
 import { generateClient } from "../client/client";
-import { NextPageContext } from "next";
+import { withServerErrorHandler } from "../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../utils/pageHelper";
 
 const states = ["all", "pending", "failed", "complete"];
 
-export default function Page(props) {
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const client = generateClient(ctx);
+  const { limit, offset, state } = ctx.query;
+
+  const { exportProcessors, total } =
+    await client.request<Actions.ExportProcessorsList>(
+      "get",
+      `/exportProcessors`,
+      {
+        limit,
+        offset,
+        state: state === "all" ? undefined : state,
+      }
+    );
+
+  return { props: { exportProcessors, total } };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   const router = useRouter();
   const { client } = useApi();
   const [loading, setLoading] = useState(false);
@@ -200,21 +218,6 @@ export default function Page(props) {
       />
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const client = generateClient(ctx);
-  const { limit, offset, state } = ctx.query;
-
-  const { exportProcessors, total } = await client.request(
-    "get",
-    `/exportProcessors`,
-    {
-      limit,
-      offset,
-      state: state === "all" ? undefined : state,
-    }
-  );
-
-  return { exportProcessors, total };
 };
+
+export default Page;

@@ -15,13 +15,28 @@ import LoadingButton from "../../../components/LoadingButton";
 import LockedBadge from "../../../components/badges/LockedBadge";
 import { Actions, Models } from "../../../utils/apiData";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
-import { NextPageContext } from "next";
 import { generateClient } from "../../../client/client";
 import { FormTypeahead } from "../../../components/Typeahead";
+import { withServerErrorHandler } from "../../../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../../../utils/pageHelper";
 
-export default function Page(
-  props: Awaited<ReturnType<typeof Page.getInitialProps>>
-) {
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const { id } = ctx.query;
+  const client = generateClient(ctx);
+  const { app } = await client.request<Actions.AppView>("get", `/app/${id}`);
+  const { options, pluginOptions, environmentVariableOptions } =
+    await client.request<Actions.AppOptions>("get", `/app/${id}/options`);
+  return {
+    props: {
+      app,
+      options,
+      pluginOptions,
+      environmentVariableOptions,
+    },
+  };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   const { environmentVariableOptions, options, pluginOptions } = props;
   const router = useRouter();
   const { client } = useApi();
@@ -447,21 +462,6 @@ export default function Page(
       </Row>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { id } = ctx.query;
-  const client = generateClient(ctx);
-  const { app } = await client.request<Actions.AppView>("get", `/app/${id}`);
-  const {
-    options,
-    pluginOptions,
-    environmentVariableOptions,
-  }: Actions.AppOptions = await client.request("get", `/app/${id}/options`);
-  return {
-    app,
-    options,
-    pluginOptions,
-    environmentVariableOptions,
-  };
 };
+
+export default Page;

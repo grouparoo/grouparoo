@@ -1,10 +1,10 @@
-import { NextPageContext } from "next";
 import Head from "next/head";
 import { Alert, Badge, Table } from "react-bootstrap";
 import { API_VERSION, generateClient } from "../client/client";
 import LinkButton from "../components/LinkButton";
-import { useApi } from "../contexts/api";
 import { Actions } from "../utils/apiData";
+import { NextPageWithInferredProps } from "../utils/pageHelper";
+import { withServerErrorHandler } from "../utils/withServerErrorHandler";
 
 const upgradeHelpPage =
   "https://www.grouparoo.com/docs/support/upgrading-grouparoo";
@@ -19,12 +19,22 @@ function formatUrl(s = "unknown", label: string) {
   );
 }
 
-export default function Page({
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const client = generateClient(ctx);
+  const { plugins }: Actions.PluginsList = await client.request(
+    "get",
+    `/plugins`,
+    {
+      includeInstalled: true,
+      includeAvailable: false,
+    }
+  );
+  return { props: { plugins } };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
   plugins,
-}: {
-  plugins: Actions.PluginsList["plugins"];
-}) {
-  const { client } = useApi();
+}) => {
   const hasOutOfDatePlugin = plugins.find((p) => !p.upToDate) ? true : false;
 
   return (
@@ -107,17 +117,6 @@ export default function Page({
       </Table>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const client = generateClient(ctx);
-  const { plugins }: Actions.PluginsList = await client.request(
-    "get",
-    `/plugins`,
-    {
-      includeInstalled: true,
-      includeAvailable: false,
-    }
-  );
-  return { plugins };
 };
+
+export default Page;

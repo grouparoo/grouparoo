@@ -1,23 +1,29 @@
 import ImportTabs from "../../../components/tabs/Import";
 import Head from "next/head";
-import { Row, Col, Table, Alert, Card } from "react-bootstrap";
+import { Table, Alert, Card } from "react-bootstrap";
 import Link from "next/link";
-import { Models } from "../../../utils/apiData";
+import { Actions } from "../../../utils/apiData";
 import { DurationTime } from "../../../components/DurationTime";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 import StateBadge from "../../../components/badges/StateBadge";
 import { generateClient } from "../../../client/client";
-import { NextPageContext } from "next";
+import { withServerErrorHandler } from "../../../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../../../utils/pageHelper";
 
-export default function Page(props) {
-  const {
-    groups,
-    _import,
-  }: {
-    groups: Models.GroupType[];
-    _import: Models.ImportType;
-  } = props;
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const { id } = ctx.query;
+  const client = generateClient(ctx);
+  const { import: _import } = await client.request<Actions.ImportView>(
+    "get",
+    `/import/${id}`
+  );
 
+  return { props: { _import } };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  _import,
+}) => {
   const errorMetadata = _import.errorMetadata
     ? JSON.parse(_import.errorMetadata)
     : {};
@@ -167,13 +173,6 @@ export default function Page(props) {
       </Card>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { id } = ctx.query;
-  const client = generateClient(ctx);
-  const { import: _import } = await client.request("get", `/import/${id}`);
-
-  const { groups } = await client.request("get", `/groups`);
-  return { _import, groups };
 };
+
+export default Page;

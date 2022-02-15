@@ -13,25 +13,61 @@ import { errorHandler, successHandler } from "../../../../../eventHandlers";
 import { Models, Actions } from "../../../../../utils/apiData";
 import PropertyAddButton from "../../../../../components/property/Add";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
-import { NextPageContext } from "next";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { generateClient } from "../../../../../client/client";
+import { withServerErrorHandler } from "../../../../../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../../../../../utils/pageHelper";
 
-export default function Page(props) {
-  const {
-    source,
-    preview,
-    columnSpeculation,
-    types,
-    defaultPropertyOptions,
-  }: {
-    source: Models.SourceType;
-    preview: Actions.SourcePreview["preview"];
-    columnSpeculation: Actions.SourcePreview["columnSpeculation"];
-    types: Actions.PropertiesOptions["types"];
-    defaultPropertyOptions: Actions.SourceDefaultPropertyOptions["defaultPropertyOptions"];
-  } = props;
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const { sourceId, modelId } = ctx.query;
+  const client = generateClient(ctx);
 
+  const { source } = await client.request<Actions.SourceView>(
+    "get",
+    `/source/${sourceId}`
+  );
+  ensureMatchingModel("Source", source.modelId, modelId.toString());
+
+  const { preview, columnSpeculation } =
+    await client.request<Actions.SourcePreview>(
+      "get",
+      `/source/${sourceId}/preview`
+    );
+  const { defaultPropertyOptions } =
+    await client.request<Actions.SourceDefaultPropertyOptions>(
+      "get",
+      `/source/${sourceId}/defaultPropertyOptions`
+    );
+  const { properties } = await client.request<Actions.PropertiesList>(
+    "get",
+    `/properties`,
+    { modelId }
+  );
+  const { types } = await client.request<Actions.PropertiesOptions>(
+    "get",
+    `/propertyOptions`
+  );
+
+  return {
+    props: {
+      source,
+      properties,
+      columnSpeculation,
+      preview,
+      types,
+      defaultPropertyOptions,
+    },
+  };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  source,
+  preview,
+  columnSpeculation,
+  types,
+  defaultPropertyOptions,
+  ...props
+}) => {
   const { client } = useApi();
   const [properties, setProperties] = useState<Models.PropertyType[]>(
     props.properties
@@ -358,44 +394,6 @@ export default function Page(props) {
       </Row>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { sourceId, modelId } = ctx.query;
-  const client = generateClient(ctx);
-
-  const { source } = await client.request<Actions.SourceView>(
-    "get",
-    `/source/${sourceId}`
-  );
-  ensureMatchingModel("Source", source.modelId, modelId.toString());
-
-  const { preview, columnSpeculation } =
-    await client.request<Actions.SourcePreview>(
-      "get",
-      `/source/${sourceId}/preview`
-    );
-  const { defaultPropertyOptions } =
-    await client.request<Actions.SourceDefaultPropertyOptions>(
-      "get",
-      `/source/${sourceId}/defaultPropertyOptions`
-    );
-  const { properties } = await client.request<Actions.PropertiesList>(
-    "get",
-    `/properties`,
-    { modelId }
-  );
-  const { types } = await client.request<Actions.PropertiesOptions>(
-    "get",
-    `/propertyOptions`
-  );
-
-  return {
-    source,
-    properties,
-    columnSpeculation,
-    preview,
-    types,
-    defaultPropertyOptions,
-  };
 };
+
+export default Page;

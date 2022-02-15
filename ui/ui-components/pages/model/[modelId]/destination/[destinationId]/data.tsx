@@ -1,6 +1,5 @@
 import { useApi } from "../../../../../contexts/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { NextPageContext } from "next";
 import { Row, Col, Form, Badge, Button, Table, Alert } from "react-bootstrap";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -18,17 +17,67 @@ import { Actions, Models } from "../../../../../utils/apiData";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 import { generateClient } from "../../../../../client/client";
+import { withServerErrorHandler } from "../../../../../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../../../../../utils/pageHelper";
 
-export default function Page(
-  props: Awaited<ReturnType<typeof Page.getInitialProps>>
-) {
-  const {
-    properties,
-    mappingOptions,
-    destinationTypeConversions,
-    groups,
-    exportArrayProperties,
-  } = props;
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const client = generateClient(ctx);
+  const { destinationId, modelId } = ctx.query;
+  const { destination } = await client.request<Actions.DestinationView>(
+    "get",
+    `/destination/${destinationId}`
+  );
+  ensureMatchingModel("Destination", destination.modelId, modelId.toString());
+  const { groups } = await client.request<Actions.GroupsList>(
+    "get",
+    `/groups`,
+    {
+      modelId: destination?.modelId,
+    }
+  );
+  const { properties } = await client.request<Actions.PropertiesList>(
+    "get",
+    `/properties`,
+    {
+      state: "ready",
+      modelId: destination?.modelId,
+    }
+  );
+
+  const { options: mappingOptions, destinationTypeConversions } =
+    await client.request<Actions.DestinationMappingOptions>(
+      "get",
+      `/destination/${destinationId}/mappingOptions`
+    );
+
+  const { exportArrayProperties } =
+    await client.request<Actions.DestinationExportArrayProperties>(
+      "get",
+      `/destination/${destinationId}/exportArrayProperties`
+    );
+
+  return {
+    props: {
+      destination,
+      properties,
+      mappingOptions,
+      destinationTypeConversions,
+      exportArrayProperties,
+      groups: groups
+        .filter((group) => group.state !== "draft")
+        .filter((group) => group.state !== "deleted"),
+    },
+  };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  properties,
+  mappingOptions,
+  destinationTypeConversions,
+  groups,
+  exportArrayProperties,
+  ...props
+}) => {
   const { client } = useApi();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -844,52 +893,6 @@ export default function Page(
       </Row>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const client = generateClient(ctx);
-  const { destinationId, modelId } = ctx.query;
-  const { destination } = await client.request<Actions.DestinationView>(
-    "get",
-    `/destination/${destinationId}`
-  );
-  ensureMatchingModel("Destination", destination.modelId, modelId.toString());
-  const { groups } = await client.request<Actions.GroupsList>(
-    "get",
-    `/groups`,
-    {
-      modelId: destination?.modelId,
-    }
-  );
-  const { properties } = await client.request<Actions.PropertiesList>(
-    "get",
-    `/properties`,
-    {
-      state: "ready",
-      modelId: destination?.modelId,
-    }
-  );
-
-  const { options: mappingOptions, destinationTypeConversions } =
-    await client.request<Actions.DestinationMappingOptions>(
-      "get",
-      `/destination/${destinationId}/mappingOptions`
-    );
-
-  const { exportArrayProperties } =
-    await client.request<Actions.DestinationExportArrayProperties>(
-      "get",
-      `/destination/${destinationId}/exportArrayProperties`
-    );
-
-  return {
-    destination,
-    properties,
-    mappingOptions,
-    destinationTypeConversions,
-    exportArrayProperties,
-    groups: groups
-      .filter((group) => group.state !== "draft")
-      .filter((group) => group.state !== "deleted"),
-  };
 };
+
+export default Page;

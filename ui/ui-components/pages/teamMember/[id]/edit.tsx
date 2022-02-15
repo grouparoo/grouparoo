@@ -10,14 +10,24 @@ import TeamMemberTabs from "../../../components/tabs/TeamMember";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { successHandler } from "../../../eventHandlers";
 import { generateClient } from "../../../client/client";
-import { NextPageContext } from "next";
+import { withServerErrorHandler } from "../../../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../../../utils/pageHelper";
 
-export default function Page(props) {
-  const {
-    teams,
-  }: {
-    teams: Models.TeamType[];
-  } = props;
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const client = generateClient(ctx);
+  const { id } = ctx.query;
+  const { teams } = await client.request<Actions.TeamsList>("get", `/teams`);
+  const { teamMember } = await client.request<Actions.TeamMemberView>(
+    "get",
+    `/team/member/${id}`
+  );
+  return { props: { teams, teamMember } };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  teams,
+  ...props
+}) => {
   const router = useRouter();
   const { client } = useApi();
   const [loading, setLoading] = useState(false);
@@ -82,7 +92,7 @@ export default function Page(props) {
           <RecordImageFromEmail loading={loading} email={teamMember.email} />
           <small>
             Image from{" "}
-            <a href="https://gravatar.com" target="_blank">
+            <a href="https://gravatar.com" rel="noreferrer" target="_blank">
               gravatar.com
             </a>
           </small>
@@ -182,12 +192,6 @@ export default function Page(props) {
       </Row>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const client = generateClient(ctx);
-  const { id } = ctx.query;
-  const { teams } = await client.request("get", `/teams`);
-  const { teamMember } = await client.request("get", `/team/member/${id}`);
-  return { teams, teamMember };
 };
+
+export default Page;

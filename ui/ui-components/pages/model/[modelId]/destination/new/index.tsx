@@ -1,4 +1,3 @@
-import { NextPageContext } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -9,13 +8,22 @@ import LinkButton from "../../../../../components/LinkButton";
 import { useApi } from "../../../../../contexts/api";
 import { useGrouparooModel } from "../../../../../contexts/grouparooModel";
 import { Actions } from "../../../../../utils/apiData";
+import { NextPageWithInferredProps } from "../../../../../utils/pageHelper";
+import { withServerErrorHandler } from "../../../../../utils/withServerErrorHandler";
 
-export default function Page(props) {
-  const {
-    connectionApps,
-  }: {
-    connectionApps: Actions.DestinationConnectionApps["connectionApps"];
-  } = props;
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const client = generateClient(ctx);
+  const { connectionApps } =
+    await client.request<Actions.DestinationConnectionApps>(
+      "get",
+      `/destinations/connectionApps`
+    );
+  return { props: { connectionApps } };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  connectionApps,
+}) => {
   const router = useRouter();
   const { client } = useApi();
   const { model } = useGrouparooModel();
@@ -95,13 +103,6 @@ export default function Page(props) {
       </Form>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const client = generateClient(ctx);
-  const { connectionApps } = await client.request(
-    "get",
-    `/destinations/connectionApps`
-  );
-  return { connectionApps };
 };
+
+export default Page;

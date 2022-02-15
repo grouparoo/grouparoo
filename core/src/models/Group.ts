@@ -56,11 +56,16 @@ import { PropertiesCache } from "../modules/caches/propertiesCache";
 export const GROUP_RULE_LIMIT = 10;
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
+export interface GroupRuleOperation {
+  op: GroupRuleOpType;
+  description?: string;
+}
+
 export interface GroupRuleWithKey {
   key?: string;
   type?: Property["type"];
   topLevel?: boolean;
-  operation: { op: GroupRuleOpType; description?: string };
+  operation: GroupRuleOperation;
   match?: string | number | boolean;
   relativeMatchNumber?: number;
   relativeMatchUnit?: RelativeMatchUnitType;

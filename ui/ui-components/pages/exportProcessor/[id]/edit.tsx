@@ -2,18 +2,27 @@ import { Table, Alert, Card } from "react-bootstrap";
 import EnterpriseLink from "../../../components/GrouparooLink";
 import Head from "next/head";
 import ExportProcessorTabs from "../../../components/tabs/ExportProcessor";
-import { Models } from "../../../utils/apiData";
 import StateBadge from "../../../components/badges/StateBadge";
 import { DurationTime } from "../../../components/DurationTime";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
-import { NextPageContext } from "next";
 import { generateClient } from "../../../client/client";
+import { withServerErrorHandler } from "../../../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../../../utils/pageHelper";
+import { Actions } from "../../../utils/apiData";
 
-export default function Page({
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const { id } = ctx.query;
+  const client = generateClient(ctx);
+  const { exportProcessor } = await client.request<Actions.ExportProcessorView>(
+    "get",
+    `/exportProcessor/${id}`
+  );
+  return { props: { exportProcessor } };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
   exportProcessor,
-}: {
-  exportProcessor: Models.ExportProcessorType;
-}) {
+}) => {
   return (
     <>
       <Head>
@@ -128,14 +137,6 @@ export default function Page({
       </Card>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { id } = ctx.query;
-  const client = generateClient(ctx);
-  const { exportProcessor } = await client.request(
-    "get",
-    `/exportProcessor/${id}`
-  );
-  return { exportProcessor };
 };
+
+export default Page;

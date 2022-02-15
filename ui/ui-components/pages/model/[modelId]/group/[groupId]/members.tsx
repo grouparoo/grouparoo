@@ -1,27 +1,35 @@
 import { useApi } from "../../../../../contexts/api";
 import Head from "next/head";
-import { NextPageContext } from "next";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
 import { successHandler } from "../../../../../eventHandlers";
 import StateBadge from "../../../../../components/badges/StateBadge";
 import GroupTabs from "../../../../../components/tabs/Group";
 import RecordsList from "../../../../../components/record/List";
-import { Models, Actions } from "../../../../../utils/apiData";
+import { Actions } from "../../../../../utils/apiData";
 import PageHeader from "../../../../../components/PageHeader";
 import LockedBadge from "../../../../../components/badges/LockedBadge";
 import ModelBadge from "../../../../../components/badges/ModelBadge";
 import { generateClient } from "../../../../../client/client";
+import { NextPageWithInferredProps } from "../../../../../utils/pageHelper";
+import { withServerErrorHandler } from "../../../../../utils/withServerErrorHandler";
 
-export default function Page(
-  props: Awaited<ReturnType<typeof Page.getInitialProps>>
-) {
-  const {
-    group,
-  }: {
-    group: Models.GroupType;
-  } = props;
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const { groupId } = ctx.query;
+  const client = generateClient(ctx);
+  const { group } = await client.request<Actions.GroupView>(
+    "get",
+    `/group/${groupId}`
+  );
+  const recordListInitialProps = await RecordsList.hydrate(ctx);
 
+  return { props: { group, ...recordListInitialProps } };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  group,
+  ...props
+}) => {
   const { client } = useApi();
   const [loading, setLoading] = useState(false);
 
@@ -79,13 +87,6 @@ export default function Page(
       />
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { groupId } = ctx.query;
-  const client = generateClient(ctx);
-  const { group } = await client.request("get", `/group/${groupId}`);
-  const recordListInitialProps = await RecordsList.hydrate(ctx);
-
-  return { group, ...recordListInitialProps };
 };
+
+export default Page;

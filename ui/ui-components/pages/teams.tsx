@@ -6,19 +6,28 @@ import EnterpriseLink from "../components/GrouparooLink";
 import { Form } from "react-bootstrap";
 import LoadingTable from "../components/LoadingTable";
 import RecordImageFromEmail from "../components/visualizations/RecordImageFromEmail";
-import { Models } from "../utils/apiData";
+import { Actions, Models } from "../utils/apiData";
 import { formatTimestamp } from "../utils/formatTimestamp";
 import LinkButton from "../components/LinkButton";
 import { grouparooUiEdition } from "../utils/uiEdition";
 import { generateClient } from "../client/client";
+import { NextPageWithInferredProps } from "../utils/pageHelper";
+import { withServerErrorHandler } from "../utils/withServerErrorHandler";
 
-export default function Page({
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const client = generateClient(ctx);
+  const { teams } = await client.request<Actions.TeamsList>("get", `/teams`);
+  const { teamMembers } = await client.request<Actions.TeamMembersList>(
+    "get",
+    `/teamMembers`
+  );
+  return { props: { teams, teamMembers } };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
   teams,
   teamMembers,
-}: {
-  teams: Models.TeamType[];
-  teamMembers: Models.TeamMemberType[];
-}) {
+}) => {
   const router = useRouter();
 
   return (
@@ -71,7 +80,11 @@ export default function Page({
         <Alert variant="primary" style={{ textAlign: "center" }}>
           Does your organization need additional Teams with finer-grained
           permissions?{" "}
-          <a target="_blank" href="https://www.grouparoo.com/meet">
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href="https://www.grouparoo.com/meet"
+          >
             Contact us
           </a>
           .
@@ -132,11 +145,6 @@ export default function Page({
       </LinkButton>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx) => {
-  const client = generateClient(ctx);
-  const { teams } = await client.request("get", `/teams`);
-  const { teamMembers } = await client.request("get", `/teamMembers`);
-  return { teams, teamMembers };
 };
+
+export default Page;

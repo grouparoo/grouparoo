@@ -1,1 +1,1 @@
-export { default } from "../../../teamMember/new";
+export { default, getServerSideProps } from "../../../teamMember/new";

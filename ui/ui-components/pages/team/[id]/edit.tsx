@@ -9,9 +9,17 @@ import TeamTabs from "../../../components/tabs/Team";
 import LockedBadge from "../../../components/badges/LockedBadge";
 import { successHandler, teamHandler } from "../../../eventHandlers";
 import { generateClient } from "../../../client/client";
-import { NextPageContext } from "next";
+import { withServerErrorHandler } from "../../../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../../../utils/pageHelper";
 
-export default function Page(props) {
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const client = generateClient(ctx);
+  const { id } = ctx.query;
+  const { team } = await client.request<Actions.TeamView>("get", `/team/${id}`);
+  return { props: { team } };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   const router = useRouter();
   const { client } = useApi();
   const [loading, setLoading] = useState(false);
@@ -146,11 +154,6 @@ export default function Page(props) {
       </Form>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const client = generateClient(ctx);
-  const { id } = ctx.query;
-  const { team } = await client.request("get", `/team/${id}`);
-  return { team };
 };
+
+export default Page;

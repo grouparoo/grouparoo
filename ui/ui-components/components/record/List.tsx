@@ -1,4 +1,4 @@
-import type { NextPageContext } from "next";
+import type { GetServerSidePropsContext } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { FormEvent, useCallback, useEffect, useState } from "react";
@@ -18,11 +18,11 @@ import Pagination from "../Pagination";
 import ArrayRecordPropertyList from "./ArrayRecordPropertyList";
 import { useGrouparooModel } from "../../contexts/grouparooModel";
 
-type Props = Awaited<ReturnType<typeof RecordsList.hydrate>> & {
+interface Props extends Awaited<ReturnType<typeof RecordsList.hydrate>> {
   header?: React.ReactNode;
   searchKey?: string;
   searchValue?: string;
-};
+}
 
 export default function RecordsList(props: Props) {
   const { properties } = props;
@@ -411,7 +411,7 @@ export default function RecordsList(props: Props) {
 }
 
 RecordsList.hydrate = async (
-  ctx: NextPageContext,
+  ctx: GetServerSidePropsContext,
   _searchKey?: string,
   _searchValue?: string
 ) => {
@@ -428,7 +428,7 @@ RecordsList.hydrate = async (
     caseSensitive,
   } = ctx.query;
 
-  const { records, total }: Actions.RecordsList = await client.request(
+  const { records, total } = await client.request<Actions.RecordsList>(
     "get",
     `/records`,
     {
@@ -442,9 +442,14 @@ RecordsList.hydrate = async (
       caseSensitive,
     }
   );
-  const { properties } = await client.request("get", `/properties`, {
-    modelId,
-  });
+
+  const { properties } = await client.request<Actions.PropertiesList>(
+    "get",
+    `/properties`,
+    {
+      modelId,
+    }
+  );
 
   return { records, total, properties };
 };

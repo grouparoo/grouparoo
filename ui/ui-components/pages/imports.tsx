@@ -1,7 +1,13 @@
 import Head from "next/head";
 import ImportList from "../components/import/List";
+import { NextPageWithInferredProps } from "../utils/pageHelper";
+import { withServerErrorHandler } from "../utils/withServerErrorHandler";
 
-export default function Page(props) {
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  return { props: await ImportList.hydrate(ctx) };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   return (
     <>
       <Head>
@@ -11,8 +17,6 @@ export default function Page(props) {
       <ImportList {...props} />
     </>
   );
-}
-
-Page.getInitialProps = async (ctx) => {
-  return ImportList.hydrate(ctx);
 };
+
+export default Page;
