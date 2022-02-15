@@ -68,6 +68,8 @@ export * from "./modules/oAuth";
 
 export type { GrouparooRunMode } from "./modules/runMode";
 
+export type { Action, ParamsFrom } from "actionhero";
+
 // ensure config types are loaded
 import "./config/api";
 import "./config/batchSize";
