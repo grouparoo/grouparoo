@@ -43,18 +43,16 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
   const retryExport = useCallback(async () => {
     setLoading(true);
     try {
-      const { count } = await client
-        .requestAction<ExportsRetryFailed>(
-          "get",
-          `/exports/retryFailed`,
-          {
-            destinationId: _export.destination.id,
-            startTimestamp: _export.createdAt,
-            endTimestamp: _export.createdAt,
-          },
-          { useCache: false }
-        )
-        .catch(() => ({ count: 0 }));
+      const { count } = await client.requestAction<ExportsRetryFailed>(
+        "get",
+        `/exports/retryFailed`,
+        {
+          destinationId: _export.destination.id,
+          startTimestamp: _export.createdAt,
+          endTimestamp: _export.createdAt,
+        },
+        { useCache: false }
+      );
       if (count) {
         successHandler.publish({ message: "Export Retried" });
         const { export: refreshedExport } =

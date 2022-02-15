@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ExportsRetryFailed } from "@grouparoo/core/dist/actions/exports";
+import { ExportsRetryFailed } from "@grouparoo/core/src/actions/exports";
 import { GetServerSidePropsContext } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -59,18 +59,16 @@ export default function ExportsList(props: Props) {
     async (_export: Models.ExportType, index: number) => {
       setLoading(true);
       try {
-        const { count } = await client
-          .requestAction<ExportsRetryFailed>(
-            "get",
-            `/exports/retryFailed`,
-            {
-              destinationId: _export.destination.id,
-              startTimestamp: _export.createdAt,
-              endTimestamp: _export.createdAt,
-            },
-            { useCache: false }
-          )
-          .catch(() => ({ count: 0 }));
+        const { count } = await client.requestAction<ExportsRetryFailed>(
+          "get",
+          `/exports/retryFailed`,
+          {
+            destinationId: _export.destination.id,
+            startTimestamp: _export.createdAt,
+            endTimestamp: _export.createdAt,
+          },
+          { useCache: false }
+        );
         if (count) {
           successHandler.publish({ message: "Export Retried" });
           const { export: refreshedExport } =
