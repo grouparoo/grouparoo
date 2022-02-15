@@ -23,7 +23,7 @@ export const getServerSideProps = withServerErrorHandler(async (ctx) => {
 
   plugins = plugins
     .filter((p) => p.apps?.length > 0)
-    .sort((a, b) => (a.name > b.name ? 1 : -1));
+    .sort((a, b) => (a.name > b.name ? 1 : a.name < b.name ? -1 : 0));
 
   return {
     props: {
