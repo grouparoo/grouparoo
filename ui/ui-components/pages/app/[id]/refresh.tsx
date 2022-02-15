@@ -51,7 +51,7 @@ export const getServerSideProps = withServerErrorHandler(async (ctx) => {
       .map((source) => source.schedule);
 
     for (const schedule of schedules) {
-      const { runs } = await client.request("get", `/runs`, {
+      const { runs } = await client.request<Actions.RunsList>("get", `/runs`, {
         creatorId: schedule.id,
         limit: 1,
       });

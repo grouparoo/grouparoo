@@ -54,12 +54,13 @@ export const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
   }, []);
 
   async function load() {
-    const response: Actions.ResqueResqueDetails = await client.request(
-      "get",
-      "/resque/resqueDetails",
-      {},
-      { useCache: false }
-    );
+    const response: Actions.ResqueResqueDetails =
+      await client.request<Actions.ResqueResqueDetails>(
+        "get",
+        "/resque/resqueDetails",
+        {},
+        { useCache: false }
+      );
 
     if (response?.resqueDetails) {
       const now = new Date().getTime();

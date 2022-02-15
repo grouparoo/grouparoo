@@ -120,7 +120,7 @@ export default function FindObject(props) {
 
   function redirectTopicWithModel(topic: string, page: string = "edit") {
     return async function (id: string) {
-      const response = await client.request("get", `/${topic}/${id}`);
+      const response = await client.request<{}>("get", `/${topic}/${id}`);
 
       if (!response || !response[topic]) {
         setError(`Cannot find object "${id}"`);
@@ -136,7 +136,10 @@ export default function FindObject(props) {
 
   async function getListPage(topic: string) {
     const singularTopic = singular(topic);
-    const response = await client.request("get", `/${singularTopic}/${id}`);
+    const response = await client.request<Record<string, { modelId: string }>>(
+      "get",
+      `/${singularTopic}/${id}`
+    );
 
     if (!response || !response[singularTopic]) {
       setError(`Cannot find object "${id}"`);

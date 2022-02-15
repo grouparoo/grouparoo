@@ -8,6 +8,7 @@ import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import Pagination from "../../components/Pagination";
 import ResqueTabs from "../../components/tabs/Resque";
 import LoadingButton from "../../components/LoadingButton";
+import { Actions } from "../../utils/apiData";
 
 export default function ResqueLocksList(props) {
   const router = useRouter();
@@ -27,7 +28,10 @@ export default function ResqueLocksList(props) {
   async function load() {
     updateURLParams(router, { offset });
     setLoading(true);
-    const response = await client.request("get", `/resque/locks`);
+    const response = await client.request<Actions.ResqueLocks>(
+      "get",
+      `/resque/locks`
+    );
     const _locks = [];
     Object.keys(response.locks).forEach(function (l) {
       _locks.push({
