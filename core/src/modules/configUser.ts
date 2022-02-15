@@ -75,4 +75,9 @@ export namespace ConfigUser {
     const fileContent = fs.readFileSync(localFilePath).toString();
     return JSON.parse(fileContent) as ConfigUserType;
   }
+
+  export async function isAuthenticated() {
+    const user = await get();
+    return Boolean(user?.email === true);
+  }
 }

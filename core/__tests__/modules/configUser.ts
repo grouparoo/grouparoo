@@ -11,7 +11,11 @@ const configDir = `${os.tmpdir()}/test/${workerId}/configUser/config`;
 process.env.GROUPAROO_CONFIG_DIR = configDir;
 
 describe("modules/ConfigUser", () => {
-  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  helper.grouparooTestServer({
+    truncate: true,
+    enableTestPlugin: true,
+    resetSettings: true,
+  });
 
   let grouparooSubscription: jest.SpyInstance;
 
@@ -96,6 +100,35 @@ describe("modules/ConfigUser", () => {
     expect(grouparooSubscription).toHaveBeenCalledWith({
       email: "demo@grouparoo.com",
       subscribed: false,
+    });
+  });
+
+  describe("#isAuthenticated()", () => {
+    test("returns false if there is no user file", async () => {
+      const filePath = await ConfigUser.localUserFilePath();
+      expect(fs.existsSync(filePath)).toEqual(false);
+
+      const isAuthenticated = await ConfigUser.isAuthenticated();
+      expect(isAuthenticated).toEqual(false);
+    });
+
+    test("returns false if only a customerId is saved", async () => {
+      const filePath = await ConfigUser.localUserFilePath();
+      fs.writeFileSync(
+        filePath,
+        JSON.stringify({ customerId: "some-customer-id" })
+      );
+
+      const isAuthenticated = await ConfigUser.isAuthenticated();
+      expect(isAuthenticated).toEqual(false);
+    });
+
+    test("returns true if email=true", async () => {
+      const filePath = await ConfigUser.localUserFilePath();
+      fs.writeFileSync(filePath, JSON.stringify({ email: true }));
+
+      const isAuthenticated = await ConfigUser.isAuthenticated();
+      expect(isAuthenticated).toEqual(true);
     });
   });
 

@@ -34,23 +34,14 @@ export class NavigationList extends OptionallyAuthenticatedAction {
   }: {
     session: { teamMember: TeamMember };
   }) {
-    let configUser: ConfigUser.ConfigUserType;
-    if (getGrouparooRunMode() === "cli:config") {
-      configUser = await ConfigUser.get();
-    }
-
     const navigationMode: NavigationMode =
       getGrouparooRunMode() === "cli:config"
-        ? configUser
+        ? (await ConfigUser.isAuthenticated())
           ? "config:authenticated"
           : "config:unauthenticated"
         : teamMember
         ? "authenticated"
         : "unauthenticated";
-
-    const isAuthenticated =
-      navigationMode === "authenticated" ||
-      navigationMode === "config:authenticated";
 
     const models = await GrouparooModel.findAll({
       order: [["name", "asc"]],
@@ -67,13 +58,13 @@ export class NavigationList extends OptionallyAuthenticatedAction {
         navResponse = await this.authenticatedNav(teamMember, models);
         break;
       case "unauthenticated":
-        navResponse = await this.unauthenticatedNav(teamMember);
+        navResponse = await this.unauthenticatedNav();
         break;
       case "config:authenticated":
-        navResponse = await this.authenticatedConfigNav(configUser, models);
+        navResponse = await this.authenticatedConfigNav(models);
         break;
       case "config:unauthenticated":
-        navResponse = await this.unauthenticatedConfigNav(configUser);
+        navResponse = await this.unauthenticatedConfigNav();
         break;
     }
 
@@ -268,7 +259,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     return { navigationItems, platformItems, bottomMenuItems };
   }
 
-  async unauthenticatedNav(teamMember: TeamMember) {
+  async unauthenticatedNav() {
     const navigationItems: NavigationItem[] = [
       { type: "link", title: "Home", href: "/" },
       { type: "link", title: "About", href: "/about" },
@@ -292,10 +283,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     return { navigationItems, platformItems, bottomMenuItems };
   }
 
-  async authenticatedConfigNav(
-    configUser: ConfigUser.ConfigUserType,
-    models: GrouparooModel[]
-  ) {
+  async authenticatedConfigNav(models: GrouparooModel[]) {
     const navigationItems: NavigationItem[] = [
       {
         type: "link",
@@ -314,7 +302,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     };
   }
 
-  async unauthenticatedConfigNav(configUser: ConfigUser.ConfigUserType) {
+  async unauthenticatedConfigNav() {
     const navigationItems: NavigationItem[] = [
       { type: "link", title: "Home", href: "/" },
     ];

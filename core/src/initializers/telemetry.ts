@@ -14,11 +14,8 @@ export class TelemetryInitializer extends CLSInitializer {
 
   async startWithinTransaction() {
     if (getGrouparooRunMode() === "cli:config") {
-      console.log("LOADING CID");
       await ConfigUser.loadOrStoreCustomerId();
-      console.log("SENDING TLM");
       await Telemetry.send("cli_config");
-      console.log("DONE");
     }
   }
 

@@ -115,10 +115,10 @@ async function authenticateConfigUser(
 ) {
   if (optional) return;
   try {
-    const user = await ConfigUser.get();
-    if (user?.email !== true) {
+    const isAuthenticated = await ConfigUser.isAuthenticated();
+    if (!isAuthenticated) {
       const error: Error & { code?: string } = new Error(
-        "Config user not properly set."
+        "Config user not set."
       );
       error["code"] = "AUTHENTICATION_ERROR";
       throw error;
