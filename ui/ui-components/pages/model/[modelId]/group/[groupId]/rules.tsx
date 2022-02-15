@@ -64,7 +64,6 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
   const [componentCounts, setComponentCounts] = useState({});
   const [autocompleteResults, setAutoCompleteResults] = useState({});
   const didLoad = useRef(false);
-  // const [funnelCounts, setFunnelCounts] = useState([]);
 
   const getCounts = useCallback(
     async (useCache = true) => {
@@ -79,7 +78,6 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
 
       if (componentMembersResponse?.componentCounts) {
         setComponentCounts(componentMembersResponse.componentCounts);
-        // setFunnelCounts(response.funnelCounts);
       }
 
       const potentialMembersResponse: Actions.GroupCountPotentialMembers =
