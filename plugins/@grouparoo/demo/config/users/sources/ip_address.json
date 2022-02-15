@@ -1,0 +1,9 @@
+{
+  "class": "Source",
+  "id": "ip_address",
+  "modelId": "users",
+  "name": "Ip Address",
+  "type": "postgres-import-query",
+  "appId": "demo_db",
+  "options": {}
+}

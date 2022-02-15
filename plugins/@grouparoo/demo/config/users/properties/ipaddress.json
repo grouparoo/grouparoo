@@ -1,0 +1,13 @@
+{
+  "class": "Property",
+  "id": "ipaddress",
+  "type": "string",
+  "key": "ipAddress",
+  "sourceId": "ip_address",
+  "unique": false,
+  "isArray": false,
+  "options": {
+    "query": "select demo.users.ip_address \nfrom demo.users\nwhere demo.users.id = {{{ userId }}}"
+  },
+  "filters": []
+}
