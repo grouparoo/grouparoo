@@ -9,6 +9,21 @@ class HubspotClient {
 
   readonly objects = new HubspotObjects(this);
 
+  private static formatAPIError(error: unknown) {
+    if (axios.isAxiosError(error) && error.response.data?.status === "error") {
+      const newError = new Error(
+        `[ Hubspot API ] ${error.message}: ${JSON.stringify(
+          error.response.data
+        )}`
+      );
+      newError["status"] = error.response.status;
+
+      return newError;
+    }
+
+    return error;
+  }
+
   constructor(appOptions: SimpleAppOptions) {
     if (appOptions.refreshToken) {
       this.accessTokenGetter = new oAuthAccessTokenGetter(
@@ -29,10 +44,13 @@ class HubspotClient {
     return { hapikey: this.hapikey };
   }
 
-  withClient<T>(callback: (client: Client) => Promise<T>): Promise<T> {
-    return this.getClientOptions().then((options) =>
-      callback(new Client(options))
-    );
+  async withClient<T>(callback: (client: Client) => Promise<T>): Promise<T> {
+    const options = await this.getClientOptions();
+    try {
+      return await callback(new Client(options));
+    } catch (e) {
+      throw HubspotClient.formatAPIError(e);
+    }
   }
 
   async getLists(): Promise<any> {
@@ -54,19 +72,20 @@ class HubspotClient {
   }
 
   async addContactToList(listId: string, email: string) {
-    try {
-      await this.request({
+    await this.request(
+      {
         method: "POST",
         url: `/contacts/v1/lists/${listId}/add`,
         data: {
           emails: [email],
         },
-      });
-    } catch (error) {
-      if (error?.response?.data?.errorType !== "LIST_EXISTS") {
-        throw error;
+      },
+      {
+        shouldSkipError: (error) =>
+          axios.isAxiosError(error) &&
+          error.response.data?.errorType === "LIST_EXISTS",
       }
-    }
+    );
   }
 
   async removeContactFromList(listId: string, email: string) {
@@ -84,18 +103,21 @@ class HubspotClient {
   }
 
   async getContactByEmail(email: string): Promise<any> {
-    try {
-      return await this.withClient((client) =>
-        client.contacts.getByEmail(email)
-      );
-    } catch (error) {
-      if (error?.response?.data?.category === "OBJECT_NOT_FOUND") {
-        // ok
-      } else {
-        throw error;
+    return await this.withClient(async (client) => {
+      try {
+        return await client.contacts.getByEmail(email);
+      } catch (error) {
+        if (
+          axios.isAxiosError(error) &&
+          error.response.data?.category === "OBJECT_NOT_FOUND"
+        ) {
+          // ok
+        } else {
+          throw error;
+        }
       }
-    }
-    return null;
+      return null;
+    });
   }
 
   async deleteContact(contactId: string): Promise<any> {
@@ -116,7 +138,12 @@ class HubspotClient {
     );
   }
 
-  async request(config: AxiosRequestConfig): Promise<any> {
+  async request(
+    config: AxiosRequestConfig,
+    options?: {
+      shouldSkipError: (error: any) => boolean;
+    }
+  ): Promise<any> {
     config.baseURL = "https://api.hubapi.com";
 
     if (this.accessTokenGetter) {
@@ -129,11 +156,13 @@ class HubspotClient {
       config.params = { ...config.params, hapikey: this.hapikey };
     }
 
-    const { data = {} } = await axios(config);
-
-    // TODO: Improve error handling here to better read Hubspot error message
-
-    return data;
+    try {
+      const { data = {} } = await axios(config);
+      return data;
+    } catch (error) {
+      if (options?.shouldSkipError?.(error)) return {};
+      throw HubspotClient.formatAPIError(error);
+    }
   }
 }
 

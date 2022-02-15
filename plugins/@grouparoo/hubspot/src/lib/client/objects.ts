@@ -64,7 +64,7 @@ export default class HubspotObjects {
         });
         return response?.results || [];
       } catch (error) {
-        if (error?.response?.status === 429) {
+        if (error?.status === 429) {
           const waitMs = Math.floor(Math.random() * 500) + 1000; // wait about a second or more
           lastError = error;
           await utils.sleep(waitMs);
