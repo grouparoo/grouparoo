@@ -32,6 +32,7 @@ import { getLock } from "../locks";
 import { ExportOps } from "./export";
 import { PropertiesCache } from "../caches/propertiesCache";
 import { DestinationsCache } from "../caches/destinationsCache";
+import { AppsCache } from "../..";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -321,10 +322,7 @@ export namespace DestinationOps {
       );
     }
 
-    const app = await destination.$get("app", {
-      scope: null,
-      include: [Option],
-    });
+    const app = await AppsCache.findOneWithCache(destination.appId);
     const appOptions = await app.getOptions();
     await app.validateOptions(appOptions);
     const properties = await PropertiesCache.findAllWithCache(record.modelId);
