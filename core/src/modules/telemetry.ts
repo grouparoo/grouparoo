@@ -45,7 +45,7 @@ export namespace Telemetry {
           body: JSON.stringify(await generateErrorPayload(error, trigger)),
         });
       } catch (newError) {
-        console.error(newError);
+        log(`[ telemetry ] ${newError}`, "debug");
       }
 
       if (toThrowOnError) {

@@ -21,7 +21,7 @@ export namespace ConfigUser {
     if (!fs.existsSync(localFileDir)) {
       fs.mkdirSync(localFileDir, { recursive: true });
     }
-    const fileContent = { ...previousContent, ...content };
+    const fileContent: ConfigUserType = { ...previousContent, ...content };
     fs.writeFileSync(localFilePath, JSON.stringify(fileContent, null, 2));
   }
 
