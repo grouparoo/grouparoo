@@ -26,6 +26,7 @@ import { CLS } from "../cls";
 import { DestinationOps } from "./destination";
 import { PropertiesCache } from "../caches/propertiesCache";
 import { DestinationsCache } from "../caches/destinationsCache";
+import { ModelsCache } from "../caches/modelsCache";
 
 export interface RecordPropertyValue {
   id: RecordProperty["id"];
@@ -829,7 +830,7 @@ export namespace RecordOps {
       if (source instanceof Source) {
         modelId = source.modelId;
       } else {
-        const models = await GrouparooModel.findAll();
+        const models = await ModelsCache.findAllWithCache();
         if (models.length > 1) throw new Error(`indeterminate model`);
         modelId = models[0].id;
       }
@@ -1082,7 +1083,7 @@ export namespace RecordOps {
   export async function makeExports(
     recordIds: string[],
     toExport: boolean,
-    force: boolean
+    force: boolean = false
   ) {
     const records = await GrouparooRecord.findAll({
       where: { id: recordIds, state: "ready" },
@@ -1120,11 +1121,7 @@ export namespace RecordOps {
 
         // make the exports
         for (const destination of destinations) {
-          await destination.exportRecord(
-            record,
-            false,
-            force ? force : undefined
-          );
+          await destination.exportRecord(record, false, force);
         }
       }
     }

@@ -36,20 +36,14 @@ export namespace ImportOps {
 
     await Import.update(
       { startedAt: new Date() },
-      {
-        where: { id: imports.map((i) => i.id) },
-      }
+      { where: { id: imports.map((i) => i.id) } }
     );
 
-    const runIds: string[] = [];
-    for (const _import of imports) {
-      if (
-        _import.creatorType === "run" &&
-        !runIds.includes(_import.creatorId)
-      ) {
-        runIds.push(_import.creatorId);
-      }
-    }
+    const runIds = [
+      ...new Set(
+        imports.filter((i) => i.creatorType === "run").map((i) => i.creatorId)
+      ),
+    ];
 
     const sources = await SourcesCache.findAllWithCache();
     const runs = await Run.findAll({ where: { id: runIds } });
@@ -68,7 +62,6 @@ export namespace ImportOps {
       creatorId: Import["creatorId"];
       createdRecord: Import["createdRecord"];
       recordId: Import["recordId"];
-      data: Import["data"];
       recordAssociatedAt: Import["recordAssociatedAt"];
       startedAt: Import["startedAt"];
       createdAt: Import["createdAt"];
@@ -98,7 +91,6 @@ export namespace ImportOps {
           creatorId: _import.creatorId,
           createdRecord: isNew,
           recordId: record.id,
-          data: _import.data,
           recordAssociatedAt: now,
           startedAt: _import.startedAt,
           createdAt: _import.createdAt,
@@ -107,28 +99,28 @@ export namespace ImportOps {
 
         await record.addOrUpdateProperties(_import.data, undefined, true);
       } catch (error) {
-        if (env !== "test") log(`[ASSOCIATE RECORD ERROR] ${error}`, "alert");
+        if (env !== "test") log(`[ASSOCIATE IMPORT ERROR] ${error}`, "alert");
         if (_import) await _import.setError(error, this.name);
       }
-
-      await RecordOps.markPendingByIds(bulkCreates.map((i) => i.recordId));
-
-      await Run.update(
-        { state: "running", completedAt: null },
-        { where: { state: "complete", id: runIds } }
-      );
-
-      await Import.bulkCreate(bulkCreates, {
-        updateOnDuplicate: [
-          "state",
-          "createdRecord",
-          "recordId",
-          "recordAssociatedAt",
-          "updatedAt",
-        ],
-      });
-
-      return imports;
     }
+
+    await RecordOps.markPendingByIds(bulkCreates.map((i) => i.recordId));
+
+    await Import.bulkCreate(bulkCreates, {
+      updateOnDuplicate: [
+        "state",
+        "createdRecord",
+        "recordId",
+        "recordAssociatedAt",
+        "updatedAt",
+      ],
+    });
+
+    await Run.update(
+      { state: "running", completedAt: null },
+      { where: { state: "complete", id: runIds } }
+    );
+
+    return imports;
   }
 }
