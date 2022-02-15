@@ -46,12 +46,14 @@ export namespace Telemetry {
         });
       } catch (newError) {
         log(`[ telemetry ] ${newError}`, "debug");
+        console.log("TLM NEW ERR", newError);
       }
 
       if (toThrowOnError) {
         throw error;
       } else {
         log(`[ telemetry ] ${error}`, "debug");
+        console.log("TLM ERR", error);
       }
     }
   }
