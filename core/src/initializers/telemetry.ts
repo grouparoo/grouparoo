@@ -1,4 +1,4 @@
-import { api, env } from "actionhero";
+import { api } from "actionhero";
 import { CLSInitializer } from "../classes/initializers/clsInitializer";
 import { Telemetry } from "../modules/telemetry";
 import { getGrouparooRunMode } from "../modules/runMode";
