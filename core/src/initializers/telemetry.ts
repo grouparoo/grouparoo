@@ -1,7 +1,8 @@
+import { api, env } from "actionhero";
 import { CLSInitializer } from "../classes/initializers/clsInitializer";
 import { Telemetry } from "../modules/telemetry";
-import { api } from "actionhero";
 import { getGrouparooRunMode } from "../modules/runMode";
+import { ConfigUser } from "../modules/configUser";
 
 export class TelemetryInitializer extends CLSInitializer {
   constructor() {
@@ -10,7 +11,15 @@ export class TelemetryInitializer extends CLSInitializer {
   }
 
   async initializeWithinTransaction() {}
-  async startWithinTransaction() {}
+
+  async startWithinTransaction() {
+    if (env === "development") {
+      await ConfigUser.loadOrStoreCustomerId();
+      if (getGrouparooRunMode() === "cli:config") {
+        await Telemetry.send("cli_config");
+      }
+    }
+  }
 
   async stopWithinTransaction() {
     if (getGrouparooRunMode() === "cli:run")

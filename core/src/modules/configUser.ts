@@ -7,20 +7,21 @@ import { Setting } from "../models/Setting";
 import { getGrouparooRunMode } from "./runMode";
 
 export namespace ConfigUser {
-  export type ConfigUserType = { email: boolean };
+  export type ConfigUserType = { email?: boolean; customerId?: string };
 
   export async function localUserFilePath() {
     const configDir = await getConfigDir(true);
     return path.join(configDir, "../.local/user.json");
   }
 
-  async function store() {
+  async function store(content: ConfigUserType) {
+    const previousContent: ConfigUserType = (await get()) ?? {};
     const localFilePath = await localUserFilePath();
     const localFileDir = path.dirname(localFilePath);
     if (!fs.existsSync(localFileDir)) {
       fs.mkdirSync(localFileDir, { recursive: true });
     }
-    const fileContent: ConfigUserType = { email: true };
+    const fileContent = { ...previousContent, ...content };
     fs.writeFileSync(localFilePath, JSON.stringify(fileContent, null, 2));
   }
 
@@ -43,6 +44,16 @@ export namespace ConfigUser {
     return setting;
   }
 
+  export async function loadOrStoreCustomerId() {
+    const user = await get();
+    if (user?.customerId) {
+      await plugin.updateSetting("telemetry", "customer-id", user.customerId);
+    } else {
+      const setting = await plugin.readSetting("telemetry", "customer-id");
+      await store({ customerId: setting.value });
+    }
+  }
+
   export async function create({
     email,
     subscribed = true,
@@ -53,7 +64,7 @@ export namespace ConfigUser {
     company: string;
   }) {
     if (getGrouparooRunMode() !== "cli:config") return;
-    await store();
+    await store({ email: true });
     await subscribe(email, subscribed);
     await storeCompanyName(company);
   }
