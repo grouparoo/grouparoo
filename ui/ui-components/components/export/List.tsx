@@ -1,21 +1,24 @@
-import { Fragment, useState } from "react";
-import { useOffset, updateURLParams } from "../../hooks/URLParams";
-import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ExportsRetryFailed } from "@grouparoo/core/dist/actions/exports";
+import { GetServerSidePropsContext } from "next";
 import Link from "next/link";
-import EnterpriseLink from "../GrouparooLink";
 import { useRouter } from "next/router";
-import { Row, Col, Button, ButtonGroup, Badge, Alert } from "react-bootstrap";
-import Pagination from "../Pagination";
-import LoadingTable from "../LoadingTable";
-import { Models, Actions } from "../../utils/apiData";
-import { ExportGroupsDiff, ExportRecordPropertiesDiff } from "./Diff";
-import { capitalize } from "../../utils/languageHelper";
+import { Fragment, useCallback, useState } from "react";
+import { Alert, Badge, Button, ButtonGroup, Col, Row } from "react-bootstrap";
+import { generateClient } from "../../client/client";
+import { useApi } from "../../contexts/api";
+import { errorHandler, successHandler } from "../../eventHandlers";
+import { updateURLParams, useOffset } from "../../hooks/URLParams";
+import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
+import { Actions, Models } from "../../utils/apiData";
 import { formatTimestamp } from "../../utils/formatTimestamp";
+import { capitalize } from "../../utils/languageHelper";
 import StateBadge from "../badges/StateBadge";
 import { DurationTime } from "../DurationTime";
-import { useApi } from "../../contexts/api";
-import { generateClient } from "../../client/client";
-import { GetServerSidePropsContext } from "next";
+import EnterpriseLink from "../GrouparooLink";
+import LoadingTable from "../LoadingTable";
+import Pagination from "../Pagination";
+import { ExportGroupsDiff, ExportRecordPropertiesDiff } from "./Diff";
 
 const states = [
   "all",
@@ -52,6 +55,49 @@ export default function ExportsList(props: Props) {
     }
   }
 
+  const retryExport = useCallback(
+    async (_export: Models.ExportType, index: number) => {
+      setLoading(true);
+      try {
+        const { count } = await client
+          .requestAction<ExportsRetryFailed>(
+            "get",
+            `/exports/retryFailed`,
+            {
+              destinationId: _export.destination.id,
+              startTimestamp: _export.createdAt,
+              endTimestamp: _export.createdAt,
+            },
+            { useCache: false }
+          )
+          .catch(() => ({ count: 0 }));
+        if (count) {
+          successHandler.publish({ message: "Export Retried" });
+          const { export: refreshedExport } =
+            await client.request<Actions.ExportView>(
+              "get",
+              `/export/${_export.id}`
+            );
+          setExports((_exports) => {
+            _exports[index] = refreshedExport;
+            return _exports;
+          });
+        } else {
+          errorHandler.publish({
+            message:
+              "There was an issue retrying the export, please try again.",
+          });
+        }
+      } catch (err) {
+        errorHandler.publish({
+          message: err,
+        });
+      }
+      setLoading(false);
+    },
+    [client]
+  );
+
   useSecondaryEffect(() => {
     load();
   }, [offset, limit, state]);
@@ -59,7 +105,7 @@ export default function ExportsList(props: Props) {
   async function load() {
     updateURLParams(router, { state, offset });
     setLoading(true);
-    const response: Actions.ExportsList = await client.request(
+    const response = await client.request<Actions.ExportsList>(
       "get",
       `/exports`,
       {
@@ -162,7 +208,7 @@ export default function ExportsList(props: Props) {
           </tr>
         </thead>
         <tbody>
-          {_exports.map((_export) => {
+          {_exports.map((_export, index) => {
             return (
               <Fragment key={`export-${_export.id}`}>
                 <tr>
@@ -174,6 +220,15 @@ export default function ExportsList(props: Props) {
                     <br />
                     <span>State</span>:{" "}
                     <StateBadge state={_export.state} marginBottom={0} />
+                    {["failed", "canceled"].includes(_export.state) ? (
+                      <FontAwesomeIcon
+                        className="ml-1"
+                        icon="sync-alt"
+                        size="xs"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => retryExport(_export, index)}
+                      />
+                    ) : null}
                     <br />
                     {_export.exportProcessorId ? (
                       <>

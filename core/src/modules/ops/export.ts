@@ -175,7 +175,7 @@ export namespace ExportOps {
     saveExports = true
   ) {
     const where: WhereOptions<Export> = {
-      state: "failed",
+      state: { [Op.in]: ["failed", "canceled"] },
       createdAt: {
         [Op.gte]: startDate,
         [Op.lte]: endDate,

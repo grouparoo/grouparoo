@@ -1,4 +1,4 @@
-import { ExportsRetryFailed } from "@grouparoo/core/dist/actions/exports";
+import { ExportsRetryFailed } from "@grouparoo/core/src/actions/exports";
 import Head from "next/head";
 import Link from "next/link";
 import { useCallback, useState } from "react";
@@ -50,7 +50,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
           {
             destinationId: _export.destination.id,
             startTimestamp: _export.createdAt,
-            endTimestamp: Date.now(),
+            endTimestamp: _export.createdAt,
           },
           { useCache: false }
         )
@@ -93,7 +93,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
             variant="outline-primary"
             size="sm"
             loading={loading}
-            disabled={!["failed", "cancelled"].includes(_export.state)}
+            disabled={!["failed", "canceled"].includes(_export.state)}
             className="ml-auto"
             onClick={retryExport}
             key={_export.state}
