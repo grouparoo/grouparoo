@@ -179,7 +179,12 @@ export const getServerSideProps: GetServerSideProps<Props> =
             `/record/${sampleRecordId}`
           )
         : null;
-    } catch (err) {console.log("user had cached sample record id (not found):", sampleRecordId)}
+    } catch (err) {
+      console.log(
+        "user had cached sample record id (not found):",
+        sampleRecordId
+      );
+    }
 
     return {
       props: {
