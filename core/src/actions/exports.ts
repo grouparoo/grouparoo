@@ -155,7 +155,6 @@ export class ExportsRetryFailedById extends AuthenticatedAction {
   }: {
     params: ParamsFrom<ExportsRetryFailedById>;
   }) {
-    console.log(params);
     const count = await Export.retryFailedById(params.exportId);
 
     return { count };
