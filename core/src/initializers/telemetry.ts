@@ -8,6 +8,7 @@ export class TelemetryInitializer extends CLSInitializer {
   constructor() {
     super();
     this.name = "telemetry";
+    this.startPriority = 20; // start after codeConfig to include configured data
   }
 
   async initializeWithinTransaction() {}
