@@ -1,6 +1,6 @@
 import Moment from "moment";
 import { config, cache, log } from "actionhero";
-import { Op, CreationAttributes } from "sequelize";
+import { CreationAttributes } from "sequelize";
 import { deepStrictEqual } from "assert";
 import {
   Destination,
@@ -32,7 +32,7 @@ import { getLock } from "../locks";
 import { ExportOps } from "./export";
 import { PropertiesCache } from "../caches/propertiesCache";
 import { DestinationsCache } from "../caches/destinationsCache";
-import { AppsCache } from "../..";
+import { AppsCache } from "../../modules/caches/appsCache";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {

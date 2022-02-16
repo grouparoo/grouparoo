@@ -6,6 +6,7 @@ import { RecordOps } from "./record";
 import { Op } from "sequelize";
 import { Schedule } from "../../models/Schedule";
 import { SourcesCache } from "../../modules/caches/sourcesCache";
+import { uniqueArrayValues } from "../arrayUtils";
 
 export namespace ImportOps {
   const defaultImportProcessingDelay = 1000 * 60 * 5;
@@ -39,11 +40,10 @@ export namespace ImportOps {
       { where: { id: imports.map((i) => i.id) } }
     );
 
-    const runIds = [
-      ...new Set(
-        imports.filter((i) => i.creatorType === "run").map((i) => i.creatorId)
-      ),
-    ];
+    const runIds = imports
+      .filter((i) => i.creatorType === "run")
+      .map((i) => i.creatorId)
+      .filter(uniqueArrayValues);
 
     const sources = await SourcesCache.findAllWithCache();
     const runs = await Run.findAll({ where: { id: runIds } });
