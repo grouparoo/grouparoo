@@ -1,9 +1,11 @@
+import fs from "fs";
 import { helper } from "@grouparoo/spec-helper";
 import { api, config } from "actionhero";
 import fetch, { enableFetchMocks } from "jest-fetch-mock";
 
 import { Telemetry } from "../../src/modules/telemetry";
 import { TelemetryInitializer } from "../../src/initializers/telemetry";
+import { ConfigUser } from "../../src/modules/configUser";
 
 enableFetchMocks();
 
@@ -181,33 +183,71 @@ describe("modules/status", () => {
   });
 
   describe("telemetry initializer", () => {
-    test("will send telemetry when running via the CLI", async () => {
-      process.env.GROUPAROO_RUN_MODE = "cli:run";
-      config.telemetry.enabled = true;
-      fetch.mockResponseOnce(JSON.stringify({ response: "FROM TEST" }));
+    describe("telemetry on stop", () => {
+      test("will send telemetry when stopping in cli:run mode", async () => {
+        process.env.GROUPAROO_RUN_MODE = "cli:run";
+        config.telemetry.enabled = true;
+        fetch.mockResponseOnce(JSON.stringify({ response: "FROM TEST" }));
 
-      const instance = new TelemetryInitializer();
-      await instance.stop();
+        const instance = new TelemetryInitializer();
+        await instance.stop();
 
-      expect(fetch).toHaveBeenCalledTimes(1);
-      expect(fetch).toHaveBeenCalledWith(
-        "https://telemetry.grouparoo.com/api/v1/telemetry",
-        expect.objectContaining({ method: "POST" })
-      );
+        expect(fetch).toHaveBeenCalledTimes(1);
+        expect(fetch).toHaveBeenCalledWith(
+          "https://telemetry.grouparoo.com/api/v1/telemetry",
+          expect.objectContaining({ method: "POST" })
+        );
 
-      const args = fetch.mock.calls[0];
-      const payload = JSON.parse(args[1].body as string);
-      expect(payload.trigger).toBe("cli_run");
-      expect(payload.metrics.length).toBeGreaterThan(1);
+        const args = fetch.mock.calls[0];
+        const payload = JSON.parse(args[1].body as string);
+        expect(payload.trigger).toBe("cli_run");
+        expect(payload.metrics.length).toBeGreaterThan(1);
+      });
+
+      test("will not send telemetry when stopping via another run mode", async () => {
+        fetch.mockResponseOnce(JSON.stringify({ response: "FROM TEST" }));
+
+        const instance = new TelemetryInitializer();
+        await instance.stop();
+
+        expect(fetch).not.toHaveBeenCalled();
+      });
     });
 
-    test("will not send telemetry when running via another method", async () => {
-      fetch.mockResponseOnce(JSON.stringify({ response: "FROM TEST" }));
+    describe("telemetry on start", () => {
+      afterEach(async () => {
+        const localFile = await ConfigUser.localUserFilePath();
+        if (fs.existsSync(localFile)) fs.rmSync(localFile);
+      });
 
-      const instance = new TelemetryInitializer();
-      await instance.stop();
+      test("will send telemetry when starting in cli:config mode", async () => {
+        process.env.GROUPAROO_RUN_MODE = "cli:config";
+        config.telemetry.enabled = true;
+        fetch.mockResponseOnce(JSON.stringify({ response: "FROM TEST" }));
 
-      expect(fetch).not.toHaveBeenCalled();
+        const instance = new TelemetryInitializer();
+        await instance.start();
+
+        expect(fetch).toHaveBeenCalledTimes(1);
+        expect(fetch).toHaveBeenCalledWith(
+          "https://telemetry.grouparoo.com/api/v1/telemetry",
+          expect.objectContaining({ method: "POST" })
+        );
+
+        const args = fetch.mock.calls[0];
+        const payload = JSON.parse(args[1].body as string);
+        expect(payload.trigger).toBe("cli_config");
+        expect(payload.metrics.length).toBeGreaterThan(1);
+      });
+
+      test("will not send telemetry when starting via another run mode", async () => {
+        fetch.mockResponseOnce(JSON.stringify({ response: "FROM TEST" }));
+
+        const instance = new TelemetryInitializer();
+        await instance.start();
+
+        expect(fetch).not.toHaveBeenCalled();
+      });
     });
   });
 });
