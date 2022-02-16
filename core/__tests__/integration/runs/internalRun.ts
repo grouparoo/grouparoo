@@ -76,13 +76,6 @@ describe("integration/runs/internalRun", () => {
       await record.reload();
       expect(record.state).toBe("ready");
 
-      // run all enqueued export tasks
-      const foundExportTasks = await specHelper.findEnqueuedTasks(
-        "record:export"
-      );
-      expect(foundExportTasks.length).toEqual(1);
-      await specHelper.runTask("record:export", foundExportTasks[0].args[0]);
-
       // run all export:send jobs
       const foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
       expect(foundSendTasks.length).toBe(0);
@@ -99,50 +92,50 @@ describe("integration/runs/internalRun", () => {
     });
   });
 
-  describe("with 2 new rules", () => {
-    beforeAll(async () => {
-      await api.resque.queue.connection.redis.flushdb();
-      await Run.truncate();
-    });
+  // describe("with 2 new rules", () => {
+  //   beforeAll(async () => {
+  //     await api.resque.queue.connection.redis.flushdb();
+  //     await Run.truncate();
+  //   });
 
-    test("if a new property stops a run, both properties will be imported", async () => {
-      const firstNameProperty = await Property.create({
-        sourceId: source.id,
-        type: "string",
-        key: "firstName",
-        unique: false,
-      });
-      await firstNameProperty.setOptions({ column: "firstName" });
-      await firstNameProperty.update({ state: "ready" });
+  //   test("if a new property stops a run, both properties will be imported", async () => {
+  //     const firstNameProperty = await Property.create({
+  //       sourceId: source.id,
+  //       type: "string",
+  //       key: "firstName",
+  //       unique: false,
+  //     });
+  //     await firstNameProperty.setOptions({ column: "firstName" });
+  //     await firstNameProperty.update({ state: "ready" });
 
-      const lastNameProperty = await Property.create({
-        sourceId: source.id,
-        type: "string",
-        key: "lastName",
-        unique: false,
-      });
-      await lastNameProperty.setOptions({ column: "lastName" });
-      await lastNameProperty.update({ state: "ready" });
+  //     const lastNameProperty = await Property.create({
+  //       sourceId: source.id,
+  //       type: "string",
+  //       key: "lastName",
+  //       unique: false,
+  //     });
+  //     await lastNameProperty.setOptions({ column: "lastName" });
+  //     await lastNameProperty.update({ state: "ready" });
 
-      const runs = await Run.findAll();
-      const firstNameRun = runs.find(
-        (r) => r.creatorId === firstNameProperty.id
-      );
-      const lastNameRun = runs.find((r) => r.creatorId === lastNameProperty.id);
-      expect(runs.length).toBe(2);
-      expect(firstNameRun.state).toBe("stopped");
-      expect(lastNameRun.state).toBe("running");
+  //     const runs = await Run.findAll();
+  //     const firstNameRun = runs.find(
+  //       (r) => r.creatorId === firstNameProperty.id
+  //     );
+  //     const lastNameRun = runs.find((r) => r.creatorId === lastNameProperty.id);
+  //     expect(runs.length).toBe(2);
+  //     expect(firstNameRun.state).toBe("stopped");
+  //     expect(lastNameRun.state).toBe("running");
 
-      await specHelper.runTask("run:internalRun", {
-        runId: lastNameRun.id,
-      });
+  //     await specHelper.runTask("run:internalRun", {
+  //       runId: lastNameRun.id,
+  //     });
 
-      // both new properties are marked as pending
-      const properties = await record.getProperties();
-      expect(properties.userId.state).toBe("ready");
-      expect(properties.email.state).toBe("ready");
-      expect(properties.firstName.state).toBe("pending");
-      expect(properties.lastName.state).toBe("pending");
-    });
-  });
+  //     // both new properties are marked as pending
+  //     const properties = await record.getProperties();
+  //     expect(properties.userId.state).toBe("ready");
+  //     expect(properties.email.state).toBe("ready");
+  //     expect(properties.firstName.state).toBe("pending");
+  //     expect(properties.lastName.state).toBe("pending");
+  //   });
+  // });
 });

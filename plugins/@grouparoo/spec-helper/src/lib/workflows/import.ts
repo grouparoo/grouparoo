@@ -34,7 +34,7 @@ export async function ImportWorkflow() {
       );
     }
 
-    await specHelper.runTask("records:makeExports", {});
+    await specHelper.runTask("records:makeReady", {});
 
     pendingRecords = await GrouparooRecord.count({
       where: { state: "pending" },

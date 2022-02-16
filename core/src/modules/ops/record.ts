@@ -1074,6 +1074,18 @@ export namespace RecordOps {
       }
     );
 
+    const now = new Date();
+    await Import.update(
+      { state: "processing", importedAt: now },
+      {
+        where: {
+          recordId: partialRecords.map((r) => r.id),
+          state: "importing",
+          recordAssociatedAt: { [Op.lt]: now },
+        },
+      }
+    );
+
     await RecordOps.updateGroupMemberships(partialRecords);
     await computeRecordsValidity(partialRecords);
 
