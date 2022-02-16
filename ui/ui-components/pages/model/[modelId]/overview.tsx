@@ -14,7 +14,6 @@ import ModelOverviewSecondarySources from "../../../components/model/overview/Mo
 import PageHeader from "../../../components/PageHeader";
 import ModelTabs from "../../../components/tabs/Model";
 import { useGrouparooModel } from "../../../contexts/grouparooModel";
-import { errorHandler, successHandler } from "../../../eventHandlers";
 import { Actions, Models } from "../../../utils/apiData";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
 import { withServerErrorHandler } from "../../../utils/withServerErrorHandler";
