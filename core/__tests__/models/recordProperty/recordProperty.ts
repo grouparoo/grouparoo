@@ -212,6 +212,8 @@ describe("models/recordProperty", () => {
           "someone.com@",
           "someone@site",
           "someone with spaces@site.com",
+          "someone@site.com ",
+          " someone@site.com",
         ];
 
         for (const e of badEmails) {

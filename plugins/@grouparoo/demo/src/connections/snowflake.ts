@@ -15,7 +15,7 @@ function findConfig(): { [key: string]: string } {
     "schema",
   ];
 
-  const options: any = {};
+  const options: Record<string, string> = {};
   for (const key of keys) {
     options[key] = getEnvValue("snowflake", `SNOWFLAKE_${key.toUpperCase()}`);
   }
@@ -30,7 +30,7 @@ function findConfig(): { [key: string]: string } {
 export default class Snowflake extends Connection {
   config = { ...findConfig() };
   lines: string[] = [];
-  data: Record<string, { [key: string]: string | number | Date }[]> = {};
+  data: Record<string, Record<string, string | number | Date>[]> = {};
 
   name() {
     return "snowflake";

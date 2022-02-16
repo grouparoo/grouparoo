@@ -25,42 +25,40 @@ export namespace RecordPropertyOps {
       return { rawValue, invalidValue, invalidReason };
     }
 
-    const stringifiedValue = `${value}`.trim();
-
     try {
       switch (type) {
         case "float":
-          rawValue = await formatFloat(stringifiedValue);
+          rawValue = await formatFloat(value?.toString());
           break;
         case "integer":
-          rawValue = await formatInteger(stringifiedValue);
+          rawValue = await formatInteger(value?.toString());
           break;
         case "date":
           rawValue = await formatDate(value);
           break;
         case "string":
-          rawValue = await formatString(stringifiedValue);
+          rawValue = await formatString(value?.toString());
           break;
         case "email":
-          rawValue = await formatEmail(stringifiedValue);
+          rawValue = await formatEmail(value?.toString());
           break;
         case "phoneNumber":
-          rawValue = await formatString(stringifiedValue);
+          rawValue = await formatString(value?.toString());
           break;
         case "url":
-          rawValue = await formatURL(stringifiedValue);
+          rawValue = await formatURL(value?.toString());
           break;
         case "boolean":
-          rawValue = await formatBoolean(stringifiedValue);
+          rawValue = await formatBoolean(value?.toString());
           break;
         default:
           throw new Error(
-            `cannot coerce recordProperty ${stringifiedValue} to type ${type}`
+            `cannot coerce recordProperty ${value} to type ${type}`
           );
       }
     } catch (error) {
       rawValue = null;
-      invalidValue = stringifiedValue;
+      invalidValue = value?.toString();
       if (recordProperty && error instanceof Error) {
         error.message += ` for record ${recordProperty.recordId}`;
       }
