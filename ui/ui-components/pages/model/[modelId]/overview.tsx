@@ -171,12 +171,20 @@ export const getServerSideProps: GetServerSideProps<Props> =
       `sampleRecord:${grouparooUiEdition()}`
     )?.[modelId as string];
 
-    const sampleRecord = sampleRecordId
-      ? await client.request<Actions.RecordView>(
-          "get",
-          `/record/${sampleRecordId}`
-        )
-      : null;
+    let sampleRecord: Actions.RecordView = null;
+    try {
+      sampleRecord = sampleRecordId
+        ? await client.request<Actions.RecordView>(
+            "get",
+            `/record/${sampleRecordId}`
+          )
+        : null;
+    } catch (err) {
+      console.log(
+        "user had cached sample record id (not found):",
+        sampleRecordId
+      );
+    }
 
     return {
       props: {
