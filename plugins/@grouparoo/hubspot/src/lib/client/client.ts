@@ -64,6 +64,16 @@ class HubspotClient {
     return data.lists;
   }
 
+  async createList(name: string) {
+    return await this.request({
+      method: "post",
+      url: "/contacts/v1/lists",
+      data: {
+        name,
+      },
+    });
+  }
+
   async deleteList(listId) {
     await this.request({
       method: "DELETE",
