@@ -1,4 +1,4 @@
-import Client, { IHubSpotClientProps } from "hubspot-api";
+import HubspotAPI, { IHubSpotClientProps } from "hubspot-api";
 import { oAuthAccessTokenGetter, SimpleAppOptions } from "@grouparoo/core";
 import HubspotObjects from "./objects";
 import axios, { AxiosRequestConfig } from "axios";
@@ -35,7 +35,7 @@ class HubspotClient {
     }
   }
 
-  async getClientOptions(): Promise<IHubSpotClientProps> {
+  async getAPIOptions(): Promise<IHubSpotClientProps> {
     if (this.accessTokenGetter) {
       const accessToken = await this.accessTokenGetter.getAccessToken();
       return { accessToken };
@@ -44,10 +44,10 @@ class HubspotClient {
     return { hapikey: this.hapikey };
   }
 
-  async withClient<T>(callback: (client: Client) => Promise<T>): Promise<T> {
-    const options = await this.getClientOptions();
+  async withAPI<T>(callback: (api: HubspotAPI) => Promise<T>): Promise<T> {
+    const options = await this.getAPIOptions();
     try {
-      return await callback(new Client(options));
+      return await callback(new HubspotAPI(options));
     } catch (e) {
       throw HubspotClient.formatAPIError(e);
     }
@@ -109,13 +109,13 @@ class HubspotClient {
   }
 
   async getAccountDetails(): Promise<any> {
-    return this.withClient((client) => client.account.getAccountDetails());
+    return this.withAPI((api) => api.account.getAccountDetails());
   }
 
   async getContactByEmail(email: string): Promise<any> {
-    return await this.withClient(async (client) => {
+    return await this.withAPI(async (api) => {
       try {
-        return await client.contacts.getByEmail(email);
+        return await api.contacts.getByEmail(email);
       } catch (error) {
         if (
           axios.isAxiosError(error) &&
@@ -131,20 +131,16 @@ class HubspotClient {
   }
 
   async deleteContact(contactId: string): Promise<any> {
-    return this.withClient((client) =>
-      client.contacts.deleteContact(contactId)
-    );
+    return this.withAPI((api) => api.contacts.deleteContact(contactId));
   }
 
   async createOrUpdateContact(payload: any): Promise<any> {
-    return this.withClient((client) =>
-      client.contacts.createOrUpdateContact(payload)
-    );
+    return this.withAPI((api) => api.contacts.createOrUpdateContact(payload));
   }
 
   async getAllContactsProperties(): Promise<any> {
-    return this.withClient((client) =>
-      client.contactsProperties.getAllContactsProperties()
+    return this.withAPI((api) =>
+      api.contactsProperties.getAllContactsProperties()
     );
   }
 
