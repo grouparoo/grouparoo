@@ -64,7 +64,7 @@ export class Client {
     } = () => ({})
   ) {}
 
-  public async request<Response = any>(
+  public async request<Response>(
     verb: Method = "get",
     path: string,
     data: AxiosRequestConfig["data"] = {},

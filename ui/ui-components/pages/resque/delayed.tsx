@@ -8,6 +8,7 @@ import Head from "next/head";
 import ResqueTabs from "../../components/tabs/Resque";
 import LoadingButton from "../../components/LoadingButton";
 import { successHandler } from "../../eventHandlers";
+import { Actions } from "../../utils/apiData";
 
 export default function ResqueDelayedList(props) {
   const router = useRouter();
@@ -28,7 +29,7 @@ export default function ResqueDelayedList(props) {
   async function load() {
     updateURLParams(router, { offset });
     setLoading(true);
-    const response = await client.request(
+    const response = await client.request<Actions.ResqueDelayedJobs>(
       "get",
       "/resque/delayedjobs",
       {

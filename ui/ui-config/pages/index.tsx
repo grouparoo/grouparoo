@@ -28,7 +28,10 @@ export default function Page(props) {
     }
 
     async function checkSetupSteps(props) {
-      const { setupSteps } = await client.request("get", `/setupSteps`);
+      const { setupSteps } = await client.request<Actions.SetupStepsList>(
+        "get",
+        `/setupSteps`
+      );
       const currentStep = await setupSteps.find(
         (step) => !step.complete && !step.skipped
       );
