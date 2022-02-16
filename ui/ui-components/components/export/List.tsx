@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ExportsRetryFailedById } from "@grouparoo/core/src/actions/exports";
+import { ExportRetryById } from "@grouparoo/core/src/actions/exports";
 import { GetServerSidePropsContext } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -37,10 +37,12 @@ export const retryExport = async (
   client: Client,
   _export: Models.ExportType
 ) => {
-  const { count } = await client.requestAction<ExportsRetryFailedById>(
-    "get",
-    `/exports/retryFailed/${_export.id}`,
-    undefined,
+  const { count } = await client.requestAction<ExportRetryById>(
+    "post",
+    `/export/retry/`,
+    {
+      exportId: _export.id,
+    },
     { useCache: false }
   );
   if (count) {

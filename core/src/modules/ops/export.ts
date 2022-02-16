@@ -216,15 +216,18 @@ export namespace ExportOps {
   /**
    * Finds finds and retries a failed or canceled export by id
    */
-  export async function retryFailedExportById(
-    exportId: string,
-    saveExports = true
-  ) {
+  export async function retryExportById(exportId: string) {
     const where: WhereOptions<Export> = {
       state: { [Op.in]: ["failed", "canceled"] },
       id: exportId,
     };
 
-    return retryExport(where, saveExports);
+    const count = await retryExport(where, true);
+
+    if (count === 0) {
+      throw new Error("No export found");
+    }
+
+    return count;
   }
 }

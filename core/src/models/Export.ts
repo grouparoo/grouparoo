@@ -328,8 +328,8 @@ export class Export extends CommonModel<Export> {
     );
   }
 
-  static retryFailedById(exportId: string) {
-    return ExportOps.retryFailedExportById(exportId);
+  static retryById(exportId: string) {
+    return ExportOps.retryExportById(exportId);
   }
 
   static async sweep(limit: number) {
