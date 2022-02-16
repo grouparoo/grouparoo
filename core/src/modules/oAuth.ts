@@ -1,5 +1,5 @@
 import "isomorphic-fetch";
-import { config } from "actionhero";
+import { config, log } from "actionhero";
 
 export type oAuthType = "user" | "app";
 
@@ -19,15 +19,19 @@ export interface oAuthIdentity {
 
 export class oAuthAccessTokenGetter {
   private accessToken: string;
-  private expirationDate: number = Date.now();
+  private expirationDate: number;
 
   constructor(
     private oAuthProviderName: string,
     private refreshToken: string
   ) {}
 
-  private async isAccessTokenExpired() {
-    return !this.accessToken || this.expirationDate <= Date.now();
+  private isAccessTokenExpired() {
+    return (
+      !this.accessToken ||
+      !this.expirationDate ||
+      this.expirationDate <= Date.now()
+    );
   }
 
   private async requestAccessToken() {
@@ -38,33 +42,42 @@ export class oAuthAccessTokenGetter {
         retries--
       ) {
         const url = `${config.oAuth.host}/api/v1/oauth/${this.oAuthProviderName}/client/refresh`;
-        const response: {
-          error?: Error;
-          token: string;
-          expirationSeconds: number;
-        } = await fetch(url, {
+        const response = await fetch(url, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ refreshToken: this.refreshToken }),
-        }).then((r) => r.json());
+        });
 
-        if (response.error?.message) {
-          throw new Error(
-            `Failed to refresh access token: ${response.error.message}`
-          );
+        if (!response.ok) {
+          const authErrorResponse = await response.json();
+          if (authErrorResponse.error?.message) {
+            log(authErrorResponse.error?.message, "error");
+          }
+          // Try again
+          continue;
         }
 
-        const { token, expirationSeconds } = response;
+        const {
+          token,
+          expirationSeconds,
+        }: {
+          token: string;
+          expirationSeconds: number;
+        } = await response.json();
 
         const expirationMs = Math.max(0, (expirationSeconds - 60) * 1000);
 
         this.accessToken = token;
         this.expirationDate = Date.now() + expirationMs;
       }
-      // TODO: Throw error if access token is still expired
     } catch (e) {
-      // TODO: Something's up and we need to figure out why
       throw e;
+    }
+
+    if (this.isAccessTokenExpired()) {
+      throw new Error(
+        `Failed to get auth for ${this.oAuthProviderName}. Please reauthorize ${this.oAuthProviderName} App.`
+      );
     }
   }
 
