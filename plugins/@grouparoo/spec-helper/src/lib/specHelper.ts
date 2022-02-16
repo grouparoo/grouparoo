@@ -53,7 +53,6 @@ import {
   AggregationMethod,
   GrouparooRunMode,
 } from "@grouparoo/core";
-import { rejects } from "assert";
 
 const {
   // modules
