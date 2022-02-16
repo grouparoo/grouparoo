@@ -40,6 +40,7 @@
     "@grouparoo/core": "0.8.1-alpha.2",
     "@grouparoo/spec-helper": "0.8.1-alpha.2",
     "@grouparoo/ui-components": "0.8.1-alpha.2",
+    "@jest/globals": "27.5.1",
     "@types/expect-puppeteer": "*",
     "@types/jest": "*",
     "@types/react": "*",

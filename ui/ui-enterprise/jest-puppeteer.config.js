@@ -7,11 +7,4 @@ module.exports = {
     args: ["--disable-infobars"],
   },
   browserContext: "default",
-  // server: {
-  //   command: helper.grouparooTestServerDetached({
-  //     port: 12345,
-  //     truncate: true,
-  //   }),
-  //   port: 12345,
-  // },
 };

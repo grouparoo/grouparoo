@@ -7,6 +7,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/ui-enterprise": { path: path.join(__dirname, "..", "..") },
 });
 import { helper } from "@grouparoo/spec-helper";
+import { expect as jExpect } from "@jest/globals";
 
 import "expect-puppeteer";
 const firstName = "mario";
@@ -36,11 +37,33 @@ describe("integration", () => {
     );
   });
   test("it loads navigation", async () => {
-    await expect(page).toMatch("Hello");
-    //todo: can we test that the navigation opens/collapses and items are hidden?
+    await expect(page).toMatchElement("#bottomNavigationMenu", {
+      text: "Hello",
+    });
     await page.click("#bottomNavigationMenu button");
   });
+
   test("it can create the first team", async () => {
     await page.goto(`${url}/team/initialize`);
+
+    await expect(page).toFillForm("#form", {
+      firstName,
+      lastName,
+      companyName,
+      email,
+      password,
+    });
+    await expect(page).toClick('button[type="submit"]');
+    await page.waitForNavigation();
+  });
+  test("it takes me to setup after I submit the form", async () => {
+    //a little funky to integrate both the jest expects and the puppeteer expects but doable!
+    jExpect(page.url()).toEqual(`${url}/setup`);
+  });
+  test.skip("it can sign out", async () => {
+    await expect(page).toClick("button", { text: "Hello mario" });
+    page.waitForNavigation();
+
+    await expect(page).toClick("button", { text: "Sign Out" });
   });
 });
