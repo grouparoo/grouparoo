@@ -14,6 +14,7 @@ import ModelOverviewSecondarySources from "../../../components/model/overview/Mo
 import PageHeader from "../../../components/PageHeader";
 import ModelTabs from "../../../components/tabs/Model";
 import { useGrouparooModel } from "../../../contexts/grouparooModel";
+import { errorHandler, successHandler } from "../../../eventHandlers";
 import { Actions, Models } from "../../../utils/apiData";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
 import { withServerErrorHandler } from "../../../utils/withServerErrorHandler";
@@ -171,12 +172,15 @@ export const getServerSideProps: GetServerSideProps<Props> =
       `sampleRecord:${grouparooUiEdition()}`
     )?.[modelId as string];
 
-    const sampleRecord = sampleRecordId
-      ? await client.request<Actions.RecordView>(
-          "get",
-          `/record/${sampleRecordId}`
-        )
-      : null;
+    let sampleRecord: Actions.RecordView = null;
+    try {
+      sampleRecord = sampleRecordId
+        ? await client.request<Actions.RecordView>(
+            "get",
+            `/record/${sampleRecordId}`
+          )
+        : null;
+    } catch (err) {}
 
     return {
       props: {
