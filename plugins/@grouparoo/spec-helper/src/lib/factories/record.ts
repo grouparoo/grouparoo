@@ -27,9 +27,10 @@ export default async (props?: { [key: string]: any }, properties = {}) => {
     await data(props)
   )) as GrouparooRecord;
 
-  const { Property } = await import(`@grouparoo/core/${loadPath}`);
+  const { Property, Source } = await import(`@grouparoo/core/${loadPath}`);
   const allProperties = await Property.findAll({
-    where: { modelId: record.modelId, state: "ready" },
+    where: { state: "ready" },
+    include: [{ model: Source, where: { modelId: record.modelId } }],
   });
   const primaryKeyProperty = allProperties.find((p) => p.isPrimaryKey);
 
