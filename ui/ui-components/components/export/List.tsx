@@ -40,7 +40,7 @@ export const retryExport = async (
   const { count } = await client.requestAction<ExportsRetryFailedById>(
     "get",
     `/exports/retryFailed/${_export.id}`,
-    {},
+    undefined,
     { useCache: false }
   );
   if (count) {

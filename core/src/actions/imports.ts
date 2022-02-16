@@ -22,7 +22,7 @@ export class ImportsList extends AuthenticatedAction {
       formatter: APIData.ensureArray,
       default: [["createdAt", "desc"]],
     },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<ImportsList> }) {
     const where: WhereAttributeHash = {};
@@ -55,7 +55,7 @@ export class ImportView extends AuthenticatedAction {
   permission: ActionPermission = { topic: "import", mode: "read" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<ImportView> }) {
     const _import = await Import.findById(params.id);

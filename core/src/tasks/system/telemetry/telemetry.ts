@@ -16,7 +16,7 @@ export class TelemetryTask extends RetryableTask {
       formatter: (p: unknown) =>
         APIData.ensureString<Telemetry.TelemetryCallTrigger>(p),
     },
-  };
+  } as const;
 
   async runWithinTransaction({ trigger }: ParamsFrom<TelemetryTask>) {
     return Telemetry.send(trigger, [], true);

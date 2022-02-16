@@ -6,7 +6,7 @@ export class NextRender extends Action {
     this.name = "next:render";
     this.description = "render react pages via next.js";
     this.outputExample = {};
-    this.inputs = {};
+    this.inputs = {} as const;
     this.logLevel = "debug";
     this.blockedConnectionTypes = ["websocket", "socket"];
   }

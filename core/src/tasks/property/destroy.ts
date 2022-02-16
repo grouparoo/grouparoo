@@ -10,7 +10,7 @@ export class PropertyDestroy extends CLSTask {
   queue = "properties";
   inputs = {
     propertyId: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ propertyId }: ParamsFrom<PropertyDestroy>) {
     const property = await Property.scope(null).findOne({

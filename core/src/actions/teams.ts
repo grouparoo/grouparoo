@@ -25,7 +25,7 @@ export class TeamInitialize extends CLSAction {
       default: true,
       formatter: APIData.ensureBoolean,
     },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -97,7 +97,7 @@ export class TeamCreate extends AuthenticatedAction {
     permissionAllRead: { required: false, default: true },
     permissionAllWrite: { required: false, default: false },
     permissions: { required: false, formatter: APIData.ensureArray },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<TeamCreate> }) {
     const team = new Team(params);
@@ -114,7 +114,7 @@ export class TeamEdit extends AuthenticatedAction {
   outputExample = {};
   permission: ActionPermission = { topic: "team", mode: "write" };
   inputs = {
-    id: { required: true },
+    id: { required: true as true },
     name: { required: false },
     permissionAllRead: { required: false },
     permissionAllWrite: { required: false },
@@ -146,7 +146,7 @@ export class TeamView extends AuthenticatedAction {
   permission: ActionPermission = { topic: "team", mode: "read" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<TeamView> }) {
     const team = await Team.findOne({
@@ -173,7 +173,7 @@ export class TeamDestroy extends AuthenticatedAction {
   permission: ActionPermission = { topic: "team", mode: "write" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<TeamDestroy> }) {
     const team = await Team.findById(params.id);

@@ -40,7 +40,7 @@ export class PropertiesList extends AuthenticatedAction {
         ["createdAt", "desc"],
       ],
     },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -132,7 +132,7 @@ export class PropertyGroups extends AuthenticatedAction {
   description = "enumerate the groups using this property in their rules";
   outputExample = {};
   permission: ActionPermission = { topic: "property", mode: "read" };
-  inputs = { id: { required: true } };
+  inputs = { id: { required: true } } as const;
 
   async runWithinTransaction({
     params,
@@ -171,7 +171,7 @@ export class PropertyCreate extends AuthenticatedAction {
     sourceId: { required: false },
     options: { required: false, formatter: APIData.ensureObject },
     filters: { required: false, formatter: APIData.ensureArray },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -214,7 +214,7 @@ export class PropertyEdit extends AuthenticatedAction {
     sourceId: { required: false },
     options: { required: false, formatter: APIData.ensureObject },
     filters: { required: false, formatter: APIData.ensureArray },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<PropertyEdit> }) {
     const property = await Property.findById(params.id);
@@ -243,7 +243,7 @@ export class PropertyFilterOptions extends AuthenticatedAction {
   permission: ActionPermission = { topic: "property", mode: "read" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -267,7 +267,7 @@ export class PropertyView extends AuthenticatedAction {
   permission: ActionPermission = { topic: "property", mode: "read" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<PropertyView> }) {
     const property = await Property.findById(params.id);
@@ -288,7 +288,7 @@ export class PropertyPluginOptions extends AuthenticatedAction {
   inputs = {
     id: { required: true },
     options: { required: false, formatter: APIData.ensureObject },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -310,7 +310,7 @@ export class PropertyRecordPreview extends AuthenticatedAction {
     recordId: { required: false },
     options: { required: false, formatter: APIData.ensureObject },
     filters: { required: false, formatter: APIData.ensureArray },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -391,7 +391,7 @@ export class PropertyTest extends AuthenticatedAction {
   permission: ActionPermission = { topic: "property", mode: "write" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<PropertyTest> }) {
     const property = await Property.findById(params.id);
@@ -407,7 +407,7 @@ export class PropertyDestroy extends AuthenticatedAction {
   permission: ActionPermission = { topic: "property", mode: "write" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,

@@ -8,7 +8,6 @@ export class AppRefreshQueriesCheck extends CLSTask {
   description = "check all appRefreshQueries and run them";
   frequency = getGrouparooRunMode() === "cli:run" ? 0 : 1000 * 60; // Run every minute
   queue = "apps";
-  inputs = {};
 
   async runWithinTransaction() {
     const appRefreshQueries = await AppRefreshQuery.findAll();

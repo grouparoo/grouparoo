@@ -33,7 +33,7 @@ export class DestinationsList extends AuthenticatedAction {
         ["createdAt", "desc"],
       ],
     },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -133,7 +133,7 @@ export class DestinationCreate extends AuthenticatedAction {
       required: false,
       formatter: APIData.ensureObject,
     },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -185,7 +185,7 @@ export class DestinationEdit extends AuthenticatedAction {
       formatter: (p: unknown) => p as Destination["collection"],
     },
     triggerExport: { required: false, formatter: APIData.ensureBoolean },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -243,7 +243,7 @@ export class DestinationConnectionOptions extends AuthenticatedAction {
   inputs = {
     id: { required: true },
     options: { required: false, formatter: APIData.ensureObject },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -264,7 +264,7 @@ export class DestinationMappingOptions extends AuthenticatedAction {
   permission: ActionPermission = { topic: "destination", mode: "read" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -291,7 +291,7 @@ export class DestinationExportArrayProperties extends AuthenticatedAction {
   permission: ActionPermission = { topic: "destination", mode: "read" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -311,7 +311,7 @@ export class DestinationView extends AuthenticatedAction {
   permission: ActionPermission = { topic: "destination", mode: "read" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -329,7 +329,7 @@ export class DestinationExport extends AuthenticatedAction {
   permission: ActionPermission = { topic: "destination", mode: "write" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -358,7 +358,7 @@ export class DestinationRecordPreview extends AuthenticatedAction {
       required: false,
       formatter: APIData.ensureObject,
     },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -435,7 +435,7 @@ export class DestinationDestroy extends AuthenticatedAction {
       default: false,
       formatter: (p: string | boolean) => p.toString().toLowerCase() === "true",
     },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,

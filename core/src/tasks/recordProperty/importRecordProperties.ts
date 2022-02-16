@@ -20,7 +20,7 @@ export class ImportRecordProperties extends RetryableTask {
   inputs = {
     recordIds: { required: true, formatter: APIData.ensureArray },
     propertyIds: { required: true, formatter: APIData.ensureArray },
-  };
+  } as const;
 
   async runWithinTransaction({
     recordIds,

@@ -18,7 +18,7 @@ export class SyncCLI extends CLI {
       letter: "n",
       flag: true,
     },
-  };
+  } as const;
   example = `grouparoo sync person@example.com --property email`;
 
   constructor() {

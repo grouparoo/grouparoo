@@ -8,7 +8,6 @@ export class AccountView extends AuthenticatedAction {
   description = "view your account details";
   permission: ActionPermission = { topic: "*", mode: "read" };
   outputExample = {};
-  inputs = {};
 
   async runWithinTransaction({
     session: { teamMember },
@@ -34,7 +33,7 @@ export class AccountEdit extends AuthenticatedAction {
     lastName: { required: false },
     password: { required: false },
     email: { required: false },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,

@@ -44,7 +44,7 @@ export class SetupStepEdit extends AuthenticatedAction {
   inputs = {
     id: { required: true },
     skipped: { required: false, formatter: APIData.ensureBoolean },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,

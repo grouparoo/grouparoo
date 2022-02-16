@@ -11,7 +11,7 @@ export class ProcessExports extends CLSTask {
   queue = "exports";
   inputs = {
     exportProcessorId: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     exportProcessorId,

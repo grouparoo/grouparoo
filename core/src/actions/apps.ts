@@ -24,7 +24,7 @@ export class AppsList extends AuthenticatedAction {
         ["createdAt", "desc"],
       ],
     },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<AppsList> }) {
     const where: WhereAttributeHash = {};
@@ -53,7 +53,7 @@ export class AppOptions extends AuthenticatedAction {
   permission: ActionPermission = { topic: "app", mode: "read" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<AppOptions> }) {
     const environmentVariableOptions =
@@ -79,7 +79,7 @@ export class AppCreate extends AuthenticatedAction {
     type: { required: true },
     state: { required: false },
     options: { required: false, formatter: APIData.ensureObject },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<AppCreate> }) {
     const app = await App.create({
@@ -107,7 +107,7 @@ export class AppEdit extends AuthenticatedAction {
     type: { required: false },
     state: { required: false },
     options: { required: false, formatter: APIData.ensureObject },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<AppEdit> }) {
     const app = await App.findById(params.id);
@@ -128,7 +128,7 @@ export class AppTest extends AuthenticatedAction {
   inputs = {
     id: { required: true },
     options: { required: false, formatter: APIData.ensureObject },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<AppTest> }) {
     const app = await App.findById(params.id);
@@ -149,7 +149,7 @@ export class AppView extends AuthenticatedAction {
   permission: ActionPermission = { topic: "app", mode: "read" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<AppView> }) {
     const app = await App.findById(params.id);
@@ -164,7 +164,7 @@ export class AppDestroy extends AuthenticatedAction {
   permission: ActionPermission = { topic: "app", mode: "write" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<AppDestroy> }) {
     const app = await App.findById(params.id);

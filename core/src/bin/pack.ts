@@ -12,7 +12,7 @@ export class Pack extends CLI {
       description: "Where should we generate the archive?",
       letter: "o",
     },
-  };
+  } as const;
 
   constructor() {
     super();

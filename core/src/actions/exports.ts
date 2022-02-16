@@ -25,7 +25,7 @@ export class ExportsList extends AuthenticatedAction {
       formatter: APIData.ensureArray,
       default: [["createdAt", "desc"]],
     },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<ExportsList> }) {
     const where: WhereAttributeHash = {};
@@ -75,7 +75,7 @@ export class ExportsTotals extends AuthenticatedAction {
   inputs = {
     recordId: { required: false },
     destinationId: { required: false },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -101,7 +101,7 @@ export class ExportView extends AuthenticatedAction {
   permission: ActionPermission = { topic: "export", mode: "read" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<ExportView> }) {
     const _export = await Export.findById(params.id);
@@ -122,7 +122,7 @@ export class ExportsRetryFailed extends AuthenticatedAction {
       default: false,
       formatter: APIData.ensureBoolean,
     },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -148,7 +148,7 @@ export class ExportsRetryFailedById extends AuthenticatedAction {
   permission: ActionPermission = { topic: "destination", mode: "write" };
   inputs = {
     exportId: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,

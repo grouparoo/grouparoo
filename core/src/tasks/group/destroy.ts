@@ -11,7 +11,7 @@ export class GroupDestroy extends CLSTask {
   queue = "groups";
   inputs = {
     groupId: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ groupId }: ParamsFrom<GroupDestroy>) {
     const limit: number = config.batchSize.imports;

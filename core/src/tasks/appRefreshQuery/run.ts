@@ -8,7 +8,7 @@ export class AppRefreshQueryRun extends CLSTask {
     "run a single appRefreshQuery and update values/trigger schedules if needed";
   frequency = 0;
   queue = "apps";
-  inputs = { appRefreshQueryId: { required: true } };
+  inputs = { appRefreshQueryId: { required: true } } as const;
 
   async runWithinTransaction({
     appRefreshQueryId,

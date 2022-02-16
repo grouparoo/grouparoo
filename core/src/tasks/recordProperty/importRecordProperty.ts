@@ -16,7 +16,7 @@ export class ImportRecordProperty extends RetryableTask {
   inputs = {
     recordId: { required: true },
     propertyId: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     recordId,

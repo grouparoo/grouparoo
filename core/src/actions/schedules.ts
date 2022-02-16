@@ -28,7 +28,7 @@ export class SchedulesList extends AuthenticatedAction {
         ["createdAt", "desc"],
       ],
     },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -75,7 +75,7 @@ export class ScheduleRun extends AuthenticatedAction {
   permission: ActionPermission = { topic: "source", mode: "write" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<ScheduleRun> }) {
     const schedule = await Schedule.findById(params.id);
@@ -98,7 +98,7 @@ export class SchedulesRun extends AuthenticatedAction {
   inputs = {
     scheduleIds: { required: false, formatter: APIData.ensureArray },
     modelId: { required: false },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<SchedulesRun> }) {
     const runs: Run[] = [];
@@ -158,7 +158,7 @@ export class ScheduleCreate extends AuthenticatedAction {
       formatter: APIData.ensureNumber,
     },
     filters: { required: false, formatter: APIData.ensureArray },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -209,7 +209,7 @@ export class ScheduleEdit extends AuthenticatedAction {
     options: { required: false, formatter: APIData.ensureObject },
     recurringFrequency: { required: false, formatter: APIData.ensureNumber },
     filters: { required: false, formatter: APIData.ensureArray },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<ScheduleEdit> }) {
     const schedule = await Schedule.findById(params.id);
@@ -258,7 +258,7 @@ export class ScheduleFilterOptions extends AuthenticatedAction {
   permission: ActionPermission = { topic: "source", mode: "read" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -281,7 +281,7 @@ export class ScheduleView extends AuthenticatedAction {
   permission: ActionPermission = { topic: "source", mode: "read" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<ScheduleView> }) {
     const schedule = await Schedule.findById(params.id);
@@ -299,7 +299,7 @@ export class ScheduleDestroy extends AuthenticatedAction {
   permission: ActionPermission = { topic: "source", mode: "write" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,

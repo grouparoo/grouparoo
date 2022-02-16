@@ -17,7 +17,7 @@ export class RecordExport extends RetryableTask {
   inputs = {
     recordId: { required: true },
     force: { required: false, formatter: APIData.ensureBoolean },
-  };
+  } as const;
 
   async runWithinTransaction({ force, recordId }: ParamsFrom<RecordExport>) {
     const record = await GrouparooRecord.findOne({

@@ -14,7 +14,7 @@ export class EnqueueExports extends RetryableTask {
   queue = "exports";
   inputs = {
     count: { required: false, default: 0, formatter: APIData.ensureNumber },
-  };
+  } as const;
 
   async runWithinTransaction(params: ParamsFrom<EnqueueExports>) {
     const count = params.count || 0;

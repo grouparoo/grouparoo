@@ -70,7 +70,7 @@ export class Client {
   public async requestAction<A extends Action>(
     verb: Method = "get",
     path: string,
-    data: Partial<ParamsFrom<A>>, // TODO: Make ParamsFrom handle required
+    data: ParamsFrom<A>, // TODO: Make ParamsFrom handle required
     options: Partial<ClientRequestOptions> = {}
   ) {
     return this.request<AsyncReturnType<A["run"]>>(verb, path, data, options);
