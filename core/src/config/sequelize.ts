@@ -126,7 +126,7 @@ export const DEFAULT = {
 
     /** Load plugin migrations */
     const { plugins } = getPluginManifest();
-    const pluginMigrations = [];
+    const pluginMigrations: string[] = [];
     for (const plugin of plugins) {
       const path = join(plugin.path, "dist", "migrations");
       if (fs.existsSync(path)) {
