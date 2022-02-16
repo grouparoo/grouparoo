@@ -53,6 +53,7 @@ import {
   AggregationMethod,
   GrouparooRunMode,
 } from "@grouparoo/core";
+import { rejects } from "assert";
 
 const {
   // modules
@@ -255,8 +256,9 @@ export namespace helper {
         }
       }
 
-      await new Promise((resolve) => {
+      await new Promise((resolve, reject) => {
         let resolved = false;
+
         serverProcess = spawn("./bin/start", [], {
           cwd: corePath,
           env: {
@@ -272,7 +274,10 @@ export namespace helper {
         });
 
         serverProcess.stdout.on("data", (data) => {
-          // console.log(String(data));
+          if (!resolved && String(data).includes("Error from Initializer")) {
+            return reject(new Error(data));
+          }
+
           if (!resolved && String(data).match(/@grouparoo\/core Started/)) {
             resolve(null);
           }
