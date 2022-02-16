@@ -141,3 +141,23 @@ export class ExportsRetryFailed extends AuthenticatedAction {
     return { count };
   }
 }
+
+export class ExportsRetryFailedById extends AuthenticatedAction {
+  name = "exports:retryFailedById";
+  description = "retry failed export by id";
+  permission: ActionPermission = { topic: "destination", mode: "write" };
+  inputs = {
+    exportId: { required: true },
+  };
+
+  async runWithinTransaction({
+    params,
+  }: {
+    params: ParamsFrom<ExportsRetryFailedById>;
+  }) {
+    console.log(params);
+    const count = await Export.retryFailedById(params.exportId);
+
+    return { count };
+  }
+}

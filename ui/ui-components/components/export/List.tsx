@@ -1,11 +1,11 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ExportsRetryFailed } from "@grouparoo/core/src/actions/exports";
+import { ExportsRetryFailedById } from "@grouparoo/core/src/actions/exports";
 import { GetServerSidePropsContext } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment, useCallback, useState } from "react";
 import { Alert, Badge, Button, ButtonGroup, Col, Row } from "react-bootstrap";
-import { generateClient } from "../../client/client";
+import { Client, generateClient } from "../../client/client";
 import { useApi } from "../../contexts/api";
 import { errorHandler, successHandler } from "../../eventHandlers";
 import { updateURLParams, useOffset } from "../../hooks/URLParams";
@@ -33,6 +33,28 @@ interface Props extends Awaited<ReturnType<typeof ExportsList.hydrate>> {
   header?: React.ReactNode;
 }
 
+export const retryExport = async (
+  client: Client,
+  _export: Models.ExportType
+) => {
+  const { count } = await client.requestAction<ExportsRetryFailedById>(
+    "get",
+    `/exports/retryFailed/${_export.id}`,
+    {},
+    { useCache: false }
+  );
+  if (count) {
+    successHandler.set({ message: "Export Retried" });
+    const { export: refreshedExport } =
+      await client.request<Actions.ExportView>("get", `/export/${_export.id}`);
+    return refreshedExport;
+  } else {
+    errorHandler.set({
+      message: "There was an issue retrying the export, please try again.",
+    });
+  }
+};
+
 export default function ExportsList(props: Props) {
   const { groups }: { groups: Models.GroupType[] } = props;
   const router = useRouter();
@@ -55,40 +77,14 @@ export default function ExportsList(props: Props) {
     }
   }
 
-  const retryExport = useCallback(
+  const doRetryExport = useCallback(
     async (_export: Models.ExportType, index: number) => {
       setLoading(true);
-      try {
-        const { count } = await client.requestAction<ExportsRetryFailed>(
-          "get",
-          `/exports/retryFailed`,
-          {
-            destinationId: _export.destination.id,
-            startTimestamp: _export.createdAt,
-            endTimestamp: _export.createdAt,
-          },
-          { useCache: false }
-        );
-        if (count) {
-          successHandler.publish({ message: "Export Retried" });
-          const { export: refreshedExport } =
-            await client.request<Actions.ExportView>(
-              "get",
-              `/export/${_export.id}`
-            );
-          setExports((_exports) => {
-            _exports[index] = refreshedExport;
-            return _exports;
-          });
-        } else {
-          errorHandler.publish({
-            message:
-              "There was an issue retrying the export, please try again.",
-          });
-        }
-      } catch (err) {
-        errorHandler.publish({
-          message: err,
+      const refreshedExport = await retryExport(client, _export);
+      if (refreshedExport) {
+        setExports((_exports) => {
+          _exports[index] = refreshedExport;
+          return _exports;
         });
       }
       setLoading(false);
@@ -224,7 +220,7 @@ export default function ExportsList(props: Props) {
                         icon="sync-alt"
                         size="xs"
                         style={{ cursor: "pointer" }}
-                        onClick={() => retryExport(_export, index)}
+                        onClick={() => doRetryExport(_export, index)}
                       />
                     ) : null}
                     <br />

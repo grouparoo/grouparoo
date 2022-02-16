@@ -10,6 +10,7 @@ import {
   ExportGroupsDiff,
   ExportRecordPropertiesDiff,
 } from "../../../components/export/Diff";
+import { retryExport } from "../../../components/export/List";
 import EnterpriseLink from "../../../components/GrouparooLink";
 import ManagedCard from "../../../components/lib/ManagedCard";
 import LoadingButton from "../../../components/LoadingButton";
@@ -40,39 +41,14 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
   const [_export, setExport] = useState(props._export);
   const [loading, setLoading] = useState(false);
 
-  const retryExport = useCallback(async () => {
+  const doRetryExport = useCallback(async () => {
     setLoading(true);
-    try {
-      const { count } = await client.requestAction<ExportsRetryFailed>(
-        "get",
-        `/exports/retryFailed`,
-        {
-          destinationId: _export.destination.id,
-          startTimestamp: _export.createdAt,
-          endTimestamp: _export.createdAt,
-        },
-        { useCache: false }
-      );
-      if (count) {
-        successHandler.publish({ message: "Export Retried" });
-        const { export: refreshedExport } =
-          await client.request<Actions.ExportView>(
-            "get",
-            `/export/${_export.id}`
-          );
-        setExport(refreshedExport);
-      } else {
-        errorHandler.publish({
-          message: "There was an issue retrying the export, please try again.",
-        });
-      }
-    } catch (err) {
-      errorHandler.publish({
-        message: err,
-      });
+    const refreshedExport = await retryExport(client, _export);
+    if (refreshedExport) {
+      setExport(refreshedExport);
     }
     setLoading(false);
-  }, [_export.createdAt, _export.destination.id, _export.id, client]);
+  }, [_export, client]);
 
   return (
     <>
@@ -93,7 +69,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
             loading={loading}
             disabled={!["failed", "canceled"].includes(_export.state)}
             className="ml-auto"
-            onClick={retryExport}
+            onClick={doRetryExport}
             key={_export.state}
           >
             Retry Export

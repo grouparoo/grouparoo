@@ -166,24 +166,12 @@ export namespace ExportOps {
   }
 
   /**
-   * Finds failed exports within a time range and sets them back to pending
+   * Sets export(s) to pending
    */
-  export async function retryFailedExports(
-    startDate: Date,
-    endDate: Date,
-    destination?: Destination,
-    saveExports = true
+  async function retryExport(
+    where: WhereOptions<Export>,
+    saveExports: boolean
   ) {
-    const where: WhereOptions<Export> = {
-      state: { [Op.in]: ["failed", "canceled"] },
-      createdAt: {
-        [Op.gte]: startDate,
-        [Op.lte]: endDate,
-      },
-    };
-
-    if (destination) where.destinationId = destination.id;
-
     if (saveExports) {
       const [count] = await Export.update(
         {
@@ -201,5 +189,42 @@ export namespace ExportOps {
     }
 
     return Export.count({ where });
+  }
+
+  /**
+   * Finds failed exports within a time range and sets them back to pending
+   */
+  export async function retryFailedExports(
+    startDate: Date,
+    endDate: Date,
+    destination?: Destination,
+    saveExports = true
+  ) {
+    const where: WhereOptions<Export> = {
+      state: "failed",
+      createdAt: {
+        [Op.gte]: startDate,
+        [Op.lte]: endDate,
+      },
+    };
+
+    if (destination) where.destinationId = destination.id;
+
+    return retryExport(where, saveExports);
+  }
+
+  /**
+   * Finds finds and retries a failed or canceled export by id
+   */
+  export async function retryFailedExportById(
+    exportId: string,
+    saveExports = true
+  ) {
+    const where: WhereOptions<Export> = {
+      state: { [Op.in]: ["failed", "canceled"] },
+      id: exportId,
+    };
+
+    return retryExport(where, saveExports);
   }
 }

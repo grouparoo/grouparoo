@@ -37,6 +37,7 @@ export const DEFAULT: { [namespace]: () => RoutesConfig } = {
         { path: "/v:apiVersion/exports", action: "exports:list" },
         { path: "/v:apiVersion/exports/totals", action: "exports:totals" },
         { path: "/v:apiVersion/exports/retryFailed", action: "exports:retryFailed" },
+        { path: "/v:apiVersion/exports/retryFailed/:exportId", action: "exports:retryFailedById" },
         { path: "/v:apiVersion/group/:groupId/records", action: "records:list" },
         { path: "/v:apiVersion/group/:id", action: "group:view" },
         { path: "/v:apiVersion/group/:id/countComponentMembers", action: "group:countComponentMembers" },
