@@ -170,7 +170,7 @@ describe("bin/config-apply", () => {
 
     test("the apply command can be run and completes with --local", async () => {
       const command = new Apply();
-      const toStop = await command.run({ params: { local: "true" } });
+      const toStop = await command.run({ params: { local: ["true"] } });
       expect(toStop).toBe(true);
 
       const output = messages.join(" ");
