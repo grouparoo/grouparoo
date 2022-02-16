@@ -21,10 +21,7 @@ export class oAuthAccessTokenGetter {
   private accessToken: string;
   private expirationDate: number;
 
-  constructor(
-    private oAuthProviderName: string,
-    private refreshToken: string
-  ) {}
+  constructor(readonly providerName: string, public refreshToken: string) {}
 
   private isAccessTokenExpired() {
     return (
@@ -41,7 +38,7 @@ export class oAuthAccessTokenGetter {
         retries > 0 && this.isAccessTokenExpired();
         retries--
       ) {
-        const url = `${config.oAuth.host}/api/v1/oauth/${this.oAuthProviderName}/client/refresh`;
+        const url = `${config.oAuth.host}/api/v1/oauth/${this.providerName}/client/refresh`;
         const response = await fetch(url, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -76,7 +73,7 @@ export class oAuthAccessTokenGetter {
 
     if (this.isAccessTokenExpired()) {
       throw new Error(
-        `Failed to get auth for ${this.oAuthProviderName}. Please reauthorize ${this.oAuthProviderName} App.`
+        `Failed to get auth for ${this.providerName}. Please reauthorize ${this.providerName} App.`
       );
     }
   }

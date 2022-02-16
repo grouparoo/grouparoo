@@ -1,11 +1,11 @@
 import HubspotAPI, { IHubSpotClientProps } from "hubspot-api";
-import { oAuthAccessTokenGetter, SimpleAppOptions } from "@grouparoo/core";
+import { plugin, SimpleAppOptions } from "@grouparoo/core";
 import HubspotObjects from "./objects";
 import axios, { AxiosRequestConfig } from "axios";
 
 class HubspotClient {
   private hapikey: string;
-  private accessTokenGetter: oAuthAccessTokenGetter;
+  private refreshToken: string;
 
   readonly objects = new HubspotObjects(this);
 
@@ -26,18 +26,18 @@ class HubspotClient {
 
   constructor(appOptions: SimpleAppOptions) {
     if (appOptions.refreshToken) {
-      this.accessTokenGetter = new oAuthAccessTokenGetter(
-        "hubspot",
-        appOptions.refreshToken as string
-      );
+      this.refreshToken = appOptions.refreshToken as string;
     } else {
       this.hapikey = appOptions.hapikey?.toString();
     }
   }
 
   async getAPIOptions(): Promise<IHubSpotClientProps> {
-    if (this.accessTokenGetter) {
-      const accessToken = await this.accessTokenGetter.getAccessToken();
+    if (this.refreshToken) {
+      const accessToken = await plugin.getOAuthAppAccessToken(
+        "hubspot",
+        this.refreshToken
+      );
       return { accessToken };
     }
 
@@ -152,8 +152,11 @@ class HubspotClient {
   ): Promise<any> {
     config.baseURL = "https://api.hubapi.com";
 
-    if (this.accessTokenGetter) {
-      const accessToken = await this.accessTokenGetter.getAccessToken();
+    if (this.refreshToken) {
+      const accessToken = await plugin.getOAuthAppAccessToken(
+        "hubspot",
+        this.refreshToken
+      );
       config.headers = {
         ...config.headers,
         Authorization: `Bearer ${accessToken}`,
