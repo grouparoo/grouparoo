@@ -17,6 +17,8 @@ export interface oAuthIdentity {
   description: string;
 }
 
+const EXPIRATION_BUFFER_MS = 60000; // 1 minute
+
 export class oAuthAccessTokenGetter {
   private accessToken: string;
   private expirationDate: number;
@@ -27,7 +29,7 @@ export class oAuthAccessTokenGetter {
     return (
       !this.accessToken ||
       !this.expirationDate ||
-      this.expirationDate <= Date.now()
+      this.expirationDate - Date.now() <= EXPIRATION_BUFFER_MS
     );
   }
 
@@ -56,16 +58,14 @@ export class oAuthAccessTokenGetter {
 
         const {
           token,
-          expirationSeconds,
+          expirationSeconds = 0,
         }: {
           token: string;
           expirationSeconds: number;
         } = await response.json();
 
-        const expirationMs = Math.max(0, (expirationSeconds - 60) * 1000);
-
         this.accessToken = token;
-        this.expirationDate = Date.now() + expirationMs;
+        this.expirationDate = Date.now() + expirationSeconds * 1000;
       }
     } catch (e) {
       throw e;

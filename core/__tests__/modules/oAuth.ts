@@ -1,3 +1,4 @@
+import { config } from "actionhero";
 import fetch, { enableFetchMocks } from "jest-fetch-mock";
 import { oAuthAccessTokenGetter } from "../../src/modules/oAuth";
 
@@ -30,7 +31,7 @@ describe("modules/oauth", () => {
 
       expect(fetch).toHaveBeenCalledTimes(1);
       expect(fetch).toHaveBeenCalledWith(
-        `https://auth.grouparoo.com/api/v1/oauth/${providerName}/client/refresh`,
+        `${config.oAuth.host}/api/v1/oauth/${providerName}/client/refresh`,
         expect.objectContaining({
           method: "POST",
           body: JSON.stringify({ refreshToken }),
