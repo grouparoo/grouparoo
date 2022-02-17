@@ -1,3 +1,4 @@
+import { parsePhoneNumberFromString, CountryCode } from "libphonenumber-js/max";
 import isEmail from "../validators/isEmail";
 import isURL from "validator/lib/isURL";
 import { RecordProperty } from "../../models/RecordProperty";
@@ -8,6 +9,7 @@ import { Source } from "../../models/Source";
 import { AggregationMethod, PluginConnection } from "../../classes/plugin";
 import { log } from "actionhero";
 import { PropertiesCache } from "../../modules/caches/propertiesCache";
+import { plugin } from "../plugin";
 
 export namespace RecordPropertyOps {
   const defaultRecordPropertyProcessingDelay = 1000 * 60 * 5;
@@ -43,7 +45,7 @@ export namespace RecordPropertyOps {
           rawValue = await formatEmail(value?.toString());
           break;
         case "phoneNumber":
-          rawValue = await formatString(value?.toString());
+          rawValue = await formatPhoneNumber(value?.toString());
           break;
         case "url":
           rawValue = await formatURL(value?.toString());
@@ -285,6 +287,24 @@ function formatEmail(v: string) {
   // We do light validation on the email to ensure that it has an "@" and a "."
   if (!isEmail(v)) throw new Error(`email "${v}" is not valid`);
   return v;
+}
+
+async function formatPhoneNumber(v: string) {
+  // Use Google's phone number validator and formatter
+  const defaultCountryCode = (
+    await plugin.readSetting("core", "records-default-country-code")
+  ).value as CountryCode;
+
+  const formattedPhoneNumber = parsePhoneNumberFromString(
+    v,
+    defaultCountryCode
+  );
+
+  if (!formattedPhoneNumber || !formattedPhoneNumber.isValid()) {
+    throw new Error(`phone number "${v}" is not valid`);
+  }
+
+  return formattedPhoneNumber.formatInternational();
 }
 
 async function formatBoolean(v: string) {
