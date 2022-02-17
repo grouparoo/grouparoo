@@ -66,6 +66,8 @@ export * from "./modules/tableSpeculation";
 
 export * from "./modules/oAuth";
 
+export { Unarray } from "./utils/array";
+
 export type { GrouparooRunMode } from "./modules/runMode";
 
 export type { Action, ParamsFrom } from "actionhero";

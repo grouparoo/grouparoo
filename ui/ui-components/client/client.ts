@@ -66,22 +66,12 @@ export class Client {
     } = () => ({})
   ) {}
 
-  // This will replace the request method below in the future
-  public async requestAction<A extends Action>(
+  public async request<A extends Action>(
     verb: Method = "get",
     path: string,
-    data: ParamsFrom<A>,
+    data?: ParamsFrom<A> & { csrfToken?: string },
     options: Partial<ClientRequestOptions> = {}
-  ) {
-    return this.request<AsyncReturnType<A["run"]>>(verb, path, data, options);
-  }
-
-  public async request<Response>(
-    verb: Method = "get",
-    path: string,
-    data: AxiosRequestConfig["data"] = {},
-    options: Partial<ClientRequestOptions> = {}
-  ): Promise<Response> {
+  ): Promise<AsyncReturnType<A["run"]>> {
     options = { useCache: true, ...options };
     const headers: AxiosRequestHeaders = { ...DEFAULT_HEADERS };
 
@@ -113,9 +103,9 @@ export class Client {
 
     let unlock: ClientCacheGetObject["unlock"];
     if (config.method === "get" && options.useCache) {
-      const { cacheData, unlock: _unlock } = await this.cache.get<Response>(
-        config.url + stringify(data)
-      );
+      const { cacheData, unlock: _unlock } = await this.cache.get<
+        AsyncReturnType<A["run"]>
+      >(config.url + stringify(data));
       if (cacheData) {
         return cacheData;
       }
@@ -125,9 +115,9 @@ export class Client {
     }
 
     try {
-      const response: AxiosResponse<Response & { error?: Error }> = await axios(
-        config
-      );
+      const response: AxiosResponse<
+        AsyncReturnType<A["run"]> & { error?: Error }
+      > = await axios(config);
       unlock?.(response.data);
 
       if (response.data && response.data.error) {
@@ -154,7 +144,10 @@ export class Client {
       }
 
       if (isBrowser()) {
-        return handleBrowserClientError<Response>(error, options.errorHandler);
+        return handleBrowserClientError<AsyncReturnType<A["run"]>>(
+          error,
+          options.errorHandler
+        );
       }
 
       throw error;
