@@ -236,8 +236,6 @@ describe("hubspot/exportRecord", () => {
       let association = await apiClient.objects.getAssociation(user.vid);
       expect(association.map((id) => id.toString())).toEqual([]);
 
-      console.log("company.domain", company1.domain);
-
       await runExport({
         destinationOptions: { companyKey },
         oldRecordProperties: {
