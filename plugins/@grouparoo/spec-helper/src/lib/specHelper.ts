@@ -256,8 +256,6 @@ export namespace helper {
       }
 
       await new Promise((resolve, reject) => {
-        let resolved = false;
-
         serverProcess = spawn("./bin/start", [], {
           cwd: corePath,
           env: {
@@ -273,12 +271,12 @@ export namespace helper {
         });
 
         serverProcess.stdout.on("data", (data) => {
-          if (!resolved && String(data).includes("Error from Initializer")) {
+          if (String(data).includes("Error from Initializer")) {
             return reject(new Error(data));
           }
 
-          if (!resolved && String(data).match(/@grouparoo\/core Started/)) {
-            resolve(null);
+          if (String(data).match(/@grouparoo\/core Started/)) {
+            return resolve(null);
           }
         });
 
