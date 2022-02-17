@@ -5,6 +5,11 @@ import {
 
 export const destinationMappingOptions: DestinationMappingOptionsMethod =
   async ({ connection, destinationOptions }) => {
+    checkOptionsIntegrity(destinationOptions);
+    const isGroupEnabled =
+      destinationOptions.groupsTable &&
+      destinationOptions.groupForeignKey &&
+      destinationOptions.groupColumnName;
     const schema = connection.schemaName;
     const tableName = destinationOptions.table;
     const query = `SELECT COLUMN_NAME, DATA_TYPE, IS_NULLABLE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = :1 AND TABLE_NAME = :2`;
@@ -53,10 +58,12 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod =
           singular: "Exported Property",
           plural: "Exported Properties",
         },
-        group: {
-          singular: "Exported Groups",
-          plural: "Exported Groups",
-        },
+        group: isGroupEnabled
+          ? {
+              singular: "Exported Groups",
+              plural: "Exported Groups",
+            }
+          : undefined,
       },
       properties: {
         required,
@@ -107,3 +114,23 @@ const mapTypesFromSnowflakeToGrouparoo = (snowflakeType) => {
   }
   return null;
 };
+
+export function checkOptionsIntegrity(options) {
+  const groupKeys = ["groupsTable", "groupForeignKey", "groupColumnName"];
+  // needs either zero or all keys
+  let count = 0;
+  for (const key of groupKeys) {
+    const value = (options[key] || "").toString().trim();
+    if (value.length > 0) {
+      options[key] = value;
+      count++;
+    } else {
+      options[key] = null;
+    }
+  }
+  if (count > 0 && groupKeys.length !== count) {
+    throw new Error(
+      `To enable Group data syncing, all related options must be set.`
+    );
+  }
+}

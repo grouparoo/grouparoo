@@ -19,6 +19,7 @@ import {
 import { ExportRecordsPluginMethod, FilterOperation } from "@grouparoo/core";
 import { connect } from "../connect";
 import { makeWhereClause } from "../shared/util";
+import { checkOptionsIntegrity } from "./destinationMappingOptions";
 
 // return an object that you can connect with
 const getClient: BatchMethodGetClient = async ({ config }) => {
@@ -451,6 +452,18 @@ export async function exportBatch({
 }) {
   const batchSize = 200;
   const findSize = 200;
+
+  checkOptionsIntegrity(destinationOptions);
+  exports.map((currentExport) => {
+    if (
+      !destinationOptions.groupsTable ||
+      !destinationOptions.groupForeignKey ||
+      !destinationOptions.groupColumnName
+    ) {
+      currentExport.oldGroups = [];
+      currentExport.newGroups = [];
+    }
+  });
 
   return exportRecordsInBatch(
     exports,

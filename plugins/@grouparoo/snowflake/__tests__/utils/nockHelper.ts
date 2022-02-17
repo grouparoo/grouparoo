@@ -78,9 +78,7 @@ export const updater = {
       const body = match[1];
       const bufferCompressed = Buffer.from(body, "hex");
       let json = zlib.gunzipSync(bufferCompressed, null).toString();
-      // console.log({ old: json });
       json = cleanUp(json);
-      // console.log({ new: json });
       const bufferUncompressed = Buffer.from(json, "utf8");
       const zipped = zlib.gzipSync(bufferUncompressed, null);
       let newBytes = zipped.toString("hex");

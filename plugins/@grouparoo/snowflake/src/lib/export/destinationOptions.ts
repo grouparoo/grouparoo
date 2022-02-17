@@ -2,7 +2,6 @@ import {
   DestinationOptionsMethod,
   DestinationOptionsMethodResponse,
 } from "@grouparoo/core";
-import { Snowflake } from "snowflake-promise";
 
 export const destinationOptions: DestinationOptionsMethod<any> = async ({
   connection,
@@ -30,12 +29,12 @@ export const destinationOptions: DestinationOptionsMethod<any> = async ({
   const tables = [];
 
   const rows = await connection.execute(
-    `SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_catalog = :1 AND table_schema = :2`,
+    `SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE table_catalog = :1 AND table_schema = :2`,
     [appOptions.database, appOptions.schema || "public"]
   );
 
   for (const i in rows) {
-    const tableName: string = rows[i].table_name;
+    const tableName: string = rows[i].TABLE_NAME;
     tables.push(tableName);
   }
 

@@ -321,6 +321,74 @@ describe("mixpanel/exportRecords", () => {
     expect(user1["LAST_NAME"]).not.toBeTruthy();
   });
 
+  test("cannot sync if only one Group option is set", async () => {
+    const badDestinationOptions = {
+      table: recordsDestinationTableName,
+      primaryKey: "EMAIL",
+      groupsTable: groupsDestinationTableName,
+    };
+
+    await expect(
+      exportBatch({
+        appOptions,
+        destinationOptions: badDestinationOptions,
+        syncOperations: DestinationSyncModeData.sync.operations,
+        exports: [
+          {
+            recordId: id1,
+            oldRecordProperties: {},
+            newRecordProperties: {
+              LAST_NAME: "Smith",
+            },
+            oldGroups: [],
+            newGroups: [],
+            toDelete: false,
+            record: null,
+          },
+        ],
+      })
+    ).rejects.toThrow(/Group data syncing, all related options must be set/);
+  });
+
+  test("no group actions are taken if no group options are set", async () => {
+    const { success, errors } = await exportBatch({
+      appOptions,
+      destinationOptions: {
+        table: recordsDestinationTableName,
+        primaryKey: "EMAIL",
+      },
+      syncOperations: DestinationSyncModeData.sync.operations,
+      exports: [
+        {
+          recordId: id1,
+          oldRecordProperties: {
+            [destinationOptions.primaryKey]: email1,
+            ID: id1,
+            FIRST_NAME: "John",
+          },
+          newRecordProperties: {
+            [destinationOptions.primaryKey]: email1,
+            ID: id1,
+            FIRST_NAME: "John",
+          },
+          oldGroups: [],
+          newGroups: [list1],
+          toDelete: false,
+          record: null,
+        },
+      ],
+    });
+
+    expect(success).toBe(true);
+    expect(errors).toBeNull();
+
+    user1 = await getRecordByPrimaryKey(destinationOptions.primaryKey, email1);
+    expect(user1[destinationOptions.primaryKey]).toBe(email1);
+
+    const groups = await getGroups(email1);
+    expect(groups.length).toBe(0); // no group added
+  });
+
   test("can add to and create lists", async () => {
     const { success, errors } = await exportBatch({
       appOptions,

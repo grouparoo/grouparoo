@@ -29,20 +29,20 @@ export const destinationConnection: PluginConnection = {
     {
       key: "groupsTable",
       displayName: "Groups Table",
-      required: true,
+      required: false,
       description: "The table to write groups to.",
     },
     {
       key: "groupForeignKey",
       displayName: "Group Foreign Key",
-      required: true,
+      required: false,
       description:
         "The foreign key that the groups table uses to reference table.",
     },
     {
       key: "groupColumnName",
       displayName: "Group Column Name",
-      required: true,
+      required: false,
       description: "The column name for where to store the group names.",
     },
   ],
