@@ -432,11 +432,6 @@ export class Property extends CommonModel<Property> {
       throw new Error(
         `Unique Property ${instance.key} (${instance.id}) cannot be mapped through a non-unique Property - ${mappedProperty.key} (${mappedProperty.id})`
       );
-
-    if (instance.isArray)
-      throw new Error(
-        `Array Property ${instance.key} (${instance.id}) cannot be mapped through a non-unique Property - ${mappedProperty.key} (${mappedProperty.id})`
-      );
   }
 
   @BeforeSave

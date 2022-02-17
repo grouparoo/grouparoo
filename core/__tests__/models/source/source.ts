@@ -1363,6 +1363,35 @@ describe("models/source", () => {
         });
       });
 
+      test("it will apply array properties to all records in the batch", async () => {
+        await propertyA.update({ isArray: true, unique: false });
+
+        const records = [mario, luigi];
+        const properties = [propertyA, propertyB];
+        const response = {
+          [mario.id]: {
+            [propertyA.id]: ["hola", "saludos"],
+            [propertyB.id]: ["bonjour"],
+          },
+        };
+        await SourceOps.applyNonUniqueMappedResultsToAllRecords(response, {
+          records,
+          properties,
+          sourceMapping,
+        });
+
+        expect(response).toEqual({
+          [mario.id]: {
+            wordInSpanish: ["hola", "saludos"],
+            wordInFrench: ["bonjour"],
+          },
+          [luigi.id]: {
+            wordInSpanish: ["hola", "saludos"],
+            wordInFrench: ["bonjour"],
+          },
+        });
+      });
+
       test("it returns undefined when the source does not have a record for the property", async () => {
         await luigi.addOrUpdateProperties({ lastName: ["x"] }); // change the value of the property that is mapped
 
