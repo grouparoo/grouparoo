@@ -54,7 +54,6 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
   client["schemaName"] = schema;
 
   await client.connect();
-
   const executeShim: typeof client.execute = client.execute.bind(client);
   (client as any).execute = (
     sqlText: Parameters<typeof client.execute>[0],

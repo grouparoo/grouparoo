@@ -1,4 +1,4 @@
-import { makeWhereClause, castRowWithHighWaterMark } from "./util";
+import { makeWhereClause, castRowWithHighWaterMark } from "../shared/util";
 import { validateQuery } from "../validateQuery";
 import {
   GetRowsMethod,

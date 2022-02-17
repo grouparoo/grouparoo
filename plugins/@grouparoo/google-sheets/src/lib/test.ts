@@ -7,5 +7,6 @@ const TEST_SHEET_ID =
 export const test: TestPluginMethod = async ({ appOptions }) => {
   const sheet = new Spreadsheet(appOptions, TEST_SHEET_ID);
   await sheet.connect();
+  sheet.updateRowByPrimaryKey();
   return { success: true, message: "Authenticated with Google" };
 };
