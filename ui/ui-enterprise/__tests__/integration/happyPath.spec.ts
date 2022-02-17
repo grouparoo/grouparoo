@@ -1,35 +1,34 @@
-// import { test, expect, Page } from "@playwright/test";
-
-// test.describe("a user can", () => {
-//   test("login and view homepage", async ({ page }) => {
-//     await page.goto("http://localhost:3000");
-//     await expect(page.locator("h2")).toHaveText(
-//       "Sync, Segment, and Send your Product Data Everywhere"
-//     );
-//   });
-// });
-
-import { test, expect, Browser } from "@playwright/test";
+import path from "path";
+process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
+  "@grouparoo/ui-enterprise": { path: path.join(__dirname, "..", "..") },
+});
+import { helper } from "@grouparoo/spec-helper";
+import { test, expect } from "@playwright/test";
 import { BrowserContext, Page } from "playwright";
 
 test.describe("login and initialization flow", () => {
+  const port = 12345 + (parseInt(process.env.JEST_WORKER_ID) ?? 0);
+  const url = `http://localhost:${port}`;
+  helper.grouparooTestServerDetached({ port, truncate: true });
+
   let page: Page;
   test.beforeAll(async ({ browser }) => {
     const context: BrowserContext = await browser.newContext();
     page = await context.newPage();
-    await page.goto("http://localhost:3000/");
   });
   test.afterAll(async ({ browser }) => {
     browser.close();
   });
 
   test("it renders the homepage", async () => {
+    await page.goto(url);
+
     await expect(page.locator("h2")).toHaveText(
       "Sync, Segment, and Send your Product Data Everywhere"
     );
     await expect(page.locator("#bottomNavigationMenu")).toContainText("Hello");
     await Promise.all([
-      page.waitForNavigation({ url: "http://localhost:3000/team/initialize" }),
+      page.waitForNavigation({ url: `${url}/team/initialize` }),
       page.locator('[data-testid="cta"]').click(),
     ]);
     // form loads on button click

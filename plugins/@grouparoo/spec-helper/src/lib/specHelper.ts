@@ -46,6 +46,8 @@ import ExportProcessorFactory from "./factories/exportProcessor";
 import RunFactory from "./factories/run";
 import ApiKeyFactory from "./factories/apiKey";
 
+import { test } from "@playwright/test";
+
 // types
 import {
   SourceOptionsMethodResponse,
@@ -246,8 +248,8 @@ export namespace helper {
     runMode?: GrouparooRunMode;
   }) => {
     let serverProcess: ChildProcessWithoutNullStreams;
-
-    beforeAll(async () => {
+    //@ts-ignore
+    test.beforeAll(async () => {
       if (truncate || resetSettings) {
         const dbName = `grouparoo_test-${port}.sqlite`;
         if (fs.existsSync(dbName)) {
@@ -286,9 +288,9 @@ export namespace helper {
           // console.log(`child process exited with code ${code}`);
         });
       });
-    }, helper.setupTime * 2);
-
-    afterAll(async () => {
+    });
+    //@ts-ignore
+    test.afterAll(async () => {
       const timeout = 60 * 1000;
       await new Promise((resolve, reject) => {
         let count = 0;
