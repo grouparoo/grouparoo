@@ -314,7 +314,7 @@ export class Export extends CommonModel<Export> {
     }
   }
 
-  static async retryFailed(
+  static retryFailed(
     startDate: Date,
     endDate: Date,
     destination?: Destination,
@@ -326,6 +326,10 @@ export class Export extends CommonModel<Export> {
       destination,
       saveExports
     );
+  }
+
+  static retryById(exportId: string) {
+    return ExportOps.retryExportById(exportId);
   }
 
   static async sweep(limit: number) {

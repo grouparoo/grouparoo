@@ -15,10 +15,10 @@ export class ConfigValidate extends AuthenticatedAction {
   inputs = {
     local: {
       required: true,
-      default: "false",
+      default: false,
       formatter: APIData.ensureBoolean,
     },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -42,7 +42,7 @@ export class ConfigApply extends AuthenticatedAction {
       default: false,
       formatter: APIData.ensureBoolean,
     },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<ConfigApply> }) {
     return spawnPromise("./node_modules/.bin/grouparoo", [
@@ -60,7 +60,7 @@ export class ConfigUserCreate extends OptionallyAuthenticatedAction {
     email: { required: true },
     company: { required: true },
     subscribed: { required: false, formatter: APIData.ensureBoolean },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,

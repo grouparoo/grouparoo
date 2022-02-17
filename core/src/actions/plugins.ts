@@ -27,7 +27,7 @@ export class PluginsList extends OptionallyAuthenticatedAction {
       required: false,
       formatter: APIData.ensureBoolean,
     },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<PluginsList> }) {
     return {
@@ -51,7 +51,7 @@ export class PluginInstall extends AuthenticatedAction {
       default: false,
       formatter: APIData.ensureBoolean,
     },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -80,7 +80,7 @@ export class PluginUninstall extends AuthenticatedAction {
       default: false,
       formatter: APIData.ensureBoolean,
     },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,

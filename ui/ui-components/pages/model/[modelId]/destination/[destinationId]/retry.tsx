@@ -50,9 +50,9 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
     if (!fromDate || !toDate) return;
 
     if (!preview) setLoading(true);
-    const response: Actions.ExportsRetryFailed = await client.request(
-      "get",
-      `/exports/retryFailed`,
+    const response = await client.request<Actions.ExportsRetryFailed>(
+      "post",
+      `/exports/retryFailures`,
       {
         destinationId: destination.id,
         startTimestamp: fromDate.getTime(),

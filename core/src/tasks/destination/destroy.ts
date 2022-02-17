@@ -12,7 +12,7 @@ export class DestinationDestroy extends CLSTask {
   queue = "destinations";
   inputs = {
     destinationId: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     destinationId,

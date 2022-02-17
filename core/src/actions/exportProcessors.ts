@@ -20,7 +20,7 @@ export class ExportProcessorsList extends AuthenticatedAction {
       default: [["createdAt", "desc"]],
       formatter: APIData.ensureArray,
     },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -56,7 +56,7 @@ export class ExportProcessorView extends AuthenticatedAction {
   permission: ActionPermission = { topic: "export", mode: "read" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,

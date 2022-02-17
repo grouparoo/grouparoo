@@ -444,7 +444,6 @@ export namespace Actions {
   export type ExportsRetryFailed = AsyncReturnType<
     typeof ExportsRetryFailed.prototype.runWithinTransaction
   >;
-
   export type ExportProcessorView = AsyncReturnType<
     typeof ExportProcessorView.prototype.runWithinTransaction
   >;

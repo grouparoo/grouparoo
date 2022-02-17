@@ -12,7 +12,7 @@ export class AppRefreshQueryRun extends AuthenticatedAction {
     "run an appRefreshQuery to check for new data and enqueue schedules if needed";
   outputExample = {};
   permission: ActionPermission = { topic: "app", mode: "write" };
-  inputs = { id: { required: true } };
+  inputs = { id: { required: true } } as const;
 
   async runWithinTransaction({
     params,
@@ -57,7 +57,7 @@ export class AppRefreshQueryCreate extends AuthenticatedAction {
     refreshQuery: { required: false },
     recurringFrequency: { required: false, formatter: APIData.ensureNumber },
     state: { required: false },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -92,7 +92,7 @@ export class AppRefreshQueryEdit extends AuthenticatedAction {
     refreshQuery: { required: false },
     recurringFrequency: { required: false },
     state: { required: false },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -127,7 +127,7 @@ export class AppRefreshQueryTest extends AuthenticatedAction {
   inputs = {
     id: { required: true },
     refreshQuery: { required: false },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -153,7 +153,7 @@ export class AppRefreshQueryView extends AuthenticatedAction {
   permission: ActionPermission = { topic: "app", mode: "read" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -172,7 +172,7 @@ export class AppRefreshQueryDestroy extends AuthenticatedAction {
   permission: ActionPermission = { topic: "app", mode: "write" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,

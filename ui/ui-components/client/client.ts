@@ -14,6 +14,8 @@ import { isBrowser } from "../utils/isBrowser";
 import { ClientCache, ClientCacheGetObject } from "./clientCache";
 import { ErrorHandler } from "../eventHandlers/errorHandler";
 import { getRedirectFromErrorCode } from "../utils/getRedirectFromErrorCode";
+import { Action, ParamsFrom } from "@grouparoo/core";
+import { AsyncReturnType } from "type-fest";
 
 export const API_VERSION = process.env.API_VERSION || "v1";
 const WEB_URL = process.env.WEB_URL ?? "";
@@ -63,6 +65,16 @@ export class Client {
       res?: ServerResponse;
     } = () => ({})
   ) {}
+
+  // This will replace the request method below in the future
+  public async requestAction<A extends Action>(
+    verb: Method = "get",
+    path: string,
+    data: ParamsFrom<A>,
+    options: Partial<ClientRequestOptions> = {}
+  ) {
+    return this.request<AsyncReturnType<A["run"]>>(verb, path, data, options);
+  }
 
   public async request<Response>(
     verb: Method = "get",

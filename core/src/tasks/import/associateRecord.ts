@@ -21,7 +21,7 @@ export class ImportAssociateRecord extends Task {
   inputs = {
     importId: { required: true },
     attempts: { required: true, default: 0, formatter: APIData.ensureNumber },
-  };
+  } as const;
 
   async run(
     { importId, attempts }: ParamsFrom<ImportAssociateRecord>,

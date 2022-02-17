@@ -11,7 +11,7 @@ export class RunGroup extends CLSTask {
   queue = "groups";
   inputs = {
     runId: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ runId }: ParamsFrom<RunGroup>) {
     // 1. Calculate the set of records that should be in this group, with a limit and offset (looping)

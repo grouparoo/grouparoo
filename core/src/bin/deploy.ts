@@ -27,7 +27,7 @@ export class Deploy extends CLI {
       description: "Optional external url attached to the Configuration.",
       letter: "u",
     },
-  };
+  } as const;
 
   constructor() {
     super();

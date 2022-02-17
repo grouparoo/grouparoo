@@ -15,7 +15,7 @@ export class RunModel extends CLSTask {
   queue = "runs";
   inputs = {
     runId: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ runId }: ParamsFrom<RunModel>) {
     const run = await Run.scope(null).findOne({ where: { id: runId } });

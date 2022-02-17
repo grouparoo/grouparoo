@@ -10,7 +10,7 @@ export class AppDestroy extends CLSTask {
   queue = "apps";
   inputs = {
     appId: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ appId }: ParamsFrom<AppDestroy>) {
     const app = await App.scope(null).findOne({

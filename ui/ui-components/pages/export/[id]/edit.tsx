@@ -1,19 +1,25 @@
-import { Row, Col, Table, Alert, Card, Badge } from "react-bootstrap";
-import Link from "next/link";
-import EnterpriseLink from "../../../components/GrouparooLink";
+import { ExportsRetryFailed } from "@grouparoo/core/src/actions/exports";
 import Head from "next/head";
-import ExportTabs from "../../../components/tabs/Export";
-import { Actions } from "../../../utils/apiData";
+import Link from "next/link";
+import { useCallback, useState } from "react";
+import { Alert, Badge, Card, Col, Row, Table } from "react-bootstrap";
+import { generateClient } from "../../../client/client";
+import StateBadge from "../../../components/badges/StateBadge";
+import { DurationTime } from "../../../components/DurationTime";
 import {
   ExportGroupsDiff,
   ExportRecordPropertiesDiff,
 } from "../../../components/export/Diff";
-import StateBadge from "../../../components/badges/StateBadge";
-import { DurationTime } from "../../../components/DurationTime";
+import { retryExport } from "../../../components/export/List";
+import EnterpriseLink from "../../../components/GrouparooLink";
+import ManagedCard from "../../../components/lib/ManagedCard";
+import LoadingButton from "../../../components/LoadingButton";
+import ExportTabs from "../../../components/tabs/Export";
+import { useApi } from "../../../contexts/api";
+import { Actions } from "../../../utils/apiData";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
-import { generateClient } from "../../../client/client";
-import { withServerErrorHandler } from "../../../utils/withServerErrorHandler";
 import { NextPageWithInferredProps } from "../../../utils/pageHelper";
+import { withServerErrorHandler } from "../../../utils/withServerErrorHandler";
 
 export const getServerSideProps = withServerErrorHandler(async (ctx) => {
   const { id } = ctx.query;
@@ -27,9 +33,22 @@ export const getServerSideProps = withServerErrorHandler(async (ctx) => {
 });
 
 const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
-  _export,
   groups,
+  ...props
 }) => {
+  const { client } = useApi();
+  const [_export, setExport] = useState(props._export);
+  const [loading, setLoading] = useState(false);
+
+  const doRetryExport = useCallback(async () => {
+    setLoading(true);
+    const refreshedExport = await retryExport(client, _export);
+    if (refreshedExport) {
+      setExport(refreshedExport);
+    }
+    setLoading(false);
+  }, [_export, client]);
+
   return (
     <>
       <Head>
@@ -40,9 +59,23 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
 
       <h1>Export {_export.id}</h1>
 
-      <Card>
+      <ManagedCard
+        title="Details"
+        actions={[
+          <LoadingButton
+            variant="outline-primary"
+            size="sm"
+            loading={loading}
+            disabled={!["failed", "canceled"].includes(_export.state)}
+            className="ml-auto"
+            onClick={doRetryExport}
+            key={_export.state}
+          >
+            Retry Export
+          </LoadingButton>,
+        ]}
+      >
         <Card.Body>
-          <h2>Details</h2>
           <p>
             State: <StateBadge state={_export.state} marginBottom={0} />
             <br />
@@ -103,7 +136,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
             </Alert>
           ) : null}
         </Card.Body>
-      </Card>
+      </ManagedCard>
 
       <br />
 
@@ -206,5 +239,4 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
     </>
   );
 };
-
 export default Page;

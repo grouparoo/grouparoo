@@ -36,7 +36,6 @@ export const DEFAULT: { [namespace]: () => RoutesConfig } = {
         { path: "/v:apiVersion/exportProcessors", action: "exportProcessors:list" },
         { path: "/v:apiVersion/exports", action: "exports:list" },
         { path: "/v:apiVersion/exports/totals", action: "exports:totals" },
-        { path: "/v:apiVersion/exports/retryFailed", action: "exports:retryFailed" },
         { path: "/v:apiVersion/group/:groupId/records", action: "records:list" },
         { path: "/v:apiVersion/group/:id", action: "group:view" },
         { path: "/v:apiVersion/group/:id/countComponentMembers", action: "group:countComponentMembers" },
@@ -122,6 +121,8 @@ export const DEFAULT: { [namespace]: () => RoutesConfig } = {
         { path: "/v:apiVersion/team", action: "team:create" },
         { path: "/v:apiVersion/team/initialize", action: "team:initialize" },
         { path: "/v:apiVersion/team/member", action: "teamMember:create" },
+        { path: "/v:apiVersion/exports/retryFailures", action: "exports:retryFailures" },
+        { path: "/v:apiVersion/export/retry", action: "export:retry" },
       ],
 
       put: [

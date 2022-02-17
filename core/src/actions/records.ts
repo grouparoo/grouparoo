@@ -37,7 +37,7 @@ export class RecordsList extends AuthenticatedAction {
       formatter: APIData.ensureArray,
       default: [["createdAt", "asc"]],
     },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<RecordsList> }) {
     const { records, total } = await RecordOps.search(params);
@@ -63,7 +63,7 @@ export class RecordAutocompleteRecordProperty extends AuthenticatedAction {
       formatter: APIData.ensureArray,
       default: [["rawValue", "asc"]],
     },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -103,7 +103,7 @@ export class RecordsImportAndUpdate extends AuthenticatedAction {
   description = "create a run to import and update every record";
   outputExample = {};
   permission: ActionPermission = { topic: "record", mode: "write" };
-  inputs = {};
+  inputs = {} as const;
 
   async runWithinTransaction({
     session,
@@ -127,7 +127,7 @@ export class RecordCreate extends AuthenticatedAction {
       default: {},
       formatter: APIData.ensureObject,
     },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<RecordCreate> }) {
     const record = new GrouparooRecord({ modelId: params.modelId });
@@ -179,7 +179,7 @@ export class RecordImport extends Action {
   middleware = ["authenticated-action"];
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async run({ params }: { params: ParamsFrom<RecordImport> }) {
     let record: GrouparooRecord;
@@ -221,7 +221,7 @@ export class RecordsImport extends Action {
   middleware = ["authenticated-action"];
   inputs = {
     modelId: { required: true },
-  };
+  } as const;
 
   async run({ params }: { params: ParamsFrom<RecordsImport> }) {
     let model: GrouparooModel;
@@ -248,7 +248,7 @@ export class RecordExport extends AuthenticatedAction {
   permission: ActionPermission = { topic: "record", mode: "write" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<RecordExport> }) {
     const record = await GrouparooRecord.findById(params.id);
@@ -269,7 +269,7 @@ export class RecordView extends AuthenticatedAction {
   permission: ActionPermission = { topic: "record", mode: "read" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<RecordView> }) {
     const record = await GrouparooRecord.findById(params.id);
@@ -292,7 +292,7 @@ export class RecordDestroy extends AuthenticatedAction {
   permission: ActionPermission = { topic: "record", mode: "write" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,

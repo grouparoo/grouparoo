@@ -13,7 +13,7 @@ export class ExportSend extends CLSTask {
   inputs = {
     destinationId: { required: true },
     exportId: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     destinationId,

@@ -9,7 +9,7 @@ export class GrouparooRecordsMakeExports extends CLSTask {
     "If all of a GrouparooRecord's Properties are ready, mark the record ready and start the export";
   frequency = 1000 * 10;
   queue = "records";
-  inputs = {};
+  inputs = {} as const;
 
   async runWithinTransaction() {
     const limit: number = config.batchSize.imports;

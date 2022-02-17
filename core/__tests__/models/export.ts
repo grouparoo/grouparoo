@@ -817,6 +817,71 @@ describe("models/export", () => {
       expect(retryingExport.errorMessage).toBe("Oh No!");
       expect(retryingExport.retryCount).toBe(1);
     });
+
+    test("can retry a single failed export", async () => {
+      const failedExport = await Export.create({
+        recordId: record.id,
+        destinationId: destination.id,
+        oldRecordProperties: {},
+        newRecordProperties: {},
+        newGroups: [],
+        oldGroups: [],
+        sendAt: new Date(),
+        errorMessage: "Oh No!",
+        errorLevel: "error",
+        state: "failed",
+        retryCount: 1,
+        createdAt: new Date("2022-01-01T11:00:00Z"),
+      });
+
+      const count = await Export.retryById(failedExport.id);
+      await failedExport.reload();
+      expect(failedExport.state).toBe("pending");
+      expect(count).toBe(1);
+    });
+
+    test("can retry a single canceled export", async () => {
+      const canceled = await Export.create({
+        recordId: record.id,
+        destinationId: destination.id,
+        oldRecordProperties: {},
+        newRecordProperties: {},
+        newGroups: [],
+        oldGroups: [],
+        sendAt: new Date(),
+        errorMessage: "Oh No!",
+        errorLevel: "error",
+        state: "canceled",
+        retryCount: 1,
+        createdAt: new Date("2022-01-01T11:00:00Z"),
+      });
+
+      const count = await Export.retryById(canceled.id);
+      await canceled.reload();
+      expect(canceled.state).toBe("pending");
+      expect(count).toBe(1);
+    });
+
+    test("should throw if the export isn't failed or canceled", async () => {
+      const _export = await Export.create({
+        recordId: record.id,
+        destinationId: destination.id,
+        oldRecordProperties: {},
+        newRecordProperties: {},
+        newGroups: [],
+        oldGroups: [],
+        sendAt: new Date(),
+        state: "complete",
+        retryCount: 1,
+        createdAt: new Date("2022-01-01T11:00:00Z"),
+      });
+
+      expect(Export.retryById(_export.id)).rejects.toEqual(
+        new Error("No export found")
+      );
+      await _export.reload();
+      expect(_export.state).toBe("complete");
+    });
   });
 
   describe("logExports", () => {

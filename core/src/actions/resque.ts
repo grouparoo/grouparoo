@@ -87,7 +87,7 @@ export class ResqueForceCleanWorker extends ResqueActionWrite {
   description = "I remove a worker from resque";
   inputs = {
     workerName: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -127,7 +127,7 @@ export class ResqueQueued extends ResqueActionRead {
       formatter: APIData.ensureNumber,
       default: 100,
     },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<ResqueQueued> }) {
     const queueLength = await api.resque.queue.length(params.queue);
@@ -146,7 +146,7 @@ export class ResqueDelQueue extends ResqueActionWrite {
   description = "I delete a queue";
   inputs = {
     queue: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -171,7 +171,7 @@ export class ResqueResqueFailed extends ResqueActionRead {
       formatter: APIData.ensureNumber,
       default: 100,
     },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -197,7 +197,7 @@ export class ResqueRemoveFailed extends ResqueActionWrite {
       required: true,
       formatter: APIData.ensureNumber,
     },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -234,7 +234,7 @@ export class ResqueRetryAndRemoveFailed extends ResqueActionWrite {
       required: true,
       formatter: APIData.ensureNumber,
     },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -277,7 +277,7 @@ export class ResqueDelLock extends ResqueActionWrite {
   description = "I delete a lock";
   inputs = {
     lock: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -302,7 +302,7 @@ export class ResqueDelayedJobs extends ResqueActionRead {
       formatter: APIData.ensureNumber,
       default: 100,
     },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -343,7 +343,7 @@ export class ResqueDelDelayed extends ResqueActionWrite {
       required: true,
       formatter: APIData.ensureNumber,
     },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -374,7 +374,7 @@ export class ResqueRunDelayed extends ResqueActionWrite {
       required: true,
       formatter: APIData.ensureNumber,
     },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,

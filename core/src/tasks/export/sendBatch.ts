@@ -15,7 +15,7 @@ export class ExportSendBatches extends CLSTask {
   inputs = {
     destinationId: { required: true },
     exportIds: { required: true, formatter: APIData.ensureArray },
-  };
+  } as const;
 
   async runWithinTransaction({
     destinationId,

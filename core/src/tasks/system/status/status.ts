@@ -16,7 +16,7 @@ export class StatusTask extends CLSTask {
   queue = "system";
   inputs = {
     toStop: { required: false, formatter: APIData.ensureBoolean },
-  };
+  } as const;
 
   async runWithinTransaction(
     { toStop }: ParamsFrom<StatusTask>,

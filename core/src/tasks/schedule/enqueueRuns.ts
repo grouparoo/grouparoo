@@ -25,7 +25,7 @@ export class ScheduleEnqueueRuns extends CLSTask {
       required: false,
       formatter: APIData.ensureArray,
     },
-  };
+  } as const;
 
   async runWithinTransaction(params: ParamsFrom<ScheduleEnqueueRuns>) {
     const ignoreDeltas =

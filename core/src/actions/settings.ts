@@ -21,7 +21,7 @@ export class SettingsList extends AuthenticatedAction {
         ["key", "desc"],
       ],
     },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<SettingsList> }) {
     const setting = await Setting.findAll({ order: params.order });
@@ -55,7 +55,7 @@ export class SettingEdit extends AuthenticatedAction {
   inputs = {
     id: { required: true },
     value: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<SettingEdit> }) {
     let setting = await Setting.findById(params.id);

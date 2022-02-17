@@ -10,7 +10,7 @@ export class ObjectFind extends AuthenticatedAction {
   permission: ActionPermission = { topic: "*", mode: "read" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<ObjectFind> }) {
     const tables = [
@@ -33,8 +33,7 @@ export class ObjectFind extends AuthenticatedAction {
       "teamMembers",
     ];
 
-    let { id }: { id: string } = params;
-    id = id.replace(/[^a-zA-Z0-9-_\/.]/g, "");
+    const id = params.id.replace(/[^a-zA-Z0-9-_\/.]/g, "");
 
     const query =
       `SELECT id, "tableName" FROM (` +

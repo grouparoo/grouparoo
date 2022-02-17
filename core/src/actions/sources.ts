@@ -36,7 +36,7 @@ export class SourcesList extends AuthenticatedAction {
         ["createdAt", "asc"],
       ],
     },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<SourcesList> }) {
     const where: WhereAttributeHash = {};
@@ -65,7 +65,6 @@ export class SourceConnectionApps extends AuthenticatedAction {
     "enumerate the connection and app pairs for creating a new source";
   outputExample = {};
   permission: ActionPermission = { topic: "source", mode: "read" };
-  inputs = {};
 
   async runWithinTransaction() {
     const apps = await App.findAll();
@@ -130,7 +129,7 @@ export class SourceCreate extends AuthenticatedAction {
     state: { required: false },
     options: { required: false, formatter: APIData.ensureObject },
     mapping: { required: false, formatter: APIData.ensureObject },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<SourceCreate> }) {
     const source = await Source.create({
@@ -157,7 +156,7 @@ export class SourceView extends AuthenticatedAction {
   permission: ActionPermission = { topic: "source", mode: "read" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<SourceView> }) {
     const source = await Source.findById(params.id);
@@ -178,7 +177,7 @@ export class SourceEdit extends AuthenticatedAction {
     state: { required: false },
     options: { required: false, formatter: APIData.ensureObject },
     mapping: { required: false, formatter: APIData.ensureObject },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<SourceEdit> }) {
     const source = await Source.findById(params.id);
@@ -197,7 +196,7 @@ export class SourceGenerateSampleRecords extends AuthenticatedAction {
   name = "source:generateSampleRecords";
   description = "create 3 sample records for this model";
   permission: ActionPermission = { topic: "source", mode: "write" };
-  inputs = { id: { required: true } };
+  inputs = { id: { required: true } } as const;
 
   async runWithinTransaction({
     params,
@@ -257,7 +256,7 @@ export class SourceBootstrapUniqueProperty extends AuthenticatedAction {
     },
     mappedColumn: { required: true },
     sourceOptions: { required: false, formatter: APIData.ensureObject },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -290,7 +289,7 @@ export class SourceConnectionOptions extends AuthenticatedAction {
   inputs = {
     id: { required: true },
     options: { required: false, formatter: APIData.ensureObject },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -310,7 +309,7 @@ export class SourcePreview extends AuthenticatedAction {
   inputs = {
     id: { required: true },
     options: { required: false, formatter: APIData.ensureObject },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -360,7 +359,7 @@ export class SourceDefaultPropertyOptions extends AuthenticatedAction {
   permission: ActionPermission = { topic: "source", mode: "read" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -379,7 +378,7 @@ export class SourceDestroy extends AuthenticatedAction {
   permission: ActionPermission = { topic: "source", mode: "write" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,

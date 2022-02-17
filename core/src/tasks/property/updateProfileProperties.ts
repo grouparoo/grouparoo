@@ -11,7 +11,7 @@ export class PropertyUpdateProfileProperties extends CLSTask {
   queue = "properties";
   inputs = {
     propertyId: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     propertyId,
