@@ -1,4 +1,6 @@
-//to debug: PWDEBUG=1 when you run!
+// to debug: PWDEBUG=1 when you run!
+// to try it out: run just this file `pnpm jest ./__tests__/integration/happyPath.ts` from inside `ui-enterprise`
+// for this POC, I did _not_ integrate with CI.  Details on running with ci at : https://github.com/smooth-code/jest-puppeteer#running-puppeteer-in-ci-environments
 
 import { chromium, Browser, Page } from "playwright";
 import { matchers } from "expect-playwright"; //not actually unused! gives us access to playwright matchers
