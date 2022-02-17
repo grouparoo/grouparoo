@@ -980,15 +980,6 @@ describe("models/property", () => {
           /Unique Property .+ cannot be mapped through a non-unique Property/
         );
       });
-
-      test("properties mapped through non-unique properties cannot be arrays", async () => {
-        await secondarySource.setMapping({ last_name: "lastName" });
-        await expect(
-          secondaryProperty.update({ isArray: true })
-        ).rejects.toThrow(
-          /Array Property .+ cannot be mapped through a non-unique Property/
-        );
-      });
     });
 
     describe("filters", () => {
