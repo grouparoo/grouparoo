@@ -1,15 +1,22 @@
+// did not take on rewriting all of spechelper... instead, run the server in staging-enterprise (make sure your database does not have a team or teamMembers!)
+
 import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/ui-enterprise": { path: path.join(__dirname, "..", "..") },
 });
-import { helper } from "@grouparoo/spec-helper";
 import { test, expect } from "@playwright/test";
 import { BrowserContext, Page } from "playwright";
 
 test.describe("login and initialization flow", () => {
-  const port = 12345 + (parseInt(process.env.JEST_WORKER_ID) ?? 0);
+  const port = 3000;
   const url = `http://localhost:${port}`;
-  helper.grouparooTestServerDetached({ port, truncate: true });
+
+  // helper.grouparooTestServerDetached({ port, truncate: true }); TODO: this is set up to use jest.
+  const firstName = "mario";
+  const lastName = "mario";
+  const email = "mario@example.com";
+  const password = "P@ssw0rd";
+  const companyName = "Mario Bros. Plumbing";
 
   let page: Page;
   test.beforeAll(async ({ browser }) => {
@@ -40,69 +47,35 @@ test.describe("login and initialization flow", () => {
     await page
       .locator('input[name="companyName"]')
       .fill("Mario Bros. Plumbing");
-    await page.locator('input[name="firstName"]').click();
-    await page.locator('input[name="firstName"]').fill("mario");
-    await page.locator('input[name="firstName"]').press("Tab");
-    await page.locator('input[name="lastName"]').fill("mario");
-    await page.locator('input[name="firstName"]').dblclick();
-    await page.locator('input[name="lastName"]').click({
-      clickCount: 3,
-    });
-    await page.locator('input[name="lastName"]').fill("mario");
-    await page.locator('input[name="email"]').click();
-    await page.locator('input[name="email"]').fill("mario@example.com");
-    await page.locator('input[name="password"]').click();
-    await page.locator('input[name="password"]').fill("P@ssw0rd");
-    await page.locator('input[name="subscribed"]').uncheck();
-    await Promise.all([page.locator('button:has-text("Submit")').click()]);
-
-    //form was submitted, now we are on setup steps
-    await expect(page.locator("text=Setup")).toBeTruthy();
+    await page.locator('input[name="firstName"]').fill(firstName);
+    await page.locator('input[name="lastName"]').fill(lastName);
+    await page.locator('input[name="email"]').fill(email);
+    await page.locator('input[name="password"]').fill(password);
+    await page.locator('button:has-text("Submit")').click();
+    await page.waitForNavigation();
+    expect(page.locator("text=Setup")).toBeTruthy();
   });
-  // test("it ")
-  // // Click button:has-text("Hello mario")
-  // await page.locator('button:has-text("Hello mario")').click();
+  // test("I was taken to the setup page after creating the first team", async () => {});
+  test("I can sign out", async () => {
+    await page.goto(`${url}/session/sign-out`);
+    await page.waitForNavigation();
+    expect(page.url()).toEqual(`${url}/`);
+  });
+  test("I can sign in", async () => {
+    await page.goto(`${url}/session/sign-in/`);
+    await page.locator('input[name="email"]').fill(email);
+    await page.locator('input[name="password"]').fill(password);
+    await page.locator('button:has-text("Sign In")').click();
 
-  // // Click text=Sign Out
-  // await Promise.all([
-  //   page.waitForNavigation(/*{ url: 'http://localhost:3000/' }*/),
-  //   page.locator("text=Sign Out").click(),
-  // ]);
-
-  // // Click [data-testid="cta"]
-  // await Promise.all([
-  //   page.waitForNavigation(/*{ url: 'http://localhost:3000/session/sign-in' }*/),
-  //   page.locator('[data-testid="cta"]').click(),
-  // ]);
-
-  // // Fill [placeholder="Email\ Address"]
-  // await page.locator('[placeholder="Email\\ Address"]').fill("mario@example.com");
-
-  // // Press Tab
-  // await page.locator('[placeholder="Email\\ Address"]').press("Tab");
-
-  // // Fill [placeholder="Password"]
-  // await page.locator('[placeholder="Password"]').fill("P@ssw0rd");
-
-  // // Click text=Email AddressEmail is requiredPasswordA password is requiredSign In >> button
-  // await Promise.all([
-  //   page.waitForNavigation(/*{ url: 'http://localhost:3000/setup' }*/),
-  //   page
-  //     .locator(
-  //       "text=Email AddressEmail is requiredPasswordA password is requiredSign In >> button"
-  //     )
-  //     .click(),
-  // ]);
-
-  // // Go to http://localhost:3000/account
-  // await page.goto("http://localhost:3000/account");
-
-  // // Double click #firstName
-  // await page.locator("#firstName").dblclick();
-
-  // // Fill #firstName
-  // await page.locator("#firstName").fill("Super Mario");
-
-  // // Click button:has-text("Update")
-  // await page.locator('button:has-text("Update")').click();
+    await page.waitForNavigation();
+    expect(page.url()).toEqual(`${url}/setup`);
+  });
+  test("I can change account information and see it reflected in the sidebar", async () => {
+    await page.goto(`${url}/account`);
+    await page.locator("#firstName").fill("Super Mario");
+    await page.locator('button[type="submit"]').click();
+    await expect(page.locator("#navigation-greeting")).toContainText(
+      "Hello Super Mario "
+    );
+  });
 });
