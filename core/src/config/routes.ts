@@ -121,7 +121,7 @@ export const DEFAULT: { [namespace]: () => RoutesConfig } = {
         { path: "/v:apiVersion/team", action: "team:create" },
         { path: "/v:apiVersion/team/initialize", action: "team:initialize" },
         { path: "/v:apiVersion/team/member", action: "teamMember:create" },
-        { path: "/v:apiVersion/exports/retryFailures", action: "exports:retryFailed" },
+        { path: "/v:apiVersion/exports/retryFailures", action: "exports:retryFailures" },
         { path: "/v:apiVersion/export/retry", action: "export:retry" },
       ],
 

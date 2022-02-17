@@ -110,7 +110,7 @@ export class ExportView extends AuthenticatedAction {
 }
 
 export class ExportsRetryFailed extends AuthenticatedAction {
-  name = "exports:retryFailed";
+  name = "exports:retryFailures";
   description = "retry failed exports within a timeframe";
   permission: ActionPermission = { topic: "destination", mode: "write" };
   inputs = {
