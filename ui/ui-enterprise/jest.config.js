@@ -1,8 +1,6 @@
-const { helper } = require("@grouparoo/spec-helper");
-
 module.exports = {
   preset: "jest-puppeteer",
-  testTimeout: helper.defaultTime,
+  testTimeout: 10000,
   maxWorkers: "50%",
   setupFiles: ["<rootDir>/jest.setup.ts"],
   transform: {
@@ -13,6 +11,4 @@ module.exports = {
     "<rootDir>/__tests__/utils",
     "<rootDir>/__tests__/__mocks__",
   ],
-  globalSetup: "jest-environment-puppeteer/setup",
-  globalTeardown: "jest-environment-puppeteer/teardown",
 };

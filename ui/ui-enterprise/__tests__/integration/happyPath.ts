@@ -1,3 +1,6 @@
+//can run using `npm run test` or run this file directly.
+//to check out debug mode, uncomment line 78
+
 // /**
 //  * @jest-environment puppeteer
 //  */
@@ -16,7 +19,7 @@ const email = "mario@example.com";
 const password = "P@ssw0rd";
 const companyName = "Mario Bros. Plumbing";
 
-const port = 3000;
+const port = 12345 + (parseInt(process.env.JEST_WORKER_ID) ?? 0);
 const url = `http://localhost:${port}`;
 
 // describe("Google", () => {
@@ -30,6 +33,8 @@ const url = `http://localhost:${port}`;
 // });
 
 describe("integration", () => {
+  helper.grouparooTestServerDetached({ port, truncate: true });
+
   test("it renders the homepage", async () => {
     await page.goto(url);
     await expect(page).toMatch(
@@ -60,10 +65,17 @@ describe("integration", () => {
     //a little funky to integrate both the jest expects and the puppeteer expects but doable!
     jExpect(page.url()).toEqual(`${url}/setup`);
   });
-  test.skip("it can sign out", async () => {
-    await expect(page).toClick("button", { text: "Hello mario" });
-    page.waitForNavigation();
-
-    await expect(page).toClick("button", { text: "Sign Out" });
+  test("it can sign out", async () => {
+    await page.goto(`${url}/session/sign-out`);
+    await page.waitForNavigation();
+    jExpect(page.url()).toEqual(`${url}/`);
+  });
+  test("it can sign in", async () => {
+    await page.goto(`${url}/session/sign-in`);
+    await expect(page).toFillForm("#form", { email, password });
+    await expect(page).toClick('button[type="submit"]');
+    await page.waitForNavigation();
+    // await jestPuppeteer.debug();
+    await expect(page).toMatchElement("h1", { text: "Setup Grouparoo" });
   });
 });

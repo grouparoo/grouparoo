@@ -23,7 +23,6 @@
     "**/*.ts",
     "**/*.tsx",
     "__tests__/utils/setUpPuppeteer.js",
-    "jest.global-setup.js",
-    "jest.global-setup.js"
+    "__tests__/integration/happyPath.ts"
   ]
 }
