@@ -39,20 +39,17 @@ const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = async ({
   getByForeignKey,
   config,
 }) => {
-  const { table, primaryKey } = config.destinationOptions;
+  const table: string = config.destinationOptions.table?.toString();
+  const primaryKey: string = config.destinationOptions.primaryKey?.toString();
   const uniqueForeignKeys = Array.from(new Set(foreignKeys));
 
-  let query = `SELECT "${primaryKey}" FROM "${table}" WHERE`;
-  const inClause = makeWhereClause(
-    {
-      columnName: primaryKey.toString(),
-      filterOperation: FilterOperation.In,
-      values: uniqueForeignKeys,
-    },
-    []
+  const records = await getRecords(
+    client,
+    table,
+    primaryKey,
+    uniqueForeignKeys
   );
-  query += ` ${inClause}`;
-  const records = await client.execute(query, uniqueForeignKeys);
+
   for (const record of records) {
     const user = getByForeignKey(record[primaryKey.toString()]);
     user.destinationId = record[primaryKey.toString()];
@@ -119,8 +116,8 @@ const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async ({
 // usually this is creating them. ideally upsert. set the destinationId on each when done
 const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSetDestinationIds =
   async ({ client, users, config }) => {
-    let { table } = config.destinationOptions;
-    table = table?.toString();
+    const table: string = config.destinationOptions.table?.toString();
+    const primaryKey: string = config.destinationOptions.primaryKey?.toString();
     let values = [];
     let columns = "";
     for (const record of users) {
@@ -145,9 +142,55 @@ const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSe
         user.destinationId = user.foreignKeyValue;
       }
     } else {
-      // TODO: treat errors.
+      const primaryKeys = users.map((record) => record.foreignKeyValue);
+      await treatErrors(client, table, primaryKey, primaryKeys, users);
     }
   };
+
+async function getRecords(
+  client: any,
+  table: string,
+  primaryKey: string,
+  primaryKeys: string[]
+) {
+  let query = `SELECT "${primaryKey}" FROM "${table}" WHERE`;
+  const inClause = makeWhereClause(
+    {
+      columnName: primaryKey.toString(),
+      filterOperation: FilterOperation.In,
+      values: primaryKeys,
+    },
+    []
+  );
+  query += ` ${inClause}`;
+  return await client.execute(query, primaryKeys);
+}
+
+async function treatErrors(
+  client: any,
+  table: string,
+  primaryKey: string,
+  primaryKeys: string[],
+  users: BatchExport[]
+) {
+  const exportedRecords = await getRecords(
+    client,
+    table,
+    primaryKey,
+    primaryKeys
+  );
+  const exportedRecordsMapping = {};
+  for (const record of exportedRecords) {
+    exportedRecordsMapping[record[primaryKey]] = record;
+  }
+  for (const record of users) {
+    if (exportedRecordsMapping[record[primaryKey]]) {
+      record.destinationId = record.foreignKeyValue;
+    } else {
+      record.error = new Error("Something went wrong exporting this record.");
+    }
+  }
+}
 
 async function treatCollisions(
   client: any,
@@ -205,25 +248,6 @@ async function insertValues(
     ", "
   )}`;
   return client.execute(query);
-}
-
-async function getRecords(
-  client: any,
-  table: string,
-  primaryKey: string,
-  primaryKeyValues: string[]
-) {
-  let query = `SELECT * FROM "${table}" WHERE`;
-  const inClause = makeWhereClause(
-    {
-      columnName: primaryKey,
-      filterOperation: FilterOperation.In,
-      values: primaryKeyValues,
-    },
-    []
-  );
-  query += ` ${inClause}`;
-  return await client.execute(query, primaryKeyValues);
 }
 
 function formatPayloadValues(payloadValues: string[]) {

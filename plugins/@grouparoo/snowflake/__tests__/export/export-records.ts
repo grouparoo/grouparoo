@@ -107,7 +107,7 @@ function makeExports(records: Record<string, any>[]) {
   }));
 }
 
-describe("mixpanel/exportRecords", () => {
+describe("snowflake/exportRecords", () => {
   beforeAll(async () => {
     connection = await getConnection(appOptions);
     await beforeData(appOptions);
@@ -227,7 +227,7 @@ describe("mixpanel/exportRecords", () => {
     expect(user1["LAST_NAME"]).not.toBeTruthy(); // not updated!
   });
 
-  test("can add/edit user variables and do multiple users", async () => {
+  test("can add/edit record variables and do multiple record", async () => {
     user2 = await getRecordByPrimaryKey(destinationOptions.primaryKey, email2);
     expect(user2).not.toBeTruthy();
 
@@ -285,7 +285,7 @@ describe("mixpanel/exportRecords", () => {
     expect(user2["FIRST_NAME"]).toBe("Pete");
   });
 
-  test("can clear user variables", async () => {
+  test("can clear record variables", async () => {
     const { success, errors } = await exportBatch({
       appOptions,
       destinationOptions,
@@ -432,7 +432,7 @@ describe("mixpanel/exportRecords", () => {
     );
   });
 
-  test("can add multiple users to lists", async () => {
+  test("can add multiple records to lists", async () => {
     const { success, errors } = await exportBatch({
       appOptions,
       destinationOptions,
@@ -507,7 +507,7 @@ describe("mixpanel/exportRecords", () => {
     );
   });
 
-  test("can remove users from lists including ones they aren't in", async () => {
+  test("can remove records from lists including ones they aren't in", async () => {
     const { success, errors } = await exportBatch({
       appOptions,
       destinationOptions,
@@ -660,7 +660,7 @@ describe("mixpanel/exportRecords", () => {
     expect(groups2.length).toBe(0);
   });
 
-  test("will not delete users if sync mode does not allow it, but will remove groups", async () => {
+  test("will not delete records if sync mode does not allow it, but will remove groups", async () => {
     const { success, errors } = await exportBatch({
       appOptions,
       destinationOptions,
@@ -703,7 +703,7 @@ describe("mixpanel/exportRecords", () => {
     expect(groups1.length).toBe(0); // no groups
   });
 
-  test("can delete a user", async () => {
+  test("can delete a record", async () => {
     const { success, errors } = await exportBatch({
       appOptions,
       destinationOptions,
@@ -776,7 +776,7 @@ describe("mixpanel/exportRecords", () => {
     expect(user2).not.toBeTruthy();
   });
 
-  test("can add back a user and many types", async () => {
+  test("can add back a record and many types", async () => {
     const { success, errors } = await exportBatch({
       appOptions,
       destinationOptions,
