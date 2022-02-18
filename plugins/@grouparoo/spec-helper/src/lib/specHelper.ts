@@ -231,6 +231,82 @@ export namespace helper {
     return actionhero;
   };
 
+  export const startTestServer = async ({
+    port,
+    truncate = false,
+    resetSettings = false,
+    runMode = "cli:start",
+  }: {
+    port: number;
+    truncate?: boolean;
+    resetSettings?: boolean;
+    runMode?: GrouparooRunMode;
+  }): Promise<ChildProcessWithoutNullStreams> => {
+    let serverProcess: ChildProcessWithoutNullStreams;
+
+    if (truncate || resetSettings) {
+      const dbName = `grouparoo_test-${port}.sqlite`;
+      if (fs.existsSync(dbName)) {
+        fs.unlinkSync(dbName);
+      }
+    }
+
+    await new Promise((resolve, reject) => {
+      serverProcess = spawn("./bin/start", [], {
+        cwd: corePath,
+        env: {
+          ...process.env,
+          PORT: String(port),
+          WEB_URL: `http://localhost:${port}`,
+          REDIS_URL: "redis://mock",
+          DATABASE_URL: `sqlite://grouparoo_test-${port}.sqlite`,
+          JEST_WORKER_ID: undefined,
+          GROUPAROO_LOG_LEVEL: "info", // relying on the log messages to know when the server is up,
+          GROUPAROO_RUN_MODE: runMode,
+        },
+      });
+
+      serverProcess.stdout.on("data", (data) => {
+        if (String(data).includes("Error from Initializer")) {
+          return reject(new Error(data));
+        }
+
+        if (String(data).match(/@grouparoo\/core Started/)) {
+          return resolve(null);
+        }
+      });
+
+      serverProcess.stderr.on("data", (data) => console.log(String(data)));
+
+      serverProcess.on("close", (code) => {
+        // console.log(`child process exited with code ${code}`);
+      });
+    });
+
+    return serverProcess;
+  };
+
+  export const stopTestServer = async (
+    serverProcess: ChildProcessWithoutNullStreams
+  ): Promise<void> => {
+    const timeout = 60 * 1000;
+    await new Promise((resolve, reject) => {
+      let count = 0;
+      const interval = setInterval(() => {
+        try {
+          process.kill(serverProcess.pid);
+        } catch (e) {
+          clearInterval(interval);
+          resolve(null);
+        }
+        if ((count += 100) > timeout) {
+          clearInterval(interval);
+          reject(new Error("Timeout process kill"));
+        }
+      }, 100);
+    });
+  };
+
   /**
    * Run a Grouparoo server "for real" in a sub-process
    */
