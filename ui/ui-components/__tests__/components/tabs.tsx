@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import PropertyTab from "../../components/tabs/Property";
 import AppTab from "../../components/tabs/App";
-import { GrouparooModelContext } from "../../contexts/grouparooModel";
+import { ContextProvider } from "../__utils__/ContextProvider";
 
 describe("<PropertyTab />", () => {
   const useRouter = jest.spyOn(require("next/router"), "useRouter");
@@ -18,9 +18,9 @@ describe("<PropertyTab />", () => {
     }));
 
     render(
-      <GrouparooModelContext.Provider value={{ model }}>
+      <ContextProvider model={model}>
         <PropertyTab property={property} source={source} />
-      </GrouparooModelContext.Provider>
+      </ContextProvider>
     );
   });
 

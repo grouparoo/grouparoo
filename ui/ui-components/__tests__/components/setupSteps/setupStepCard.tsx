@@ -2,6 +2,7 @@ import { act, render, screen } from "@testing-library/react";
 import SetupStepCard from "../../../components/setupSteps/SetupStepCard";
 import { ApiContext } from "../../../contexts/api";
 import { Models } from "../../../utils/apiData";
+import { ContextProvider } from "../../__utils__/ContextProvider";
 
 describe("<setupStepCard />", () => {
   const setupStep: Models.SetupStepType = {
@@ -20,15 +21,15 @@ describe("<setupStepCard />", () => {
 
       await act(async () => {
         render(
-          <ApiContext.Provider
-            value={{
-              client: {
+          <ContextProvider
+            client={
+              {
                 request: async () => ({}),
-              } as any,
-            }}
+              } as any
+            }
           >
             <SetupStepCard setupStep={setupStep} reload={() => {}} />
-          </ApiContext.Provider>
+          </ContextProvider>
         );
       });
     });
@@ -45,15 +46,15 @@ describe("<setupStepCard />", () => {
 
       await act(async () => {
         render(
-          <ApiContext.Provider
-            value={{
-              client: {
+          <ContextProvider
+            client={
+              {
                 request: async () => ({}),
-              } as any,
-            }}
+              } as any
+            }
           >
             <SetupStepCard setupStep={setupStep} reload={() => {}} />
-          </ApiContext.Provider>
+          </ContextProvider>
         );
       });
     });

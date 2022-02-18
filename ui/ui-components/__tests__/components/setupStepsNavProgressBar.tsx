@@ -1,9 +1,8 @@
 import { act, render, screen } from "@testing-library/react";
 import mockAxios from "jest-mock-axios";
-import { Client } from "../../client/client";
 import Component from "../../components/navigation/SetupStepsNavProgressBar";
-import { ApiContext } from "../../contexts/api";
 import { Actions } from "../../utils/apiData";
+import { ContextProvider } from "../__utils__/ContextProvider";
 
 const useRouter = jest.spyOn(require("next/router"), "useRouter");
 
@@ -21,13 +20,9 @@ describe("setupStepsNavProgressBar", () => {
         useRouter.mockImplementation(() => ({ pathname: page, asPath: page }));
         await act(async () => {
           render(
-            <ApiContext.Provider
-              value={{
-                client: new Client(),
-              }}
-            >
+            <ContextProvider>
               <Component />
-            </ApiContext.Provider>
+            </ContextProvider>
           );
         });
         expect(screen.queryByTestId("setupStepsProgressBar")).toBeNull();
@@ -51,13 +46,9 @@ describe("setupStepsNavProgressBar", () => {
     it("doesn't display without steps", async () => {
       await act(async () => {
         render(
-          <ApiContext.Provider
-            value={{
-              client: new Client(),
-            }}
-          >
+          <ContextProvider>
             <Component />
-          </ApiContext.Provider>
+          </ContextProvider>
         );
       });
 
@@ -89,13 +80,9 @@ describe("setupStepsNavProgressBar", () => {
 
       await act(async () => {
         render(
-          <ApiContext.Provider
-            value={{
-              client: new Client(),
-            }}
-          >
+          <ContextProvider>
             <Component />
-          </ApiContext.Provider>
+          </ContextProvider>
         );
       });
 
@@ -137,13 +124,9 @@ describe("setupStepsNavProgressBar", () => {
 
       await act(async () => {
         render(
-          <ApiContext.Provider
-            value={{
-              client: new Client(),
-            }}
-          >
+          <ContextProvider>
             <Component />
-          </ApiContext.Provider>
+          </ContextProvider>
         );
       });
 
