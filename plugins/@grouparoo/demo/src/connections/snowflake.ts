@@ -15,7 +15,7 @@ function findConfig(): { [key: string]: string } {
     "schema",
   ];
 
-  const options: any = {};
+  const options: Record<string, string> = {};
   for (const key of keys) {
     options[key] = getEnvValue("snowflake", `SNOWFLAKE_${key.toUpperCase()}`);
   }
@@ -28,15 +28,9 @@ function findConfig(): { [key: string]: string } {
 }
 
 export default class Snowflake extends Connection {
-  config: { [key: string]: string };
-  lines: string[];
-  data: { [tableName: string]: { [key: string]: string | number | Date }[] };
-  constructor() {
-    super();
-    this.config = Object.assign({}, findConfig());
-    this.lines = [];
-    this.data = {};
-  }
+  config = { ...findConfig() };
+  lines: string[] = [];
+  data: Record<string, Record<string, string | number | Date>[]> = {};
 
   name() {
     return "snowflake";
@@ -59,7 +53,7 @@ export default class Snowflake extends Connection {
       return;
     }
 
-    const out = [].concat(this.lines);
+    const out = [...this.lines];
     for (const tableName in this.data) {
       out.push(this.fillTable(tableName, this.data[tableName]));
     }
@@ -122,7 +116,7 @@ export default class Snowflake extends Connection {
 
   async insertRow(
     tableName: string,
-    keys: string[],
+    _: string[],
     row: { [key: string]: string | number | Date }
   ) {
     this.data[tableName] = this.data[tableName] || [];

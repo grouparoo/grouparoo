@@ -9,7 +9,14 @@ import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
-import { SimpleAppOptions, GrouparooRecord, Property } from "@grouparoo/core";
+import {
+  SimpleAppOptions,
+  GrouparooRecord,
+  Property,
+  SourceMapping,
+  PropertyFiltersWithKey,
+  SimpleSourceOptions,
+} from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/table-import/connection";
 const recordProperty = getConnection().methods.recordProperty;
@@ -18,22 +25,25 @@ const { newNock } = helper.useNock(__filename, updater);
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 let record: GrouparooRecord;
 
-let sourceOptions;
+let sourceOptions: SimpleSourceOptions;
 async function getPropertyValue(
-  { column, sourceMapping, aggregationMethod },
-  usePropertyFilters?,
-  useRecord?: GrouparooRecord
+  {
+    column,
+    sourceMapping,
+    aggregationMethod,
+  }: {
+    column: string;
+    sourceMapping: SourceMapping;
+    aggregationMethod: string;
+  },
+  propertyFilters: PropertyFiltersWithKey[] = [],
+  useRecord = record
 ) {
   const propertyOptions = {
     column,
-    aggregationMethod: aggregationMethod,
+    aggregationMethod,
   };
 
-  if (!useRecord) {
-    useRecord = record;
-  }
-
-  const propertyFilters = usePropertyFilters || [];
   const connection = await connect({ appOptions, app: null, appId: null });
   const property = await Property.findOne({
     where: { key: "email" },
@@ -67,7 +77,7 @@ describe("snowflake/table/recordProperty", () => {
     record = await helper.factories.record();
     await record.addOrUpdateProperties({
       userId: [1],
-      email: ["ejervois0@example.com"],
+      email: ["ejervoiS0@example.com"],
       lastName: null,
     });
     expect(record.id).toBeTruthy();

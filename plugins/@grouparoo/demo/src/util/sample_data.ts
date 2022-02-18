@@ -129,7 +129,7 @@ async function loadCsvTable(
     const perPage = rows.length;
 
     for (const fileRow of rows) {
-      const row = Object.assign({}, fileRow);
+      const row = { ...fileRow };
       row.id = parseInt(row.id);
       if (row.id <= 0) {
         throw new Error(`no id column on ${tableName}`);

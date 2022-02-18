@@ -278,7 +278,7 @@ importers:
       jest: 27.5.1
       jest-fetch-mock: 3.0.3
       json5: 2.2.0
-      libphonenumber-js: 1.9.46
+      libphonenumber-js: ^1.9.49
       moment: 2.29.1
       mustache: 4.2.0
       nock: 13.2.2
@@ -323,7 +323,7 @@ importers:
       ioredis-mock: 7.0.0_ioredis@4.28.3
       isomorphic-fetch: 3.0.0
       json5: 2.2.0
-      libphonenumber-js: 1.9.46
+      libphonenumber-js: 1.9.49
       moment: 2.29.1
       mustache: 4.2.0
       node-resque: 9.1.5
@@ -10098,8 +10098,8 @@ packages:
       - supports-color
     dev: true
 
-  /libphonenumber-js/1.9.46:
-    resolution: {integrity: sha512-QqTX4UVsGy24njtCgLRspiKpxfRniRBZE/P+d0vQXuYWQ+hwDS6X0ouo0O/SRyf7bhhMCE71b6vAvLMtY5PfEw==}
+  /libphonenumber-js/1.9.49:
+    resolution: {integrity: sha512-/wEOIONcVboFky+lWlCaF7glm1FhBz11M5PHeCApA+xDdVfmhKjHktHS8KjyGxouV5CSXIr4f3GvLSpJa4qMSg==}
     dev: false
 
   /lie/3.3.0:

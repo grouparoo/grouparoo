@@ -5,6 +5,6 @@
  * We cannot use import isEmail from "validator/lib/isEmail" until https://github.com/validatorjs/validator.js/pull/1435 is merged in.
  */
 export default function isEmail(string: string) {
-  if (string.match(/^\S+@\S+\.\S+$/)) return true;
+  if (string.match(/@\S+\./)) return true;
   return false;
 }
