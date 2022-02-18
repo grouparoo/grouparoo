@@ -74,7 +74,8 @@ class OptionsHandler {
       "hs_object_id",
     ];
     const out: DestinationOptionsMethodResponse = {
-      companyKey: { type: "list", options: [], descriptions: [] },
+      companyKey: { type: "typeahead", options: [], descriptions: [] },
+      companyKey: { type: "typeahead", options: [], descriptions: [] },
     };
     const companySchema = await this.getSchema("COMPANY");
     const companyProperties = companySchema?.properties;
