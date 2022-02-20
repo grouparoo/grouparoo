@@ -394,21 +394,25 @@ export namespace RecordOps {
     }
 
     // TODO: This select may be slower than allowing the upsert to throw like we used to
-    // However, the upsert was really hard to deal with because it would throw and ruin/end the transaction
-    const duplicateRecordPropertyMatches = await RecordProperty.findAll({
-      where: {
-        rawValue: { [Op.ne]: null },
-        unique: true,
-        [Op.and]: bulkCreates
-          .filter((bc) => bc.unique && !bc.invalidValue)
-          .map((bc) => {
-            return {
-              rawValue: bc.rawValue,
-              recordId: { [Op.ne]: bc.recordId },
-            };
-          }),
-      },
-    });
+    // However, the previous upsert method was really hard to deal with because it would throw and ruin/end the transaction
+    const duplicateRecordAnds = bulkCreates
+      .filter((bc) => bc.unique && !bc.invalidValue)
+      .map((bc) => {
+        return {
+          rawValue: bc.rawValue,
+          recordId: { [Op.ne]: bc.recordId },
+        };
+      });
+    const duplicateRecordPropertyMatches =
+      duplicateRecordAnds.length > 0
+        ? await RecordProperty.findAll({
+            where: {
+              rawValue: { [Op.ne]: null },
+              unique: true,
+              [Op.and]: duplicateRecordAnds,
+            },
+          })
+        : [];
     for (const duplicate of duplicateRecordPropertyMatches) {
       const getMatchIdx = () =>
         bulkCreates.findIndex(
