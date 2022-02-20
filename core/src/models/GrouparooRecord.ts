@@ -249,7 +249,11 @@ export class GrouparooRecord extends CommonModel<GrouparooRecord> {
     },
     source?: boolean | Source
   ) {
-    return RecordOps.findOrCreateByUniqueRecordProperties(hash, source);
+    return RecordOps.findOrCreateByUniqueRecordProperties(
+      [hash],
+      ["_"],
+      source
+    );
   }
 
   @BeforeCreate

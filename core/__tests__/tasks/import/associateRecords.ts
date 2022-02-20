@@ -118,7 +118,13 @@ describe("tasks/import:associateRecords", () => {
 
     await _import.reload();
     const record = await GrouparooRecord.findOne();
-    expect(record).toBeTruthy();
+    expect(await record.simplifiedProperties()).toEqual(
+      expect.objectContaining({
+        email: ["toad@example.com"],
+        firstName: ["Toad"],
+      })
+    );
+
     expect(_import.recordId).toBe(record.id);
     expect(_import.recordAssociatedAt).toBeTruthy();
     expect(_import.state).toBe("importing");
@@ -193,6 +199,49 @@ describe("tasks/import:associateRecords", () => {
     expect(properties.firstName).toEqual(["Bowser"]);
     expect(properties.lastName).toEqual(["Jr"]);
     expect(properties.someNonexistentProp).toBeUndefined();
+  });
+
+  test("duplicate imports for creating the same record properties are handled", async () => {
+    await GrouparooRecord.truncate();
+    const run = await helper.factories.run(primarySchedule);
+
+    // both imports try to create the 'mario' record at once
+    const _importA = await helper.factories.import(run, {
+      email: "mario@example.com",
+      firstName: "Mario",
+      noExist: "here",
+    });
+    const _importB = await helper.factories.import(run, {
+      email: "mario@example.com",
+      firstName: "Mario",
+      lastName: "Mario",
+    });
+
+    expect(_importA.state).toBe("associating");
+    expect(_importB.state).toBe("associating");
+
+    try {
+      await specHelper.runTask("import:associateRecords", {});
+    } catch (e) {
+      console.error(e);
+      throw e;
+    }
+
+    expect(await GrouparooRecord.count()).toBe(1);
+    const record = await GrouparooRecord.findOne();
+    await record.import();
+    await record.update({ state: "pending" });
+    const properties = await record.simplifiedProperties();
+    expect(properties).toEqual(
+      expect.objectContaining({ firstName: ["Mario"], lastName: ["Mario"] })
+    );
+
+    await _importA.reload();
+    await _importB.reload();
+    expect(_importA.state).toBe("importing");
+    expect(_importB.state).toBe("importing");
+
+    await run.destroy();
   });
 
   // Prevent data in Secondary Sources from Creating Records that do not exist in the Primary Sources

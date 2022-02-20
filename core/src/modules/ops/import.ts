@@ -55,7 +55,7 @@ export namespace ImportOps {
       },
     });
 
-    const bulkCreates: {
+    const bulkImportUpdates: {
       id: Import["id"];
       state: Import["state"];
       creatorType: Import["creatorType"];
@@ -68,6 +68,7 @@ export namespace ImportOps {
       updatedAt: Import["updatedAt"];
     }[] = [];
 
+    const importCollections: { [sourceId: string]: Import[] } = {};
     for (const _import of imports) {
       let source: Source;
       if (runIds.includes(_import.creatorId)) {
@@ -76,38 +77,48 @@ export namespace ImportOps {
         source = sources.find((s) => s.id === schedule.sourceId);
       }
 
-      try {
-        const { record, isNew } =
-          await RecordOps.findOrCreateByUniqueRecordProperties(
-            _import.data,
-            source
-          );
+      const sourceId = source?.id ?? "no-source";
+      if (!importCollections[sourceId]) importCollections[sourceId] = [];
+      importCollections[sourceId].push(_import);
+    }
 
-        const now = new Date();
-        bulkCreates.push({
-          id: _import.id,
-          state: "importing",
-          creatorType: _import.creatorType,
-          creatorId: _import.creatorId,
-          createdRecord: isNew,
-          recordId: record.id,
-          recordAssociatedAt: now,
-          startedAt: _import.startedAt,
-          createdAt: _import.createdAt,
-          updatedAt: now,
-        });
+    for (const [sourceId, collectionImports] of Object.entries(
+      importCollections
+    )) {
+      const response = await RecordOps.findOrCreateByUniqueRecordProperties(
+        collectionImports.map((i) => i.data),
+        collectionImports.map((i) => i.id),
+        sources.find((s) => s.id === sourceId),
+        true
+      );
 
-        await record.addOrUpdateProperties(_import.data, undefined, true);
-      } catch (error) {
-        if (env !== "test") log(`[ASSOCIATE IMPORT ERROR] ${error}`, "alert");
-        if (_import)
+      const now = new Date();
+      for (const { referenceId, isNew, record, error } of response) {
+        const _import = collectionImports.find((i) => i.id === referenceId);
+
+        if (error) {
+          if (env !== "test") log(`[ASSOCIATE IMPORT ERROR] ${error}`, "alert");
           await _import.setError(error, "processPendingImportsForAssociation");
+        } else {
+          bulkImportUpdates.push({
+            id: _import.id,
+            state: "importing",
+            creatorType: _import.creatorType,
+            creatorId: _import.creatorId,
+            createdRecord: isNew,
+            recordId: record.id,
+            recordAssociatedAt: now,
+            startedAt: _import.startedAt,
+            createdAt: _import.createdAt,
+            updatedAt: now,
+          });
+        }
       }
     }
 
-    await RecordOps.markPendingByIds(bulkCreates.map((i) => i.recordId));
+    await RecordOps.markPendingByIds(bulkImportUpdates.map((i) => i.recordId));
 
-    await Import.bulkCreate(bulkCreates, {
+    await Import.bulkCreate(bulkImportUpdates, {
       updateOnDuplicate: [
         "state",
         "createdRecord",

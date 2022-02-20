@@ -127,57 +127,78 @@ describe("models/record", () => {
     });
 
     test("it can find the record via email", async () => {
-      const { record, isNew } =
-        await RecordOps.findOrCreateByUniqueRecordProperties({
-          email: ["toad@example.com"],
-          color: ["orange"],
-        });
+      const [{ record, isNew, referenceId, error }] =
+        await RecordOps.findOrCreateByUniqueRecordProperties(
+          [
+            {
+              email: ["toad@example.com"],
+              color: ["orange"],
+            },
+          ],
+          ["_"]
+        );
 
+      expect(referenceId).toBe("_");
+      expect(error).toBeUndefined();
       expect(isNew).toBe(false);
       expect(record.id).toBe(toad.id);
     });
 
     test("it cannot find the record by color and will create a new one", async () => {
-      const { record, isNew } =
+      const [{ record, isNew, referenceId, error }] =
         await RecordOps.findOrCreateByUniqueRecordProperties(
-          {
-            email: ["luigi@example.com"],
-            color: ["green"],
-          },
+          [
+            {
+              email: ["luigi@example.com"],
+              color: ["green"],
+            },
+          ],
+          ["_"],
           source
         );
 
+      expect(referenceId).toBe("_");
+      expect(error).toBeUndefined();
       expect(isNew).toBe(true);
       expect(record.id).not.toBe(toad.id);
     });
 
-    test("it will throw an error if no unique record properties are included", async () => {
-      await expect(
-        RecordOps.findOrCreateByUniqueRecordProperties(
+    test("it will return an error if no unique record properties are included", async () => {
+      const [response] = await RecordOps.findOrCreateByUniqueRecordProperties(
+        [
           {
             color: ["orange"],
           },
-          source
-        )
-      ).rejects.toThrow(
-        'there are no unique record properties provided in {"color":["orange"]}'
+        ],
+        ["_"],
+        source
+      );
+
+      expect(response.error.message).toMatch(
+        'there are no unique record properties provided in {"color":["orange"]} (_)'
       );
     });
 
     test("it will lock when creating new records so duplicate records are not created", async () => {
-      const responseA = await RecordOps.findOrCreateByUniqueRecordProperties(
-        {
-          email: ["bowser@example.com"],
-          color: ["green"],
-        },
+      const [responseA] = await RecordOps.findOrCreateByUniqueRecordProperties(
+        [
+          {
+            email: ["bowser@example.com"],
+            color: ["green"],
+          },
+        ],
+        ["_"],
         source
       );
 
-      const responseB = await RecordOps.findOrCreateByUniqueRecordProperties(
-        {
-          email: ["bowser@example.com"],
-          house: ["castle"],
-        },
+      const [responseB] = await RecordOps.findOrCreateByUniqueRecordProperties(
+        [
+          {
+            email: ["bowser@example.com"],
+            house: ["castle"],
+          },
+        ],
+        ["_"],
         source
       );
 
@@ -187,19 +208,25 @@ describe("models/record", () => {
     });
 
     test("it will merge overlapping unique properties and not store non-unique properties", async () => {
-      const responseA = await RecordOps.findOrCreateByUniqueRecordProperties(
-        {
-          email: ["koopa@example.com"],
-          userId: [99],
-        },
+      const [responseA] = await RecordOps.findOrCreateByUniqueRecordProperties(
+        [
+          {
+            email: ["koopa@example.com"],
+            userId: [99],
+          },
+        ],
+        ["_"],
         source
       );
 
-      const responseB = await RecordOps.findOrCreateByUniqueRecordProperties(
-        {
-          userId: [99],
-          house: ["castle"],
-        },
+      const [responseB] = await RecordOps.findOrCreateByUniqueRecordProperties(
+        [
+          {
+            userId: [99],
+            house: ["castle"],
+          },
+        ],
+        ["_"],
         source
       );
 
@@ -216,20 +243,24 @@ describe("models/record", () => {
     });
 
     test("cannot create a new record without a source or override", async () => {
-      await expect(
-        RecordOps.findOrCreateByUniqueRecordProperties({
-          email: ["yoshi@example.com"],
-        })
-      ).rejects.toThrow(
+      const responseA = await RecordOps.findOrCreateByUniqueRecordProperties(
+        [
+          {
+            email: ["yoshi@example.com"],
+          },
+        ],
+        ["_"]
+      );
+      expect(responseA[0].error.message).toMatch(
         'could not create a new record because no record property in {"email":["yoshi@example.com"]} is unique and owned by the source'
       );
 
-      await expect(
-        RecordOps.findOrCreateByUniqueRecordProperties(
-          { email: ["yoshi@example.com"] },
-          false
-        )
-      ).rejects.toThrow(
+      const responseB = await RecordOps.findOrCreateByUniqueRecordProperties(
+        [{ email: ["yoshi@example.com"] }],
+        ["_"],
+        false
+      );
+      expect(responseB[0].error.message).toMatch(
         'could not create a new record because no record property in {"email":["yoshi@example.com"]} is unique and owned by the source'
       );
     });

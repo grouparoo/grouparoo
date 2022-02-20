@@ -270,7 +270,6 @@ export namespace RecordOps {
       );
     }
 
-    const releaseLocks: Function[] = [];
     const bulkCreates: {
       id?: string;
       propertyId: string;
@@ -294,159 +293,158 @@ export namespace RecordOps {
       where: { recordId: { [Op.in]: records.map((p) => p.id) } },
     });
 
-    try {
-      let recordOffset = 0;
-      for (const record of records) {
-        const properties = await PropertiesCache.findAllWithCache(
-          record.modelId
-        );
+    let recordOffset = 0;
+    for (const record of records) {
+      const properties = await PropertiesCache.findAllWithCache(record.modelId);
 
-        if (toLock) {
-          const response = await waitForLock(`record:${record.id}`);
-          releaseLocks.push(response.releaseLock);
+      if (record.isNewRecord) await record.save();
+
+      const keys = Object.keys(recordProperties[recordOffset]);
+      checkKeys: for (const key of keys) {
+        // this special, internal-ony key is used to send extra information though an Import.  `_meta` is prevented from being a valid Property key
+        if (key === "_meta") continue checkKeys;
+
+        const h: { [key: string]: (string | number | boolean | Date)[] } = {};
+        h[key] = Array.isArray(recordProperties[recordOffset][key])
+          ? recordProperties[recordOffset][key]
+          : [recordProperties[recordOffset][key]];
+
+        const property =
+          properties.find((p) => p.id === key) ??
+          properties.find((p) => p.key === key);
+
+        if (!property) {
+          if (ignoreMissingProperties) continue;
+          throw new Error(`cannot find a property for id or key \`${key}\``);
         }
 
-        if (record.isNewRecord) await record.save();
-
-        const keys = Object.keys(recordProperties[recordOffset]);
-        checkKeys: for (const key of keys) {
-          // this special, internal-ony key is used to send extra information though an Import.  `_meta` is prevented from being a valid Property key
-          if (key === "_meta") continue checkKeys;
-
-          const h: { [key: string]: (string | number | boolean | Date)[] } = {};
-          h[key] = Array.isArray(recordProperties[recordOffset][key])
-            ? recordProperties[recordOffset][key]
-            : [recordProperties[recordOffset][key]];
-
-          const property =
-            properties.find((p) => p.id === key) ??
-            properties.find((p) => p.key === key);
-
-          if (!property) {
-            if (ignoreMissingProperties) continue;
-            throw new Error(`cannot find a property for id or key \`${key}\``);
+        // add new GrouparooRecord Properties to batch
+        let position = 0;
+        buildQueries: for (const value of h[key]) {
+          if (position > 0 && !property.isArray) {
+            throw new Error(
+              "cannot set multiple record properties for a non-array property"
+            );
           }
 
-          // add new GrouparooRecord Properties to batch
-          let position = 0;
-          buildQueries: for (const value of h[key]) {
-            if (position > 0 && !property.isArray) {
-              throw new Error(
-                "cannot set multiple record properties for a non-array property"
-              );
-            }
+          const existingRecordProperty = existingRecordProperties.find(
+            (p) =>
+              p.recordId === record.id &&
+              p.propertyId === property.id &&
+              p.position === position
+          );
 
-            const existingRecordProperty = existingRecordProperties.find(
-              (p) =>
-                p.recordId === record.id &&
-                p.propertyId === property.id &&
-                p.position === position
+          let { rawValue, invalidValue, invalidReason } =
+            await RecordPropertyOps.buildRawValue(
+              value,
+              property.type,
+              existingRecordProperty
             );
-            const { rawValue, invalidValue, invalidReason } =
-              await RecordPropertyOps.buildRawValue(
-                value,
-                property.type,
-                existingRecordProperty
-              );
 
-            bulkCreates.push({
-              id: existingRecordProperty
-                ? existingRecordProperty.id
-                : undefined,
-              recordId: record.id,
-              propertyId: property.id,
-              position,
-              rawValue,
-              invalidValue,
-              invalidReason,
-              state: "ready",
-              stateChangedAt: now,
-              confirmedAt: now,
-              startedAt: null,
-              valueChangedAt:
-                !existingRecordProperty ||
-                !existingRecordProperty.valueChangedAt ||
-                !existingRecordProperty.rawValue ||
-                rawValue !== existingRecordProperty.rawValue
-                  ? now
-                  : existingRecordProperty.valueChangedAt,
-              unique: property.unique,
-            });
+          const bulkCreate = {
+            id: existingRecordProperty ? existingRecordProperty.id : undefined,
+            recordId: record.id,
+            propertyId: property.id,
+            position,
+            rawValue,
+            invalidValue,
+            invalidReason,
+            state: "ready",
+            stateChangedAt: now,
+            confirmedAt: now,
+            startedAt: null,
+            valueChangedAt:
+              !existingRecordProperty ||
+              !existingRecordProperty.valueChangedAt ||
+              !existingRecordProperty.rawValue ||
+              rawValue !== existingRecordProperty.rawValue
+                ? now
+                : existingRecordProperty.valueChangedAt,
+            unique: property.unique,
+          } as typeof bulkCreates[number];
 
-            position++;
-          }
+          const matchIdx = bulkCreates.findIndex(
+            (bc) =>
+              bc.recordId === record.id &&
+              bc.propertyId === property.id &&
+              bc.position === position
+          );
 
-          // delete old properties we didn't update
-          existingRecordProperties
-            .filter(
-              (p) =>
-                p.recordId === record.id &&
-                p.propertyId === property.id &&
-                p.position >= position
-            )
-            .map((p) => bulkDeletes.where.id.push(p.id));
-        }
-
-        recordOffset++;
-      }
-
-      if (bulkCreates.length > 0) {
-        try {
-          await RecordProperty.bulkCreate(bulkCreates, {
-            updateOnDuplicate: [
-              "state",
-              "unique",
-              "stateChangedAt",
-              "confirmedAt",
-              "valueChangedAt",
-              "startedAt",
-              "rawValue",
-              "invalidValue",
-              "invalidReason",
-              "updatedAt",
-            ],
-          });
-        } catch (error) {
-          // we can resque an attempted single-write due to uniqueConstraint problems
-          const attemptedRecordProperty = bulkCreates[0];
-          if (
-            bulkCreates.length === 1 &&
-            attemptedRecordProperty.unique &&
-            error instanceof UniqueConstraintError
-          ) {
-            return CLS.afterCommit(() =>
-              api.sequelize.transaction((transaction: Transaction) =>
-                RecordProperty.update(
-                  {
-                    state: "ready",
-                    rawValue: null,
-                    invalidValue: `${attemptedRecordProperty.rawValue}`,
-                    invalidReason: InvalidReasons.Duplicate,
-                    stateChangedAt: new Date(),
-                    confirmedAt: new Date(),
-                    startedAt: null,
-                  },
-                  {
-                    transaction,
-                    where: {
-                      propertyId: attemptedRecordProperty.propertyId,
-                      recordId: attemptedRecordProperty.recordId,
-                      state: "pending",
-                    },
-                  }
-                )
-              )
-            );
+          if (matchIdx >= 0) {
+            bulkCreates.splice(matchIdx, 1, bulkCreate);
           } else {
-            throw error;
+            bulkCreates.push(bulkCreate);
           }
+
+          position++;
         }
+
+        // delete old properties we didn't update
+        existingRecordProperties
+          .filter(
+            (p) =>
+              p.recordId === record.id &&
+              p.propertyId === property.id &&
+              p.position >= position
+          )
+          .map((p) => bulkDeletes.where.id.push(p.id));
       }
-      if (bulkDeletes.where.id.length > 0) {
-        await RecordProperty.destroy(bulkDeletes);
+
+      recordOffset++;
+    }
+
+    // TODO: This select may be slower than allowing the upsert to throw like we used to
+    // However, the upsert was really hard to deal with because it would throw and ruin/end the transaction
+    const duplicateRecordPropertyMatches = await RecordProperty.findAll({
+      where: {
+        rawValue: { [Op.ne]: null },
+        unique: true,
+        [Op.and]: bulkCreates
+          .filter((bc) => bc.unique && !bc.invalidValue)
+          .map((bc) => {
+            return {
+              rawValue: bc.rawValue,
+              recordId: { [Op.ne]: bc.recordId },
+            };
+          }),
+      },
+    });
+    for (const duplicate of duplicateRecordPropertyMatches) {
+      const getMatchIdx = () =>
+        bulkCreates.findIndex(
+          (bc) =>
+            !bc.invalidValue &&
+            bc.recordId !== duplicate.recordId &&
+            bc.rawValue === duplicate.rawValue
+        );
+      let matchIdx = getMatchIdx();
+
+      while (matchIdx >= 0) {
+        bulkCreates[matchIdx].invalidReason = InvalidReasons.Duplicate;
+        bulkCreates[matchIdx].invalidValue = bulkCreates[matchIdx].rawValue;
+        bulkCreates[matchIdx].rawValue = null;
+        matchIdx = getMatchIdx();
       }
-    } finally {
-      for (const releaseLock of releaseLocks) await releaseLock();
+    }
+
+    if (bulkCreates.length > 0) {
+      await RecordProperty.bulkCreate(bulkCreates, {
+        updateOnDuplicate: [
+          "state",
+          "unique",
+          "stateChangedAt",
+          "confirmedAt",
+          "valueChangedAt",
+          "startedAt",
+          "rawValue",
+          "invalidValue",
+          "invalidReason",
+          "updatedAt",
+        ],
+      });
+    }
+    if (bulkDeletes.where.id.length > 0) {
+      await RecordProperty.destroy(bulkDeletes);
     }
   }
 
@@ -748,102 +746,164 @@ export namespace RecordOps {
    * This method today always returns a record by finding it or making a a new one... unless it throws because the source isn't allowed to make new records.
    */
   export async function findOrCreateByUniqueRecordProperties(
-    hash: {
+    hashes: {
       [key: string]: (string | number | boolean | Date)[];
-    },
-    source?: boolean | Source
+    }[],
+    referenceIds: string[],
+    source?: boolean | Source,
+    includeAllProperties = false
   ) {
-    let record: GrouparooRecord;
-    let isNew = false;
-    let recordProperty: RecordProperty;
+    const response: {
+      referenceId: string;
+      record: GrouparooRecord;
+      isNew: boolean;
+      error: NodeJS.ErrnoException;
+      hash: Record<string, (string | number | boolean | Date)[]>;
+      uniquePropertiesHash: Record<
+        string,
+        (string | number | boolean | Date)[]
+      >;
+    }[] = [];
+
     const uniqueProperties = (
       await PropertiesCache.findAllWithCache(
         source instanceof Source ? source.modelId : undefined,
         "ready"
       )
-    ).filter((p) => p.unique === true);
-    const uniquePropertiesHash: Record<
-      string,
-      (string | boolean | number | Date)[]
-    > = {};
+    ).filter((p) => p.unique);
 
-    uniqueProperties.forEach((property) => {
-      if (hash[property.key] !== null && hash[property.key] !== undefined) {
-        uniquePropertiesHash[property.id] = hash[property.key];
-      } else if (
-        hash[property.id] !== null &&
-        hash[property.id] !== undefined
-      ) {
-        uniquePropertiesHash[property.id] = hash[property.id];
-      }
-    });
-
-    if (Object.keys(uniquePropertiesHash).length === 0) {
-      throw new Error(
-        `there are no unique record properties provided in ${JSON.stringify(
-          hash
-        )}`
-      );
-    }
-
-    const uniquePropertyIds = Object.keys(uniquePropertiesHash);
-
-    for (const i in uniquePropertyIds) {
-      const id = uniquePropertyIds[i];
-      const value = uniquePropertiesHash[id];
-      const property = uniqueProperties.find((r) => r.id === id);
-
-      recordProperty = await RecordProperty.findOne({
-        where: {
-          propertyId: property.id,
-          rawValue: String(value),
-        },
+    let i = 0;
+    const rawValues: string[] = [];
+    for (const hash of hashes) {
+      const uniquePropertiesHash: Record<string, string[]> = {};
+      uniqueProperties.forEach((property) => {
+        if (
+          (hash[property.key] !== null && hash[property.key] !== undefined) ||
+          (hash[property.id] !== null && hash[property.id] !== undefined)
+        ) {
+          uniquePropertiesHash[property.id] = Array.isArray(hash[property.key])
+            ? hash[property.key].map((v) => String(v))
+            : [String(hash[property.key])];
+          Array.isArray(hash[property.key])
+            ? hash[property.key].forEach((v) => rawValues.push(String(v)))
+            : rawValues.push(String(hash[property.key]));
+        }
       });
 
-      if (recordProperty) break;
-    }
-
-    if (recordProperty) {
-      record = await GrouparooRecord.findOne({
-        where: { id: recordProperty.recordId },
-      });
-    } else {
-      const canCreateNewRecord =
-        typeof source === "boolean"
-          ? source
-          : source instanceof Source
-          ? (await PropertiesCache.findAllWithCache(source.modelId, "ready"))
-              .filter((p) => p.unique === true && p.sourceId === source.id)
-              .map((p) => p.key)
-              .filter((key) => !!hash[key]).length > 0
-          : false;
-
-      if (!canCreateNewRecord) {
-        throw new Error(
-          `could not create a new record because no record property in ${JSON.stringify(
+      let error: Error;
+      if (Object.keys(uniquePropertiesHash).length === 0) {
+        error = Error(
+          `there are no unique record properties provided in ${JSON.stringify(
             hash
-          )} is unique and owned by the source`
+          )} (${referenceIds[i]})`
         );
       }
 
-      let modelId: string;
-      if (source instanceof Source) {
-        modelId = source.modelId;
-      } else {
-        const models = await ModelsCache.findAllWithCache();
-        if (models.length > 1) throw new Error(`indeterminate model`);
-        modelId = models[0].id;
-      }
+      response.push({
+        referenceId: referenceIds[i],
+        record: undefined,
+        isNew: undefined,
+        hash,
+        uniquePropertiesHash,
+        error,
+      });
 
-      record = await GrouparooRecord.create({ modelId });
-      record = await record.reload();
-      await addOrUpdateProperties([record], [uniquePropertiesHash], false);
-      await buildNullProperties([record]);
-
-      isNew = true;
+      i++;
     }
 
-    return { record, isNew };
+    const recordProperties = await RecordProperty.findAll({
+      where: { unique: true, rawValue: rawValues },
+      include: [GrouparooRecord],
+    });
+
+    const properties = await PropertiesCache.findAllWithCache(
+      undefined,
+      "ready"
+    );
+
+    i = 0;
+    for (const data of response) {
+      if (data.error) continue;
+
+      // the record already exists in the DB and we can find it by property value
+      for (const matchValues of Object.values(data.uniquePropertiesHash)) {
+        const recordProperty = recordProperties.find((rp) =>
+          matchValues.includes(rp.rawValue)
+        );
+        if (recordProperty) {
+          data.record = recordProperty.record;
+          data.isNew = false;
+        }
+      }
+
+      // another import in this batch has already created the record
+      if (!data.record) {
+        const match = response.find(
+          (r) =>
+            r.referenceId !== data.referenceId &&
+            r.isNew === true &&
+            JSON.stringify(r.uniquePropertiesHash) ===
+              JSON.stringify(data.uniquePropertiesHash)
+        );
+        if (match) {
+          data.record = match.record;
+          data.isNew = false;
+        }
+      }
+
+      // we need to create a new record
+      if (!data.record) {
+        let modelId: string;
+        if (source instanceof Source) {
+          modelId = source.modelId;
+        } else {
+          const models = await ModelsCache.findAllWithCache();
+          if (models.length > 1) data.error = Error(`indeterminate model`);
+          modelId = models[0].id;
+        }
+
+        const canCreateNewRecord =
+          typeof source === "boolean"
+            ? source
+            : source instanceof Source
+            ? properties
+                .filter(
+                  (p) =>
+                    p.source.modelId === modelId &&
+                    p.unique === true &&
+                    p.sourceId === source.id
+                )
+                .map((p) => p.key)
+                .filter((key) => !!data.hash[key]).length > 0
+            : false;
+
+        if (!canCreateNewRecord) {
+          data.error = Error(
+            `could not create a new record because no record property in ${JSON.stringify(
+              data.hash
+            )} is unique and owned by the source`
+          );
+        }
+
+        data.record = await GrouparooRecord.create({ modelId });
+        data.isNew = true;
+      }
+    }
+
+    await buildNullProperties(
+      response.filter((d) => !d.error && d.isNew).map((d) => d.record)
+    );
+
+    await addOrUpdateProperties(
+      response.filter((d) => !d.error).map((d) => d.record),
+      response
+        .filter((d) => !d.error)
+        .map((d) => (includeAllProperties ? d.hash : d.uniquePropertiesHash)),
+      false,
+      true
+    );
+
+    return response;
   }
 
   /**
@@ -853,6 +913,8 @@ export namespace RecordOps {
     recordIds: string[],
     includeProperties = true
   ) {
+    if (recordIds.length === 0) return;
+
     await GrouparooRecord.update(
       { state: "pending" },
       { where: { id: { [Op.in]: recordIds } } }

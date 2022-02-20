@@ -2,7 +2,6 @@ import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
 import {
   GrouparooPlugin,
-  GrouparooRecord,
   RecordProperty,
   Property,
   PluginConnection,
@@ -118,7 +117,7 @@ describe("tasks/recordProperty:importRecordProperty", () => {
       spy.mockRestore();
     });
 
-    test("will set null on propertyValues when there is an duplicate unique value", async () => {
+    test("will set null on propertyValues when there is a duplicate unique value", async () => {
       const spy = jest
         .spyOn(testPluginConnection.methods, "recordProperty")
         //@ts-ignore // partial mock
