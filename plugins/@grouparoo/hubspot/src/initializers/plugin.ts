@@ -32,6 +32,20 @@ export class Plugins extends Initializer {
           ],
           methods: { test, parallelism },
         },
+        {
+          name: "hubspot-oauth",
+          displayName: "HubSpot (OAuth)",
+          options: [
+            {
+              key: "refreshToken",
+              type: "oauth-token",
+              displayName: "OAuth Refresh Token",
+              required: true,
+              description: "Hubspot OAuth refresh token.",
+            },
+          ],
+          methods: { test, parallelism },
+        },
       ],
       connections: [
         contactsDestinationConnection,

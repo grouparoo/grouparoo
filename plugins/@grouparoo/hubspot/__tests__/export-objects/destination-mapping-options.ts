@@ -3,82 +3,92 @@ import { destinationMappingOptions } from "../../src/lib/export-objects/destinat
 import { loadAppOptions, updater } from "../utils/nockHelper";
 
 const { newNock } = helper.useNock(__filename, updater);
-const appOptions = loadAppOptions(newNock);
 const appId = "app_78189023490-789789456456-90-3k";
 
-async function runDestinationMappingOptions({ destinationOptions }) {
-  return destinationMappingOptions({
-    appOptions,
-    destinationOptions,
-    app: null,
-    appId: appId,
-    connection: null,
-    destination: null,
-    destinationId: null,
-  });
-}
-
 describe("hubspot/destinationMappingOptions", () => {
-  test("can load all destinationMappingOptions", async () => {
-    const destinationOptions = {
-      schemaId: "CONTACT",
-      primaryKey: "email",
-    };
-    const options = await runDestinationMappingOptions({ destinationOptions });
-    const { properties } = options;
-    const { required, known } = properties;
+  describe.each([
+    { useOAuth: false, description: "with API key" },
+    { useOAuth: true, description: "with OAuth" },
+  ])("$description", ({ useOAuth }) => {
+    const appOptions = loadAppOptions(newNock, { useOAuth });
 
-    expect(required.length).toBe(1);
+    async function runDestinationMappingOptions({ destinationOptions }) {
+      return destinationMappingOptions({
+        appOptions,
+        destinationOptions,
+        app: null,
+        appId: appId,
+        connection: null,
+        destination: null,
+        destinationId: null,
+      });
+    }
 
-    const requiredFieldEmail = required.find((f) => f.key === "email");
-    expect(requiredFieldEmail.key).toBe("email");
-    expect(requiredFieldEmail.type).toBe("email");
+    test("can load all destinationMappingOptions", async () => {
+      const destinationOptions = {
+        schemaId: "CONTACT",
+        primaryKey: "email",
+      };
+      const options = await runDestinationMappingOptions({
+        destinationOptions,
+      });
+      const { properties } = options;
+      const { required, known } = properties;
 
-    const knownFieldCompany = known.find((f) => f.key === "company");
-    expect(knownFieldCompany.type).toBe("string");
-    expect(knownFieldCompany.important).toBe(true);
+      expect(required.length).toBe(1);
 
-    const knownFieldPhoneNumber = known.find((f) => f.key === "phone");
-    expect(knownFieldPhoneNumber.type).toBe("phoneNumber");
-    expect(knownFieldPhoneNumber.important).toBe(true);
+      const requiredFieldEmail = required.find((f) => f.key === "email");
+      expect(requiredFieldEmail.key).toBe("email");
+      expect(requiredFieldEmail.type).toBe("email");
 
-    const knownFieldMobilePhoneNumber = known.find(
-      (f) => f.key === "mobilephone"
-    );
-    expect(knownFieldMobilePhoneNumber.type).toBe("phoneNumber");
-    expect(knownFieldMobilePhoneNumber.important).toBe(true);
+      const knownFieldCompany = known.find((f) => f.key === "company");
+      expect(knownFieldCompany.type).toBe("string");
+      expect(knownFieldCompany.important).toBe(true);
 
-    const readOnlyField = known.find((f) => f.key === "days_to_close");
-    expect(readOnlyField).toBe(undefined);
-  });
+      const knownFieldPhoneNumber = known.find((f) => f.key === "phone");
+      expect(knownFieldPhoneNumber.type).toBe("phoneNumber");
+      expect(knownFieldPhoneNumber.important).toBe(true);
 
-  test("can load all destinationMappingOptions using the custom object", async () => {
-    const destinationOptions = {
-      schemaId: "2-3604285",
-      primaryKey: "grouparoo_object_property",
-    };
-    const options = await runDestinationMappingOptions({ destinationOptions });
-    const { properties } = options;
-    const { required, known } = properties;
+      const knownFieldMobilePhoneNumber = known.find(
+        (f) => f.key === "mobilephone"
+      );
+      expect(knownFieldMobilePhoneNumber.type).toBe("phoneNumber");
+      expect(knownFieldMobilePhoneNumber.important).toBe(true);
 
-    expect(required.length).toBe(1);
+      const readOnlyField = known.find((f) => f.key === "days_to_close");
+      expect(readOnlyField).toBe(undefined);
+    });
 
-    const requiredFieldEmail = required.find(
-      (f) => f.key === "grouparoo_object_property"
-    );
-    expect(requiredFieldEmail.key).toBe("grouparoo_object_property");
-    expect(requiredFieldEmail.type).toBe("string");
+    test("can load all destinationMappingOptions using the custom object", async () => {
+      const destinationOptions = {
+        schemaId: "2-3604285",
+        primaryKey: "grouparoo_object_property",
+      };
+      const options = await runDestinationMappingOptions({
+        destinationOptions,
+      });
+      const { properties } = options;
+      const { required, known } = properties;
 
-    const knownFieldFirstName = known.find((f) => f.key === "first_name");
-    expect(knownFieldFirstName.type).toBe("string");
-    expect(knownFieldFirstName.important).toBe(true);
+      expect(required.length).toBe(1);
 
-    const knownFieldLastName = known.find((f) => f.key === "last_name");
-    expect(knownFieldLastName.type).toBe("string");
-    expect(knownFieldLastName.important).toBe(true);
+      const requiredFieldEmail = required.find(
+        (f) => f.key === "grouparoo_object_property"
+      );
+      expect(requiredFieldEmail.key).toBe("grouparoo_object_property");
+      expect(requiredFieldEmail.type).toBe("string");
 
-    const knownFieldNumberField = known.find((f) => f.key === "number_field");
-    expect(knownFieldNumberField.type).toBe("float");
-    expect(knownFieldNumberField.important).toBe(false);
+      const knownFieldFirstName = known.find((f) => f.key === "first_name");
+      expect(knownFieldFirstName.type).toBe("string");
+      expect(knownFieldFirstName.important).toBe(true);
+
+      const knownFieldLastName = known.find((f) => f.key === "last_name");
+      expect(knownFieldLastName.type).toBe("string");
+      expect(knownFieldLastName.important).toBe(true);
+
+      const knownFieldNumberField = known.find((f) => f.key === "number_field");
+      expect(knownFieldNumberField.type).toBe("float");
+      expect(knownFieldNumberField.important).toBe(false);
+    });
   });
 });

@@ -1,7 +1,12 @@
-import { objectCache } from "@grouparoo/core";
-import Axios from "axios";
+import { objectCache, SimpleAppOptions } from "@grouparoo/core";
+import { HubspotClient } from "../client/client";
 
-async function getLists(client, appId, appOptions, update = false) {
+async function getLists(
+  client: HubspotClient,
+  appId: string,
+  appOptions: SimpleAppOptions,
+  update = false
+) {
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
   const cacheKey = ["getLists", appOptions];
   const read = !update; // if updating, skip the read from cache. still write.
@@ -14,10 +19,10 @@ async function getLists(client, appId, appOptions, update = false) {
 }
 
 async function getListId(
-  client,
-  appId,
-  appOptions,
-  groupName
+  client: HubspotClient,
+  appId: string,
+  appOptions: SimpleAppOptions,
+  groupName: string
 ): Promise<string> {
   groupName = (groupName || "").toString().trim();
   if (groupName.length === 0) {
@@ -34,7 +39,10 @@ async function getListId(
   );
 }
 
-function filterLists(hubspotLists, groupName) {
+function filterLists(
+  hubspotLists: { name: string; listId: string }[],
+  groupName: string
+) {
   hubspotLists = hubspotLists || [];
   const matchingList = hubspotLists.filter(
     (list) => list.name === groupName
@@ -47,10 +55,10 @@ function filterLists(hubspotLists, groupName) {
 
 // gets called if the list if is not cached
 async function ensureList(
-  client,
-  appId,
-  appOptions,
-  groupName
+  client: HubspotClient,
+  appId: string,
+  appOptions: SimpleAppOptions,
+  groupName: string
 ): Promise<string> {
   let hubspotLists, listId;
 
@@ -69,30 +77,28 @@ async function ensureList(
   }
 
   // need to create it
-  const url = `https://api.hubapi.com/contacts/v1/lists?hapikey=${appOptions.hapikey}`;
-  const { data }: { data: Record<string, any> } = await Axios({
-    method: "POST",
-    url,
-    headers: { "Content-Type": "application/json" },
-    data: {
-      name: groupName,
-    },
-  });
+  ({ listId } = await client.createList(groupName));
 
-  return data.listId;
+  return listId;
 }
 
-export async function addToList(client, appId, appOptions, email, groupName) {
+export async function addToList(
+  client: HubspotClient,
+  appId: string,
+  appOptions: SimpleAppOptions,
+  email: string,
+  groupName: string
+) {
   const listId = await getListId(client, appId, appOptions, groupName);
   await client.addContactToList(listId, email);
 }
 
 export async function removeFromList(
-  client,
-  appId,
-  appOptions,
-  email,
-  groupName
+  client: HubspotClient,
+  appId: string,
+  appOptions: SimpleAppOptions,
+  email: string,
+  groupName: string
 ) {
   const listId = await getListId(client, appId, appOptions, groupName);
   await client.removeContactFromList(listId, email);

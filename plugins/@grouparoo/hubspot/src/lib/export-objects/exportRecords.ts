@@ -218,16 +218,13 @@ export const exportRecords: ExportRecordsPluginMethod = async ({
       exports: batchExports,
     });
   } catch (error) {
-    if (error?.response?.status === 429) {
+    if (error?.status === 429) {
       // hubspot generally limited by 10 second blocks
       const retryIn = Math.floor(Math.random() * 10) + 5; // seconds
       // TODO: need a better way to return a general error
       //       we can't throw because we want the retryDelay
       //       but also don't ahve individual ones for each record
       return { success: false, retryDelay: 1000 * retryIn };
-    }
-    if (error?.response?.data?.message) {
-      error.message = `${error.message}: ${error?.response?.data?.message}`;
     }
     throw error;
   }

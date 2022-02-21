@@ -18,6 +18,7 @@ import {
 import { connect } from "../../src/lib/connect";
 import Axios from "axios";
 import { loadAppOptions, updater } from "../utils/nockHelper";
+import { HubspotClient } from "../../src/lib/client/client";
 
 const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
@@ -25,7 +26,7 @@ const appOptions = loadAppOptions(newNock);
 const email1 = "luigi@example.com";
 const list1 = "<test> hubspot people";
 
-let client;
+let client: HubspotClient;
 
 async function cleanUp(suppressErrors) {
   try {
