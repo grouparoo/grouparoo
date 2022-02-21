@@ -78,7 +78,7 @@ describe("test grouparoo records", () => {
           { userId: ["person1@example.com"] },
           source
         );
-      record = response[0].record;
+      record = response.record;
 
       // import & export the record
       await record.sync();
