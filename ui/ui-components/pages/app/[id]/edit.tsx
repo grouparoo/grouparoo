@@ -351,6 +351,9 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
                             } else if (
                               options[opt.key]?.type === "oauth-token"
                             ) {
+                              const hasValue = !!getValues(
+                                `options.${opt.key}`
+                              );
                               return (
                                 <>
                                   <br />
@@ -360,23 +363,27 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
                                       Boolean(app.locked) || loadingOAuth
                                     }
                                     loading={loadingOAuth}
-                                    variant="outline-primary"
+                                    variant={"outline-primary"}
                                     onClick={() => startOAuthLogin(opt.key)}
                                   >
-                                    Sign in with OAuth
+                                    {hasValue ? "Re-request" : "Request"} Token
                                   </LoadingButton>
-
-                                  <Form.Control
-                                    className="mt-2"
-                                    required={opt.required}
-                                    type="password"
-                                    placeholder={opt.placeholder}
-                                    name={`options.${opt.key}`}
-                                    {...register(`options.${opt.key}`)}
-                                  />
-                                  <Form.Text className="text-muted">
-                                    {opt.description}
-                                  </Form.Text>
+                                  {hasValue && (
+                                    <>
+                                      <Form.Control
+                                        className="mt-2"
+                                        required={opt.required}
+                                        type="password"
+                                        disabled
+                                        placeholder={opt.placeholder}
+                                        name={`options.${opt.key}`}
+                                        {...register(`options.${opt.key}`)}
+                                      />
+                                      <Form.Text className="text-muted">
+                                        {opt.description}
+                                      </Form.Text>
+                                    </>
+                                  )}
                                 </>
                               );
                             } else {
