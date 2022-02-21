@@ -92,6 +92,7 @@ describe("models/modelsCache", () => {
     test("after an model is updated, the local cache should be invalid", async () => {
       ModelsCache.expires = new Date().getTime() + 1000 * 30;
       await model.update({ name: "NEW NAME" });
+      await helper.sleep(10);
       expect(ModelsCache.expires).toEqual(0);
     });
 
@@ -128,6 +129,7 @@ describe("models/modelsCache", () => {
       ];
       ModelsCache.expires = new Date().getTime() + 1000 * 30;
       const found = await ModelsCache.findOneWithCache(model.id);
+      await helper.sleep(10);
       expect(found.id).toEqual(model.id);
       expect(ModelsCache.expires).toBe(0);
     });
@@ -135,6 +137,7 @@ describe("models/modelsCache", () => {
     test("a cache miss without a secondary find will not invalidate the cache", async () => {
       ModelsCache.expires = new Date().getTime() + 1000 * 30;
       const found = await ModelsCache.findOneWithCache("missing");
+      await helper.sleep(10);
       expect(found).toBeNull();
       expect(ModelsCache.expires).not.toBe(0);
     });
