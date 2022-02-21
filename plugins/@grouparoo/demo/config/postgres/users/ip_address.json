@@ -1,6 +1,6 @@
 {
   "class": "Property",
-  "id": "ipaddress",
+  "id": "ip_address",
   "type": "string",
   "key": "ipAddress",
   "sourceId": "ip_address",

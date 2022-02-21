@@ -1,6 +1,6 @@
 {
   "class": "Property",
-  "id": "planname",
+  "id": "plan_name",
   "type": "string",
   "key": "planName",
   "sourceId": "plan",
