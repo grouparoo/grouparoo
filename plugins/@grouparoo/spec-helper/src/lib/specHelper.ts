@@ -350,6 +350,10 @@ export namespace helper {
               required: true,
             },
             {
+              key: "environment",
+              required: false,
+            },
+            {
               key: "password",
               required: false,
             },
@@ -373,7 +377,10 @@ export namespace helper {
             },
             appOptions: async () => {
               return {
-                fileId: { type: "list", options: ["a", "b"] },
+                environment: {
+                  type: "list",
+                  options: ["staging", "production"],
+                },
                 password: { type: "password" },
               };
             },
