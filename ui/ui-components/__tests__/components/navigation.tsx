@@ -4,7 +4,7 @@ import Component from "../../components/Navigation";
 import "../../components/Icons"; // this is needed to load the library
 import commonProps from "../__utils__/commonProps";
 import { WebAppContext } from "../../contexts/webApp";
-import { ContextProvider } from "../__utils__/ContextProvider";
+import { TestContextProvider } from "../__utils__/ContextProvider";
 
 const useRouter = jest.spyOn(require("next/router"), "useRouter");
 
@@ -71,9 +71,9 @@ describe("navigation", () => {
 
   test("shows the nav returned from the server", async () => {
     render(
-      <ContextProvider webAppContext={webAppContext}>
+      <TestContextProvider webAppContext={webAppContext}>
         <Component {...commonProps} />
-      </ContextProvider>
+      </TestContextProvider>
     );
     const navigation = screen.getByTestId("navigation");
     expect(navigation.outerHTML).toContain("<span>Dashboard</span>");
@@ -87,9 +87,9 @@ describe("navigation", () => {
       asPath: "/model/accounts/overview",
     }));
     const component = render(
-      <ContextProvider webAppContext={webAppContext}>
+      <TestContextProvider webAppContext={webAppContext}>
         <Component {...commonProps} />
-      </ContextProvider>
+      </TestContextProvider>
     );
     expect(component.container).toMatchSnapshot();
   });
@@ -100,9 +100,9 @@ describe("navigation", () => {
       asPath: "/model/accounts/overview#destinations",
     }));
     const component = render(
-      <ContextProvider webAppContext={webAppContext}>
+      <TestContextProvider webAppContext={webAppContext}>
         <Component {...commonProps} />
-      </ContextProvider>
+      </TestContextProvider>
     );
     expect(component.container).toMatchSnapshot();
   });

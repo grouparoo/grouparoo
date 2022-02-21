@@ -4,7 +4,7 @@ import SampleRecordCard, {
   SampleRecordCardProps,
 } from "../../../components/record/SampleRecordCard";
 import { Models } from "../../../utils/apiData";
-import { ContextProvider } from "../../__utils__/ContextProvider";
+import { TestContextProvider } from "../../__utils__/ContextProvider";
 
 describe("SampleRecordCard", () => {
   let cardProps: SampleRecordCardProps;
@@ -24,7 +24,7 @@ describe("SampleRecordCard", () => {
     let card: ReturnType<typeof render>;
     await act(async () => {
       card = render(
-        <ContextProvider
+        <TestContextProvider
           model={{ id: modelId }}
           client={
             {
@@ -36,7 +36,7 @@ describe("SampleRecordCard", () => {
           }
         >
           <SampleRecordCard {...cardProps} />
-        </ContextProvider>
+        </TestContextProvider>
       );
     });
     expect(card.container).toMatchSnapshot();
@@ -49,7 +49,7 @@ describe("SampleRecordCard", () => {
     let card: ReturnType<typeof render>;
     await act(async () => {
       card = render(
-        <ContextProvider
+        <TestContextProvider
           model={{ id: modelId }}
           client={
             {
@@ -61,7 +61,7 @@ describe("SampleRecordCard", () => {
           }
         >
           <SampleRecordCard {...cardProps} />
-        </ContextProvider>
+        </TestContextProvider>
       );
     });
     expect(card.container).toMatchSnapshot();
@@ -109,7 +109,7 @@ describe("SampleRecordCard", () => {
     let card: ReturnType<typeof render>;
     await act(async () => {
       card = render(
-        <ContextProvider
+        <TestContextProvider
           model={{ id: modelId }}
           client={
             {
@@ -121,7 +121,7 @@ describe("SampleRecordCard", () => {
           }
         >
           <SampleRecordCard {...cardProps} />
-        </ContextProvider>
+        </TestContextProvider>
       );
     });
     expect(card.container).toMatchSnapshot();
@@ -170,7 +170,7 @@ describe("SampleRecordCard", () => {
     let card: ReturnType<typeof render>;
     await act(async () => {
       card = render(
-        <ContextProvider
+        <TestContextProvider
           model={{ id: modelId }}
           client={
             {
@@ -182,7 +182,7 @@ describe("SampleRecordCard", () => {
           }
         >
           <SampleRecordCard {...cardProps} />
-        </ContextProvider>
+        </TestContextProvider>
       );
     });
     expect(card.container).toMatchSnapshot();
@@ -241,7 +241,7 @@ describe("SampleRecordCard", () => {
     let card: ReturnType<typeof render>;
     await act(async () => {
       card = render(
-        <ContextProvider
+        <TestContextProvider
           model={{ id: modelId }}
           client={
             {
@@ -253,7 +253,7 @@ describe("SampleRecordCard", () => {
           }
         >
           <SampleRecordCard {...cardProps} />
-        </ContextProvider>
+        </TestContextProvider>
       );
     });
     expect(card.container).toMatchSnapshot();

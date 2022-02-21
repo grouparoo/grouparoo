@@ -2,14 +2,14 @@ import { render, screen } from "@testing-library/react";
 import mockAxios from "jest-mock-axios";
 import Page from "../../pages/about";
 import commonProps from "../__utils__/commonProps";
-import { ContextProvider } from "../__utils__/ContextProvider";
+import { TestContextProvider } from "../__utils__/ContextProvider";
 
 describe("pages/about", () => {
   beforeEach(() => {
     render(
-      <ContextProvider>
+      <TestContextProvider>
         <Page {...commonProps} plugins={[]} />
-      </ContextProvider>
+      </TestContextProvider>
     );
   });
 

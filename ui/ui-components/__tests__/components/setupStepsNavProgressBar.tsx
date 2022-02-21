@@ -2,7 +2,7 @@ import { act, render, screen } from "@testing-library/react";
 import mockAxios from "jest-mock-axios";
 import Component from "../../components/navigation/SetupStepsNavProgressBar";
 import { Actions } from "../../utils/apiData";
-import { ContextProvider } from "../__utils__/ContextProvider";
+import { TestContextProvider } from "../__utils__/ContextProvider";
 
 const useRouter = jest.spyOn(require("next/router"), "useRouter");
 
@@ -20,9 +20,9 @@ describe("setupStepsNavProgressBar", () => {
         useRouter.mockImplementation(() => ({ pathname: page, asPath: page }));
         await act(async () => {
           render(
-            <ContextProvider>
+            <TestContextProvider>
               <Component />
-            </ContextProvider>
+            </TestContextProvider>
           );
         });
         expect(screen.queryByTestId("setupStepsProgressBar")).toBeNull();
@@ -46,9 +46,9 @@ describe("setupStepsNavProgressBar", () => {
     it("doesn't display without steps", async () => {
       await act(async () => {
         render(
-          <ContextProvider>
+          <TestContextProvider>
             <Component />
-          </ContextProvider>
+          </TestContextProvider>
         );
       });
 
@@ -80,9 +80,9 @@ describe("setupStepsNavProgressBar", () => {
 
       await act(async () => {
         render(
-          <ContextProvider>
+          <TestContextProvider>
             <Component />
-          </ContextProvider>
+          </TestContextProvider>
         );
       });
 
@@ -124,9 +124,9 @@ describe("setupStepsNavProgressBar", () => {
 
       await act(async () => {
         render(
-          <ContextProvider>
+          <TestContextProvider>
             <Component />
-          </ContextProvider>
+          </TestContextProvider>
         );
       });
 

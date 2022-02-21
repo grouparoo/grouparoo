@@ -12,7 +12,7 @@ interface ContextProviderProps {
   model?: Models.GrouparooModelType;
 }
 
-export const ContextProvider: FC<ContextProviderProps> = ({
+export const TestContextProvider: FC<ContextProviderProps> = ({
   children,
   webAppContext = {},
   client = new Client(),
