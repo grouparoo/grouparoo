@@ -30,6 +30,7 @@ describe("demo accounts", () => {
       "account_users",
       "demo_accounts",
       "demo_payments",
+      "demo_accounts_queries",
     ]);
 
     const properties = (await Property.findAll()).map((o) => o.id).sort();

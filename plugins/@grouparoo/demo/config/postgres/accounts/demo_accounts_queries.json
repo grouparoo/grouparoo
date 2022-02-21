@@ -1,8 +1,8 @@
 {
   "class": "Source",
-  "id": "plan",
+  "id": "demo_accounts_queries",
   "modelId": "accounts",
-  "name": "Plan",
+  "name": "Accounts Queries",
   "type": "postgres-import-query",
   "appId": "demo_db",
   "options": {}

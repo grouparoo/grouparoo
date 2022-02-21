@@ -1,8 +1,8 @@
 {
   "class": "Source",
-  "id": "ip_address",
+  "id": "demo_users_queries",
   "modelId": "users",
-  "name": "Ip Address",
+  "name": "Users Queries",
   "type": "postgres-import-query",
   "appId": "demo_db",
   "options": {}
