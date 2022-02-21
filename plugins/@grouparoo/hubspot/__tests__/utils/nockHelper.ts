@@ -46,8 +46,8 @@ export const updater = {
         nockEnv.HUBSPOT_OAUTH_REFRESH_TOKEN
       )
       .replace(
-        new RegExp(process.env.GROUPAROO_AUTH_URL, "gi"),
-        "https://auth.grouparoo.com"
+        new RegExp(realEnv.GROUPAROO_AUTH_URL, "gi"),
+        nockEnv.GROUPAROO_AUTH_URL
       );
     return nockCall;
   },
