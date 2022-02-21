@@ -1,9 +1,10 @@
-import { render } from "@testing-library/react";
 import { Client } from "../../../../../../client/client";
 import { ApiContext } from "../../../../../../contexts/api";
+import { GrouparooModelContext } from "../../../../../../contexts/grouparooModel";
 import DataPage, {
   getServerSideProps,
 } from "../../../../../../pages/model/[modelId]/destination/[destinationId]/data";
+import { renderAndWait } from "../../../../../__utils__/renderAndWait";
 
 const destinationId = "test-destination";
 const modelId = "test-model";
@@ -11,9 +12,14 @@ const groupId = "test-group";
 
 jest.mock("next/router", () => {
   return {
-    useRouter: () => ({ query: { destinationId } }),
+    useRouter: () => ({ query: { destinationId }, asPath: "", pathname: "" }),
   };
 });
+
+jest.mock(
+  "../../../../../../components/destination/DestinationSampleRecord",
+  () => () => null
+);
 
 jest.mock("../../../../../../client/client", () => {
   const fakeRequest = () =>
@@ -60,12 +66,14 @@ describe("model destination data page", () => {
         modelId,
       },
     } as any);
-    expect(
-      render(
+
+    const dataPage = await renderAndWait(
+      <GrouparooModelContext.Provider value={{ model: {} }}>
         <ApiContext.Provider value={{ client: new Client() }}>
           <DataPage {...props.props} />
         </ApiContext.Provider>
-      ).container
-    ).toMatchSnapshot();
-  }, 10000);
+      </GrouparooModelContext.Provider>
+    );
+    expect(dataPage.container).toMatchSnapshot();
+  });
 });

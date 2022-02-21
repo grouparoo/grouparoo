@@ -1,25 +1,160 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`model destination data page should render 1`] = `
-<Context.Provider
-  value={
-    Object {
-      "client": Client {
-        "cache": ClientCache {
-          "cache": Object {},
-          "ttl": 5000,
-        },
-        "getRequestContext": [Function],
-      },
-    }
-  }
->
-  <Page
-    props={
-      Object {
-        "hydrationError": "Cannot destructure property 'destinationId' of 'ctx.query' as it is undefined.",
-      }
-    }
-  />
-</Context.Provider>
+<div>
+  <div
+    class="mb-3 media"
+  >
+    <div
+      style="padding: 10px; text-align: center; height: 100px; width: 100px;"
+    >
+      <br />
+      <span
+        class="badge"
+      >
+        <em>
+          no icon
+        </em>
+      </span>
+    </div>
+    <div
+      class="media-body"
+    >
+      <div>
+        <h1
+          class="mr-3"
+          style="display: inline;"
+        >
+          <em>
+            Draft
+          </em>
+        </h1>
+      </div>
+        
+      <span
+        class="badge badge-primary"
+        style="margin-left: 3px; margin-right: 3px; margin-bottom: 20px;"
+      />
+        
+      <span
+        class="badge badge-primary"
+        style="margin-bottom: 20px;"
+      >
+        <span>
+          <a
+            style="color: white;"
+          />
+        </span>
+      </span>
+      
+    </div>
+  </div>
+  <div
+    class="row"
+  >
+    <div
+      class="mb-4 col"
+    >
+      <form
+        class=""
+        id="form"
+      >
+        <fieldset>
+          <div
+            class="row"
+            id="destinationCollection"
+          >
+            <div
+              class="col"
+            >
+              <h5>
+                Who should be sent to
+                 
+                <span
+                  class="text-primary"
+                />
+                ?
+              </h5>
+              <select
+                class="form-control"
+                required=""
+              >
+                <option
+                  value="__none"
+                >
+                  No Model or Group
+                </option>
+                <option
+                  disabled=""
+                >
+                  --- Models ---
+                </option>
+                <option
+                  value="__model"
+                >
+                  All Records in the  Model
+                </option>
+                <option
+                  disabled=""
+                >
+                  --- Groups ---
+                </option>
+              </select>
+            </div>
+          </div>
+          <br />
+          <div
+            class="row"
+            id="destinationData"
+          >
+            <div
+              class="col"
+            >
+              <h5>
+                What data do you want in
+                 
+                <span
+                  class="text-primary"
+                />
+                ?
+              </h5>
+              <br />
+              <div
+                data-screenshotid="destinationRecords"
+              />
+              <br />
+              <div
+                data-screenshotid="destinationGroups"
+              />
+            </div>
+          </div>
+          <div
+            class="row"
+          >
+            <div
+              class="col"
+            >
+              <br />
+              <hr />
+              <button
+                class="btn btn-primary"
+                style="display: inline-flex; align-items: center; justify-content: center;"
+                type="submit"
+              >
+                <span
+                  style="opacity: 1;"
+                >
+                  Save Destination Data
+                </span>
+              </button>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+    <div
+      class="col-xl-5"
+    />
+  </div>
+</div>
 `;
