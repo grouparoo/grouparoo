@@ -401,7 +401,6 @@ const Page: NextPage<Props> = ({
 
       const { properties, examples } =
         await client.request<Actions.PropertiesList>("get", `/properties`, {
-          unique: true,
           includeExamples: true,
           state: "ready",
           modelId: source?.modelId,

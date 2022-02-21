@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 import { UseFormRegister, UseFormWatch } from "react-hook-form";
 import FormInputContainer from "../lib/form/FormInputContainer";
-import { Actions, Models } from "../../utils/apiData";
+import { Models } from "../../utils/apiData";
 import { FormData } from "../../pages/model/[modelId]/source/[sourceId]/edit";
 
 const renderExamples = (exampleText?: string) => (
@@ -84,17 +84,19 @@ const FormMappingSelector: React.FC<Props> = ({
     // Properties rules:
     // Include unique properties in own source if it has the primary key or the primary key has not been defined
     // Otherwise, it's not the primary source and show all properties from other sources
-    return properties.filter((property) =>
-      isPrimaryKeyInSource || !hasPrimaryKeyProperty
-        ? property.sourceId === source.id && property.unique
-        : property.sourceId !== source.id
+    return properties.filter(
+      (property) =>
+        !property.isArray &&
+        (isPrimaryKeyInSource || !hasPrimaryKeyProperty
+          ? property.sourceId === source.id && property.unique
+          : property.sourceId !== source.id)
     );
   }, [source, properties, hasPrimaryKeyProperty]);
 
   const propertyExample = useMemo<string>(
     () =>
       selectedProperty
-        ? propertyExamples[selectedProperty.id].slice(0, 3).join(", ")
+        ? propertyExamples[selectedProperty.id]?.slice(0, 3).join(", ")
         : undefined,
     [propertyExamples, selectedProperty]
   );
