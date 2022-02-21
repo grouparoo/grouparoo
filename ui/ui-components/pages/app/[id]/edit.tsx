@@ -228,9 +228,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
 
               <Form.Group controlId="type">
                 <Form.Label>Type</Form.Label>
-                <Form.Control as="select" value={app.type} disabled>
-                  <option>{app.type}</option>
-                </Form.Control>
+                <Form.Control as="input" value={app.type} disabled />
               </Form.Group>
               <div data-screenshotid="appOptions">
                 {pluginOptions.length > 0 ? (
