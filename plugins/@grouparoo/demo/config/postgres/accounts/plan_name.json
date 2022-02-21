@@ -1,0 +1,13 @@
+{
+  "class": "Property",
+  "id": "plan_name",
+  "type": "string",
+  "key": "planName",
+  "sourceId": "demo_accounts_queries",
+  "unique": false,
+  "isArray": false,
+  "options": {
+    "query": "select demo.plans.name \nfrom demo.\"plans\"\njoin demo.accounts on accounts.plan_id = plans.id\nwhere accounts.id = {{{ accountId }}}"
+  },
+  "filters": []
+}

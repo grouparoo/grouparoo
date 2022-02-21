@@ -1,0 +1,9 @@
+{
+  "class": "Source",
+  "id": "demo_accounts_queries",
+  "modelId": "accounts",
+  "name": "Accounts Queries",
+  "type": "postgres-import-query",
+  "appId": "demo_db",
+  "options": {}
+}

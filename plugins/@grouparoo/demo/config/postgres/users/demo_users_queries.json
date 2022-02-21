@@ -1,0 +1,9 @@
+{
+  "class": "Source",
+  "id": "demo_users_queries",
+  "modelId": "users",
+  "name": "Users Queries",
+  "type": "postgres-import-query",
+  "appId": "demo_db",
+  "options": {}
+}
