@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`model destination data page should render 1`] = `
+<Context.Provider
+  value={
+    Object {
+      "client": Client {
+        "cache": ClientCache {
+          "cache": Object {},
+          "ttl": 5000,
+        },
+        "getRequestContext": [Function],
+      },
+    }
+  }
+>
+  <Page
+    props={
+      Object {
+        "hydrationError": "Cannot destructure property 'destinationId' of 'ctx.query' as it is undefined.",
+      }
+    }
+  />
+</Context.Provider>
+`;
