@@ -388,7 +388,6 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
                                         className="mt-2"
                                         required={opt.required}
                                         type="password"
-                                        disabled
                                         placeholder={opt.placeholder}
                                         name={`options.${opt.key}`}
                                         {...register(`options.${opt.key}`)}
