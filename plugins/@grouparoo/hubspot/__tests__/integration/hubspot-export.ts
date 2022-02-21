@@ -48,7 +48,7 @@ async function deleteUsers() {
         await client.deleteContact(contact.vid);
       }
     } catch (error) {
-      if (!error.toString().match(/Request failed with status code 400/)) {
+      if (!error.toString().match(/Request failed with status code 404/)) {
         throw error;
       }
     }
