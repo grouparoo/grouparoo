@@ -53,7 +53,10 @@ export async function loadSource(
     modelId: configObject.modelId,
   });
 
-  await source.setOptions(extractNonNullParts(configObject, "options"));
+  await source.setOptions(
+    extractNonNullParts(configObject, "options"),
+    externallyValidate
+  );
 
   // a form of testing the options
   if (externallyValidate && (await source.previewAvailable())) {

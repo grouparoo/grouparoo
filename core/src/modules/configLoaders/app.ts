@@ -45,7 +45,7 @@ export async function loadApp(
   });
 
   const options = extractNonNullParts(configObject, "options");
-  if (options) await app.setOptions(options);
+  if (options) await app.setOptions(options, externallyValidate);
 
   if (externallyValidate) {
     const response = await app.test(

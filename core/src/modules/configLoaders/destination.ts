@@ -64,7 +64,7 @@ export async function loadDestination(
   });
 
   const options = extractNonNullParts(configObject, "options");
-  if (options) await destination.setOptions(options);
+  if (options) await destination.setOptions(options, externallyValidate);
 
   let mapping: Record<string, string> = {};
   let destinationGroupMemberships: Record<string, string> = {};

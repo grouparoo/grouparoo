@@ -269,9 +269,12 @@ export class Destination extends CommonModel<Destination> {
     return OptionHelper.getOptions(this, sourceFromEnvironment);
   }
 
-  async setOptions(options: SimpleDestinationOptions) {
+  async setOptions(
+    options: SimpleDestinationOptions,
+    externallyValidate = true
+  ) {
     await this.validateUniqueAppAndOptionsForGroup(options);
-    return OptionHelper.setOptions(this, options);
+    return OptionHelper.setOptions(this, options, externallyValidate);
   }
 
   async afterSetOptions(hasChanges: boolean) {

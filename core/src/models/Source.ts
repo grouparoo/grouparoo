@@ -145,8 +145,8 @@ export class Source extends CommonModel<Source> {
     return OptionHelper.getOptions(this, sourceFromEnvironment);
   }
 
-  async setOptions(options: SimpleSourceOptions) {
-    return OptionHelper.setOptions(this, options);
+  async setOptions(options: SimpleSourceOptions, externallyValidate = true) {
+    return OptionHelper.setOptions(this, options, externallyValidate);
   }
 
   async afterSetOptions(hasChanges: boolean) {

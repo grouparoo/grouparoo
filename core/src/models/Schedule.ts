@@ -151,8 +151,8 @@ export class Schedule extends CommonModel<Schedule> {
     return OptionHelper.getOptions(this, sourceFromEnvironment);
   }
 
-  async setOptions(options: SimpleScheduleOptions) {
-    return OptionHelper.setOptions(this, options);
+  async setOptions(options: SimpleScheduleOptions, externallyValidate = true) {
+    return OptionHelper.setOptions(this, options, externallyValidate);
   }
 
   async afterSetOptions(hasChanges: boolean) {

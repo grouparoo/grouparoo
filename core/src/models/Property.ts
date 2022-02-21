@@ -185,7 +185,11 @@ export class Property extends CommonModel<Property> {
     return options;
   }
 
-  async setOptions(options: SimplePropertyOptions, test = true) {
+  async setOptions(
+    options: SimplePropertyOptions,
+    test = true,
+    externallyValidate = true
+  ) {
     if (test) await this.test(options);
     const source = await SourcesCache.findOneWithCache(this.sourceId);
 
@@ -197,7 +201,7 @@ export class Property extends CommonModel<Property> {
         );
     }
 
-    return OptionHelper.setOptions(this, options);
+    return OptionHelper.setOptions(this, options, externallyValidate);
   }
 
   async afterSetOptions(hasChanges: boolean) {
