@@ -3,7 +3,7 @@
   "id": "plan_name",
   "type": "string",
   "key": "planName",
-  "sourceId": "plan",
+  "sourceId": "demo_accounts_queries",
   "unique": false,
   "isArray": false,
   "options": {

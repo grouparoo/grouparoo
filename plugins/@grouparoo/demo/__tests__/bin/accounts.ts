@@ -29,8 +29,8 @@ describe("demo accounts", () => {
     expect(sources).toEqual([
       "account_users",
       "demo_accounts",
-      "demo_payments",
       "demo_accounts_queries",
+      "demo_payments",
     ]);
 
     const properties = (await Property.findAll()).map((o) => o.id).sort();
@@ -40,6 +40,7 @@ describe("demo accounts", () => {
       "account_value",
       "contact_email",
       "domain",
+      "plan_name",
     ]);
 
     const schedules = (await Schedule.findAll()).map((o) => o.id).sort();

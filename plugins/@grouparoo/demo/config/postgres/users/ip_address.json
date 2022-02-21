@@ -3,7 +3,7 @@
   "id": "ip_address",
   "type": "string",
   "key": "ipAddress",
-  "sourceId": "ip_address",
+  "sourceId": "demo_users_queries",
   "unique": false,
   "isArray": false,
   "options": {

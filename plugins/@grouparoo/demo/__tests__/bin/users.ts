@@ -40,6 +40,7 @@ describe("demo users", () => {
       "email",
       "first_name",
       "full_name",
+      "ip_address",
       "language",
       "last_name",
       "last_purchase_category",
