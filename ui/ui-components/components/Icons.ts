@@ -24,6 +24,7 @@ import {
   faUsers,
   faFlask,
   faFileAlt,
+  faLocationArrow,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { faSlack } from "@fortawesome/free-brands-svg-icons";
@@ -51,5 +52,6 @@ library.add(
   faUser,
   faUsers,
   faFlask,
-  faFileAlt
+  faFileAlt,
+  faLocationArrow
 );

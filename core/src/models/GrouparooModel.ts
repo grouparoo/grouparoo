@@ -28,7 +28,7 @@ import { CommonModel } from "../classes/commonModel";
 import { CLS } from "../modules/cls";
 import { ModelsCache } from "../modules/caches/modelsCache";
 
-export const ModelTypes = ["profile", "account", "custom"] as const;
+export const ModelTypes = ["profile", "account", "event", "custom"] as const;
 export type ModelType = typeof ModelTypes[number];
 
 const STATES = ["ready", "deleted"] as const;
@@ -82,6 +82,8 @@ export class GrouparooModel extends CommonModel<GrouparooModel> {
         return "user";
       case "account":
         return "building";
+      case "event":
+        return "location-arrow";
       case "custom":
         return "database";
       default:
