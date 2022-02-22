@@ -76,7 +76,7 @@ describe("models/destinationsCache", () => {
     test("calling setOptions signals RPC", async () => {
       await makeDestination();
       DestinationsCache.expires = Date.now();
-      await destination.setOptions({ table: "foo" });
+      await destination.setOptions({ table: "users" });
       expect(DestinationsCache.expires).toBe(0);
     });
 

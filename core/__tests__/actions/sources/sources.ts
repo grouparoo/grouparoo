@@ -169,7 +169,9 @@ describe("actions/sources", () => {
           connection
         );
       expect(error).toBeUndefined();
-      expect(options).toEqual({ table: { options: ["users"], type: "list" } });
+      expect(options).toEqual({
+        table: { options: ["users", "admins", "purchases"], type: "list" },
+      });
     });
 
     test("a source with no options will see an empty preview", async () => {
@@ -192,7 +194,7 @@ describe("actions/sources", () => {
       connection.params = {
         csrfToken,
         id,
-        options: { table: "users" },
+        options: { table: "admins" },
       };
       const { error, preview, columnSpeculation } =
         await specHelper.runAction<SourcePreview>("source:preview", connection);
@@ -220,7 +222,7 @@ describe("actions/sources", () => {
       connection.params = {
         csrfToken,
         id,
-        options: { table: "users" },
+        options: { table: "admins" },
       };
       const { error, defaultPropertyOptions } =
         await specHelper.runAction<SourceDefaultPropertyOptions>(
@@ -234,9 +236,32 @@ describe("actions/sources", () => {
           displayName: undefined,
           key: "column",
           options: [
-            { examples: [1, 2, 3], key: "id" },
-            { examples: ["mario", "luigi", "peach"], key: "fname" },
-            { examples: ["mario", "mario", "toadstool"], key: "lname" },
+            { key: "id", examples: [1, 2, 3] },
+            { key: "accountId", examples: [1, 2, 3] },
+            {
+              key: "firstName",
+              examples: ["mario", "luigi", "peach"],
+            },
+            {
+              key: "lastName",
+              examples: ["mario", "mario", "toadstool"],
+            },
+            {
+              key: "email",
+              examples: [
+                "mario@nintendo.com",
+                "luigi@nintendo.com",
+                "peach@nintendo.com",
+              ],
+            },
+            {
+              key: "lastLoginAt",
+              examples: ["2020-01-01", "2020-04-02", "2020-07-24"],
+            },
+            { key: "ltv", examples: [123.45, 100, 0] },
+            { key: "isVIP", examples: [true, false, true] },
+            { key: "purchases", examples: [10, 31, 212] },
+            { key: "purchaseAmounts", examples: [50, 12, 0] },
           ],
           required: true,
           type: "list",
@@ -261,14 +286,14 @@ describe("actions/sources", () => {
       connection.params = {
         csrfToken,
         id,
-        options: { table: "users" },
+        options: { table: "admins" },
       };
       const { error, source } = await specHelper.runAction<SourceEdit>(
         "source:edit",
         connection
       );
       expect(error).toBeUndefined();
-      expect(source.options).toEqual({ table: "users" });
+      expect(source.options).toEqual({ table: "admins" });
       expect(configSpy).toBeCalledTimes(1);
     });
 
@@ -339,7 +364,7 @@ describe("actions/sources", () => {
         connection.params = {
           csrfToken,
           id,
-          options: { table: "users" },
+          options: { table: "admins" },
         };
         const { error, preview, columnSpeculation } =
           await specHelper.runAction<SourcePreview>(

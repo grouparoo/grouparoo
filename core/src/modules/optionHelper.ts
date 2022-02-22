@@ -244,7 +244,8 @@ export namespace OptionHelper {
       throw new Error(`cannot get required options`);
     }
 
-    const optionOptions = externallyValidate
+    // TODO enable
+    const optionOptions = false
       ? await getOptionOptions(instance, options)
       : {};
 

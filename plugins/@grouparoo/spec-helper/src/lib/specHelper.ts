@@ -408,7 +408,10 @@ export namespace helper {
           methods: {
             sourceOptions: async ({ sourceOptions }) => {
               const response: SourceOptionsMethodResponse = {
-                table: { type: "list", options: ["users"] },
+                table: {
+                  type: "list",
+                  options: ["users", "admins", "purchases"],
+                },
               };
               if (sourceOptions.options)
                 response["receivedOptions"] = {
@@ -417,11 +420,40 @@ export namespace helper {
                 };
               return response;
             },
-            sourcePreview: async () => {
-              return [
-                { id: 1, fname: "mario", lname: "mario" },
-                { id: 2, fname: "luigi", lname: "mario" },
-              ];
+            sourcePreview: async ({ sourceOptions }) => {
+              if (sourceOptions.table === "admins")
+                return [
+                  { id: 1, fname: "mario", lname: "mario" },
+                  { id: 2, fname: "luigi", lname: "mario" },
+                ];
+              if (sourceOptions.table === "users")
+                return [
+                  {
+                    id: 1,
+                    accountId: 42,
+                    firstName: "mario",
+                    lastName: "mario",
+                    email: "mario@nintendo.com",
+                    lastLoginAt: "2020-01-02",
+                    ltv: 500,
+                    isVIP: true,
+                    purchases: 123,
+                    purchaseAmounts: 12,
+                  },
+                  {
+                    id: 2,
+                    accountId: 12,
+                    firstName: "luigi",
+                    lastName: "mario",
+                    email: "mario@nintendo.com",
+                    lastLoginAt: "2020-01-02",
+                    ltv: 213,
+                    isVIP: false,
+                    purchases: 18,
+                    purchaseAmounts: 50,
+                  },
+                ];
+              return [];
             },
             propertyOptions: async () => [
               {
@@ -432,8 +464,31 @@ export namespace helper {
                 options: async () => {
                   return [
                     { key: "id", examples: [1, 2, 3] },
-                    { key: "fname", examples: ["mario", "luigi", "peach"] },
-                    { key: "lname", examples: ["mario", "mario", "toadstool"] },
+                    { key: "accountId", examples: [1, 2, 3] },
+                    {
+                      key: "firstName",
+                      examples: ["mario", "luigi", "peach"],
+                    },
+                    {
+                      key: "lastName",
+                      examples: ["mario", "mario", "toadstool"],
+                    },
+                    {
+                      key: "email",
+                      examples: [
+                        "mario@nintendo.com",
+                        "luigi@nintendo.com",
+                        "peach@nintendo.com",
+                      ],
+                    },
+                    {
+                      key: "lastLoginAt",
+                      examples: ["2020-01-01", "2020-04-02", "2020-07-24"],
+                    },
+                    { key: "ltv", examples: [123.45, 100, 0] },
+                    { key: "isVIP", examples: [true, false, true] },
+                    { key: "purchases", examples: [10, 31, 212] },
+                    { key: "purchaseAmounts", examples: [50, 12, 0] },
                   ];
                 },
               },
@@ -468,7 +523,7 @@ export namespace helper {
             ],
             uniquePropertyBootstrapOptions: async () => {
               return {
-                column: "__default_column",
+                column: "id",
               };
             },
             sourceFilters: async () => {
@@ -523,7 +578,10 @@ export namespace helper {
             },
             destinationOptions: async ({ destinationOptions }) => {
               const response: DestinationOptionsMethodResponse = {
-                table: { type: "list", options: ["users_out"] },
+                table: {
+                  type: "list",
+                  options: ["users_out", "users", "groups"],
+                },
               };
               if (destinationOptions.options)
                 response["receivedOptions"] = {

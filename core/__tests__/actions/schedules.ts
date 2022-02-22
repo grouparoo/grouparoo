@@ -59,7 +59,7 @@ describe("actions/schedules", () => {
       });
       //source using default model
       source = await helper.factories.source(null, { modelId: "mod_profiles" });
-      await source.setOptions({ table: "test table" });
+      await source.setOptions({ table: "users" });
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
 
@@ -68,7 +68,7 @@ describe("actions/schedules", () => {
         modelId: otherModel.id,
       });
 
-      await source2.setOptions({ table: "test table2" });
+      await source2.setOptions({ table: "admins" });
       const newProperty = await helper.factories.property(
         source2,
         {

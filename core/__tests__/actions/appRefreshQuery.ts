@@ -62,7 +62,7 @@ describe("actions/appRefreshQuery", () => {
       await app.update({ name: "test app" });
 
       source = await helper.factories.source(app);
-      await source.setOptions({ table: "test table" });
+      await source.setOptions({ table: "users" });
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
 

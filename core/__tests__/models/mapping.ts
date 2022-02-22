@@ -18,7 +18,7 @@ describe("models/mapping", () => {
         appId: app.id,
         modelId: model.id,
       });
-      await source.setOptions({ table: "test table" });
+      await source.setOptions({ table: "users" });
     });
 
     test("a source can have a mapping set", async () => {
@@ -28,14 +28,14 @@ describe("models/mapping", () => {
     });
 
     test("it will memoize mappings as they are set", async () => {
-      await source.setMapping({ foo: "userId" });
+      await source.setMapping({ accountId: "userId" });
       expect(source.mappings.length).toBe(1);
-      expect(source.mappings[0].remoteKey).toBe("foo");
+      expect(source.mappings[0].remoteKey).toBe("accountId");
     });
 
     test("it will use memoized mappings if they exist", async () => {
       const userId = await Property.findOne({ where: { key: "userId" } });
-      await source.setMapping({ foo: "userId" });
+      await source.setMapping({ id: "userId" });
 
       source.mappings = [
         Mapping.build({
@@ -51,14 +51,14 @@ describe("models/mapping", () => {
 
     test("a source cannot have 2 mappings with the same remoteKey", async () => {
       await expect(
-        source.setMapping({ foo: "userId", bar: "userId" })
+        source.setMapping({ email: "userId", accountId: "userId" })
       ).rejects.toThrow(/There is already a Mapping for/);
     });
 
     test("a source cannot have 2 mappings with the same recordId", async () => {
       const userId = await Property.findOne({ where: { key: "userId" } });
 
-      await source.setMapping({ foo: "userId" });
+      await source.setMapping({ accountId: "userId" });
       await expect(
         Mapping.create({
           ownerId: source.id,

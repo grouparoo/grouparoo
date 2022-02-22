@@ -31,7 +31,7 @@ describe("models/schedule", () => {
         appId: app.id,
         modelId: model.id,
       });
-      await source.setOptions({ table: "test table" });
+      await source.setOptions({ table: "users" });
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
     });
