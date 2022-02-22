@@ -238,7 +238,7 @@ describe("hubspot/exportRecord", () => {
       expect(association.map((id) => id.toString())).toEqual([]);
 
       await runExport({
-        destinationOptions: { companyKey },
+        destinationOptions: { companyKey, companyRecordField },
         oldRecordProperties: {
           email,
           firstname: firstName,
@@ -250,7 +250,7 @@ describe("hubspot/exportRecord", () => {
           firstname: firstName,
           lastname: lastName,
           mobilephone: phoneNumber,
-          "Company.domain": company1.domain,
+          website: company1.domain,
         },
         oldGroups: [],
         newGroups: [],
@@ -290,20 +290,20 @@ describe("hubspot/exportRecord", () => {
       );
 
       await runExport({
-        destinationOptions: { companyKey },
+        destinationOptions: { companyKey, companyRecordField },
         oldRecordProperties: {
           email,
           firstname: firstName,
           lastname: lastName,
           mobilephone: phoneNumber,
-          "Company.domain": company1.domain,
+          website: company1.domain,
         },
         newRecordProperties: {
           email,
           firstname: firstName,
           lastname: lastName,
           mobilephone: phoneNumber,
-          "Company.domain": company2.domain,
+          website: company2.domain,
         },
         oldGroups: [],
         newGroups: [],

@@ -84,6 +84,10 @@ describe("hubspot/destinationMappingOptions", () => {
       expect(requiredFieldEmail.key).toBe("email");
       expect(requiredFieldEmail.type).toBe("email");
 
+      const knownFieldWebsite = known.find((f) => f.key === "website"); // website is known,
+      expect(knownFieldWebsite.key).toBe("website");
+      expect(knownFieldWebsite.type).toBe("string");
+
       const knownFieldPhoneNumber = known.find((f) => f.key === "phone");
       expect(knownFieldPhoneNumber.type).toBe("phoneNumber");
       expect(knownFieldPhoneNumber.important).toBe(false);
@@ -100,7 +104,10 @@ describe("hubspot/destinationMappingOptions", () => {
 
     test("can load all destinationMappingOptions giving destination options", async () => {
       const options = await runDestinationMappingOptions({
-        destinationOptions: { companyKey: "domain" },
+        destinationOptions: {
+          companyKey: "domain",
+          companyRecordField: "website",
+        },
       });
       const { properties } = options;
       const { required, known } = properties;
@@ -111,11 +118,9 @@ describe("hubspot/destinationMappingOptions", () => {
       expect(requiredFieldEmail.key).toBe("email");
       expect(requiredFieldEmail.type).toBe("email");
 
-      const requiredFieldDomain = required.find(
-        (f) => f.key === "Company.domain"
-      );
-      expect(requiredFieldDomain.key).toBe("Company.domain");
-      expect(requiredFieldDomain.type).toBe("string");
+      const requiredFieldSite = required.find((f) => f.key === "website"); // now website is required
+      expect(requiredFieldSite.key).toBe("website");
+      expect(requiredFieldSite.type).toBe("string");
 
       const knownFieldPhoneNumber = known.find((f) => f.key === "phone");
       expect(knownFieldPhoneNumber.type).toBe("phoneNumber");

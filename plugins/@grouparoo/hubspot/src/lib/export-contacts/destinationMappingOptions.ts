@@ -13,7 +13,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod =
     const client = await connect(appOptions);
     const required = getRequiredFields();
     const known = await getUserFields(client, appOptions);
-    if (destinationOptions.companyRecordField) {
+    if (destinationOptions?.companyRecordField) {
       let index = -1;
       for (let i = 0; i < known.length; i++) {
         if (known[i].key === destinationOptions.companyRecordField) {
