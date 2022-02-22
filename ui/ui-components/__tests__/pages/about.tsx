@@ -1,17 +1,13 @@
 import { render, screen } from "@testing-library/react";
 import mockAxios from "jest-mock-axios";
-import { Client } from "../../client/client";
-import { ApiContext } from "../../contexts/api";
 import Page from "../../pages/about";
 import commonProps from "../__utils__/commonProps";
+import { TestContextProvider } from "../__utils__/TestContextProvider";
+import { renderWithContext } from "../__utils__/renderWithContext";
 
 describe("pages/about", () => {
   beforeEach(() => {
-    render(
-      <ApiContext.Provider value={{ client: new Client() }}>
-        <Page {...commonProps} plugins={[]} />
-      </ApiContext.Provider>
-    );
+    renderWithContext(<Page {...commonProps} plugins={[]} />);
   });
 
   afterEach(() => {

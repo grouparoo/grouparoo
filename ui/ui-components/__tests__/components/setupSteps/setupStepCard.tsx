@@ -2,6 +2,8 @@ import { act, render, screen } from "@testing-library/react";
 import SetupStepCard from "../../../components/setupSteps/SetupStepCard";
 import { ApiContext } from "../../../contexts/api";
 import { Models } from "../../../utils/apiData";
+import { TestContextProvider } from "../../__utils__/TestContextProvider";
+import { asyncRenderWithContext } from "../../__utils__/renderWithContext";
 
 describe("<setupStepCard />", () => {
   const setupStep: Models.SetupStepType = {
@@ -18,19 +20,14 @@ describe("<setupStepCard />", () => {
     beforeAll(async () => {
       process.env.GROUPAROO_UI_EDITION = "enterprise";
 
-      await act(async () => {
-        render(
-          <ApiContext.Provider
-            value={{
-              client: {
-                request: async () => ({}),
-              } as any,
-            }}
-          >
-            <SetupStepCard setupStep={setupStep} reload={() => {}} />
-          </ApiContext.Provider>
-        );
-      });
+      const client = {
+        request: async () => ({}),
+      } as any;
+
+      await asyncRenderWithContext(
+        <SetupStepCard setupStep={setupStep} reload={() => {}} />,
+        { client }
+      );
     });
 
     it("renders a call to action", async () => {
@@ -43,19 +40,14 @@ describe("<setupStepCard />", () => {
     beforeAll(async () => {
       process.env.GROUPAROO_UI_EDITION = "community";
 
-      await act(async () => {
-        render(
-          <ApiContext.Provider
-            value={{
-              client: {
-                request: async () => ({}),
-              } as any,
-            }}
-          >
-            <SetupStepCard setupStep={setupStep} reload={() => {}} />
-          </ApiContext.Provider>
-        );
-      });
+      const client = {
+        request: async () => ({}),
+      } as any;
+
+      await asyncRenderWithContext(
+        <SetupStepCard setupStep={setupStep} reload={() => {}} />,
+        { client }
+      );
     });
 
     it("does not render a call to action", async () => {

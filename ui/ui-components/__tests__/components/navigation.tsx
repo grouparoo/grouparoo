@@ -4,8 +4,7 @@ import Component from "../../components/Navigation";
 import "../../components/Icons"; // this is needed to load the library
 import commonProps from "../__utils__/commonProps";
 import { WebAppContext } from "../../contexts/webApp";
-import { ApiContext } from "../../contexts/api";
-import { Client } from "../../client/client";
+import { renderWithContext } from "../__utils__/renderWithContext";
 
 const useRouter = jest.spyOn(require("next/router"), "useRouter");
 
@@ -71,13 +70,7 @@ describe("navigation", () => {
   });
 
   test("shows the nav returned from the server", async () => {
-    render(
-      <ApiContext.Provider value={{ client: new Client() }}>
-        <WebAppContext.Provider value={webAppContext}>
-          <Component {...commonProps} />
-        </WebAppContext.Provider>
-      </ApiContext.Provider>
-    );
+    renderWithContext(<Component {...commonProps} />, { webAppContext });
     const navigation = screen.getByTestId("navigation");
     expect(navigation.outerHTML).toContain("<span>Dashboard</span>");
     expect(navigation.outerHTML).toContain("Something Cool</span>");
@@ -89,13 +82,9 @@ describe("navigation", () => {
       pathname: "/",
       asPath: "/model/accounts/overview",
     }));
-    const component = render(
-      <ApiContext.Provider value={{ client: new Client() }}>
-        <WebAppContext.Provider value={webAppContext}>
-          <Component {...commonProps} />
-        </WebAppContext.Provider>
-      </ApiContext.Provider>
-    );
+    const component = renderWithContext(<Component {...commonProps} />, {
+      webAppContext,
+    });
     expect(component.container).toMatchSnapshot();
   });
 
@@ -104,13 +93,9 @@ describe("navigation", () => {
       pathname: "/",
       asPath: "/model/accounts/overview#destinations",
     }));
-    const component = render(
-      <ApiContext.Provider value={{ client: new Client() }}>
-        <WebAppContext.Provider value={webAppContext}>
-          <Component {...commonProps} />
-        </WebAppContext.Provider>
-      </ApiContext.Provider>
-    );
+    const component = renderWithContext(<Component {...commonProps} />, {
+      webAppContext,
+    });
     expect(component.container).toMatchSnapshot();
   });
 });
