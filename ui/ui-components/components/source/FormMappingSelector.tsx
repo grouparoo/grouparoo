@@ -115,7 +115,7 @@ const FormMappingSelector: React.FC<Props> = ({
             as="select"
             required
             disabled={disabled || !previewColumns.length}
-            defaultValue={columnName || previewColumns?.[0] || ""}
+            defaultValue={""}
             {...register("mapping.sourceColumn")}
           >
             <option value={""} disabled>
