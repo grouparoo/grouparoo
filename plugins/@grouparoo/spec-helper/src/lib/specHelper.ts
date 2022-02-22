@@ -231,6 +231,53 @@ export namespace helper {
     return actionhero;
   };
 
+  export const startTestServer = ({
+    port,
+    truncate = false,
+    resetSettings = false,
+    runMode = "cli:start",
+  }: {
+    port: number;
+    truncate?: boolean;
+    resetSettings?: boolean;
+    runMode?: GrouparooRunMode;
+  }) => {
+    let serverProcess: ChildProcessWithoutNullStreams;
+
+    if (truncate || resetSettings) {
+      const dbName = `grouparoo_test-${port}.sqlite`;
+      if (fs.existsSync(dbName)) {
+        fs.unlinkSync(dbName);
+      }
+    }
+
+    const env = {
+      ...process.env,
+      PORT: String(port),
+      WEB_URL: `http://localhost:${port}`,
+      REDIS_URL: "redis://mock",
+      DATABASE_URL: `sqlite://grouparoo_test-${port}.sqlite`,
+      JEST_WORKER_ID: undefined,
+      GROUPAROO_LOG_LEVEL: "info", // relying on the log messages to know when the server is up,
+      GROUPAROO_RUN_MODE: runMode,
+    };
+
+    serverProcess = spawn("./bin/start", [], {
+      cwd: corePath,
+      env,
+    });
+
+    serverProcess.stdout.on("data", (data) => {
+      console.log(String(data));
+    });
+
+    serverProcess.stderr.on("data", (data) => console.log(String(data)));
+
+    serverProcess.on("close", (code) => {
+      console.log(`child process exited with code ${code}`);
+    });
+  };
+
   /**
    * Run a Grouparoo server "for real" in a sub-process
    */

@@ -1,0 +1,4 @@
+{
+  "baseUrl": "http://localhost:3100/",
+  "testFiles": "**/*.spec.ts"
+}
