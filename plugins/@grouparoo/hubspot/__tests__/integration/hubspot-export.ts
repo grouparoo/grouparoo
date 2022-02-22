@@ -200,7 +200,9 @@ describe("integration/runs/hubspot", () => {
       );
     expect(error).toBeUndefined();
     expect(options.companyKey).not.toBe(undefined);
-    expect(options.companyKey.type).toBe("list");
+    expect(options.companyKey.type).toBe("typeahead");
+    expect(options.companyRecordField).not.toBe(undefined);
+    expect(options.companyRecordField.type).toBe("typeahead");
   });
 
   test("we can read the hubspot mapping options", async () => {
