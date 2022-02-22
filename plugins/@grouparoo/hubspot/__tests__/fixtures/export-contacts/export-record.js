@@ -11,6 +11,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       vid: 289601,
       "canonical-vid": 289601,
       "merged-vids": [],
@@ -54,6 +55,12 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       },
       "list-memberships": [],
       "identity-profiles": [
+=======
+      status: "error",
+      message: "contact does not exist",
+      correlationId: "8906487b-3b1f-44e8-ac63-4f69438a8465",
+      errors: [
+>>>>>>> chore: add additional destination option.
         {
           vid: 289601,
           "saved-at-timestamp": 1645124063308,
@@ -77,7 +84,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:14 GMT",
+=======
+      "Tue, 22 Feb 2022 02:07:45 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -85,7 +96,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c0a2e4de720-EWR",
+=======
+      "6e14a9a699c7274f-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -97,11 +112,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "03b19ffa-337a-4854-86a8-204eae119888",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248904",
+=======
+      "8906487b-3b1f-44e8-ac63-4f69438a8465",
+      "X-HubSpot-NotFound",
+      "true",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249798",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
@@ -113,9 +138,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "X-HubSpot-RateLimit-Secondly-Remaining",
       "9",
       "X-Trace",
+<<<<<<< HEAD
       "2B9D15DDC1473920C738CDFB64129D551A5750FCB4000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=QHm%2FnAdfiRuHtCscW1EUNMI8nqpLwXldI5cCIt4fXOC%2FxnTWtJgKnnzngA9AznbNEgUNdQZ%2Bp7tCUlKii%2FHx%2B7Rjan5c7oekQJ5Lc9aQDvLLW8AlxC%2FnMMo7QPbvM%2BbB"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2B0BD6058E198912C1A14940F843CD30AA6D211528000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=K6GbVcBR%2F%2BETFGrxkNlOObcfJh6PA5WC4bEU95DB4sMGLLG6K7NRW24xpQd0Teo5Os0aoDrqx02x9X7Ttn3QWz8oMPRldKuceeKoNufuNPw6rK%2F%2FEq80%2FDL9UhUE3BOv"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -189,7 +220,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     {
       status: "error",
       message: "contact does not exist",
+<<<<<<< HEAD
       correlationId: "678fb2e2-0eb5-47a3-9543-1be9cb25f8ea",
+=======
+      correlationId: "27b797af-1ee8-4f2c-be5f-0031c8b6fefc",
+>>>>>>> chore: add additional destination option.
       errors: [
         {
           message:
@@ -200,7 +235,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:14 GMT",
+=======
+      "Tue, 22 Feb 2022 02:07:46 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -208,7 +247,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c0cda391809-EWR",
+=======
+      "6e14a9a7db8be084-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -220,13 +263,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "678fb2e2-0eb5-47a3-9543-1be9cb25f8ea",
+=======
+      "27b797af-1ee8-4f2c-be5f-0031c8b6fefc",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-NotFound",
       "true",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
+<<<<<<< HEAD
       "248902",
+=======
+      "249797",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
@@ -238,9 +289,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "X-HubSpot-RateLimit-Secondly-Remaining",
       "9",
       "X-Trace",
+<<<<<<< HEAD
       "2B4DF42043EB1D8294C837D22B669E401ED3D2A09B000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=M6vTs2lF6dP35kYgkRZnnz7uzIj7IwdJFrar46hXsd4IpRt5QbQVSd0abhnlnb0uKsxj7mAkkom3bcSxP1cUMAJgEgdOxoUkCXYu%2BG%2BBClDlhxxAywX9t3aDOmw%2BEY9p"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2BBD67110C4185C67525AC03B8D805A994C53A441B000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=sj3rD15qyDLgpPdE32Q9ml%2BTgphJ%2FIEBtZlhZl6NaJnF7RzWrL8kmTj6eadNqUVwiRuH%2FxFp1BuGBwGkpUvtf%2BdOIbkpt47jzxaXbZOH6l3a1sSQnvur98zEIKZq9fCu"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -262,7 +319,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     {
       status: "error",
       message: "contact does not exist",
+<<<<<<< HEAD
       correlationId: "cc784e28-e540-4e01-a0f2-a5eb49b52b9d",
+=======
+      correlationId: "97b4f933-b0c8-4230-b5bf-a56c1f1fccce",
+>>>>>>> chore: add additional destination option.
       errors: [
         {
           message: "The contact e:sandro.arturo@mailinator.com does not exist.",
@@ -272,7 +333,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:15 GMT",
+=======
+      "Tue, 22 Feb 2022 02:07:46 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -280,7 +345,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c0df9f318d0-EWR",
+=======
+      "6e14a9a95b762746-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -292,13 +361,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "cc784e28-e540-4e01-a0f2-a5eb49b52b9d",
+=======
+      "97b4f933-b0c8-4230-b5bf-a56c1f1fccce",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-NotFound",
       "true",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
+<<<<<<< HEAD
       "248901",
+=======
+      "249796",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
@@ -310,9 +387,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "X-HubSpot-RateLimit-Secondly-Remaining",
       "9",
       "X-Trace",
+<<<<<<< HEAD
       "2BD5D936A1E5B6E723AC07ACD247AE9621DEA74BCB000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=jpJTlue5nFE1%2BkQ4zezDRYHUNijGeEMIN7KsvkuMt5yhb7lFECYmeyKdcvRmqFi7mmaWGAarAknT6DYEruMYW%2FnsOgbmDzN9GjQ9fGoicuJOEyNycPBErcn6F08rUg2%2F"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2B170AF0C376F11672E9FAF26DA736F835393C5459000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=5xctqE3Y3apFGIBvRW4Lm2vUGONVPuBhpQRWhAd78rc%2F1gRGI0dMNTZPWFRTEyaDQSWOUD88uaCZ%2Bp6iJHz0KdvBALeVHd82fIjKSqArLezJ1e5GmxmsJi6K6qaYkmMP"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -334,7 +417,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     {
       status: "error",
       message: "contact does not exist",
+<<<<<<< HEAD
       correlationId: "4aa2fb01-16c0-446b-910c-1e4ed24e933f",
+=======
+      correlationId: "cd840412-dff7-4320-946e-063d3366e5a9",
+>>>>>>> chore: add additional destination option.
       errors: [
         {
           message:
@@ -345,7 +432,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:15 GMT",
+=======
+      "Tue, 22 Feb 2022 02:07:46 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -353,7 +444,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c0ebd4f1859-EWR",
+=======
+      "6e14a9aaeab1274f-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -365,13 +460,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "4aa2fb01-16c0-446b-910c-1e4ed24e933f",
+=======
+      "cd840412-dff7-4320-946e-063d3366e5a9",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-NotFound",
       "true",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
+<<<<<<< HEAD
       "248900",
+=======
+      "249795",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
@@ -383,9 +486,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "X-HubSpot-RateLimit-Secondly-Remaining",
       "9",
       "X-Trace",
+<<<<<<< HEAD
       "2B3B00A1760BF96D242FB0B6312E838BA73E6C8B3C000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=xqqK0AUmeIQCNvA0Nl8sV6yKR5%2BKXlBh0pBJxumnDvWYWmgAjkyjhZ%2Fi66EKOeF0P2kggpHTN2p5jSZvs3R4ZB7rrPnEKLci5Rae46J75p%2FHUbDwrD76q0FpbBylbERi"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2BD76A30BC4C979FA44F7B649BFAF5E30FDD6BBB44000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=5WRsnamWsuchx0GwAHRGIIm6Epevi7KsyLxRZJStXjxZxFab%2FwbaTytdWavkbd2lcohRcz037sveFLzorf2fHLhzAUAv9LTqdlnMFYStbSr2lmmfGdJLd1sFE%2Bzy9nh2"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -407,7 +516,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     {
       status: "error",
       message: "contact does not exist",
+<<<<<<< HEAD
       correlationId: "940f9a4d-92c1-46df-8db1-fdef3ef4aab1",
+=======
+      correlationId: "2083da16-6031-4219-b395-b44233083df8",
+>>>>>>> chore: add additional destination option.
       errors: [
         { message: "The contact e:jake.jill@mailinator.com does not exist." },
       ],
@@ -415,7 +528,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:15 GMT",
+=======
+      "Tue, 22 Feb 2022 02:07:46 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -423,7 +540,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c0f8adb8c81-EWR",
+=======
+      "6e14a9acbb88e08e-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -435,13 +556,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "940f9a4d-92c1-46df-8db1-fdef3ef4aab1",
+=======
+      "2083da16-6031-4219-b395-b44233083df8",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-NotFound",
       "true",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
+<<<<<<< HEAD
       "248899",
+=======
+      "249794",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
@@ -453,9 +582,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "X-HubSpot-RateLimit-Secondly-Remaining",
       "9",
       "X-Trace",
+<<<<<<< HEAD
       "2BDDD508CCC860C25431F66BD950A162ED2B4BBF50000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=VrlwDKiHk3IYtaY2w4AKyfXpdiD%2FKQRwAZpBTDLF4csy9LLpycozm%2FlH9OrVtUYHOzccjGdE9yhDQTgBT3%2BIzGR40Iyz4FY7rpAPSru2aPX7zY2D%2FPOq4rU1UjKBmQHn"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2B083EBCEA90FC063AF84CA42E0F876663DD36EC68000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=MAk0QJt3wDOn8GcaTHM5nl9pFxpRoV6cboU6ttlElCYEWOks44tEapy8aJ0wOSy541OpmzX9cgsa%2BmAkzpYUBomwgcnITiMZPjg70rce11WtwocbIG6LKNJaWimnD%2BDr"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -495,6 +630,70 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           teamIds: [],
           dynamic: false,
         },
+<<<<<<< HEAD
+=======
+      ],
+      "has-more": false,
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:07:47 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14a9ae1fea2755-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "e6fca1e8-ce0c-4994-816b-2279a4a1abf3",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249793",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "94",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "9",
+      "X-Trace",
+      "2B855F19DF66DDBD090F0C4B959ED563837414BBB9000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=zbLwgB0ivypz%2BqWresAbJCXKndGpWEhag7BApFW8WvgPyXBRyAIi16KBp0yKIfKHWx%2FCwALCUuFopuAf04tMWkIKnCDSfQZL19xcY1rKxBvqhCMJCnwCeJyWzRkJZq2b"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/lists/static")
+  .query({ count: "999", hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+    {
+      offset: 500,
+      lists: [
+>>>>>>> chore: add additional destination option.
         {
           portalId: 7974676,
           listId: 627,
@@ -517,255 +716,14 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           teamIds: [],
           dynamic: false,
         },
-        {
-          portalId: 7974676,
-          listId: 622,
-          internalListId: 622,
-          createdAt: 1634665347746,
-          updatedAt: 1634665347746,
-          name: "Bought anything at all",
-          listType: "STATIC",
-          filters: [],
-          metaData: {
-            size: 0,
-            lastSizeChangeAt: 1634665476559,
-            processing: "DONE",
-            lastProcessingStateChangeAt: 1634665347951,
-            error: "",
-            listReferencesCount: null,
-            parentFolderId: null,
-          },
-          archived: false,
-          teamIds: [],
-          dynamic: false,
-        },
-        {
-          portalId: 7974676,
-          listId: 562,
-          internalListId: 562,
-          createdAt: 1632402381791,
-          updatedAt: 1632402381791,
-          name: "Cool People",
-          listType: "STATIC",
-          filters: [],
-          metaData: {
-            size: 0,
-            lastSizeChangeAt: 1634665193431,
-            processing: "DONE",
-            lastProcessingStateChangeAt: 1632402381930,
-            error: "",
-            listReferencesCount: null,
-            parentFolderId: null,
-          },
-          archived: false,
-          teamIds: [],
-          dynamic: false,
-        },
-        {
-          portalId: 7974676,
-          listId: 629,
-          internalListId: 629,
-          createdAt: 1644964544670,
-          updatedAt: 1644964544670,
-          name: "Group of 10",
-          listType: "STATIC",
-          filters: [],
-          metaData: {
-            size: 12,
-            lastSizeChangeAt: 1644965397142,
-            processing: "DONE",
-            lastProcessingStateChangeAt: 1644964544826,
-            error: "",
-            listReferencesCount: null,
-            parentFolderId: null,
-          },
-          archived: false,
-          teamIds: [],
-          dynamic: false,
-        },
-        {
-          portalId: 7974676,
-          listId: 628,
-          internalListId: 628,
-          createdAt: 1644353956866,
-          updatedAt: 1644353956866,
-          name: "High LTV Spanish Speakers_campaign001",
-          listType: "STATIC",
-          filters: [],
-          metaData: {
-            size: 31,
-            lastSizeChangeAt: 1644361007859,
-            processing: "DONE",
-            lastProcessingStateChangeAt: 1644353957024,
-            error: "",
-            listReferencesCount: null,
-            parentFolderId: null,
-          },
-          archived: false,
-          teamIds: [],
-          dynamic: false,
-        },
-        {
-          portalId: 7974676,
-          listId: 624,
-          internalListId: 624,
-          createdAt: 1634665348999,
-          updatedAt: 1634665348999,
-          name: "High Value Cusotmers",
-          listType: "STATIC",
-          filters: [],
-          metaData: {
-            size: 0,
-            lastSizeChangeAt: 1634665476551,
-            processing: "DONE",
-            lastProcessingStateChangeAt: 1634665349262,
-            error: "",
-            listReferencesCount: null,
-            parentFolderId: null,
-          },
-          archived: false,
-          teamIds: [],
-          dynamic: false,
-        },
-        {
-          portalId: 7974676,
-          listId: 554,
-          internalListId: 554,
-          createdAt: 1629388529006,
-          updatedAt: 1629388529006,
-          name: "High value customers",
-          listType: "STATIC",
-          filters: [],
-          metaData: {
-            size: 0,
-            lastSizeChangeAt: 1632401940030,
-            processing: "DONE",
-            lastProcessingStateChangeAt: 1629388529229,
-            error: "",
-            listReferencesCount: null,
-            parentFolderId: null,
-          },
-          archived: false,
-          teamIds: [],
-          dynamic: false,
-        },
-        {
-          portalId: 7974676,
-          listId: 630,
-          internalListId: 630,
-          createdAt: 1645024635891,
-          updatedAt: 1645024635891,
-          name: "High Value with Recent Automotive Purchase",
-          listType: "STATIC",
-          authorId: 13534722,
-          filters: [],
-          metaData: {
-            size: 5,
-            lastSizeChangeAt: 1645024659194,
-            processing: "DONE",
-            lastProcessingStateChangeAt: 1645024636106,
-            error: "",
-            listReferencesCount: null,
-            parentFolderId: null,
-          },
-          archived: false,
-          teamIds: [],
-          dynamic: false,
-        },
-        {
-          portalId: 7974676,
-          listId: 623,
-          internalListId: 623,
-          createdAt: 1634665348795,
-          updatedAt: 1634665348795,
-          name: "People who bought Clothing",
-          listType: "STATIC",
-          filters: [],
-          metaData: {
-            size: 0,
-            lastSizeChangeAt: 1634665476557,
-            processing: "DONE",
-            lastProcessingStateChangeAt: 1634665349095,
-            error: "",
-            listReferencesCount: null,
-            parentFolderId: null,
-          },
-          archived: false,
-          teamIds: [],
-          dynamic: false,
-        },
-        {
-          portalId: 7974676,
-          listId: 626,
-          internalListId: 626,
-          createdAt: 1639592812568,
-          updatedAt: 1639592812568,
-          name: "Spanish Speakers",
-          listType: "STATIC",
-          filters: [],
-          metaData: {
-            size: 212,
-            lastSizeChangeAt: 1644965328249,
-            processing: "DONE",
-            lastProcessingStateChangeAt: 1639592812763,
-            error: "",
-            listReferencesCount: null,
-            parentFolderId: null,
-          },
-          archived: false,
-          teamIds: [],
-          dynamic: false,
-        },
-        {
-          portalId: 7974676,
-          listId: 555,
-          internalListId: 555,
-          createdAt: 1629388530006,
-          updatedAt: 1629388530006,
-          name: "Speaks English",
-          listType: "STATIC",
-          filters: [],
-          metaData: {
-            size: 0,
-            lastSizeChangeAt: 1632401940005,
-            processing: "DONE",
-            lastProcessingStateChangeAt: 1629388530207,
-            error: "",
-            listReferencesCount: null,
-            parentFolderId: null,
-          },
-          archived: false,
-          teamIds: [],
-          dynamic: false,
-        },
-        {
-          portalId: 7974676,
-          listId: 556,
-          internalListId: 556,
-          createdAt: 1629388533048,
-          updatedAt: 1629388533048,
-          name: "Speaks Spanish",
-          listType: "STATIC",
-          filters: [],
-          metaData: {
-            size: 0,
-            lastSizeChangeAt: 1632401940035,
-            processing: "DONE",
-            lastProcessingStateChangeAt: 1629388533258,
-            error: "",
-            listReferencesCount: null,
-            parentFolderId: null,
-          },
-          archived: false,
-          teamIds: [],
-          dynamic: false,
-        },
+<<<<<<< HEAD
+=======
       ],
       "has-more": false,
     },
     [
       "Date",
-      "Thu, 17 Feb 2022 18:56:15 GMT",
+      "Tue, 22 Feb 2022 02:07:47 GMT",
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -773,7 +731,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
-      "6df13c105c50330c-EWR",
+      "6e14a9af49732737-FOR",
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -785,11 +743,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
-      "0e93dd97-9118-4fc5-b604-937f49be125a",
+      "4955a60f-5392-4882-9025-d79e0172b354",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
-      "248898",
+      "249792",
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
@@ -801,9 +759,9 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "X-HubSpot-RateLimit-Secondly-Remaining",
       "9",
       "X-Trace",
-      "2B89AB2426F829AD8E92817B4D72A5FCF392EEE08A000000000000000000",
+      "2BF67CCEDFC8CB20684B5E11F1BBBD519B310A7E4E000000000000000000",
       "Report-To",
-      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=KCoQDOfOuGRafazo0aWLHB5pOeKYu7w10Spt15GdYQOkhSWDG039PFnvySx8lJHwiieAFFCOb6y%2FC7Mjyb%2FH2j80IW4hQV14y6AjbKs19NMFhOTtHGRcneGSUDkEoo3a"}],"group":"cf-nel","max_age":604800}',
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=tpMYxB63tm5c7IYslDrcGCBzsNUQSFfDy%2BbkSUSmzP1THvNAeEcWwJQnzl4xJ8KMVr8kYkCIukrfpi26iEzUH8siDM5Lfxr%2BcALS4wrfcYvIBimmvlzTbbstX%2BAX13zE"}],"group":"cf-nel","max_age":604800}',
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -821,50 +779,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     {
       offset: 500,
       lists: [
-        {
-          portalId: 7974676,
-          listId: 625,
-          internalListId: 625,
-          createdAt: 1634679147740,
-          updatedAt: 1634679147740,
-          name: "All Admins",
-          listType: "STATIC",
-          filters: [],
-          metaData: {
-            size: 25,
-            lastSizeChangeAt: 1634679152319,
-            processing: "DONE",
-            lastProcessingStateChangeAt: 1634679147919,
-            error: "",
-            listReferencesCount: null,
-            parentFolderId: null,
-          },
-          archived: false,
-          teamIds: [],
-          dynamic: false,
-        },
-        {
-          portalId: 7974676,
-          listId: 627,
-          internalListId: 627,
-          createdAt: 1644353912852,
-          updatedAt: 1644353912852,
-          name: "All Emails",
-          listType: "STATIC",
-          filters: [],
-          metaData: {
-            size: 988,
-            lastSizeChangeAt: 1644965337100,
-            processing: "DONE",
-            lastProcessingStateChangeAt: 1644353913044,
-            error: "",
-            listReferencesCount: null,
-            parentFolderId: null,
-          },
-          archived: false,
-          teamIds: [],
-          dynamic: false,
-        },
+>>>>>>> chore: add additional destination option.
         {
           portalId: 7974676,
           listId: 622,
@@ -1064,56 +979,14 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           teamIds: [],
           dynamic: false,
         },
-        {
-          portalId: 7974676,
-          listId: 555,
-          internalListId: 555,
-          createdAt: 1629388530006,
-          updatedAt: 1629388530006,
-          name: "Speaks English",
-          listType: "STATIC",
-          filters: [],
-          metaData: {
-            size: 0,
-            lastSizeChangeAt: 1632401940005,
-            processing: "DONE",
-            lastProcessingStateChangeAt: 1629388530207,
-            error: "",
-            listReferencesCount: null,
-            parentFolderId: null,
-          },
-          archived: false,
-          teamIds: [],
-          dynamic: false,
-        },
-        {
-          portalId: 7974676,
-          listId: 556,
-          internalListId: 556,
-          createdAt: 1629388533048,
-          updatedAt: 1629388533048,
-          name: "Speaks Spanish",
-          listType: "STATIC",
-          filters: [],
-          metaData: {
-            size: 0,
-            lastSizeChangeAt: 1632401940035,
-            processing: "DONE",
-            lastProcessingStateChangeAt: 1629388533258,
-            error: "",
-            listReferencesCount: null,
-            parentFolderId: null,
-          },
-          archived: false,
-          teamIds: [],
-          dynamic: false,
-        },
+<<<<<<< HEAD
+=======
       ],
       "has-more": false,
     },
     [
       "Date",
-      "Thu, 17 Feb 2022 18:56:15 GMT",
+      "Tue, 22 Feb 2022 02:07:47 GMT",
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -1121,7 +994,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
-      "6df13c111a1978df-EWR",
+      "6e14a9b0ae242745-FOR",
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -1133,11 +1006,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
-      "1e4b6efc-611a-4228-bde5-45e2d9d8c484",
+      "8b4d19a9-bd37-47f5-b1ae-27d19316da8f",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
-      "248897",
+      "249791",
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
@@ -1149,9 +1022,9 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "X-HubSpot-RateLimit-Secondly-Remaining",
       "9",
       "X-Trace",
-      "2BFA74659A6CFD6D895D3EEDFCA31725CE7DA5EF2A000000000000000000",
+      "2B6610CDB87176A0360A0057CEA9242C6B658E12C8000000000000000000",
       "Report-To",
-      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=KorrgjNFunCV%2BHBfM9R3gsZN2zGL8biWCzHeIuQsUdSKTnsgTC37QMb%2B7Iv6CQzZnuZqft0qsQ92hIzuZ94JltSO5N0W4K6sJi3MbS3dVz2es3y9MSQmfRv46KKPlNh7"}],"group":"cf-nel","max_age":604800}',
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=xRRDG85wwaggpwLLxoArJlt%2BnooXhY9AK95%2BLb%2BHGN49IvrXQqfnPKzGVkJYzqovoUz%2BgE3rbPrndqN9Tit%2FAvY6G8WxYAAfdsHTX9ppgPVb4y8%2BWBfsKNCwzl%2BGmsr5"}],"group":"cf-nel","max_age":604800}',
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -1169,6 +1042,687 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     {
       offset: 500,
       lists: [
+>>>>>>> chore: add additional destination option.
+        {
+          portalId: 7974676,
+          listId: 555,
+          internalListId: 555,
+          createdAt: 1629388530006,
+          updatedAt: 1629388530006,
+          name: "Speaks English",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 0,
+            lastSizeChangeAt: 1632401940005,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1629388530207,
+            error: "",
+            listReferencesCount: null,
+            parentFolderId: null,
+          },
+          archived: false,
+          teamIds: [],
+          dynamic: false,
+        },
+        {
+          portalId: 7974676,
+          listId: 556,
+          internalListId: 556,
+          createdAt: 1629388533048,
+          updatedAt: 1629388533048,
+          name: "Speaks Spanish",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 0,
+            lastSizeChangeAt: 1632401940035,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1629388533258,
+            error: "",
+            listReferencesCount: null,
+            parentFolderId: null,
+          },
+          archived: false,
+          teamIds: [],
+          dynamic: false,
+        },
+      ],
+      "has-more": false,
+    },
+    [
+      "Date",
+<<<<<<< HEAD
+      "Thu, 17 Feb 2022 18:56:15 GMT",
+=======
+      "Tue, 22 Feb 2022 02:07:47 GMT",
+>>>>>>> chore: add additional destination option.
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+<<<<<<< HEAD
+      "6df13c105c50330c-EWR",
+=======
+      "6e14a9b1ebca2746-FOR",
+>>>>>>> chore: add additional destination option.
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
+      "0e93dd97-9118-4fc5-b604-937f49be125a",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "248898",
+=======
+      "4976107d-c5ca-48cf-bdb0-6071891902f4",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249790",
+>>>>>>> chore: add additional destination option.
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "93",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "9",
+      "X-Trace",
+<<<<<<< HEAD
+      "2B89AB2426F829AD8E92817B4D72A5FCF392EEE08A000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=KCoQDOfOuGRafazo0aWLHB5pOeKYu7w10Spt15GdYQOkhSWDG039PFnvySx8lJHwiieAFFCOb6y%2FC7Mjyb%2FH2j80IW4hQV14y6AjbKs19NMFhOTtHGRcneGSUDkEoo3a"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2B5740144A44A508A3957FA55E78C9B669BE2ADED7000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=P%2BpsB3LHZRsi3pay%2BhONda6eIXpUnT1oYvT%2BHNa5TLdqndP0XR6agA9%2BPXq6BifieYBt6ZITpKZkKlZJGrFX%2FVS5UDC%2F0OW%2BosGrXIYhuLZGH8OTY85PFOD7PyUlq1F3"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
+  .get("/contacts/v1/lists/static")
+  .query({ count: "999", hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+=======
+  .post("/crm/v3/objects/COMPANY/search", {
+    filterGroups: [
+      {
+        filters: [
+          {
+            propertyName: "domain",
+            operator: "EQ",
+            value: "bossa.grouparoo.com",
+          },
+        ],
+      },
+      {
+        filters: [
+          {
+            propertyName: "domain",
+            operator: "EQ",
+            value: "samba.grouparoo.com",
+          },
+        ],
+      },
+    ],
+    properties: ["domain"],
+    limit: 100,
+  })
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(200, { total: 0, results: [] }, [
+    "Date",
+    "Tue, 22 Feb 2022 02:07:48 GMT",
+    "Content-Type",
+    "application/json;charset=utf-8",
+    "Content-Length",
+    "24",
+    "Connection",
+    "close",
+    "CF-Ray",
+    "6e14a9b4effdcf9a-FOR",
+    "Strict-Transport-Security",
+    "max-age=31536000; includeSubDomains; preload",
+    "Vary",
+    "Accept-Encoding",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Access-Control-Allow-Credentials",
+    "false",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "X-HubSpot-Correlation-Id",
+    "71364bfb-e02c-41a9-94dc-ee303a5c182b",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249789",
+    "X-Trace",
+    "2BC8F1D238716785AD7A2DFE186FE92CC4D107F662000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=%2F%2BJEXuQIlesZBzSOGT%2FtLr1Bm1VfJ1A6h3P55MfgG5u%2FSYAIXFhhaig4Gm0OC%2B0dsgOEPTLdMlKg9AARS%2F8NiL1xi3sgk%2FRYTCyQow5tBjnI97Zq5OQWS1CP%2ByFS2yWE"}],"group":"cf-nel","max_age":604800}',
+    "NEL",
+    '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+    "Server",
+    "cloudflare",
+    "alt-svc",
+    'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+  ]);
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .post("/crm/v3/objects/COMPANY/batch/create", {
+    inputs: [
+      { properties: { name: "bossa", domain: "bossa.grouparoo.com" } },
+      { properties: { name: "samba", domain: "samba.grouparoo.com" } },
+    ],
+  })
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+>>>>>>> chore: add additional destination option.
+  .once()
+  .reply(
+    200,
+    {
+      offset: 500,
+      lists: [
+        {
+<<<<<<< HEAD
+          portalId: 7974676,
+          listId: 625,
+          internalListId: 625,
+          createdAt: 1634679147740,
+          updatedAt: 1634679147740,
+          name: "All Admins",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 25,
+            lastSizeChangeAt: 1634679152319,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1634679147919,
+            error: "",
+            listReferencesCount: null,
+            parentFolderId: null,
+          },
+=======
+          id: "7977984560",
+          properties: {
+            createdate: "2022-02-22T02:07:48.429Z",
+            domain: "bossa.grouparoo.com",
+            hs_lastmodifieddate: "2022-02-22T02:07:48.429Z",
+            hs_object_id: "7977984560",
+            name: "bossa",
+            website: "bossa.grouparoo.com",
+          },
+          createdAt: "2022-02-22T02:07:48.429Z",
+          updatedAt: "2022-02-22T02:07:48.429Z",
+>>>>>>> chore: add additional destination option.
+          archived: false,
+          teamIds: [],
+          dynamic: false,
+        },
+        {
+<<<<<<< HEAD
+          portalId: 7974676,
+          listId: 627,
+          internalListId: 627,
+          createdAt: 1644353912852,
+          updatedAt: 1644353912852,
+          name: "All Emails",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 988,
+            lastSizeChangeAt: 1644965337100,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1644353913044,
+            error: "",
+            listReferencesCount: null,
+            parentFolderId: null,
+          },
+=======
+          id: "7977984559",
+          properties: {
+            createdate: "2022-02-22T02:07:48.429Z",
+            domain: "samba.grouparoo.com",
+            hs_lastmodifieddate: "2022-02-22T02:07:48.429Z",
+            hs_object_id: "7977984559",
+            name: "samba",
+            website: "samba.grouparoo.com",
+          },
+          createdAt: "2022-02-22T02:07:48.429Z",
+          updatedAt: "2022-02-22T02:07:48.429Z",
+>>>>>>> chore: add additional destination option.
+          archived: false,
+          teamIds: [],
+          dynamic: false,
+        },
+<<<<<<< HEAD
+=======
+      ],
+      startedAt: "2022-02-22T02:07:48.415Z",
+      completedAt: "2022-02-22T02:07:48.490Z",
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:07:48 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14a9b70bcbcf9a-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "a6b5aef8-8f1a-4316-9c96-22dae30562c0",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249788",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "90",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "9",
+      "X-Trace",
+      "2B096BD6D05A4D2BF7F72267ECBC58635B3C56E56C000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=%2B%2BH7%2BogKkXzgLfrM83JfCErGyz3ENZaKHJoLZVYBNuwhQ7Pwf4vnX1U5sj72v8ZoixQdS5m%2BZniQq5QLewdVaJRjrJ3E%2FLvLVjlzpHd8%2FHS8F4Kf8LJ4mKRBFE8ipqI2"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/contact/email/caio.silveira@mailinator.com/profile", {})
+  .query({
+    propertyMode: "value_only",
+    formSubmissionMode: "none",
+    hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded",
+  })
+  .once()
+  .reply(
+    404,
+    {
+      status: "error",
+      message: "contact does not exist",
+      correlationId: "0a59fc44-4754-494b-a763-62a495d331eb",
+      errors: [
+>>>>>>> chore: add additional destination option.
+        {
+          portalId: 7974676,
+          listId: 622,
+          internalListId: 622,
+          createdAt: 1634665347746,
+          updatedAt: 1634665347746,
+          name: "Bought anything at all",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 0,
+            lastSizeChangeAt: 1634665476559,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1634665347951,
+            error: "",
+            listReferencesCount: null,
+            parentFolderId: null,
+          },
+          archived: false,
+          teamIds: [],
+          dynamic: false,
+        },
+        {
+          portalId: 7974676,
+          listId: 562,
+          internalListId: 562,
+          createdAt: 1632402381791,
+          updatedAt: 1632402381791,
+          name: "Cool People",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 0,
+            lastSizeChangeAt: 1634665193431,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1632402381930,
+            error: "",
+            listReferencesCount: null,
+            parentFolderId: null,
+          },
+          archived: false,
+          teamIds: [],
+          dynamic: false,
+        },
+        {
+          portalId: 7974676,
+          listId: 629,
+          internalListId: 629,
+          createdAt: 1644964544670,
+          updatedAt: 1644964544670,
+          name: "Group of 10",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 12,
+            lastSizeChangeAt: 1644965397142,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1644964544826,
+            error: "",
+            listReferencesCount: null,
+            parentFolderId: null,
+          },
+          archived: false,
+          teamIds: [],
+          dynamic: false,
+        },
+        {
+          portalId: 7974676,
+          listId: 628,
+          internalListId: 628,
+          createdAt: 1644353956866,
+          updatedAt: 1644353956866,
+          name: "High LTV Spanish Speakers_campaign001",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 31,
+            lastSizeChangeAt: 1644361007859,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1644353957024,
+            error: "",
+            listReferencesCount: null,
+            parentFolderId: null,
+          },
+          archived: false,
+          teamIds: [],
+          dynamic: false,
+        },
+        {
+          portalId: 7974676,
+          listId: 624,
+          internalListId: 624,
+          createdAt: 1634665348999,
+          updatedAt: 1634665348999,
+          name: "High Value Cusotmers",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 0,
+            lastSizeChangeAt: 1634665476551,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1634665349262,
+            error: "",
+            listReferencesCount: null,
+            parentFolderId: null,
+          },
+          archived: false,
+          teamIds: [],
+          dynamic: false,
+        },
+        {
+          portalId: 7974676,
+          listId: 554,
+          internalListId: 554,
+          createdAt: 1629388529006,
+          updatedAt: 1629388529006,
+          name: "High value customers",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 0,
+            lastSizeChangeAt: 1632401940030,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1629388529229,
+            error: "",
+            listReferencesCount: null,
+            parentFolderId: null,
+          },
+          archived: false,
+          teamIds: [],
+          dynamic: false,
+        },
+        {
+          portalId: 7974676,
+          listId: 630,
+          internalListId: 630,
+          createdAt: 1645024635891,
+          updatedAt: 1645024635891,
+          name: "High Value with Recent Automotive Purchase",
+          listType: "STATIC",
+          authorId: 13534722,
+          filters: [],
+          metaData: {
+            size: 5,
+            lastSizeChangeAt: 1645024659194,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645024636106,
+            error: "",
+            listReferencesCount: null,
+            parentFolderId: null,
+          },
+          archived: false,
+          teamIds: [],
+          dynamic: false,
+        },
+        {
+          portalId: 7974676,
+          listId: 623,
+          internalListId: 623,
+          createdAt: 1634665348795,
+          updatedAt: 1634665348795,
+          name: "People who bought Clothing",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 0,
+            lastSizeChangeAt: 1634665476557,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1634665349095,
+            error: "",
+            listReferencesCount: null,
+            parentFolderId: null,
+          },
+          archived: false,
+          teamIds: [],
+          dynamic: false,
+        },
+        {
+          portalId: 7974676,
+          listId: 626,
+          internalListId: 626,
+          createdAt: 1639592812568,
+          updatedAt: 1639592812568,
+          name: "Spanish Speakers",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 212,
+            lastSizeChangeAt: 1644965328249,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1639592812763,
+            error: "",
+            listReferencesCount: null,
+            parentFolderId: null,
+          },
+          archived: false,
+          teamIds: [],
+          dynamic: false,
+        },
+        {
+          portalId: 7974676,
+          listId: 555,
+          internalListId: 555,
+          createdAt: 1629388530006,
+          updatedAt: 1629388530006,
+          name: "Speaks English",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 0,
+            lastSizeChangeAt: 1632401940005,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1629388530207,
+            error: "",
+            listReferencesCount: null,
+            parentFolderId: null,
+          },
+          archived: false,
+          teamIds: [],
+          dynamic: false,
+        },
+        {
+          portalId: 7974676,
+          listId: 556,
+          internalListId: 556,
+          createdAt: 1629388533048,
+          updatedAt: 1629388533048,
+          name: "Speaks Spanish",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 0,
+            lastSizeChangeAt: 1632401940035,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1629388533258,
+            error: "",
+            listReferencesCount: null,
+            parentFolderId: null,
+          },
+          archived: false,
+          teamIds: [],
+          dynamic: false,
+        },
+      ],
+      "has-more": false,
+    },
+    [
+      "Date",
+<<<<<<< HEAD
+      "Thu, 17 Feb 2022 18:56:15 GMT",
+=======
+      "Tue, 22 Feb 2022 02:07:48 GMT",
+>>>>>>> chore: add additional destination option.
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+<<<<<<< HEAD
+      "6df13c111a1978df-EWR",
+=======
+      "6e14a9b8cd7fcf8a-FOR",
+>>>>>>> chore: add additional destination option.
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
+      "1e4b6efc-611a-4228-bde5-45e2d9d8c484",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "248897",
+=======
+      "0a59fc44-4754-494b-a763-62a495d331eb",
+      "X-HubSpot-NotFound",
+      "true",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249787",
+>>>>>>> chore: add additional destination option.
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "92",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "9",
+      "X-Trace",
+<<<<<<< HEAD
+      "2BFA74659A6CFD6D895D3EEDFCA31725CE7DA5EF2A000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=KorrgjNFunCV%2BHBfM9R3gsZN2zGL8biWCzHeIuQsUdSKTnsgTC37QMb%2B7Iv6CQzZnuZqft0qsQ92hIzuZ94JltSO5N0W4K6sJi3MbS3dVz2es3y9MSQmfRv46KKPlNh7"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2B344564C0F9461CA596A5189DAB18248187D32A04000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=LqzN46DVi6hL1BWd2w6itx4M3893dZ8mmsE4eAWfbmgsh41c4FBWOWn5%2FIvmVBT0mbeQyCvUbtybXL4e%2BA3BLiEdy8%2BtWImicPUpBz3XxG7ZjsrZ%2BLjHR6rgjT%2BzGbDV"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/lists/static")
+  .query({ count: "999", hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+    {
+<<<<<<< HEAD
+      offset: 500,
+      lists: [
+=======
+      status: "error",
+      message: "contact does not exist",
+      correlationId: "7acf4e2c-bf33-4ad5-b318-b424a81d3fcc",
+      errors: [
+>>>>>>> chore: add additional destination option.
         {
           portalId: 7974676,
           listId: 625,
@@ -1191,6 +1745,78 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           teamIds: [],
           dynamic: false,
         },
+<<<<<<< HEAD
+=======
+      ],
+      category: "OBJECT_NOT_FOUND",
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:07:48 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Content-Length",
+      "222",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14a9ba1a94e08e-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "7acf4e2c-bf33-4ad5-b318-b424a81d3fcc",
+      "X-HubSpot-NotFound",
+      "true",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249786",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "88",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "8",
+      "X-Trace",
+      "2B270F7B1917BE4BC3E8CE5EC82D91CC174E7DF048000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=7xML0BNTodioD94w3aWDi8GHaxniCirEkmcPOrZAOTrmsHoKFBkdcWpCxVKWb%2FYKTNXZIbA8xYJ0VrozYu%2BQRBxzh5WB2DrI%2FMQ7%2FdJWknK30I4jBJ0xAPm8HOs9RHrH"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/contact/email/caio.silveira@mailinator.com/profile", {})
+  .query({
+    propertyMode: "value_only",
+    formSubmissionMode: "none",
+    hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded",
+  })
+  .once()
+  .reply(
+    404,
+    {
+      status: "error",
+      message: "contact does not exist",
+      correlationId: "584ef5f6-0e71-4522-af35-c6b1883e1ed4",
+      errors: [
+>>>>>>> chore: add additional destination option.
         {
           portalId: 7974676,
           listId: 627,
@@ -1461,7 +2087,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:15 GMT",
+=======
+      "Tue, 22 Feb 2022 02:07:49 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -1469,7 +2099,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c11fd5d3320-EWR",
+=======
+      "6e14a9bbbb8c274f-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -1481,11 +2115,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "281641ab-7925-4d72-acfe-232792a185f1",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248896",
+=======
+      "584ef5f6-0e71-4522-af35-c6b1883e1ed4",
+      "X-HubSpot-NotFound",
+      "true",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249785",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
@@ -1497,9 +2141,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "X-HubSpot-RateLimit-Secondly-Remaining",
       "9",
       "X-Trace",
+<<<<<<< HEAD
       "2BEBAB8CF25F799095428F3A024238AD1D0768B45E000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=nLi0Tq4e3W36EVlPxZMTB1yq409bkkVYtqCLk%2B258NcP83BJAAGJyQtSanQvg5lFvQJZYykqVLMhCBPFSBOxfRJLnd3I%2Fo9sg1P9S%2BDADqsOxlyRBqMXtMjwxXbLN655"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2B6E402339B44ADC26C7CB14FB3D74B219A3C77269000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=pz7tGHELBHCsdqHzUZHnDslhrdrJevrTD2fWBZS4gys4vg6ukNTYzgH2s1fn4hNUP7Wmk9JDg2C9X5dV1Msi0%2FxdzA7RxBRGR9240L1xl8O6nFHZZnUbbkxqMg346yEw"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -1515,8 +2165,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       offset: 500,
       lists: [
+=======
+      status: "error",
+      message: "contact does not exist",
+      correlationId: "78784d84-6fc7-41c2-8ba5-aa89f651f482",
+      errors: [
+>>>>>>> chore: add additional destination option.
         {
           portalId: 7974676,
           listId: 625,
@@ -1539,6 +2196,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           teamIds: [],
           dynamic: false,
         },
+<<<<<<< HEAD
         {
           portalId: 7974676,
           listId: 627,
@@ -1818,6 +2476,22 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "close",
       "CF-Ray",
       "6df13c12dd810ca1-EWR",
+=======
+      ],
+      category: "OBJECT_NOT_FOUND",
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:07:49 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Content-Length",
+      "222",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14a9becba72745-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -1829,11 +2503,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "6080c1e4-dbd5-4405-b605-311163c35ab7",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248895",
+=======
+      "78784d84-6fc7-41c2-8ba5-aa89f651f482",
+      "X-HubSpot-NotFound",
+      "true",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249784",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
@@ -1845,9 +2529,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "X-HubSpot-RateLimit-Secondly-Remaining",
       "9",
       "X-Trace",
+<<<<<<< HEAD
       "2B471B21D8C8B70238FC8E81F348399AF2B3E88761000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=DEfqxIjE8pPzgf2n7mvaBUy30g86zv3BarHQG7hGou0ueugsnbnOWLyFGV%2FUiYfxMcKV8HFy828VfiKzisdlBY9CTlRy%2FhmQW3U3XtlYu%2BQOM4T2wqkrCPvbzseQj7M1"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2B56859F27E44DA2B5AC195CAFA934E914F3D594F6000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=nir8qp%2BYoZg7ACU3lm9C%2FDAihKd9jvJ7v0AEFQup6FCL%2BhEtXaepf7DWUuYsbyr7Lffmj1K3%2BtYemyd1WNk%2FhMy4mCOvUqkF1P5xEmWMYrcvyayJVLQmpkcxNMKiCRdu"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -1883,6 +2573,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   })
   .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
   .once()
+<<<<<<< HEAD
   .reply(
     200,
     {
@@ -1911,12 +2602,111 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           createdAt: "2022-02-17T18:54:22.300Z",
           updatedAt: "2022-02-17T18:54:25.876Z",
           archived: false,
+=======
+  .reply(200, { vid: 43951, isNew: true }, [
+    "Date",
+    "Tue, 22 Feb 2022 02:07:50 GMT",
+    "Content-Type",
+    "application/json;charset=utf-8",
+    "Content-Length",
+    "26",
+    "Connection",
+    "close",
+    "CF-Ray",
+    "6e14a9c03ea9e08e-FOR",
+    "Strict-Transport-Security",
+    "max-age=31536000; includeSubDomains; preload",
+    "Vary",
+    "Accept-Encoding",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Access-Control-Allow-Credentials",
+    "false",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "X-HubSpot-Correlation-Id",
+    "a6de0871-afb7-44ce-bf5c-ad57e8226251",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249783",
+    "X-HubSpot-RateLimit-Interval-Milliseconds",
+    "10000",
+    "X-HubSpot-RateLimit-Max",
+    "100",
+    "X-HubSpot-RateLimit-Remaining",
+    "85",
+    "X-HubSpot-RateLimit-Secondly",
+    "10",
+    "X-HubSpot-RateLimit-Secondly-Remaining",
+    "8",
+    "X-Trace",
+    "2B7CE00AE82FD7776679293D0357173EC9E4B49AFF000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=jwvwR%2BY%2FnuFE0rCD3LsA%2BJrqj%2BpRM%2Fi3o4CUoAdKrv1DAJue%2F%2FnalgftuRW%2FX3vi2jkiBvQWiU2fX5VB2mXDyirBobUFvxb72cS9XWaZh7NhvwRrbKtU8phgsBJJ5w%2BW"}],"group":"cf-nel","max_age":604800}',
+    "NEL",
+    '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+    "Server",
+    "cloudflare",
+    "alt-svc",
+    'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+  ]);
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/contact/email/caio.silveira@mailinator.com/profile", {})
+  .query({
+    propertyMode: "value_only",
+    formSubmissionMode: "none",
+    hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      vid: 43951,
+      "canonical-vid": 43951,
+      "merged-vids": [],
+      "portal-id": 20858235,
+      "is-contact": true,
+      properties: {
+        hs_is_unworked: { value: "true" },
+        firstname: { value: "Caio" },
+        hs_is_contact: { value: "true" },
+        lastmodifieddate: { value: "1645495669917" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        hs_object_id: { value: "43951" },
+        hs_email_domain: { value: "mailinator.com" },
+        createdate: { value: "1645495669917" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495669917" },
+        lifecyclestage: { value: "subscriber" },
+        email: { value: "caio.silveira@mailinator.com" },
+        hs_all_contact_vids: { value: "43951" },
+      },
+      "list-memberships": [],
+      "identity-profiles": [
+        {
+          vid: 43951,
+          "saved-at-timestamp": 1645495669988,
+          "deleted-changed-timestamp": 0,
+          identities: [
+            {
+              type: "EMAIL",
+              value: "caio.silveira@mailinator.com",
+              timestamp: 1645495669917,
+              "is-primary": true,
+            },
+            {
+              type: "LEAD_GUID",
+              value: "35e4802d-1313-4de6-943b-f7a89f7a8dc2",
+              timestamp: 1645495669983,
+            },
+          ],
         },
       ],
+      "merge-audits": [],
     },
     [
       "Date",
-      "Thu, 17 Feb 2022 18:56:16 GMT",
+      "Tue, 22 Feb 2022 02:07:50 GMT",
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -1924,7 +2714,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
-      "6df13c13bf66f031-EWR",
+      "6e14a9c32c87273d-FOR",
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -1936,6 +2726,120 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+      "af92a02b-e33c-4ff2-bde1-e6587721d9ef",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249782",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "84",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "8",
+      "X-Trace",
+      "2BDA00EB6EECBFC0B38BCAE12EFA3EC9C43D780F75000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=JqmJmWi65x5ULEwlFNeRF2RmGX2NN3U9V%2F2GzE04jmv46XBhLtiB47FdCBSdm5LtIA2DznrlCLDU6u73kl7vFRU%2FLvZTZ%2Bh0cYbCw%2FEvFu8WAEZ2QJ0pd0X8dguWZ1jB"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/contact/email/caio.silveira@mailinator.com/profile", {})
+  .query({
+    propertyMode: "value_only",
+    formSubmissionMode: "none",
+    hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      vid: 43951,
+      "canonical-vid": 43951,
+      "merged-vids": [],
+      "portal-id": 20858235,
+      "is-contact": true,
+      properties: {
+        hs_is_unworked: { value: "true" },
+        firstname: { value: "Caio" },
+        lastmodifieddate: { value: "1645495670805" },
+        num_unique_conversion_events: { value: "0" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645495669917" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495669917" },
+        hs_all_contact_vids: { value: "43951" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        hs_object_id: { value: "43951" },
+        hs_email_domain: { value: "mailinator.com" },
+        lifecyclestage: { value: "subscriber" },
+        email: { value: "caio.silveira@mailinator.com" },
+      },
+      "list-memberships": [],
+      "identity-profiles": [
+        {
+          vid: 43951,
+          "saved-at-timestamp": 1645495669988,
+          "deleted-changed-timestamp": 0,
+          identities: [
+            {
+              type: "EMAIL",
+              value: "caio.silveira@mailinator.com",
+              timestamp: 1645495669917,
+              "is-primary": true,
+            },
+            {
+              type: "LEAD_GUID",
+              value: "35e4802d-1313-4de6-943b-f7a89f7a8dc2",
+              timestamp: 1645495669983,
+            },
+          ],
+>>>>>>> chore: add additional destination option.
+        },
+      ],
+    },
+    [
+      "Date",
+<<<<<<< HEAD
+      "Thu, 17 Feb 2022 18:56:16 GMT",
+=======
+      "Tue, 22 Feb 2022 02:07:51 GMT",
+>>>>>>> chore: add additional destination option.
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+<<<<<<< HEAD
+      "6df13c13bf66f031-EWR",
+=======
+      "6e14a9c50e9e2737-FOR",
+>>>>>>> chore: add additional destination option.
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "c3bbc329-d148-4d53-b3a2-824ec9576aca",
       "X-HubSpot-RateLimit-Daily",
       "250000",
@@ -1945,6 +2849,27 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B27F8B8A12528337AC7EC897E407DCBAF36AFA412000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=h65MB4EHQuxjJrvHDBAmd2p4vyt8Qyz3ZtEL1NgbwKpS90NHRpHfSphLTCaG6jUL5tr69iR%2BK4Ae3D6UBeu0Zsa5iWilNrre7hI56uBFE7F8sMwbWgwNJmSKeVXN%2FiHN"}],"group":"cf-nel","max_age":604800}',
+=======
+      "46afc935-35ec-43d1-976e-f057ddeb321c",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249781",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "83",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "8",
+      "X-Trace",
+      "2B1EECE7B494A7D7EE8FA92BE55BE2292685D14497000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=i7UzXs0ziz86H4daks8PVop75B2afyjpIqQFczgyWEd%2BgHOkNxG%2BIFuLmbeu0JF8Me7wJrBYgiw9FdLBlT%2BMIUt8ksOAAS1AqfFBC9eVC%2FvOT5DRoYUT%2FZqbam1yi4ti"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -1959,6 +2884,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   })
   .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
   .once()
+<<<<<<< HEAD
   .reply(204, "", [
     "Date",
     "Thu, 17 Feb 2022 18:56:16 GMT",
@@ -1966,6 +2892,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "close",
     "CF-Ray",
     "6df13c156a858c63-EWR",
+=======
+  .reply(200, { vid: 43951, isNew: false }, [
+    "Date",
+    "Tue, 22 Feb 2022 02:07:51 GMT",
+    "Content-Type",
+    "application/json;charset=utf-8",
+    "Content-Length",
+    "27",
+    "Connection",
+    "close",
+    "CF-Ray",
+    "6e14a9ca090a2745-FOR",
+>>>>>>> chore: add additional destination option.
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains; preload",
     "CF-Cache-Status",
@@ -1975,25 +2914,43 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
     "c8721c2b-d5c9-4b14-95c2-fb2981fe4c65",
     "X-HubSpot-RateLimit-Daily",
     "250000",
     "X-HubSpot-RateLimit-Daily-Remaining",
     "248893",
+=======
+    "3970a97d-5f19-442a-a37e-a1ed9077583c",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249780",
+>>>>>>> chore: add additional destination option.
     "X-HubSpot-RateLimit-Interval-Milliseconds",
     "10000",
     "X-HubSpot-RateLimit-Max",
     "100",
     "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
     "89",
+=======
+    "82",
+>>>>>>> chore: add additional destination option.
     "X-HubSpot-RateLimit-Secondly",
     "10",
     "X-HubSpot-RateLimit-Secondly-Remaining",
     "8",
     "X-Trace",
+<<<<<<< HEAD
     "2B935FC5048CD432B22EA621D8F9EB8BF6284872C5000000000000000000",
     "Report-To",
     '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=pu0mZTAlL7Fw5eKh%2FW4x6UPfpY8v3eKgNOOp6gconL9X%2BMGjPLLVWT3MDpCY25%2BGmdewuBHdR14WblMgUC8hbA97Zc%2BeP8ujRvQSF7h2aLzdinfmaX4k9VRNuTY8co%2BU"}],"group":"cf-nel","max_age":604800}',
+=======
+    "2B8F786FE91784B8748E098B1BCED102E4BE0E0D83000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=sUpBl2%2FjMWDXMFPko6esCi5JWaYGA%2BoFTcwijPrGWmS43of9pIvklzcnN8bL64qLMCBgR0doQto5E1Ym%2Bx1utf6KdqWRCb%2BdqY5d2KUcR4cSW5RDX96eyUtaV4pc1siO"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
     "NEL",
     '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
     "Server",
@@ -2013,6 +2970,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     201,
     {
+<<<<<<< HEAD
       status: "COMPLETE",
       results: [
         {
@@ -2042,6 +3000,53 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           createdAt: "2022-02-17T18:56:16.511Z",
           updatedAt: "2022-02-17T18:56:16.511Z",
           archived: false,
+=======
+      vid: 43951,
+      "canonical-vid": 43951,
+      "merged-vids": [],
+      "portal-id": 20858235,
+      "is-contact": true,
+      properties: {
+        hs_is_unworked: { value: "true" },
+        firstname: { value: "Caio" },
+        lastmodifieddate: { value: "1645495671452" },
+        num_unique_conversion_events: { value: "0" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645495669917" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495669917" },
+        hs_calculated_mobile_number: { value: "+5583999999999" },
+        lastname: { value: "Silveira" },
+        hs_all_contact_vids: { value: "43951" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        mobilephone: { value: "+5583999999999" },
+        hs_searchable_calculated_mobile_number: { value: "83999999999" },
+        hs_object_id: { value: "43951" },
+        hs_email_domain: { value: "mailinator.com" },
+        lifecyclestage: { value: "subscriber" },
+        email: { value: "caio.silveira@mailinator.com" },
+      },
+      "list-memberships": [],
+      "identity-profiles": [
+        {
+          vid: 43951,
+          "saved-at-timestamp": 1645495669988,
+          "deleted-changed-timestamp": 0,
+          identities: [
+            {
+              type: "EMAIL",
+              value: "caio.silveira@mailinator.com",
+              timestamp: 1645495669917,
+              "is-primary": true,
+            },
+            {
+              type: "LEAD_GUID",
+              value: "35e4802d-1313-4de6-943b-f7a89f7a8dc2",
+              timestamp: 1645495669983,
+            },
+          ],
+>>>>>>> chore: add additional destination option.
         },
       ],
       startedAt: "2022-02-17T18:56:16.496Z",
@@ -2049,7 +3054,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:16 GMT",
+=======
+      "Tue, 22 Feb 2022 02:07:51 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -2057,7 +3066,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c16991d197c-EWR",
+=======
+      "6e14a9cbad68275b-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -2069,25 +3082,43 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "8a3317d2-4aa5-489e-814f-cc6783e043d3",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248892",
+=======
+      "5ae31f7b-838e-4e6e-b36c-a8dd1a36c197",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249779",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "88",
+=======
+      "81",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Secondly",
       "10",
       "X-HubSpot-RateLimit-Secondly-Remaining",
       "8",
       "X-Trace",
+<<<<<<< HEAD
       "2B884BAC11D0FA689FD0AF2EC8DC2B4D944812BB44000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=I0E%2Fvyye4eh%2F2Zk9mE6MNmZGg6Ktd0ZtNnfls3RpNBchfS3k8x3CPcXojE4jwiCr8qhbldLWKXLzffFOj1zWmDs%2F4pW%2F5jlc7c58XxfTSNmoIiAJkeMB%2BQ8EwZTvchZv"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2BB4894F98F46602890C12FE87C6B89B9F9680DF5C000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=RZMg7moEiIXNnenfYUfiKRA8XzpinLWDO6U96xUB%2BSbMI%2FH6Q0PF%2BcidOU1epiq27Vdkv0DusdhLl67T23J9HlSwPHxzJj0dIB5%2BCM26t6TBT7HIhvmqIepDAMfBkEKR"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -2117,6 +3148,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       total: 1,
       results: [
         {
@@ -2130,12 +3162,63 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           createdAt: "2022-02-17T18:56:16.511Z",
           updatedAt: "2022-02-17T18:56:19.243Z",
           archived: false,
+=======
+      vid: 43951,
+      "canonical-vid": 43951,
+      "merged-vids": [],
+      "portal-id": 20858235,
+      "is-contact": true,
+      properties: {
+        hs_is_unworked: { value: "true" },
+        firstname: { value: "Caio" },
+        lastmodifieddate: { value: "1645495671452" },
+        num_unique_conversion_events: { value: "0" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645495669917" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495669917" },
+        hs_calculated_mobile_number: { value: "+5583999999999" },
+        lastname: { value: "Silveira" },
+        hs_all_contact_vids: { value: "43951" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        mobilephone: { value: "+5583999999999" },
+        hs_searchable_calculated_mobile_number: { value: "83999999999" },
+        hs_object_id: { value: "43951" },
+        hs_email_domain: { value: "mailinator.com" },
+        lifecyclestage: { value: "subscriber" },
+        email: { value: "caio.silveira@mailinator.com" },
+      },
+      "list-memberships": [],
+      "identity-profiles": [
+        {
+          vid: 43951,
+          "saved-at-timestamp": 1645495669988,
+          "deleted-changed-timestamp": 0,
+          identities: [
+            {
+              type: "EMAIL",
+              value: "caio.silveira@mailinator.com",
+              timestamp: 1645495669917,
+              "is-primary": true,
+            },
+            {
+              type: "LEAD_GUID",
+              value: "35e4802d-1313-4de6-943b-f7a89f7a8dc2",
+              timestamp: 1645495669983,
+            },
+          ],
+>>>>>>> chore: add additional destination option.
         },
       ],
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:21 GMT",
+=======
+      "Tue, 22 Feb 2022 02:07:52 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -2143,7 +3226,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c375d5b192c-EWR",
+=======
+      "6e14a9cd0de8e084-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -2155,6 +3242,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "b22d8d5b-f48f-4458-a426-b979cfe10bcc",
       "X-HubSpot-RateLimit-Daily",
       "250000",
@@ -2164,6 +3252,27 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B0EA42AF8FF08FD74F823A545897E0A8EE2A35B83000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=26mJtsQAwFRklI%2BxDaiZBzOVgbjd%2F%2BeMuw4v3b0rA2JCy8uxrUPLkCJZqoZ%2BerI2rmZ4HfGZokVnbBsvjaR7dn%2BgDTpjgXfCjE1DfbHBVodFPE8WKE6j1nPHvTSxp27n"}],"group":"cf-nel","max_age":604800}',
+=======
+      "9fa73c62-174b-476a-b05a-dec521dc4e7e",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249778",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "80",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "8",
+      "X-Trace",
+      "2BDA93F320FAA7AEE382E723EE893AF9034DA064EB000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=TUyVRYdlrSzlMXuOc%2BdgU0D8naPZFrnpVcT27FNGXyZC%2BJFe9JUgFkNz%2FY%2BPdcX3zbzluhsWOUOp%2B4oaWZxhf8Z3xkDmbvdnSFvgLx6rnglWFTbvhq5C3hQwXQIP3tg5"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -2173,6 +3282,61 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
+=======
+  .get("/crm-associations/v1/associations/43951/HUBSPOT_DEFINED/1")
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(200, { results: [], hasMore: false, offset: 0 }, [
+    "Date",
+    "Tue, 22 Feb 2022 02:07:52 GMT",
+    "Content-Type",
+    "application/json;charset=utf-8",
+    "Content-Length",
+    "41",
+    "Connection",
+    "close",
+    "CF-Ray",
+    "6e14a9ce5d642743-FOR",
+    "Strict-Transport-Security",
+    "max-age=31536000; includeSubDomains; preload",
+    "Vary",
+    "Accept-Encoding",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Access-Control-Allow-Credentials",
+    "false",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "X-HubSpot-Correlation-Id",
+    "b542c550-201f-41c0-9934-6fd85a4402f8",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249777",
+    "X-HubSpot-RateLimit-Interval-Milliseconds",
+    "10000",
+    "X-HubSpot-RateLimit-Max",
+    "100",
+    "X-HubSpot-RateLimit-Remaining",
+    "79",
+    "X-HubSpot-RateLimit-Secondly",
+    "10",
+    "X-HubSpot-RateLimit-Secondly-Remaining",
+    "7",
+    "X-Trace",
+    "2B5091DEB8299909E7899415EC321473E935237B9C000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=%2BUkgsfc5tCW8wZXZ4g3EL%2F9dWpnfX%2BoOL9Fldy6RuniVna48zC7rDufhqRX5NX92W6kTHkxCweLhlXXj892g%2Fd5de7hqHo149oxhKo5ZkzfLyseh26EFRvDVf%2B6fnO%2Fc"}],"group":"cf-nel","max_age":604800}',
+    "NEL",
+    '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+    "Server",
+    "cloudflare",
+    "alt-svc",
+    'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+  ]);
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+>>>>>>> chore: add additional destination option.
   .get("/contacts/v1/contact/email/caio.silveira@mailinator.com/profile", {})
   .query({
     propertyMode: "value_only",
@@ -2183,19 +3347,71 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     404,
     {
+<<<<<<< HEAD
       status: "error",
       message: "contact does not exist",
       correlationId: "23b1dd37-4fe4-4c63-9428-3aa139a0ed30",
       errors: [
         {
           message: "The contact e:caio.silveira@mailinator.com does not exist.",
+=======
+      vid: 43951,
+      "canonical-vid": 43951,
+      "merged-vids": [],
+      "portal-id": 20858235,
+      "is-contact": true,
+      properties: {
+        hs_is_unworked: { value: "true" },
+        firstname: { value: "Caio" },
+        lastmodifieddate: { value: "1645495671452" },
+        num_unique_conversion_events: { value: "0" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645495669917" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495669917" },
+        hs_calculated_mobile_number: { value: "+5583999999999" },
+        lastname: { value: "Silveira" },
+        hs_all_contact_vids: { value: "43951" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        mobilephone: { value: "+5583999999999" },
+        hs_searchable_calculated_mobile_number: { value: "83999999999" },
+        hs_object_id: { value: "43951" },
+        hs_email_domain: { value: "mailinator.com" },
+        lifecyclestage: { value: "subscriber" },
+        email: { value: "caio.silveira@mailinator.com" },
+      },
+      "list-memberships": [],
+      "identity-profiles": [
+        {
+          vid: 43951,
+          "saved-at-timestamp": 1645495669988,
+          "deleted-changed-timestamp": 0,
+          identities: [
+            {
+              type: "EMAIL",
+              value: "caio.silveira@mailinator.com",
+              timestamp: 1645495669917,
+              "is-primary": true,
+            },
+            {
+              type: "LEAD_GUID",
+              value: "35e4802d-1313-4de6-943b-f7a89f7a8dc2",
+              timestamp: 1645495669983,
+            },
+          ],
+>>>>>>> chore: add additional destination option.
         },
       ],
       category: "OBJECT_NOT_FOUND",
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:21 GMT",
+=======
+      "Tue, 22 Feb 2022 02:07:52 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -2203,7 +3419,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c384b3de714-EWR",
+=======
+      "6e14a9d2dc32273d-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -2215,6 +3435,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "23b1dd37-4fe4-4c63-9428-3aa139a0ed30",
       "X-HubSpot-NotFound",
       "true",
@@ -2222,20 +3443,37 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248890",
+=======
+      "1856cb29-5e24-4601-8ff7-f31c484f394b",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249776",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "87",
+=======
+      "78",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Secondly",
       "10",
       "X-HubSpot-RateLimit-Secondly-Remaining",
-      "8",
+      "7",
       "X-Trace",
+<<<<<<< HEAD
       "2BDFFA92F8D996C12D42088E2636A718346894D384000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=uQZNryYaR0QRsjHbzhCUsHzuwWzoSNSCTng%2FcOfD6wmbZIEAZKmL5pKBVSHZGQNs3hcVL6Ydovzbqoz%2FacFCih4mi3gR3CQTZT3YxJJhtB45xoodtSwtwOKezPO6XlGe"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2B803FAA550F416D35F4AEDD9475F797D0BD319D21000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=r%2F%2FmJwQXUNPvrzlEJBZYrkDIRsyUP%2FmwY%2Fi3UtuxdeKTNpqYfqibfV56rCox%2BaihFdjzFWlHbIIobH2lJsZbD7twZRLRJRJfNewrRVb5IgNb%2FdNqkglrFwOqkAzuRjuQ"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -2245,11 +3483,91 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
   .get("/contacts/v1/contact/email/caio.silveira@mailinator.com/profile", {})
   .query({
     propertyMode: "value_only",
     formSubmissionMode: "none",
     hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded",
+=======
+  .post(
+    "/contacts/v1/contact/createOrUpdate/email/caio.silveira@mailinator.com/",
+    {
+      properties: [
+        { property: "email", value: "caio.silveira@mailinator.com" },
+        { property: "firstname", value: "Caio" },
+        { property: "lastname", value: "Silveira" },
+        { property: "mobilephone", value: "+5583999999999" },
+        { property: "website", value: "bossa.grouparoo.com" },
+      ],
+    }
+  )
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(200, { vid: 43951, isNew: false }, [
+    "Date",
+    "Tue, 22 Feb 2022 02:07:53 GMT",
+    "Content-Type",
+    "application/json;charset=utf-8",
+    "Content-Length",
+    "27",
+    "Connection",
+    "close",
+    "CF-Ray",
+    "6e14a9d42eba273d-FOR",
+    "Strict-Transport-Security",
+    "max-age=31536000; includeSubDomains; preload",
+    "Vary",
+    "Accept-Encoding",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Access-Control-Allow-Credentials",
+    "false",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "X-HubSpot-Correlation-Id",
+    "70395b95-ee78-4780-96f0-5b0f24296ada",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249775",
+    "X-HubSpot-RateLimit-Interval-Milliseconds",
+    "10000",
+    "X-HubSpot-RateLimit-Max",
+    "100",
+    "X-HubSpot-RateLimit-Remaining",
+    "77",
+    "X-HubSpot-RateLimit-Secondly",
+    "10",
+    "X-HubSpot-RateLimit-Secondly-Remaining",
+    "7",
+    "X-Trace",
+    "2BFD136B5C9CC601EB15AD740003E781FC52B817C1000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=Ta6lYOsgjVxxXvn1x7lDT8yox%2BB0sDWHmbuaPUkSbpgFQLpvk1zlcLzws07HDw1TmGa76tP9VBpa1kJob55v%2FYxRzGsXZpkR4hrkd1nPpSN9DgKVNxPiOImV3meC9vEL"}],"group":"cf-nel","max_age":604800}',
+    "NEL",
+    '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+    "Server",
+    "cloudflare",
+    "alt-svc",
+    'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+  ]);
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .post("/crm/v3/objects/COMPANY/search", {
+    filterGroups: [
+      {
+        filters: [
+          {
+            propertyName: "domain",
+            operator: "EQ",
+            value: "bossa.grouparoo.com",
+          },
+        ],
+      },
+    ],
+    properties: ["domain"],
+    limit: 100,
+>>>>>>> chore: add additional destination option.
   })
   .once()
   .reply(
@@ -2260,14 +3578,31 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       correlationId: "3315bb53-008c-43c9-8dd0-66feb106d5f0",
       errors: [
         {
+<<<<<<< HEAD
           message: "The contact e:caio.silveira@mailinator.com does not exist.",
+=======
+          id: "7977984560",
+          properties: {
+            createdate: "2022-02-22T02:07:48.429Z",
+            domain: "bossa.grouparoo.com",
+            hs_lastmodifieddate: "2022-02-22T02:07:51.126Z",
+            hs_object_id: "7977984560",
+          },
+          createdAt: "2022-02-22T02:07:48.429Z",
+          updatedAt: "2022-02-22T02:07:51.126Z",
+          archived: false,
+>>>>>>> chore: add additional destination option.
         },
       ],
       category: "OBJECT_NOT_FOUND",
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:22 GMT",
+=======
+      "Tue, 22 Feb 2022 02:07:53 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -2275,7 +3610,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c39ae07333c-EWR",
+=======
+      "6e14a9d60f1c2745-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -2287,6 +3626,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "3315bb53-008c-43c9-8dd0-66feb106d5f0",
       "X-HubSpot-NotFound",
       "true",
@@ -2308,6 +3648,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B2E6D97065640412964830FF639933B00418A0B27000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=S%2FkkYPRj0wYfaENXb5b0rabe0WunQu%2BzRPxEHyDf%2FVrisMbQNk4dCsQwj63RrUR4vX2vGCvBA61FTcRlY823QMXtop%2BOmaaHd2ALzG40fGaPP6U8FWIHobm1SYXHT%2Bay"}],"group":"cf-nel","max_age":604800}',
+=======
+      "955dea91-52b7-4421-a470-de9e6f3a59bb",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249774",
+      "X-Trace",
+      "2B32B060BC6E1A4D458A6FE5B40369E270E0CA203B000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=hAnmFoeEoMDIsv0XK1wfPxnQha%2Bkc5c7OhkfLQFPWW8THtoX%2BT5KaRT%2FcKl%2Flf0e%2BVpcbIQQ9vnplPmJV2j48EyBFBAClsEVSSVHmAVQRYD3TNtng62Vaiu3vBK8NlgE"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -2317,6 +3668,60 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
+=======
+  .put("/crm-associations/v1/associations", {
+    fromObjectId: 43951,
+    toObjectId: "7977984560",
+    category: "HUBSPOT_DEFINED",
+    definitionId: 1,
+  })
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Tue, 22 Feb 2022 02:07:54 GMT",
+    "Connection",
+    "close",
+    "CF-Ray",
+    "6e14a9da9bebe084-FOR",
+    "Strict-Transport-Security",
+    "max-age=31536000; includeSubDomains; preload",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Access-Control-Allow-Credentials",
+    "false",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "X-HubSpot-Correlation-Id",
+    "cba01b8a-ea47-4ce0-aa18-17c13a6b6f54",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249773",
+    "X-HubSpot-RateLimit-Interval-Milliseconds",
+    "10000",
+    "X-HubSpot-RateLimit-Max",
+    "100",
+    "X-HubSpot-RateLimit-Remaining",
+    "76",
+    "X-HubSpot-RateLimit-Secondly",
+    "10",
+    "X-HubSpot-RateLimit-Secondly-Remaining",
+    "7",
+    "X-Trace",
+    "2BB897A6A1E6BB5A4F0B281595B5EA50E6A484CE39000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=PIcNZ3XRQJ4JZK9fmHo2ORtk3u9AnoH1TdpLjqrFX65%2FH0upHID55KS7Fmvs4SpaY1yjWVLp%2FzQbeXPp0DEj1Wobh94PQ4W0ZNgZhz41rxlLI6QUaRirOSO1EbpAkEbw"}],"group":"cf-nel","max_age":604800}',
+    "NEL",
+    '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+    "Server",
+    "cloudflare",
+    "alt-svc",
+    'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+  ]);
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+>>>>>>> chore: add additional destination option.
   .get("/contacts/v1/contact/email/caio.silveira@mailinator.com/profile", {})
   .query({
     propertyMode: "value_only",
@@ -2327,19 +3732,72 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     404,
     {
+<<<<<<< HEAD
       status: "error",
       message: "contact does not exist",
       correlationId: "45a0e454-de17-4224-a94d-1dcbb756fddb",
       errors: [
         {
           message: "The contact e:caio.silveira@mailinator.com does not exist.",
+=======
+      vid: 43951,
+      "canonical-vid": 43951,
+      "merged-vids": [],
+      "portal-id": 20858235,
+      "is-contact": true,
+      properties: {
+        hs_is_unworked: { value: "true" },
+        website: { value: "http://bossa.grouparoo.com" },
+        firstname: { value: "Caio" },
+        lastmodifieddate: { value: "1645495673106" },
+        num_unique_conversion_events: { value: "0" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645495669917" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495669917" },
+        hs_calculated_mobile_number: { value: "+5583999999999" },
+        lastname: { value: "Silveira" },
+        hs_all_contact_vids: { value: "43951" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        mobilephone: { value: "+5583999999999" },
+        hs_searchable_calculated_mobile_number: { value: "83999999999" },
+        hs_object_id: { value: "43951" },
+        hs_email_domain: { value: "mailinator.com" },
+        lifecyclestage: { value: "subscriber" },
+        email: { value: "caio.silveira@mailinator.com" },
+      },
+      "list-memberships": [],
+      "identity-profiles": [
+        {
+          vid: 43951,
+          "saved-at-timestamp": 1645495669988,
+          "deleted-changed-timestamp": 0,
+          identities: [
+            {
+              type: "EMAIL",
+              value: "caio.silveira@mailinator.com",
+              timestamp: 1645495669917,
+              "is-primary": true,
+            },
+            {
+              type: "LEAD_GUID",
+              value: "35e4802d-1313-4de6-943b-f7a89f7a8dc2",
+              timestamp: 1645495669983,
+            },
+          ],
+>>>>>>> chore: add additional destination option.
         },
       ],
       category: "OBJECT_NOT_FOUND",
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:22 GMT",
+=======
+      "Tue, 22 Feb 2022 02:07:54 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -2347,7 +3805,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c3b1cc21978-EWR",
+=======
+      "6e14a9dcfd4b2743-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -2359,6 +3821,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "45a0e454-de17-4224-a94d-1dcbb756fddb",
       "X-HubSpot-NotFound",
       "true",
@@ -2366,20 +3829,33 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248888",
+=======
+      "3d1ab7c4-d33d-492e-9d8f-addcd7307c66",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249772",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
-      "85",
+      "75",
       "X-HubSpot-RateLimit-Secondly",
       "10",
       "X-HubSpot-RateLimit-Secondly-Remaining",
-      "8",
+      "7",
       "X-Trace",
+<<<<<<< HEAD
       "2B55074C8F166E2FDAB15E407E61B5CE4B4883C2AC000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=vSSrB4TpW5iOMItj7xjGF65HHSrj8lQb8aUbfbq%2BFz4RU2llPovrCxLH91dz%2F7fTw8huXfxO6XWT4TtAkDB5HUUMvI0SfzVxKeuPGVfFwkfCIjisEoyKz1So7myv6ZNN"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2BCE9675D66D4A1F468ED176B33E7ADF089F5843FB000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=38QNFOCOlf8HxXn4y5s39Jxpere3cLlxT4LvI9X2jZ6i447zHCh6iUlP2dQgPYwIZkTupox9vx9NQWHPY8Mfegl1ds5BzHh%2BWYuKpF%2F665wUCldsMoA4TqRBqoM814XU"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -2404,14 +3880,31 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       correlationId: "b4ebe14a-2a7e-4afc-bcb2-9fa748156c9e",
       errors: [
         {
+<<<<<<< HEAD
           message: "The contact e:caio.silveira@mailinator.com does not exist.",
+=======
+          id: "7977984560",
+          properties: {
+            createdate: "2022-02-22T02:07:48.429Z",
+            domain: "bossa.grouparoo.com",
+            hs_lastmodifieddate: "2022-02-22T02:07:51.126Z",
+            hs_object_id: "7977984560",
+          },
+          createdAt: "2022-02-22T02:07:48.429Z",
+          updatedAt: "2022-02-22T02:07:51.126Z",
+          archived: false,
+>>>>>>> chore: add additional destination option.
         },
       ],
       category: "OBJECT_NOT_FOUND",
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:22 GMT",
+=======
+      "Tue, 22 Feb 2022 02:07:54 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -2419,7 +3912,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c3bc82d1819-EWR",
+=======
+      "6e14a9de3f3e2746-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -2431,6 +3928,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "b4ebe14a-2a7e-4afc-bcb2-9fa748156c9e",
       "X-HubSpot-NotFound",
       "true",
@@ -2452,6 +3950,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2BC9E0EBFA9194704B526945BA3E0EBAA5BB0625EB000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=XFmF8AgOqw4rYl3Btxp8jl0kEuPTdcGmh%2B0IQGADbt6a35NdZVXDC4uA%2Bq%2FE21LguyoxQmT%2Bj0Nf6XYeQxh1aqJi%2FtiSzZ4GnwA6fbGRD174yfVg4c6f%2BI7t531Xx7c6"}],"group":"cf-nel","max_age":604800}',
+=======
+      "7ba67532-6a7e-4e81-bb56-2f93269f269f",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249771",
+      "X-Trace",
+      "2B17CBD2A9BD8E31FB9E03D07297651E8F9AA10F96000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=uDJGCRqRfWOwwm1os7hobTIDJLzc0rjHJbqd8sTZYIt6sb4INBeR6nF54zrX%2BezliZrfLYLej%2BMTn1ahrzREx4XiilUpbiy3YImFQmwFwCddLMrfaTqCdL4HNF2TwwGR"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -2461,6 +3970,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
   .post(
     "/contacts/v1/contact/createOrUpdate/email/caio.silveira@mailinator.com/",
     {
@@ -2475,6 +3985,14 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(200, { vid: 289651, isNew: true }, [
     "Date",
     "Thu, 17 Feb 2022 18:56:22 GMT",
+=======
+  .get("/crm-associations/v1/associations/43951/HUBSPOT_DEFINED/1")
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(200, { results: [7977984560], hasMore: false, offset: 7977984560 }, [
+    "Date",
+    "Tue, 22 Feb 2022 02:07:55 GMT",
+>>>>>>> chore: add additional destination option.
     "Content-Type",
     "application/json;charset=utf-8",
     "Content-Length",
@@ -2482,7 +4000,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "CF-Ray",
+<<<<<<< HEAD
     "6df13c3dad7f8c90-EWR",
+=======
+    "6e14a9dfec14e084-FOR",
+>>>>>>> chore: add additional destination option.
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains; preload",
     "Vary",
@@ -2494,16 +4016,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
     "5ae7ed19-2032-4fb5-a6c5-3a67240f6cb3",
     "X-HubSpot-RateLimit-Daily",
     "250000",
     "X-HubSpot-RateLimit-Daily-Remaining",
     "248886",
+=======
+    "4ad5c786-010c-457f-a9de-ad264b629b99",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249770",
+>>>>>>> chore: add additional destination option.
     "X-HubSpot-RateLimit-Interval-Milliseconds",
     "10000",
     "X-HubSpot-RateLimit-Max",
     "100",
     "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
     "83",
     "X-HubSpot-RateLimit-Secondly",
     "10",
@@ -2513,6 +4044,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "2BF4826B726A11FE93A416C6D6423A669433A11A27000000000000000000",
     "Report-To",
     '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=z2PUQ5SB%2FJBj5i8u%2FPXgDu7Llia2A4NdVRPzf%2FroPD5PNsLEcV8%2BAkqxTwCSGMpbmTaH0KetqITUbrrB7DxL%2Bsqe8t16I4EkDUJ4UqPDLHUSWe4fRbTnWZUNxu9KPxqr"}],"group":"cf-nel","max_age":604800}',
+=======
+    "74",
+    "X-HubSpot-RateLimit-Secondly",
+    "10",
+    "X-HubSpot-RateLimit-Secondly-Remaining",
+    "7",
+    "X-Trace",
+    "2B9FE408A3E5DC061110256F52FE587361A979A3D8000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=Fo9XxFKZlyXugti3qZNPzxTsfEEpNNkdL%2B0R%2BzaLoJEwUaMQTJ2IT6S2CkS%2Br6vEX1B0Tw92B55Xaoekb11%2BxlBV6hImYczBdDgLQTphD0hbX%2FE83v0iqGeEcssSUjy2"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
     "NEL",
     '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
     "Server",
@@ -2531,18 +4073,43 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       vid: 289651,
       "canonical-vid": 289651,
+=======
+      vid: 43951,
+      "canonical-vid": 43951,
+>>>>>>> chore: add additional destination option.
       "merged-vids": [],
       "portal-id": 7974676,
       "is-contact": true,
       properties: {
         hs_is_unworked: { value: "true" },
+<<<<<<< HEAD
         firstname: { value: "Caio" },
         hs_is_contact: { value: "true" },
         lastmodifieddate: { value: "1645124182719" },
         hs_pipeline: { value: "contacts-lifecycle-pipeline" },
         hs_object_id: { value: "289651" },
+=======
+        website: { value: "http://bossa.grouparoo.com" },
+        firstname: { value: "Caio" },
+        associatedcompanyid: { value: "7977984560" },
+        lastmodifieddate: { value: "1645495674712" },
+        num_unique_conversion_events: { value: "0" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645495669917" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495669917" },
+        hs_calculated_mobile_number: { value: "+5583999999999" },
+        lastname: { value: "Silveira" },
+        hs_all_contact_vids: { value: "43951" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        mobilephone: { value: "+5583999999999" },
+        hs_searchable_calculated_mobile_number: { value: "83999999999" },
+        hs_object_id: { value: "43951" },
+>>>>>>> chore: add additional destination option.
         hs_email_domain: { value: "mailinator.com" },
         createdate: { value: "1645124182719" },
         hs_lifecyclestage_subscriber_date: { value: "1645124182719" },
@@ -2553,29 +4120,93 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "list-memberships": [],
       "identity-profiles": [
         {
+<<<<<<< HEAD
           vid: 289651,
           "saved-at-timestamp": 1645124182773,
+=======
+          vid: 43951,
+          "saved-at-timestamp": 1645495669988,
+>>>>>>> chore: add additional destination option.
           "deleted-changed-timestamp": 0,
           identities: [
             {
               type: "EMAIL",
               value: "caio.silveira@mailinator.com",
+<<<<<<< HEAD
               timestamp: 1645124182718,
+=======
+              timestamp: 1645495669917,
+>>>>>>> chore: add additional destination option.
               "is-primary": true,
             },
             {
               type: "LEAD_GUID",
+<<<<<<< HEAD
               value: "7a4c414e-69d9-4aa5-9a81-dec51e999f27",
               timestamp: 1645124182768,
+=======
+              value: "35e4802d-1313-4de6-943b-f7a89f7a8dc2",
+              timestamp: 1645495669983,
+>>>>>>> chore: add additional destination option.
             },
           ],
         },
       ],
       "merge-audits": [],
+<<<<<<< HEAD
     },
     [
       "Date",
       "Thu, 17 Feb 2022 18:56:23 GMT",
+=======
+      "associated-company": {
+        "company-id": 7977984560,
+        "portal-id": 20858235,
+        properties: {
+          country: { value: "United States" },
+          num_associated_contacts: { value: "1" },
+          timezone: { value: "America/Los_Angeles" },
+          createdate: { value: "1645495668429" },
+          description: {
+            value:
+              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
+          },
+          hs_num_blockers: { value: "0" },
+          web_technologies: {
+            value:
+              "slack;google_tag_manager;google_analytics;twitter_button;lever;google_apps",
+          },
+          numberofemployees: { value: "10" },
+          linkedin_company_page: {
+            value: "https://www.linkedin.com/company/grouparoo",
+          },
+          founded_year: { value: "2019" },
+          state: { value: "CA" },
+          linkedinbio: {
+            value:
+              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
+          },
+          hs_num_open_deals: { value: "0" },
+          website: { value: "bossa.grouparoo.com" },
+          first_contact_createdate: { value: "1645495669917" },
+          twitterhandle: { value: "grouparoo" },
+          hs_target_account_probability: { value: "0.4076234698295593" },
+          hs_lastmodifieddate: { value: "1645495674664" },
+          hs_num_decision_makers: { value: "0" },
+          num_conversion_events: { value: "0" },
+          domain: { value: "bossa.grouparoo.com" },
+          hs_num_child_companies: { value: "0" },
+          hs_num_contacts_with_buying_roles: { value: "0" },
+          hs_object_id: { value: "7977984560" },
+          is_public: { value: "false" },
+          name: { value: "bossa" },
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:07:55 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -2583,7 +4214,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c3fed7a18bc-EWR",
+=======
+      "6e14a9e14b4ecf96-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -2595,16 +4230,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "fe5f28c1-37d9-47b7-9669-537de1d0bb92",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248885",
+=======
+      "a7636d76-6368-488e-a7b0-9347de9cb8d9",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249769",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "82",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -2614,6 +4258,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2BAD49E71052AEFBBE8088979D68CB80FF45014C4B000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=DK0iaXTV4RbtW3ofwzyCqYdhibbxGPWXm1dXZR%2FyJO%2BzTZdr%2Bcmm8uTw5IsYVbYiE31QlbsRec30LKtrQpCi9%2F5CV%2BHwsptRrhiahIsHndN6I9ppEw%2BV8CC1iB1iPC4J"}],"group":"cf-nel","max_age":604800}',
+=======
+      "74",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2B5DE9393B663B117ECD05B74D9312BDDCCBC6DBF2000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=bHH6a5bBmC1PKhFPDAPUIMY%2B%2BJtlOjypY3GucxpeBKxdPDOanx4HBU%2Fo5C8rvPb0ywXyn%2BHXRkhlAXzrhEoUMppB80ACNu2M4vrOLvpzpRtsmT1qa5xxrjlJgDOgAWyN"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -2655,6 +4310,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "list-memberships": [],
       "identity-profiles": [
         {
+<<<<<<< HEAD
           vid: 289651,
           "saved-at-timestamp": 1645124182773,
           "deleted-changed-timestamp": 0,
@@ -2671,13 +4327,29 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
               timestamp: 1645124182768,
             },
           ],
+=======
+          id: "7977984560",
+          properties: {
+            createdate: "2022-02-22T02:07:48.429Z",
+            domain: "bossa.grouparoo.com",
+            hs_lastmodifieddate: "2022-02-22T02:07:54.664Z",
+            hs_object_id: "7977984560",
+          },
+          createdAt: "2022-02-22T02:07:48.429Z",
+          updatedAt: "2022-02-22T02:07:54.664Z",
+          archived: false,
+>>>>>>> chore: add additional destination option.
         },
       ],
       "merge-audits": [],
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:23 GMT",
+=======
+      "Tue, 22 Feb 2022 02:07:55 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -2685,7 +4357,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c409a638c4b-EWR",
+=======
+      "6e14a9e2c8242746-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -2697,6 +4373,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "b0c59b09-033d-4098-98ce-9724e65d8842",
       "X-HubSpot-RateLimit-Daily",
       "250000",
@@ -2716,6 +4393,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2BDEF69AC6D47996F3DE767601D5DBB22F80A9D6F4000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=Qh0r7L4G%2FVXHNzDolRA%2Fk6vGwI71teGzKzFPZWKq8Xzyu%2BqnhzIYjQQ1CvCEs6daD3XeDYGAkZZTJKI8Jp7ytg33hx8t6YWsbQxTfCqXadS4NeTDYqPHsy0Txmzmm4aq"}],"group":"cf-nel","max_age":604800}',
+=======
+      "7a17ea04-25a9-4964-a2fe-e923c66c1133",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249768",
+      "X-Trace",
+      "2B4ED7E9BDD0C2CA93E98332F69A15415812EB333B000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=ozeeViQv%2Fm1zMvoBlW1yKvxtxEmO%2F2aqvRStcK8UUouIFmy54TUY46EO29YY4a8%2BATljoOU7g2qC8TdtxCkp8VmVSzssIF4eVrEYp6eeEi%2FzNqRGGqPaSlqqCw2Y%2Fc7f"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -2725,6 +4413,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
   .post(
     "/contacts/v1/contact/createOrUpdate/email/caio.silveira@mailinator.com/",
     {
@@ -2741,6 +4430,14 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(200, { vid: 289651, isNew: false }, [
     "Date",
     "Thu, 17 Feb 2022 18:56:23 GMT",
+=======
+  .get("/crm-associations/v1/associations/43951/HUBSPOT_DEFINED/1")
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(200, { results: [7977984560], hasMore: false, offset: 7977984560 }, [
+    "Date",
+    "Tue, 22 Feb 2022 02:07:55 GMT",
+>>>>>>> chore: add additional destination option.
     "Content-Type",
     "application/json;charset=utf-8",
     "Content-Length",
@@ -2748,7 +4445,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "CF-Ray",
+<<<<<<< HEAD
     "6df13c415e498c60-EWR",
+=======
+    "6e14a9e43c152743-FOR",
+>>>>>>> chore: add additional destination option.
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains; preload",
     "Vary",
@@ -2760,16 +4461,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
     "67fb98a6-3c80-45b2-8673-af3c1960c9d2",
     "X-HubSpot-RateLimit-Daily",
     "250000",
     "X-HubSpot-RateLimit-Daily-Remaining",
     "248883",
+=======
+    "8079c33c-c501-44f4-ac46-61e780de4177",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249767",
+>>>>>>> chore: add additional destination option.
     "X-HubSpot-RateLimit-Interval-Milliseconds",
     "10000",
     "X-HubSpot-RateLimit-Max",
     "100",
     "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
     "80",
     "X-HubSpot-RateLimit-Secondly",
     "10",
@@ -2779,6 +4489,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "2B2C976A9DD8F2C66FC78FEF70747BB19BB06AA9FB000000000000000000",
     "Report-To",
     '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=%2Fbif%2Fyzmd1Lf2XcYzA3%2FjLp6NGdvq%2FUsQgUhZXI0gnLzpWOM22k4zlzkIeaHkyqooAyVoeXfb1UGBfar1Ffuec%2BtjunWJ4OwAcspBYCIm0PLjY3VNm3rL6iFKFB2lOvj"}],"group":"cf-nel","max_age":604800}',
+=======
+    "73",
+    "X-HubSpot-RateLimit-Secondly",
+    "10",
+    "X-HubSpot-RateLimit-Secondly-Remaining",
+    "7",
+    "X-Trace",
+    "2B75289C46256BAB01EA76DEC1F54AF24BBB428DC4000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=xCsmGO%2BzHU8tiLMm%2B9%2BTl1sghCSWyjleT0Me3G5XknOF9D82UiYyrJ8L%2Fyj3mL2hhqkuyHT215iVvV39p1AYbcG17TYuXicHC0fkAkcsd8eEeZzroGyEJO7Pq5MMSr18"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
     "NEL",
     '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
     "Server",
@@ -2797,13 +4518,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       vid: 289651,
       "canonical-vid": 289651,
+=======
+      vid: 43951,
+      "canonical-vid": 43951,
+>>>>>>> chore: add additional destination option.
       "merged-vids": [],
       "portal-id": 7974676,
       "is-contact": true,
       properties: {
         hs_is_unworked: { value: "true" },
+<<<<<<< HEAD
         firstname: { value: "Caio" },
         lastmodifieddate: { value: "1645124183312" },
         hs_pipeline: { value: "contacts-lifecycle-pipeline" },
@@ -2812,10 +4539,28 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
         hs_calculated_mobile_number: { value: "+5583999999999" },
         lastname: { value: "Silveira" },
         hs_all_contact_vids: { value: "289651" },
+=======
+        website: { value: "http://bossa.grouparoo.com" },
+        firstname: { value: "Caio" },
+        associatedcompanyid: { value: "7977984560" },
+        lastmodifieddate: { value: "1645495674712" },
+        num_unique_conversion_events: { value: "0" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645495669917" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495669917" },
+        hs_calculated_mobile_number: { value: "+5583999999999" },
+        lastname: { value: "Silveira" },
+        hs_all_contact_vids: { value: "43951" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+>>>>>>> chore: add additional destination option.
         hs_is_contact: { value: "true" },
         mobilephone: { value: "+5583999999999" },
         hs_searchable_calculated_mobile_number: { value: "83999999999" },
+<<<<<<< HEAD
         hs_object_id: { value: "289651" },
+=======
+        hs_object_id: { value: "43951" },
+>>>>>>> chore: add additional destination option.
         hs_email_domain: { value: "mailinator.com" },
         lifecyclestage: { value: "subscriber" },
         email: { value: "caio.silveira@mailinator.com" },
@@ -2823,29 +4568,93 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "list-memberships": [],
       "identity-profiles": [
         {
+<<<<<<< HEAD
           vid: 289651,
           "saved-at-timestamp": 1645124182773,
+=======
+          vid: 43951,
+          "saved-at-timestamp": 1645495669988,
+>>>>>>> chore: add additional destination option.
           "deleted-changed-timestamp": 0,
           identities: [
             {
               type: "EMAIL",
               value: "caio.silveira@mailinator.com",
+<<<<<<< HEAD
               timestamp: 1645124182718,
+=======
+              timestamp: 1645495669917,
+>>>>>>> chore: add additional destination option.
               "is-primary": true,
             },
             {
               type: "LEAD_GUID",
+<<<<<<< HEAD
               value: "7a4c414e-69d9-4aa5-9a81-dec51e999f27",
               timestamp: 1645124182768,
+=======
+              value: "35e4802d-1313-4de6-943b-f7a89f7a8dc2",
+              timestamp: 1645495669983,
+>>>>>>> chore: add additional destination option.
             },
           ],
         },
       ],
       "merge-audits": [],
+<<<<<<< HEAD
     },
     [
       "Date",
       "Thu, 17 Feb 2022 18:56:23 GMT",
+=======
+      "associated-company": {
+        "company-id": 7977984560,
+        "portal-id": 20858235,
+        properties: {
+          country: { value: "United States" },
+          num_associated_contacts: { value: "1" },
+          timezone: { value: "America/Los_Angeles" },
+          createdate: { value: "1645495668429" },
+          description: {
+            value:
+              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
+          },
+          hs_num_blockers: { value: "0" },
+          web_technologies: {
+            value:
+              "slack;google_tag_manager;google_analytics;twitter_button;lever;google_apps",
+          },
+          numberofemployees: { value: "10" },
+          linkedin_company_page: {
+            value: "https://www.linkedin.com/company/grouparoo",
+          },
+          founded_year: { value: "2019" },
+          state: { value: "CA" },
+          linkedinbio: {
+            value:
+              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
+          },
+          hs_num_open_deals: { value: "0" },
+          website: { value: "bossa.grouparoo.com" },
+          first_contact_createdate: { value: "1645495669917" },
+          twitterhandle: { value: "grouparoo" },
+          hs_target_account_probability: { value: "0.4076234698295593" },
+          hs_lastmodifieddate: { value: "1645495674664" },
+          hs_num_decision_makers: { value: "0" },
+          num_conversion_events: { value: "0" },
+          domain: { value: "bossa.grouparoo.com" },
+          hs_num_child_companies: { value: "0" },
+          hs_num_contacts_with_buying_roles: { value: "0" },
+          hs_object_id: { value: "7977984560" },
+          is_public: { value: "false" },
+          name: { value: "bossa" },
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:07:55 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -2853,7 +4662,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c428a6a8c06-EWR",
+=======
+      "6e14a9e5ab422749-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -2865,25 +4678,43 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "b7c80fa0-a074-4ee2-94cd-6de1506aa74a",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248882",
+=======
+      "74e8b162-2446-47f3-be7f-f9bdcf11beff",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249766",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "79",
+=======
+      "72",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Secondly",
       "10",
       "X-HubSpot-RateLimit-Secondly-Remaining",
       "7",
       "X-Trace",
+<<<<<<< HEAD
       "2BDEE6F69284478D865A176CA7959A1EF140CF0619000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=LjsAKIhRj%2B1fugmHMyhpQwIkpV97D3G3THePEhZt0r4QuZLCHfFhMAvVYmsKjyTpCAR%2BsFWDcUbH2oUhz32CaWsADUx1TgbmMTgZftUA%2Fi9mIK290MYFNjD76Wvd5LVu"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2B64CF0C985A1CCD61AF033481AB39FD8409410940000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=exX0MnKFwH1P%2BN%2FHUFmyaf%2FLYIeck1FO%2F22bJ3L%2ByafZj9eB4NkuNQjce3dIWjPEvz8i%2BMVIP2plgf%2BFpbh5lzWDFUjjO207ySEGjDuaFHINWTe4MTtfFj6mAYZNIlxH"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -2903,6 +4734,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       vid: 289651,
       "canonical-vid": 289651,
       "merged-vids": [],
@@ -2948,6 +4780,14 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             },
           ],
         },
+=======
+      properties: [
+        { property: "email", value: "caio.silveira@mailinator.com" },
+        { property: "firstname", value: "Caio" },
+        { property: "lastname", value: "Silveira" },
+        { property: "mobilephone", value: "+5583999999999" },
+        { property: "website", value: "samba.grouparoo.com" },
+>>>>>>> chore: add additional destination option.
       ],
       "merge-audits": [],
     },
@@ -3004,9 +4844,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .get("/crm-associations/v1/associations/289651/HUBSPOT_DEFINED/1")
   .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
   .once()
+<<<<<<< HEAD
   .reply(200, { results: [], hasMore: false, offset: 0 }, [
     "Date",
     "Thu, 17 Feb 2022 18:56:23 GMT",
+=======
+  .reply(200, { vid: 43951, isNew: false }, [
+    "Date",
+    "Tue, 22 Feb 2022 02:07:56 GMT",
+>>>>>>> chore: add additional destination option.
     "Content-Type",
     "application/json;charset=utf-8",
     "Content-Length",
@@ -3014,7 +4860,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "CF-Ray",
+<<<<<<< HEAD
     "6df13c4409a019d7-EWR",
+=======
+    "6e14a9e70d892755-FOR",
+>>>>>>> chore: add additional destination option.
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains; preload",
     "Vary",
@@ -3026,25 +4876,43 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
     "05924517-3df6-45f6-b449-cfd95312b368",
     "X-HubSpot-RateLimit-Daily",
     "250000",
     "X-HubSpot-RateLimit-Daily-Remaining",
     "248880",
+=======
+    "3d227589-39e3-44fd-b8ec-bbb732ef1ecc",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249765",
+>>>>>>> chore: add additional destination option.
     "X-HubSpot-RateLimit-Interval-Milliseconds",
     "10000",
     "X-HubSpot-RateLimit-Max",
     "100",
     "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
     "77",
+=======
+    "76",
+>>>>>>> chore: add additional destination option.
     "X-HubSpot-RateLimit-Secondly",
     "10",
     "X-HubSpot-RateLimit-Secondly-Remaining",
     "7",
     "X-Trace",
+<<<<<<< HEAD
     "2B7147003DE0AEC9EB1C97A2B40D137710F625B3FF000000000000000000",
     "Report-To",
     '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=%2BMWOq8MgSPGnUR2R9VQ68qLqLHJ%2ByLSX%2Bzdl%2B%2FjGdkyKmfK73yqY%2FdqX9Pf6puUvsZTVAL4T%2FoN1kAxnFrjRgZweGr1n3TLxlqZiW4lA%2BByT1soBdo5h9g3c3rv4JYDT"}],"group":"cf-nel","max_age":604800}',
+=======
+    "2BDFE1DDA2EDF7B5C502F09B278218EA671342CF4E000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=HzZfTPTb7e3P5wtEVQzn6EGKu0%2BCvhx5RpzmF2JOqWFcwVy5upNm6RJJcbEmK%2FCprlgyV5O3%2FYZgE61Oxnyy%2FE9J5VOfhiEzhNB91ASCOkjUZINdZh5HqeDoaWVuNQor"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
     "NEL",
     '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
     "Server",
@@ -3091,6 +4959,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "list-memberships": [],
       "identity-profiles": [
         {
+<<<<<<< HEAD
           vid: 289651,
           "saved-at-timestamp": 1645124182773,
           "deleted-changed-timestamp": 0,
@@ -3107,13 +4976,29 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
               timestamp: 1645124182768,
             },
           ],
+=======
+          id: "7977984560",
+          properties: {
+            createdate: "2022-02-22T02:07:48.429Z",
+            domain: "bossa.grouparoo.com",
+            hs_lastmodifieddate: "2022-02-22T02:07:55.860Z",
+            hs_object_id: "7977984560",
+          },
+          createdAt: "2022-02-22T02:07:48.429Z",
+          updatedAt: "2022-02-22T02:07:55.860Z",
+          archived: false,
+>>>>>>> chore: add additional destination option.
         },
       ],
       "merge-audits": [],
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:23 GMT",
+=======
+      "Tue, 22 Feb 2022 02:07:56 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -3121,7 +5006,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c44dca6335a-EWR",
+=======
+      "6e14a9ebff0a2755-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -3133,6 +5022,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "ac9ce0f3-1a87-4dc3-ba78-6124f05b1dc3",
       "X-HubSpot-RateLimit-Daily",
       "250000",
@@ -3152,6 +5042,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B3A8B489E3D6A48B4BED1765084E92A137D91B71D000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=hXJ1iGopxW4nTckX5EVi5ceTwFVfT%2B7bAcL7Zv59r%2FkaxnroHXL8wx4zJz4qXvKpLzsGJ1NJIkrH%2FD4A%2F2oQE6qcJrO%2BfAaws35yYiTRQ%2F12E%2FpmcTH6%2BjYE%2BK5p3kHJ"}],"group":"cf-nel","max_age":604800}',
+=======
+      "f6ce53f5-1b55-4fd2-bb2c-7eb4f2caaf0b",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249764",
+      "X-Trace",
+      "2BAF69B17E6BC82823F6276884967E4763D1C0884B000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=7qEugfw2OEp4J1fxoYEV5%2BC5pPz%2FVV4oq1HeF5ewk4Jul3S%2F1J9OXSqt3GWhm3Dga2t9iIfaNSNa5ROEHYBKXoSvliTArFg%2BlPygOTN%2BSiaxQAu9UTwoJ5lPaAbOSioR"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -3161,6 +5062,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
   .post(
     "/contacts/v1/contact/createOrUpdate/email/caio.silveira@mailinator.com/",
     {
@@ -3172,10 +5074,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       ],
     }
   )
+=======
+  .put("/crm-associations/v1/associations/delete", {
+    fromObjectId: 43951,
+    toObjectId: "7977984560",
+    category: "HUBSPOT_DEFINED",
+    definitionId: 1,
+  })
+>>>>>>> chore: add additional destination option.
   .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
   .once()
   .reply(200, { vid: 289651, isNew: false }, [
     "Date",
+<<<<<<< HEAD
     "Thu, 17 Feb 2022 18:56:24 GMT",
     "Content-Type",
     "application/json;charset=utf-8",
@@ -3185,6 +5096,13 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "close",
     "CF-Ray",
     "6df13c45da8417d9-EWR",
+=======
+    "Tue, 22 Feb 2022 02:07:57 GMT",
+    "Connection",
+    "close",
+    "CF-Ray",
+    "6e14a9ed7cb62745-FOR",
+>>>>>>> chore: add additional destination option.
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains; preload",
     "Vary",
@@ -3196,11 +5114,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
     "9fbba4b5-0e9f-47a1-aabb-8ff46f4784ee",
     "X-HubSpot-RateLimit-Daily",
     "250000",
     "X-HubSpot-RateLimit-Daily-Remaining",
     "248878",
+=======
+    "949c32fd-76fb-4d0c-84fc-f948408f1ddc",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249763",
+>>>>>>> chore: add additional destination option.
     "X-HubSpot-RateLimit-Interval-Milliseconds",
     "10000",
     "X-HubSpot-RateLimit-Max",
@@ -3212,9 +5138,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "X-HubSpot-RateLimit-Secondly-Remaining",
     "7",
     "X-Trace",
+<<<<<<< HEAD
     "2BB4B6A7E166281DD8F4890759ADA52950CC6D9BE0000000000000000000",
     "Report-To",
     '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=24EjTdVu%2FpBbXCfhqHOXbT6r3gPY2CLHKg1Mmv2IPkeGML13y6DS28mrvcGiKOCVNnTiIOLJiWTppZpmkhXlT8hUIWffYfUsy8pKHy8lphWdd%2F2fWdHv%2B1or5SOq4tFo"}],"group":"cf-nel","max_age":604800}',
+=======
+    "2B305E800A14EA77CE6965763E938E427EF0AA4565000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=LHUAW9UC48lK9xRH6xl4x43CTKdKiTurtOOPSBmofpgpmEVQ1Sf8M7H4lCq7jZbIZEyKS4zTfbvqxiSzAK36wnA6JTAWHB7cHCfV1W7aenAC4bs3HbsGdKsmJKi2v7sS"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
     "NEL",
     '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
     "Server",
@@ -3246,6 +5178,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       total: 1,
       results: [
         {
+<<<<<<< HEAD
           id: "7945038518",
           properties: {
             createdate: "2022-02-17T18:56:16.511Z",
@@ -3255,13 +5188,28 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           },
           createdAt: "2022-02-17T18:56:16.511Z",
           updatedAt: "2022-02-17T18:56:19.243Z",
+=======
+          id: "7977984559",
+          properties: {
+            createdate: "2022-02-22T02:07:48.429Z",
+            domain: "samba.grouparoo.com",
+            hs_lastmodifieddate: "2022-02-22T02:07:51.044Z",
+            hs_object_id: "7977984559",
+          },
+          createdAt: "2022-02-22T02:07:48.429Z",
+          updatedAt: "2022-02-22T02:07:51.044Z",
+>>>>>>> chore: add additional destination option.
           archived: false,
         },
       ],
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:24 GMT",
+=======
+      "Tue, 22 Feb 2022 02:07:57 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -3269,7 +5217,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c46fdda8c33-EWR",
+=======
+      "6e14a9ef0ff92745-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -3281,6 +5233,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "dbe9cb2f-3ad5-4d51-b20b-44505843ddb7",
       "X-HubSpot-RateLimit-Daily",
       "250000",
@@ -3290,6 +5243,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B22E7533BACA1A20D8A1EB096F4EF764EEA161466000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=chiBh7mFtXmu5IexfOr%2FF0%2BXj%2BqlrMjpKAliE7lXi%2FisPuwjNu9%2Bxz4SeGbFJFeDRh48kQQKul1RAQvrfw4MK8OUxEIOJG18Ek0RQ0yyTO8MC3KWkJy%2BGQlcvnbvbkAc"}],"group":"cf-nel","max_age":604800}',
+=======
+      "21df4002-bd1e-4258-a6a0-ccb9a0154511",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249762",
+      "X-Trace",
+      "2BE67D86D1CAEF1F2F0B73E3202D305DC4EF5892E1000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=WnU5fW6Jab698cyOftSvHbJiLZFEeldARLpg96brX754z9r7fQDAH23UfZbOqbllE1FGQnEalzRd5l8yrEntOTnyJCHqJ1szCnwxGds6xm%2BHf1nhnT1YbV7uUeT26hOW"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -3300,8 +5264,13 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .put("/crm-associations/v1/associations", {
+<<<<<<< HEAD
     fromObjectId: 289651,
     toObjectId: "7945038518",
+=======
+    fromObjectId: 43951,
+    toObjectId: "7977984559",
+>>>>>>> chore: add additional destination option.
     category: "HUBSPOT_DEFINED",
     definitionId: 1,
   })
@@ -3309,11 +5278,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .once()
   .reply(204, "", [
     "Date",
+<<<<<<< HEAD
     "Thu, 17 Feb 2022 18:56:24 GMT",
     "Connection",
     "close",
     "CF-Ray",
     "6df13c483fc18c4d-EWR",
+=======
+    "Tue, 22 Feb 2022 02:07:57 GMT",
+    "Connection",
+    "close",
+    "CF-Ray",
+    "6e14a9f08aff2745-FOR",
+>>>>>>> chore: add additional destination option.
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains; preload",
     "CF-Cache-Status",
@@ -3323,11 +5300,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
     "849e93b3-b934-4807-8936-1b2aaf49ac00",
     "X-HubSpot-RateLimit-Daily",
     "250000",
     "X-HubSpot-RateLimit-Daily-Remaining",
     "248876",
+=======
+    "386f0b30-c43d-4578-b702-ce599885b142",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249761",
+>>>>>>> chore: add additional destination option.
     "X-HubSpot-RateLimit-Interval-Milliseconds",
     "10000",
     "X-HubSpot-RateLimit-Max",
@@ -3339,9 +5324,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "X-HubSpot-RateLimit-Secondly-Remaining",
     "7",
     "X-Trace",
+<<<<<<< HEAD
     "2B5B883CD8390272CE58FDF0C9F4E37E769954AFBE000000000000000000",
     "Report-To",
     '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=RzE12BQfWvMDjcup3zwrxa2LuIg%2BA25kcSACZC1%2FsHPiBZQsJuE%2FAp%2Bgh9IOBXmKahQwelmWRvRIt2maNUaGLf9vGVAo75%2Fe0cD5uSXoOzXl%2BrGHwxV%2BAH9G2P6Z6yav"}],"group":"cf-nel","max_age":604800}',
+=======
+    "2BC3DD8C2013D646C6DF2E8136C9B3524950F61BCB000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=NUaJu4%2BzUnAh1zKFDOnXTN2QDNml1UEleVSolj119E5XOjkOZT8lM3votjmeF8nCnxDocJc%2BsIisHXez2MmqFxcqq1gscOod4%2FkMnJEVSu7D3msvk4WyL8SoM7v6NqA5"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
     "NEL",
     '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
     "Server",
@@ -3360,13 +5351,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       vid: 289651,
       "canonical-vid": 289651,
+=======
+      vid: 43951,
+      "canonical-vid": 43951,
+>>>>>>> chore: add additional destination option.
       "merged-vids": [],
       "portal-id": 7974676,
       "is-contact": true,
       properties: {
         hs_is_unworked: { value: "true" },
+<<<<<<< HEAD
         firstname: { value: "Caio" },
         lastmodifieddate: { value: "1645124183657" },
         num_unique_conversion_events: { value: "0" },
@@ -3376,12 +5373,29 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
         hs_calculated_mobile_number: { value: "+5583999999999" },
         lastname: { value: "Silveira" },
         hs_all_contact_vids: { value: "289651" },
+=======
+        website: { value: "http://samba.grouparoo.com" },
+        firstname: { value: "Caio" },
+        associatedcompanyid: { value: "7977984560" },
+        lastmodifieddate: { value: "1645495676543" },
+        num_unique_conversion_events: { value: "0" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645495669917" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495669917" },
+        hs_calculated_mobile_number: { value: "+5583999999999" },
+        lastname: { value: "Silveira" },
+        hs_all_contact_vids: { value: "43951" },
+>>>>>>> chore: add additional destination option.
         hs_sequences_actively_enrolled_count: { value: "0" },
         hs_is_contact: { value: "true" },
         num_conversion_events: { value: "0" },
         mobilephone: { value: "+5583999999999" },
         hs_searchable_calculated_mobile_number: { value: "83999999999" },
+<<<<<<< HEAD
         hs_object_id: { value: "289651" },
+=======
+        hs_object_id: { value: "43951" },
+>>>>>>> chore: add additional destination option.
         hs_email_domain: { value: "mailinator.com" },
         lifecyclestage: { value: "subscriber" },
         email: { value: "caio.silveira@mailinator.com" },
@@ -3389,29 +5403,90 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "list-memberships": [],
       "identity-profiles": [
         {
+<<<<<<< HEAD
           vid: 289651,
           "saved-at-timestamp": 1645124182773,
+=======
+          vid: 43951,
+          "saved-at-timestamp": 1645495669988,
+>>>>>>> chore: add additional destination option.
           "deleted-changed-timestamp": 0,
           identities: [
             {
               type: "EMAIL",
               value: "caio.silveira@mailinator.com",
+<<<<<<< HEAD
               timestamp: 1645124182718,
+=======
+              timestamp: 1645495669917,
+>>>>>>> chore: add additional destination option.
               "is-primary": true,
             },
             {
               type: "LEAD_GUID",
+<<<<<<< HEAD
               value: "7a4c414e-69d9-4aa5-9a81-dec51e999f27",
               timestamp: 1645124182768,
+=======
+              value: "35e4802d-1313-4de6-943b-f7a89f7a8dc2",
+              timestamp: 1645495669983,
+>>>>>>> chore: add additional destination option.
             },
           ],
         },
       ],
       "merge-audits": [],
+      "associated-company": {
+        "company-id": 7977984560,
+        "portal-id": 20858235,
+        properties: {
+          country: { value: "United States" },
+          num_associated_contacts: { value: "1" },
+          timezone: { value: "America/Los_Angeles" },
+          createdate: { value: "1645495668429" },
+          description: {
+            value:
+              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
+          },
+          hs_num_blockers: { value: "0" },
+          web_technologies: {
+            value:
+              "slack;google_tag_manager;google_analytics;twitter_button;lever;google_apps",
+          },
+          numberofemployees: { value: "10" },
+          linkedin_company_page: {
+            value: "https://www.linkedin.com/company/grouparoo",
+          },
+          founded_year: { value: "2019" },
+          state: { value: "CA" },
+          linkedinbio: {
+            value:
+              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
+          },
+          hs_num_open_deals: { value: "0" },
+          website: { value: "bossa.grouparoo.com" },
+          first_contact_createdate: { value: "1645495669917" },
+          twitterhandle: { value: "grouparoo" },
+          hs_target_account_probability: { value: "0.4076234698295593" },
+          hs_lastmodifieddate: { value: "1645495674664" },
+          hs_num_decision_makers: { value: "0" },
+          num_conversion_events: { value: "0" },
+          domain: { value: "bossa.grouparoo.com" },
+          hs_num_child_companies: { value: "0" },
+          hs_num_contacts_with_buying_roles: { value: "0" },
+          hs_object_id: { value: "7977984560" },
+          is_public: { value: "false" },
+          name: { value: "bossa" },
+        },
+      },
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:24 GMT",
+=======
+      "Tue, 22 Feb 2022 02:07:57 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -3419,7 +5494,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c499bec3350-EWR",
+=======
+      "6e14a9f249dae084-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -3431,11 +5510,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "fd256e5e-314c-487c-a0de-90d9a8660444",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248875",
+=======
+      "45e67a06-1fd7-426d-b5e5-cbefc1dda7b0",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249760",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
@@ -3447,9 +5534,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "X-HubSpot-RateLimit-Secondly-Remaining",
       "7",
       "X-Trace",
+<<<<<<< HEAD
       "2BE6EAEA04C8BFEB14676A3FE6C15874CC86A975F8000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=VyPNOB%2F5SV66la6KsjDE1fWTE4PWRizvHHdTQnqh6ddKMEbcNJKV6h0hSGeO%2B7tFvKBd4OVQi5bcaRGTiRlPJ%2BTy7czpIDqV71rbBUqmerI6rGaNLU9MGVKIAEGWANwn"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2B29DEAB1D00C445463ED94879CDF6E8800B92A6C6000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=itsG0YjnB3k97GVJcl6vjwe%2FWuTs3hmeZkUcbkhuuh2aVX1SgcoAR2flVZWOIj1TvdxwrNlpS1SJMrlPRgnbi8iRThWuyWPYionygLV%2Br5VqQXmJNZdriDU5ueoPZKYm"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -3482,6 +5575,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       total: 1,
       results: [
         {
+<<<<<<< HEAD
           id: "7945038518",
           properties: {
             createdate: "2022-02-17T18:56:16.511Z",
@@ -3491,13 +5585,28 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           },
           createdAt: "2022-02-17T18:56:16.511Z",
           updatedAt: "2022-02-17T18:56:19.243Z",
+=======
+          id: "7977984559",
+          properties: {
+            createdate: "2022-02-22T02:07:48.429Z",
+            domain: "samba.grouparoo.com",
+            hs_lastmodifieddate: "2022-02-22T02:07:51.044Z",
+            hs_object_id: "7977984559",
+          },
+          createdAt: "2022-02-22T02:07:48.429Z",
+          updatedAt: "2022-02-22T02:07:51.044Z",
+>>>>>>> chore: add additional destination option.
           archived: false,
         },
       ],
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:24 GMT",
+=======
+      "Tue, 22 Feb 2022 02:07:58 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -3505,7 +5614,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c4aaca818ae-EWR",
+=======
+      "6e14a9f38b72e07c-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -3517,6 +5630,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "741ee5d3-3b36-45b7-90d5-d7ddf5484fcc",
       "X-HubSpot-RateLimit-Daily",
       "250000",
@@ -3526,6 +5640,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B8B571ABC213D2958CE53CAAE30FF380B9DFDB1ED000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=R9uloyVpaQdgC2dIKxl1T%2BYLZeOCEyIiNZu3xBk9PjHKCf1ZeWCD8keE198wYF9g6CODViAsuHFxS9K4VTWbOl2OsYS7cIDVc1SGdBoJiMp4mAU1iKr5fBoNgPfbXVT2"}],"group":"cf-nel","max_age":604800}',
+=======
+      "f0028210-1c1c-4171-b292-2353bf751ad8",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249759",
+      "X-Trace",
+      "2B2692AFF034C6844AD4F37175471E4D66753692D3000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=Ocoeh8bzWeJ%2BZP2%2FjjkPnpzQIqZJgya8lJWhMqHwC1dNhg1URey256fmOe9kaZ68lSoaE3sxNz0JKsvCfy%2B%2BKKpYo%2BcmqES%2B7K%2FDooQuqLRq5Uo%2BMd0dosOBiV3uTeDl"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -3535,12 +5660,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
   .get("/crm-associations/v1/associations/289651/HUBSPOT_DEFINED/1")
   .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
   .once()
   .reply(200, { results: [7945038518], hasMore: false, offset: 7945038518 }, [
     "Date",
     "Thu, 17 Feb 2022 18:56:24 GMT",
+=======
+  .get("/crm-associations/v1/associations/43951/HUBSPOT_DEFINED/1")
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(200, { results: [7977984559], hasMore: false, offset: 7977984559 }, [
+    "Date",
+    "Tue, 22 Feb 2022 02:07:58 GMT",
+>>>>>>> chore: add additional destination option.
     "Content-Type",
     "application/json;charset=utf-8",
     "Content-Length",
@@ -3548,7 +5682,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "CF-Ray",
+<<<<<<< HEAD
     "6df13c4b8d9d3320-EWR",
+=======
+    "6e14a9f4fee2cf9a-FOR",
+>>>>>>> chore: add additional destination option.
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains; preload",
     "Vary",
@@ -3560,25 +5698,43 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
     "d9ee7cad-efc1-4590-8002-a3a1cf9f6029",
     "X-HubSpot-RateLimit-Daily",
     "250000",
     "X-HubSpot-RateLimit-Daily-Remaining",
     "248873",
+=======
+    "c198db19-098d-49fc-8b56-3070e2f22f83",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249758",
+>>>>>>> chore: add additional destination option.
     "X-HubSpot-RateLimit-Interval-Milliseconds",
     "10000",
     "X-HubSpot-RateLimit-Max",
     "100",
     "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
     "75",
+=======
+    "78",
+>>>>>>> chore: add additional destination option.
     "X-HubSpot-RateLimit-Secondly",
     "10",
     "X-HubSpot-RateLimit-Secondly-Remaining",
     "7",
     "X-Trace",
+<<<<<<< HEAD
     "2B08995D4134EFFF22E869A3CC6B361D9363AE8F6D000000000000000000",
     "Report-To",
     '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=Cf3vIse65SfF8b5IPW%2BZQ1P9CE7N%2B3aP3fIe3RKJeU4CtRmz1%2FDo9p76dE1yJ1MOI7o3KZgaJWnHc8OEhtYvNMI4DShAhZTN1Pj82P1QuY%2BIfCP2yNom%2BhnF9Ia2bdY5"}],"group":"cf-nel","max_age":604800}',
+=======
+    "2B7F216AD6B7FD9F32BD566F98E29B471423D0F21F000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=fBVA9R4Bx6oCIT2V6OljW%2BJSxKG3N4MDBGMkJdYNU%2Bv42uKV4vj2hVdQWk1z1r60LrpHIbbLoECapgrAG0rqZlYUOxGwlQk4midgDOSksAL2seDVxaQnn74mZ30DvsLD"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
     "NEL",
     '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
     "Server",
@@ -3597,13 +5753,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       vid: 289651,
       "canonical-vid": 289651,
+=======
+      vid: 43951,
+      "canonical-vid": 43951,
+>>>>>>> chore: add additional destination option.
       "merged-vids": [],
       "portal-id": 7974676,
       "is-contact": true,
       properties: {
         hs_is_unworked: { value: "true" },
+<<<<<<< HEAD
         firstname: { value: "Caio" },
         lastmodifieddate: { value: "1645124183657" },
         num_unique_conversion_events: { value: "0" },
@@ -3613,12 +5775,29 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
         hs_calculated_mobile_number: { value: "+5583999999999" },
         lastname: { value: "Silveira" },
         hs_all_contact_vids: { value: "289651" },
+=======
+        website: { value: "http://samba.grouparoo.com" },
+        firstname: { value: "Caio" },
+        associatedcompanyid: { value: "7977984559" },
+        lastmodifieddate: { value: "1645495677829" },
+        num_unique_conversion_events: { value: "0" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645495669917" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495669917" },
+        hs_calculated_mobile_number: { value: "+5583999999999" },
+        lastname: { value: "Silveira" },
+        hs_all_contact_vids: { value: "43951" },
+>>>>>>> chore: add additional destination option.
         hs_sequences_actively_enrolled_count: { value: "0" },
         hs_is_contact: { value: "true" },
         num_conversion_events: { value: "0" },
         mobilephone: { value: "+5583999999999" },
         hs_searchable_calculated_mobile_number: { value: "83999999999" },
+<<<<<<< HEAD
         hs_object_id: { value: "289651" },
+=======
+        hs_object_id: { value: "43951" },
+>>>>>>> chore: add additional destination option.
         hs_email_domain: { value: "mailinator.com" },
         lifecyclestage: { value: "subscriber" },
         email: { value: "caio.silveira@mailinator.com" },
@@ -3626,29 +5805,88 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "list-memberships": [],
       "identity-profiles": [
         {
+<<<<<<< HEAD
           vid: 289651,
           "saved-at-timestamp": 1645124182773,
+=======
+          vid: 43951,
+          "saved-at-timestamp": 1645495669988,
+>>>>>>> chore: add additional destination option.
           "deleted-changed-timestamp": 0,
           identities: [
             {
               type: "EMAIL",
               value: "caio.silveira@mailinator.com",
+<<<<<<< HEAD
               timestamp: 1645124182718,
+=======
+              timestamp: 1645495669917,
+>>>>>>> chore: add additional destination option.
               "is-primary": true,
             },
             {
               type: "LEAD_GUID",
+<<<<<<< HEAD
               value: "7a4c414e-69d9-4aa5-9a81-dec51e999f27",
               timestamp: 1645124182768,
+=======
+              value: "35e4802d-1313-4de6-943b-f7a89f7a8dc2",
+              timestamp: 1645495669983,
+>>>>>>> chore: add additional destination option.
             },
           ],
         },
       ],
       "merge-audits": [],
+      "associated-company": {
+        "company-id": 7977984559,
+        "portal-id": 20858235,
+        properties: {
+          hs_num_open_deals: { value: "0" },
+          country: { value: "United States" },
+          website: { value: "samba.grouparoo.com" },
+          num_associated_contacts: { value: "0" },
+          timezone: { value: "America/Los_Angeles" },
+          createdate: { value: "1645495668429" },
+          description: {
+            value:
+              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
+          },
+          hs_num_blockers: { value: "0" },
+          web_technologies: {
+            value:
+              "slack;google_tag_manager;google_analytics;twitter_button;lever;google_apps",
+          },
+          numberofemployees: { value: "10" },
+          linkedin_company_page: {
+            value: "https://www.linkedin.com/company/grouparoo",
+          },
+          twitterhandle: { value: "grouparoo" },
+          hs_target_account_probability: { value: "0.4076234698295593" },
+          hs_lastmodifieddate: { value: "1645495671044" },
+          hs_num_decision_makers: { value: "0" },
+          domain: { value: "samba.grouparoo.com" },
+          founded_year: { value: "2019" },
+          hs_num_child_companies: { value: "0" },
+          hs_num_contacts_with_buying_roles: { value: "0" },
+          hs_object_id: { value: "7977984559" },
+          is_public: { value: "false" },
+          name: { value: "samba" },
+          state: { value: "CA" },
+          linkedinbio: {
+            value:
+              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
+          },
+        },
+      },
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:25 GMT",
+=======
+      "Tue, 22 Feb 2022 02:07:58 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -3656,7 +5894,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c4c5f3118ea-EWR",
+=======
+      "6e14a9f63d4ce08e-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -3668,16 +5910,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "bdeb3858-6356-4974-8852-3ba1e0ad45f5",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248872",
+=======
+      "c12f77c2-dea5-49ee-afc7-18bd3c9b7fe4",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249757",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "81",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -3687,6 +5938,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B49B9B8835F1EDF03F7C151ACB6B371D64C184442000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=GbMIJcjiBjHnywBY%2BOc1fqKxfwPWgnNDe8B16QFW8gd%2BY6bhBxPx0xqXcvNVcgUCINSJq2QNGUXhBzr1BjdUONxI3pUPVRb9tZ6NWAdlJMfj5ztb7NYBpvZuJCGZNYGP"}],"group":"cf-nel","max_age":604800}',
+=======
+      "77",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2B6AF4E4BCEC45D59906620875388ADF88DC545BD6000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=nIDQtT%2BoL889XAIRB6iCEzCD8zn5CTjIyUOZBlICksQmk9RpQ2lqotgp1KP3hMJaxDeqln32PRJmhLdtaE625HDzv3cB%2B2SXsqA026qkjR4PyRHgaNV0az7fMaGO%2FQDO"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -3716,6 +5978,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       total: 1,
       results: [
         {
@@ -3725,6 +5988,96 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             domain: "bossa.grouparoo.com",
             hs_lastmodifieddate: "2022-02-17T18:56:19.243Z",
             hs_object_id: "7945038518",
+=======
+      vid: 43951,
+      "canonical-vid": 43951,
+      "merged-vids": [],
+      "portal-id": 20858235,
+      "is-contact": true,
+      properties: {
+        hs_is_unworked: { value: "true" },
+        website: { value: "http://samba.grouparoo.com" },
+        firstname: { value: "Caio" },
+        associatedcompanyid: { value: "7977984559" },
+        lastmodifieddate: { value: "1645495677829" },
+        num_unique_conversion_events: { value: "0" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645495669917" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495669917" },
+        hs_calculated_mobile_number: { value: "+5583999999999" },
+        lastname: { value: "Silveira" },
+        hs_all_contact_vids: { value: "43951" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        mobilephone: { value: "+5583999999999" },
+        hs_searchable_calculated_mobile_number: { value: "83999999999" },
+        hs_object_id: { value: "43951" },
+        hs_email_domain: { value: "mailinator.com" },
+        lifecyclestage: { value: "subscriber" },
+        email: { value: "caio.silveira@mailinator.com" },
+      },
+      "list-memberships": [],
+      "identity-profiles": [
+        {
+          vid: 43951,
+          "saved-at-timestamp": 1645495669988,
+          "deleted-changed-timestamp": 0,
+          identities: [
+            {
+              type: "EMAIL",
+              value: "caio.silveira@mailinator.com",
+              timestamp: 1645495669917,
+              "is-primary": true,
+            },
+            {
+              type: "LEAD_GUID",
+              value: "35e4802d-1313-4de6-943b-f7a89f7a8dc2",
+              timestamp: 1645495669983,
+            },
+          ],
+        },
+      ],
+      "merge-audits": [],
+      "associated-company": {
+        "company-id": 7977984559,
+        "portal-id": 20858235,
+        properties: {
+          hs_num_open_deals: { value: "0" },
+          country: { value: "United States" },
+          website: { value: "samba.grouparoo.com" },
+          num_associated_contacts: { value: "0" },
+          timezone: { value: "America/Los_Angeles" },
+          createdate: { value: "1645495668429" },
+          description: {
+            value:
+              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
+          },
+          hs_num_blockers: { value: "0" },
+          web_technologies: {
+            value:
+              "slack;google_tag_manager;google_analytics;twitter_button;lever;google_apps",
+          },
+          numberofemployees: { value: "10" },
+          linkedin_company_page: {
+            value: "https://www.linkedin.com/company/grouparoo",
+          },
+          twitterhandle: { value: "grouparoo" },
+          hs_target_account_probability: { value: "0.4076234698295593" },
+          hs_lastmodifieddate: { value: "1645495671044" },
+          hs_num_decision_makers: { value: "0" },
+          domain: { value: "samba.grouparoo.com" },
+          founded_year: { value: "2019" },
+          hs_num_child_companies: { value: "0" },
+          hs_num_contacts_with_buying_roles: { value: "0" },
+          hs_object_id: { value: "7977984559" },
+          is_public: { value: "false" },
+          name: { value: "samba" },
+          state: { value: "CA" },
+          linkedinbio: {
+            value:
+              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
+>>>>>>> chore: add additional destination option.
           },
           createdAt: "2022-02-17T18:56:16.511Z",
           updatedAt: "2022-02-17T18:56:19.243Z",
@@ -3734,7 +6087,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:25 GMT",
+=======
+      "Tue, 22 Feb 2022 02:07:58 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -3742,7 +6099,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c4d5cc98ccc-EWR",
+=======
+      "6e14a9f7bd7e273d-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -3754,6 +6115,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "32c99dff-8477-4acd-a69a-9139d162f7c6",
       "X-HubSpot-RateLimit-Daily",
       "250000",
@@ -3763,6 +6125,27 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B56617433FF6057EB57CF30F746B48716CB62C042000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=HqutBqfjw3Y5S7OVDJ6kLgCCyieQ5xkd2a34IrMuEjJ9lxCD9GBDC4%2FAwq3Il2ehtxaEx%2BbU2ENzGQReOBqAu2mIXrd8pxAujYpPTnW4FqN5Me49E51TlzxamvRF9%2Fnk"}],"group":"cf-nel","max_age":604800}',
+=======
+      "a4dac637-dd7e-423b-a8f5-9f9b03961409",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249756",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "76",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2B74122F84971607A235D2D505B7B4FA02532B89D0000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=Ml9LVmqpqPMUW33iiKERTO1gu3XNlI43yy%2BYlhIRpP7sETjznkOY%2FGDxZ%2Fyj5dyCf4Q7UQSxnt03A0H74XtgJXsdvT%2Bf2Y9vsSkdmycco87vZjVgZGAeTu%2FtHjvfRZRI"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -3834,13 +6217,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       vid: 289651,
       "canonical-vid": 289651,
+=======
+      vid: 43951,
+      "canonical-vid": 43951,
+>>>>>>> chore: add additional destination option.
       "merged-vids": [],
       "portal-id": 7974676,
       "is-contact": true,
       properties: {
         hs_is_unworked: { value: "true" },
+<<<<<<< HEAD
         firstname: { value: "Caio" },
         lastmodifieddate: { value: "1645124183657" },
         num_unique_conversion_events: { value: "0" },
@@ -3850,12 +6239,29 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
         hs_calculated_mobile_number: { value: "+5583999999999" },
         lastname: { value: "Silveira" },
         hs_all_contact_vids: { value: "289651" },
+=======
+        website: { value: "http://samba.grouparoo.com" },
+        firstname: { value: "Caio" },
+        associatedcompanyid: { value: "7977984559" },
+        lastmodifieddate: { value: "1645495677829" },
+        num_unique_conversion_events: { value: "0" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645495669917" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495669917" },
+        hs_calculated_mobile_number: { value: "+5583999999999" },
+        lastname: { value: "Silveira" },
+        hs_all_contact_vids: { value: "43951" },
+>>>>>>> chore: add additional destination option.
         hs_sequences_actively_enrolled_count: { value: "0" },
         hs_is_contact: { value: "true" },
         num_conversion_events: { value: "0" },
         mobilephone: { value: "+5583999999999" },
         hs_searchable_calculated_mobile_number: { value: "83999999999" },
+<<<<<<< HEAD
         hs_object_id: { value: "289651" },
+=======
+        hs_object_id: { value: "43951" },
+>>>>>>> chore: add additional destination option.
         hs_email_domain: { value: "mailinator.com" },
         lifecyclestage: { value: "subscriber" },
         email: { value: "caio.silveira@mailinator.com" },
@@ -3863,29 +6269,91 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "list-memberships": [],
       "identity-profiles": [
         {
+<<<<<<< HEAD
           vid: 289651,
           "saved-at-timestamp": 1645124182773,
+=======
+          vid: 43951,
+          "saved-at-timestamp": 1645495669988,
+>>>>>>> chore: add additional destination option.
           "deleted-changed-timestamp": 0,
           identities: [
             {
               type: "EMAIL",
               value: "caio.silveira@mailinator.com",
+<<<<<<< HEAD
               timestamp: 1645124182718,
+=======
+              timestamp: 1645495669917,
+>>>>>>> chore: add additional destination option.
               "is-primary": true,
             },
             {
               type: "LEAD_GUID",
+<<<<<<< HEAD
               value: "7a4c414e-69d9-4aa5-9a81-dec51e999f27",
               timestamp: 1645124182768,
+=======
+              value: "35e4802d-1313-4de6-943b-f7a89f7a8dc2",
+              timestamp: 1645495669983,
+>>>>>>> chore: add additional destination option.
             },
           ],
         },
       ],
       "merge-audits": [],
+<<<<<<< HEAD
     },
     [
       "Date",
       "Thu, 17 Feb 2022 18:56:25 GMT",
+=======
+      "associated-company": {
+        "company-id": 7977984559,
+        "portal-id": 20858235,
+        properties: {
+          hs_num_open_deals: { value: "0" },
+          country: { value: "United States" },
+          website: { value: "samba.grouparoo.com" },
+          num_associated_contacts: { value: "0" },
+          timezone: { value: "America/Los_Angeles" },
+          createdate: { value: "1645495668429" },
+          description: {
+            value:
+              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
+          },
+          hs_num_blockers: { value: "0" },
+          web_technologies: {
+            value:
+              "slack;google_tag_manager;google_analytics;twitter_button;lever;google_apps",
+          },
+          numberofemployees: { value: "10" },
+          linkedin_company_page: {
+            value: "https://www.linkedin.com/company/grouparoo",
+          },
+          twitterhandle: { value: "grouparoo" },
+          hs_target_account_probability: { value: "0.4076234698295593" },
+          hs_lastmodifieddate: { value: "1645495671044" },
+          hs_num_decision_makers: { value: "0" },
+          domain: { value: "samba.grouparoo.com" },
+          founded_year: { value: "2019" },
+          hs_num_child_companies: { value: "0" },
+          hs_num_contacts_with_buying_roles: { value: "0" },
+          hs_object_id: { value: "7977984559" },
+          is_public: { value: "false" },
+          name: { value: "samba" },
+          state: { value: "CA" },
+          linkedinbio: {
+            value:
+              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
+          },
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:07:59 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -3893,7 +6361,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c4f69e88c23-EWR",
+=======
+      "6e14a9f9083f273d-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -3905,25 +6377,43 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "2d5f5f48-278a-495a-bfe1-b016877e0d89",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248869",
+=======
+      "2872354d-b81a-4b3d-b9eb-e9a65f64bc3a",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249755",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "79",
+=======
+      "75",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Secondly",
       "10",
       "X-HubSpot-RateLimit-Secondly-Remaining",
       "7",
       "X-Trace",
+<<<<<<< HEAD
       "2B574D064FFEC85339F9278399B336179A9C09EF18000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=%2FljwAmcqerMDv9citlMeAe%2Fdn0i98xF0t2NvT4S5FDLKSS0sklA4Hr5z4G3100kirh7587HJNMgunu38eDxbJEmbunHfceo3ezxltMwrebuqvpsj%2FndgC9sc%2FRhZ7jqb"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2B6263305F092287EFE62C22B3A5C85AA7F36AB39F000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=Se2hfZL72ZQ0GvY2UYqDsZSKSEDDJNXPHqBJu1F6in%2FzJwssrhqOCEpmwFuL3WmIG8n6PKyRGMS4xp6FKcQK4VIZlb0%2F%2FDVDc%2B%2FMG469t3Nt49ZsHt1UROeijtd1l2My"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -3946,9 +6436,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   )
   .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
   .once()
+<<<<<<< HEAD
   .reply(200, { vid: 289651, isNew: false }, [
     "Date",
     "Thu, 17 Feb 2022 18:56:25 GMT",
+=======
+  .reply(200, { vid: 43951, isNew: false }, [
+    "Date",
+    "Tue, 22 Feb 2022 02:07:59 GMT",
+>>>>>>> chore: add additional destination option.
     "Content-Type",
     "application/json;charset=utf-8",
     "Content-Length",
@@ -3956,7 +6452,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "CF-Ray",
+<<<<<<< HEAD
     "6df13c5049ff8cc6-EWR",
+=======
+    "6e14a9fa5b732749-FOR",
+>>>>>>> chore: add additional destination option.
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains; preload",
     "Vary",
@@ -3968,25 +6468,43 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
     "45dacd31-b10d-41b3-9e0a-c0cbec23d6e0",
     "X-HubSpot-RateLimit-Daily",
     "250000",
     "X-HubSpot-RateLimit-Daily-Remaining",
     "248868",
+=======
+    "54126c17-34e5-46dc-b11f-41cdea82532f",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249754",
+>>>>>>> chore: add additional destination option.
     "X-HubSpot-RateLimit-Interval-Milliseconds",
     "10000",
     "X-HubSpot-RateLimit-Max",
     "100",
     "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
     "78",
+=======
+    "77",
+>>>>>>> chore: add additional destination option.
     "X-HubSpot-RateLimit-Secondly",
     "10",
     "X-HubSpot-RateLimit-Secondly-Remaining",
     "7",
     "X-Trace",
+<<<<<<< HEAD
     "2B48F5E8F3A274297504654835DD66F2BAE4F5DA08000000000000000000",
     "Report-To",
     '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=yrWmphcMw%2BnpjCiJy1YVdJy3TPAF83EIfj1ZSdogaJ3iDPcjjslHpTv%2FYSuAXGMeCMdzfXkpJiwMu9KnUElBEiCbUAKckggjMG0wys14yz1%2BCJv%2B5%2F%2Bgqm5iDU1T34Eh"}],"group":"cf-nel","max_age":604800}',
+=======
+    "2B9FF3AC22578894B42EFE354CB72E6C6DDAB77CCC000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=dsNuCYVh9MiqX%2Fh9UJ%2FD0IB6P%2FYbekzy%2F0XmW%2FURi0wxCoqWgTfmiR3r8ubQaRfiGJ6SqS%2BR4Xpm6Q%2Fhor9mpqH9FfgmYe%2BHTo5BqJoDZkyVNV0ae5omb%2F33MpSqK1iO"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
     "NEL",
     '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
     "Server",
@@ -4015,6 +6533,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       total: 1,
       results: [
         {
@@ -4155,12 +6674,115 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           createdAt: "2022-02-17T18:56:16.511Z",
           updatedAt: "2022-02-17T18:56:19.071Z",
           archived: false,
+=======
+      vid: 43951,
+      "canonical-vid": 43951,
+      "merged-vids": [],
+      "portal-id": 20858235,
+      "is-contact": true,
+      properties: {
+        hs_is_unworked: { value: "true" },
+        firstname: { value: "Evan" },
+        associatedcompanyid: { value: "7977984559" },
+        num_unique_conversion_events: { value: "0" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645495669917" },
+        date_field: { value: "1613001600000" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        mobilephone: { value: "+5583999999998" },
+        hs_searchable_calculated_mobile_number: { value: "83999999998" },
+        hs_email_domain: { value: "mailinator.com" },
+        number_field: { value: "30.39" },
+        email: { value: "caio.silveira@mailinator.com" },
+        website: { value: "http://samba.grouparoo.com" },
+        closedate: { value: "1613001600000" },
+        lastmodifieddate: { value: "1645495679191" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495669917" },
+        message: {
+          value:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla est purus, ultrices in porttitor\nin, accumsan non quam.",
+        },
+        hs_calculated_mobile_number: { value: "+5583999999998" },
+        lastname: { value: "Podolsky" },
+        hs_all_contact_vids: { value: "43951" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        hs_object_id: { value: "43951" },
+        text_field: { value: "text_field" },
+        lifecyclestage: { value: "subscriber" },
+      },
+      "list-memberships": [],
+      "identity-profiles": [
+        {
+          vid: 43951,
+          "saved-at-timestamp": 1645495669988,
+          "deleted-changed-timestamp": 0,
+          identities: [
+            {
+              type: "EMAIL",
+              value: "caio.silveira@mailinator.com",
+              timestamp: 1645495669917,
+              "is-primary": true,
+            },
+            {
+              type: "LEAD_GUID",
+              value: "35e4802d-1313-4de6-943b-f7a89f7a8dc2",
+              timestamp: 1645495669983,
+            },
+          ],
+        },
+      ],
+      "merge-audits": [],
+      "associated-company": {
+        "company-id": 7977984559,
+        "portal-id": 20858235,
+        properties: {
+          hs_num_open_deals: { value: "0" },
+          country: { value: "United States" },
+          website: { value: "samba.grouparoo.com" },
+          num_associated_contacts: { value: "0" },
+          timezone: { value: "America/Los_Angeles" },
+          createdate: { value: "1645495668429" },
+          description: {
+            value:
+              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
+          },
+          hs_num_blockers: { value: "0" },
+          web_technologies: {
+            value:
+              "slack;google_tag_manager;google_analytics;twitter_button;lever;google_apps",
+          },
+          numberofemployees: { value: "10" },
+          linkedin_company_page: {
+            value: "https://www.linkedin.com/company/grouparoo",
+          },
+          twitterhandle: { value: "grouparoo" },
+          hs_target_account_probability: { value: "0.4076234698295593" },
+          hs_lastmodifieddate: { value: "1645495671044" },
+          hs_num_decision_makers: { value: "0" },
+          domain: { value: "samba.grouparoo.com" },
+          founded_year: { value: "2019" },
+          hs_num_child_companies: { value: "0" },
+          hs_num_contacts_with_buying_roles: { value: "0" },
+          hs_object_id: { value: "7977984559" },
+          is_public: { value: "false" },
+          name: { value: "samba" },
+          state: { value: "CA" },
+          linkedinbio: {
+            value:
+              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
+          },
+>>>>>>> chore: add additional destination option.
         },
       ],
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:26 GMT",
+=======
+      "Tue, 22 Feb 2022 02:07:59 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -4168,7 +6790,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c532d2de85d-EWR",
+=======
+      "6e14a9fca87f275b-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -4180,6 +6806,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "c8464b6a-5738-4f0c-baf2-215115f55e53",
       "X-HubSpot-RateLimit-Daily",
       "250000",
@@ -4189,6 +6816,27 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2BD1A7C576181529521B9B64F27DA2F9119E291B1D000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=Bur8WXzvQpBtxYfGiZu50WRk1tuJm7%2Bni6%2BM0OVJRiN4%2Bwn%2FAgut7OHWsJF4AAGVujtc2B9WErjJ9RozeI%2F%2BmgvPa%2BFuX1rhe8U9d6malXMqRPAeuhZ33Y4UH%2B8Banyy"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2f08e077-19c4-4d26-a0c8-7553c6dfa972",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249753",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "76",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2B2E83AEB674B6003E6518A5434A8C849DB97F7979000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=QXRs9Au0b4%2BY8QUHe34IRwb0mLWfIdV0HAU%2F2RNZZbjsE9Z%2FO75mOR%2BOCtU4FlxaY7Ymn6K2oE9VZaNLkH72FEoEhBb9LgYaC3%2FcxmoM884W0qIv4HhpJHL3ZBrmI%2Bds"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -4259,13 +6907,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       vid: 289651,
       "canonical-vid": 289651,
+=======
+      vid: 43951,
+      "canonical-vid": 43951,
+>>>>>>> chore: add additional destination option.
       "merged-vids": [],
       "portal-id": 7974676,
       "is-contact": true,
       properties: {
         hs_is_unworked: { value: "true" },
+<<<<<<< HEAD
         firstname: { value: "Caio" },
         associatedcompanyid: { value: "7945038518" },
         lastmodifieddate: { value: "1645124185247" },
@@ -4285,37 +6939,710 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
         hs_email_domain: { value: "mailinator.com" },
         lifecyclestage: { value: "subscriber" },
         email: { value: "caio.silveira@mailinator.com" },
+=======
+        firstname: { value: "Evan" },
+        associatedcompanyid: { value: "7977984559" },
+        num_unique_conversion_events: { value: "0" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645495669917" },
+        date_field: { value: "1613001600000" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        mobilephone: { value: "+5583999999998" },
+        hs_searchable_calculated_mobile_number: { value: "83999999998" },
+        hs_email_domain: { value: "mailinator.com" },
+        number_field: { value: "30.39" },
+        email: { value: "caio.silveira@mailinator.com" },
+        website: { value: "http://samba.grouparoo.com" },
+        closedate: { value: "1613001600000" },
+        lastmodifieddate: { value: "1645495679191" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495669917" },
+        message: {
+          value:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla est purus, ultrices in porttitor\nin, accumsan non quam.",
+        },
+        hs_calculated_mobile_number: { value: "+5583999999998" },
+        lastname: { value: "Podolsky" },
+        hs_all_contact_vids: { value: "43951" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        hs_object_id: { value: "43951" },
+        text_field: { value: "text_field" },
+        lifecyclestage: { value: "subscriber" },
+>>>>>>> chore: add additional destination option.
       },
       "list-memberships": [],
       "identity-profiles": [
         {
+<<<<<<< HEAD
           vid: 289651,
           "saved-at-timestamp": 1645124182773,
+=======
+          vid: 43951,
+          "saved-at-timestamp": 1645495669988,
+>>>>>>> chore: add additional destination option.
           "deleted-changed-timestamp": 0,
           identities: [
             {
               type: "EMAIL",
               value: "caio.silveira@mailinator.com",
+<<<<<<< HEAD
               timestamp: 1645124182718,
+=======
+              timestamp: 1645495669917,
+>>>>>>> chore: add additional destination option.
               "is-primary": true,
             },
             {
               type: "LEAD_GUID",
+<<<<<<< HEAD
               value: "7a4c414e-69d9-4aa5-9a81-dec51e999f27",
               timestamp: 1645124182768,
+=======
+              value: "35e4802d-1313-4de6-943b-f7a89f7a8dc2",
+              timestamp: 1645495669983,
+>>>>>>> chore: add additional destination option.
             },
           ],
         },
       ],
       "merge-audits": [],
       "associated-company": {
+<<<<<<< HEAD
         "company-id": 7945038518,
         "portal-id": 7974676,
+=======
+        "company-id": 7977984559,
+        "portal-id": 20858235,
+>>>>>>> chore: add additional destination option.
+        properties: {
+          hs_num_open_deals: { value: "0" },
+          country: { value: "United States" },
+          website: { value: "samba.grouparoo.com" },
+          num_associated_contacts: { value: "0" },
+          timezone: { value: "America/Los_Angeles" },
+<<<<<<< HEAD
+          createdate: { value: "1645124176511" },
+=======
+          createdate: { value: "1645495668429" },
+>>>>>>> chore: add additional destination option.
+          description: {
+            value:
+              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
+          },
+          hs_num_blockers: { value: "0" },
+          web_technologies: {
+            value:
+              "slack;google_tag_manager;google_analytics;twitter_button;lever;google_apps",
+          },
+          numberofemployees: { value: "10" },
+          linkedin_company_page: {
+            value: "https://www.linkedin.com/company/grouparoo",
+          },
+          twitterhandle: { value: "grouparoo" },
+          hs_target_account_probability: { value: "0.4076234698295593" },
+          hs_lastmodifieddate: { value: "1645495671044" },
+          hs_num_decision_makers: { value: "0" },
+          domain: { value: "samba.grouparoo.com" },
+          founded_year: { value: "2019" },
+          hs_num_child_companies: { value: "0" },
+          hs_num_contacts_with_buying_roles: { value: "0" },
+          hs_object_id: { value: "7977984559" },
+          is_public: { value: "false" },
+          name: { value: "samba" },
+          state: { value: "CA" },
+          linkedinbio: {
+            value:
+              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
+          },
+<<<<<<< HEAD
+          hs_num_open_deals: { value: "0" },
+          website: { value: "bossa.grouparoo.com" },
+          first_contact_createdate: { value: "1645124182719" },
+          twitterhandle: { value: "grouparoo" },
+          hs_target_account_probability: { value: "0.38625118136405945" },
+          hs_lastmodifieddate: { value: "1645124186532" },
+          hs_num_decision_makers: { value: "0" },
+          num_conversion_events: { value: "0" },
+          domain: { value: "bossa.grouparoo.com" },
+          hs_num_child_companies: { value: "0" },
+          hs_num_contacts_with_buying_roles: { value: "0" },
+          hs_object_id: { value: "7945038518" },
+          is_public: { value: "false" },
+          name: { value: "bossa" },
+=======
+>>>>>>> chore: add additional destination option.
+        },
+      },
+    },
+    [
+      "Date",
+<<<<<<< HEAD
+      "Thu, 17 Feb 2022 18:56:26 GMT",
+=======
+      "Tue, 22 Feb 2022 02:07:59 GMT",
+>>>>>>> chore: add additional destination option.
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+<<<<<<< HEAD
+      "6df13c55dbc1efc0-EWR",
+=======
+      "6e14a9fe4ac7273d-FOR",
+>>>>>>> chore: add additional destination option.
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
+      "927178d9-4540-45d2-9430-342a1a01fd35",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "248863",
+=======
+      "50ac8dae-39e7-48cc-a114-4cdb60795683",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249752",
+>>>>>>> chore: add additional destination option.
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
+      "77",
+=======
+      "75",
+>>>>>>> chore: add additional destination option.
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+<<<<<<< HEAD
+      "2BC0289816EDC1EA5FF704059186357D2FFFB3D418000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=J1vuXkf8iTfz3kK8dtDeuN96i9Nu2nlocm%2BGsVcPd3cKjorAHJKKLWWp2EaSkSQ2awn2oKCld3ztbEnteyLRWVRSSKOGvNWqOTcsQ4N%2FTMGiDuCIVpCOy6L3%2Fs1USVtb"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2B56F8BA6401F7C001B48E13B69ECB0D83487F907A000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=PbSJltZucn5vnsotBj5Zf4jUJRhMzOGuO2EBKZYc7shvGFakS3mdtBgIvA4oa%2BVr6VgsSzXLbJYrnMfgO4NJM%2F9%2FLCmTfSyBsufhVcjcqir0VeHG%2FHI%2BD7ZJMnokSe00"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
+  .post("/crm/v3/objects/COMPANY/search", {
+    filterGroups: [
+      {
+        filters: [
+          {
+            propertyName: "domain",
+            operator: "EQ",
+            value: "samba.grouparoo.com",
+          },
+        ],
+      },
+    ],
+    properties: ["domain"],
+    limit: 100,
+=======
+  .post(
+    "/contacts/v1/contact/createOrUpdate/email/caio.silveira@mailinator.com/",
+    {
+      properties: [
+        { property: "closedate", value: "asd000" },
+        { property: "email", value: "caio.silveira@mailinator.com" },
+      ],
+    }
+  )
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    400,
+    {
+      validationResults: [
+        {
+          isValid: false,
+          message: "asd000 was not a valid long.",
+          error: "INVALID_LONG",
+          name: "closedate",
+        },
+      ],
+      status: "error",
+      message: "Property values were not valid",
+      correlationId: "5b50e717-398a-434d-954c-35f749e2cb85",
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:00 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Content-Length",
+      "239",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14a9ffbf352743-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "5b50e717-398a-434d-954c-35f749e2cb85",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249751",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "75",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2B3537FA17193876855C76838B1E61F332546BE326000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=b3EtXyCgrg9BmMVzJ3GrPwIVqaOSvvQUa591sh6bjcBkmEcDIdFk8izaVII%2FxvWNspJRyKKpPYL8V8UDg9XCQEujLU9b3ST%2BYovi%2BxpqH%2BUk%2F184Vcgngj%2BlO8%2BnA6Ht"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/contact/email/caio.silveira@mailinator.com/profile", {})
+  .query({
+    propertyMode: "value_only",
+    formSubmissionMode: "none",
+    hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded",
+>>>>>>> chore: add additional destination option.
+  })
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+    {
+<<<<<<< HEAD
+      total: 1,
+      results: [
+        {
+          id: "7945038519",
+          properties: {
+            createdate: "2022-02-17T18:56:16.511Z",
+            domain: "samba.grouparoo.com",
+            hs_lastmodifieddate: "2022-02-17T18:56:19.071Z",
+            hs_object_id: "7945038519",
+          },
+          createdAt: "2022-02-17T18:56:16.511Z",
+          updatedAt: "2022-02-17T18:56:19.071Z",
+          archived: false,
+=======
+      vid: 43951,
+      "canonical-vid": 43951,
+      "merged-vids": [],
+      "portal-id": 20858235,
+      "is-contact": true,
+      properties: {
+        hs_is_unworked: { value: "true" },
+        firstname: { value: "Evan" },
+        associatedcompanyid: { value: "7977984559" },
+        num_unique_conversion_events: { value: "0" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645495669917" },
+        date_field: { value: "1613001600000" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        mobilephone: { value: "+5583999999998" },
+        hs_searchable_calculated_mobile_number: { value: "83999999998" },
+        hs_email_domain: { value: "mailinator.com" },
+        number_field: { value: "30.39" },
+        email: { value: "caio.silveira@mailinator.com" },
+        website: { value: "http://samba.grouparoo.com" },
+        closedate: { value: "1613001600000" },
+        lastmodifieddate: { value: "1645495679191" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495669917" },
+        message: {
+          value:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla est purus, ultrices in porttitor\nin, accumsan non quam.",
+        },
+        hs_calculated_mobile_number: { value: "+5583999999998" },
+        lastname: { value: "Podolsky" },
+        hs_all_contact_vids: { value: "43951" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        hs_object_id: { value: "43951" },
+        text_field: { value: "text_field" },
+        lifecyclestage: { value: "subscriber" },
+      },
+      "list-memberships": [],
+      "identity-profiles": [
+        {
+          vid: 43951,
+          "saved-at-timestamp": 1645495669988,
+          "deleted-changed-timestamp": 0,
+          identities: [
+            {
+              type: "EMAIL",
+              value: "caio.silveira@mailinator.com",
+              timestamp: 1645495669917,
+              "is-primary": true,
+            },
+            {
+              type: "LEAD_GUID",
+              value: "35e4802d-1313-4de6-943b-f7a89f7a8dc2",
+              timestamp: 1645495669983,
+            },
+          ],
+        },
+      ],
+      "merge-audits": [],
+      "associated-company": {
+        "company-id": 7977984559,
+        "portal-id": 20858235,
+        properties: {
+          hs_num_open_deals: { value: "0" },
+          country: { value: "United States" },
+          website: { value: "samba.grouparoo.com" },
+          num_associated_contacts: { value: "0" },
+          timezone: { value: "America/Los_Angeles" },
+          createdate: { value: "1645495668429" },
+          description: {
+            value:
+              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
+          },
+          hs_num_blockers: { value: "0" },
+          web_technologies: {
+            value:
+              "slack;google_tag_manager;google_analytics;twitter_button;lever;google_apps",
+          },
+          numberofemployees: { value: "10" },
+          linkedin_company_page: {
+            value: "https://www.linkedin.com/company/grouparoo",
+          },
+          twitterhandle: { value: "grouparoo" },
+          hs_target_account_probability: { value: "0.4076234698295593" },
+          hs_lastmodifieddate: { value: "1645495671044" },
+          hs_num_decision_makers: { value: "0" },
+          domain: { value: "samba.grouparoo.com" },
+          founded_year: { value: "2019" },
+          hs_num_child_companies: { value: "0" },
+          hs_num_contacts_with_buying_roles: { value: "0" },
+          hs_object_id: { value: "7977984559" },
+          is_public: { value: "false" },
+          name: { value: "samba" },
+          state: { value: "CA" },
+          linkedinbio: {
+            value:
+              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
+          },
+>>>>>>> chore: add additional destination option.
+        },
+      ],
+    },
+    [
+      "Date",
+<<<<<<< HEAD
+      "Thu, 17 Feb 2022 18:56:26 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:00 GMT",
+>>>>>>> chore: add additional destination option.
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+<<<<<<< HEAD
+      "6df13c56ff238ce6-EWR",
+=======
+      "6e14aa011993275b-FOR",
+>>>>>>> chore: add additional destination option.
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
+      "b24384ce-8827-4735-8de3-a11b3dae1e7a",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "248862",
+      "X-Trace",
+      "2BD21BA6883F683BCBA618A2F9B233B76F9FFE50E0000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=ruF5SiHeKWXHzSj3rbEr%2Fba%2BUgzyNZjSwJV1b%2Ff5t6SXydmEaOu5bI5m0LnCROBKpplyYiji4ZI50JA97HiJ2N1cLQgEhyPrQysQX6mBh6cyEip5R%2BEWHpNpYbIBEPzn"}],"group":"cf-nel","max_age":604800}',
+=======
+      "6c4ee767-8615-44e9-90ac-b1e67a3a1194",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249750",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "74",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2BBB6929939D5F05B7289D8050D683EC9D873EDCDA000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=FsWYwg30CU80SpuCb1Odz3ixw%2FnTeUbqMVFLFLO7uAJjb5SIuiX9EB%2ByxHRZsKgS2SG3wlLOMWXKc0mlE85oh%2BSoXi0FD0jMv8VZWa9TrOn4%2FNlLwJnP%2BZclQnRL%2BnpQ"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/crm-associations/v1/associations/289651/HUBSPOT_DEFINED/1")
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+<<<<<<< HEAD
+  .reply(200, { results: [7945038519], hasMore: false, offset: 7945038519 }, [
+    "Date",
+    "Thu, 17 Feb 2022 18:56:26 GMT",
+=======
+  .reply(200, { vid: 43951, isNew: false }, [
+    "Date",
+    "Tue, 22 Feb 2022 02:08:00 GMT",
+>>>>>>> chore: add additional destination option.
+    "Content-Type",
+    "application/json;charset=utf-8",
+    "Content-Length",
+    "60",
+    "Connection",
+    "close",
+    "CF-Ray",
+<<<<<<< HEAD
+    "6df13c57ec648c24-EWR",
+=======
+    "6e14aa025b3acf96-FOR",
+>>>>>>> chore: add additional destination option.
+    "Strict-Transport-Security",
+    "max-age=31536000; includeSubDomains; preload",
+    "Vary",
+    "Accept-Encoding",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Access-Control-Allow-Credentials",
+    "false",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
+    "6e735f1e-9f23-45f9-8cc8-15cafe1bdafc",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "248861",
+=======
+    "bee13c1f-8038-4e88-8589-7935fd2feadd",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249749",
+>>>>>>> chore: add additional destination option.
+    "X-HubSpot-RateLimit-Interval-Milliseconds",
+    "10000",
+    "X-HubSpot-RateLimit-Max",
+    "100",
+    "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
+    "76",
+=======
+    "73",
+>>>>>>> chore: add additional destination option.
+    "X-HubSpot-RateLimit-Secondly",
+    "10",
+    "X-HubSpot-RateLimit-Secondly-Remaining",
+    "7",
+    "X-Trace",
+<<<<<<< HEAD
+    "2BF84CB595F7B400D14CC1A15F960135383763539F000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=YG%2B9LxuvbJqHfmelWy812Vljrb8fBvDfIzlulHaV6lMtzHUOqmM6dT52dXclcSnx1dhFPhZJvmMta%2BroHvMlj7n%2FprFYmzLnueAECOp9po3l2JGzJEWYodQZXvMJ7Q7U"}],"group":"cf-nel","max_age":604800}',
+=======
+    "2BAA3E199D0895F9083B1185C9B36DA0CA6B376C4E000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=fIIgcExEC7M4eJC11A94UecX%2BzfiBbnS%2BJOwakU7xA%2B2iWuDQ%2BM%2FL4lvzyOTdpPTR%2F41%2FXVxfS4Sny4uLJbWS7SKc9OU0gu3MsroweOtxQRQo9St68Xa44D0irFiH500"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
+    "NEL",
+    '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+    "Server",
+    "cloudflare",
+    "alt-svc",
+    'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+  ]);
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/contact/email/caio.silveira@mailinator.com/profile", {})
+  .query({
+    propertyMode: "value_only",
+    formSubmissionMode: "none",
+    hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded",
+  })
+  .once()
+  .reply(
+    200,
+    {
+<<<<<<< HEAD
+      vid: 289651,
+      "canonical-vid": 289651,
+=======
+      vid: 43951,
+      "canonical-vid": 43951,
+>>>>>>> chore: add additional destination option.
+      "merged-vids": [],
+      "portal-id": 7974676,
+      "is-contact": true,
+      properties: {
+        hs_is_unworked: { value: "true" },
+<<<<<<< HEAD
+        firstname: { value: "Caio" },
+        associatedcompanyid: { value: "" },
+        lastmodifieddate: { value: "1645124186611" },
+        num_unique_conversion_events: { value: "0" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645124182719" },
+        hs_lifecyclestage_subscriber_date: { value: "1645124182719" },
+        hs_calculated_mobile_number: { value: "+5583999999999" },
+        lastname: { value: "Silveira" },
+        hs_all_contact_vids: { value: "289651" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        mobilephone: { value: "+5583999999999" },
+        hs_searchable_calculated_mobile_number: { value: "83999999999" },
+        hs_object_id: { value: "289651" },
+        hs_email_domain: { value: "mailinator.com" },
+        lifecyclestage: { value: "subscriber" },
+        email: { value: "caio.silveira@mailinator.com" },
+=======
+        firstname: { value: "" },
+        associatedcompanyid: { value: "7977984559" },
+        num_unique_conversion_events: { value: "0" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645495669917" },
+        date_field: { value: "" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        mobilephone: { value: "" },
+        hs_searchable_calculated_mobile_number: { value: "" },
+        hs_email_domain: { value: "mailinator.com" },
+        number_field: { value: "" },
+        email: { value: "caio.silveira@mailinator.com" },
+        website: { value: "http://samba.grouparoo.com" },
+        closedate: { value: "1613001600000" },
+        lastmodifieddate: { value: "1645495680483" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495669917" },
+        message: {
+          value:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla est purus, ultrices in porttitor\nin, accumsan non quam.",
+        },
+        hs_calculated_mobile_number: { value: "" },
+        lastname: { value: "" },
+        hs_all_contact_vids: { value: "43951" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        hs_object_id: { value: "43951" },
+        text_field: { value: "" },
+        lifecyclestage: { value: "subscriber" },
+>>>>>>> chore: add additional destination option.
+      },
+      "list-memberships": [],
+      "identity-profiles": [
+        {
+<<<<<<< HEAD
+          vid: 289651,
+          "saved-at-timestamp": 1645124182773,
+=======
+          vid: 43951,
+          "saved-at-timestamp": 1645495669988,
+>>>>>>> chore: add additional destination option.
+          "deleted-changed-timestamp": 0,
+          identities: [
+            {
+              type: "EMAIL",
+              value: "caio.silveira@mailinator.com",
+<<<<<<< HEAD
+              timestamp: 1645124182718,
+=======
+              timestamp: 1645495669917,
+>>>>>>> chore: add additional destination option.
+              "is-primary": true,
+            },
+            {
+              type: "LEAD_GUID",
+<<<<<<< HEAD
+              value: "7a4c414e-69d9-4aa5-9a81-dec51e999f27",
+              timestamp: 1645124182768,
+=======
+              value: "35e4802d-1313-4de6-943b-f7a89f7a8dc2",
+              timestamp: 1645495669983,
+>>>>>>> chore: add additional destination option.
+            },
+          ],
+        },
+      ],
+      "merge-audits": [],
+<<<<<<< HEAD
+    },
+    [
+      "Date",
+      "Thu, 17 Feb 2022 18:56:27 GMT",
+=======
+      "associated-company": {
+        "company-id": 7977984559,
+        "portal-id": 20858235,
         properties: {
           country: { value: "United States" },
           num_associated_contacts: { value: "1" },
           timezone: { value: "America/Los_Angeles" },
-          createdate: { value: "1645124176511" },
+          createdate: { value: "1645495668429" },
           description: {
             value:
               "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
@@ -4336,25 +7663,26 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
               "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
           },
           hs_num_open_deals: { value: "0" },
-          website: { value: "bossa.grouparoo.com" },
-          first_contact_createdate: { value: "1645124182719" },
+          website: { value: "samba.grouparoo.com" },
+          first_contact_createdate: { value: "1645495669917" },
           twitterhandle: { value: "grouparoo" },
           hs_target_account_probability: { value: "0.38625118136405945" },
-          hs_lastmodifieddate: { value: "1645124186532" },
+          hs_lastmodifieddate: { value: "1645495680174" },
           hs_num_decision_makers: { value: "0" },
           num_conversion_events: { value: "0" },
-          domain: { value: "bossa.grouparoo.com" },
+          domain: { value: "samba.grouparoo.com" },
           hs_num_child_companies: { value: "0" },
           hs_num_contacts_with_buying_roles: { value: "0" },
-          hs_object_id: { value: "7945038518" },
+          hs_object_id: { value: "7977984559" },
           is_public: { value: "false" },
-          name: { value: "bossa" },
+          name: { value: "samba" },
         },
       },
     },
     [
       "Date",
-      "Thu, 17 Feb 2022 18:56:26 GMT",
+      "Tue, 22 Feb 2022 02:08:01 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -4362,245 +7690,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
-      "6df13c55dbc1efc0-EWR",
-      "Strict-Transport-Security",
-      "max-age=31536000; includeSubDomains; preload",
-      "Vary",
-      "Accept-Encoding",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Access-Control-Allow-Credentials",
-      "false",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "X-HubSpot-Correlation-Id",
-      "927178d9-4540-45d2-9430-342a1a01fd35",
-      "X-HubSpot-RateLimit-Daily",
-      "250000",
-      "X-HubSpot-RateLimit-Daily-Remaining",
-      "248863",
-      "X-HubSpot-RateLimit-Interval-Milliseconds",
-      "10000",
-      "X-HubSpot-RateLimit-Max",
-      "100",
-      "X-HubSpot-RateLimit-Remaining",
-      "77",
-      "X-HubSpot-RateLimit-Secondly",
-      "10",
-      "X-HubSpot-RateLimit-Secondly-Remaining",
-      "7",
-      "X-Trace",
-      "2BC0289816EDC1EA5FF704059186357D2FFFB3D418000000000000000000",
-      "Report-To",
-      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=J1vuXkf8iTfz3kK8dtDeuN96i9Nu2nlocm%2BGsVcPd3cKjorAHJKKLWWp2EaSkSQ2awn2oKCld3ztbEnteyLRWVRSSKOGvNWqOTcsQ4N%2FTMGiDuCIVpCOy6L3%2Fs1USVtb"}],"group":"cf-nel","max_age":604800}',
-      "NEL",
-      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
-      "Server",
-      "cloudflare",
-      "alt-svc",
-      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
-    ]
-  );
-nock("https://api.hubapi.com:443", { encodedQueryParams: true })
-  .post("/crm/v3/objects/COMPANY/search", {
-    filterGroups: [
-      {
-        filters: [
-          {
-            propertyName: "domain",
-            operator: "EQ",
-            value: "samba.grouparoo.com",
-          },
-        ],
-      },
-    ],
-    properties: ["domain"],
-    limit: 100,
-  })
-  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
-  .once()
-  .reply(
-    200,
-    {
-      total: 1,
-      results: [
-        {
-          id: "7945038519",
-          properties: {
-            createdate: "2022-02-17T18:56:16.511Z",
-            domain: "samba.grouparoo.com",
-            hs_lastmodifieddate: "2022-02-17T18:56:19.071Z",
-            hs_object_id: "7945038519",
-          },
-          createdAt: "2022-02-17T18:56:16.511Z",
-          updatedAt: "2022-02-17T18:56:19.071Z",
-          archived: false,
-        },
-      ],
-    },
-    [
-      "Date",
-      "Thu, 17 Feb 2022 18:56:26 GMT",
-      "Content-Type",
-      "application/json;charset=utf-8",
-      "Transfer-Encoding",
-      "chunked",
-      "Connection",
-      "close",
-      "CF-Ray",
-      "6df13c56ff238ce6-EWR",
-      "Strict-Transport-Security",
-      "max-age=31536000; includeSubDomains; preload",
-      "Vary",
-      "Accept-Encoding",
-      "CF-Cache-Status",
-      "DYNAMIC",
-      "Access-Control-Allow-Credentials",
-      "false",
-      "Expect-CT",
-      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-      "X-HubSpot-Correlation-Id",
-      "b24384ce-8827-4735-8de3-a11b3dae1e7a",
-      "X-HubSpot-RateLimit-Daily",
-      "250000",
-      "X-HubSpot-RateLimit-Daily-Remaining",
-      "248862",
-      "X-Trace",
-      "2BD21BA6883F683BCBA618A2F9B233B76F9FFE50E0000000000000000000",
-      "Report-To",
-      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=ruF5SiHeKWXHzSj3rbEr%2Fba%2BUgzyNZjSwJV1b%2Ff5t6SXydmEaOu5bI5m0LnCROBKpplyYiji4ZI50JA97HiJ2N1cLQgEhyPrQysQX6mBh6cyEip5R%2BEWHpNpYbIBEPzn"}],"group":"cf-nel","max_age":604800}',
-      "NEL",
-      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
-      "Server",
-      "cloudflare",
-      "alt-svc",
-      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
-    ]
-  );
-nock("https://api.hubapi.com:443", { encodedQueryParams: true })
-  .get("/crm-associations/v1/associations/289651/HUBSPOT_DEFINED/1")
-  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
-  .once()
-  .reply(200, { results: [7945038519], hasMore: false, offset: 7945038519 }, [
-    "Date",
-    "Thu, 17 Feb 2022 18:56:26 GMT",
-    "Content-Type",
-    "application/json;charset=utf-8",
-    "Content-Length",
-    "60",
-    "Connection",
-    "close",
-    "CF-Ray",
-    "6df13c57ec648c24-EWR",
-    "Strict-Transport-Security",
-    "max-age=31536000; includeSubDomains; preload",
-    "Vary",
-    "Accept-Encoding",
-    "CF-Cache-Status",
-    "DYNAMIC",
-    "Access-Control-Allow-Credentials",
-    "false",
-    "Expect-CT",
-    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
-    "X-HubSpot-Correlation-Id",
-    "6e735f1e-9f23-45f9-8cc8-15cafe1bdafc",
-    "X-HubSpot-RateLimit-Daily",
-    "250000",
-    "X-HubSpot-RateLimit-Daily-Remaining",
-    "248861",
-    "X-HubSpot-RateLimit-Interval-Milliseconds",
-    "10000",
-    "X-HubSpot-RateLimit-Max",
-    "100",
-    "X-HubSpot-RateLimit-Remaining",
-    "76",
-    "X-HubSpot-RateLimit-Secondly",
-    "10",
-    "X-HubSpot-RateLimit-Secondly-Remaining",
-    "7",
-    "X-Trace",
-    "2BF84CB595F7B400D14CC1A15F960135383763539F000000000000000000",
-    "Report-To",
-    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=YG%2B9LxuvbJqHfmelWy812Vljrb8fBvDfIzlulHaV6lMtzHUOqmM6dT52dXclcSnx1dhFPhZJvmMta%2BroHvMlj7n%2FprFYmzLnueAECOp9po3l2JGzJEWYodQZXvMJ7Q7U"}],"group":"cf-nel","max_age":604800}',
-    "NEL",
-    '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
-    "Server",
-    "cloudflare",
-    "alt-svc",
-    'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
-  ]);
-nock("https://api.hubapi.com:443", { encodedQueryParams: true })
-  .get("/contacts/v1/contact/email/caio.silveira@mailinator.com/profile", {})
-  .query({
-    propertyMode: "value_only",
-    formSubmissionMode: "none",
-    hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded",
-  })
-  .once()
-  .reply(
-    200,
-    {
-      vid: 289651,
-      "canonical-vid": 289651,
-      "merged-vids": [],
-      "portal-id": 7974676,
-      "is-contact": true,
-      properties: {
-        hs_is_unworked: { value: "true" },
-        firstname: { value: "Caio" },
-        associatedcompanyid: { value: "" },
-        lastmodifieddate: { value: "1645124186611" },
-        num_unique_conversion_events: { value: "0" },
-        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
-        createdate: { value: "1645124182719" },
-        hs_lifecyclestage_subscriber_date: { value: "1645124182719" },
-        hs_calculated_mobile_number: { value: "+5583999999999" },
-        lastname: { value: "Silveira" },
-        hs_all_contact_vids: { value: "289651" },
-        hs_sequences_actively_enrolled_count: { value: "0" },
-        hs_is_contact: { value: "true" },
-        num_conversion_events: { value: "0" },
-        mobilephone: { value: "+5583999999999" },
-        hs_searchable_calculated_mobile_number: { value: "83999999999" },
-        hs_object_id: { value: "289651" },
-        hs_email_domain: { value: "mailinator.com" },
-        lifecyclestage: { value: "subscriber" },
-        email: { value: "caio.silveira@mailinator.com" },
-      },
-      "list-memberships": [],
-      "identity-profiles": [
-        {
-          vid: 289651,
-          "saved-at-timestamp": 1645124182773,
-          "deleted-changed-timestamp": 0,
-          identities: [
-            {
-              type: "EMAIL",
-              value: "caio.silveira@mailinator.com",
-              timestamp: 1645124182718,
-              "is-primary": true,
-            },
-            {
-              type: "LEAD_GUID",
-              value: "7a4c414e-69d9-4aa5-9a81-dec51e999f27",
-              timestamp: 1645124182768,
-            },
-          ],
-        },
-      ],
-      "merge-audits": [],
-    },
-    [
-      "Date",
-      "Thu, 17 Feb 2022 18:56:27 GMT",
-      "Content-Type",
-      "application/json;charset=utf-8",
-      "Transfer-Encoding",
-      "chunked",
-      "Connection",
-      "close",
-      "CF-Ray",
+<<<<<<< HEAD
       "6df13c589e3418c4-EWR",
+=======
+      "6e14aa046a722737-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -4612,25 +7706,43 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "4e955ec5-f641-4343-9150-48198cbf2565",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248860",
+=======
+      "511c03ea-c2ea-4645-9776-aecb07564155",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249748",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "75",
+=======
+      "72",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Secondly",
       "10",
       "X-HubSpot-RateLimit-Secondly-Remaining",
       "7",
       "X-Trace",
+<<<<<<< HEAD
       "2B55B4DBB194514856F9F1121F8A03FA643A9AE975000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=o90ksAVE96%2BnbwJ12kwUBuGE3r2qYIOPijNH51zkqxBNgDJKIX9gdEtUfeArDF9Q0g2C%2BYJIYT7nFBicWYtKd9QF%2FuofEsD6xVnUBMypTBFZk3VzCicwvU0AzVZV0d%2BV"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2B193574D430973266E8E3A6C2D42AB9539FBE70CD000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=Tz6bfUihhnQppiHJFkd8glEhiwyrQN7PK4k0mvCemKPdySfnJ6VnTtivf9zGaKsMsYzD8qRvsjS9UUrT6OTh46CA46RslQbHCxM2iqVGhtEOCqD4zqREI3J%2FAuiG0Mze"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -4650,13 +7762,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       vid: 289651,
       "canonical-vid": 289651,
+=======
+      vid: 43951,
+      "canonical-vid": 43951,
+>>>>>>> chore: add additional destination option.
       "merged-vids": [],
       "portal-id": 7974676,
       "is-contact": true,
       properties: {
         hs_is_unworked: { value: "true" },
+<<<<<<< HEAD
         firstname: { value: "Caio" },
         associatedcompanyid: { value: "" },
         lastmodifieddate: { value: "1645124186611" },
@@ -4786,39 +7904,92 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
         hs_email_domain: { value: "mailinator.com" },
         lifecyclestage: { value: "subscriber" },
         email: { value: "caio.silveira@mailinator.com" },
+=======
+        firstname: { value: "" },
+        associatedcompanyid: { value: "7977984559" },
+        num_unique_conversion_events: { value: "0" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645495669917" },
+        date_field: { value: "" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        mobilephone: { value: "" },
+        hs_searchable_calculated_mobile_number: { value: "" },
+        hs_email_domain: { value: "mailinator.com" },
+        number_field: { value: "" },
+        email: { value: "caio.silveira@mailinator.com" },
+        website: { value: "http://samba.grouparoo.com" },
+        closedate: { value: "1613001600000" },
+        lastmodifieddate: { value: "1645495680483" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495669917" },
+        message: {
+          value:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla est purus, ultrices in porttitor\nin, accumsan non quam.",
+        },
+        hs_calculated_mobile_number: { value: "" },
+        lastname: { value: "" },
+        hs_all_contact_vids: { value: "43951" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        hs_object_id: { value: "43951" },
+        text_field: { value: "" },
+        lifecyclestage: { value: "subscriber" },
+>>>>>>> chore: add additional destination option.
       },
       "list-memberships": [],
       "identity-profiles": [
         {
+<<<<<<< HEAD
           vid: 289651,
           "saved-at-timestamp": 1645124182773,
+=======
+          vid: 43951,
+          "saved-at-timestamp": 1645495669988,
+>>>>>>> chore: add additional destination option.
           "deleted-changed-timestamp": 0,
           identities: [
             {
               type: "EMAIL",
               value: "caio.silveira@mailinator.com",
+<<<<<<< HEAD
               timestamp: 1645124182718,
+=======
+              timestamp: 1645495669917,
+>>>>>>> chore: add additional destination option.
               "is-primary": true,
             },
             {
               type: "LEAD_GUID",
+<<<<<<< HEAD
               value: "7a4c414e-69d9-4aa5-9a81-dec51e999f27",
               timestamp: 1645124182768,
+=======
+              value: "35e4802d-1313-4de6-943b-f7a89f7a8dc2",
+              timestamp: 1645495669983,
+>>>>>>> chore: add additional destination option.
             },
           ],
         },
       ],
       "merge-audits": [],
       "associated-company": {
+<<<<<<< HEAD
         "company-id": 7945038519,
         "portal-id": 7974676,
+=======
+        "company-id": 7977984559,
+        "portal-id": 20858235,
+>>>>>>> chore: add additional destination option.
         properties: {
           hs_num_open_deals: { value: "0" },
           country: { value: "United States" },
           website: { value: "samba.grouparoo.com" },
           num_associated_contacts: { value: "0" },
           timezone: { value: "America/Los_Angeles" },
+<<<<<<< HEAD
           createdate: { value: "1645124176511" },
+=======
+          createdate: { value: "1645495668429" },
+>>>>>>> chore: add additional destination option.
           description: {
             value:
               "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
@@ -4848,12 +8019,33 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             value:
               "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
           },
+<<<<<<< HEAD
+=======
+          hs_num_open_deals: { value: "0" },
+          website: { value: "samba.grouparoo.com" },
+          first_contact_createdate: { value: "1645495669917" },
+          twitterhandle: { value: "grouparoo" },
+          hs_target_account_probability: { value: "0.38625118136405945" },
+          hs_lastmodifieddate: { value: "1645495680174" },
+          hs_num_decision_makers: { value: "0" },
+          num_conversion_events: { value: "0" },
+          domain: { value: "samba.grouparoo.com" },
+          hs_num_child_companies: { value: "0" },
+          hs_num_contacts_with_buying_roles: { value: "0" },
+          hs_object_id: { value: "7977984559" },
+          is_public: { value: "false" },
+          name: { value: "samba" },
+>>>>>>> chore: add additional destination option.
         },
       },
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:27 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:01 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -4861,7 +8053,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c5a4f053320-EWR",
+=======
+      "6e14aa06a857e08e-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -4873,25 +8069,43 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "ac14fade-d0a7-4a22-abd6-39c538128d6e",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248858",
+=======
+      "260ae10f-2135-4bcc-8a8b-2f61bacd43fa",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249747",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "73",
+=======
+      "75",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Secondly",
       "10",
       "X-HubSpot-RateLimit-Secondly-Remaining",
       "7",
       "X-Trace",
+<<<<<<< HEAD
       "2B36CF1186A288F12FFA7AD458781685F4C8A1FB14000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=C83BP6t6cdb%2BzeGJNdWsQMFib2Dzyu4sxKA4Ap%2BUZmURzgaIM%2FLHu83E77PdmRcmZPnHF6%2BVA%2F9alA0uJfOsktKyHW6xnkIYH5hF%2F%2FISd2yInvbXorK0zsN7cmOCkZZx"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2BBE3C3C9435680CAADC97D27A18DE0FEC8D920D76000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=ffRIxZXX6O5lWyrD61bLgrZd9o4AQF0pVlLp7exxtfe480kV19JZ9NWcSeRY9aMIQzeGKeOb%2Fo8EuEaIP2yjj4JdRNTS7AlxVoFbW4%2F59DyVB9LQpGIB5DDbiOdWZ4A2"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -4923,9 +8137,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   )
   .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
   .once()
+<<<<<<< HEAD
   .reply(200, { vid: 289651, isNew: false }, [
     "Date",
     "Thu, 17 Feb 2022 18:56:27 GMT",
+=======
+  .reply(200, { vid: 43951, isNew: false }, [
+    "Date",
+    "Tue, 22 Feb 2022 02:08:01 GMT",
+>>>>>>> chore: add additional destination option.
     "Content-Type",
     "application/json;charset=utf-8",
     "Content-Length",
@@ -4933,7 +8153,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "CF-Ray",
+<<<<<<< HEAD
     "6df13c5aed991799-EWR",
+=======
+    "6e14aa086b6fe08e-FOR",
+>>>>>>> chore: add additional destination option.
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains; preload",
     "Vary",
@@ -4945,25 +8169,43 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
     "e01ca4e9-894d-48ec-953b-2008ed4aedc5",
     "X-HubSpot-RateLimit-Daily",
     "250000",
     "X-HubSpot-RateLimit-Daily-Remaining",
     "248857",
+=======
+    "59f6ec0d-8964-41ca-a2d8-1f26116352fc",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249746",
+>>>>>>> chore: add additional destination option.
     "X-HubSpot-RateLimit-Interval-Milliseconds",
     "10000",
     "X-HubSpot-RateLimit-Max",
     "100",
     "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
     "72",
+=======
+    "74",
+>>>>>>> chore: add additional destination option.
     "X-HubSpot-RateLimit-Secondly",
     "10",
     "X-HubSpot-RateLimit-Secondly-Remaining",
     "7",
     "X-Trace",
+<<<<<<< HEAD
     "2BD40AB8517FA77CB1DF2ED58DA5A42DFCDC172135000000000000000000",
     "Report-To",
     '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=n4nowJfuDem5wwDcrTwh1NmGe2rTWZrMtoXm9LYcHQiTDZdH5WlUFPUUDWq40SzqvbH2QmyIJjNODhDi4XHBSEXlTZY5FDHynjVsHTeXRXCTr9O1ObQ0vaep%2FhHg%2Bzok"}],"group":"cf-nel","max_age":604800}',
+=======
+    "2B796E8D5FB7EA0C10E58426B0862B66715087F421000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=if%2F%2F8%2BGQQYKiP8nfq4vXzdfOgyycHQt0VezvB3ZbxGe15ZBn0LgD8hik4926pOk7uTp7LzTETw%2BZZcNu3O0wMpe90yO6cq5gsvGSDvgp8uQSxyjX5gcKTmhtCf1yBuoF"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
     "NEL",
     '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
     "Server",
@@ -5083,7 +8325,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:27 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:01 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -5091,7 +8337,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c5c8998e744-EWR",
+=======
+      "6e14aa0a1ebbe07c-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -5103,25 +8353,43 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "9973513d-935c-4a87-86b3-d53de17069c1",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248856",
+=======
+      "3f2fb4ba-50eb-404d-9b67-de63fdbb58cc",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249745",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "71",
+=======
+      "73",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Secondly",
       "10",
       "X-HubSpot-RateLimit-Secondly-Remaining",
       "7",
       "X-Trace",
+<<<<<<< HEAD
       "2B3B43FA9729D79A6A2B098C06AD1E767891D2941B000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=gnty6LyB3G4DBjyS%2BdkTmFOMAH6u8aWEdYPSlwU%2B78f%2BQkaQ0jV%2BEUEEtNXN327YyE20xpuXPF3qodWpK8s6u%2B3pVftmI5f3fXFHeCRT7pe9WQYBnriOSxhofrPg14DM"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2BFD31A2B0BBB49A3B9FCB4AB05118CCD2257D7D4C000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=wZF%2FvRDtRvY5nbLrMjdT9%2B%2BqDH%2B8R8G%2FZB28qNMY8a6DV9jaIZ5f7eHNQSFJNGGpOIeQSE9GTIElfex4pfkQQytb8HlyR7N6RFRNPHTZSpdkgVuLdag6ul7SVZPeHNWf"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -5242,7 +8510,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:27 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:02 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -5250,7 +8522,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c5d78c80cc9-EWR",
+=======
+      "6e14aa0b9edd2746-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -5262,25 +8538,43 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "69cfa0e5-21a3-49fe-b3fd-decfda2f79e8",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248855",
+=======
+      "bf7f4aa4-0c7b-4529-a860-08768aca9eef",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249744",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "70",
+=======
+      "72",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Secondly",
       "10",
       "X-HubSpot-RateLimit-Secondly-Remaining",
       "7",
       "X-Trace",
+<<<<<<< HEAD
       "2B8AA0685F5345290B96720D9058152109715EF335000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=l4HyvYkZvbLNj974y6isEwBuvE2kuO%2BC27MckPYDgmMKfnXH3skXpHlUywlxdkmLM8I5z8O5R81oD%2FyeQabxzAVHLGm%2F6JY8qE%2FvKA1FoJZZVfRREF2YWlRYjH7afV%2BT"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2B8241ACC72B871BF15F9482BA028DD5666CD09BE1000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=bXbIx3xq2xbar71z2oEopaQeOy7mDf5lGFo5RZj6Jxo%2Btng2xeAUDmKhijwD8PBtrXBQip1kjILukw6Z%2FBhw7DztEnEA%2BtKkreR4%2F%2BfcvNR4nUttn%2F6ueDvTgYKZVk6l"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -5304,6 +8598,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     400,
     {
+<<<<<<< HEAD
       validationResults: [
         {
           isValid: false,
@@ -5319,6 +8614,32 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     [
       "Date",
       "Thu, 17 Feb 2022 18:56:27 GMT",
+=======
+      portalId: 20858235,
+      listId: 64,
+      internalListId: 64,
+      createdAt: 1645495682180,
+      updatedAt: 1645495682180,
+      name: "List One",
+      listType: "STATIC",
+      filters: [],
+      metaData: {
+        size: 0,
+        lastSizeChangeAt: 0,
+        processing: "DONE",
+        lastProcessingStateChangeAt: 1645495682180,
+        error: "",
+        listReferencesCount: null,
+        parentFolderId: null,
+      },
+      archived: false,
+      teamIds: [],
+      dynamic: false,
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:02 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -5326,7 +8647,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c5e4a280cc9-EWR",
+=======
+      "6e14aa0ce9742743-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -5338,16 +8663,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "2352fe7e-c7e2-40af-acf3-a734f3be9431",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248854",
+=======
+      "3e3daaa7-be77-4669-8640-1b751264e1fa",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249743",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "69",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -5357,6 +8691,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B4BE620035CA907E3E9B541941D2F8411BC570512000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=yVlccCcK3B%2B8g4JtwioDkzQ0Ta3KlXNvppowqacyK%2Boyq%2F2pWNItvOFKxVPps2%2B56120zsB3IpC4fjSn3t0aiD8qKEyfjBSbnboHa15EOBNnHQTTdVRZyHf4emaH0AIK"}],"group":"cf-nel","max_age":604800}',
+=======
+      "73",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2B26AE9AE5DB0C34FDC5341BE34DB2454671255674000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=B1cF62T%2BAG1rG%2BpgwT%2FR%2FmA6VfWDXw4EqqStat5VdC3tkezgYEsHwFDsLqby75WpVPC%2FURa%2BDaFvpU%2Fzf0JD3FsFvqdmWetfA527xR3OQ%2FTv09Su8OvIEd2whjcqPeyg"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -5366,15 +8711,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
   .get("/contacts/v1/contact/email/caio.silveira@mailinator.com/profile", {})
   .query({
     propertyMode: "value_only",
     formSubmissionMode: "none",
     hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded",
+=======
+  .post("/contacts/v1/lists/64/add", {
+    emails: ["caio.silveira@mailinator.com"],
+>>>>>>> chore: add additional destination option.
   })
   .once()
   .reply(
     200,
+<<<<<<< HEAD
     {
       vid: 289651,
       "canonical-vid": 289651,
@@ -5480,6 +8831,12 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     [
       "Date",
       "Thu, 17 Feb 2022 18:56:28 GMT",
+=======
+    { updated: [43951], discarded: [], invalidVids: [], invalidEmails: [] },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:02 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -5487,7 +8844,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c5f0fbf1906-EWR",
+=======
+      "6e14aa0f7f43e08e-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -5499,16 +8860,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "97cf1ac4-2844-4b74-b77e-2f2d7a8c58db",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248853",
+=======
+      "a1e06f5e-7414-4033-be6a-72017a6b5d5b",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249742",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "68",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -5518,6 +8888,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2BA5A48C9FBB8F732B35761F696B0915828812596A000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=CTVREVwrCqvcEJLWHiTkNAABrf2vm4HCD1JN%2FQ8OtGpFrP9D9YxtVtOhsgtodiI4Kh54pVIyANTP%2BOoA2eoMuZBa0carX%2BF0t1VfVTC08jHQSJ7NGatZABiXS1fK1lmu"}],"group":"cf-nel","max_age":604800}',
+=======
+      "72",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2B5550F949F1D86362806C3409F1BCB5000739D8C7000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=P%2FvwPxBMTHhwY9eOlLHYSDL3N%2BJO9Pyc5JDexG8so7oVSb858ngkSu%2F%2F12xWNkU1X82IikvkmBra%2B1zWiDokLx%2FkoEI66BxuhWCuWsEDWBlJT3%2FZpmOztr1k%2F0Caueov"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -5530,6 +8911,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .post(
     "/contacts/v1/contact/createOrUpdate/email/caio.silveira@mailinator.com/",
     {
+<<<<<<< HEAD
       properties: [
         { property: "date_field", value: null },
         { property: "email", value: "caio.silveira@mailinator.com" },
@@ -5591,6 +8973,106 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "alt-svc",
     'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
   ]);
+=======
+      offset: 500,
+      lists: [
+        {
+          portalId: 20858235,
+          listId: 27,
+          internalListId: 27,
+          createdAt: 1636048111339,
+          updatedAt: 1636048111339,
+          name: "High Value",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 185,
+            lastSizeChangeAt: 1637623749196,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1636048111503,
+            error: "",
+            listReferencesCount: null,
+            parentFolderId: null,
+          },
+          archived: false,
+          teamIds: [],
+          dynamic: false,
+        },
+        {
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+          name: "List One",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495682646,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+            error: "",
+            listReferencesCount: null,
+            parentFolderId: null,
+          },
+          archived: false,
+          teamIds: [],
+          dynamic: false,
+        },
+      ],
+      "has-more": false,
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:02 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14aa115c7acf96-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "cbc02248-661b-4f97-b06f-fc88a00cf6b4",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249741",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "71",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2BCCED4873A066AA575A55F5F25D5B2220672678B4000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=xkbqPc9glZWlWDfpFaRU0f45ZrG6aBuQyGpLkUObeTGBDh6jzl6a0CTmljCNtxpl6q34hqDGhlSQAu4Ph9JQ8qEQRwz%2By59MmKF%2BFYNc1twsWE3e57GMCdJzSRdlBxMl"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+>>>>>>> chore: add additional destination option.
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .get("/contacts/v1/contact/email/caio.silveira@mailinator.com/profile", {})
   .query({
@@ -5640,6 +9122,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "list-memberships": [],
       "identity-profiles": [
         {
+<<<<<<< HEAD
           vid: 289651,
           "saved-at-timestamp": 1645124182773,
           "deleted-changed-timestamp": 0,
@@ -5656,6 +9139,28 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
               timestamp: 1645124182768,
             },
           ],
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+          name: "List One",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495682646,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+            error: "",
+            listReferencesCount: null,
+            parentFolderId: null,
+          },
+          archived: false,
+          teamIds: [],
+          dynamic: false,
+>>>>>>> chore: add additional destination option.
         },
       ],
       "merge-audits": [],
@@ -5705,7 +9210,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:28 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:03 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -5713,7 +9222,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c612ea11967-EWR",
+=======
+      "6e14aa12ccd3273d-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -5725,16 +9238,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "1b1499c8-fc7d-4ab3-9020-c0ce1763a962",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248851",
+=======
+      "71653347-f264-41ec-b709-6763ff5cfd95",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249740",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "66",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -5744,6 +9266,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B00FBD00F2BFD799FE261D8D63C05BC089B3A1029000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=rYbZJfkBANR62oevJZ92wQtGuJMr76szdtypE3zc4Mxna0tkxanFTf6yKZaq5qk7fdWc8s%2FKVjRAfF32Gmp%2BFgy8wcWeHyYl58nYop3jLj5DGzzLN4N47osivz9qzrNc"}],"group":"cf-nel","max_age":604800}',
+=======
+      "71",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2BE0CBAF0E9D478826772B6C0478A5F62D1AA84A88000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=tmPaTqVJd3c218CzCb%2BtMb4rOzhoIOIfC8TE4Md9boe11ICP56Fk4HUDQIwuIRhJM653oHlKIHiMFKwRSCxIzOdeFNDdc0L2txvbR0Q7fhv3QrS97mHtlUZvDc91I71a"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -5763,110 +9296,34 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       vid: 289651,
       "canonical-vid": 289651,
-      "merged-vids": [],
-      "portal-id": 7974676,
-      "is-contact": true,
-      properties: {
-        hs_is_unworked: { value: "true" },
-        firstname: { value: "" },
-        associatedcompanyid: { value: "7945038519" },
-        closedate: { value: "1613001600000" },
-        lastmodifieddate: { value: "1645124188236" },
-        num_unique_conversion_events: { value: "0" },
-        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
-        createdate: { value: "1645124182719" },
-        hs_lifecyclestage_subscriber_date: { value: "1645124182719" },
-        message: {
-          value:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla est purus, ultrices in porttitor\nin, accumsan non quam.",
-        },
-        hs_calculated_mobile_number: { value: "" },
-        lastname: { value: "" },
-        hs_all_contact_vids: { value: "289651" },
-        date_field: { value: "" },
-        hs_sequences_actively_enrolled_count: { value: "0" },
-        hs_is_contact: { value: "true" },
-        num_conversion_events: { value: "0" },
-        mobilephone: { value: "" },
-        hs_searchable_calculated_mobile_number: { value: "" },
-        hs_object_id: { value: "289651" },
-        text_field: { value: "" },
-        hs_email_domain: { value: "mailinator.com" },
-        lifecyclestage: { value: "subscriber" },
-        number_field: { value: "" },
-        email: { value: "caio.silveira@mailinator.com" },
+=======
+      portalId: 20858235,
+      listId: 65,
+      internalListId: 65,
+      createdAt: 1645495684161,
+      updatedAt: 1645495684161,
+      name: "List Two",
+      listType: "STATIC",
+      filters: [],
+      metaData: {
+        size: 0,
+        lastSizeChangeAt: 0,
+        processing: "DONE",
+        lastProcessingStateChangeAt: 1645495684161,
+        error: "",
+        listReferencesCount: null,
+        parentFolderId: null,
       },
-      "list-memberships": [],
-      "identity-profiles": [
-        {
-          vid: 289651,
-          "saved-at-timestamp": 1645124182773,
-          "deleted-changed-timestamp": 0,
-          identities: [
-            {
-              type: "EMAIL",
-              value: "caio.silveira@mailinator.com",
-              timestamp: 1645124182718,
-              "is-primary": true,
-            },
-            {
-              type: "LEAD_GUID",
-              value: "7a4c414e-69d9-4aa5-9a81-dec51e999f27",
-              timestamp: 1645124182768,
-            },
-          ],
-        },
-      ],
-      "merge-audits": [],
-      "associated-company": {
-        "company-id": 7945038519,
-        "portal-id": 7974676,
-        properties: {
-          country: { value: "United States" },
-          num_associated_contacts: { value: "1" },
-          timezone: { value: "America/Los_Angeles" },
-          createdate: { value: "1645124176511" },
-          description: {
-            value:
-              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
-          },
-          hs_num_blockers: { value: "0" },
-          web_technologies: {
-            value:
-              "slack;google_tag_manager;google_analytics;twitter_button;lever;google_apps",
-          },
-          numberofemployees: { value: "10" },
-          linkedin_company_page: {
-            value: "https://www.linkedin.com/company/grouparoo",
-          },
-          founded_year: { value: "2019" },
-          state: { value: "CA" },
-          linkedinbio: {
-            value:
-              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
-          },
-          hs_num_open_deals: { value: "0" },
-          website: { value: "samba.grouparoo.com" },
-          first_contact_createdate: { value: "1645124182719" },
-          twitterhandle: { value: "grouparoo" },
-          hs_target_account_probability: { value: "0.4076234698295593" },
-          hs_lastmodifieddate: { value: "1645124187151" },
-          hs_num_decision_makers: { value: "0" },
-          num_conversion_events: { value: "0" },
-          domain: { value: "samba.grouparoo.com" },
-          hs_num_child_companies: { value: "0" },
-          hs_num_contacts_with_buying_roles: { value: "0" },
-          hs_object_id: { value: "7945038519" },
-          is_public: { value: "false" },
-          name: { value: "samba" },
-        },
-      },
+      archived: false,
+      teamIds: [],
+      dynamic: false,
     },
     [
       "Date",
-      "Thu, 17 Feb 2022 18:56:28 GMT",
+      "Tue, 22 Feb 2022 02:08:04 GMT",
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -5874,7 +9331,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
-      "6df13c61ff96196c-EWR",
+      "6e14aa179a9fe084-FOR",
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -5886,16 +9343,352 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
-      "39ddb613-f48c-4d9a-b054-de8c076e9c0e",
+      "7c650b19-940d-43ba-b464-b170528b7fb9",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
-      "248850",
+      "249739",
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+      "73",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2B274BDB9EADB528F0AF7C34765C8DA1E63A23A9F6000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=Tzy0qzsOVrNqxdx8BBTtk9sk12uBq1Wzz4U67Z53At3P4pDdQBt4lqZc2d5KOgcuqT9KjjS9PqL5uwmQruQbSGinmY0j4vMeNXSJeezH4YDEtkazfQevYIJ2Ws%2BIIr%2F2"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .post("/contacts/v1/lists/65/add", {
+    emails: ["caio.silveira@mailinator.com"],
+  })
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+    { updated: [43951], discarded: [], invalidVids: [], invalidEmails: [] },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:04 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Content-Length",
+      "70",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14aa1c2fe12746-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "5e1d51f3-c230-4e57-a827-2f1df9140a28",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249738",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "72",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2BC49F4D63F445D43D9ABC5C2638F1E719DB0935AE000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=nm0KOlvNIRnwZDdlLeT2SH%2FbrOOFMHJamJrd%2FgaTauw2ZauHsm8Qb0iJ80dMhWCQ8T1WLDp4irZ%2FrYt4Q7X1n3nx4hnCJSPYAgmKCDUih3KahhjwyeXR3DRWUp6hmNQv"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/contact/email/caio.silveira@mailinator.com/profile", {})
+  .query({
+    propertyMode: "value_only",
+    formSubmissionMode: "none",
+    hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      vid: 43951,
+      "canonical-vid": 43951,
+>>>>>>> chore: add additional destination option.
+      "merged-vids": [],
+      "portal-id": 7974676,
+      "is-contact": true,
+      properties: {
+<<<<<<< HEAD
+        hs_is_unworked: { value: "true" },
+        firstname: { value: "" },
+        associatedcompanyid: { value: "7945038519" },
+        closedate: { value: "1613001600000" },
+        lastmodifieddate: { value: "1645124188236" },
+        num_unique_conversion_events: { value: "0" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645124182719" },
+        hs_lifecyclestage_subscriber_date: { value: "1645124182719" },
+=======
+        hs_latest_source_data_1: { value: "API" },
+        hs_is_unworked: { value: "true" },
+        firstname: { value: "" },
+        associatedcompanyid: { value: "7977984559" },
+        num_unique_conversion_events: { value: "0" },
+        hs_latest_source: { value: "OFFLINE" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        hs_analytics_revenue: { value: "0.0" },
+        hs_social_num_broadcast_clicks: { value: "0" },
+        createdate: { value: "1645495669917" },
+        hs_analytics_num_visits: { value: "0" },
+        date_field: { value: "" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        hs_social_linkedin_clicks: { value: "0" },
+        hs_analytics_source: { value: "OFFLINE" },
+        mobilephone: { value: "" },
+        hs_searchable_calculated_mobile_number: { value: "" },
+        hs_email_domain: { value: "mailinator.com" },
+        hs_analytics_num_page_views: { value: "0" },
+        number_field: { value: "" },
+        email: { value: "caio.silveira@mailinator.com" },
+        website: { value: "http://samba.grouparoo.com" },
+        closedate: { value: "1613001600000" },
+        lastmodifieddate: { value: "1645495681443" },
+        hs_analytics_first_timestamp: { value: "1645495669917" },
+        hs_social_google_plus_clicks: { value: "0" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495669917" },
+>>>>>>> chore: add additional destination option.
+        message: {
+          value:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla est purus, ultrices in porttitor\nin, accumsan non quam.",
+        },
+        hs_calculated_mobile_number: { value: "" },
+<<<<<<< HEAD
+        lastname: { value: "" },
+        hs_all_contact_vids: { value: "289651" },
+        date_field: { value: "" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        mobilephone: { value: "" },
+        hs_searchable_calculated_mobile_number: { value: "" },
+        hs_object_id: { value: "289651" },
+=======
+        hs_analytics_average_page_views: { value: "0" },
+        lastname: { value: "" },
+        hs_all_contact_vids: { value: "43951" },
+        hs_social_facebook_clicks: { value: "0" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        hs_object_id: { value: "43951" },
+>>>>>>> chore: add additional destination option.
+        text_field: { value: "" },
+        hs_email_domain: { value: "mailinator.com" },
+        lifecyclestage: { value: "subscriber" },
+        number_field: { value: "" },
+        email: { value: "caio.silveira@mailinator.com" },
+      },
+<<<<<<< HEAD
+      "list-memberships": [],
+      "identity-profiles": [
+        {
+          vid: 289651,
+          "saved-at-timestamp": 1645124182773,
+=======
+      "list-memberships": [
+        {
+          "static-list-id": 64,
+          "internal-list-id": 64,
+          timestamp: 1645495682604,
+          vid: 43951,
+          "is-member": true,
+        },
+        {
+          "static-list-id": 65,
+          "internal-list-id": 65,
+          timestamp: 1645495684617,
+          vid: 43951,
+          "is-member": true,
+        },
+      ],
+      "identity-profiles": [
+        {
+          vid: 43951,
+          "saved-at-timestamp": 1645495669988,
+>>>>>>> chore: add additional destination option.
+          "deleted-changed-timestamp": 0,
+          identities: [
+            {
+              type: "EMAIL",
+              value: "caio.silveira@mailinator.com",
+<<<<<<< HEAD
+              timestamp: 1645124182718,
+=======
+              timestamp: 1645495669917,
+>>>>>>> chore: add additional destination option.
+              "is-primary": true,
+            },
+            {
+              type: "LEAD_GUID",
+<<<<<<< HEAD
+              value: "7a4c414e-69d9-4aa5-9a81-dec51e999f27",
+              timestamp: 1645124182768,
+=======
+              value: "35e4802d-1313-4de6-943b-f7a89f7a8dc2",
+              timestamp: 1645495669983,
+>>>>>>> chore: add additional destination option.
+            },
+          ],
+        },
+      ],
+      "merge-audits": [],
+      "associated-company": {
+<<<<<<< HEAD
+        "company-id": 7945038519,
+        "portal-id": 7974676,
+=======
+        "company-id": 7977984559,
+        "portal-id": 20858235,
+>>>>>>> chore: add additional destination option.
+        properties: {
+          country: { value: "United States" },
+          num_associated_contacts: { value: "1" },
+          timezone: { value: "America/Los_Angeles" },
+<<<<<<< HEAD
+          createdate: { value: "1645124176511" },
+=======
+          createdate: { value: "1645495668429" },
+>>>>>>> chore: add additional destination option.
+          description: {
+            value:
+              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
+          },
+          hs_num_blockers: { value: "0" },
+          web_technologies: {
+            value:
+              "slack;google_tag_manager;google_analytics;twitter_button;lever;google_apps",
+          },
+          numberofemployees: { value: "10" },
+          hs_analytics_num_visits: { value: "0" },
+          linkedin_company_page: {
+            value: "https://www.linkedin.com/company/grouparoo",
+          },
+          hs_analytics_source: { value: "OFFLINE" },
+          founded_year: { value: "2019" },
+          hs_analytics_num_page_views: { value: "0" },
+          state: { value: "CA" },
+          linkedinbio: {
+            value:
+              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
+          },
+          hs_num_open_deals: { value: "0" },
+          website: { value: "samba.grouparoo.com" },
+<<<<<<< HEAD
+          first_contact_createdate: { value: "1645124182719" },
+          twitterhandle: { value: "grouparoo" },
+          hs_target_account_probability: { value: "0.4076234698295593" },
+          hs_lastmodifieddate: { value: "1645124187151" },
+=======
+          hs_analytics_first_timestamp: { value: "1645495669917" },
+          first_contact_createdate: { value: "1645495669917" },
+          twitterhandle: { value: "grouparoo" },
+          hs_target_account_probability: { value: "0.38625118136405945" },
+          hs_lastmodifieddate: { value: "1645495683505" },
+>>>>>>> chore: add additional destination option.
+          hs_num_decision_makers: { value: "0" },
+          num_conversion_events: { value: "0" },
+          domain: { value: "samba.grouparoo.com" },
+          hs_num_child_companies: { value: "0" },
+          hs_num_contacts_with_buying_roles: { value: "0" },
+<<<<<<< HEAD
+          hs_object_id: { value: "7945038519" },
+          is_public: { value: "false" },
+          name: { value: "samba" },
+=======
+          hs_object_id: { value: "7977984559" },
+          is_public: { value: "false" },
+          name: { value: "samba" },
+          hs_analytics_source_data_1: { value: "API" },
+>>>>>>> chore: add additional destination option.
+        },
+      },
+    },
+    [
+      "Date",
+<<<<<<< HEAD
+      "Thu, 17 Feb 2022 18:56:28 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:04 GMT",
+>>>>>>> chore: add additional destination option.
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+<<<<<<< HEAD
+      "6df13c61ff96196c-EWR",
+=======
+      "6e14aa1df9a6cf96-FOR",
+>>>>>>> chore: add additional destination option.
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
+      "39ddb613-f48c-4d9a-b054-de8c076e9c0e",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "248850",
+=======
+      "0eab527d-89f1-4299-857d-7191dbfda22c",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249737",
+>>>>>>> chore: add additional destination option.
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "65",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -5905,6 +9698,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2BA9B97AF051026889DA8B611722F80B5579B13FD0000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=j2hVSQ%2FzM02XlGHrSFeVke%2Fs6ljEml3S1IWREohsad2rC35WVB6qGYuktBGc%2FmSdZmjs8RHJgEv%2BQu3vfC5qHBy%2FUwEBOjHxWkzYNWhMtZNpQXyQLnbP8w28ao4yPrAl"}],"group":"cf-nel","max_age":604800}',
+=======
+      "71",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2BDD9CEBF23D24CC5D8853C03EED04B5EDEC7E4256000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=Yqs5U2E9KLHWaVGS8C9I0drrKaJA77oSiwTtfi179TmRwb53EdQx8N3sd1%2BOQ8EkIUriPUPTpSztPAcjiAN7xB9DT8dGotQdVeSZnafAyzKRnuI8hFp3kckOzKF79ffC"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -6004,6 +9808,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 627,
           internalListId: 627,
@@ -6017,6 +9822,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1644965337100,
             processing: "DONE",
             lastProcessingStateChangeAt: 1644353913044,
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+          name: "List One",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495682646,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -6026,6 +9846,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 622,
           internalListId: 622,
@@ -6039,6 +9860,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1634665476559,
             processing: "DONE",
             lastProcessingStateChangeAt: 1634665347951,
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+          name: "List Two",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495684759,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -6047,6 +9883,70 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           teamIds: [],
           dynamic: false,
         },
+<<<<<<< HEAD
+=======
+      ],
+      "has-more": false,
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:05 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14aa1f6945275d-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "eca19010-cb57-44e3-b13e-90b10e8481fd",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249736",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "89",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "8",
+      "X-Trace",
+      "2B3D85E938C87D8A0DB664B1DF3E439DB32A26A55E000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=E5u448AlnzoB3eoa8QZu12CosQ9TYtEg3L1dcDtLcOxfJMbdRn8YVZEJE03dj%2BJGkGtXMDIxZwOzDVg2qbd8dm8%2Fn4%2Bfzuo3PiC2XKYlUA2nKq7%2FyXFDu%2Bgsi8LpffRk"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/lists/static")
+  .query({ count: "999", hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+    {
+      offset: 500,
+      lists: [
+>>>>>>> chore: add additional destination option.
         {
           portalId: 7974676,
           listId: 562,
@@ -6070,6 +9970,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 629,
           internalListId: 629,
@@ -6083,6 +9984,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1644965397142,
             processing: "DONE",
             lastProcessingStateChangeAt: 1644964544826,
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+          name: "List One",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495682646,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -6092,6 +10008,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 628,
           internalListId: 628,
@@ -6260,6 +10177,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1632401940035,
             processing: "DONE",
             lastProcessingStateChangeAt: 1629388533258,
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+          name: "List Two",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495684759,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -6273,7 +10205,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:28 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:05 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -6281,7 +10217,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c64195132ee-EWR",
+=======
+      "6e14aa20cfcacf8e-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -6293,16 +10233,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "ad034844-bdc0-48b3-9be6-bd3e18a9319a",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248848",
+=======
+      "a0f29db1-662c-47f7-952d-ff0cede9fc60",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249735",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "63",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -6312,6 +10261,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B061CF9172116677035B39DF8D917A4381D07A1E5000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=U3xSLvt6FQbvlKJcCDvsXni1qTkCM4NrlKTOYlkL7kyS5OyKHpiXpmd9RLPhjYp%2BWU3yzH%2BjbV4dP%2BCtv%2BNq36iN1KNZtGnpigND6hYf6KVvyLJxX%2BcFgq3vO7xle6b4"}],"group":"cf-nel","max_age":604800}',
+=======
+      "88",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "8",
+      "X-Trace",
+      "2BBE5F64E1AA6E3BBFCAC987957A74111A37F20556000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=xs1%2Fsjdg5DCaZeoFZaNkHt3zSOKE44rwohSFb3DM3GHbwDjh5OAIvdb4s536kTvly%2FV4SA6jiLXRLTHnYnWZP42IMDETee8jBP5XzlxgdCiLrMO%2BiuJmSs0M%2FDMCABkj"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -6327,6 +10287,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       offset: 500,
       lists: [
         {
@@ -6372,8 +10333,76 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           archived: false,
           teamIds: [],
           dynamic: false,
+=======
+      vid: 43951,
+      "canonical-vid": 43951,
+      "merged-vids": [],
+      "portal-id": 20858235,
+      "is-contact": true,
+      properties: {
+        hs_latest_source_data_1: { value: "API" },
+        hs_is_unworked: { value: "true" },
+        firstname: { value: "" },
+        associatedcompanyid: { value: "7977984559" },
+        num_unique_conversion_events: { value: "0" },
+        hs_latest_source: { value: "OFFLINE" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        hs_analytics_revenue: { value: "0.0" },
+        hs_social_num_broadcast_clicks: { value: "0" },
+        createdate: { value: "1645495669917" },
+        hs_analytics_num_visits: { value: "0" },
+        date_field: { value: "" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        hs_social_linkedin_clicks: { value: "0" },
+        hs_analytics_source: { value: "OFFLINE" },
+        mobilephone: { value: "" },
+        hs_searchable_calculated_mobile_number: { value: "" },
+        hs_email_domain: { value: "mailinator.com" },
+        hs_analytics_num_page_views: { value: "0" },
+        number_field: { value: "" },
+        email: { value: "caio.silveira@mailinator.com" },
+        website: { value: "http://samba.grouparoo.com" },
+        closedate: { value: "1613001600000" },
+        lastmodifieddate: { value: "1645495681443" },
+        hs_analytics_first_timestamp: { value: "1645495669917" },
+        hs_social_google_plus_clicks: { value: "0" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495669917" },
+        message: {
+          value:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla est purus, ultrices in porttitor\nin, accumsan non quam.",
+        },
+        hs_calculated_mobile_number: { value: "" },
+        hs_analytics_average_page_views: { value: "0" },
+        lastname: { value: "" },
+        hs_all_contact_vids: { value: "43951" },
+        hs_social_facebook_clicks: { value: "0" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        hs_object_id: { value: "43951" },
+        text_field: { value: "" },
+        hs_analytics_num_event_completions: { value: "0" },
+        hs_social_twitter_clicks: { value: "0" },
+        hs_analytics_source_data_1: { value: "API" },
+        lifecyclestage: { value: "subscriber" },
+      },
+      "list-memberships": [
+        {
+          "static-list-id": 64,
+          "internal-list-id": 64,
+          timestamp: 1645495682604,
+          vid: 43951,
+          "is-member": true,
         },
         {
+          "static-list-id": 65,
+          "internal-list-id": 65,
+          timestamp: 1645495684617,
+          vid: 43951,
+          "is-member": true,
+>>>>>>> chore: add additional destination option.
+        },
+        {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 622,
           internalListId: 622,
@@ -6460,6 +10489,73 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           archived: false,
           teamIds: [],
           dynamic: false,
+=======
+          vid: 43951,
+          "saved-at-timestamp": 1645495669988,
+          "deleted-changed-timestamp": 0,
+          identities: [
+            {
+              type: "EMAIL",
+              value: "caio.silveira@mailinator.com",
+              timestamp: 1645495669917,
+              "is-primary": true,
+            },
+            {
+              type: "LEAD_GUID",
+              value: "35e4802d-1313-4de6-943b-f7a89f7a8dc2",
+              timestamp: 1645495669983,
+            },
+          ],
+        },
+      ],
+      "merge-audits": [],
+      "associated-company": {
+        "company-id": 7977984559,
+        "portal-id": 20858235,
+        properties: {
+          country: { value: "United States" },
+          num_associated_contacts: { value: "1" },
+          timezone: { value: "America/Los_Angeles" },
+          createdate: { value: "1645495668429" },
+          description: {
+            value:
+              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
+          },
+          hs_num_blockers: { value: "0" },
+          web_technologies: {
+            value:
+              "slack;google_tag_manager;google_analytics;twitter_button;lever;google_apps",
+          },
+          numberofemployees: { value: "10" },
+          hs_analytics_num_visits: { value: "0" },
+          linkedin_company_page: {
+            value: "https://www.linkedin.com/company/grouparoo",
+          },
+          hs_analytics_source: { value: "OFFLINE" },
+          founded_year: { value: "2019" },
+          hs_analytics_num_page_views: { value: "0" },
+          state: { value: "CA" },
+          linkedinbio: {
+            value:
+              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
+          },
+          hs_num_open_deals: { value: "0" },
+          website: { value: "samba.grouparoo.com" },
+          hs_analytics_first_timestamp: { value: "1645495669917" },
+          first_contact_createdate: { value: "1645495669917" },
+          twitterhandle: { value: "grouparoo" },
+          hs_target_account_probability: { value: "0.38625118136405945" },
+          hs_lastmodifieddate: { value: "1645495683505" },
+          hs_num_decision_makers: { value: "0" },
+          num_conversion_events: { value: "0" },
+          domain: { value: "samba.grouparoo.com" },
+          hs_num_child_companies: { value: "0" },
+          hs_num_contacts_with_buying_roles: { value: "0" },
+          hs_object_id: { value: "7977984559" },
+          is_public: { value: "false" },
+          name: { value: "samba" },
+          hs_analytics_source_data_1: { value: "API" },
+>>>>>>> chore: add additional destination option.
         },
         {
           portalId: 7974676,
@@ -6621,7 +10717,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:29 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:05 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -6629,7 +10729,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c64eb9ee770-EWR",
+=======
+      "6e14aa2229772749-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -6641,16 +10745,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "af3205be-8469-4d3c-bab7-cd660164fbea",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248847",
+=======
+      "a4d55366-9ac3-4857-b425-3a79fd588630",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249734",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "62",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -6660,6 +10773,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2BAD48771C05DD32CD55F5E78BC7756B82F9B74BA9000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=yO%2F7HL6GTbKnfBICLtihlvIld7GcyjwaDDUwFQEuepDWqq9fQRiRvNGP1S2UoqhPnBp04XW1ngVVN8I6YRhFljOpyHuCplu1CiTbOzQjd9gEhkxMZ%2BJLdHVv3dqsaL0d"}],"group":"cf-nel","max_age":604800}',
+=======
+      "87",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "8",
+      "X-Trace",
+      "2B9E9928E31876C5765A79A935BDDB03A4EF55E7C8000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=cyuVDelZoDvXZNiOQZnjBFMSYiXXnMKHmBxrDSpnX8n8%2FLAUwIVxb%2Fx539pq75081HdKjKlDiuoWkaeZmnnwCX6J%2BM9jjUXiuDJmGRpxVPGSKqIJdorRqUYtOFTSNJS4"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -6672,6 +10796,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .post("/contacts/v1/lists", { name: "List One" })
   .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
   .once()
+<<<<<<< HEAD
   .reply(
     200,
     {
@@ -6699,6 +10824,137 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     [
       "Date",
       "Thu, 17 Feb 2022 18:56:29 GMT",
+=======
+  .reply(200, { vid: 43951, isNew: false }, [
+    "Date",
+    "Tue, 22 Feb 2022 02:08:05 GMT",
+    "Content-Type",
+    "application/json;charset=utf-8",
+    "Content-Length",
+    "27",
+    "Connection",
+    "close",
+    "CF-Ray",
+    "6e14aa237c55e074-FOR",
+    "Strict-Transport-Security",
+    "max-age=31536000; includeSubDomains; preload",
+    "Vary",
+    "Accept-Encoding",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Access-Control-Allow-Credentials",
+    "false",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "X-HubSpot-Correlation-Id",
+    "95cb1b9c-7183-4665-a057-ea0db302701c",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249733",
+    "X-HubSpot-RateLimit-Interval-Milliseconds",
+    "10000",
+    "X-HubSpot-RateLimit-Max",
+    "100",
+    "X-HubSpot-RateLimit-Remaining",
+    "86",
+    "X-HubSpot-RateLimit-Secondly",
+    "10",
+    "X-HubSpot-RateLimit-Secondly-Remaining",
+    "8",
+    "X-Trace",
+    "2BDA1D9C1D44BD3A25ECCFAAC415A664BE0E3B5056000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=lGwVwRY%2BM6SHt%2B%2BpS48n%2Bav7zNzI9%2FUN2vGiUcIbQFav0FY8USEvGqdyyTt5jPbCzsi%2BapwQDTvkyrWRLAuc%2BOHsZ7ke%2BpIU5vYlBBgVOk7Ev3YNl%2BmR7pEub0768CBy"}],"group":"cf-nel","max_age":604800}',
+    "NEL",
+    '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+    "Server",
+    "cloudflare",
+    "alt-svc",
+    'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+  ]);
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/lists/static")
+  .query({ count: "999", hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+    {
+      offset: 500,
+      lists: [
+        {
+          portalId: 20858235,
+          listId: 27,
+          internalListId: 27,
+          createdAt: 1636048111339,
+          updatedAt: 1636048111339,
+          name: "High Value",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 185,
+            lastSizeChangeAt: 1637623749196,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1636048111503,
+            error: "",
+            listReferencesCount: null,
+            parentFolderId: null,
+          },
+          archived: false,
+          teamIds: [],
+          dynamic: false,
+        },
+        {
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+          name: "List One",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495682646,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+            error: "",
+            listReferencesCount: null,
+            parentFolderId: null,
+          },
+          archived: false,
+          teamIds: [],
+          dynamic: false,
+        },
+        {
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+          name: "List Two",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495684759,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+            error: "",
+            listReferencesCount: null,
+            parentFolderId: null,
+          },
+          archived: false,
+          teamIds: [],
+          dynamic: false,
+        },
+      ],
+      "has-more": false,
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:06 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -6706,7 +10962,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c664a111849-EWR",
+=======
+      "6e14aa24ffa1cf9a-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -6718,16 +10978,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "41364e71-2f7c-409f-8e40-ea8fbfb2f35a",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248846",
+=======
+      "08129ac6-e8c8-48ae-8505-47ac83ce0422",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249732",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "61",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -6737,6 +11006,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B2075FA46D4459E37B26D0F0C1C0CED4E4E70EDCE000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=UIFd1y3dynkzXDm6uyzUI5Up%2FJy651wZnle8llDkoW2%2FaaFFdIARFzEv3%2B1nImciAFFR6tqxYPs2rSZBLBY701cmBGrhkCC%2FxdMJAtRJ%2F%2BmwPndJP%2BfP4ZQu7C3TcCRg"}],"group":"cf-nel","max_age":604800}',
+=======
+      "85",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "8",
+      "X-Trace",
+      "2BBB16A5D82317B7A4BD22CC785864AFCF417FA4D5000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=0bZxEPLcwUp3H9i6OF7pQ%2FXOLZAHIJWpBMvGbVQto2Isi6bUCpgxp7qXe5Fp5TU%2FI%2BDWgoji%2B6VrduS8yDsr%2FJShPYrOiiDkhSA4NJnD29%2Frf%2FYOx9dru5doOhzz7D9m"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -6746,17 +11026,28 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
   .post("/contacts/v1/lists/668/add", {
+=======
+  .post("/contacts/v1/lists/64/add", {
+>>>>>>> chore: add additional destination option.
     emails: ["caio.silveira@mailinator.com"],
   })
   .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
   .once()
   .reply(
     200,
+<<<<<<< HEAD
     { updated: [289651], discarded: [], invalidVids: [], invalidEmails: [] },
     [
       "Date",
       "Thu, 17 Feb 2022 18:56:29 GMT",
+=======
+    { updated: [], discarded: [43951], invalidVids: [], invalidEmails: [] },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:06 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -6764,7 +11055,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c68aab432e2-EWR",
+=======
+      "6e14aa2649c1cf9a-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -6776,16 +11071,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "adde2c9d-7f62-46a9-874e-75e8c83b45da",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248845",
+=======
+      "b26fdf37-4890-4d3f-935b-c39737ebcdca",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249731",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "60",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -6795,6 +11099,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2BDD27303D0B577FE769B8803B72E121F827E81873000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=b1lz%2F23y7CZvRcHR6vK%2BHd%2F5Ek9iW6s6R86VK3jAggxCxvdonBz1fQMzUizhUDMu%2Fth%2BaSGwBavr8D5xMjKWHrGHibbhDO4HCS%2FK9K4B0zZkvPS3YIhgIVsMkFAYI4wc"}],"group":"cf-nel","max_age":604800}',
+=======
+      "84",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "8",
+      "X-Trace",
+      "2B05E80D6D37CA0565A5B5F229E6947146D9AF862E000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=tazUQxeUr7lR8u1KTB72Dtsh0PeQMDIo5ZwoRg7kqznYv77%2FZJVd8ch7XZlhpbHT246r5GKaNOnnDkPGdHH73gyIUGYTvQyGlpB2iflB7OhqZUQ3ujIq%2B4SvGX6FBdvX"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -6835,6 +11150,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 627,
           internalListId: 627,
@@ -6848,6 +11164,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1644965337100,
             processing: "DONE",
             lastProcessingStateChangeAt: 1644353913044,
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+          name: "List One",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495682646,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -6857,6 +11188,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 622,
           internalListId: 622,
@@ -6870,6 +11202,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1634665476559,
             processing: "DONE",
             lastProcessingStateChangeAt: 1634665347951,
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+          name: "List Two",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495684759,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -6878,6 +11225,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           teamIds: [],
           dynamic: false,
         },
+<<<<<<< HEAD
         {
           portalId: 7974676,
           listId: 562,
@@ -7127,6 +11475,13 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     [
       "Date",
       "Thu, 17 Feb 2022 18:56:29 GMT",
+=======
+      ],
+      "has-more": false,
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:06 GMT",
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -7134,7 +11489,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
-      "6df13c69d84beff1-EWR",
+      "6e14aa27fc5fe07c-FOR",
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -7146,16 +11501,88 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
-      "76c6798d-5d67-4d69-9646-fecf6cc3496c",
+      "5f961142-aa39-41eb-911a-b951af140c6d",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
-      "248844",
+      "249730",
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+      "83",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "8",
+      "X-Trace",
+      "2BC0737E48B5AC27D681CEE6991284F51B05D61E84000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=1jFTnM1oHLUi96%2BB6zV8k3UdoejWiysaqqK53G4nVj332KM96CmXZ%2Fm5FjErfa4QUDNeP7CJsRk0R653CCeXfvAO3vGF%2FhEUhZJ7TuOMo1xIf2kfUYhKTjWSx5f2Qofz"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .post("/contacts/v1/lists/65/remove", {
+    emails: ["caio.silveira@mailinator.com"],
+  })
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+    { updated: [43951], discarded: [], invalidVids: [], invalidEmails: [] },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:06 GMT",
+>>>>>>> chore: add additional destination option.
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+<<<<<<< HEAD
+      "6df13c69d84beff1-EWR",
+=======
+      "6e14aa29ad6a274f-FOR",
+>>>>>>> chore: add additional destination option.
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
+      "76c6798d-5d67-4d69-9646-fecf6cc3496c",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "248844",
+=======
+      "86ce1a9e-6996-47c4-b63a-db9d89a176f4",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249729",
+>>>>>>> chore: add additional destination option.
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "59",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -7165,6 +11592,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2BC410945ADCA1AE5106473971CEDE9C22AE0B1A16000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=Hd49WyiWA0tRsQkaP4MJ2fbVCGHfyKO0K%2BRQUUA2eMCc9GgYdUFbhq92ITsIvM2yIBbQWOVNV%2BopfR3jwEcF4YkTVNKX4Da2yLWHe%2F2mSa39ni5mGCsN2v2b4Ct7cqtq"}],"group":"cf-nel","max_age":604800}',
+=======
+      "82",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "8",
+      "X-Trace",
+      "2B31C608C350E1752AB3BB54FE9CF28CCF8AE916CF000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=l9ai8KECsVFw2%2B6qiU%2BuqZ8RgpAr5Hwcs3jZVHTLZQWkdTkmNvTy4nyuptbIoPfhM2qmmxhQHVxOQ4N4HgGNAe1R3AnEB7B6OIRHfiplVpp0KYWAMEcD7KVNoikhild3"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -7180,6 +11618,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       offset: 500,
       lists: [
         {
@@ -7265,6 +11704,110 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
+=======
+      vid: 43951,
+      "canonical-vid": 43951,
+      "merged-vids": [],
+      "portal-id": 20858235,
+      "is-contact": true,
+      properties: {
+        hs_latest_source_data_1: { value: "API" },
+        hs_is_unworked: { value: "true" },
+        firstname: { value: "" },
+        associatedcompanyid: { value: "7977984559" },
+        num_unique_conversion_events: { value: "0" },
+        hs_latest_source: { value: "OFFLINE" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        hs_analytics_revenue: { value: "0.0" },
+        hs_social_num_broadcast_clicks: { value: "0" },
+        createdate: { value: "1645495669917" },
+        hs_analytics_num_visits: { value: "0" },
+        date_field: { value: "" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        hs_social_linkedin_clicks: { value: "0" },
+        hs_analytics_source: { value: "OFFLINE" },
+        mobilephone: { value: "" },
+        hs_searchable_calculated_mobile_number: { value: "" },
+        hs_email_domain: { value: "mailinator.com" },
+        hs_analytics_num_page_views: { value: "0" },
+        number_field: { value: "" },
+        email: { value: "caio.silveira@mailinator.com" },
+        website: { value: "http://samba.grouparoo.com" },
+        closedate: { value: "1613001600000" },
+        lastmodifieddate: { value: "1645495681443" },
+        hs_analytics_first_timestamp: { value: "1645495669917" },
+        hs_social_google_plus_clicks: { value: "0" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495669917" },
+        message: {
+          value:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla est purus, ultrices in porttitor\nin, accumsan non quam.",
+        },
+        hs_calculated_mobile_number: { value: "" },
+        hs_analytics_average_page_views: { value: "0" },
+        lastname: { value: "" },
+        hs_all_contact_vids: { value: "43951" },
+        hs_social_facebook_clicks: { value: "0" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        hs_object_id: { value: "43951" },
+        text_field: { value: "" },
+        hs_analytics_num_event_completions: { value: "0" },
+        hs_social_twitter_clicks: { value: "0" },
+        hs_analytics_source_data_1: { value: "API" },
+        lifecyclestage: { value: "subscriber" },
+      },
+      "list-memberships": [
+        {
+          "static-list-id": 64,
+          "internal-list-id": 64,
+          timestamp: 1645495686224,
+          vid: 43951,
+          "is-member": true,
+        },
+      ],
+      "identity-profiles": [
+        {
+          vid: 43951,
+          "saved-at-timestamp": 1645495669988,
+          "deleted-changed-timestamp": 0,
+          identities: [
+            {
+              type: "EMAIL",
+              value: "caio.silveira@mailinator.com",
+              timestamp: 1645495669917,
+              "is-primary": true,
+            },
+            {
+              type: "LEAD_GUID",
+              value: "35e4802d-1313-4de6-943b-f7a89f7a8dc2",
+              timestamp: 1645495669983,
+            },
+          ],
+        },
+      ],
+      "merge-audits": [],
+      "associated-company": {
+        "company-id": 7977984559,
+        "portal-id": 20858235,
+        properties: {
+          country: { value: "United States" },
+          num_associated_contacts: { value: "1" },
+          timezone: { value: "America/Los_Angeles" },
+          createdate: { value: "1645495668429" },
+          description: {
+            value:
+              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
+          },
+          hs_num_blockers: { value: "0" },
+          web_technologies: {
+            value:
+              "slack;google_tag_manager;google_analytics;twitter_button;lever;google_apps",
+          },
+          numberofemployees: { value: "10" },
+          hs_analytics_num_visits: { value: "0" },
+          linkedin_company_page: {
+            value: "https://www.linkedin.com/company/grouparoo",
+>>>>>>> chore: add additional destination option.
           },
           archived: false,
           teamIds: [],
@@ -7288,6 +11831,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             listReferencesCount: null,
             parentFolderId: null,
           },
+<<<<<<< HEAD
           archived: false,
           teamIds: [],
           dynamic: false,
@@ -7358,6 +11902,85 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           teamIds: [],
           dynamic: false,
         },
+=======
+          hs_num_open_deals: { value: "0" },
+          website: { value: "samba.grouparoo.com" },
+          hs_analytics_first_timestamp: { value: "1645495669917" },
+          first_contact_createdate: { value: "1645495669917" },
+          twitterhandle: { value: "grouparoo" },
+          hs_target_account_probability: { value: "0.38625118136405945" },
+          hs_lastmodifieddate: { value: "1645495683505" },
+          hs_num_decision_makers: { value: "0" },
+          num_conversion_events: { value: "0" },
+          domain: { value: "samba.grouparoo.com" },
+          hs_num_child_companies: { value: "0" },
+          hs_num_contacts_with_buying_roles: { value: "0" },
+          hs_object_id: { value: "7977984559" },
+          is_public: { value: "false" },
+          name: { value: "samba" },
+          hs_analytics_source_data_1: { value: "API" },
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:07 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14aa2b5ea12746-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "fbfaf96f-2dbb-4a88-bf4d-298c414ae5ea",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249728",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "81",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "8",
+      "X-Trace",
+      "2BAC33194BBBCE5AAE50D754F3F53FF439717D160B000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=C1e8wo4ZPOMAPZJJQqMUSaEqWOIUDkqkJL74jl%2BwL0Iyn6IpS2DC4C5rprq%2Fp%2BjIWFvPoVIKaiylKsQgp1xzQWUILpkpeWuTqWN9O4%2B67hbjjf1CUUKJmosW1JkueuLv"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/lists/static")
+  .query({ count: "999", hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+    {
+      offset: 500,
+      lists: [
+>>>>>>> chore: add additional destination option.
         {
           portalId: 7974676,
           listId: 630,
@@ -7382,19 +12005,33 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 668,
           internalListId: 668,
           createdAt: 1645124189267,
           updatedAt: 1645124189267,
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+>>>>>>> chore: add additional destination option.
           name: "List One",
           listType: "STATIC",
           filters: [],
           metaData: {
             size: 1,
+<<<<<<< HEAD
             lastSizeChangeAt: 1645124189865,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124189446,
+=======
+            lastSizeChangeAt: 1645495682646,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -7404,6 +12041,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 623,
           internalListId: 623,
@@ -7476,13 +12114,27 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           createdAt: 1629388533048,
           updatedAt: 1629388533048,
           name: "Speaks Spanish",
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+          name: "List Two",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1632401940035,
             processing: "DONE",
             lastProcessingStateChangeAt: 1629388533258,
+=======
+            lastSizeChangeAt: 1645495686861,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -7496,7 +12148,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:29 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:07 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -7504,7 +12160,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c6aab00332c-EWR",
+=======
+      "6e14aa2d0fe4e08e-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -7516,25 +12176,43 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "ba842453-4ed7-429e-b52d-a94875ea44ba",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248843",
+=======
+      "a572b017-2414-418f-b6be-e8f51ec9eb19",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249727",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "58",
+=======
+      "80",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Secondly",
       "10",
       "X-HubSpot-RateLimit-Secondly-Remaining",
       "5",
       "X-Trace",
+<<<<<<< HEAD
       "2BC42E5F4C251C08443286C1432BCE3E85E755714A000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=i5F18%2B5%2BA5MUp0fd%2F9tPVCTpWeOsGWWqvXIr56%2F6nhBIO5nsU0cDCTcPLNx2Ymi%2BYRiuFIt3ULXa2IRuE3IcG6a%2FOgR3%2B6aZCwmWY0qFjr%2B%2FR%2FHNAHlCRwgUB7mROO1I"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2B45D96A3B58EE99AAC2623A280F96C4B379FD4E24000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=Dite6WwgN1BZZCudCEiQsfkFQjVVbCqdLiDTFSexxeAp1D7vIShhE5dDABi3gPbd2YGVfMueHFp0DqmJhnEDAAjH6pVCbq99C9%2B8JBX%2F4S%2B5%2F8cqKaaK2uarTFnakBdn"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -7550,6 +12228,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       portalId: 7974676,
       listId: 669,
       internalListId: 669,
@@ -7704,11 +12383,47 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
         hs_pipeline: { value: "contacts-lifecycle-pipeline" },
         createdate: { value: "1645124182719" },
         hs_lifecyclestage_subscriber_date: { value: "1645124182719" },
+=======
+      vid: 43951,
+      "canonical-vid": 43951,
+      "merged-vids": [],
+      "portal-id": 20858235,
+      "is-contact": true,
+      properties: {
+        hs_latest_source_data_1: { value: "API" },
+        hs_is_unworked: { value: "true" },
+        firstname: { value: "" },
+        associatedcompanyid: { value: "7977984559" },
+        num_unique_conversion_events: { value: "0" },
+        hs_latest_source: { value: "OFFLINE" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        hs_analytics_revenue: { value: "0.0" },
+        hs_social_num_broadcast_clicks: { value: "0" },
+        createdate: { value: "1645495669917" },
+        hs_analytics_num_visits: { value: "0" },
+        date_field: { value: "" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        hs_social_linkedin_clicks: { value: "0" },
+        hs_analytics_source: { value: "OFFLINE" },
+        mobilephone: { value: "" },
+        hs_searchable_calculated_mobile_number: { value: "" },
+        hs_email_domain: { value: "mailinator.com" },
+        hs_analytics_num_page_views: { value: "0" },
+        number_field: { value: "" },
+        email: { value: "caio.silveira@mailinator.com" },
+        website: { value: "http://samba.grouparoo.com" },
+        closedate: { value: "1613001600000" },
+        lastmodifieddate: { value: "1645495681443" },
+        hs_analytics_first_timestamp: { value: "1645495669917" },
+        hs_social_google_plus_clicks: { value: "0" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495669917" },
+>>>>>>> chore: add additional destination option.
         message: {
           value:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla est purus, ultrices in porttitor\nin, accumsan non quam.",
         },
         hs_calculated_mobile_number: { value: "" },
+<<<<<<< HEAD
         lastname: { value: "" },
         hs_all_contact_vids: { value: "289651" },
         date_field: { value: "" },
@@ -7718,6 +12433,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
         mobilephone: { value: "" },
         hs_searchable_calculated_mobile_number: { value: "" },
         hs_object_id: { value: "289651" },
+=======
+        hs_analytics_average_page_views: { value: "0" },
+        lastname: { value: "" },
+        hs_all_contact_vids: { value: "43951" },
+        hs_social_facebook_clicks: { value: "0" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        hs_object_id: { value: "43951" },
+>>>>>>> chore: add additional destination option.
         text_field: { value: "" },
         hs_email_domain: { value: "mailinator.com" },
         lifecyclestage: { value: "subscriber" },
@@ -7726,6 +12450,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       },
       "list-memberships": [
         {
+<<<<<<< HEAD
           "static-list-id": 668,
           "internal-list-id": 668,
           timestamp: 1645124189599,
@@ -7737,38 +12462,67 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           "internal-list-id": 669,
           timestamp: 1645124190482,
           vid: 289651,
+=======
+          "static-list-id": 64,
+          "internal-list-id": 64,
+          timestamp: 1645495686224,
+          vid: 43951,
+>>>>>>> chore: add additional destination option.
           "is-member": true,
         },
       ],
       "identity-profiles": [
         {
+<<<<<<< HEAD
           vid: 289651,
           "saved-at-timestamp": 1645124182773,
+=======
+          vid: 43951,
+          "saved-at-timestamp": 1645495669988,
+>>>>>>> chore: add additional destination option.
           "deleted-changed-timestamp": 0,
           identities: [
             {
               type: "EMAIL",
               value: "caio.silveira@mailinator.com",
+<<<<<<< HEAD
               timestamp: 1645124182718,
+=======
+              timestamp: 1645495669917,
+>>>>>>> chore: add additional destination option.
               "is-primary": true,
             },
             {
               type: "LEAD_GUID",
+<<<<<<< HEAD
               value: "7a4c414e-69d9-4aa5-9a81-dec51e999f27",
               timestamp: 1645124182768,
+=======
+              value: "35e4802d-1313-4de6-943b-f7a89f7a8dc2",
+              timestamp: 1645495669983,
+>>>>>>> chore: add additional destination option.
             },
           ],
         },
       ],
       "merge-audits": [],
       "associated-company": {
+<<<<<<< HEAD
         "company-id": 7945038519,
         "portal-id": 7974676,
+=======
+        "company-id": 7977984559,
+        "portal-id": 20858235,
+>>>>>>> chore: add additional destination option.
         properties: {
           country: { value: "United States" },
           num_associated_contacts: { value: "1" },
           timezone: { value: "America/Los_Angeles" },
+<<<<<<< HEAD
           createdate: { value: "1645124176511" },
+=======
+          createdate: { value: "1645495668429" },
+>>>>>>> chore: add additional destination option.
           description: {
             value:
               "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
@@ -7790,24 +12544,43 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           },
           hs_num_open_deals: { value: "0" },
           website: { value: "samba.grouparoo.com" },
+<<<<<<< HEAD
           first_contact_createdate: { value: "1645124182719" },
           twitterhandle: { value: "grouparoo" },
           hs_target_account_probability: { value: "0.38625118136405945" },
           hs_lastmodifieddate: { value: "1645124189259" },
+=======
+          hs_analytics_first_timestamp: { value: "1645495669917" },
+          first_contact_createdate: { value: "1645495669917" },
+          twitterhandle: { value: "grouparoo" },
+          hs_target_account_probability: { value: "0.38625118136405945" },
+          hs_lastmodifieddate: { value: "1645495683505" },
+>>>>>>> chore: add additional destination option.
           hs_num_decision_makers: { value: "0" },
           num_conversion_events: { value: "0" },
           domain: { value: "samba.grouparoo.com" },
           hs_num_child_companies: { value: "0" },
           hs_num_contacts_with_buying_roles: { value: "0" },
+<<<<<<< HEAD
           hs_object_id: { value: "7945038519" },
           is_public: { value: "false" },
           name: { value: "samba" },
+=======
+          hs_object_id: { value: "7977984559" },
+          is_public: { value: "false" },
+          name: { value: "samba" },
+          hs_analytics_source_data_1: { value: "API" },
+>>>>>>> chore: add additional destination option.
         },
       },
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:30 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:07 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -7815,7 +12588,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c6f68ac8c3f-EWR",
+=======
+      "6e14aa2e4cfae07c-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -7827,16 +12604,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "01522704-f0ef-416c-992a-8276cd6e5f67",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248840",
+=======
+      "2da4b9ca-64b3-4dcf-8ac2-27ea3cd882fc",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249726",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "55",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -7846,6 +12632,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2BEEEAAE2C5A726A78424BFD02638883F83A7AE2C5000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=%2FdLtmBzZaTKxHS%2Fk8zfk2pgZI692bHHjASk46g%2FUt8ReH3H7Ag4bi%2FRi8PsdCFO2vpugmYg3194RFyKCQa%2BYTvZTgfDu%2BQL2Ukbc3oqtikOKVAiIyab8NWPqfH%2FpVjoU"}],"group":"cf-nel","max_age":604800}',
+=======
+      "79",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2B3C809E42C903D268364E020197A8F51A12402EB1000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=mSM4EzHpUJ%2B0MR2UOI2%2B3d9znn0vP7ra9ysc7n1HDRf%2BNtuvCudf8dB3laVDIoFdV%2FPzDcZgp2VXdoU6yuzY1ViTXbCOIoXfzBWOzjfN6os7KWIy7vJmPLhBWn%2F1GdSJ"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -7855,6 +12652,68 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
+=======
+  .post(
+    "/contacts/v1/contact/createOrUpdate/email/caio.silveira@mailinator.com/",
+    {
+      properties: [
+        { property: "email", value: "caio.silveira@mailinator.com" },
+      ],
+    }
+  )
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(200, { vid: 43951, isNew: false }, [
+    "Date",
+    "Tue, 22 Feb 2022 02:08:07 GMT",
+    "Content-Type",
+    "application/json;charset=utf-8",
+    "Content-Length",
+    "27",
+    "Connection",
+    "close",
+    "CF-Ray",
+    "6e14aa2fbeaf2755-FOR",
+    "Strict-Transport-Security",
+    "max-age=31536000; includeSubDomains; preload",
+    "Vary",
+    "Accept-Encoding",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Access-Control-Allow-Credentials",
+    "false",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "X-HubSpot-Correlation-Id",
+    "fbf23bb1-3cbb-4cf7-945a-2a295e18ba07",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249725",
+    "X-HubSpot-RateLimit-Interval-Milliseconds",
+    "10000",
+    "X-HubSpot-RateLimit-Max",
+    "100",
+    "X-HubSpot-RateLimit-Remaining",
+    "78",
+    "X-HubSpot-RateLimit-Secondly",
+    "10",
+    "X-HubSpot-RateLimit-Secondly-Remaining",
+    "7",
+    "X-Trace",
+    "2BB0D3EC2EA3005AC3DCEEC0F921BF0F09E5DBAD56000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=SG4IUiLbtlcmwGsmEIMAIRufqw9WtEkiRrX20Mt4kTG7sdtwzjeQfxKBeCyGcduxqopWBm6X9OPHHJq5b2I3LVY36aFTanQKb8rGxlaLg9CR6jySiVvNOeLrBMkMAWIe"}],"group":"cf-nel","max_age":604800}',
+    "NEL",
+    '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+    "Server",
+    "cloudflare",
+    "alt-svc",
+    'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+  ]);
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+>>>>>>> chore: add additional destination option.
   .get("/contacts/v1/lists/static")
   .query({ count: "999", hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
   .once()
@@ -7886,6 +12745,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 627,
           internalListId: 627,
@@ -7899,6 +12759,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1644965337100,
             processing: "DONE",
             lastProcessingStateChangeAt: 1644353913044,
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+          name: "List One",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495682646,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -7908,16 +12783,26 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 622,
           internalListId: 622,
           createdAt: 1634665347746,
           updatedAt: 1634665347746,
           name: "Bought anything at all",
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+          name: "List Two",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1634665476559,
             processing: "DONE",
             lastProcessingStateChangeAt: 1634665347951,
@@ -8031,6 +12916,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1632401940030,
             processing: "DONE",
             lastProcessingStateChangeAt: 1629388529229,
+=======
+            lastSizeChangeAt: 1645495686861,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -8039,6 +12929,128 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           teamIds: [],
           dynamic: false,
         },
+<<<<<<< HEAD
+=======
+      ],
+      "has-more": false,
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:08 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14aa3139b72755-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "b8655fdd-d0d5-419f-becf-ca81dd3002db",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249724",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "77",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2BBAE31356BC8E2E703021D40A0FFB3A12ED4F6CE2000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=CxFGHLhU81EFmvjnf5w5KaSV62y6frr16UbPcg5pwnzyNgPmvmmALiEqgYpxhU3LkfisVYdVdgB8ttOCeRinkIe%2BfnK8xe3FN05c1utGhtQ540Rf7rN%2BuoyRG81runwP"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .post("/contacts/v1/lists/65/add", {
+    emails: ["caio.silveira@mailinator.com"],
+  })
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+    { updated: [43951], discarded: [], invalidVids: [], invalidEmails: [] },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:08 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Content-Length",
+      "70",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14aa345e992749-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "b49cdcdc-5f5b-4dc4-b0ec-b21d20804b94",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249723",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "76",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2BB337BCA19F3D9E8116766FCDF4C25AA26396A2FF000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=ViLk%2FbWvCWzS%2B874Bd7ucTq3gpAKZmSK6USelIcsXBTMLaz9fL5xv93poZXLo%2F7Iuz3zRIADb5NS6bYLjRNdhQJMNpbW6p2CTUxCcgi%2BAlWziZ6zBRd0HAmmI%2FQKbN%2BK"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/lists/static")
+  .query({ count: "999", hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+    {
+      offset: 500,
+      lists: [
+>>>>>>> chore: add additional destination option.
         {
           portalId: 7974676,
           listId: 630,
@@ -8063,19 +13075,33 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 668,
           internalListId: 668,
           createdAt: 1645124189267,
           updatedAt: 1645124189267,
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+>>>>>>> chore: add additional destination option.
           name: "List One",
           listType: "STATIC",
           filters: [],
           metaData: {
             size: 1,
+<<<<<<< HEAD
             lastSizeChangeAt: 1645124189865,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124189446,
+=======
+            lastSizeChangeAt: 1645495682646,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -8085,16 +13111,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 669,
           internalListId: 669,
           createdAt: 1645124190063,
           updatedAt: 1645124190063,
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+>>>>>>> chore: add additional destination option.
           name: "List Two",
           listType: "STATIC",
           filters: [],
           metaData: {
             size: 1,
+<<<<<<< HEAD
             lastSizeChangeAt: 1645124190596,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124190286,
@@ -8186,6 +13221,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1632401940035,
             processing: "DONE",
             lastProcessingStateChangeAt: 1629388533258,
+=======
+            lastSizeChangeAt: 1645495688583,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -8199,7 +13239,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:30 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:09 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -8207,7 +13251,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c702f2e8c51-EWR",
+=======
+      "6e14aa35fc9ecf8a-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -8219,16 +13267,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "fc160be4-a436-403b-bb86-15e1bc3cd298",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248839",
+=======
+      "a65f8507-ccc2-4b68-8419-5526580c9fd9",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249722",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "54",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -8238,6 +13295,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B33F10ECCA0559500F731E7401B36916E436AF9FE000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=YHR769FEg1QtMrobMAvU87kTgpagXPsGVGFFUHgXg6QlhnpdOG29SODemFBn9cynT9ISI%2FhIfH1Xhji3xUjkBLtN4yvxie2w%2FHUVoUMb7VuXmlGHfoHb7iAk4IfmRXEq"}],"group":"cf-nel","max_age":604800}',
+=======
+      "75",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2BF23B934B6FCB3E4DAB849D0A804A05B7E40FB9A9000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=HL2XwPFfNY5ha5FN5nbaNNBQlb%2FNDah7VnmAQ9UgF0tY6PXuFt2whVHhMN5X1%2FE35l5aGwK6hp9hXWn2naNv26gO4lzJ%2B0IsiqPsAiBhvUdU4GIWQr1gZCER4vUFg9m0"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -8278,6 +13346,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 627,
           internalListId: 627,
@@ -8291,6 +13360,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1644965337100,
             processing: "DONE",
             lastProcessingStateChangeAt: 1644353913044,
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+          name: "List One",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495682646,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -8300,6 +13384,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 622,
           internalListId: 622,
@@ -8313,6 +13398,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1634665476559,
             processing: "DONE",
             lastProcessingStateChangeAt: 1634665347951,
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+          name: "List Two",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495688583,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -8321,6 +13421,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           teamIds: [],
           dynamic: false,
         },
+<<<<<<< HEAD
         {
           portalId: 7974676,
           listId: 562,
@@ -8592,6 +13693,13 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     [
       "Date",
       "Thu, 17 Feb 2022 18:56:30 GMT",
+=======
+      ],
+      "has-more": false,
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:09 GMT",
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -8599,7 +13707,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
-      "6df13c70d84f19e3-EWR",
+      "6e14aa392feb2749-FOR",
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -8611,16 +13719,165 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
-      "5ba42bef-4454-4a80-9bdc-aa5c019db634",
+      "10be556f-e5c4-4d3b-bd88-0c6cf518e768",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
-      "248838",
+      "249721",
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+      "74",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2B90C8ED2A1C7A006756813608A19618C0D8D15C53000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=L6nMF8vucoh1g0i7QdNGGXvnUO2p4IFg5qCEeCJH%2BV4eN432q5ZlkJXuDvxVY9IZnfpLBEfATr7E1cfoUfNBElPuoDqw%2FuH0VFgr6nTXEeZenbfM0FKaGd2WXctSpmf9"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .post("/contacts/v1/lists", { name: "List Three" })
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+    {
+      portalId: 20858235,
+      listId: 66,
+      internalListId: 66,
+      createdAt: 1645495689464,
+      updatedAt: 1645495689464,
+      name: "List Three",
+      listType: "STATIC",
+      filters: [],
+      metaData: {
+        size: 0,
+        lastSizeChangeAt: 0,
+        processing: "DONE",
+        lastProcessingStateChangeAt: 1645495689464,
+        error: "",
+        listReferencesCount: null,
+        parentFolderId: null,
+      },
+      archived: false,
+      teamIds: [],
+      dynamic: false,
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:09 GMT",
+>>>>>>> chore: add additional destination option.
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+<<<<<<< HEAD
+      "6df13c70d84f19e3-EWR",
+=======
+      "6e14aa3a9a2ccf96-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "39c7b017-0860-45e6-9936-5f574a7263fd",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249720",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "73",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2BE8D08E23CAF070F3A00F975FD5CA88E61964B2C4000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=1k%2FCLfMYxITBNsMHY80mwQoEQ8xZpy4n89vNWTUp2keKrAIJY7yMW3B0X8%2Fptoa8KYFDLbz26QuH%2FVzAFjzRp141fSZMiQulu6CSYbCOdxg5Ed6L1zNASRWRQdCvUdl7"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .post("/contacts/v1/lists/66/add", {
+    emails: ["caio.silveira@mailinator.com"],
+  })
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+    { updated: [43951], discarded: [], invalidVids: [], invalidEmails: [] },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:10 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Content-Length",
+      "70",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14aa3d184f2743-FOR",
+>>>>>>> chore: add additional destination option.
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
+      "5ba42bef-4454-4a80-9bdc-aa5c019db634",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "248838",
+=======
+      "6b591752-7a88-4131-94dd-480add0b8da9",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249719",
+>>>>>>> chore: add additional destination option.
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "53",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -8630,6 +13887,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B1798985C3BD36AE7E674CF46029B1B44C8BCD7E9000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=5M8isGUcJT7poCiW9C95Z5CMqQ1ykGVSeaYwwaT%2FdikBRDiQuMb0sVBxAKzyvXKSLtbiYDeoN0FJBR8a7Nf75hqOZR36D%2FPZ24XrJGacWWAW8GzkdeKyqQzfDIGceGc2"}],"group":"cf-nel","max_age":604800}',
+=======
+      "72",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2B59D05D7534B4F9D49325CFF7BA68492DDA4E723E000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=85jhy2EvbFE%2Bzk2EJjfTtV%2BjngM2%2BGbNgRHoPEzheb9awrI%2Fkp8jZO8VZhGEw9nWfvMoSWcVtBDeHAWvf1GeS4G3FfKoS2WsuDTBeHjvjeSKupPmUIa35L0u5b4sAtQM"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -8649,12 +13917,18 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       vid: 289651,
       "canonical-vid": 289651,
+=======
+      vid: 43951,
+      "canonical-vid": 43951,
+>>>>>>> chore: add additional destination option.
       "merged-vids": [],
       "portal-id": 7974676,
       "is-contact": true,
       properties: {
+<<<<<<< HEAD
         hs_is_unworked: { value: "true" },
         firstname: { value: "" },
         associatedcompanyid: { value: "7945038519" },
@@ -8664,11 +13938,41 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
         hs_pipeline: { value: "contacts-lifecycle-pipeline" },
         createdate: { value: "1645124182719" },
         hs_lifecyclestage_subscriber_date: { value: "1645124182719" },
+=======
+        hs_latest_source_data_1: { value: "API" },
+        hs_is_unworked: { value: "true" },
+        firstname: { value: "" },
+        associatedcompanyid: { value: "7977984559" },
+        num_unique_conversion_events: { value: "0" },
+        hs_latest_source: { value: "OFFLINE" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        hs_analytics_revenue: { value: "0.0" },
+        hs_social_num_broadcast_clicks: { value: "0" },
+        createdate: { value: "1645495669917" },
+        hs_analytics_num_visits: { value: "0" },
+        date_field: { value: "" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        hs_social_linkedin_clicks: { value: "0" },
+        hs_analytics_source: { value: "OFFLINE" },
+        mobilephone: { value: "" },
+        hs_searchable_calculated_mobile_number: { value: "" },
+        hs_email_domain: { value: "mailinator.com" },
+        hs_analytics_num_page_views: { value: "0" },
+        number_field: { value: "" },
+        email: { value: "caio.silveira@mailinator.com" },
+        website: { value: "http://samba.grouparoo.com" },
+        closedate: { value: "1613001600000" },
+        lastmodifieddate: { value: "1645495681443" },
+        hs_analytics_first_timestamp: { value: "1645495669917" },
+        hs_social_google_plus_clicks: { value: "0" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495669917" },
+>>>>>>> chore: add additional destination option.
         message: {
           value:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla est purus, ultrices in porttitor\nin, accumsan non quam.",
         },
         hs_calculated_mobile_number: { value: "" },
+<<<<<<< HEAD
         lastname: { value: "" },
         hs_all_contact_vids: { value: "289651" },
         date_field: { value: "" },
@@ -8678,6 +13982,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
         mobilephone: { value: "" },
         hs_searchable_calculated_mobile_number: { value: "" },
         hs_object_id: { value: "289651" },
+=======
+        hs_analytics_average_page_views: { value: "0" },
+        lastname: { value: "" },
+        hs_all_contact_vids: { value: "43951" },
+        hs_social_facebook_clicks: { value: "0" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        hs_object_id: { value: "43951" },
+>>>>>>> chore: add additional destination option.
         text_field: { value: "" },
         hs_email_domain: { value: "mailinator.com" },
         lifecyclestage: { value: "subscriber" },
@@ -8686,6 +13999,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       },
       "list-memberships": [
         {
+<<<<<<< HEAD
           "static-list-id": 668,
           "internal-list-id": 668,
           timestamp: 1645124189599,
@@ -8697,38 +14011,83 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           "internal-list-id": 669,
           timestamp: 1645124190482,
           vid: 289651,
+=======
+          "static-list-id": 64,
+          "internal-list-id": 64,
+          timestamp: 1645495686224,
+          vid: 43951,
+          "is-member": true,
+        },
+        {
+          "static-list-id": 65,
+          "internal-list-id": 65,
+          timestamp: 1645495688474,
+          vid: 43951,
+>>>>>>> chore: add additional destination option.
           "is-member": true,
         },
       ],
       "identity-profiles": [
         {
+<<<<<<< HEAD
           vid: 289651,
           "saved-at-timestamp": 1645124182773,
+=======
+          "static-list-id": 66,
+          "internal-list-id": 66,
+          timestamp: 1645495689900,
+          vid: 43951,
+          "is-member": true,
+        },
+      ],
+      "identity-profiles": [
+        {
+          vid: 43951,
+          "saved-at-timestamp": 1645495669988,
+>>>>>>> chore: add additional destination option.
           "deleted-changed-timestamp": 0,
           identities: [
             {
               type: "EMAIL",
               value: "caio.silveira@mailinator.com",
+<<<<<<< HEAD
               timestamp: 1645124182718,
+=======
+              timestamp: 1645495669917,
+>>>>>>> chore: add additional destination option.
               "is-primary": true,
             },
             {
               type: "LEAD_GUID",
+<<<<<<< HEAD
               value: "7a4c414e-69d9-4aa5-9a81-dec51e999f27",
               timestamp: 1645124182768,
+=======
+              value: "35e4802d-1313-4de6-943b-f7a89f7a8dc2",
+              timestamp: 1645495669983,
+>>>>>>> chore: add additional destination option.
             },
           ],
         },
       ],
       "merge-audits": [],
       "associated-company": {
+<<<<<<< HEAD
         "company-id": 7945038519,
         "portal-id": 7974676,
+=======
+        "company-id": 7977984559,
+        "portal-id": 20858235,
+>>>>>>> chore: add additional destination option.
         properties: {
           country: { value: "United States" },
           num_associated_contacts: { value: "1" },
           timezone: { value: "America/Los_Angeles" },
+<<<<<<< HEAD
           createdate: { value: "1645124176511" },
+=======
+          createdate: { value: "1645495668429" },
+>>>>>>> chore: add additional destination option.
           description: {
             value:
               "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
@@ -8750,24 +14109,43 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           },
           hs_num_open_deals: { value: "0" },
           website: { value: "samba.grouparoo.com" },
+<<<<<<< HEAD
           first_contact_createdate: { value: "1645124182719" },
           twitterhandle: { value: "grouparoo" },
           hs_target_account_probability: { value: "0.38625118136405945" },
           hs_lastmodifieddate: { value: "1645124189259" },
+=======
+          hs_analytics_first_timestamp: { value: "1645495669917" },
+          first_contact_createdate: { value: "1645495669917" },
+          twitterhandle: { value: "grouparoo" },
+          hs_target_account_probability: { value: "0.38625118136405945" },
+          hs_lastmodifieddate: { value: "1645495683505" },
+>>>>>>> chore: add additional destination option.
           hs_num_decision_makers: { value: "0" },
           num_conversion_events: { value: "0" },
           domain: { value: "samba.grouparoo.com" },
           hs_num_child_companies: { value: "0" },
           hs_num_contacts_with_buying_roles: { value: "0" },
+<<<<<<< HEAD
           hs_object_id: { value: "7945038519" },
           is_public: { value: "false" },
           name: { value: "samba" },
+=======
+          hs_object_id: { value: "7977984559" },
+          is_public: { value: "false" },
+          name: { value: "samba" },
+          hs_analytics_source_data_1: { value: "API" },
+>>>>>>> chore: add additional destination option.
         },
       },
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:31 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:10 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -8775,7 +14153,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c71bc1b0ca9-EWR",
+=======
+      "6e14aa3efd12275b-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -8787,16 +14169,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "a38dc2b2-e6b8-46ca-8ac7-dc107e3196f0",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248837",
+=======
+      "cdf19103-c0ae-4692-8ec1-bed40dffc229",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249718",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "53",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -8806,6 +14197,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B6B4B2BEE37F6DFAA9785A1BBDB6CA6F71C6F1FA8000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=DYA9dv9MghTTzlkhINLvyH2URXOlhLsjsk21Hih983atXo8qbGTnIeja9VW79%2FsoY%2FKSlIY2%2BjQvj%2FN7YAceKT%2BKEwh6YIQH43EUNN%2Bfj%2F%2BdYnXvhZSsSalDxJ14RZzA"}],"group":"cf-nel","max_age":604800}',
+=======
+      "71",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2B22A69AD4343F653152ADD3681E907241F23851EE000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=EU%2FcWK7HKpOg1bf1glEY45OGFWVHw4l4iZ%2F0Mhv70i7LrfscwycHa1VKHTUNE98BRC9w%2B0Kr0jJlIx3QGDNFH2A8XOyt9aFWs3xROVzHqtA%2Be7fVDjK2f5US5B%2FvJMpv"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -8905,6 +14307,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 627,
           internalListId: 627,
@@ -8918,6 +14321,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1644965337100,
             processing: "DONE",
             lastProcessingStateChangeAt: 1644353913044,
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+          name: "List One",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495682646,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -8927,6 +14345,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 622,
           internalListId: 622,
@@ -8940,6 +14359,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1634665476559,
             processing: "DONE",
             lastProcessingStateChangeAt: 1634665347951,
+=======
+          portalId: 20858235,
+          listId: 66,
+          internalListId: 66,
+          createdAt: 1645495689464,
+          updatedAt: 1645495689464,
+          name: "List Three",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495690037,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495689627,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -8949,6 +14383,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 562,
           internalListId: 562,
@@ -8962,6 +14397,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1634665193431,
             processing: "DONE",
             lastProcessingStateChangeAt: 1632402381930,
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+          name: "List Two",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495688583,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -8970,6 +14420,70 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           teamIds: [],
           dynamic: false,
         },
+<<<<<<< HEAD
+=======
+      ],
+      "has-more": false,
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:10 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14aa405fca275b-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "c2d4b547-f0e1-42bb-b992-6dee8e661233",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249717",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "70",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2BBFE5716142D7935D3DA380430FD05A463F77779C000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=NgrUCMd9pPhRGCmeu7OdoW5CLYXX634pYlvzTeE285dtoplrRIG9ujf3keFyMjUPo5sclKDruQJ67ddrfFk6h9Ev0KDmGn%2FQzfm%2FDVQyw4RfrgtuW%2BdElQIq5SFRJnby"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/lists/static")
+  .query({ count: "999", hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+    {
+      offset: 500,
+      lists: [
+>>>>>>> chore: add additional destination option.
         {
           portalId: 7974676,
           listId: 629,
@@ -8993,6 +14507,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 628,
           internalListId: 628,
@@ -9006,6 +14521,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1644361007859,
             processing: "DONE",
             lastProcessingStateChangeAt: 1644353957024,
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+          name: "List One",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495682646,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -9015,6 +14545,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 624,
           internalListId: 624,
@@ -9028,6 +14559,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1634665476551,
             processing: "DONE",
             lastProcessingStateChangeAt: 1634665349262,
+=======
+          portalId: 20858235,
+          listId: 66,
+          internalListId: 66,
+          createdAt: 1645495689464,
+          updatedAt: 1645495689464,
+          name: "List Three",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495690037,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495689627,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -9037,6 +14583,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 554,
           internalListId: 554,
@@ -9050,6 +14597,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1632401940030,
             processing: "DONE",
             lastProcessingStateChangeAt: 1629388529229,
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+          name: "List Two",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495688583,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -9058,6 +14620,70 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           teamIds: [],
           dynamic: false,
         },
+<<<<<<< HEAD
+=======
+      ],
+      "has-more": false,
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:10 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14aa4199b22755-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "75d6b97f-2b96-45e0-ab81-6a2f4f53e9f4",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249716",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "69",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B0EA8603484C39927C3A4D4242DAEEA22E9FB5832000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=ESXqoJsP7%2FgJBjBzqCSsQSRvbyvVfjBVVRk3ciLQszQXX7aa1uNkCQfQrK0S3QfxqCt6kL0F9io5TG8g95pPkyFMizwYLxXgsBlfTun5lt6LjVNbkomEwUo7X9JH3zIE"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/lists/static")
+  .query({ count: "999", hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+    {
+      offset: 500,
+      lists: [
+>>>>>>> chore: add additional destination option.
         {
           portalId: 7974676,
           listId: 630,
@@ -9082,19 +14708,33 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 668,
           internalListId: 668,
           createdAt: 1645124189267,
           updatedAt: 1645124189267,
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+>>>>>>> chore: add additional destination option.
           name: "List One",
           listType: "STATIC",
           filters: [],
           metaData: {
             size: 1,
+<<<<<<< HEAD
             lastSizeChangeAt: 1645124189865,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124189446,
+=======
+            lastSizeChangeAt: 1645495682646,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -9104,19 +14744,34 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 669,
           internalListId: 669,
           createdAt: 1645124190063,
           updatedAt: 1645124190063,
           name: "List Two",
+=======
+          portalId: 20858235,
+          listId: 66,
+          internalListId: 66,
+          createdAt: 1645495689464,
+          updatedAt: 1645495689464,
+          name: "List Three",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           filters: [],
           metaData: {
             size: 1,
+<<<<<<< HEAD
             lastSizeChangeAt: 1645124190596,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124190286,
+=======
+            lastSizeChangeAt: 1645495690037,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495689627,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -9126,6 +14781,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 623,
           internalListId: 623,
@@ -9205,6 +14861,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1632401940035,
             processing: "DONE",
             lastProcessingStateChangeAt: 1629388533258,
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+          name: "List Two",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495688583,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -9218,7 +14889,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:31 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:10 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -9226,7 +14901,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c74aa493342-EWR",
+=======
+      "6e14aa42fcaee074-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -9238,16 +14917,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "46ed851e-615b-4d27-8737-a654ed34971f",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248835",
+=======
+      "5c9c6bb6-e94b-4ad2-9bf9-3c21f4fffe16",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249715",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "51",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -9257,6 +14945,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2BD9A2CDB9261591DB006296C4852BA575ECEBEC30000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=1Tx2IgxlHLe6det%2Ba1sM9HkzYArCqYxhjvTu84%2FzY7A5Zwk09zY4bgdQyQ0D9vk5jg2DH8NPrI0xnM%2BQwYK6XuIhUnI5M0OvA0IiW71rjNWhyB3YXuDlFmxIJbNgwKNv"}],"group":"cf-nel","max_age":604800}',
+=======
+      "68",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B2C7C82CBBA49443D8D8AE0057AA082ECF7E4B752000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=LqnTadD3Tg1dxyFwbo8XCNx2fmyEiUq88Jp0LbgQqmO6%2B08xNTVZRl7qT0YEzA4Sphwyfi%2FbhcvgEh9NxKzl0zjjc3wbMx9SU6pD8I2XQPJgvzoQ9fc2UaFIPpMwFMln"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -9273,10 +14972,161 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .once()
   .reply(
     200,
+<<<<<<< HEAD
     { updated: [], discarded: [289651], invalidVids: [], invalidEmails: [] },
     [
       "Date",
       "Thu, 17 Feb 2022 18:56:31 GMT",
+=======
+    {
+      vid: 43951,
+      "canonical-vid": 43951,
+      "merged-vids": [],
+      "portal-id": 20858235,
+      "is-contact": true,
+      properties: {
+        hs_latest_source_data_1: { value: "API" },
+        hs_is_unworked: { value: "true" },
+        firstname: { value: "" },
+        associatedcompanyid: { value: "7977984559" },
+        num_unique_conversion_events: { value: "0" },
+        hs_latest_source: { value: "OFFLINE" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        hs_analytics_revenue: { value: "0.0" },
+        hs_social_num_broadcast_clicks: { value: "0" },
+        createdate: { value: "1645495669917" },
+        hs_analytics_num_visits: { value: "0" },
+        date_field: { value: "" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        hs_social_linkedin_clicks: { value: "0" },
+        hs_analytics_source: { value: "OFFLINE" },
+        mobilephone: { value: "" },
+        hs_searchable_calculated_mobile_number: { value: "" },
+        hs_email_domain: { value: "mailinator.com" },
+        hs_analytics_num_page_views: { value: "0" },
+        number_field: { value: "" },
+        email: { value: "caio.silveira@mailinator.com" },
+        website: { value: "http://samba.grouparoo.com" },
+        closedate: { value: "1613001600000" },
+        lastmodifieddate: { value: "1645495681443" },
+        hs_analytics_first_timestamp: { value: "1645495669917" },
+        hs_social_google_plus_clicks: { value: "0" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495669917" },
+        message: {
+          value:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla est purus, ultrices in porttitor\nin, accumsan non quam.",
+        },
+        hs_calculated_mobile_number: { value: "" },
+        hs_analytics_average_page_views: { value: "0" },
+        lastname: { value: "" },
+        hs_all_contact_vids: { value: "43951" },
+        hs_social_facebook_clicks: { value: "0" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        hs_object_id: { value: "43951" },
+        text_field: { value: "" },
+        hs_analytics_num_event_completions: { value: "0" },
+        hs_social_twitter_clicks: { value: "0" },
+        hs_analytics_source_data_1: { value: "API" },
+        lifecyclestage: { value: "subscriber" },
+      },
+      "list-memberships": [
+        {
+          "static-list-id": 64,
+          "internal-list-id": 64,
+          timestamp: 1645495686224,
+          vid: 43951,
+          "is-member": true,
+        },
+        {
+          "static-list-id": 65,
+          "internal-list-id": 65,
+          timestamp: 1645495688474,
+          vid: 43951,
+          "is-member": true,
+        },
+        {
+          "static-list-id": 66,
+          "internal-list-id": 66,
+          timestamp: 1645495689900,
+          vid: 43951,
+          "is-member": true,
+        },
+      ],
+      "identity-profiles": [
+        {
+          vid: 43951,
+          "saved-at-timestamp": 1645495669988,
+          "deleted-changed-timestamp": 0,
+          identities: [
+            {
+              type: "EMAIL",
+              value: "caio.silveira@mailinator.com",
+              timestamp: 1645495669917,
+              "is-primary": true,
+            },
+            {
+              type: "LEAD_GUID",
+              value: "35e4802d-1313-4de6-943b-f7a89f7a8dc2",
+              timestamp: 1645495669983,
+            },
+          ],
+        },
+      ],
+      "merge-audits": [],
+      "associated-company": {
+        "company-id": 7977984559,
+        "portal-id": 20858235,
+        properties: {
+          country: { value: "United States" },
+          num_associated_contacts: { value: "1" },
+          timezone: { value: "America/Los_Angeles" },
+          createdate: { value: "1645495668429" },
+          description: {
+            value:
+              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
+          },
+          hs_num_blockers: { value: "0" },
+          web_technologies: {
+            value:
+              "slack;google_tag_manager;google_analytics;twitter_button;lever;google_apps",
+          },
+          numberofemployees: { value: "10" },
+          hs_analytics_num_visits: { value: "0" },
+          linkedin_company_page: {
+            value: "https://www.linkedin.com/company/grouparoo",
+          },
+          hs_analytics_source: { value: "OFFLINE" },
+          founded_year: { value: "2019" },
+          hs_analytics_num_page_views: { value: "0" },
+          state: { value: "CA" },
+          linkedinbio: {
+            value:
+              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
+          },
+          hs_num_open_deals: { value: "0" },
+          website: { value: "samba.grouparoo.com" },
+          hs_analytics_first_timestamp: { value: "1645495669917" },
+          first_contact_createdate: { value: "1645495669917" },
+          twitterhandle: { value: "grouparoo" },
+          hs_target_account_probability: { value: "0.38625118136405945" },
+          hs_lastmodifieddate: { value: "1645495683505" },
+          hs_num_decision_makers: { value: "0" },
+          num_conversion_events: { value: "0" },
+          domain: { value: "samba.grouparoo.com" },
+          hs_num_child_companies: { value: "0" },
+          hs_num_contacts_with_buying_roles: { value: "0" },
+          hs_object_id: { value: "7977984559" },
+          is_public: { value: "false" },
+          name: { value: "samba" },
+          hs_analytics_source_data_1: { value: "API" },
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:11 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -9284,7 +15134,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c755fa318ea-EWR",
+=======
+      "6e14aa446df2275d-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -9296,16 +15150,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "f217b8fe-b0c7-438c-b82e-bcc22fe575a6",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248834",
+=======
+      "bba09066-af99-4136-b4be-652c683b2b7c",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249714",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "50",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -9315,6 +15178,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B76C397D327EFA50016E8C0C4E110A319B021480A000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=tqkZQqofGPzP9R0gt0YacLiLzLs8E1CKS2oHDaO910KF4Y4izFLnU297B4jMKVGx63miiQEpQrsj%2FgSnVINt5UvzdDdDKISF9QssnQMMC%2BD5WV7jI71jmteXZdveEqzN"}],"group":"cf-nel","max_age":604800}',
+=======
+      "70",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2BBC9FE7D837EE987CBB65679D39B8C0C5C424B713000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=ZXuy9RBFjUw0PVp5JAJLjF3mAR99XSCwPUe4j%2BtwwlPj0bAXuurOPYYJRtyyED8LqeBK5%2BkZF5SGpk7uxNvlZvOkl58UxdwePd3%2F3RAKdeb2U%2Fri8RXz7yRleouaD2c%2B"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -9324,6 +15198,68 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
+=======
+  .post(
+    "/contacts/v1/contact/createOrUpdate/email/caio.silveira@mailinator.com/",
+    {
+      properties: [
+        { property: "email", value: "caio.silveira@mailinator.com" },
+      ],
+    }
+  )
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(200, { vid: 43951, isNew: false }, [
+    "Date",
+    "Tue, 22 Feb 2022 02:08:11 GMT",
+    "Content-Type",
+    "application/json;charset=utf-8",
+    "Content-Length",
+    "27",
+    "Connection",
+    "close",
+    "CF-Ray",
+    "6e14aa45e814e084-FOR",
+    "Strict-Transport-Security",
+    "max-age=31536000; includeSubDomains; preload",
+    "Vary",
+    "Accept-Encoding",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Access-Control-Allow-Credentials",
+    "false",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "X-HubSpot-Correlation-Id",
+    "64ec6edb-d572-4382-a1c4-21a08dbc0806",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249713",
+    "X-HubSpot-RateLimit-Interval-Milliseconds",
+    "10000",
+    "X-HubSpot-RateLimit-Max",
+    "100",
+    "X-HubSpot-RateLimit-Remaining",
+    "69",
+    "X-HubSpot-RateLimit-Secondly",
+    "10",
+    "X-HubSpot-RateLimit-Secondly-Remaining",
+    "6",
+    "X-Trace",
+    "2B3553601669AC70EC97C6F98A6FCD74769DB3C6B7000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=ucatdOZhfJ%2FsUi68ET32kywuVL8YbWU1TqV84MvP%2Ff2licySNapmrIlqOArfWKdUFHqqf9mkdGV8Zag97DITlVqFSWYFd%2BUpprSXLB9oMgriVbx86TN6cKBLNHJ6G6f8"}],"group":"cf-nel","max_age":604800}',
+    "NEL",
+    '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+    "Server",
+    "cloudflare",
+    "alt-svc",
+    'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+  ]);
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+>>>>>>> chore: add additional destination option.
   .get("/contacts/v1/lists/static")
   .query({ count: "999", hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
   .once()
@@ -9355,6 +15291,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 627,
           internalListId: 627,
@@ -9368,6 +15305,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1644965337100,
             processing: "DONE",
             lastProcessingStateChangeAt: 1644353913044,
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+          name: "List One",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495682646,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -9377,6 +15329,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 622,
           internalListId: 622,
@@ -9390,6 +15343,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1634665476559,
             processing: "DONE",
             lastProcessingStateChangeAt: 1634665347951,
+=======
+          portalId: 20858235,
+          listId: 66,
+          internalListId: 66,
+          createdAt: 1645495689464,
+          updatedAt: 1645495689464,
+          name: "List Three",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495690037,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495689627,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -9399,6 +15367,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 562,
           internalListId: 562,
@@ -9412,6 +15381,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1634665193431,
             processing: "DONE",
             lastProcessingStateChangeAt: 1632402381930,
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+          name: "List Two",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495688583,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -9420,6 +15404,70 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           teamIds: [],
           dynamic: false,
         },
+<<<<<<< HEAD
+=======
+      ],
+      "has-more": false,
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:11 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14aa478c3c2749-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "61f5f4a5-45bf-4834-8ee3-bdd9a4e1526f",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249712",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "68",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B3AD901B96849EEA643D80D8744695EC3FA8D59F3000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=7gSt7JCDbrJ8sdIokRY%2F0l%2Bm8j3XlUivOIsQ87gOWuhb%2FUApaTogaUfAfdUJK4hsgI3SZ9dEWVnbVu9DLePK8ZDrVSapS9IlZD8FfK6UmvYpmk%2F16T9UNp8L082EjyaD"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/lists/static")
+  .query({ count: "999", hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+    {
+      offset: 500,
+      lists: [
+>>>>>>> chore: add additional destination option.
         {
           portalId: 7974676,
           listId: 629,
@@ -9443,6 +15491,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 628,
           internalListId: 628,
@@ -9456,6 +15505,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1644361007859,
             processing: "DONE",
             lastProcessingStateChangeAt: 1644353957024,
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+          name: "List One",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495682646,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -9465,6 +15529,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 624,
           internalListId: 624,
@@ -9478,6 +15543,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1634665476551,
             processing: "DONE",
             lastProcessingStateChangeAt: 1634665349262,
+=======
+          portalId: 20858235,
+          listId: 66,
+          internalListId: 66,
+          createdAt: 1645495689464,
+          updatedAt: 1645495689464,
+          name: "List Three",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495690037,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495689627,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -9487,6 +15567,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 554,
           internalListId: 554,
@@ -9538,13 +15619,27 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           createdAt: 1645124189267,
           updatedAt: 1645124189267,
           name: "List One",
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+          name: "List Two",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           filters: [],
           metaData: {
             size: 1,
+<<<<<<< HEAD
             lastSizeChangeAt: 1645124189865,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124189446,
+=======
+            lastSizeChangeAt: 1645495688583,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -9553,6 +15648,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           teamIds: [],
           dynamic: false,
         },
+<<<<<<< HEAD
         {
           portalId: 7974676,
           listId: 669,
@@ -9669,6 +15765,13 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     [
       "Date",
       "Thu, 17 Feb 2022 18:56:31 GMT",
+=======
+      ],
+      "has-more": false,
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:11 GMT",
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -9676,7 +15779,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
-      "6df13c766b421859-EWR",
+      "6e14aa490f64275d-FOR",
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -9688,25 +15791,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
-      "489cebac-75a9-43fb-864c-d8baac111829",
+      "661ab080-59dd-4ac5-914b-aeaacad2c440",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
-      "248833",
+      "249711",
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
-      "49",
+      "67",
       "X-HubSpot-RateLimit-Secondly",
       "10",
       "X-HubSpot-RateLimit-Secondly-Remaining",
-      "4",
+      "6",
       "X-Trace",
-      "2BB00E6C66A7EA27A1C99F6D0F4944BFA0A7CD1560000000000000000000",
+      "2BBDC037302AD2006DEF0C53524A42BE68EDE57AE7000000000000000000",
       "Report-To",
-      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=jVevH9oithBWLY9brmQ9fBBZiqqBf%2FvtVNY1mehn6H0sAPuuEvMnJJf6BWpHg8qqSCz3wHRn2zKkE1Z4bLfKVXyinPT9fpRMop3ewMnKFR5I5W5IIKysM8bp3tblmW69"}],"group":"cf-nel","max_age":604800}',
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=Nzy%2FMI%2F1BTHZPIbvKZfGkx3KKlfM7aChtPARBVK%2B4Iat8RN4DvtdMBOiyA%2B63c55scgCnrqwirpYM4l7GNcuXQJ8lN9JWewZ94YR1zhXG7XdSs7rbTDzS0pmHG%2FxHlcp"}],"group":"cf-nel","max_age":604800}',
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -9716,25 +15819,49 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
-  .post("/contacts/v1/lists/669/remove", {
-    emails: ["caio.silveira@mailinator.com"],
-  })
+  .post("/contacts/v1/lists", { name: "List Four" })
   .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
   .once()
   .reply(
     200,
-    { updated: [289651], discarded: [], invalidVids: [], invalidEmails: [] },
+    {
+      portalId: 20858235,
+      listId: 67,
+      internalListId: 67,
+      createdAt: 1645495691989,
+      updatedAt: 1645495691989,
+      name: "List Four",
+      listType: "STATIC",
+      filters: [],
+      metaData: {
+        size: 0,
+        lastSizeChangeAt: 0,
+        processing: "DONE",
+        lastProcessingStateChangeAt: 1645495691989,
+        error: "",
+        listReferencesCount: null,
+        parentFolderId: null,
+      },
+      archived: false,
+      teamIds: [],
+      dynamic: false,
+    },
     [
       "Date",
-      "Thu, 17 Feb 2022 18:56:32 GMT",
+      "Tue, 22 Feb 2022 02:08:12 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
-      "Content-Length",
-      "71",
+      "Transfer-Encoding",
+      "chunked",
       "Connection",
       "close",
       "CF-Ray",
-      "6df13c7728d78c6c-EWR",
+<<<<<<< HEAD
+      "6df13c766b421859-EWR",
+=======
+      "6e14aa4a5e4c273d-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -9746,16 +15873,118 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
-      "607d9d79-141b-4d1a-a043-9afe12441a31",
+<<<<<<< HEAD
+      "489cebac-75a9-43fb-864c-d8baac111829",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
-      "248832",
+      "248833",
+=======
+      "188aff2b-b00b-4e24-b574-9995b4eaae60",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249710",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
+      "49",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "4",
+      "X-Trace",
+      "2BB00E6C66A7EA27A1C99F6D0F4944BFA0A7CD1560000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=jVevH9oithBWLY9brmQ9fBBZiqqBf%2FvtVNY1mehn6H0sAPuuEvMnJJf6BWpHg8qqSCz3wHRn2zKkE1Z4bLfKVXyinPT9fpRMop3ewMnKFR5I5W5IIKysM8bp3tblmW69"}],"group":"cf-nel","max_age":604800}',
+=======
+      "66",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2BC6655339881D74861BE5F1DD765052C4DD131A29000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=pX9G5c%2Fj40CLjvufP34%2BZvYRVxPzDfki6URbCY3YIh0q6yJv3QOoTiSG%2FMYkU7I7BTcnqaNDntoXgvxySK88448HWuQH4K5esUVchVPLV4z4YdRqRTBb6y%2FltYU8U4su"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
+  .post("/contacts/v1/lists/669/remove", {
+=======
+  .post("/contacts/v1/lists/67/remove", {
+>>>>>>> chore: add additional destination option.
+    emails: ["caio.silveira@mailinator.com"],
+  })
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+<<<<<<< HEAD
+    { updated: [289651], discarded: [], invalidVids: [], invalidEmails: [] },
+    [
+      "Date",
+      "Thu, 17 Feb 2022 18:56:32 GMT",
+=======
+    { updated: [], discarded: [43951], invalidVids: [], invalidEmails: [] },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:12 GMT",
+>>>>>>> chore: add additional destination option.
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Content-Length",
+      "71",
+      "Connection",
+      "close",
+      "CF-Ray",
+<<<<<<< HEAD
+      "6df13c7728d78c6c-EWR",
+=======
+      "6e14aa4cc9bd2746-FOR",
+>>>>>>> chore: add additional destination option.
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
+      "607d9d79-141b-4d1a-a043-9afe12441a31",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "248832",
+=======
+      "767b9abf-4a14-47db-a0db-afd473f9977b",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249709",
+>>>>>>> chore: add additional destination option.
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "48",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -9765,6 +15994,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B02E3962920B3D926F7B3DD4BE4E936585762232A000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=6GwfQWnQPpoQlgHcYdBd0tnEQr%2Fcsu9R65Xg3Q1c%2FJ8zyOtK%2F6nmNJFBj49Ha8IIeUW5B2KcDRulPyFImY2DEiv80AuK5n5cWqsh2p2hH04uEKrXztvOSv%2B0z4%2BauHAM"}],"group":"cf-nel","max_age":604800}',
+=======
+      "68",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B10CBD10926AE4EA7F6BBFB5A898538B65B421E48000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=0tfN184kKWdAVHGpoE4rVUlHHpIknB9XiYMeqYlXvH6t%2FamlZ%2BkRWoTQsctKmbT6KOxazPuA%2FQYgvd%2BaW7l3KmODvE4UsWHDMkc5IY1MgCsth3IaCEolzLxKB2hhiEJ%2F"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -9784,12 +16024,18 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       vid: 289651,
       "canonical-vid": 289651,
+=======
+      vid: 43951,
+      "canonical-vid": 43951,
+>>>>>>> chore: add additional destination option.
       "merged-vids": [],
       "portal-id": 7974676,
       "is-contact": true,
       properties: {
+<<<<<<< HEAD
         hs_is_unworked: { value: "true" },
         firstname: { value: "" },
         associatedcompanyid: { value: "7945038519" },
@@ -9799,11 +16045,41 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
         hs_pipeline: { value: "contacts-lifecycle-pipeline" },
         createdate: { value: "1645124182719" },
         hs_lifecyclestage_subscriber_date: { value: "1645124182719" },
+=======
+        hs_latest_source_data_1: { value: "API" },
+        hs_is_unworked: { value: "true" },
+        firstname: { value: "" },
+        associatedcompanyid: { value: "7977984559" },
+        num_unique_conversion_events: { value: "0" },
+        hs_latest_source: { value: "OFFLINE" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        hs_analytics_revenue: { value: "0.0" },
+        hs_social_num_broadcast_clicks: { value: "0" },
+        createdate: { value: "1645495669917" },
+        hs_analytics_num_visits: { value: "0" },
+        date_field: { value: "" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        hs_social_linkedin_clicks: { value: "0" },
+        hs_analytics_source: { value: "OFFLINE" },
+        mobilephone: { value: "" },
+        hs_searchable_calculated_mobile_number: { value: "" },
+        hs_email_domain: { value: "mailinator.com" },
+        hs_analytics_num_page_views: { value: "0" },
+        number_field: { value: "" },
+        email: { value: "caio.silveira@mailinator.com" },
+        website: { value: "http://samba.grouparoo.com" },
+        closedate: { value: "1613001600000" },
+        lastmodifieddate: { value: "1645495681443" },
+        hs_analytics_first_timestamp: { value: "1645495669917" },
+        hs_social_google_plus_clicks: { value: "0" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495669917" },
+>>>>>>> chore: add additional destination option.
         message: {
           value:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla est purus, ultrices in porttitor\nin, accumsan non quam.",
         },
         hs_calculated_mobile_number: { value: "" },
+<<<<<<< HEAD
         lastname: { value: "" },
         hs_all_contact_vids: { value: "289651" },
         date_field: { value: "" },
@@ -9813,6 +16089,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
         mobilephone: { value: "" },
         hs_searchable_calculated_mobile_number: { value: "" },
         hs_object_id: { value: "289651" },
+=======
+        hs_analytics_average_page_views: { value: "0" },
+        lastname: { value: "" },
+        hs_all_contact_vids: { value: "43951" },
+        hs_social_facebook_clicks: { value: "0" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        hs_object_id: { value: "43951" },
+>>>>>>> chore: add additional destination option.
         text_field: { value: "" },
         hs_email_domain: { value: "mailinator.com" },
         lifecyclestage: { value: "subscriber" },
@@ -9821,42 +16106,86 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       },
       "list-memberships": [
         {
+<<<<<<< HEAD
           "static-list-id": 668,
           "internal-list-id": 668,
           timestamp: 1645124191640,
           vid: 289651,
+=======
+          "static-list-id": 64,
+          "internal-list-id": 64,
+          timestamp: 1645495686224,
+          vid: 43951,
+          "is-member": true,
+        },
+        {
+          "static-list-id": 65,
+          "internal-list-id": 65,
+          timestamp: 1645495688474,
+          vid: 43951,
+          "is-member": true,
+        },
+        {
+          "static-list-id": 66,
+          "internal-list-id": 66,
+          timestamp: 1645495689900,
+          vid: 43951,
+>>>>>>> chore: add additional destination option.
           "is-member": true,
         },
       ],
       "identity-profiles": [
         {
+<<<<<<< HEAD
           vid: 289651,
           "saved-at-timestamp": 1645124182773,
+=======
+          vid: 43951,
+          "saved-at-timestamp": 1645495669988,
+>>>>>>> chore: add additional destination option.
           "deleted-changed-timestamp": 0,
           identities: [
             {
               type: "EMAIL",
               value: "caio.silveira@mailinator.com",
+<<<<<<< HEAD
               timestamp: 1645124182718,
+=======
+              timestamp: 1645495669917,
+>>>>>>> chore: add additional destination option.
               "is-primary": true,
             },
             {
               type: "LEAD_GUID",
+<<<<<<< HEAD
               value: "7a4c414e-69d9-4aa5-9a81-dec51e999f27",
               timestamp: 1645124182768,
+=======
+              value: "35e4802d-1313-4de6-943b-f7a89f7a8dc2",
+              timestamp: 1645495669983,
+>>>>>>> chore: add additional destination option.
             },
           ],
         },
       ],
       "merge-audits": [],
       "associated-company": {
+<<<<<<< HEAD
         "company-id": 7945038519,
         "portal-id": 7974676,
+=======
+        "company-id": 7977984559,
+        "portal-id": 20858235,
+>>>>>>> chore: add additional destination option.
         properties: {
           country: { value: "United States" },
           num_associated_contacts: { value: "1" },
           timezone: { value: "America/Los_Angeles" },
+<<<<<<< HEAD
           createdate: { value: "1645124176511" },
+=======
+          createdate: { value: "1645495668429" },
+>>>>>>> chore: add additional destination option.
           description: {
             value:
               "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
@@ -9878,24 +16207,43 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           },
           hs_num_open_deals: { value: "0" },
           website: { value: "samba.grouparoo.com" },
+<<<<<<< HEAD
           first_contact_createdate: { value: "1645124182719" },
           twitterhandle: { value: "grouparoo" },
           hs_target_account_probability: { value: "0.38625118136405945" },
           hs_lastmodifieddate: { value: "1645124189259" },
+=======
+          hs_analytics_first_timestamp: { value: "1645495669917" },
+          first_contact_createdate: { value: "1645495669917" },
+          twitterhandle: { value: "grouparoo" },
+          hs_target_account_probability: { value: "0.38625118136405945" },
+          hs_lastmodifieddate: { value: "1645495683505" },
+>>>>>>> chore: add additional destination option.
           hs_num_decision_makers: { value: "0" },
           num_conversion_events: { value: "0" },
           domain: { value: "samba.grouparoo.com" },
           hs_num_child_companies: { value: "0" },
           hs_num_contacts_with_buying_roles: { value: "0" },
+<<<<<<< HEAD
           hs_object_id: { value: "7945038519" },
           is_public: { value: "false" },
           name: { value: "samba" },
+=======
+          hs_object_id: { value: "7977984559" },
+          is_public: { value: "false" },
+          name: { value: "samba" },
+          hs_analytics_source_data_1: { value: "API" },
+>>>>>>> chore: add additional destination option.
         },
       },
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:32 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:12 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -9903,7 +16251,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c784c0c19f7-EWR",
+=======
+      "6e14aa4e7c03275b-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -9915,16 +16267,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "132554de-1c0d-489e-8a11-e86dde2e6b96",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248831",
+=======
+      "272fb500-56bd-4f8b-aa27-d394c4fb4836",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249708",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "51",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -9934,6 +16295,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2BBD82C252C3F0907F5354411AE61ADBF32570095D000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=gtyOK41rTi%2Fp2XElJEfphS2KWowH6pIuFLd0i5sXkiBcCnkSrc%2F7Sv50aIBj3UNAr5yCkFeV%2BAsYtXerFnpJOV2HfxDUbT7Bg2h1XpLsJqXOMdCZX6RHTJb8rwoPGOag"}],"group":"cf-nel","max_age":604800}',
+=======
+      "67",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B18584431C0EAF78F4732BA12ED32B69E5D3B72E0000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=iMH0abpzrs3ezi3TeSv9CPLTGAzmQU1lK%2F7mnRoohHwMv3B7g786GYcxFCNn6lVCbnhfZmzTz7N6Gzdl1Bp%2Fgt7Bs0BkLymo%2BtVnKyZ%2F8UGTwWmLcb7Sq0P%2FdmxSAHsx"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -9974,19 +16346,32 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 627,
           internalListId: 627,
           createdAt: 1644353912852,
           updatedAt: 1644353912852,
           name: "All Emails",
+=======
+          portalId: 20858235,
+          listId: 67,
+          internalListId: 67,
+          createdAt: 1645495691989,
+          updatedAt: 1645495691989,
+          name: "List Four",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           filters: [],
           metaData: {
             size: 988,
             lastSizeChangeAt: 1644965337100,
             processing: "DONE",
+<<<<<<< HEAD
             lastProcessingStateChangeAt: 1644353913044,
+=======
+            lastProcessingStateChangeAt: 1645495692149,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -9996,6 +16381,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 622,
           internalListId: 622,
@@ -10009,6 +16395,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1634665476559,
             processing: "DONE",
             lastProcessingStateChangeAt: 1634665347951,
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+          name: "List One",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495682646,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -10018,6 +16419,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 562,
           internalListId: 562,
@@ -10031,6 +16433,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1634665193431,
             processing: "DONE",
             lastProcessingStateChangeAt: 1632402381930,
+=======
+          portalId: 20858235,
+          listId: 66,
+          internalListId: 66,
+          createdAt: 1645495689464,
+          updatedAt: 1645495689464,
+          name: "List Three",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495690037,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495689627,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -10040,6 +16457,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 629,
           internalListId: 629,
@@ -10053,6 +16471,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1644965397142,
             processing: "DONE",
             lastProcessingStateChangeAt: 1644964544826,
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+          name: "List Two",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495688583,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -10061,6 +16494,76 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           teamIds: [],
           dynamic: false,
         },
+<<<<<<< HEAD
+=======
+      ],
+      "has-more": false,
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:12 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14aa4fef39e084-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "0a1ceb73-b2c8-45e0-8ac4-4fc19a113f05",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249707",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "66",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B07C6A321CB848398FC5E592EF8027368A1D75BEC000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=7plnfSB0IYaXcuvt47YQAbl5%2BukCfqWjokf0xJECyCinjAPUrrpvQ9hwgZAbe02cakehk4U0tilEURYyRpZmCDC46xZmae7rg6RKXQgaQ%2FqtaSVxwYknZ1pWPLFQJvFM"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/contact/email/lucas.nogueira@mailinator.com/profile", {})
+  .query({
+    propertyMode: "value_only",
+    formSubmissionMode: "none",
+    hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded",
+  })
+  .once()
+  .reply(
+    404,
+    {
+      status: "error",
+      message: "contact does not exist",
+      correlationId: "c78995dd-edd4-4a88-b999-7ba82691f47a",
+      errors: [
+>>>>>>> chore: add additional destination option.
         {
           portalId: 7974676,
           listId: 628,
@@ -10287,7 +16790,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:32 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:13 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -10295,7 +16802,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c795f471977-EWR",
+=======
+      "6e14aa5158d02743-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -10307,16 +16818,27 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "762af065-ddb9-4287-949c-aafe7feda29a",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248830",
+=======
+      "c78995dd-edd4-4a88-b999-7ba82691f47a",
+      "X-HubSpot-NotFound",
+      "true",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249706",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "50",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -10326,6 +16848,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2BC1CD7B25C3EC730D870FBB71E629BF0BAE916676000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=5BHshKD%2Fv7EckFx7nIv6oFAELq3ao2BTMyDd5oxasGPXEIje7IkR9UzPLH5IxtavdYPS6yyoE8jzqRRQEwB4QitqZnMSxfPmErXgj3fG087Nwc0Za%2BOHL85p6x5bbYW0"}],"group":"cf-nel","max_age":604800}',
+=======
+      "66",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B79077262752CCB96C758A804D3AA6F230C46F806000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=9whoDPLxlHLm9ncEFYyDJjhYvSjYLQFbl0bh9da7BdpQ3Vbi5S4YFMdsn0mhQiMgDunl0oICXmsBp3S3qRJZwcRuCM6GeX%2BWksEG5ViXwDHQ5dz%2BIVirtwr1sEoODp16"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -10345,12 +16878,18 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       vid: 289651,
       "canonical-vid": 289651,
+=======
+      vid: 43951,
+      "canonical-vid": 43951,
+>>>>>>> chore: add additional destination option.
       "merged-vids": [],
       "portal-id": 7974676,
       "is-contact": true,
       properties: {
+<<<<<<< HEAD
         hs_is_unworked: { value: "true" },
         firstname: { value: "" },
         associatedcompanyid: { value: "7945038519" },
@@ -10360,11 +16899,41 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
         hs_pipeline: { value: "contacts-lifecycle-pipeline" },
         createdate: { value: "1645124182719" },
         hs_lifecyclestage_subscriber_date: { value: "1645124182719" },
+=======
+        hs_latest_source_data_1: { value: "API" },
+        hs_is_unworked: { value: "true" },
+        firstname: { value: "" },
+        associatedcompanyid: { value: "7977984559" },
+        num_unique_conversion_events: { value: "0" },
+        hs_latest_source: { value: "OFFLINE" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        hs_analytics_revenue: { value: "0.0" },
+        hs_social_num_broadcast_clicks: { value: "0" },
+        createdate: { value: "1645495669917" },
+        hs_analytics_num_visits: { value: "0" },
+        date_field: { value: "" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        hs_social_linkedin_clicks: { value: "0" },
+        hs_analytics_source: { value: "OFFLINE" },
+        mobilephone: { value: "" },
+        hs_searchable_calculated_mobile_number: { value: "" },
+        hs_email_domain: { value: "mailinator.com" },
+        hs_analytics_num_page_views: { value: "0" },
+        number_field: { value: "" },
+        email: { value: "caio.silveira@mailinator.com" },
+        website: { value: "http://samba.grouparoo.com" },
+        closedate: { value: "1613001600000" },
+        lastmodifieddate: { value: "1645495681443" },
+        hs_analytics_first_timestamp: { value: "1645495669917" },
+        hs_social_google_plus_clicks: { value: "0" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495669917" },
+>>>>>>> chore: add additional destination option.
         message: {
           value:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla est purus, ultrices in porttitor\nin, accumsan non quam.",
         },
         hs_calculated_mobile_number: { value: "" },
+<<<<<<< HEAD
         lastname: { value: "" },
         hs_all_contact_vids: { value: "289651" },
         date_field: { value: "" },
@@ -10374,6 +16943,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
         mobilephone: { value: "" },
         hs_searchable_calculated_mobile_number: { value: "" },
         hs_object_id: { value: "289651" },
+=======
+        hs_analytics_average_page_views: { value: "0" },
+        lastname: { value: "" },
+        hs_all_contact_vids: { value: "43951" },
+        hs_social_facebook_clicks: { value: "0" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        hs_object_id: { value: "43951" },
+>>>>>>> chore: add additional destination option.
         text_field: { value: "" },
         hs_email_domain: { value: "mailinator.com" },
         lifecyclestage: { value: "subscriber" },
@@ -10382,42 +16960,86 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       },
       "list-memberships": [
         {
+<<<<<<< HEAD
           "static-list-id": 668,
           "internal-list-id": 668,
           timestamp: 1645124191640,
           vid: 289651,
+=======
+          "static-list-id": 64,
+          "internal-list-id": 64,
+          timestamp: 1645495686224,
+          vid: 43951,
+          "is-member": true,
+        },
+        {
+          "static-list-id": 65,
+          "internal-list-id": 65,
+          timestamp: 1645495688474,
+          vid: 43951,
+          "is-member": true,
+        },
+        {
+          "static-list-id": 66,
+          "internal-list-id": 66,
+          timestamp: 1645495689900,
+          vid: 43951,
+>>>>>>> chore: add additional destination option.
           "is-member": true,
         },
       ],
       "identity-profiles": [
         {
+<<<<<<< HEAD
           vid: 289651,
           "saved-at-timestamp": 1645124182773,
+=======
+          vid: 43951,
+          "saved-at-timestamp": 1645495669988,
+>>>>>>> chore: add additional destination option.
           "deleted-changed-timestamp": 0,
           identities: [
             {
               type: "EMAIL",
               value: "caio.silveira@mailinator.com",
+<<<<<<< HEAD
               timestamp: 1645124182718,
+=======
+              timestamp: 1645495669917,
+>>>>>>> chore: add additional destination option.
               "is-primary": true,
             },
             {
               type: "LEAD_GUID",
+<<<<<<< HEAD
               value: "7a4c414e-69d9-4aa5-9a81-dec51e999f27",
               timestamp: 1645124182768,
+=======
+              value: "35e4802d-1313-4de6-943b-f7a89f7a8dc2",
+              timestamp: 1645495669983,
+>>>>>>> chore: add additional destination option.
             },
           ],
         },
       ],
       "merge-audits": [],
       "associated-company": {
+<<<<<<< HEAD
         "company-id": 7945038519,
         "portal-id": 7974676,
+=======
+        "company-id": 7977984559,
+        "portal-id": 20858235,
+>>>>>>> chore: add additional destination option.
         properties: {
           country: { value: "United States" },
           num_associated_contacts: { value: "1" },
           timezone: { value: "America/Los_Angeles" },
+<<<<<<< HEAD
           createdate: { value: "1645124176511" },
+=======
+          createdate: { value: "1645495668429" },
+>>>>>>> chore: add additional destination option.
           description: {
             value:
               "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
@@ -10439,24 +17061,43 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           },
           hs_num_open_deals: { value: "0" },
           website: { value: "samba.grouparoo.com" },
+<<<<<<< HEAD
           first_contact_createdate: { value: "1645124182719" },
           twitterhandle: { value: "grouparoo" },
           hs_target_account_probability: { value: "0.38625118136405945" },
           hs_lastmodifieddate: { value: "1645124189259" },
+=======
+          hs_analytics_first_timestamp: { value: "1645495669917" },
+          first_contact_createdate: { value: "1645495669917" },
+          twitterhandle: { value: "grouparoo" },
+          hs_target_account_probability: { value: "0.38625118136405945" },
+          hs_lastmodifieddate: { value: "1645495683505" },
+>>>>>>> chore: add additional destination option.
           hs_num_decision_makers: { value: "0" },
           num_conversion_events: { value: "0" },
           domain: { value: "samba.grouparoo.com" },
           hs_num_child_companies: { value: "0" },
           hs_num_contacts_with_buying_roles: { value: "0" },
+<<<<<<< HEAD
           hs_object_id: { value: "7945038519" },
           is_public: { value: "false" },
           name: { value: "samba" },
+=======
+          hs_object_id: { value: "7977984559" },
+          is_public: { value: "false" },
+          name: { value: "samba" },
+          hs_analytics_source_data_1: { value: "API" },
+>>>>>>> chore: add additional destination option.
         },
       },
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:56:32 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:13 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -10464,7 +17105,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13c7a29c617b9-EWR",
+=======
+      "6e14aa529eb1273d-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -10476,16 +17121,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "84c41fcf-d2a8-421f-b45e-6a7da8636178",
       "X-HubSpot-RateLimit-Daily",
       "250000",
       "X-HubSpot-RateLimit-Daily-Remaining",
       "248829",
+=======
+      "f76ec70f-85b6-4d0d-b252-e4384069872d",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249705",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "49",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -10495,6 +17149,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2BC2253604C91AFB827594EEB72493C72AE8A8CD3D000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=BniDVSmC%2FT4j34Uv3OVL%2BSLi%2BUzUu4fu7yMw1ep3Hi0M10xYk%2B0FHOWHruoFjK2yYd7Gu9Wty2wUmjOtFexAsg0kUhVKuBOj7PBfe%2BBbVJocbLBfSgk6zLi%2BwAdMc6OD"}],"group":"cf-nel","max_age":604800}',
+=======
+      "65",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2BFAF3030E5185B7B767C54560F3DCBDDD9A5C888E000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=wgtMYZKXQ6zKxOERnKidUI3ADRjDuQy6JMjCnXZbKKG6hcWA3muNZqGhvdtp%2Bx9JysM9E5zI3DQJvVQ%2F9%2BSxz2k%2Bi1XjCeRb5QGL5OEgnkkMuuhkt5D%2FPHrfej2nxMMn"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -10569,6 +17234,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       offset: 500,
       lists: [
         {
@@ -15778,11 +22444,18 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "canonical-vid": 289651,
       "merged-vids": [],
       "portal-id": 7974676,
+=======
+      vid: 43951,
+      "canonical-vid": 43951,
+      "merged-vids": [],
+      "portal-id": 20858235,
+>>>>>>> chore: add additional destination option.
       "is-contact": true,
       properties: {
         hs_latest_source_data_1: { value: "API" },
         hs_is_unworked: { value: "true" },
         firstname: { value: "" },
+<<<<<<< HEAD
         associatedcompanyid: { value: "7945038519" },
         num_unique_conversion_events: { value: "0" },
         hs_latest_source: { value: "OFFLINE" },
@@ -46066,12 +52739,55 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
         hs_email_domain: { value: "mailinator.com" },
         createdate: { value: "1645124234796" },
         hs_lifecyclestage_subscriber_date: { value: "1645124234796" },
+=======
+        associatedcompanyid: { value: "7977984559" },
+        num_unique_conversion_events: { value: "0" },
+        hs_latest_source: { value: "OFFLINE" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        hs_analytics_revenue: { value: "0.0" },
+        hs_social_num_broadcast_clicks: { value: "0" },
+        createdate: { value: "1645495669917" },
+        hs_analytics_num_visits: { value: "0" },
+        date_field: { value: "" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        hs_social_linkedin_clicks: { value: "0" },
+        hs_analytics_source: { value: "OFFLINE" },
+        mobilephone: { value: "" },
+        hs_searchable_calculated_mobile_number: { value: "" },
+        hs_email_domain: { value: "mailinator.com" },
+        hs_analytics_num_page_views: { value: "0" },
+        number_field: { value: "" },
+        email: { value: "caio.silveira@mailinator.com" },
+        website: { value: "http://samba.grouparoo.com" },
+        closedate: { value: "1613001600000" },
+        lastmodifieddate: { value: "1645495681443" },
+        hs_analytics_first_timestamp: { value: "1645495669917" },
+        hs_social_google_plus_clicks: { value: "0" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495669917" },
+        message: {
+          value:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla est purus, ultrices in porttitor\nin, accumsan non quam.",
+        },
+        hs_calculated_mobile_number: { value: "" },
+        hs_analytics_average_page_views: { value: "0" },
+        lastname: { value: "" },
+        hs_all_contact_vids: { value: "43951" },
+        hs_social_facebook_clicks: { value: "0" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        hs_object_id: { value: "43951" },
+        text_field: { value: "" },
+        hs_analytics_num_event_completions: { value: "0" },
+        hs_social_twitter_clicks: { value: "0" },
+        hs_analytics_source_data_1: { value: "API" },
+>>>>>>> chore: add additional destination option.
         lifecyclestage: { value: "subscriber" },
         email: { value: "lucas.nogueira@mailinator.com" },
         hs_all_contact_vids: { value: "290001" },
       },
       "list-memberships": [
         {
+<<<<<<< HEAD
           "static-list-id": 672,
           "internal-list-id": 672,
           timestamp: 1645124235357,
@@ -46090,6 +52806,12 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           "internal-list-id": 674,
           timestamp: 1645124235938,
           vid: 290001,
+=======
+          "static-list-id": 64,
+          "internal-list-id": 64,
+          timestamp: 1645495686224,
+          vid: 43951,
+>>>>>>> chore: add additional destination option.
           "is-member": true,
         },
       ],
@@ -46415,6 +53137,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 674,
           internalListId: 674,
@@ -46459,8 +53182,23 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           archived: false,
           teamIds: [],
           dynamic: false,
+=======
+          "static-list-id": 65,
+          "internal-list-id": 65,
+          timestamp: 1645495688474,
+          vid: 43951,
+          "is-member": true,
         },
         {
+          "static-list-id": 66,
+          "internal-list-id": 66,
+          timestamp: 1645495689900,
+          vid: 43951,
+          "is-member": true,
+>>>>>>> chore: add additional destination option.
+        },
+        {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 623,
           internalListId: 623,
@@ -46477,6 +53215,48 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
+=======
+          vid: 43951,
+          "saved-at-timestamp": 1645495669988,
+          "deleted-changed-timestamp": 0,
+          identities: [
+            {
+              type: "EMAIL",
+              value: "caio.silveira@mailinator.com",
+              timestamp: 1645495669917,
+              "is-primary": true,
+            },
+            {
+              type: "LEAD_GUID",
+              value: "35e4802d-1313-4de6-943b-f7a89f7a8dc2",
+              timestamp: 1645495669983,
+            },
+          ],
+        },
+      ],
+      "merge-audits": [],
+      "associated-company": {
+        "company-id": 7977984559,
+        "portal-id": 20858235,
+        properties: {
+          country: { value: "United States" },
+          num_associated_contacts: { value: "1" },
+          timezone: { value: "America/Los_Angeles" },
+          createdate: { value: "1645495668429" },
+          description: {
+            value:
+              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
+          },
+          hs_num_blockers: { value: "0" },
+          web_technologies: {
+            value:
+              "slack;google_tag_manager;google_analytics;twitter_button;lever;google_apps",
+          },
+          numberofemployees: { value: "10" },
+          hs_analytics_num_visits: { value: "0" },
+          linkedin_company_page: {
+            value: "https://www.linkedin.com/company/grouparoo",
+>>>>>>> chore: add additional destination option.
           },
           archived: false,
           teamIds: [],
@@ -46500,10 +53280,96 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             listReferencesCount: null,
             parentFolderId: null,
           },
+<<<<<<< HEAD
           archived: false,
           teamIds: [],
           dynamic: false,
         },
+=======
+          hs_num_open_deals: { value: "0" },
+          website: { value: "samba.grouparoo.com" },
+          hs_analytics_first_timestamp: { value: "1645495669917" },
+          first_contact_createdate: { value: "1645495669917" },
+          twitterhandle: { value: "grouparoo" },
+          hs_target_account_probability: { value: "0.38625118136405945" },
+          hs_lastmodifieddate: { value: "1645495683505" },
+          hs_num_decision_makers: { value: "0" },
+          num_conversion_events: { value: "0" },
+          domain: { value: "samba.grouparoo.com" },
+          hs_num_child_companies: { value: "0" },
+          hs_num_contacts_with_buying_roles: { value: "0" },
+          hs_object_id: { value: "7977984559" },
+          is_public: { value: "false" },
+          name: { value: "samba" },
+          hs_analytics_source_data_1: { value: "API" },
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:13 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14aa541f8c2746-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "2211fe1d-060c-4ee0-8784-db4a2e35d570",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249704",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "64",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2BC9D05F0B84712B7869C984A7F93A8F897D2B20B7000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=k9%2Fo8mrMWN5MORf3b66lKjG%2B2LJDyf4kOLmCWxL5Myn9GsEGTR%2BUytEmBGYv3g%2Ff5e3T%2F3LJebwKdPCnyG3cg%2FaSo14aXRWFftWABo8VetQLoAzpHTS8NDynhgM87MiB"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/contact/email/lucas.nogueira@mailinator.com/profile", {})
+  .query({
+    propertyMode: "value_only",
+    formSubmissionMode: "none",
+    hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded",
+  })
+  .once()
+  .reply(
+    404,
+    {
+      status: "error",
+      message: "contact does not exist",
+      correlationId: "e35cbda0-f3e0-47ed-a320-e5552542764b",
+      errors: [
+>>>>>>> chore: add additional destination option.
         {
           portalId: 7974676,
           listId: 555,
@@ -46526,6 +53392,78 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           teamIds: [],
           dynamic: false,
         },
+<<<<<<< HEAD
+=======
+      ],
+      category: "OBJECT_NOT_FOUND",
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:13 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Content-Length",
+      "223",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14aa557b5ecf8e-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "e35cbda0-f3e0-47ed-a320-e5552542764b",
+      "X-HubSpot-NotFound",
+      "true",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249703",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "63",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2BA485EC9F6B1C8F8C77B3EAEDA6D213900693E3FF000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=FaRwOhn2MYdbHme58lLK2tmQql51a1%2BE3bvL08NEdij7Oes1UMUwbeOBYWn4VNDSB53e9cb29etFbEah69Ex8%2BPoPlfNGLSftw%2BfGZRFCL79V8C6lDlucQRh3ZNt3ppr"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/contact/email/lucas.nogueira@mailinator.com/profile", {})
+  .query({
+    propertyMode: "value_only",
+    formSubmissionMode: "none",
+    hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded",
+  })
+  .once()
+  .reply(
+    404,
+    {
+      status: "error",
+      message: "contact does not exist",
+      correlationId: "2db23fcc-6200-404a-ac91-521320710d7d",
+      errors: [
+>>>>>>> chore: add additional destination option.
         {
           portalId: 7974676,
           listId: 556,
@@ -46553,7 +53491,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:16 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:14 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -46561,7 +53503,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13d8d3a7f1921-EWR",
+=======
+      "6e14aa56cc44cf8a-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -46573,12 +53519,23 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "fb921950-1a48-4045-9b18-5bf2a98c5e71",
+=======
+      "2db23fcc-6200-404a-ac91-521320710d7d",
+      "X-HubSpot-NotFound",
+      "true",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249702",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "47",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -46588,6 +53545,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2BBF1A5989FC030A964F5313FC85A904C67C019BE4000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=u5M%2Bl6Hx7QDTMfSg2E75JkatuzY2%2FeFFHXKGmZR0XL5OWS3ahXYOvgmL60ZvfNiL8G3whYMJNiQDjldsuY0atpTCWIn9%2Bv%2F6s%2Fm0V7f7Tlze2DLsTPol4JyHHlOXMOZw"}],"group":"cf-nel","max_age":604800}',
+=======
+      "62",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2BF058493C2002C1B5217699207F251AECA239F8D9000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=nVsQP725mLN%2FTc1Oc3RuoW4ClAIcSObBmlMmo8Obz2jXeAH6c%2BUDrpJFujsDLcKGn8IEz2QKPlQiZQ198WHxsHBYjLRpydgc8spH%2FVm%2FH2JRJaGfjrUtmBsyAf5Sr3Q1"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -46603,6 +53571,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       offset: 500,
       lists: [
         {
@@ -46692,8 +53661,83 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           archived: false,
           teamIds: [],
           dynamic: false,
+=======
+      vid: 43951,
+      "canonical-vid": 43951,
+      "merged-vids": [],
+      "portal-id": 20858235,
+      "is-contact": true,
+      properties: {
+        hs_latest_source_data_1: { value: "API" },
+        hs_is_unworked: { value: "true" },
+        firstname: { value: "" },
+        associatedcompanyid: { value: "7977984559" },
+        num_unique_conversion_events: { value: "0" },
+        hs_latest_source: { value: "OFFLINE" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        hs_analytics_revenue: { value: "0.0" },
+        hs_social_num_broadcast_clicks: { value: "0" },
+        createdate: { value: "1645495669917" },
+        hs_analytics_num_visits: { value: "0" },
+        date_field: { value: "" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        hs_social_linkedin_clicks: { value: "0" },
+        hs_analytics_source: { value: "OFFLINE" },
+        mobilephone: { value: "" },
+        hs_searchable_calculated_mobile_number: { value: "" },
+        hs_email_domain: { value: "mailinator.com" },
+        hs_analytics_num_page_views: { value: "0" },
+        number_field: { value: "" },
+        email: { value: "caio.silveira@mailinator.com" },
+        website: { value: "http://samba.grouparoo.com" },
+        closedate: { value: "1613001600000" },
+        lastmodifieddate: { value: "1645495681443" },
+        hs_analytics_first_timestamp: { value: "1645495669917" },
+        hs_social_google_plus_clicks: { value: "0" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495669917" },
+        message: {
+          value:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla est purus, ultrices in porttitor\nin, accumsan non quam.",
+        },
+        hs_calculated_mobile_number: { value: "" },
+        hs_analytics_average_page_views: { value: "0" },
+        lastname: { value: "" },
+        hs_all_contact_vids: { value: "43951" },
+        hs_social_facebook_clicks: { value: "0" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        hs_object_id: { value: "43951" },
+        text_field: { value: "" },
+        hs_analytics_num_event_completions: { value: "0" },
+        hs_social_twitter_clicks: { value: "0" },
+        hs_analytics_source_data_1: { value: "API" },
+        lifecyclestage: { value: "subscriber" },
+      },
+      "list-memberships": [
+        {
+          "static-list-id": 64,
+          "internal-list-id": 64,
+          timestamp: 1645495686224,
+          vid: 43951,
+          "is-member": true,
         },
         {
+          "static-list-id": 65,
+          "internal-list-id": 65,
+          timestamp: 1645495688474,
+          vid: 43951,
+          "is-member": true,
+        },
+        {
+          "static-list-id": 66,
+          "internal-list-id": 66,
+          timestamp: 1645495689900,
+          vid: 43951,
+          "is-member": true,
+>>>>>>> chore: add additional destination option.
+        },
+        {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 629,
           internalListId: 629,
@@ -46957,6 +54001,48 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
+=======
+          vid: 43951,
+          "saved-at-timestamp": 1645495669988,
+          "deleted-changed-timestamp": 0,
+          identities: [
+            {
+              type: "EMAIL",
+              value: "caio.silveira@mailinator.com",
+              timestamp: 1645495669917,
+              "is-primary": true,
+            },
+            {
+              type: "LEAD_GUID",
+              value: "35e4802d-1313-4de6-943b-f7a89f7a8dc2",
+              timestamp: 1645495669983,
+            },
+          ],
+        },
+      ],
+      "merge-audits": [],
+      "associated-company": {
+        "company-id": 7977984559,
+        "portal-id": 20858235,
+        properties: {
+          country: { value: "United States" },
+          num_associated_contacts: { value: "1" },
+          timezone: { value: "America/Los_Angeles" },
+          createdate: { value: "1645495668429" },
+          description: {
+            value:
+              "Grouparoo is an open source framework that helps you move data between your data warehouse and all of your cloud-based tools.",
+          },
+          hs_num_blockers: { value: "0" },
+          web_technologies: {
+            value:
+              "slack;google_tag_manager;google_analytics;twitter_button;lever;google_apps",
+          },
+          numberofemployees: { value: "10" },
+          hs_analytics_num_visits: { value: "0" },
+          linkedin_company_page: {
+            value: "https://www.linkedin.com/company/grouparoo",
+>>>>>>> chore: add additional destination option.
           },
           archived: false,
           teamIds: [],
@@ -46980,16 +54066,39 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             listReferencesCount: null,
             parentFolderId: null,
           },
+<<<<<<< HEAD
           archived: false,
           teamIds: [],
           dynamic: false,
+=======
+          hs_num_open_deals: { value: "0" },
+          website: { value: "samba.grouparoo.com" },
+          hs_analytics_first_timestamp: { value: "1645495669917" },
+          first_contact_createdate: { value: "1645495669917" },
+          twitterhandle: { value: "grouparoo" },
+          hs_target_account_probability: { value: "0.38625118136405945" },
+          hs_lastmodifieddate: { value: "1645495683505" },
+          hs_num_decision_makers: { value: "0" },
+          num_conversion_events: { value: "0" },
+          domain: { value: "samba.grouparoo.com" },
+          hs_num_child_companies: { value: "0" },
+          hs_num_contacts_with_buying_roles: { value: "0" },
+          hs_object_id: { value: "7977984559" },
+          is_public: { value: "false" },
+          name: { value: "samba" },
+          hs_analytics_source_data_1: { value: "API" },
+>>>>>>> chore: add additional destination option.
         },
       ],
       "has-more": false,
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:16 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:14 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -46997,7 +54106,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13d8ded161801-EWR",
+=======
+      "6e14aa580c7ee07c-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -47009,12 +54122,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "303a4303-cd25-4eb4-b4e0-64c3fdc1e663",
+=======
+      "9f8c58ac-91cd-4ce0-a02e-6d8dc2dcb27e",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249701",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "46",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -47024,6 +54146,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2BFE7FB931C825D3B8C5D2B4AA3804525867240810000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=0erw%2BUGcgXhGkhF6pOk9ghblJ4umC04a8QjtQ6QW5iHqjrf8uYb7To8CLfqjNK%2FhK8c8dHmETfsSkJGNWbhm2jNXVM%2BE2omQuFRnf34wHiLWLlGMi2sVBOva6Iw92Z79"}],"group":"cf-nel","max_age":604800}',
+=======
+      "64",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B148FC8A02F64928BF825D7A340D1C4B7E3D67351000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=IQYBb8w7O0daoROT4X8c31jcmRvtqBxJwdfBgUTE7utt5%2Bybd4ebF33%2BIYNFU5fJfNAjQwzMpiU74GiJgsz%2BDZWGlBT6otQ2mqB2tIuQSVb4t0FmVOZFflC4DVvpbdia"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -47033,6 +54166,120 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
+=======
+  .delete("/contacts/v1/contact/vid/43951", {})
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(200, { vid: 43951, deleted: true, reason: "OK" }, [
+    "Date",
+    "Tue, 22 Feb 2022 02:08:14 GMT",
+    "Content-Type",
+    "application/json;charset=utf-8",
+    "Content-Length",
+    "42",
+    "Connection",
+    "close",
+    "CF-Ray",
+    "6e14aa597c56273d-FOR",
+    "Strict-Transport-Security",
+    "max-age=31536000; includeSubDomains; preload",
+    "Vary",
+    "Accept-Encoding",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Access-Control-Allow-Credentials",
+    "false",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "X-HubSpot-Correlation-Id",
+    "c201a570-d35e-495f-833f-df7a31bcb552",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249700",
+    "X-HubSpot-RateLimit-Interval-Milliseconds",
+    "10000",
+    "X-HubSpot-RateLimit-Max",
+    "100",
+    "X-HubSpot-RateLimit-Remaining",
+    "63",
+    "X-HubSpot-RateLimit-Secondly",
+    "10",
+    "X-HubSpot-RateLimit-Secondly-Remaining",
+    "6",
+    "X-Trace",
+    "2BE91694C81EB60DB0EB33A219DAC6334C76C632DB000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=ZQJpYM%2Bg1bMPWVmmYPM0OM%2BzTcC3rYxhU%2BDFhWuNbaVvLnkQDm9JbJdG7M7dWsTDIZCEgHVuMwKRP%2F9KX5T4VanIn3G20vnla%2Bd%2BSLbCtxaV4J25%2BSGp5RA1ACgQl57z"}],"group":"cf-nel","max_age":604800}',
+    "NEL",
+    '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+    "Server",
+    "cloudflare",
+    "alt-svc",
+    'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+  ]);
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .post(
+    "/contacts/v1/contact/createOrUpdate/email/lucas.nogueira@mailinator.com/",
+    {
+      properties: [
+        { property: "email", value: "lucas.nogueira@mailinator.com" },
+      ],
+    }
+  )
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(200, { vid: 44001, isNew: true }, [
+    "Date",
+    "Tue, 22 Feb 2022 02:08:15 GMT",
+    "Content-Type",
+    "application/json;charset=utf-8",
+    "Content-Length",
+    "26",
+    "Connection",
+    "close",
+    "CF-Ray",
+    "6e14aa5bf8cd275d-FOR",
+    "Strict-Transport-Security",
+    "max-age=31536000; includeSubDomains; preload",
+    "Vary",
+    "Accept-Encoding",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Access-Control-Allow-Credentials",
+    "false",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "X-HubSpot-Correlation-Id",
+    "5eaf5dae-3810-4948-b440-6d53cdc59db8",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249699",
+    "X-HubSpot-RateLimit-Interval-Milliseconds",
+    "10000",
+    "X-HubSpot-RateLimit-Max",
+    "100",
+    "X-HubSpot-RateLimit-Remaining",
+    "66",
+    "X-HubSpot-RateLimit-Secondly",
+    "10",
+    "X-HubSpot-RateLimit-Secondly-Remaining",
+    "6",
+    "X-Trace",
+    "2BF37B9989B9F25176A9DA8E38391F5BC03143814B000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=SbtCxVCay2XsETggNnzd7S3oQ6X%2F18FdiH3A3%2B%2FuAHws30%2FRjJxROZbCmJPYCesJff7YR2ddY4v6UCKMtimvE6OJm%2BCLcn%2FLztHvHKYhm3u2IJTGpKqEMNujH9QbUHrq"}],"group":"cf-nel","max_age":604800}',
+    "NEL",
+    '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+    "Server",
+    "cloudflare",
+    "alt-svc",
+    'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+  ]);
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+>>>>>>> chore: add additional destination option.
   .get("/contacts/v1/lists/static")
   .query({ count: "999" })
   .once()
@@ -47241,11 +54488,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 675,
           internalListId: 675,
           createdAt: 1645124232745,
           updatedAt: 1645124232745,
+=======
+          portalId: 20858235,
+          listId: 67,
+          internalListId: 67,
+          createdAt: 1645495691989,
+          updatedAt: 1645495691989,
+>>>>>>> chore: add additional destination option.
           name: "List Four",
           listType: "STATIC",
           authorId: 13534722,
@@ -47254,7 +54509,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             size: 0,
             lastSizeChangeAt: 0,
             processing: "DONE",
+<<<<<<< HEAD
             lastProcessingStateChangeAt: 1645124232946,
+=======
+            lastProcessingStateChangeAt: 1645495692149,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -47264,20 +54523,35 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 672,
           internalListId: 672,
           createdAt: 1645124226905,
           updatedAt: 1645124226905,
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+>>>>>>> chore: add additional destination option.
           name: "List One",
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
           metaData: {
+<<<<<<< HEAD
             size: 1,
             lastSizeChangeAt: 1645124235520,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124227052,
+=======
+            size: 0,
+            lastSizeChangeAt: 1645495694680,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -47287,20 +54561,35 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 674,
           internalListId: 674,
           createdAt: 1645124231086,
           updatedAt: 1645124231086,
+=======
+          portalId: 20858235,
+          listId: 66,
+          internalListId: 66,
+          createdAt: 1645495689464,
+          updatedAt: 1645495689464,
+>>>>>>> chore: add additional destination option.
           name: "List Three",
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
           metaData: {
+<<<<<<< HEAD
             size: 1,
             lastSizeChangeAt: 1645124236124,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124231299,
+=======
+            size: 0,
+            lastSizeChangeAt: 1645495694602,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495689627,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -47310,11 +54599,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 673,
           internalListId: 673,
           createdAt: 1645124227704,
           updatedAt: 1645124227704,
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+>>>>>>> chore: add additional destination option.
           name: "List Two",
           listType: "STATIC",
           authorId: 13534722,
@@ -47409,9 +54706,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1632401940035,
             processing: "DONE",
             lastProcessingStateChangeAt: 1629388533258,
+=======
+            lastSizeChangeAt: 1645495694641,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -47425,7 +54728,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:16 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:15 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -47433,7 +54740,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13d8efc3b1a48-EWR",
+=======
+      "6e14aa61af54cf8e-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -47445,12 +54756,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "ad949f8f-0e9f-4710-a72e-c389ba039d71",
+=======
+      "e7e11e7c-f361-4072-97a6-58229b450131",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249698",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "45",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -47460,6 +54780,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B4838CD34D973E2C57E5E186868FED25DCC79E356000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=yvLj4S7vot3mwa6RLStBXmzw5o5Jm5N2ooYKget46LlexOY6hfeevBLai6xkVLrS6dfWc5P%2B9Jbxfdisox9YdoswoAkp4OosGMIwmJEF%2F%2Ft2InqFN1qgBAWUlszctByH"}],"group":"cf-nel","max_age":604800}',
+=======
+      "65",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2BFB9C21CB98BDC105CF2786BFDD0AAB35F28171AA000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=t%2B39hkPnpi5wuAA5PL5s2g3%2Fa0Kp9jUscoC2xqTHohfCEukzMV73YPy3egtcNl9oNdXAC7yZar2dgdGZoKLisZ7wjSgivaEGIDpMfAEdNLVPVvT03%2Br04k%2FNFYWnAG%2B0"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -47469,6 +54800,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
   .get("/contacts/v1/contact/email/caio.silveira@mailinator.com/profile", {})
   .query({ propertyMode: "value_only", formSubmissionMode: "none" })
   .once()
@@ -47488,6 +54820,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     [
       "Date",
       "Thu, 17 Feb 2022 18:57:17 GMT",
+=======
+  .post("/contacts/v1/lists/64/add", {
+    emails: ["lucas.nogueira@mailinator.com"],
+  })
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+    { updated: [44001], discarded: [], invalidVids: [], invalidEmails: [] },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:16 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -47495,7 +54840,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13d8fef168c81-EWR",
+=======
+      "6e14aa62edce2749-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -47507,14 +54856,23 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "f21ff3bb-522f-467f-8230-201b70afdccd",
       "X-HubSpot-NotFound",
       "true",
+=======
+      "50db7d0c-1f48-4341-b36b-34a1c166f8ab",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249697",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "44",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -47642,6 +55000,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B111028DBDB6D179EE7E6A892D7D7023F3A23BC0D000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=RDVKH%2FOaDX6rPpkBve7BHsyX1EkQaYzCs%2FLepIjnCg5UjsQddXclbiS1eikKaAh5TOlGmc7bXGQj3XlvT8KT%2FgFs3pNqR4puDoeZbYk0oVW%2F6nvicniLrKT6lXNzaNB%2F"}],"group":"cf-nel","max_age":604800}',
+=======
+      "64",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B3C5B82335C653228EBDC3A170503ED97ED3D40C1000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=eB8Z2goAmorS4s14nrjeKXXF%2FZkOdU4s3nAMkUMpYPluhPl6IItICIwRI%2FL56Kn%2FvSxKtwYlKlinm%2Bntn827zJTCROkctm1xx0YLIGARpMoPDXvBzGUEMLUpY6k83nQE"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -47770,19 +55139,32 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 628,
           internalListId: 628,
           createdAt: 1644353956866,
           updatedAt: 1644353956866,
           name: "High LTV Spanish Speakers_campaign001",
+=======
+          portalId: 20858235,
+          listId: 67,
+          internalListId: 67,
+          createdAt: 1645495691989,
+          updatedAt: 1645495691989,
+          name: "List Four",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           filters: [],
           metaData: {
             size: 31,
             lastSizeChangeAt: 1644361007859,
             processing: "DONE",
+<<<<<<< HEAD
             lastProcessingStateChangeAt: 1644353957024,
+=======
+            lastProcessingStateChangeAt: 1645495692149,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -47792,6 +55174,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 624,
           internalListId: 624,
@@ -47805,6 +55188,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1634665476551,
             processing: "DONE",
             lastProcessingStateChangeAt: 1634665349262,
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+          name: "List One",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495696144,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -47814,19 +55212,34 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 554,
           internalListId: 554,
           createdAt: 1629388529006,
           updatedAt: 1629388529006,
           name: "High value customers",
+=======
+          portalId: 20858235,
+          listId: 66,
+          internalListId: 66,
+          createdAt: 1645495689464,
+          updatedAt: 1645495689464,
+          name: "List Three",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1632401940030,
             processing: "DONE",
             lastProcessingStateChangeAt: 1629388529229,
+=======
+            lastSizeChangeAt: 1645495694602,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495689627,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -47836,6 +55249,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 630,
           internalListId: 630,
@@ -47865,14 +55279,28 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           createdAt: 1645124232745,
           updatedAt: 1645124232745,
           name: "List Four",
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+          name: "List Two",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 0,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124232946,
+=======
+            lastSizeChangeAt: 1645495694641,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -47881,6 +55309,128 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           teamIds: [],
           dynamic: false,
         },
+<<<<<<< HEAD
+=======
+      ],
+      "has-more": false,
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:16 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14aa64fa76275b-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "17a740e5-b9d1-4a70-ac55-bf2a9da4b562",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249696",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "67",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2BC0978888C5D4C6689D5A52D8006882F3B8068389000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=gwnrxLrhOeT9DFOb1m7%2BlG9OGngGr2kbmVCrrvr5K8R0nbwrNhQKsDumVsFhz%2BoaQXeIbCZ6rQvOAyYq1GHfXYic0jvk%2BCkHnFCzgFnlvzALNoZD%2BY0fzZdKY8FYzmph"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .post("/contacts/v1/lists/65/add", {
+    emails: ["lucas.nogueira@mailinator.com"],
+  })
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+    { updated: [44001], discarded: [], invalidVids: [], invalidEmails: [] },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:16 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Content-Length",
+      "70",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14aa663d20273d-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "7d689c3b-e4cf-4efe-a1c1-75a76546ca78",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249695",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "66",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2BA6782B035932B58E093C7AAB3E92C05C9C6234E5000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=WpzoQiYbDMYpetaTta1tHUyYJyjfn3Ce8upczHgNgcqN7VJgfYaA%2FVlWt9rvj1tEuGA3O8GnkQdaITcj9PnZscQ7KCPK4r7YJVRspOaNpVznGIaNsrFvLas0dyDuInLB"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/lists/static")
+  .query({ count: "999", hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+    {
+      offset: 500,
+      lists: [
+>>>>>>> chore: add additional destination option.
         {
           portalId: 7974676,
           listId: 672,
@@ -47905,12 +55455,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 674,
           internalListId: 674,
           createdAt: 1645124231086,
           updatedAt: 1645124231086,
           name: "List Three",
+=======
+          portalId: 20858235,
+          listId: 67,
+          internalListId: 67,
+          createdAt: 1645495691989,
+          updatedAt: 1645495691989,
+          name: "List Four",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
@@ -47918,7 +55477,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             size: 1,
             lastSizeChangeAt: 1645124236124,
             processing: "DONE",
+<<<<<<< HEAD
             lastProcessingStateChangeAt: 1645124231299,
+=======
+            lastProcessingStateChangeAt: 1645495692149,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -47928,20 +55491,35 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 673,
           internalListId: 673,
           createdAt: 1645124227704,
           updatedAt: 1645124227704,
           name: "List Two",
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+          name: "List One",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
           metaData: {
             size: 1,
+<<<<<<< HEAD
             lastSizeChangeAt: 1645124235779,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124227891,
+=======
+            lastSizeChangeAt: 1645495696144,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -47951,19 +55529,34 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 623,
           internalListId: 623,
           createdAt: 1634665348795,
           updatedAt: 1634665348795,
           name: "People who bought Clothing",
+=======
+          portalId: 20858235,
+          listId: 66,
+          internalListId: 66,
+          createdAt: 1645495689464,
+          updatedAt: 1645495689464,
+          name: "List Three",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1634665476557,
             processing: "DONE",
             lastProcessingStateChangeAt: 1634665349095,
+=======
+            lastSizeChangeAt: 1645495694602,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495689627,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -47973,6 +55566,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 626,
           internalListId: 626,
@@ -48008,6 +55602,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1632401940005,
             processing: "DONE",
             lastProcessingStateChangeAt: 1629388530207,
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+          name: "List Two",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495696503,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -48016,6 +55625,134 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           teamIds: [],
           dynamic: false,
         },
+<<<<<<< HEAD
+=======
+      ],
+      "has-more": false,
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:16 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14aa67d86e2755-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "00db9a0b-8456-411a-9af6-9cd223f978c1",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249694",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "65",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B595AF56ED017B249FBABD124975522FA3EE30348000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=VJnPw0OrBiFCqGrZMSs8I4utzwH9OMLJ%2FCilNZA0o%2FKO5ykzMYdVCviIaWXb8ZNoGGnUOOyQCmRs5AmKlQFAfJCLeIUCA92ep8DdqXE14u13zMPbsjUifpjMGdfxKEdX"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .post("/contacts/v1/lists/66/add", {
+    emails: ["lucas.nogueira@mailinator.com"],
+  })
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+    { updated: [44001], discarded: [], invalidVids: [], invalidEmails: [] },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:17 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Content-Length",
+      "70",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14aa693b37e074-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "e212c510-aacd-4b46-a4c2-8dc3f5fc1b37",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249693",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "64",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B43A330149A5AE71DB325F030A4C014C0F7FC3CBE000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=4CcFcGCKzDXw6L5JR59y8d7ZdrXK9ePZEI6gPtsNqxxoYNmOsq%2FYqyO01TwVYyqrA1m0Hy1%2Fij7b1LzHXShk2DXOtc6ld6v24%2BPP1A0qhmlMSz3m4mKLx7okdtgQNJJg"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/contact/email/caio.silveira@mailinator.com/profile", {})
+  .query({
+    propertyMode: "value_only",
+    formSubmissionMode: "none",
+    hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded",
+  })
+  .once()
+  .reply(
+    404,
+    {
+      status: "error",
+      message: "contact does not exist",
+      correlationId: "2c58ed93-3482-486c-b60b-eff0732b5901",
+      errors: [
+>>>>>>> chore: add additional destination option.
         {
           portalId: 7974676,
           listId: 556,
@@ -48043,7 +55780,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:17 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:17 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -48051,7 +55792,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13d928e331a30-EWR",
+=======
+      "6e14aa6b08002755-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -48063,12 +55808,23 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "3cc2f436-ca4c-424f-81ed-dd623e2db835",
+=======
+      "2c58ed93-3482-486c-b60b-eff0732b5901",
+      "X-HubSpot-NotFound",
+      "true",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249692",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "46",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -48078,6 +55834,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B5370E83A3E5B73DBB631FBC95254A7014F16E9D7000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=oTVkqXbJIO9xRfgt%2Fvu8RPUzT7D9fZfRzLJ8g0VwI8u9SyIJmqM%2BjV3s3rUdiKC9zzcZch0wTznGpt8Y7GRhSUsKBMt5A4BshJfZ%2BdP2R8VbGCRMWjhC51gG68RpliiS"}],"group":"cf-nel","max_age":604800}',
+=======
+      "67",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B317D05FEB66CEB4AEE0F703DA845E17F79CAB82C000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=q9gys1mHlG6CUsaq03oglcoO1hbTTG06ds8c6U03jXxUnoafze4sMPuv6aybYmI%2FfriUDhpQl%2FcAxcmo7s9kzUaa5yZLnbfm4aytueKxjSHguWbFJxfyMw61HBjbZdOe"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -48093,10 +55860,83 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .once()
   .reply(
     200,
+<<<<<<< HEAD
     { updated: [290001], discarded: [], invalidVids: [], invalidEmails: [] },
     [
       "Date",
       "Thu, 17 Feb 2022 18:57:17 GMT",
+=======
+    {
+      vid: 44001,
+      "canonical-vid": 44001,
+      "merged-vids": [],
+      "portal-id": 20858235,
+      "is-contact": true,
+      properties: {
+        hs_is_unworked: { value: "true" },
+        lastmodifieddate: { value: "1645495695815" },
+        num_unique_conversion_events: { value: "0" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645495695245" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495695245" },
+        hs_all_contact_vids: { value: "44001" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        hs_object_id: { value: "44001" },
+        hs_email_domain: { value: "mailinator.com" },
+        lifecyclestage: { value: "subscriber" },
+        email: { value: "lucas.nogueira@mailinator.com" },
+      },
+      "list-memberships": [
+        {
+          "static-list-id": 64,
+          "internal-list-id": 64,
+          timestamp: 1645495695977,
+          vid: 44001,
+          "is-member": true,
+        },
+        {
+          "static-list-id": 65,
+          "internal-list-id": 65,
+          timestamp: 1645495696440,
+          vid: 44001,
+          "is-member": true,
+        },
+        {
+          "static-list-id": 66,
+          "internal-list-id": 66,
+          timestamp: 1645495696932,
+          vid: 44001,
+          "is-member": true,
+        },
+      ],
+      "identity-profiles": [
+        {
+          vid: 44001,
+          "saved-at-timestamp": 1645495695312,
+          "deleted-changed-timestamp": 0,
+          identities: [
+            {
+              type: "EMAIL",
+              value: "lucas.nogueira@mailinator.com",
+              timestamp: 1645495695245,
+              "is-primary": true,
+            },
+            {
+              type: "LEAD_GUID",
+              value: "66b29ec3-19ad-4af3-9aaa-5167fd9e652f",
+              timestamp: 1645495695308,
+            },
+          ],
+        },
+      ],
+      "merge-audits": [],
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:17 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -48104,7 +55944,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13d9349011a28-EWR",
+=======
+      "6e14aa6c5e70274f-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -48116,12 +55960,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "6516c8f8-f8c6-4119-9018-23f21e9157b1",
+=======
+      "484744bd-b65c-41c9-8093-d8c16a48ecf2",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249691",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "45",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -48131,6 +55984,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B9B866D059439AD9EEF2CAC51D195A2E3DB8E49B5000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=St5cOJpOt%2FSdnyj3CydLXm3jnRx8PS0AGbpqVoOo7tjhc9e2Ri3AlrHR5oXYrX3Eu4aVcQosJTLQrPMydI%2BA8FlEzCegVwmYsVolq1TjnFLfq3axj3MVJ7cP9QxmYBo3"}],"group":"cf-nel","max_age":604800}',
+=======
+      "66",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B8DCC39D2DA6EA1ED3F06ECFC196DFF29AB98D071000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=paT8n5I7ZljArVP%2FI1BPKpXoeJcqBPJzjZdEhQgZy7lmu0tWD50Ze6FNZtN68mBBjVN%2B6mjtum%2Fj%2F3BiuawbWueVPD15Mdg5j28QPpXiOJmyM9czp14jyahglX5PTPkm"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -48440,19 +56304,32 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 623,
           internalListId: 623,
           createdAt: 1634665348795,
           updatedAt: 1634665348795,
           name: "People who bought Clothing",
+=======
+          portalId: 20858235,
+          listId: 67,
+          internalListId: 67,
+          createdAt: 1645495691989,
+          updatedAt: 1645495691989,
+          name: "List Four",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           filters: [],
           metaData: {
             size: 0,
             lastSizeChangeAt: 1634665476557,
             processing: "DONE",
+<<<<<<< HEAD
             lastProcessingStateChangeAt: 1634665349095,
+=======
+            lastProcessingStateChangeAt: 1645495692149,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -48462,6 +56339,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 626,
           internalListId: 626,
@@ -48475,6 +56353,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1644965328249,
             processing: "DONE",
             lastProcessingStateChangeAt: 1639592812763,
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+          name: "List One",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495696144,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -48484,6 +56377,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 555,
           internalListId: 555,
@@ -48497,6 +56391,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1632401940005,
             processing: "DONE",
             lastProcessingStateChangeAt: 1629388530207,
+=======
+          portalId: 20858235,
+          listId: 66,
+          internalListId: 66,
+          createdAt: 1645495689464,
+          updatedAt: 1645495689464,
+          name: "List Three",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495697077,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495689627,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -48506,6 +56415,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 556,
           internalListId: 556,
@@ -48519,6 +56429,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1632401940035,
             processing: "DONE",
             lastProcessingStateChangeAt: 1629388533258,
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+          name: "List Two",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495696503,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -48532,7 +56457,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:17 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:17 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -48540,7 +56469,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13d9448ab8c59-EWR",
+=======
+      "6e14aa6d9d11e08e-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -48552,12 +56485,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "b5a093b7-8ccb-4284-a03e-3ca01ad92942",
+=======
+      "6dddc50c-ebc1-47be-979c-8e234bc8e3ec",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249690",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "91",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -48620,6 +56562,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B40D084F756CF1693415AE4333D45CA4CDA19AF25000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=CvgnWAM%2B%2FDXdOzuhzPpeUNvGtOfxYrsxRFZg%2F2p5RKQOA3zh3kHMrzLoOtCB2M4K7pgPU9ydsjLVNYLcxzw9fQdHFDj6Jpm8DisDRs8MMw4Et1Rat9k9fGjZGylSS5K%2B"}],"group":"cf-nel","max_age":604800}',
+=======
+      "65",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B959E48A2CD5BA484291725368B4179FC98A33F94000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=LIQWd0VuwFD%2Bx%2FQy6xeBzgWC1UbWgG164gu7U2vlGcU%2FlLBjQF8KvfuI2FK1GBrtZ5FNkwuNxrz%2B%2F0HQQUj9KaDcv5p%2BdVRK7G6A1ZQsoutHTjdHq0NwTHJVx0hYCpZ1"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -48660,6 +56613,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 627,
           internalListId: 627,
@@ -48688,13 +56642,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           createdAt: 1634665347746,
           updatedAt: 1634665347746,
           name: "Bought anything at all",
+=======
+          portalId: 20858235,
+          listId: 67,
+          internalListId: 67,
+          createdAt: 1645495691989,
+          updatedAt: 1645495691989,
+          name: "List Four",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           filters: [],
           metaData: {
             size: 0,
             lastSizeChangeAt: 1634665476559,
             processing: "DONE",
+<<<<<<< HEAD
             lastProcessingStateChangeAt: 1634665347951,
+=======
+            lastProcessingStateChangeAt: 1645495692149,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -48704,6 +56670,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 562,
           internalListId: 562,
@@ -48717,6 +56684,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1634665193431,
             processing: "DONE",
             lastProcessingStateChangeAt: 1632402381930,
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+          name: "List One",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495696144,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -48726,6 +56708,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 629,
           internalListId: 629,
@@ -48739,6 +56722,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1644965397142,
             processing: "DONE",
             lastProcessingStateChangeAt: 1644964544826,
+=======
+          portalId: 20858235,
+          listId: 66,
+          internalListId: 66,
+          createdAt: 1645495689464,
+          updatedAt: 1645495689464,
+          name: "List Three",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495697077,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495689627,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -48748,6 +56746,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 628,
           internalListId: 628,
@@ -48805,6 +56804,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1632401940030,
             processing: "DONE",
             lastProcessingStateChangeAt: 1629388529229,
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+          name: "List Two",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495696503,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -48813,6 +56827,70 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           teamIds: [],
           dynamic: false,
         },
+<<<<<<< HEAD
+=======
+      ],
+      "has-more": false,
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:17 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14aa6f0f8d275b-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "57d8c093-28db-4d18-9df8-9f024d3955e0",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249689",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "64",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B296DF33E5D08DA768FCE8AEE2C8B90880F6AB222000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=UcoQwCwzBruktAs6UDcji%2FHY5krw86G9LlITtb8GKCqXNgHqhB%2BIcSZO1BWrCTJYZ%2BCupmCxApzVl8wxnXMZvbU97d6ezDUvO%2BInl9rv438myZH%2BZNr0BFvr9ZU7kTjZ"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/lists/static")
+  .query({ count: "999", hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+    {
+      offset: 500,
+      lists: [
+>>>>>>> chore: add additional destination option.
         {
           portalId: 7974676,
           listId: 630,
@@ -48837,11 +56915,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 675,
           internalListId: 675,
           createdAt: 1645124232745,
           updatedAt: 1645124232745,
+=======
+          portalId: 20858235,
+          listId: 67,
+          internalListId: 67,
+          createdAt: 1645495691989,
+          updatedAt: 1645495691989,
+>>>>>>> chore: add additional destination option.
           name: "List Four",
           listType: "STATIC",
           authorId: 13534722,
@@ -48850,7 +56936,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             size: 0,
             lastSizeChangeAt: 0,
             processing: "DONE",
+<<<<<<< HEAD
             lastProcessingStateChangeAt: 1645124232946,
+=======
+            lastProcessingStateChangeAt: 1645495692149,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -48860,20 +56950,35 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 672,
           internalListId: 672,
           createdAt: 1645124226905,
           updatedAt: 1645124226905,
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+>>>>>>> chore: add additional destination option.
           name: "List One",
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
           metaData: {
+<<<<<<< HEAD
             size: 0,
             lastSizeChangeAt: 1645124237596,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124227052,
+=======
+            size: 1,
+            lastSizeChangeAt: 1645495696144,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -48883,20 +56988,34 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 674,
           internalListId: 674,
           createdAt: 1645124231086,
           updatedAt: 1645124231086,
+=======
+          portalId: 20858235,
+          listId: 66,
+          internalListId: 66,
+          createdAt: 1645495689464,
+          updatedAt: 1645495689464,
+>>>>>>> chore: add additional destination option.
           name: "List Three",
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
           metaData: {
             size: 1,
+<<<<<<< HEAD
             lastSizeChangeAt: 1645124236124,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124231299,
+=======
+            lastSizeChangeAt: 1645495697077,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495689627,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -48906,16 +57025,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 673,
           internalListId: 673,
           createdAt: 1645124227704,
           updatedAt: 1645124227704,
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+>>>>>>> chore: add additional destination option.
           name: "List Two",
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
           metaData: {
+<<<<<<< HEAD
             size: 0,
             lastSizeChangeAt: 1645124237877,
             processing: "DONE",
@@ -48964,6 +57092,12 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1644965328249,
             processing: "DONE",
             lastProcessingStateChangeAt: 1639592812763,
+=======
+            size: 1,
+            lastSizeChangeAt: 1645495696503,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -48972,6 +57106,76 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           teamIds: [],
           dynamic: false,
         },
+<<<<<<< HEAD
+=======
+      ],
+      "has-more": false,
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:18 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14aa707a9b2745-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "abd6b198-eb6c-47df-b8fe-da9e34e5796b",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249688",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "65",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2BF82310EE6DE2F3AF742096B968D1FF437B667298000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=n2o4QyRYJAfaZXhPjy2U4eLAqXJ%2FB1B%2FLc3%2FYmj2ic%2Fw7tXtGUk49nt7oGb71%2Fhitum7T%2BI2cMJ%2F%2FEhhV%2FLkfvXCJFKfTaobmeRw25L8ju1moVdnPyiIUcahlIDWoCas"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/contact/email/caio.silveira@mailinator.com/profile", {})
+  .query({
+    propertyMode: "value_only",
+    formSubmissionMode: "none",
+    hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded",
+  })
+  .once()
+  .reply(
+    404,
+    {
+      status: "error",
+      message: "contact does not exist",
+      correlationId: "ab401b24-05f2-4ebc-897c-f2c31a3eccd1",
+      errors: [
+>>>>>>> chore: add additional destination option.
         {
           portalId: 7974676,
           listId: 555,
@@ -49021,7 +57225,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:17 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:18 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -49029,7 +57237,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13d96f9dc1a0f-EWR",
+=======
+      "6e14aa71bd002737-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -49041,21 +57253,41 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "6ff2ed24-93d2-4b84-8bcd-15e865ad606c",
+=======
+      "ab401b24-05f2-4ebc-897c-f2c31a3eccd1",
+      "X-HubSpot-NotFound",
+      "true",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249687",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "89",
+=======
+      "64",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Secondly",
       "10",
       "X-HubSpot-RateLimit-Secondly-Remaining",
-      "8",
+      "6",
       "X-Trace",
+<<<<<<< HEAD
       "2BA42220D8A2C0EE8CCC96D8B8D1168EB8569147FA000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=NsGPQ5MhjK09JrRS%2BXo0NXqkuqC3v352GXjGOgsLwo%2F90O%2FYL4E87ZpZGtx9hD4exOXZWiGvpj7J7dvZ%2F2U%2FON9dSLBY4bA6eaWvH3et7lQ2xFyC71zlRA7KLG2VWjM%2F"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2B86FF6796CA0D093C7DA8785291CB4F26BA70F521000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=j6dD2EBpPiNd%2BuNwltbkXXqEi4nAbStJSIqMvqycg4IaVphI0j6TXyqXAYlRkSxKof6VwV78A%2FxrXWzk7cK0UjECYsPoBVDoiA4WBGuk1V4G3g1s5wsQ5h32Ry4RhO9V"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -49071,10 +57303,83 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .once()
   .reply(
     200,
+<<<<<<< HEAD
     { updated: [290001], discarded: [], invalidVids: [], invalidEmails: [] },
     [
       "Date",
       "Thu, 17 Feb 2022 18:57:18 GMT",
+=======
+    {
+      vid: 44001,
+      "canonical-vid": 44001,
+      "merged-vids": [],
+      "portal-id": 20858235,
+      "is-contact": true,
+      properties: {
+        hs_is_unworked: { value: "true" },
+        lastmodifieddate: { value: "1645495695815" },
+        num_unique_conversion_events: { value: "0" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645495695245" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495695245" },
+        hs_all_contact_vids: { value: "44001" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        hs_object_id: { value: "44001" },
+        hs_email_domain: { value: "mailinator.com" },
+        lifecyclestage: { value: "subscriber" },
+        email: { value: "lucas.nogueira@mailinator.com" },
+      },
+      "list-memberships": [
+        {
+          "static-list-id": 64,
+          "internal-list-id": 64,
+          timestamp: 1645495695977,
+          vid: 44001,
+          "is-member": true,
+        },
+        {
+          "static-list-id": 65,
+          "internal-list-id": 65,
+          timestamp: 1645495696440,
+          vid: 44001,
+          "is-member": true,
+        },
+        {
+          "static-list-id": 66,
+          "internal-list-id": 66,
+          timestamp: 1645495696932,
+          vid: 44001,
+          "is-member": true,
+        },
+      ],
+      "identity-profiles": [
+        {
+          vid: 44001,
+          "saved-at-timestamp": 1645495695312,
+          "deleted-changed-timestamp": 0,
+          identities: [
+            {
+              type: "EMAIL",
+              value: "lucas.nogueira@mailinator.com",
+              timestamp: 1645495695245,
+              "is-primary": true,
+            },
+            {
+              type: "LEAD_GUID",
+              value: "66b29ec3-19ad-4af3-9aaa-5167fd9e652f",
+              timestamp: 1645495695308,
+            },
+          ],
+        },
+      ],
+      "merge-audits": [],
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:18 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -49082,7 +57387,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13d97982619ff-EWR",
+=======
+      "6e14aa73487d2745-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -49094,21 +57403,39 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "c1888d26-e75a-47f9-8817-922f041eb402",
+=======
+      "b5799368-8609-42fe-8f85-26a43ef7a757",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249686",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "88",
+=======
+      "63",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Secondly",
       "10",
       "X-HubSpot-RateLimit-Secondly-Remaining",
-      "8",
+      "6",
       "X-Trace",
+<<<<<<< HEAD
       "2B27B4D2B89E3FDF618DAF0635C4E97ED136D52090000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=JdbPOChWbsgCZV3piVJD99renfl7X7Wm3Xzkw9Rs7p2on1qduWdS8eOgeIlg3%2BFbi5kLHf3j2lHjq18ZeApPsKdKH1J3NJMGQFItAKe00%2Fbt8xyDFr5JoTE1axkl8njg"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2B947FD72AC3BFB1A3F7C75115AC10C07CF79481B3000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=wMaeFNpI%2FskTw3oSfgQZKg4g%2FKURXHqtD3D1H04ej6pgVpsVtORCXYkcj93%2FmKTHy7IeduomRWGd5tfjpSiESbioAsf%2BBatfTB5K4dkhnkUuuI5y%2FPnhAo5hPlIGPzb9"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -49381,11 +57708,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 675,
           internalListId: 675,
           createdAt: 1645124232745,
           updatedAt: 1645124232745,
+=======
+          portalId: 20858235,
+          listId: 67,
+          internalListId: 67,
+          createdAt: 1645495691989,
+          updatedAt: 1645495691989,
+>>>>>>> chore: add additional destination option.
           name: "List Four",
           listType: "STATIC",
           authorId: 13534722,
@@ -49394,7 +57729,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             size: 0,
             lastSizeChangeAt: 0,
             processing: "DONE",
+<<<<<<< HEAD
             lastProcessingStateChangeAt: 1645124232946,
+=======
+            lastProcessingStateChangeAt: 1645495692149,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -49404,20 +57743,35 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 672,
           internalListId: 672,
           createdAt: 1645124226905,
           updatedAt: 1645124226905,
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+>>>>>>> chore: add additional destination option.
           name: "List One",
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
           metaData: {
+<<<<<<< HEAD
             size: 0,
             lastSizeChangeAt: 1645124237596,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124227052,
+=======
+            size: 1,
+            lastSizeChangeAt: 1645495696144,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -49427,20 +57781,35 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 674,
           internalListId: 674,
           createdAt: 1645124231086,
           updatedAt: 1645124231086,
+=======
+          portalId: 20858235,
+          listId: 66,
+          internalListId: 66,
+          createdAt: 1645495689464,
+          updatedAt: 1645495689464,
+>>>>>>> chore: add additional destination option.
           name: "List Three",
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
           metaData: {
+<<<<<<< HEAD
             size: 0,
             lastSizeChangeAt: 1645124238232,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124231299,
+=======
+            size: 1,
+            lastSizeChangeAt: 1645495697077,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495689627,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -49450,16 +57819,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 673,
           internalListId: 673,
           createdAt: 1645124227704,
           updatedAt: 1645124227704,
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+>>>>>>> chore: add additional destination option.
           name: "List Two",
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
           metaData: {
+<<<<<<< HEAD
             size: 0,
             lastSizeChangeAt: 1645124237877,
             processing: "DONE",
@@ -49552,6 +57930,12 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1632401940035,
             processing: "DONE",
             lastProcessingStateChangeAt: 1629388533258,
+=======
+            size: 1,
+            lastSizeChangeAt: 1645495696503,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -49565,7 +57949,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:18 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:18 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -49573,7 +57961,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13d9ac964e6dc-EWR",
+=======
+      "6e14aa74a847cf8e-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -49585,21 +57977,39 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "5c7ffcf4-0c94-42e1-8d2d-c984abf0b643",
+=======
+      "b098e8b1-7758-4797-ac87-9bab029ecd91",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249685",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "86",
+=======
+      "62",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Secondly",
       "10",
       "X-HubSpot-RateLimit-Secondly-Remaining",
-      "8",
+      "6",
       "X-Trace",
+<<<<<<< HEAD
       "2BF39CB5EF32A81CB8D080D7E02D30F9FFAA6519B8000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=olZfQ7JLk9f3kwJFgJ136wWtgajaOoBbg1oNuvT9%2FE68kYdP%2FtP4Af12UDG15p9F54GR9z9pVVr3V8CwLkKnh0uSujuSvNbZZmZVqu1yYnwmhNK%2FBnSfnR1lqf0ijLlr"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2B6370F741534F94BB8947BB5A80DCC7D3B5DECDB4000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=7dp%2FJ%2BLiTVs1BynKm3YtfzsDiagmIZixB1HisSknDnUqJXHhvtv6dOeEzgrfqvx8jTe8Rd10%2BC7GC3my8P0ay89ahfF0%2BmZrBDto61w99pcOXsSOrm0waEIY8cEQN2Ve"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -49609,16 +58019,28 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
   .post("/contacts/v1/lists/672/add", {
     emails: ["caio.silveira@mailinator.com"],
+=======
+  .post("/contacts/v1/lists/64/remove", {
+    emails: ["lucas.nogueira@mailinator.com"],
+>>>>>>> chore: add additional destination option.
   })
   .once()
   .reply(
     200,
+<<<<<<< HEAD
     { updated: [290051], discarded: [], invalidVids: [], invalidEmails: [] },
     [
       "Date",
       "Thu, 17 Feb 2022 18:57:18 GMT",
+=======
+    { updated: [44001], discarded: [], invalidVids: [], invalidEmails: [] },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:19 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -49626,7 +58048,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13d9bb9fd17b1-EWR",
+=======
+      "6e14aa75f8f9275b-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -49638,21 +58064,39 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "c80e6a38-0a56-480d-9f49-f4599cb31cdb",
+=======
+      "4ed71d4a-f0eb-40e0-b993-c7396d4dbb17",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249684",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "85",
+=======
+      "61",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Secondly",
       "10",
       "X-HubSpot-RateLimit-Secondly-Remaining",
-      "8",
+      "6",
       "X-Trace",
+<<<<<<< HEAD
       "2BAB489437EFFBB2424F73ED57C3EF21B907272126000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=G%2BLMffEuvg0tF2iT7s8zRwIxOKqz8IymIAV9CwSIz6tB2qArzwC6igZIRtlfKxcdYx%2FInLkQL9JLdJxuHjebnP7NFsMN1uOGzpM6lHqeObih7X5DXzmvreCZc%2B9Nfi6U"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2BFB442E313FEBF854CDC5813D686CE157DFFB9DFD000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=tQlagtQxwmiyoNAAay8FkeSt2ppM%2FWZSwCA0a2QFner42m%2BjHbz%2FgZbEmreyuF6lsBE1OGKPp48qUuR%2FRFY8QYox%2FcSm%2BXDu8VNyTtCWrUBI%2B3Fd8HJ9K4dYCdTmgU9i"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -49693,6 +58137,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 627,
           internalListId: 627,
@@ -49721,13 +58166,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           createdAt: 1634665347746,
           updatedAt: 1634665347746,
           name: "Bought anything at all",
+=======
+          portalId: 20858235,
+          listId: 67,
+          internalListId: 67,
+          createdAt: 1645495691989,
+          updatedAt: 1645495691989,
+          name: "List Four",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           filters: [],
           metaData: {
             size: 0,
             lastSizeChangeAt: 1634665476559,
             processing: "DONE",
+<<<<<<< HEAD
             lastProcessingStateChangeAt: 1634665347951,
+=======
+            lastProcessingStateChangeAt: 1645495692149,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -49737,19 +58194,34 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 562,
           internalListId: 562,
           createdAt: 1632402381791,
           updatedAt: 1632402381791,
           name: "Cool People",
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+          name: "List One",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1634665193431,
             processing: "DONE",
             lastProcessingStateChangeAt: 1632402381930,
+=======
+            lastSizeChangeAt: 1645495699109,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -49759,6 +58231,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 629,
           internalListId: 629,
@@ -49772,6 +58245,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1644965397142,
             processing: "DONE",
             lastProcessingStateChangeAt: 1644964544826,
+=======
+          portalId: 20858235,
+          listId: 66,
+          internalListId: 66,
+          createdAt: 1645495689464,
+          updatedAt: 1645495689464,
+          name: "List Three",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495697077,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495689627,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -49781,6 +58269,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 628,
           internalListId: 628,
@@ -49884,6 +58373,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 0,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124232946,
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+          name: "List Two",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495696503,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -49892,6 +58396,128 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           teamIds: [],
           dynamic: false,
         },
+<<<<<<< HEAD
+=======
+      ],
+      "has-more": false,
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:19 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14aa77accf275b-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "44b6e0c7-1750-4683-be4f-45cd65b8496e",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249683",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "64",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B2AD2C51396A30DC0D9A8A0F17ABE1609CED96FFF000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=YgOERbSR5yYkPzjE%2FVxImn9MdiX2IthHhZEOHQeJk9gAIGfV2oLg5xkRUHTOH9g3jaLIbytBuvD%2Fs%2BJgMzbs9YJ0tAIyMwzeq7dZZhWOCny%2FBye%2FKwcP3yKdRPAv2wMA"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .post("/contacts/v1/lists/65/remove", {
+    emails: ["lucas.nogueira@mailinator.com"],
+  })
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+    { updated: [44001], discarded: [], invalidVids: [], invalidEmails: [] },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:19 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Content-Length",
+      "70",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14aa78f98a275d-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "85d288a2-0ed7-47af-9171-749ce26602aa",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249682",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "63",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B60C9AD7E66B4D219C9B7443E009372329D8FD691000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=RxvsPa6%2FY4PAgwrAChgtwuBT7hSnmQoXgMNF9SlDU4otusZusfrum1ap%2FkM5mDxf3Cc5RWCd9Yd0xcSMvPEuSRJyGXb4h5XG4N%2FoshtfRBgmx%2F%2F%2Fd%2Bazp2UQyHMM2t6K"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/lists/static")
+  .query({ count: "999", hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+    {
+      offset: 500,
+      lists: [
+>>>>>>> chore: add additional destination option.
         {
           portalId: 7974676,
           listId: 672,
@@ -49916,12 +58542,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 674,
           internalListId: 674,
           createdAt: 1645124231086,
           updatedAt: 1645124231086,
           name: "List Three",
+=======
+          portalId: 20858235,
+          listId: 67,
+          internalListId: 67,
+          createdAt: 1645495691989,
+          updatedAt: 1645495691989,
+          name: "List Four",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
@@ -49929,7 +58564,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             size: 0,
             lastSizeChangeAt: 1645124238232,
             processing: "DONE",
+<<<<<<< HEAD
             lastProcessingStateChangeAt: 1645124231299,
+=======
+            lastProcessingStateChangeAt: 1645495692149,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -49939,20 +58578,35 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 673,
           internalListId: 673,
           createdAt: 1645124227704,
           updatedAt: 1645124227704,
           name: "List Two",
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+          name: "List One",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1645124237877,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124227891,
+=======
+            lastSizeChangeAt: 1645495699109,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -49962,6 +58616,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 623,
           internalListId: 623,
@@ -49975,6 +58630,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1634665476557,
             processing: "DONE",
             lastProcessingStateChangeAt: 1634665349095,
+=======
+          portalId: 20858235,
+          listId: 66,
+          internalListId: 66,
+          createdAt: 1645495689464,
+          updatedAt: 1645495689464,
+          name: "List Three",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495697077,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495689627,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -49984,6 +58654,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 626,
           internalListId: 626,
@@ -50034,13 +58705,27 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           createdAt: 1629388533048,
           updatedAt: 1629388533048,
           name: "Speaks Spanish",
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+          name: "List Two",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1632401940035,
             processing: "DONE",
             lastProcessingStateChangeAt: 1629388533258,
+=======
+            lastSizeChangeAt: 1645495699687,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -50054,7 +58739,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:18 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:19 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -50062,7 +58751,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13d9d19358c45-EWR",
+=======
+      "6e14aa7aa9a5e084-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -50074,21 +58767,39 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "17bfccd2-74f3-4f4f-9ed8-f6cc7e87cbd4",
+=======
+      "b5464ae3-e2c2-4842-977d-cfb3282a50b6",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249681",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "84",
+=======
+      "62",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Secondly",
       "10",
       "X-HubSpot-RateLimit-Secondly-Remaining",
-      "8",
+      "6",
       "X-Trace",
+<<<<<<< HEAD
       "2B6743BEE6680DF103687EAAF421B04381FC3F4EE5000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=R7VIvxf55%2Fpvf4VMtcYwtLdgSFOA65cDMTU8gSbVXXZwwpFZhgu5CJnWIZyiI6XSJfN2ikjG17vYLqNJWJVtDZCU%2BzAQxcBsVj9fBdi%2BO2Pcmg9Di7pkPsc2PnP42%2FlK"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2BA7DC2E35097B6FCF7795647A0B765C936AA9E604000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=xwgSFCmMCTY0LM36FCTn4EciEkrPtzm%2FMzzHe4FSNzgfdd2SSx0N4PKGtVROgKG0oQv%2BNp%2FRuE0FWEmxIgfpi7fOEELNnSPgCrfiIc%2BY2Q4pkE9zxQEffPxRW9i7D06c"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -50098,16 +58809,28 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
   .post("/contacts/v1/lists/673/add", {
     emails: ["caio.silveira@mailinator.com"],
+=======
+  .post("/contacts/v1/lists/66/remove", {
+    emails: ["lucas.nogueira@mailinator.com"],
+>>>>>>> chore: add additional destination option.
   })
   .once()
   .reply(
     200,
+<<<<<<< HEAD
     { updated: [290051], discarded: [], invalidVids: [], invalidEmails: [] },
     [
       "Date",
       "Thu, 17 Feb 2022 18:57:19 GMT",
+=======
+    { updated: [44001], discarded: [], invalidVids: [], invalidEmails: [] },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:20 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -50115,7 +58838,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13d9dbda41916-EWR",
+=======
+      "6e14aa7bef23275b-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -50127,21 +58854,39 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "7f1072e6-3d13-4be0-8183-70c6db046c4e",
+=======
+      "3e4e3dcb-1282-45da-958a-20876038d115",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249680",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "83",
+=======
+      "61",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Secondly",
       "10",
       "X-HubSpot-RateLimit-Secondly-Remaining",
-      "8",
+      "6",
       "X-Trace",
+<<<<<<< HEAD
       "2BC320955A781E965C7383D48CB69D2670649BC0DC000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=pE2qB94%2FUv5VQQtymXEOc4I13nDLgaqnw4AxyD8Esishv8RSKN4jkKPjza%2BRb%2FyxkosX7wU96a6GDsvlk%2FrHizHXdoabb7QTpio2LG9yVohgDCQM8zRmtyJR28i9UCQY"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2BA01041059F06F1EE801A0F4258A2BE6FBD91F08A000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=Al30X2KrMAb%2BLGMT6nXayv4%2FT2tmcmwftrudbMbUd9ELWkDDRnofsAVHuNc5fezq2kcTcoZwutCsHxw9jt6yQLoRADkyR3hmeL9ec%2FQdssX4PRDc5IvILPNJN8ViFLB1"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -50151,6 +58896,68 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
+=======
+  .post(
+    "/contacts/v1/contact/createOrUpdate/email/caio.silveira@mailinator.com/",
+    {
+      properties: [
+        { property: "email", value: "caio.silveira@mailinator.com" },
+      ],
+    }
+  )
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(200, { vid: 44051, isNew: true }, [
+    "Date",
+    "Tue, 22 Feb 2022 02:08:20 GMT",
+    "Content-Type",
+    "application/json;charset=utf-8",
+    "Content-Length",
+    "26",
+    "Connection",
+    "close",
+    "CF-Ray",
+    "6e14aa7decda2743-FOR",
+    "Strict-Transport-Security",
+    "max-age=31536000; includeSubDomains; preload",
+    "Vary",
+    "Accept-Encoding",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Access-Control-Allow-Credentials",
+    "false",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "X-HubSpot-Correlation-Id",
+    "0a19fd28-1dd4-430d-a9fa-b5f757af5d64",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249679",
+    "X-HubSpot-RateLimit-Interval-Milliseconds",
+    "10000",
+    "X-HubSpot-RateLimit-Max",
+    "100",
+    "X-HubSpot-RateLimit-Remaining",
+    "64",
+    "X-HubSpot-RateLimit-Secondly",
+    "10",
+    "X-HubSpot-RateLimit-Secondly-Remaining",
+    "6",
+    "X-Trace",
+    "2BE0863B2DD13E15C27D350E12FC135E17AC6C51DA000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=aYQYZg%2BjItVTvCKNI%2F9urgCDcxmbABdT4lxxpYLpCpBy%2F1N1tD6e9WkCf4KBw1uRyhHftvtZ8B64Wig0LbJG93wANjD%2BQodZHDFaOAvo6FHAmZul51u9U3lBvak3HPgS"}],"group":"cf-nel","max_age":604800}',
+    "NEL",
+    '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+    "Server",
+    "cloudflare",
+    "alt-svc",
+    'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+  ]);
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+>>>>>>> chore: add additional destination option.
   .get("/contacts/v1/lists/static")
   .query({ count: "999" })
   .once()
@@ -50182,19 +58989,32 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 627,
           internalListId: 627,
           createdAt: 1644353912852,
           updatedAt: 1644353912852,
           name: "All Emails",
+=======
+          portalId: 20858235,
+          listId: 67,
+          internalListId: 67,
+          createdAt: 1645495691989,
+          updatedAt: 1645495691989,
+          name: "List Four",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           filters: [],
           metaData: {
             size: 988,
             lastSizeChangeAt: 1644965337100,
             processing: "DONE",
+<<<<<<< HEAD
             lastProcessingStateChangeAt: 1644353913044,
+=======
+            lastProcessingStateChangeAt: 1645495692149,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -50204,19 +59024,34 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 622,
           internalListId: 622,
           createdAt: 1634665347746,
           updatedAt: 1634665347746,
           name: "Bought anything at all",
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+          name: "List One",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1634665476559,
             processing: "DONE",
             lastProcessingStateChangeAt: 1634665347951,
+=======
+            lastSizeChangeAt: 1645495699109,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -50226,19 +59061,34 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 562,
           internalListId: 562,
           createdAt: 1632402381791,
           updatedAt: 1632402381791,
           name: "Cool People",
+=======
+          portalId: 20858235,
+          listId: 66,
+          internalListId: 66,
+          createdAt: 1645495689464,
+          updatedAt: 1645495689464,
+          name: "List Three",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1634665193431,
             processing: "DONE",
             lastProcessingStateChangeAt: 1632402381930,
+=======
+            lastSizeChangeAt: 1645495700169,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495689627,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -50248,6 +59098,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 629,
           internalListId: 629,
@@ -50261,6 +59112,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1644965397142,
             processing: "DONE",
             lastProcessingStateChangeAt: 1644964544826,
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+          name: "List Two",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 0,
+            lastSizeChangeAt: 1645495699687,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -50269,6 +59135,128 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           teamIds: [],
           dynamic: false,
         },
+<<<<<<< HEAD
+=======
+      ],
+      "has-more": false,
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:20 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14aa806e0a273d-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "85de69a9-47c8-44c1-a6ce-766afa2e2359",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249678",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "63",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B1178B5215D32242704B11B580DAE327AA3A8A41A000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=2waC9hqdrAutgKn%2BQ3ZSGOVk9sydgaTCKD1AFdfnOewlMjr95qVVQ1l4e%2F0Vq2TPdPqhFaHY%2FEvuDaWtFxG5m0DyhZNGhGcWV2U5JhIFpqw8SIdeTOI24Cw1XyZyDiAK"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .post("/contacts/v1/lists/64/add", {
+    emails: ["caio.silveira@mailinator.com"],
+  })
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+    { updated: [44051], discarded: [], invalidVids: [], invalidEmails: [] },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:21 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Content-Length",
+      "70",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14aa819e802749-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "4996fac4-3de9-4dcf-8950-e659998931c9",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249677",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "62",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2BD9FB57B8DCC0B7916C7E6C441E81AAB49ADC70CB000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=pHQA12ryR3RNOu4OIzS3sgjOvnCXpe8CU4px1ExZzPOts2CpiYJrWukXEJKQVZunslX3rOLgYmDczqkZkv%2Bc5aY283ptCSbFRN7XIAWMCCHtuVeBgeeq5RxhG%2BZ5kkDr"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/lists/static")
+  .query({ count: "999", hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+    {
+      offset: 500,
+      lists: [
+>>>>>>> chore: add additional destination option.
         {
           portalId: 7974676,
           listId: 628,
@@ -50292,19 +59280,32 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 624,
           internalListId: 624,
           createdAt: 1634665348999,
           updatedAt: 1634665348999,
           name: "High Value Cusotmers",
+=======
+          portalId: 20858235,
+          listId: 67,
+          internalListId: 67,
+          createdAt: 1645495691989,
+          updatedAt: 1645495691989,
+          name: "List Four",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           filters: [],
           metaData: {
             size: 0,
             lastSizeChangeAt: 1634665476551,
             processing: "DONE",
+<<<<<<< HEAD
             lastProcessingStateChangeAt: 1634665349262,
+=======
+            lastProcessingStateChangeAt: 1645495692149,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -50314,6 +59315,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 554,
           internalListId: 554,
@@ -50327,6 +59329,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1632401940030,
             processing: "DONE",
             lastProcessingStateChangeAt: 1629388529229,
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+          name: "List One",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495701029,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -50336,6 +59353,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 630,
           internalListId: 630,
@@ -50388,14 +59406,29 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           createdAt: 1645124226905,
           updatedAt: 1645124226905,
           name: "List One",
+=======
+          portalId: 20858235,
+          listId: 66,
+          internalListId: 66,
+          createdAt: 1645495689464,
+          updatedAt: 1645495689464,
+          name: "List Three",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
           metaData: {
+<<<<<<< HEAD
             size: 1,
             lastSizeChangeAt: 1645124238860,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124227052,
+=======
+            size: 0,
+            lastSizeChangeAt: 1645495700169,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495689627,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -50405,20 +59438,35 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 674,
           internalListId: 674,
           createdAt: 1645124231086,
           updatedAt: 1645124231086,
           name: "List Three",
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+          name: "List Two",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1645124238232,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124231299,
+=======
+            lastSizeChangeAt: 1645495699687,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -50427,6 +59475,128 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           teamIds: [],
           dynamic: false,
         },
+<<<<<<< HEAD
+=======
+      ],
+      "has-more": false,
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:21 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14aa839809e084-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "3497194f-fad4-4da3-98f1-174dafad514a",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249676",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "66",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B7D9D4E89C18F2128C4861E6BB66AB94457FE0AC0000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=p2sFjLLXmkRhpfLjXR%2FUIGL8A55QTmVr513FQLGKO1h1RUs94P2qJgy2RbJXRmp%2FrKfzqTVUltxcn6AVokpk8Uk5rvFkf1iPx1XG1EOzPY33vQSPntTAEMkRiaY3Qm0c"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .post("/contacts/v1/lists/65/add", {
+    emails: ["caio.silveira@mailinator.com"],
+  })
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+    { updated: [44051], discarded: [], invalidVids: [], invalidEmails: [] },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:21 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Content-Length",
+      "70",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14aa84def2273d-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "7e426283-e0cf-42da-afd8-73b1addb6543",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249675",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "65",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B27D9F9785FAFDCC67E60FC9750CFAEB394FE6742000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=3wKPiT%2FxjSLvw4P8T4ObuSb3tu5NtttdpFiN2FT8ELo6mgFTzq2rgwe%2FLaCT05KqRBCpG6JzcCUtVPjn3UNRx8Twh0FeiTmK5n63OfEEpvey0LMuRsc12EJQmZFzDCd6"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/lists/static")
+  .query({ count: "999", hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+    {
+      offset: 500,
+      lists: [
+>>>>>>> chore: add additional destination option.
         {
           portalId: 7974676,
           listId: 673,
@@ -50451,19 +59621,32 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 623,
           internalListId: 623,
           createdAt: 1634665348795,
           updatedAt: 1634665348795,
           name: "People who bought Clothing",
+=======
+          portalId: 20858235,
+          listId: 67,
+          internalListId: 67,
+          createdAt: 1645495691989,
+          updatedAt: 1645495691989,
+          name: "List Four",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           filters: [],
           metaData: {
             size: 0,
             lastSizeChangeAt: 1634665476557,
             processing: "DONE",
+<<<<<<< HEAD
             lastProcessingStateChangeAt: 1634665349095,
+=======
+            lastProcessingStateChangeAt: 1645495692149,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -50473,6 +59656,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 626,
           internalListId: 626,
@@ -50486,6 +59670,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1644965328249,
             processing: "DONE",
             lastProcessingStateChangeAt: 1639592812763,
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+          name: "List One",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495701029,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -50495,19 +59694,34 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 555,
           internalListId: 555,
           createdAt: 1629388530006,
           updatedAt: 1629388530006,
           name: "Speaks English",
+=======
+          portalId: 20858235,
+          listId: 66,
+          internalListId: 66,
+          createdAt: 1645495689464,
+          updatedAt: 1645495689464,
+          name: "List Three",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1632401940005,
             processing: "DONE",
             lastProcessingStateChangeAt: 1629388530207,
+=======
+            lastSizeChangeAt: 1645495700169,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495689627,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -50517,6 +59731,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 556,
           internalListId: 556,
@@ -50530,6 +59745,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1632401940035,
             processing: "DONE",
             lastProcessingStateChangeAt: 1629388533258,
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+          name: "List Two",
+          listType: "STATIC",
+          filters: [],
+          metaData: {
+            size: 1,
+            lastSizeChangeAt: 1645495701422,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -50543,7 +59773,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:19 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:21 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -50551,7 +59785,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13d9eef3de720-EWR",
+=======
+      "6e14aa869c34275d-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -50563,21 +59801,39 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "e0e1afcf-a910-4afc-b7e8-80eff8c7e98a",
+=======
+      "04b164c3-aa1b-4b41-bf91-c9ee50431c39",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249674",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "82",
+=======
+      "64",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Secondly",
       "10",
       "X-HubSpot-RateLimit-Secondly-Remaining",
-      "8",
+      "6",
       "X-Trace",
+<<<<<<< HEAD
       "2BFD75E5A21D43A7BC75AF61A2ACF7F4A6DF173748000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=lfd9bQW%2BuddpjGVq6xKpfImiNuzIH1tMKQR2E2t4EwlZUtjaRkDa8p2SiIc%2BofAB5MBt08YbJHXzvHaj%2FcQSiTHSNwngzrXA5gSn%2FoCa5KdLgr7xXWgvAQrOaYxpwFep"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2B89392007883D068F784FC5965AEEC87C84ED53AD000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=xeY0cojIQIsvkVXuQ%2BkdWOtWpIqqsWiQgHZbiw2zfDokrPgdOJK4VTzvivMa7vRcorybOFXPfv2OtdUOIkyTqn9Cd6IpDhGpw9ImPuq%2FzZ5L5OXQzpfyY0S230%2Bly7vx"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -50587,16 +59843,27 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
   .post("/contacts/v1/lists/674/add", {
+=======
+  .post("/contacts/v1/lists/66/add", {
+>>>>>>> chore: add additional destination option.
     emails: ["caio.silveira@mailinator.com"],
   })
   .once()
   .reply(
     200,
+<<<<<<< HEAD
     { updated: [290051], discarded: [], invalidVids: [], invalidEmails: [] },
     [
       "Date",
       "Thu, 17 Feb 2022 18:57:19 GMT",
+=======
+    { updated: [44051], discarded: [], invalidVids: [], invalidEmails: [] },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:22 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -50604,7 +59871,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13d9faea232d3-EWR",
+=======
+      "6e14aa8848a32745-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -50616,21 +59887,35 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "26b4b0bd-8af5-47de-9340-a0e3581d6956",
+=======
+      "d127ad7e-0f16-45b8-860b-4f1afa9d9a74",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249673",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
-      "81",
+      "63",
       "X-HubSpot-RateLimit-Secondly",
       "10",
       "X-HubSpot-RateLimit-Secondly-Remaining",
-      "8",
+      "6",
       "X-Trace",
+<<<<<<< HEAD
       "2BA288718CB4BE23188F25D0796E73B9B80DCBE384000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=MdCKstqPJ%2FBw4NI7oaRuvsJ5AT2682JdTBf9fQ9gnBmI2nEXwU4%2FbB963tO2Z8wm0zb8X1%2BsUF7MjmNNcC7pKzFKtfnG0Mdg5jPXWcycxmbXzYFYCeZxoUmBRY6HdLbH"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2BA84766FCA5C22022BCE4E0B5574FBE898D87240B000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=paLrEcpX2xRDP%2BVkNk7YSiGalqqecsbPNG%2B84rbP9BVOsrG6ltCPDA0yPT56p4TqvQPE7lQAqH2KKaaRhiy41T8pfV0u%2FAGSlGY6g4o0XAu4%2BCRRLiNTPaWGSfUuBWuy"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -50646,13 +59931,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       vid: 290001,
       "canonical-vid": 290001,
+=======
+      vid: 44001,
+      "canonical-vid": 44001,
+>>>>>>> chore: add additional destination option.
       "merged-vids": [],
       "portal-id": 7974676,
       "is-contact": true,
       properties: {
         hs_is_unworked: { value: "true" },
+<<<<<<< HEAD
         lastmodifieddate: { value: "1645124236004" },
         num_unique_conversion_events: { value: "0" },
         hs_pipeline: { value: "contacts-lifecycle-pipeline" },
@@ -50663,6 +59954,18 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
         hs_is_contact: { value: "true" },
         num_conversion_events: { value: "0" },
         hs_object_id: { value: "290001" },
+=======
+        lastmodifieddate: { value: "1645495695815" },
+        num_unique_conversion_events: { value: "0" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645495695245" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495695245" },
+        hs_all_contact_vids: { value: "44001" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        hs_object_id: { value: "44001" },
+>>>>>>> chore: add additional destination option.
         hs_email_domain: { value: "mailinator.com" },
         lifecyclestage: { value: "subscriber" },
         email: { value: "lucas.nogueira@mailinator.com" },
@@ -50670,20 +59973,34 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "list-memberships": [],
       "identity-profiles": [
         {
+<<<<<<< HEAD
           vid: 290001,
           "saved-at-timestamp": 1645124234858,
+=======
+          vid: 44001,
+          "saved-at-timestamp": 1645495695312,
+>>>>>>> chore: add additional destination option.
           "deleted-changed-timestamp": 0,
           identities: [
             {
               type: "EMAIL",
               value: "lucas.nogueira@mailinator.com",
+<<<<<<< HEAD
               timestamp: 1645124234796,
+=======
+              timestamp: 1645495695245,
+>>>>>>> chore: add additional destination option.
               "is-primary": true,
             },
             {
               type: "LEAD_GUID",
+<<<<<<< HEAD
               value: "6b75e1c1-a87e-4a32-81c2-bdb83ce5c6b3",
               timestamp: 1645124234839,
+=======
+              value: "66b29ec3-19ad-4af3-9aaa-5167fd9e652f",
+              timestamp: 1645495695308,
+>>>>>>> chore: add additional destination option.
             },
           ],
         },
@@ -50692,7 +60009,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:19 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:22 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -50700,7 +60021,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13da0c9013308-EWR",
+=======
+      "6e14aa8a5c802745-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -50712,21 +60037,35 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "6cdfee96-293a-476a-9789-af523b9aab03",
+=======
+      "1c05de39-eca4-4a1a-bf21-d47e2ea0e004",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249672",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
-      "80",
+      "65",
       "X-HubSpot-RateLimit-Secondly",
       "10",
       "X-HubSpot-RateLimit-Secondly-Remaining",
-      "8",
+      "6",
       "X-Trace",
+<<<<<<< HEAD
       "2B6A3B70B841D550931A3AE9A88A2A212662D51FA0000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=31tkJYazXXdsy7F%2B5zs8C1iZpfWq0bEMq1jhOkrJO99pbje9PuZfJ6wloMhdQSxEy6YfPQjsnHW5A8h6cTUdZ0nP%2FBgcpQU6xIYG3bY8%2F05CNjASV4ifPnsXklbq2Du9"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2B0A87F03870FA37C77F6B3A7CC59C66DE27E0999D000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=7LqQUHshh4OtN8FeJmKh6xU0xSqzYkoIJ1DPiZe6yPlBR4a9tP5qDoiUI0XKwwBwfiG9xIOlGwi4ClhBr7WD5RQos2IqceCI7ab3svdcBW7bodvX7Vb54sLtDihTCU5d"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -50742,13 +60081,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       vid: 290051,
       "canonical-vid": 290051,
+=======
+      vid: 44051,
+      "canonical-vid": 44051,
+>>>>>>> chore: add additional destination option.
       "merged-vids": [],
       "portal-id": 7974676,
       "is-contact": true,
       properties: {
         hs_is_unworked: { value: "true" },
+<<<<<<< HEAD
         lastmodifieddate: { value: "1645124238995" },
         num_unique_conversion_events: { value: "0" },
         hs_pipeline: { value: "contacts-lifecycle-pipeline" },
@@ -50759,12 +60104,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
         hs_is_contact: { value: "true" },
         num_conversion_events: { value: "0" },
         hs_object_id: { value: "290051" },
+=======
+        lastmodifieddate: { value: "1645495701054" },
+        num_unique_conversion_events: { value: "0" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645495700246" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495700246" },
+        hs_all_contact_vids: { value: "44051" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        hs_object_id: { value: "44051" },
+>>>>>>> chore: add additional destination option.
         hs_email_domain: { value: "mailinator.com" },
         lifecyclestage: { value: "subscriber" },
         email: { value: "caio.silveira@mailinator.com" },
       },
       "list-memberships": [
         {
+<<<<<<< HEAD
           "static-list-id": 672,
           "internal-list-id": 672,
           timestamp: 1645124238770,
@@ -50783,25 +60141,59 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           "internal-list-id": 674,
           timestamp: 1645124239354,
           vid: 290051,
+=======
+          "static-list-id": 64,
+          "internal-list-id": 64,
+          timestamp: 1645495700844,
+          vid: 44051,
+          "is-member": true,
+        },
+        {
+          "static-list-id": 65,
+          "internal-list-id": 65,
+          timestamp: 1645495701344,
+          vid: 44051,
+          "is-member": true,
+        },
+        {
+          "static-list-id": 66,
+          "internal-list-id": 66,
+          timestamp: 1645495701940,
+          vid: 44051,
+>>>>>>> chore: add additional destination option.
           "is-member": true,
         },
       ],
       "identity-profiles": [
         {
+<<<<<<< HEAD
           vid: 290051,
           "saved-at-timestamp": 1645124238290,
+=======
+          vid: 44051,
+          "saved-at-timestamp": 1645495700298,
+>>>>>>> chore: add additional destination option.
           "deleted-changed-timestamp": 0,
           identities: [
             {
               type: "EMAIL",
               value: "caio.silveira@mailinator.com",
+<<<<<<< HEAD
               timestamp: 1645124238262,
+=======
+              timestamp: 1645495700246,
+>>>>>>> chore: add additional destination option.
               "is-primary": true,
             },
             {
               type: "LEAD_GUID",
+<<<<<<< HEAD
               value: "433c7032-85d9-40e9-b9d3-3f166cf8c372",
               timestamp: 1645124238285,
+=======
+              value: "5f099501-64e9-4cfc-88e8-8cd373b6f34d",
+              timestamp: 1645495700292,
+>>>>>>> chore: add additional destination option.
             },
           ],
         },
@@ -50810,7 +60202,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:19 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:22 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -50818,7 +60214,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13da21df417f5-EWR",
+=======
+      "6e14aa8bbf49275d-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -50830,12 +60230,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "4f6940bf-7d47-4cf3-9ff0-475a8d78425e",
+=======
+      "1df583b9-f9a2-4045-817d-7c5532b72fc7",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249671",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "79",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -50845,6 +60254,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2BAE3885B8AF0F86F5EF842A7F23EA1EC7FD6C4CCC000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=vSVXC0HeEWZTrFg6SGCjhoyGhlNyqNxo6O7IOFlTYKl%2FChJfpCA0j9scfWn79toIfP1oElBq5MulaJ0LOFlYjGOY9MS3LYwIVLwr06Kx55ll42TMbtPEpBuqVV8FhN2W"}],"group":"cf-nel","max_age":604800}',
+=======
+      "64",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B7CD00295F79A0D6508402238923F66636E47CDEF000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=5R0McAbUMMvwzc%2FlD8q8ae6fj3wnLtBS%2F4hXI9bskQMIp5E7hPIEVoJLgepCz9zfaSOMaqtbNoYco1efZwryCaR%2FwuFu0xZOn67Gk4ycOMzAA6%2F8MZF%2FjBKOHLN8kN5%2B"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -50862,7 +60282,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     {
       status: "error",
       message: "contact does not exist",
+<<<<<<< HEAD
       correlationId: "068f023d-7827-455c-a964-2d5f1ef061e2",
+=======
+      correlationId: "27616068-1dea-47a2-8483-34cdac4ebc72",
+>>>>>>> chore: add additional destination option.
       errors: [
         {
           message: "The contact e:sandro.arturo@mailinator.com does not exist.",
@@ -50872,7 +60296,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:19 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:22 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -50880,7 +60308,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13da2de798c47-EWR",
+=======
+      "6e14aa8d3c70e07c-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -50892,14 +60324,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "068f023d-7827-455c-a964-2d5f1ef061e2",
       "X-HubSpot-NotFound",
       "true",
+=======
+      "27616068-1dea-47a2-8483-34cdac4ebc72",
+      "X-HubSpot-NotFound",
+      "true",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249670",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "78",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -50909,6 +60352,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B12EF0CF621E70A6C10C85BC08946D63E193A4E78000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=cVtbfwXrdMs00XG3NpChnqn5Ub%2Frpcm%2BZ1tXpSsJAPgBligfgy%2B4ZGa46f1nbcTx3hY2o8m2JdmlnAEIGoAgamOTqZuM8xtglC%2BnsfuQFGHfxyfn%2FNEYnEiC2e0KmAVf"}],"group":"cf-nel","max_age":604800}',
+=======
+      "63",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B98159B95572F4575B1CDE369293B5A9D3B0D51DB000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=IMXX5E7%2B%2FsoGlwxI0H345ztXCpVqe3Wb7zDSw9bQsLbi%2FZjp5EutTYZfWdEhDYPr7JPj2NQnMgi0JZoRROlMxzYAWhNto%2B3%2Fd5yCCBpg4xG8R4qbHXOysA9NBSbTx2o1"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -50924,13 +60378,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       vid: 290051,
       "canonical-vid": 290051,
+=======
+      vid: 44051,
+      "canonical-vid": 44051,
+>>>>>>> chore: add additional destination option.
       "merged-vids": [],
       "portal-id": 7974676,
       "is-contact": true,
       properties: {
         hs_is_unworked: { value: "true" },
+<<<<<<< HEAD
         lastmodifieddate: { value: "1645124238995" },
         num_unique_conversion_events: { value: "0" },
         hs_pipeline: { value: "contacts-lifecycle-pipeline" },
@@ -50941,12 +60401,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
         hs_is_contact: { value: "true" },
         num_conversion_events: { value: "0" },
         hs_object_id: { value: "290051" },
+=======
+        lastmodifieddate: { value: "1645495701054" },
+        num_unique_conversion_events: { value: "0" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645495700246" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495700246" },
+        hs_all_contact_vids: { value: "44051" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        hs_object_id: { value: "44051" },
+>>>>>>> chore: add additional destination option.
         hs_email_domain: { value: "mailinator.com" },
         lifecyclestage: { value: "subscriber" },
         email: { value: "caio.silveira@mailinator.com" },
       },
       "list-memberships": [
         {
+<<<<<<< HEAD
           "static-list-id": 672,
           "internal-list-id": 672,
           timestamp: 1645124238770,
@@ -50965,25 +60438,59 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           "internal-list-id": 674,
           timestamp: 1645124239354,
           vid: 290051,
+=======
+          "static-list-id": 64,
+          "internal-list-id": 64,
+          timestamp: 1645495700844,
+          vid: 44051,
+          "is-member": true,
+        },
+        {
+          "static-list-id": 65,
+          "internal-list-id": 65,
+          timestamp: 1645495701344,
+          vid: 44051,
+          "is-member": true,
+        },
+        {
+          "static-list-id": 66,
+          "internal-list-id": 66,
+          timestamp: 1645495701940,
+          vid: 44051,
+>>>>>>> chore: add additional destination option.
           "is-member": true,
         },
       ],
       "identity-profiles": [
         {
+<<<<<<< HEAD
           vid: 290051,
           "saved-at-timestamp": 1645124238290,
+=======
+          vid: 44051,
+          "saved-at-timestamp": 1645495700298,
+>>>>>>> chore: add additional destination option.
           "deleted-changed-timestamp": 0,
           identities: [
             {
               type: "EMAIL",
               value: "caio.silveira@mailinator.com",
+<<<<<<< HEAD
               timestamp: 1645124238262,
+=======
+              timestamp: 1645495700246,
+>>>>>>> chore: add additional destination option.
               "is-primary": true,
             },
             {
               type: "LEAD_GUID",
+<<<<<<< HEAD
               value: "433c7032-85d9-40e9-b9d3-3f166cf8c372",
               timestamp: 1645124238285,
+=======
+              value: "5f099501-64e9-4cfc-88e8-8cd373b6f34d",
+              timestamp: 1645495700292,
+>>>>>>> chore: add additional destination option.
             },
           ],
         },
@@ -50992,7 +60499,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:19 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:22 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -51000,7 +60511,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13da39f5218aa-EWR",
+=======
+      "6e14aa8e7c5d275d-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -51012,12 +60527,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "2b479758-6dd5-4f28-aa0c-c63639784511",
+=======
+      "012afdc6-1c88-4ea3-9a15-d53a79260376",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249669",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "77",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -51027,6 +60551,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B8DD1CBBC7CDC5C4E747023846DFE545596FC62CA000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=TGsNGAQJ96bNpiij76Pso2RwhMW1LGex1iH7bsCohdL7dZJB%2B6y4uzrICFP5cpSDLk87F9OOXZz7H09wXiNCJwR7Oks0fZcRrA4m1Ya6YJY%2BYcQsTKzi41zrhwqDVMuU"}],"group":"cf-nel","max_age":604800}',
+=======
+      "62",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2BEC8B9999AACEBDE5465F3AFD23FD5E3E32062B37000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=6CcDHVX9iqoIGdGhUvkpUsiYzChLgF1vtLPt%2B7pwf68PqZwald2G0u2vhpBDaP4LomzW13U4%2FkhOUHDKCgNxoBaxAhSpGMwYNDPGnLYeBqgvG%2BhCc3x7XhRrvAZXqt9Y"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -51036,12 +60571,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
   .delete("/contacts/v1/contact/vid/290051", {})
   .query({})
   .once()
   .reply(200, { vid: 290051, deleted: true, reason: "OK" }, [
     "Date",
     "Thu, 17 Feb 2022 18:57:20 GMT",
+=======
+  .delete("/contacts/v1/contact/vid/44051", {})
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(200, { vid: 44051, deleted: true, reason: "OK" }, [
+    "Date",
+    "Tue, 22 Feb 2022 02:08:23 GMT",
+>>>>>>> chore: add additional destination option.
     "Content-Type",
     "application/json;charset=utf-8",
     "Content-Length",
@@ -51049,7 +60593,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "CF-Ray",
+<<<<<<< HEAD
     "6df13da44d658c48-EWR",
+=======
+    "6e14aa8fcb0f274f-FOR",
+>>>>>>> chore: add additional destination option.
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains; preload",
     "Vary",
@@ -51061,12 +60609,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
     "577f8f98-13ad-44a9-a5da-033c4d94317c",
+=======
+    "cc282799-3933-4703-8d98-8f7a75afd951",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249668",
+>>>>>>> chore: add additional destination option.
     "X-HubSpot-RateLimit-Interval-Milliseconds",
     "10000",
     "X-HubSpot-RateLimit-Max",
     "100",
     "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
     "76",
     "X-HubSpot-RateLimit-Secondly",
     "10",
@@ -51076,6 +60633,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "2B4A325EBDA97A11ECE5A8FF631730673C92E675C5000000000000000000",
     "Report-To",
     '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=H2UQZLCVP%2FQ%2B5sg82pYMCDWN%2B102gBGjP3xWEZBpUiAM0lgNbAXDEkoApZ7U6xB%2Bk0pcgvwgYUfvv5nJQmDEhxLGo%2BgTY9oPGsjg4vQVYDRcXT1bnzuoeK93ocP1jFdr"}],"group":"cf-nel","max_age":604800}',
+=======
+    "66",
+    "X-HubSpot-RateLimit-Secondly",
+    "10",
+    "X-HubSpot-RateLimit-Secondly-Remaining",
+    "6",
+    "X-Trace",
+    "2B0C9C2B10EB3F5B7FBD158D0044F3C7346F8F45D3000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=oIG6S5DYtNwniIjECQDHlRAULPa3lajvF%2B3IT3Ip%2FMOkwnSmpUmx8gMnU64Z%2BIwo1EGHZh2hLmg4q0K3cnveUZzH%2Bv4nDaYwJv0Ckgksl7TEYPTWL73e5Y2ldQJ2Dhff"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
     "NEL",
     '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
     "Server",
@@ -51096,9 +60664,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   )
   .query({})
   .once()
+<<<<<<< HEAD
   .reply(200, { vid: 290101, isNew: true }, [
     "Date",
     "Thu, 17 Feb 2022 18:57:20 GMT",
+=======
+  .reply(200, { vid: 44101, isNew: true }, [
+    "Date",
+    "Tue, 22 Feb 2022 02:08:23 GMT",
+>>>>>>> chore: add additional destination option.
     "Content-Type",
     "application/json;charset=utf-8",
     "Content-Length",
@@ -51106,7 +60680,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "CF-Ray",
+<<<<<<< HEAD
     "6df13da5ed138cec-EWR",
+=======
+    "6e14aa921f162743-FOR",
+>>>>>>> chore: add additional destination option.
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains; preload",
     "Vary",
@@ -51118,12 +60696,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
     "e9ad3a5b-17d4-48b8-b9af-b2fce2acfaab",
+=======
+    "8487a635-6140-4b2c-9ddb-27bc983ee1a1",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249667",
+>>>>>>> chore: add additional destination option.
     "X-HubSpot-RateLimit-Interval-Milliseconds",
     "10000",
     "X-HubSpot-RateLimit-Max",
     "100",
     "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
     "75",
     "X-HubSpot-RateLimit-Secondly",
     "10",
@@ -51133,6 +60720,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "2BA2C1421DE42B8DCA34850198F4E0AD9362BA5914000000000000000000",
     "Report-To",
     '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=t23pgbFs7UXby9keprOkrHju0ourYy8ueIYSN1fszreNDPz5jcPl1KhhMZ%2BnXtJrNNDgtE9NiGdGw5oMt2jGRxmFo9L3%2FFbUO24wrFYug1qGvfAippZbddPUa7xPpNmA"}],"group":"cf-nel","max_age":604800}',
+=======
+    "65",
+    "X-HubSpot-RateLimit-Secondly",
+    "10",
+    "X-HubSpot-RateLimit-Secondly-Remaining",
+    "6",
+    "X-Trace",
+    "2BEDBEC6DDAA738D3C7E8A2C49EBA9D15FC14B2D08000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=4ad6tShwsEqYPg%2Fw2mrPiGxZC280aUnaqzyRXB9GHLq0yZ8rpYgbcDz3v9Id749lEaNQ5ZDQ0dlcguSc1QXCnwRf3KMeg60JRNvmuBv3NmLaoEsFGzOwhxWgXtPLFkCG"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
     "NEL",
     '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
     "Server",
@@ -51349,11 +60947,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 675,
           internalListId: 675,
           createdAt: 1645124232745,
           updatedAt: 1645124232745,
+=======
+          portalId: 20858235,
+          listId: 67,
+          internalListId: 67,
+          createdAt: 1645495691989,
+          updatedAt: 1645495691989,
+>>>>>>> chore: add additional destination option.
           name: "List Four",
           listType: "STATIC",
           authorId: 13534722,
@@ -51362,7 +60968,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             size: 0,
             lastSizeChangeAt: 0,
             processing: "DONE",
+<<<<<<< HEAD
             lastProcessingStateChangeAt: 1645124232946,
+=======
+            lastProcessingStateChangeAt: 1645495692149,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -51372,20 +60982,34 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 672,
           internalListId: 672,
           createdAt: 1645124226905,
           updatedAt: 1645124226905,
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+>>>>>>> chore: add additional destination option.
           name: "List One",
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1645124240352,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124227052,
+=======
+            lastSizeChangeAt: 1645495703374,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -51395,20 +61019,34 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 674,
           internalListId: 674,
           createdAt: 1645124231086,
           updatedAt: 1645124231086,
+=======
+          portalId: 20858235,
+          listId: 66,
+          internalListId: 66,
+          createdAt: 1645495689464,
+          updatedAt: 1645495689464,
+>>>>>>> chore: add additional destination option.
           name: "List Three",
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1645124240411,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124231299,
+=======
+            lastSizeChangeAt: 1645495703317,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495689627,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -51418,11 +61056,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 673,
           internalListId: 673,
           createdAt: 1645124227704,
           updatedAt: 1645124227704,
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+>>>>>>> chore: add additional destination option.
           name: "List Two",
           listType: "STATIC",
           authorId: 13534722,
@@ -51517,9 +61163,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1632401940035,
             processing: "DONE",
             lastProcessingStateChangeAt: 1629388533258,
+=======
+            lastSizeChangeAt: 1645495703324,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -51533,7 +61185,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:20 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:23 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -51541,7 +61197,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13da7bfb318c4-EWR",
+=======
+      "6e14aa94af04e07c-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -51553,12 +61213,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "bb3e4198-d24c-4da0-a034-b59c1be0579f",
+=======
+      "84988915-36d8-47e8-8e20-8440c0a3e88d",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249666",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "74",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -51568,6 +61237,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2BD63D01087B7B99A7EDDD345D681675EB70E3A21D000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=6h4NMZ0L9tU4tQm5zU5M51xLMzS4R4F3UlcGHDGEtK6stxGQezInHPSb5nMH4DzMTyxCHnqjbfHn2III4Y2PKu2QxLF7wcjgc%2BvV0YTBqI%2BRkz%2FjanJilg2k%2BaSRDPQs"}],"group":"cf-nel","max_age":604800}',
+=======
+      "64",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B2B58FCCFE6C08AA5A2983AD60C0F01C418EA37FD000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=bHqpK%2Bt5CYM8flzYS9ZSGfnNaGoz70W%2Bj63lU1okhwoktxSRLNN7r602eoSIK5j6BP45C9HM8KA1jucCM%2Fr79q80whKf%2BOavySBhRD8fFPkc6CS%2F%2BFpRjEyRhBd9Nq6P"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -51577,16 +61257,27 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
   .post("/contacts/v1/lists/672/add", {
+=======
+  .post("/contacts/v1/lists/64/add", {
+>>>>>>> chore: add additional destination option.
     emails: ["sandro.arturo@mailinator.com"],
   })
   .once()
   .reply(
     200,
+<<<<<<< HEAD
     { updated: [290101], discarded: [], invalidVids: [], invalidEmails: [] },
     [
       "Date",
       "Thu, 17 Feb 2022 18:57:20 GMT",
+=======
+    { updated: [44101], discarded: [], invalidVids: [], invalidEmails: [] },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:24 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -51594,7 +61285,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13da8acad32ca-EWR",
+=======
+      "6e14aa95ecfe2755-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -51606,12 +61301,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "34b6e42d-f032-4d91-972f-89f06deda854",
+=======
+      "5008f477-2f00-4f13-a6b8-29a27756e603",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249665",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "73",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -51621,6 +61325,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B5E82217794D94212E7BF53ADF28808AA3848C1F2000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=uonA8mjTBSN03txfvCyaI0CCM9nQ9T0jL9miaEYcTe8niMO2XJKmCglo2e%2B6y21JzKu79mFwzB7QAd0d6fNN2qrgP498%2BmhPrNh38dgAD5XzczjI3eZkgx4NJuCv81Tq"}],"group":"cf-nel","max_age":604800}',
+=======
+      "65",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B08E36EB44EABB5A6500A3FC5E7876EBEC1067BFD000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=dUaoYkiYtik474kIyfBXT0YV9VOH8E0J73YRL4U8phFdUHcZssMPCNKFGKXt%2FecQ2FvdwqwTCA%2FzA0fDxZ5K89h6umxaRHGlqpnkoZE%2BKBh3HEhVKrH1PMjOONuiZZVc"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -51636,14 +61351,20 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       vid: 290101,
       "canonical-vid": 290101,
+=======
+      vid: 44101,
+      "canonical-vid": 44101,
+>>>>>>> chore: add additional destination option.
       "merged-vids": [],
       "portal-id": 7974676,
       "is-contact": true,
       properties: {
         hs_is_unworked: { value: "true" },
         firstname: { value: "Lucas" },
+<<<<<<< HEAD
         lastmodifieddate: { value: "1645124240365" },
         hs_pipeline: { value: "contacts-lifecycle-pipeline" },
         createdate: { value: "1645124240365" },
@@ -51654,35 +61375,68 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
         mobilephone: { value: "+5583999999997" },
         hs_searchable_calculated_mobile_number: { value: "83999999997" },
         hs_object_id: { value: "290101" },
+=======
+        lastmodifieddate: { value: "1645495703495" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645495703495" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495703495" },
+        hs_calculated_mobile_number: { value: "+5583999999997" },
+        hs_all_contact_vids: { value: "44101" },
+        hs_is_contact: { value: "true" },
+        mobilephone: { value: "+5583999999997" },
+        hs_searchable_calculated_mobile_number: { value: "83999999997" },
+        hs_object_id: { value: "44101" },
+>>>>>>> chore: add additional destination option.
         hs_email_domain: { value: "mailinator.com" },
         lifecyclestage: { value: "subscriber" },
         email: { value: "sandro.arturo@mailinator.com" },
       },
       "list-memberships": [
         {
+<<<<<<< HEAD
           "static-list-id": 672,
           "internal-list-id": 672,
           timestamp: 1645124240815,
           vid: 290101,
+=======
+          "static-list-id": 64,
+          "internal-list-id": 64,
+          timestamp: 1645495704087,
+          vid: 44101,
+>>>>>>> chore: add additional destination option.
           "is-member": true,
         },
       ],
       "identity-profiles": [
         {
+<<<<<<< HEAD
           vid: 290101,
           "saved-at-timestamp": 1645124240395,
+=======
+          vid: 44101,
+          "saved-at-timestamp": 1645495703513,
+>>>>>>> chore: add additional destination option.
           "deleted-changed-timestamp": 0,
           identities: [
             {
               type: "EMAIL",
               value: "sandro.arturo@mailinator.com",
+<<<<<<< HEAD
               timestamp: 1645124240365,
+=======
+              timestamp: 1645495703495,
+>>>>>>> chore: add additional destination option.
               "is-primary": true,
             },
             {
               type: "LEAD_GUID",
+<<<<<<< HEAD
               value: "22401ade-1b74-42a6-8c59-037bbbc18d6b",
               timestamp: 1645124240387,
+=======
+              value: "93d8dbaf-d850-4c47-974b-73bfe31f02e2",
+              timestamp: 1645495703508,
+>>>>>>> chore: add additional destination option.
             },
           ],
         },
@@ -51691,7 +61445,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:21 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:24 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -51699,7 +61457,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13da9db3619df-EWR",
+=======
+      "6e14aa9798912755-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -51711,12 +61473,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "ea8d22f9-d9e6-4ce7-9f04-9875f56b8d6e",
+=======
+      "376d56f8-c8ba-4c1b-94fe-dc6438249e9a",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249664",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "72",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -51726,6 +61497,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B74E028C7D653DF1C1BD44E14FEAEA0FF987387A9000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=sDP4jgIzG%2Fb64BIRmCl%2FNHbi1bv90jELAhuxsZHy5mVz3o%2BYbvzvJT%2FdVMFInrgfwsXwOTcuzS0phOonWShcfRI5FUPe29Cm8dIwv1T64brm89Mas0Nka05y2hf8tUXN"}],"group":"cf-nel","max_age":604800}',
+=======
+      "64",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2BA1B0CC904246AE63DA1A898460B6C1DD29E79974000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=D50rq2sorfFL6Kj%2BrFQXtoYMaHzorRqHzNyEHXwBwkAbmabwMon4xPh6bIm0TAmPPmw9dHv9QJg7XMqHNehQ9IOi24OyEATPUjGFHpsZqvE%2FCsGGhe9xqM4qpEzhAZG%2B"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -51736,13 +61518,18 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .get("/contacts/v1/lists/static")
+<<<<<<< HEAD
   .query({ count: "999" })
+=======
+  .query({ count: "999", hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+>>>>>>> chore: add additional destination option.
   .once()
   .reply(
     200,
     {
       offset: 500,
       lists: [
+<<<<<<< HEAD
         {
           portalId: 7974676,
           listId: 625,
@@ -51919,6 +61706,8 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           teamIds: [],
           dynamic: false,
         },
+=======
+>>>>>>> chore: add additional destination option.
         {
           portalId: 7974676,
           listId: 630,
@@ -51943,11 +61732,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 675,
           internalListId: 675,
           createdAt: 1645124232745,
           updatedAt: 1645124232745,
+=======
+          portalId: 20858235,
+          listId: 67,
+          internalListId: 67,
+          createdAt: 1645495691989,
+          updatedAt: 1645495691989,
+>>>>>>> chore: add additional destination option.
           name: "List Four",
           listType: "STATIC",
           authorId: 13534722,
@@ -51956,7 +61753,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             size: 0,
             lastSizeChangeAt: 0,
             processing: "DONE",
+<<<<<<< HEAD
             lastProcessingStateChangeAt: 1645124232946,
+=======
+            lastProcessingStateChangeAt: 1645495692149,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -51966,20 +61767,34 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 672,
           internalListId: 672,
           createdAt: 1645124226905,
           updatedAt: 1645124226905,
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+>>>>>>> chore: add additional destination option.
           name: "List One",
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
           metaData: {
             size: 1,
+<<<<<<< HEAD
             lastSizeChangeAt: 1645124240986,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124227052,
+=======
+            lastSizeChangeAt: 1645495704219,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -51989,20 +61804,34 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 674,
           internalListId: 674,
           createdAt: 1645124231086,
           updatedAt: 1645124231086,
+=======
+          portalId: 20858235,
+          listId: 66,
+          internalListId: 66,
+          createdAt: 1645495689464,
+          updatedAt: 1645495689464,
+>>>>>>> chore: add additional destination option.
           name: "List Three",
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1645124240411,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124231299,
+=======
+            lastSizeChangeAt: 1645495703317,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495689627,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -52012,11 +61841,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 673,
           internalListId: 673,
           createdAt: 1645124227704,
           updatedAt: 1645124227704,
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+>>>>>>> chore: add additional destination option.
           name: "List Two",
           listType: "STATIC",
           authorId: 13534722,
@@ -52111,9 +61948,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1632401940035,
             processing: "DONE",
             lastProcessingStateChangeAt: 1629388533258,
+=======
+            lastSizeChangeAt: 1645495703324,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -52127,7 +61970,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:21 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:24 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -52135,7 +61982,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13daa9fd7f00d-EWR",
+=======
+      "6e14aa996d34e074-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -52147,12 +61998,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "4d1455f2-7b98-4421-b74f-043ad5cc92eb",
+=======
+      "0a9fe172-511e-4d8d-9323-07e1344d3941",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249663",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "71",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -52162,6 +62022,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B9D00F7963A7C406402A5358A4ED93347CD878360000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=eU052Jr%2FKkH%2B4sKxy0KmyH41vo9u%2FxtEOycjHl26NLqmNmlXm%2FZ2uHrPmLr9Jv8%2B1UKRTzEGdC6PFEbcFZ5m%2F8gYZ1QePHS1SpTtEU2NzMb0UOEIag9kdKpXGvbeT%2FX%2F"}],"group":"cf-nel","max_age":604800}',
+=======
+      "63",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B2E6C2CB3730D0E31AB4F954584A567ED973362EA000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=7Eq%2Fw3S0g%2FcXNLpnwl%2Bmo2h0hUBkjK%2BnQeALCJoTjOmMkkh2IDJdAoFriDcqf4gbfC2DhfLr2XasrDTM69ucGock4WyXbIKHyfXOGpLqTOhzK%2FLtQgAxEgO3cwZxjP1%2F"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -52179,7 +62050,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     {
       status: "error",
       message: "contact does not exist",
+<<<<<<< HEAD
       correlationId: "ec2e55b3-4b62-4c8e-bf41-aa0eac0f4db7",
+=======
+      correlationId: "2ea8ed8c-f533-48ec-8e95-105fe9b96586",
+>>>>>>> chore: add additional destination option.
       errors: [
         {
           message: "The contact e:caio.silveira@mailinator.com does not exist.",
@@ -52189,7 +62064,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:21 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:24 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -52197,7 +62076,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13dab5ef58c29-EWR",
+=======
+      "6e14aa9ac931cf8e-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -52209,14 +62092,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "ec2e55b3-4b62-4c8e-bf41-aa0eac0f4db7",
       "X-HubSpot-NotFound",
       "true",
+=======
+      "2ea8ed8c-f533-48ec-8e95-105fe9b96586",
+      "X-HubSpot-NotFound",
+      "true",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249662",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "70",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -52226,6 +62120,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2BC8C553BDBD892A8E69996EED1E80EC3B45718584000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=2aRQ510DTvJdIS6YkBdt5f0DOmRM0wOpvYES3i8yOO6mEEQ9Zd0feoCxlc8bSSV4GI2KEY5fMjPD2czkwdKN8eJqRUYVVoIjiJeaazZzszmyM7TndLDI7YFRdDj4wGZm"}],"group":"cf-nel","max_age":604800}',
+=======
+      "62",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2BAA274D4FC9226FD7D0AD94AF89F3E415D68BC9DD000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=lyTLcH2X9oeO%2FlLbTC2IhUOusZUEi9BMu0FxqI0glYA6JPHGsy%2F2LnpH%2FHlHIVru9uBQwr1qGy%2Fn%2FO6M42M8B3JxwoEGjOyCBz8gKdyzr8hMk94eGaO%2BWxqcHPPFGpnZ"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -52241,14 +62146,20 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       vid: 290101,
       "canonical-vid": 290101,
+=======
+      vid: 44101,
+      "canonical-vid": 44101,
+>>>>>>> chore: add additional destination option.
       "merged-vids": [],
       "portal-id": 7974676,
       "is-contact": true,
       properties: {
         hs_is_unworked: { value: "true" },
         firstname: { value: "Lucas" },
+<<<<<<< HEAD
         lastmodifieddate: { value: "1645124240692" },
         num_unique_conversion_events: { value: "0" },
         hs_pipeline: { value: "contacts-lifecycle-pipeline" },
@@ -52256,40 +62167,75 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
         hs_lifecyclestage_subscriber_date: { value: "1645124240365" },
         hs_calculated_mobile_number: { value: "+5583999999997" },
         hs_all_contact_vids: { value: "290101" },
+=======
+        lastmodifieddate: { value: "1645495704055" },
+        num_unique_conversion_events: { value: "0" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645495703495" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495703495" },
+        hs_calculated_mobile_number: { value: "+5583999999997" },
+        hs_all_contact_vids: { value: "44101" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+>>>>>>> chore: add additional destination option.
         hs_is_contact: { value: "true" },
         num_conversion_events: { value: "0" },
         mobilephone: { value: "+5583999999997" },
         hs_searchable_calculated_mobile_number: { value: "83999999997" },
+<<<<<<< HEAD
         hs_object_id: { value: "290101" },
+=======
+        hs_object_id: { value: "44101" },
+>>>>>>> chore: add additional destination option.
         hs_email_domain: { value: "mailinator.com" },
         lifecyclestage: { value: "subscriber" },
         email: { value: "sandro.arturo@mailinator.com" },
       },
       "list-memberships": [
         {
+<<<<<<< HEAD
           "static-list-id": 672,
           "internal-list-id": 672,
           timestamp: 1645124240815,
           vid: 290101,
+=======
+          "static-list-id": 64,
+          "internal-list-id": 64,
+          timestamp: 1645495704087,
+          vid: 44101,
+>>>>>>> chore: add additional destination option.
           "is-member": true,
         },
       ],
       "identity-profiles": [
         {
+<<<<<<< HEAD
           vid: 290101,
           "saved-at-timestamp": 1645124240395,
+=======
+          vid: 44101,
+          "saved-at-timestamp": 1645495703513,
+>>>>>>> chore: add additional destination option.
           "deleted-changed-timestamp": 0,
           identities: [
             {
               type: "EMAIL",
               value: "sandro.arturo@mailinator.com",
+<<<<<<< HEAD
               timestamp: 1645124240365,
+=======
+              timestamp: 1645495703495,
+>>>>>>> chore: add additional destination option.
               "is-primary": true,
             },
             {
               type: "LEAD_GUID",
+<<<<<<< HEAD
               value: "22401ade-1b74-42a6-8c59-037bbbc18d6b",
               timestamp: 1645124240387,
+=======
+              value: "93d8dbaf-d850-4c47-974b-73bfe31f02e2",
+              timestamp: 1645495703508,
+>>>>>>> chore: add additional destination option.
             },
           ],
         },
@@ -52298,7 +62244,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:21 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:25 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -52306,7 +62256,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13dac5d418c90-EWR",
+=======
+      "6e14aa9c7c44cf8a-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -52318,12 +62272,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "b1422a2c-60a6-4e99-a87c-1758ad1e2b68",
+=======
+      "a2584f09-fdbe-4d93-b63c-128a92764062",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249661",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "69",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -52333,6 +62296,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B5D815EA571E9D72C45D488A5F526683DF1B435AC000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=MYU6jfViamT1ti0dmqRL654XIeDC60cd1ZJ0odAePBAP9PhvT3QoEW56ZAJXdkkPS9gp7g2tmF2q8btvS7LP8IjJwITT7TnkJlUpUlizA9Y6C0%2FJE3WItqIrqtpHurGi"}],"group":"cf-nel","max_age":604800}',
+=======
+      "86",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "8",
+      "X-Trace",
+      "2B66C1F19ECFEF5CA082CF830B9CE9909F0FA33C12000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=3%2FgBMGQHFGVU8XzBLfuBjyPEYfdWCulwLzAGm05CqFbC71rhsBuecVtphnFsskJLw7xRAyDYGOgRVZAJV02F%2Bw1YhkW7dBve5kXtEKutvHa5dZh4VlLg0PZooSR2ZI4T"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -52348,14 +62322,20 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       vid: 290101,
       "canonical-vid": 290101,
+=======
+      vid: 44101,
+      "canonical-vid": 44101,
+>>>>>>> chore: add additional destination option.
       "merged-vids": [],
       "portal-id": 7974676,
       "is-contact": true,
       properties: {
         hs_is_unworked: { value: "true" },
         firstname: { value: "Lucas" },
+<<<<<<< HEAD
         lastmodifieddate: { value: "1645124240692" },
         num_unique_conversion_events: { value: "0" },
         hs_pipeline: { value: "contacts-lifecycle-pipeline" },
@@ -52363,40 +62343,75 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
         hs_lifecyclestage_subscriber_date: { value: "1645124240365" },
         hs_calculated_mobile_number: { value: "+5583999999997" },
         hs_all_contact_vids: { value: "290101" },
+=======
+        lastmodifieddate: { value: "1645495704055" },
+        num_unique_conversion_events: { value: "0" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645495703495" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495703495" },
+        hs_calculated_mobile_number: { value: "+5583999999997" },
+        hs_all_contact_vids: { value: "44101" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+>>>>>>> chore: add additional destination option.
         hs_is_contact: { value: "true" },
         num_conversion_events: { value: "0" },
         mobilephone: { value: "+5583999999997" },
         hs_searchable_calculated_mobile_number: { value: "83999999997" },
+<<<<<<< HEAD
         hs_object_id: { value: "290101" },
+=======
+        hs_object_id: { value: "44101" },
+>>>>>>> chore: add additional destination option.
         hs_email_domain: { value: "mailinator.com" },
         lifecyclestage: { value: "subscriber" },
         email: { value: "sandro.arturo@mailinator.com" },
       },
       "list-memberships": [
         {
+<<<<<<< HEAD
           "static-list-id": 672,
           "internal-list-id": 672,
           timestamp: 1645124240815,
           vid: 290101,
+=======
+          "static-list-id": 64,
+          "internal-list-id": 64,
+          timestamp: 1645495704087,
+          vid: 44101,
+>>>>>>> chore: add additional destination option.
           "is-member": true,
         },
       ],
       "identity-profiles": [
         {
+<<<<<<< HEAD
           vid: 290101,
           "saved-at-timestamp": 1645124240395,
+=======
+          vid: 44101,
+          "saved-at-timestamp": 1645495703513,
+>>>>>>> chore: add additional destination option.
           "deleted-changed-timestamp": 0,
           identities: [
             {
               type: "EMAIL",
               value: "sandro.arturo@mailinator.com",
+<<<<<<< HEAD
               timestamp: 1645124240365,
+=======
+              timestamp: 1645495703495,
+>>>>>>> chore: add additional destination option.
               "is-primary": true,
             },
             {
               type: "LEAD_GUID",
+<<<<<<< HEAD
               value: "22401ade-1b74-42a6-8c59-037bbbc18d6b",
               timestamp: 1645124240387,
+=======
+              value: "93d8dbaf-d850-4c47-974b-73bfe31f02e2",
+              timestamp: 1645495703508,
+>>>>>>> chore: add additional destination option.
             },
           ],
         },
@@ -52405,7 +62420,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:21 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:25 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -52413,7 +62432,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13dad0b331839-EWR",
+=======
+      "6e14aa9dd823e08e-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -52425,12 +62448,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "0755c152-6765-4d00-b797-564edbab29fe",
+=======
+      "16f3424d-c042-487a-bc2e-134d0fd5c8d4",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249660",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "68",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -52440,6 +62472,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B7C96C44E1EB524EAD185843D360D2AEBB456E7BF000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=tnD5Rol8X%2FpGLlJ%2BKTnxV8vMO0bTZHCRbGvtZOIaAZimSpLbe3A7XGoY0EHzPsLAx3ahS2BreX9cPYucn%2B402dYVH9YATqMY1RYxcbjY9rypxFlrUzR4OmPJ7JljEGFJ"}],"group":"cf-nel","max_age":604800}',
+=======
+      "85",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "8",
+      "X-Trace",
+      "2BB080C744B5B5A99B96207BCB185380A7078E032A000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=AoA3z15ZlyZu3OJVJUofFpK0myMPcrwWkb52NJUrOvnIIO2%2FTDwccE9WdVfgehnB8d5h0ogRSIow7yIaLCN2XWe7dfz3OtTCgKb%2BOBlIPV7y4qy2ZMMlkd0FO4ZpTZwm"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -52455,14 +62498,20 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       vid: 290101,
       "canonical-vid": 290101,
+=======
+      vid: 44101,
+      "canonical-vid": 44101,
+>>>>>>> chore: add additional destination option.
       "merged-vids": [],
       "portal-id": 7974676,
       "is-contact": true,
       properties: {
         hs_is_unworked: { value: "true" },
         firstname: { value: "Lucas" },
+<<<<<<< HEAD
         lastmodifieddate: { value: "1645124240692" },
         num_unique_conversion_events: { value: "0" },
         hs_pipeline: { value: "contacts-lifecycle-pipeline" },
@@ -52470,40 +62519,75 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
         hs_lifecyclestage_subscriber_date: { value: "1645124240365" },
         hs_calculated_mobile_number: { value: "+5583999999997" },
         hs_all_contact_vids: { value: "290101" },
+=======
+        lastmodifieddate: { value: "1645495704055" },
+        num_unique_conversion_events: { value: "0" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645495703495" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495703495" },
+        hs_calculated_mobile_number: { value: "+5583999999997" },
+        hs_all_contact_vids: { value: "44101" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+>>>>>>> chore: add additional destination option.
         hs_is_contact: { value: "true" },
         num_conversion_events: { value: "0" },
         mobilephone: { value: "+5583999999997" },
         hs_searchable_calculated_mobile_number: { value: "83999999997" },
+<<<<<<< HEAD
         hs_object_id: { value: "290101" },
+=======
+        hs_object_id: { value: "44101" },
+>>>>>>> chore: add additional destination option.
         hs_email_domain: { value: "mailinator.com" },
         lifecyclestage: { value: "subscriber" },
         email: { value: "sandro.arturo@mailinator.com" },
       },
       "list-memberships": [
         {
+<<<<<<< HEAD
           "static-list-id": 672,
           "internal-list-id": 672,
           timestamp: 1645124240815,
           vid: 290101,
+=======
+          "static-list-id": 64,
+          "internal-list-id": 64,
+          timestamp: 1645495704087,
+          vid: 44101,
+>>>>>>> chore: add additional destination option.
           "is-member": true,
         },
       ],
       "identity-profiles": [
         {
+<<<<<<< HEAD
           vid: 290101,
           "saved-at-timestamp": 1645124240395,
+=======
+          vid: 44101,
+          "saved-at-timestamp": 1645495703513,
+>>>>>>> chore: add additional destination option.
           "deleted-changed-timestamp": 0,
           identities: [
             {
               type: "EMAIL",
               value: "sandro.arturo@mailinator.com",
+<<<<<<< HEAD
               timestamp: 1645124240365,
+=======
+              timestamp: 1645495703495,
+>>>>>>> chore: add additional destination option.
               "is-primary": true,
             },
             {
               type: "LEAD_GUID",
+<<<<<<< HEAD
               value: "22401ade-1b74-42a6-8c59-037bbbc18d6b",
               timestamp: 1645124240387,
+=======
+              value: "93d8dbaf-d850-4c47-974b-73bfe31f02e2",
+              timestamp: 1645495703508,
+>>>>>>> chore: add additional destination option.
             },
           ],
         },
@@ -52512,7 +62596,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:21 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:25 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -52520,7 +62608,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13dadecad8ccd-EWR",
+=======
+      "6e14aa9f3d31e07c-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -52532,21 +62624,39 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "7b3cfa81-76bd-43f2-b3d4-906f215b1ea9",
+=======
+      "c0db3937-e85f-486b-9039-d8dc195802a1",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249659",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "67",
+=======
+      "84",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Secondly",
       "10",
       "X-HubSpot-RateLimit-Secondly-Remaining",
       "6",
       "X-Trace",
+<<<<<<< HEAD
       "2BF30A4E37B609E9A8A03486027159A372A58E0FD3000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=0nkv6EM9vVBXisUXgS2NuA7jrHtmgzPWakdIHhmd57APU7fW1yKwyeIv3YL3mOYBsqP0nRqIEQ%2FZpNxYPK0QqG02W%2B69GDwrQP8CDrl7jLRnAsf%2FZ98UL%2FAa0Wj5nL7V"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2B89B0043B50FE26514B9FAF1A35CECAB57015335D000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=v2Arj0TsH5COMhBddyfgZsdR70BHRdNzd3t1upGl8i8UYWyc4DjNnEVXtfRRHcyhy4ZFU8nYuU0%2BlbOTc4xVMBDi23CY58zvHlg5bOoyXRMuRNK%2FDlvNZ5vEflgXeDbP"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -52556,12 +62666,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
   .delete("/contacts/v1/contact/vid/290101", {})
   .query({})
   .once()
   .reply(200, { vid: 290101, deleted: true, reason: "OK" }, [
     "Date",
     "Thu, 17 Feb 2022 18:57:21 GMT",
+=======
+  .delete("/contacts/v1/contact/vid/44101", {})
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(200, { vid: 44101, deleted: true, reason: "OK" }, [
+    "Date",
+    "Tue, 22 Feb 2022 02:08:26 GMT",
+>>>>>>> chore: add additional destination option.
     "Content-Type",
     "application/json;charset=utf-8",
     "Content-Length",
@@ -52569,7 +62688,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "CF-Ray",
+<<<<<<< HEAD
     "6df13daecb118c87-EWR",
+=======
+    "6e14aaa06a15cf8a-FOR",
+>>>>>>> chore: add additional destination option.
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains; preload",
     "Vary",
@@ -52581,21 +62704,39 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
     "9630e7a8-098a-46d9-a605-9510c603e7f0",
+=======
+    "d0a1aba4-d9d9-4c1d-9322-23a6ddb391fc",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249658",
+>>>>>>> chore: add additional destination option.
     "X-HubSpot-RateLimit-Interval-Milliseconds",
     "10000",
     "X-HubSpot-RateLimit-Max",
     "100",
     "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
     "66",
+=======
+    "83",
+>>>>>>> chore: add additional destination option.
     "X-HubSpot-RateLimit-Secondly",
     "10",
     "X-HubSpot-RateLimit-Secondly-Remaining",
     "6",
     "X-Trace",
+<<<<<<< HEAD
     "2BE87C9E007B0269DE7DE37C6D12EC5FA6259FB1CD000000000000000000",
     "Report-To",
     '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=FhdaoJByG9icI0J4o6HjWRDhRdfffGd5uynLUScDOtvGTYWvIXsyitwXewGd1gZVfJaGyMfupiGFl8wDxYgMGEmzeVhx1HhVAPBbtcEJbmC65eYP4KOgv3PsjgqxTB8p"}],"group":"cf-nel","max_age":604800}',
+=======
+    "2B5B2C341C6DFD525B045DD09647AB85A41ADC8D80000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=8IGCZAaZDKwsphMGqQ4FG8A%2FtwwOoiTLW%2BPtSy%2Ff3q1%2FRVmmgbcPNaoc9jQaCboN3lykL%2F4pfJLIQDsUp5C3g0F2l7PbkoHYv5WGKUdA5%2Bv%2Ff8dQP2n9OV9sYxWdLCWg"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
     "NEL",
     '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
     "Server",
@@ -52612,7 +62753,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     {
       status: "error",
       message: "contact does not exist",
+<<<<<<< HEAD
       correlationId: "d03ed51d-ee1f-41ba-9871-47e395437aa5",
+=======
+      correlationId: "645abcf0-691c-4b29-ba08-97429525c244",
+>>>>>>> chore: add additional destination option.
       errors: [
         {
           message: "The contact e:sandro.arturo@mailinator.com does not exist.",
@@ -52622,7 +62767,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:22 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:26 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -52630,7 +62779,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13db03fa98cb3-EWR",
+=======
+      "6e14aaa3bff9274f-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -52642,23 +62795,43 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "d03ed51d-ee1f-41ba-9871-47e395437aa5",
       "X-HubSpot-NotFound",
       "true",
+=======
+      "645abcf0-691c-4b29-ba08-97429525c244",
+      "X-HubSpot-NotFound",
+      "true",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249657",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "65",
+=======
+      "82",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Secondly",
       "10",
       "X-HubSpot-RateLimit-Secondly-Remaining",
       "6",
       "X-Trace",
+<<<<<<< HEAD
       "2BF85CDDBBF93ECF6FE309CBEE9C2BD899EC8D5F69000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=0fYY4YZO5jNs4x21lamPRoVgYSEbczRk4FioHOuYv5v%2FgJeDex%2FAB2K4sN2vbc8UpMn5XwjaOXu2FEzkTFSzlrodARbECEUmW%2FKzD1HJxq%2F6ZQJV8C5m0MgEDppWhjBe"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2BB1108061C5A2D775F6B50C8EA79C72D86587FB27000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=ZJdjZet9iKVAzXqm4LPQzpwTRKnKtT8ewbL9uDn4eg7gnuDnaflH2cp2DfEMVv9%2B49N2MRNBPT%2FFFRdwY4g%2B4XLM2JniXJWDPZ7IozLz3woiDO25sUHXei5NcTzWz0jR"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -52676,7 +62849,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     {
       status: "error",
       message: "contact does not exist",
+<<<<<<< HEAD
       correlationId: "2f5d79a9-d6f2-44db-95db-d131690e157b",
+=======
+      correlationId: "a933b66c-93ee-4492-a95e-a4b56cce4a82",
+>>>>>>> chore: add additional destination option.
       errors: [
         {
           message: "The contact e:sandro.arturo@mailinator.com does not exist.",
@@ -52686,7 +62863,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:22 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:26 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -52694,7 +62875,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13db0ff1d19bb-EWR",
+=======
+      "6e14aaa54950cf9a-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -52706,23 +62891,43 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "2f5d79a9-d6f2-44db-95db-d131690e157b",
       "X-HubSpot-NotFound",
       "true",
+=======
+      "a933b66c-93ee-4492-a95e-a4b56cce4a82",
+      "X-HubSpot-NotFound",
+      "true",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249656",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "64",
+=======
+      "81",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Secondly",
       "10",
       "X-HubSpot-RateLimit-Secondly-Remaining",
       "6",
       "X-Trace",
+<<<<<<< HEAD
       "2BE4C655980EA12F403802EE07A5B182D5E51A7A9D000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=SyGlJtwsRhNkzdkxPnnXCFVtsj9zgDJs%2BWJoW9gDmUhATwSCgikIy1Q1OQqKEiR4gu30ANxQOsRMdm3ZZR9O4SADcZqual4tufHuogG2IQ4gaNC1zBe8Nr5sOteAUGj2"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2B9EA8889AEDAA8C9CB7ADA2392F57F8DF98734ABA000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=YbLQSFKt6dbLJ1m05oH7jqQ8dKuBhLS9fiLs6agJFc%2B9G6LmRoHY%2BucQ5cFNhVr15kIdZdsHTYdD8%2BBfcby%2FMBRWmEiIQOquI1E7%2FE2zOs9ysWjJ%2FfDtFypmQkn9QliN"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -52740,7 +62945,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     {
       status: "error",
       message: "contact does not exist",
+<<<<<<< HEAD
       correlationId: "5d80190d-fb03-4a73-aa0c-1c53eb816bb2",
+=======
+      correlationId: "deec0c6b-e305-424a-88a7-f182308daa38",
+>>>>>>> chore: add additional destination option.
       errors: [
         {
           message: "The contact e:sandro.arturo@mailinator.com does not exist.",
@@ -52750,7 +62959,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:22 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:26 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -52758,7 +62971,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13db1ca461971-EWR",
+=======
+      "6e14aaa6bcb3cf96-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -52770,23 +62987,43 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "5d80190d-fb03-4a73-aa0c-1c53eb816bb2",
       "X-HubSpot-NotFound",
       "true",
+=======
+      "deec0c6b-e305-424a-88a7-f182308daa38",
+      "X-HubSpot-NotFound",
+      "true",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249655",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "63",
+=======
+      "80",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Secondly",
       "10",
       "X-HubSpot-RateLimit-Secondly-Remaining",
       "6",
       "X-Trace",
+<<<<<<< HEAD
       "2B5C54FA9CD019C8973B49863DCE88614994079846000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=0gH4p746I10XZyKq4ycQjEzzdep%2Fyg6boKmAXOGwfqRyXlNjEfTQJVgWAQcMrQLOhSvzRzOWpCFH3GkBpmqpkwLB1AXrL6JVcYdmx4lAlKYhYf%2BD5ZW3zJbCQ7W6szqw"}],"group":"cf-nel","max_age":604800}',
+=======
+      "2BC7C0C0C47A494598225C53EAE77059B3346190DA000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=sN%2Bc3yxwhHabVwnFwThHG5SFaSYOLmo6spjO%2BCtoymnKiAnBmxEgdx0pg5mXlrJsSRMjxHxArDRacEb9ID3AooW25aOSfB50A69EjHXw5XcnaCqx7%2FsS6axa6i3XA6XO"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -52804,7 +63041,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     {
       status: "error",
       message: "contact does not exist",
+<<<<<<< HEAD
       correlationId: "73f691ea-1dc3-4491-a7b4-0f5f24fb4b30",
+=======
+      correlationId: "8f30b885-0272-49c2-b3e2-152084adc623",
+>>>>>>> chore: add additional destination option.
       errors: [
         {
           message: "The contact e:sandro.arturo@mailinator.com does not exist.",
@@ -52814,7 +63055,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:22 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:27 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -52822,7 +63067,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13db2aefa176c-EWR",
+=======
+      "6e14aaa828a52745-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -52834,14 +63083,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "73f691ea-1dc3-4491-a7b4-0f5f24fb4b30",
       "X-HubSpot-NotFound",
       "true",
+=======
+      "8f30b885-0272-49c2-b3e2-152084adc623",
+      "X-HubSpot-NotFound",
+      "true",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249654",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "62",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -52851,6 +63111,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2BA862439E5B4D667EF785A0C1FE60221B869BB021000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=Wgxrd2je8hwjSYdkNU6uv1yqZkdDa%2BhFLhIG%2BwD8jDRBTwwaXeAvlCiD%2F12layqhSy8S1dtcktkIstdPrka%2F3z%2FLvc2GS75kJT1p%2F1YmIVfXJW45alyKzD2lash%2B3jf6"}],"group":"cf-nel","max_age":604800}',
+=======
+      "79",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2B1313151C6BEDB77B9175BE367F817AA06358F3E3000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=WCsfTShrg5KFlDw41vRMA7Ei4J2Ky8ZIncEEKbCtr9jJEslv52dWqojPv3l0ehV%2B%2Bnm7kYsMR9TU2HPX0a2WoXLOas%2FJ6%2BQocRKF64MieUmq1WgcY1dqZScUWEP6h14W"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -52868,7 +63139,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     {
       status: "error",
       message: "contact does not exist",
+<<<<<<< HEAD
       correlationId: "99bf81f7-807e-4dc6-8ab4-5d18f2ee7223",
+=======
+      correlationId: "21536567-6460-4af0-b117-06c71e516456",
+>>>>>>> chore: add additional destination option.
       errors: [
         {
           message:
@@ -52879,7 +63154,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:22 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:27 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -52887,7 +63166,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13db36f938c8a-EWR",
+=======
+      "6e14aaa9db01cf96-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -52899,14 +63182,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "99bf81f7-807e-4dc6-8ab4-5d18f2ee7223",
       "X-HubSpot-NotFound",
       "true",
+=======
+      "21536567-6460-4af0-b117-06c71e516456",
+      "X-HubSpot-NotFound",
+      "true",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249653",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "61",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -52916,6 +63210,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B5870DE2DA7F1819983ED6EA541B5BC5C1BF6EB66000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=AMyFhckxgfHqMJBXbCXlqN%2FQwPIOt6uImLwDsALU7WV2fZ5hWnxABRu6E6haKHnM88FZc6oDtjlnPqljd4vKMyM58joP5P63f5bc0trI5E1kHY11b3l8RuHRMlpmFz9r"}],"group":"cf-nel","max_age":604800}',
+=======
+      "78",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2B1325799DD1115B23EB6E013586598C0D6BF9AB29000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=22oTSQyL9CcQpwXcKxyOQbWpBMtpQHi0lCy2kGA2pl%2BudHAyshAG4iuYsS98pXmcBkluS1Xf3768cELSmwcV25UzIO10qpQodPRcVHpcx%2B60hgtXMvQlqsrhwIeOfa21"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -52933,7 +63238,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     {
       status: "error",
       message: "contact does not exist",
+<<<<<<< HEAD
       correlationId: "3bd01d47-d26f-49ec-a746-e6f1828a74de",
+=======
+      correlationId: "0bd3094f-21a0-4e1b-be3c-b65bd1061a62",
+>>>>>>> chore: add additional destination option.
       errors: [
         {
           message:
@@ -52944,7 +63253,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:22 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:27 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -52952,7 +63265,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13db419758cb1-EWR",
+=======
+      "6e14aaad7b1c274f-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -52964,14 +63281,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "3bd01d47-d26f-49ec-a746-e6f1828a74de",
       "X-HubSpot-NotFound",
       "true",
+=======
+      "0bd3094f-21a0-4e1b-be3c-b65bd1061a62",
+      "X-HubSpot-NotFound",
+      "true",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249652",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "60",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -52981,6 +63309,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B5FA14E8C25810556A0E1253E4E9550DA7CBE682F000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=nDxxKHu%2FN9sdj9YkjjQKGv4BN47BNuMEqYxk7gj6y7O%2FROAVbE9J%2B%2BK1YORqOf0nTuKNYiGk7kztekBST8G8o5KCgm88ZNIlNXBDCSxDgsWwXmt3e29HXDylnwWPf2Xp"}],"group":"cf-nel","max_age":604800}',
+=======
+      "77",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2B7DEEE105EE9F242A542DE49D965F3928A36E858B000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=kyVuKZ%2FrJQZUU6lgdzA7rtUZuNfAKY3nWFvG0yKkL%2F3yorE7jYkIaDQk7sN8m88ab7txKUNwu2OLNCqNHz3%2BJw9YiL36UPGm92Pn0Aq2liYclsTgkP7qaODCZ939Bc7G"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -53001,9 +63340,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   )
   .query({})
   .once()
+<<<<<<< HEAD
   .reply(200, { vid: 290151, isNew: true }, [
     "Date",
     "Thu, 17 Feb 2022 18:57:22 GMT",
+=======
+  .reply(200, { vid: 44151, isNew: true }, [
+    "Date",
+    "Tue, 22 Feb 2022 02:08:28 GMT",
+>>>>>>> chore: add additional destination option.
     "Content-Type",
     "application/json;charset=utf-8",
     "Content-Length",
@@ -53011,7 +63356,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "CF-Ray",
+<<<<<<< HEAD
     "6df13db4cdcb0cc5-EWR",
+=======
+    "6e14aaaeb8e4cf9a-FOR",
+>>>>>>> chore: add additional destination option.
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains; preload",
     "Vary",
@@ -53023,12 +63372,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
     "ab568de0-e092-4436-889f-110aed0a3867",
+=======
+    "2486df90-834e-4b86-b1fa-4210481c2d9c",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249651",
+>>>>>>> chore: add additional destination option.
     "X-HubSpot-RateLimit-Interval-Milliseconds",
     "10000",
     "X-HubSpot-RateLimit-Max",
     "100",
     "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
     "59",
     "X-HubSpot-RateLimit-Secondly",
     "10",
@@ -53038,6 +63396,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "2BDB9955D0D58D5AD1E57E5799ED781278FBC931B9000000000000000000",
     "Report-To",
     '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=sEDcMDAJxIgypoPDV3mhl061brItRbxasMkWtgOniek9PJvFwJ3ARSYKaXRBws6ZCc0f0sd8xfAl9d8sN5%2FN7yimTh1lZB%2FmUjbsXyau6d6DSi9sfUAVX86oxokxFvuQ"}],"group":"cf-nel","max_age":604800}',
+=======
+    "76",
+    "X-HubSpot-RateLimit-Secondly",
+    "10",
+    "X-HubSpot-RateLimit-Secondly-Remaining",
+    "7",
+    "X-Trace",
+    "2B770948B88C94DB09D164D111935FA79E46C8EDB0000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=VgofEbeZeLlPiceMCRaHsB4Ox%2BzmH38y1zwA4p4vLBO%2F6sa8djrZPqOXa4z4XL3kbzsmzTbW1WHllCyYDUPxWNAPxeGKaeFCTBSHw6Mcc8qTGgw8CBY%2BGFXd8%2FUUcW%2FY"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
     "NEL",
     '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
     "Server",
@@ -53254,11 +63623,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 675,
           internalListId: 675,
           createdAt: 1645124232745,
           updatedAt: 1645124232745,
+=======
+          portalId: 20858235,
+          listId: 67,
+          internalListId: 67,
+          createdAt: 1645495691989,
+          updatedAt: 1645495691989,
+>>>>>>> chore: add additional destination option.
           name: "List Four",
           listType: "STATIC",
           authorId: 13534722,
@@ -53267,7 +63644,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             size: 0,
             lastSizeChangeAt: 0,
             processing: "DONE",
+<<<<<<< HEAD
             lastProcessingStateChangeAt: 1645124232946,
+=======
+            lastProcessingStateChangeAt: 1645495692149,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -53277,20 +63658,34 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 672,
           internalListId: 672,
           createdAt: 1645124226905,
           updatedAt: 1645124226905,
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+>>>>>>> chore: add additional destination option.
           name: "List One",
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1645124242058,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124227052,
+=======
+            lastSizeChangeAt: 1645495706165,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -53300,20 +63695,34 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 674,
           internalListId: 674,
           createdAt: 1645124231086,
           updatedAt: 1645124231086,
+=======
+          portalId: 20858235,
+          listId: 66,
+          internalListId: 66,
+          createdAt: 1645495689464,
+          updatedAt: 1645495689464,
+>>>>>>> chore: add additional destination option.
           name: "List Three",
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1645124240411,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124231299,
+=======
+            lastSizeChangeAt: 1645495703317,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495689627,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -53323,11 +63732,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 673,
           internalListId: 673,
           createdAt: 1645124227704,
           updatedAt: 1645124227704,
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+>>>>>>> chore: add additional destination option.
           name: "List Two",
           listType: "STATIC",
           authorId: 13534722,
@@ -53422,9 +63839,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1632401940035,
             processing: "DONE",
             lastProcessingStateChangeAt: 1629388533258,
+=======
+            lastSizeChangeAt: 1645495703324,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -53438,7 +63861,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:23 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:28 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -53446,7 +63873,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13db6cb6a8c5d-EWR",
+=======
+      "6e14aab14ccdcf8a-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -53458,12 +63889,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "22692409-bcad-424a-87b6-78e6d6ae4c22",
+=======
+      "6eb7d158-903d-49eb-9459-82461c27c7f7",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249650",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "58",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -53473,6 +63913,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2BC4A129DBC61FCB2175ACBEC23BBFFB429BC9CEC5000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=%2BfyvJodnrKg63RM%2BhCSy%2BH4B3YrHm7LF8OFpZtQb33UWgTx5lOll8PbcfZNKbPEE9AEPalf7B3p5600g0senGxvKK6vFC3RyOnhwGGJXYsyeEDg9a8QkZBgyNVY8GTB7"}],"group":"cf-nel","max_age":604800}',
+=======
+      "75",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2BACC5474C8C2CD0925F2D1262B423DCBC037A92C3000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=6YW4n9RBMStq82Ts4OCd21lHVpFXnQGbS0SmJZX8mm4F%2BGdmT8pt4t%2Fv9g0N92oIaaEne8OIiQd4WobPqYGxJFcfNOuoiRVU23%2BAzi2VzaMMo3PyDWNqaPngvk%2B4OQdh"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -53482,16 +63933,27 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
   .post("/contacts/v1/lists/675/add", {
+=======
+  .post("/contacts/v1/lists/67/add", {
+>>>>>>> chore: add additional destination option.
     emails: ["carlos.solimoes@mailinator.com"],
   })
   .once()
   .reply(
     200,
+<<<<<<< HEAD
     { updated: [290151], discarded: [], invalidVids: [], invalidEmails: [] },
     [
       "Date",
       "Thu, 17 Feb 2022 18:57:23 GMT",
+=======
+    { updated: [44151], discarded: [], invalidVids: [], invalidEmails: [] },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:28 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -53499,7 +63961,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13db77eef17a1-EWR",
+=======
+      "6e14aab29f762746-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -53511,12 +63977,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "696c4b07-7167-46c6-a9d0-33155adea1bf",
+=======
+      "4d0dc3ad-dbe4-47b5-93b2-56369a7537e5",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249649",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "57",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -53526,6 +64001,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B1E49269F23B3E922E6F6DE6FDAB2318B3E512692000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=lSJDTsjurgpttb0KHMsR0PNpBmVVJSvfr0uyQX21W3OBL7G83UlY2quRns4AFtJJCMnqSAuj9Ik%2FfGoytzqg5x1AUPARMkmvGfe8jpZ6VHG528uDN4PwjB0gvMDtQyiB"}],"group":"cf-nel","max_age":604800}',
+=======
+      "74",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2B0292F02FB232524E4489974BC46139D7630F46F0000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=xDB%2FyIuhE6CA6G73HztjSyHBDMF%2Bq5EbJPh%2BOlVjngG5SiyrXBSzW3277ATiSPDEX8JSbmipa3Pz5JpmJRxtRPrcBm0wY3hxgbD1uq6n73PNuXvkkO5286XPcbFJnoSF"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -53541,8 +64027,13 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       vid: 290151,
       "canonical-vid": 290151,
+=======
+      vid: 44151,
+      "canonical-vid": 44151,
+>>>>>>> chore: add additional destination option.
       "merged-vids": [],
       "portal-id": 7974676,
       "is-contact": true,
@@ -53550,6 +64041,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
         hs_is_unworked: { value: "true" },
         firstname: { value: "Carlos" },
         hs_is_contact: { value: "true" },
+<<<<<<< HEAD
         lastmodifieddate: { value: "1645124242729" },
         hs_pipeline: { value: "contacts-lifecycle-pipeline" },
         hs_object_id: { value: "290151" },
@@ -53566,25 +64058,57 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           "internal-list-id": 675,
           timestamp: 1645124243173,
           vid: 290151,
+=======
+        lastmodifieddate: { value: "1645495708052" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        hs_object_id: { value: "44151" },
+        hs_email_domain: { value: "mailinator.com" },
+        createdate: { value: "1645495708052" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495708052" },
+        lifecyclestage: { value: "subscriber" },
+        email: { value: "carlos.solimoes@mailinator.com" },
+        hs_all_contact_vids: { value: "44151" },
+      },
+      "list-memberships": [
+        {
+          "static-list-id": 67,
+          "internal-list-id": 67,
+          timestamp: 1645495708681,
+          vid: 44151,
+>>>>>>> chore: add additional destination option.
           "is-member": true,
         },
       ],
       "identity-profiles": [
         {
+<<<<<<< HEAD
           vid: 290151,
           "saved-at-timestamp": 1645124242749,
+=======
+          vid: 44151,
+          "saved-at-timestamp": 1645495708098,
+>>>>>>> chore: add additional destination option.
           "deleted-changed-timestamp": 0,
           identities: [
             {
               type: "EMAIL",
               value: "carlos.solimoes@mailinator.com",
+<<<<<<< HEAD
               timestamp: 1645124242728,
+=======
+              timestamp: 1645495708052,
+>>>>>>> chore: add additional destination option.
               "is-primary": true,
             },
             {
               type: "LEAD_GUID",
+<<<<<<< HEAD
               value: "ed4eb714-98cc-457a-815f-7f447df6d1f3",
               timestamp: 1645124242745,
+=======
+              value: "1f1b8b7f-a5a6-45d8-b249-0bf5c792549c",
+              timestamp: 1645495708094,
+>>>>>>> chore: add additional destination option.
             },
           ],
         },
@@ -53593,7 +64117,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:23 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:28 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -53601,7 +64129,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13db8cac01a0b-EWR",
+=======
+      "6e14aab43f83275d-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -53613,12 +64145,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "ec03c6a1-467c-4d41-99cf-d258adcb54ee",
+=======
+      "b872c43d-fbe4-495b-93c1-b884b5debdf9",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249648",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "56",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -53628,6 +64169,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2BD54020DEA40DDC772ABD1DEE770D88358ACE5E54000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=b%2BZC0GJMMdM7QuEBExo7vgtaaHa%2Fzl5QEfUF2YvDiQEhKTCKc1OttStkXa32CN5VA4yKkRp4MpB3FAWj3IjRKTTspv7W8VX0InsHsjNjvKp5Z3ivCj1AwU5NV4rB0FoT"}],"group":"cf-nel","max_age":604800}',
+=======
+      "73",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2B7FBCF53D4464D3E0F4CAB782F3FBEA7E3FC80295000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=SzyaYljq2fVS%2FvEN3evdlqn12GjWmjfJvkVSdNSTIV7axr3pg43HjMHEEB9Lj3y9UeMkSRq%2FhiQNo3%2B1jyZ6WROJvc54T%2Bne6uPffswuBA64Hh7IP4dKbBkxUAYeWzHG"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -53845,20 +64397,34 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 675,
           internalListId: 675,
           createdAt: 1645124232745,
           updatedAt: 1645124232745,
+=======
+          portalId: 20858235,
+          listId: 67,
+          internalListId: 67,
+          createdAt: 1645495691989,
+          updatedAt: 1645495691989,
+>>>>>>> chore: add additional destination option.
           name: "List Four",
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
           metaData: {
             size: 1,
+<<<<<<< HEAD
             lastSizeChangeAt: 1645124243270,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124232946,
+=======
+            lastSizeChangeAt: 1645495708756,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495692149,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -53868,20 +64434,34 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 672,
           internalListId: 672,
           createdAt: 1645124226905,
           updatedAt: 1645124226905,
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+>>>>>>> chore: add additional destination option.
           name: "List One",
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1645124242058,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124227052,
+=======
+            lastSizeChangeAt: 1645495706165,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -53891,20 +64471,34 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 674,
           internalListId: 674,
           createdAt: 1645124231086,
           updatedAt: 1645124231086,
+=======
+          portalId: 20858235,
+          listId: 66,
+          internalListId: 66,
+          createdAt: 1645495689464,
+          updatedAt: 1645495689464,
+>>>>>>> chore: add additional destination option.
           name: "List Three",
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1645124240411,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124231299,
+=======
+            lastSizeChangeAt: 1645495703317,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495689627,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -53914,11 +64508,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 673,
           internalListId: 673,
           createdAt: 1645124227704,
           updatedAt: 1645124227704,
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+>>>>>>> chore: add additional destination option.
           name: "List Two",
           listType: "STATIC",
           authorId: 13534722,
@@ -54013,9 +64615,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1632401940035,
             processing: "DONE",
             lastProcessingStateChangeAt: 1629388533258,
+=======
+            lastSizeChangeAt: 1645495703324,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -54029,7 +64637,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:23 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:29 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -54037,7 +64649,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13db98ffee83d-EWR",
+=======
+      "6e14aab58ff5e08e-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -54049,12 +64665,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "50a25a03-acc5-41e5-bfaf-58527615a6e6",
+=======
+      "fbfa19bd-4c69-4fbd-bc3f-3e7293bf4b51",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249647",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "55",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -54064,6 +64689,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B5952D60828A837F68294ADC1A22AFAA297BE9926000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=OPdcSrsZ6BmxTcfytZqvH9jfrLRqRAZ4OZZSMULEJahRA%2B3ZweD01l6oeRZfxcnEkoShAH7z1j32J6RxZUiZh9FgD3NdTnlPi4vZ%2BCYPyeTQ1Dn8T9%2FTF4p5RZmsOQqT"}],"group":"cf-nel","max_age":604800}',
+=======
+      "72",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2B26AB06069FFD8AE7F33B3342CF3252729520310F000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=y1%2FIL6YHwzoEwEqZkIf21ScHvEvrRdEKgmYYx61pr9c5pxSLu1zo%2B1B00FPwIdle8a8bCO3ydmC0bDDfivWhPlIh4UdexMaRTi0UAIVwXANlTCKgmUfJl4w6ofi%2F2z3Z"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -54081,7 +64717,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     {
       status: "error",
       message: "contact does not exist",
+<<<<<<< HEAD
       correlationId: "904c5ecb-43e0-4bf5-869b-646c32e59c64",
+=======
+      correlationId: "a7c6c2dd-d7bb-4943-a912-09c9d1ac3a2e",
+>>>>>>> chore: add additional destination option.
       errors: [
         { message: "The contact e:jake.jill@mailinator.com does not exist." },
       ],
@@ -54089,7 +64729,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:23 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:29 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -54097,7 +64741,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13dba4a731a40-EWR",
+=======
+      "6e14aab6d8b6275b-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -54109,14 +64757,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "904c5ecb-43e0-4bf5-869b-646c32e59c64",
       "X-HubSpot-NotFound",
       "true",
+=======
+      "a7c6c2dd-d7bb-4943-a912-09c9d1ac3a2e",
+      "X-HubSpot-NotFound",
+      "true",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249646",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "54",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -54126,6 +64785,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2BB0D673BF1231DE3BFFC7BDF5B5397EC3B8AEEF53000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=CWdttemVHQ1N70nS0cxVkKSZUBjDNGr8wpgcS6Tl7%2FaSGeYFFFvyRW1q0Dt%2B1cdAxDDOLutKMLPpzTUDA%2FIPwwQEQfQdFpP55pZ27fEOdFMQih%2F%2BZOiL8ddrK6ADBgAa"}],"group":"cf-nel","max_age":604800}',
+=======
+      "71",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2BE00ED2A5BB737C37A9703F3FE68CAA780B289CFA000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=8ywomniI%2BYKuudmTVGTXHuUs1wpsdRccWcSwDQHoTROqO1Rcdv8E06v%2BZzL1OK7a3Y5QvfdrDW8Lthj6ZypBicstSrj4Dk9qnEYriLtSFkfDsG90ocMrDC2FLxKsTVpg"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -54143,7 +64813,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     {
       status: "error",
       message: "contact does not exist",
+<<<<<<< HEAD
       correlationId: "d1e601fd-2550-4cf1-b45d-73e9eff59485",
+=======
+      correlationId: "b7bf54b3-623a-450e-ae34-c133d3c2aa87",
+>>>>>>> chore: add additional destination option.
       errors: [
         { message: "The contact e:pilo.paz@mailinator.com does not exist." },
       ],
@@ -54151,7 +64825,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:23 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:29 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -54159,7 +64837,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13dbafaa819aa-EWR",
+=======
+      "6e14aab82d552743-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -54171,14 +64853,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "d1e601fd-2550-4cf1-b45d-73e9eff59485",
       "X-HubSpot-NotFound",
       "true",
+=======
+      "b7bf54b3-623a-450e-ae34-c133d3c2aa87",
+      "X-HubSpot-NotFound",
+      "true",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249645",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "53",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -54188,6 +64881,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B282B4E59B22F63571FD362D242496C539568BCEF000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=o6IMVvp1cq7WshZSxQf4k9NLdoD%2F3XPNVCnHLcPScZUlhgj9OxEF43RGMTI7xaZSwSVaqHJm5LLeBCElQpMrmDHZPOJCd%2FPtwdXdd%2Fe8LoyTuroDoxbs8NbAQye%2F7T55"}],"group":"cf-nel","max_age":604800}',
+=======
+      "70",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2BB53E1E18B50DFAAAEDE3D7C5B117E795654544DF000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=kppBkRAf4Fqef6v15sm2AjZdZX9BXj9KeviqpNAcJhhJwfiGg%2FkzddKD94gEag2VRNduFccXz9kWI75cZz0hfF7OXot%2BT9W7%2FrU6rBiDmQYmjOS7aU8h31pjQdAFK7dS"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -54205,7 +64909,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     {
       status: "error",
       message: "contact does not exist",
+<<<<<<< HEAD
       correlationId: "09f452cf-c4c3-4508-87c0-f7ceb5be0b57",
+=======
+      correlationId: "9d3038dd-c72c-421d-a6e5-737d80d66466",
+>>>>>>> chore: add additional destination option.
       errors: [
         { message: "The contact e:jake.jill@mailinator.com does not exist." },
       ],
@@ -54213,7 +64921,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:23 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:29 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -54221,7 +64933,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13dbbcf638ca1-EWR",
+=======
+      "6e14aab9aa7e2749-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -54233,14 +64949,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "09f452cf-c4c3-4508-87c0-f7ceb5be0b57",
       "X-HubSpot-NotFound",
       "true",
+=======
+      "9d3038dd-c72c-421d-a6e5-737d80d66466",
+      "X-HubSpot-NotFound",
+      "true",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249644",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "52",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -54250,6 +64977,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B4CF2E136C3F657F066E109761D1076B8E2078500000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=K2JsS2xEzjsX0lr3BFOTgwDmCLveeroOnA9MeuvILMzWhLrs6vNX%2Brkcyy86OjIklkAw%2FXMaLscRJ0mn9nyB%2FWVNY5dB6GcLDBH7ZPRCtor119DaZ6jiWvNY3i2zpJpN"}],"group":"cf-nel","max_age":604800}',
+=======
+      "69",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B238D32E237F9CAE7E51DD72204E0A71905927D36000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=3L9FFeFN%2BTSlqgW7AFW7IGK68%2F7%2BlCKg4f3m%2BS4%2Bp3vBbtBWMjhyqDo8y3TDJLr7BtOAsVEtn0yBOa8DAmi2TT9ewfOc6giwtOwacf%2B64EocWOmpW1Va%2FBF8jlB2yExG"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -54267,7 +65005,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     {
       status: "error",
       message: "contact does not exist",
+<<<<<<< HEAD
       correlationId: "0f721fef-1c94-4e8d-b0f4-4dee68b1b9ef",
+=======
+      correlationId: "9f93bdf6-2715-4b87-8d7d-21f8ea2407c1",
+>>>>>>> chore: add additional destination option.
       errors: [
         { message: "The contact e:pilo.paz@mailinator.com does not exist." },
       ],
@@ -54275,7 +65017,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:24 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:30 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -54283,7 +65029,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13dbd2b778c05-EWR",
+=======
+      "6e14aabafcbc2749-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -54295,14 +65045,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "0f721fef-1c94-4e8d-b0f4-4dee68b1b9ef",
       "X-HubSpot-NotFound",
       "true",
+=======
+      "9f93bdf6-2715-4b87-8d7d-21f8ea2407c1",
+      "X-HubSpot-NotFound",
+      "true",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249643",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "51",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -54312,6 +65073,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B133BBA2E9211D525253F5462DED8E16BCC130476000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=HfVh%2BWRKDQK1HKXjdTXzihhyy6j%2BA2kvwrlqzRwywtxAgfp%2FdDEq%2B9%2BnpKzbO7rZ2BThHpvDuJv0vlGzsshlQdMmWA6LWLLZGkL3pJ1tKvHkyYwbOd7aEBiDMhdZ0QL7"}],"group":"cf-nel","max_age":604800}',
+=======
+      "68",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B56DF1A54D0CDE2F08C57838702FE95F4042C0D4F000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=vj9cgnTmRLeMj8DSUREShtmZCgWQnkHg4UTB2KstQwKw%2F2du%2FHHA5OgNx%2Fd9n%2FUA0QadLslaTre36voSec8zidLRa4eqb4MdrvsCJnUfFhOX7wl9A1mRBWm1ruie%2F4Ve"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -54329,9 +65101,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   })
   .query({})
   .once()
+<<<<<<< HEAD
   .reply(200, { vid: 290152, isNew: true }, [
     "Date",
     "Thu, 17 Feb 2022 18:57:24 GMT",
+=======
+  .reply(200, { vid: 44201, isNew: true }, [
+    "Date",
+    "Tue, 22 Feb 2022 02:08:30 GMT",
+>>>>>>> chore: add additional destination option.
     "Content-Type",
     "application/json;charset=utf-8",
     "Content-Length",
@@ -54339,7 +65117,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "CF-Ray",
+<<<<<<< HEAD
     "6df13dbdca08f009-EWR",
+=======
+    "6e14aabc2a4be084-FOR",
+>>>>>>> chore: add additional destination option.
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains; preload",
     "Vary",
@@ -54351,12 +65133,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
     "fd4e7dcc-b5ba-4052-8148-3a0f1ce9e4eb",
+=======
+    "302526bd-fc8d-4957-b1f2-ef898480ea6d",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249642",
+>>>>>>> chore: add additional destination option.
     "X-HubSpot-RateLimit-Interval-Milliseconds",
     "10000",
     "X-HubSpot-RateLimit-Max",
     "100",
     "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
     "50",
     "X-HubSpot-RateLimit-Secondly",
     "10",
@@ -54366,6 +65157,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "2B0F618BA7296E605168AD07C66D6AEE4D44C334AC000000000000000000",
     "Report-To",
     '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=Dq0ALcZIypkvdvfbsrTsMiuBC8wj7G3%2By0CHSdboS4C8LxSczplmXjfg4eQz2jjF%2BchR4Sw4MNOylZ01mLbktyXQq%2B8aMwgbUBgTUtg1KdbD%2B8pHucxAEmXrNNg%2F9tiC"}],"group":"cf-nel","max_age":604800}',
+=======
+    "67",
+    "X-HubSpot-RateLimit-Secondly",
+    "10",
+    "X-HubSpot-RateLimit-Secondly-Remaining",
+    "6",
+    "X-Trace",
+    "2BCAC4FC35CFC535F5F650205FB774ED0F5582A207000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=7L4W6ADqW38hP81Nxb7YSeM0PQ7PwuYUP0XVz8s7599hMMI76Xygp%2FbPNpmR8%2BA5uw%2BrgKfCYqYcaqLSnA6fQNv0YiQVZUERRp6pR%2F%2FCtyOxO9WwY6FpNTwL15dSp3cf"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
     "NEL",
     '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
     "Server",
@@ -54380,8 +65182,13 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       vid: 290152,
       "canonical-vid": 290152,
+=======
+      vid: 44201,
+      "canonical-vid": 44201,
+>>>>>>> chore: add additional destination option.
       "merged-vids": [],
       "portal-id": 7974676,
       "is-contact": true,
@@ -54389,6 +65196,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
         hs_is_unworked: { value: "true" },
         firstname: { value: "Jake" },
         hs_is_contact: { value: "true" },
+<<<<<<< HEAD
         lastmodifieddate: { value: "1645124244185" },
         hs_pipeline: { value: "contacts-lifecycle-pipeline" },
         hs_object_id: { value: "290152" },
@@ -54398,22 +65206,43 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
         lifecyclestage: { value: "subscriber" },
         email: { value: "jake.jill@mailinator.com" },
         hs_all_contact_vids: { value: "290152" },
+=======
+        lastmodifieddate: { value: "1645495710212" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        hs_object_id: { value: "44201" },
+        hs_email_domain: { value: "mailinator.com" },
+        createdate: { value: "1645495710212" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495710212" },
+        lifecyclestage: { value: "subscriber" },
+        email: { value: "jake.jill@mailinator.com" },
+        hs_all_contact_vids: { value: "44201" },
+>>>>>>> chore: add additional destination option.
       },
       "list-memberships": [],
       "identity-profiles": [
         {
+<<<<<<< HEAD
           vid: 290152,
           "saved-at-timestamp": 1645124244198,
+=======
+          vid: 44201,
+          "saved-at-timestamp": 1645495710240,
+>>>>>>> chore: add additional destination option.
           "deleted-changed-timestamp": 0,
           identities: [
             {
               type: "EMAIL",
               value: "jake.jill@mailinator.com",
+<<<<<<< HEAD
               timestamp: 1645124244185,
+=======
+              timestamp: 1645495710212,
+>>>>>>> chore: add additional destination option.
               "is-primary": true,
             },
             {
               type: "LEAD_GUID",
+<<<<<<< HEAD
               value: "41d093f0-3d92-46ab-87bd-30c8dccb3e8f",
               timestamp: 1645124244197,
             },
@@ -54542,6 +65371,12 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           message: "Email address 000 is invalid",
           error: "INVALID_EMAIL",
           name: "email",
+=======
+              value: "6e219432-115b-4eee-9843-1fb02d6e5845",
+              timestamp: 1645495710237,
+            },
+          ],
+>>>>>>> chore: add additional destination option.
         },
       ],
       status: "error",
@@ -54550,7 +65385,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:24 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:30 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -54558,7 +65397,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13dc19b158c2a-EWR",
+=======
+      "6e14aabebab5cf96-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -54570,12 +65413,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "9fc2b292-d904-4f05-9e88-74a1d25de42f",
+=======
+      "7ece687e-deda-4317-a7f4-d035b0a69aa0",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249641",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "47",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -54585,6 +65437,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B9235442346952C5A8FAC52E2A99E1710F6009265000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=pxdD6v2rOR7ehpa27a5oFBpc2SVr0C%2BNHKEzWFT2jq1v592nIMGwSBUYhHR%2FnPEu0zO%2FJyf%2Fo044ii2%2BVQjOvCZWQPMZr2Arr040SfHCmRX5I5yhFqrc1wouJ%2F997bbp"}],"group":"cf-nel","max_age":604800}',
+=======
+      "66",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B726C6787F6A08FF432D08D67515068DE342B921E000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=b3myS1%2Bptx8stQaIRELo%2FMKvWvrx5wJlixpfHDDO%2BQe%2BsblpTQ8GtUR%2FOXHeyz2HBNfdvu0kzuhLQxUbTAZ6wZ5Rs056kr6qDuST%2BpE%2BzPWT0vvQDXvbUGMHP484Khsr"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -54602,17 +65465,26 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     {
       status: "error",
       message: "contact does not exist",
+<<<<<<< HEAD
       correlationId: "40574b20-d6d1-40bf-a08a-57deeb7343ca",
       errors: [
         {
           message: "The contact e:caio.silveira@mailinator.com does not exist.",
         },
       ],
+=======
+      correlationId: "9f50a0f8-496e-4d04-b3b3-c528b8daba40",
+      errors: [{ message: "The contact e:000 does not exist." }],
+>>>>>>> chore: add additional destination option.
       category: "OBJECT_NOT_FOUND",
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:24 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:30 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -54620,7 +65492,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13dc249348c5d-EWR",
+=======
+      "6e14aabff9e3e074-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -54632,14 +65508,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "40574b20-d6d1-40bf-a08a-57deeb7343ca",
       "X-HubSpot-NotFound",
       "true",
+=======
+      "9f50a0f8-496e-4d04-b3b3-c528b8daba40",
+      "X-HubSpot-NotFound",
+      "true",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249640",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "46",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -54649,6 +65536,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B6230A1F2A57A6614A156EEDC9558DFEDEA517A8A000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=DMMM0%2FXKhkw0mhvWhLf0wFaV%2FHk8NN5loptKYS1DExemciIZZiIh%2FQA%2FjwFjQgmLXo2Ic0uvay0%2BlpbKIm3xUsWNgPrK5kNKV74OoT3sItch7bct6VYFHhl9FdKgAjoM"}],"group":"cf-nel","max_age":604800}',
+=======
+      "65",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B2183FEA006AAEC2C1119A767840F5D8267473D1C000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=2z5ZW2iNchziH2nWphOTkc5dP%2FGme4cojDCwoyu74dUGF9fnVMOrYkQF1%2FIBJmQEJkbo3BTMyexqVHDAxHcjYII2cT7p48%2Bz4l%2Fcxm%2FWfYCkz4T3plebQJo%2BWIJZlvRg"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -54706,11 +65604,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           ],
         },
       ],
+<<<<<<< HEAD
       "merge-audits": [],
     },
     [
       "Date",
       "Thu, 17 Feb 2022 18:57:25 GMT",
+=======
+      status: "error",
+      message: "Property values were not valid",
+      correlationId: "97c50e59-5df9-4eb0-b775-63f5f45dfdbc",
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:31 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -54718,7 +65626,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13dc2f97b1819-EWR",
+=======
+      "6e14aac13e5fcf96-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -54730,12 +65642,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "94d8e15a-afb6-4e72-bbbc-c23e1ecd0ed8",
+=======
+      "97c50e59-5df9-4eb0-b775-63f5f45dfdbc",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249639",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "45",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -54745,6 +65666,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B4B0826FC5384D47379AF74677D42CA848C4AA470000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=sTL9RXKDzTo%2BG9WRMRzaF%2B506mHMDOjRyKr4g3OU14zwkH6FZOLmsYczx32m0VJ3i5OxmjKhvDhGEFL4BD6WYyq35lCOoYHQGNSAIj8IJAZ3S0615lKPK3iXi166WWkC"}],"group":"cf-nel","max_age":604800}',
+=======
+      "66",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2BBCDBE3CDD9A8EFFB172872C1C889C5F937F934EE000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=0EGMVI06BihkekH2siuJ5bYpDR1Qgyv81CjQWPBw5T8oDeEBg4t4cetm0N3Cl9w9MtxxMOWDcdTZJmQT6R%2FOw6chRxC%2B6cacX8tHzs2Dtme0xWcPVzvZ185eN4WyXIF%2F"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -54810,7 +65742,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     {
       status: "error",
       message: "contact does not exist",
+<<<<<<< HEAD
       correlationId: "854f50f4-9473-4ffe-bdca-e558101c917b",
+=======
+      correlationId: "ab6ddfe4-05fc-4ef7-8104-b4020a668c07",
+>>>>>>> chore: add additional destination option.
       errors: [
         {
           message: "The contact e:sandro.arturo@mailinator.com does not exist.",
@@ -54820,7 +65756,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:25 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:31 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Content-Length",
@@ -54828,7 +65768,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13dc56c761971-EWR",
+=======
+      "6e14aac46f91275d-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -54840,14 +65784,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "854f50f4-9473-4ffe-bdca-e558101c917b",
       "X-HubSpot-NotFound",
       "true",
+=======
+      "ab6ddfe4-05fc-4ef7-8104-b4020a668c07",
+      "X-HubSpot-NotFound",
+      "true",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249638",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "43",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -54857,6 +65812,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2BC3B86AA5F8CD535D8BF509268877E4A9A7615657000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=1AahsCREefWJKx1KfYzJDM9BDnNzqpNoGnuOBPYRHrt%2BJaED2c2q6GBPfdJjyDzrAV2KhHCZ4jmoPZHIb7Ss5rl4UJOL1HLaApesQHRv2jAoGAtIXWUOmlOrQ3m06lpt"}],"group":"cf-nel","max_age":604800}',
+=======
+      "65",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2BF409AFD18E2344A20B666E542543E92BA2174FA4000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=yzyhqVzExATFiaD0S5r5xSilhridM22iNsz3kT2%2F5vHU5DQo27e4mMUa%2BNbfNQYEIKyuQW70oHYkF2zq6bguoxTZySzbQXzN1UxxOcBaLMqsWrP0qZvZkOIlC2BIjy9H"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -54872,12 +65838,18 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       vid: 290151,
       "canonical-vid": 290151,
+=======
+      vid: 44001,
+      "canonical-vid": 44001,
+>>>>>>> chore: add additional destination option.
       "merged-vids": [],
       "portal-id": 7974676,
       "is-contact": true,
       properties: {
+<<<<<<< HEAD
         hs_is_unworked: { value: "true" },
         firstname: { value: "Carlos" },
         lastmodifieddate: { value: "1645124243502" },
@@ -54891,6 +65863,36 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
         num_conversion_events: { value: "0" },
         hs_object_id: { value: "290151" },
         hs_email_domain: { value: "mailinator.com" },
+=======
+        hs_latest_source_data_1: { value: "API" },
+        hs_is_unworked: { value: "true" },
+        num_unique_conversion_events: { value: "0" },
+        hs_latest_source: { value: "OFFLINE" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        hs_analytics_revenue: { value: "0.0" },
+        hs_social_num_broadcast_clicks: { value: "0" },
+        createdate: { value: "1645495695245" },
+        hs_analytics_num_visits: { value: "0" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        hs_social_linkedin_clicks: { value: "0" },
+        hs_analytics_source: { value: "OFFLINE" },
+        hs_email_domain: { value: "mailinator.com" },
+        hs_analytics_num_page_views: { value: "0" },
+        email: { value: "lucas.nogueira@mailinator.com" },
+        lastmodifieddate: { value: "1645495699961" },
+        hs_analytics_first_timestamp: { value: "1645495695245" },
+        hs_social_google_plus_clicks: { value: "0" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495695245" },
+        hs_analytics_average_page_views: { value: "0" },
+        hs_all_contact_vids: { value: "44001" },
+        hs_social_facebook_clicks: { value: "0" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        hs_object_id: { value: "44001" },
+        hs_analytics_num_event_completions: { value: "0" },
+        hs_social_twitter_clicks: { value: "0" },
+        hs_analytics_source_data_1: { value: "API" },
+>>>>>>> chore: add additional destination option.
         lifecyclestage: { value: "subscriber" },
         email: { value: "carlos.solimoes@mailinator.com" },
       },
@@ -54905,20 +65907,35 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       ],
       "identity-profiles": [
         {
+<<<<<<< HEAD
           vid: 290151,
           "saved-at-timestamp": 1645124242749,
+=======
+          vid: 44001,
+          "saved-at-timestamp": 1645495695312,
+>>>>>>> chore: add additional destination option.
           "deleted-changed-timestamp": 0,
           identities: [
             {
               type: "EMAIL",
+<<<<<<< HEAD
               value: "carlos.solimoes@mailinator.com",
               timestamp: 1645124242728,
+=======
+              value: "lucas.nogueira@mailinator.com",
+              timestamp: 1645495695245,
+>>>>>>> chore: add additional destination option.
               "is-primary": true,
             },
             {
               type: "LEAD_GUID",
+<<<<<<< HEAD
               value: "ed4eb714-98cc-457a-815f-7f447df6d1f3",
               timestamp: 1645124242745,
+=======
+              value: "66b29ec3-19ad-4af3-9aaa-5167fd9e652f",
+              timestamp: 1645495695308,
+>>>>>>> chore: add additional destination option.
             },
           ],
         },
@@ -54927,7 +65944,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:25 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:31 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -54935,7 +65956,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13dc61b2e19aa-EWR",
+=======
+      "6e14aac5cdfee08e-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -54947,12 +65972,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "bc40061e-3469-4d64-966c-24ff43440a85",
+=======
+      "599ee27b-6765-4413-81a3-392f622def6b",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249637",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "42",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -54962,6 +65996,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B94BBDA2E379A6E5710E31F07B59F6E95B3760EDA000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=aSSpU0xL4qwy7uhFkkFZ6rNQxUZl%2Fm8uSfwjCUsGLFA4GraEWzDruE6LOZZ4aPI1ki45jzf93a7Lo8fUBLUd0PT9mr6a1q%2Bi5256CpyL%2B66XQCR5ydEii9HulFVD05LD"}],"group":"cf-nel","max_age":604800}',
+=======
+      "64",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2BD55C98A54E18B3313DA96BDBD33E5AAFB539F262000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=XRt5LSiYVI0TyYZm%2FkavD1xSbA5RF8s%2Fimu6eOwDCVD25uXy8Dc%2FJTaaDtih4VmxBaD%2FuzJ8wU9uNyvoGLupOVA0xZJtGRmQCb7XwVGN1NE1Q%2FyVqzaLgzAgeyE%2BaIY6"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -54971,12 +66016,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
   .delete("/contacts/v1/contact/vid/290151", {})
   .query({})
   .once()
   .reply(200, { vid: 290151, deleted: true, reason: "OK" }, [
     "Date",
     "Thu, 17 Feb 2022 18:57:25 GMT",
+=======
+  .delete("/contacts/v1/contact/vid/44001", {})
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(200, { vid: 44001, deleted: true, reason: "OK" }, [
+    "Date",
+    "Tue, 22 Feb 2022 02:08:32 GMT",
+>>>>>>> chore: add additional destination option.
     "Content-Type",
     "application/json;charset=utf-8",
     "Content-Length",
@@ -54984,7 +66038,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "CF-Ray",
+<<<<<<< HEAD
     "6df13dc6ff7932f4-EWR",
+=======
+    "6e14aac70a1ee084-FOR",
+>>>>>>> chore: add additional destination option.
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains; preload",
     "Vary",
@@ -54996,12 +66054,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
     "978a05df-cdad-45f4-a665-cd8a49225664",
+=======
+    "0689f524-04e6-4d90-8f52-d9ab12bb5c40",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249636",
+>>>>>>> chore: add additional destination option.
     "X-HubSpot-RateLimit-Interval-Milliseconds",
     "10000",
     "X-HubSpot-RateLimit-Max",
     "100",
     "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
     "41",
     "X-HubSpot-RateLimit-Secondly",
     "10",
@@ -55011,6 +66078,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "2BAA81166C8F1F0541972CEEDF01A7A62D638DA09F000000000000000000",
     "Report-To",
     '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=FJf9%2B1Ho%2FiIOYN%2FrbMqsYme5DJ0WzF6F6ss9LR97OMg0xRuOn7qSYL2p2tS6QPf6dandl9yD%2B7qaz2zfNFPHnlQq1w%2BgX8cGqLTYi4rFxsrkPCHi%2B2bYgkD2FQTTDsBb"}],"group":"cf-nel","max_age":604800}',
+=======
+    "63",
+    "X-HubSpot-RateLimit-Secondly",
+    "10",
+    "X-HubSpot-RateLimit-Secondly-Remaining",
+    "6",
+    "X-Trace",
+    "2B9A31717455E12CB66C0F58E2FE900A61AC07F7C9000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=x47dli0%2Fs0f8ul4ysjAGiEK2dgxV4MbTChsJcSkZJTpX2ZlRToiMkY5F4ViJ37nUVWXWOl6w6JOkhjcj3%2BKvMENQoJyWp1n6jJ1oBTsM%2B%2Fv104QjVYGkZeF3Y8isLINl"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
     "NEL",
     '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
     "Server",
@@ -55025,6 +66103,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       vid: 290152,
       "canonical-vid": 290152,
       "merged-vids": [],
@@ -55049,6 +66128,12 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       },
       "list-memberships": [],
       "identity-profiles": [
+=======
+      status: "error",
+      message: "contact does not exist",
+      correlationId: "ed6c4e3c-bd25-48cb-a184-06baaedc2cd9",
+      errors: [
+>>>>>>> chore: add additional destination option.
         {
           vid: 290152,
           "saved-at-timestamp": 1645124244198,
@@ -55072,7 +66157,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:25 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:32 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -55080,7 +66169,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13dc8cf601a38-EWR",
+=======
+      "6e14aac91bdfcf9a-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -55092,12 +66185,23 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "0bb30c91-63ed-45f5-8c43-0db4473008c9",
+=======
+      "ed6c4e3c-bd25-48cb-a184-06baaedc2cd9",
+      "X-HubSpot-NotFound",
+      "true",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249635",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "40",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -55107,6 +66211,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2BE50321516B7BE4DD57219D77738A1208ABBF9D11000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=V3GYD9C9rFLewqHHyMQoZOXFyYifp8zs6V62RkVYiwtSg3D0j0Cu%2BobGHzH9lGlB2yNCbPtNfSyWwHTvd0oyfoXb1mKM5XTiPIQz4dgiebSpBwGG0QnAJakHHlQEwWYF"}],"group":"cf-nel","max_age":604800}',
+=======
+      "66",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2BA668B112D93A078E76A334EF7F8DB2188C9E7E41000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=wzRGGJlmOr%2Fh5s2Au840qXpWEWUG9H%2BNYLffHYN4pynZ2s8naSFqTgdfoVAOuFdFIA%2FgSS6CzMORtsjxjGnOEFJ2FTIiNGAVlK1k5v6sm0LYcxDEvv6no52rQVPBzEjg"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -55170,6 +66285,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
+<<<<<<< HEAD
       offset: 500,
       lists: [
         {
@@ -55506,8 +66622,55 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           archived: false,
           teamIds: [],
           dynamic: false,
+=======
+      vid: 44151,
+      "canonical-vid": 44151,
+      "merged-vids": [],
+      "portal-id": 20858235,
+      "is-contact": true,
+      properties: {
+        hs_latest_source_data_1: { value: "API" },
+        hs_is_unworked: { value: "true" },
+        firstname: { value: "Carlos" },
+        num_unique_conversion_events: { value: "0" },
+        hs_latest_source: { value: "OFFLINE" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        hs_analytics_revenue: { value: "0.0" },
+        hs_social_num_broadcast_clicks: { value: "0" },
+        createdate: { value: "1645495708052" },
+        hs_analytics_num_visits: { value: "0" },
+        hs_sequences_actively_enrolled_count: { value: "0" },
+        hs_social_linkedin_clicks: { value: "0" },
+        hs_analytics_source: { value: "OFFLINE" },
+        hs_email_domain: { value: "mailinator.com" },
+        hs_analytics_num_page_views: { value: "0" },
+        email: { value: "carlos.solimoes@mailinator.com" },
+        lastmodifieddate: { value: "1645495710612" },
+        hs_analytics_first_timestamp: { value: "1645495708052" },
+        hs_social_google_plus_clicks: { value: "0" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495708052" },
+        hs_analytics_average_page_views: { value: "0" },
+        hs_all_contact_vids: { value: "44151" },
+        hs_social_facebook_clicks: { value: "0" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        hs_object_id: { value: "44151" },
+        hs_analytics_num_event_completions: { value: "0" },
+        hs_social_twitter_clicks: { value: "0" },
+        hs_analytics_source_data_1: { value: "API" },
+        lifecyclestage: { value: "subscriber" },
+      },
+      "list-memberships": [
+        {
+          "static-list-id": 67,
+          "internal-list-id": 67,
+          timestamp: 1645495708681,
+          vid: 44151,
+          "is-member": true,
+>>>>>>> chore: add additional destination option.
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 555,
           internalListId: 555,
@@ -55550,13 +66713,30 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           archived: false,
           teamIds: [],
           dynamic: false,
+=======
+          vid: 44151,
+          "saved-at-timestamp": 1645495708098,
+          "deleted-changed-timestamp": 0,
+          identities: [
+            {
+              type: "EMAIL",
+              value: "carlos.solimoes@mailinator.com",
+              timestamp: 1645495708052,
+              "is-primary": true,
+            },
+            {
+              type: "LEAD_GUID",
+              value: "1f1b8b7f-a5a6-45d8-b249-0bf5c792549c",
+              timestamp: 1645495708094,
+            },
+          ],
         },
       ],
-      "has-more": false,
+      "merge-audits": [],
     },
     [
       "Date",
-      "Thu, 17 Feb 2022 18:57:26 GMT",
+      "Tue, 22 Feb 2022 02:08:33 GMT",
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -55564,7 +66744,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
-      "6df13dcb6c3b1764-EWR",
+      "6e14aacdc80bcf8e-FOR",
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -55576,21 +66756,25 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
-      "81981acf-5cae-4b02-8ae2-6d8240a4b9de",
+      "f022e859-7fd5-47a1-8b88-786b0655a92a",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249634",
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
-      "43",
+      "68",
       "X-HubSpot-RateLimit-Secondly",
       "10",
       "X-HubSpot-RateLimit-Secondly-Remaining",
-      "4",
+      "6",
       "X-Trace",
-      "2B2ED7833DA37AA606985796479D30D75F39134E00000000000000000000",
+      "2B6D99CE8EA92483427A5CF1F80AB03A406C01FB3B000000000000000000",
       "Report-To",
-      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=PtX4oWnWLk%2BbSXcluvqBQWX6OAsmIsP%2BCiZuYeIMcMZ8Rlbt4gAjbJOnb4AnzMepH3rNej3qyY%2BVQHH2Jj4jkHBaQYQDI9ZdZHNIv0ET%2BBNYQHuyR1DQw1LCVEaQUf21"}],"group":"cf-nel","max_age":604800}',
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=LBHUpZXFcbEMdWEyBi1HTVN8CRKvkuuADAULZviOutQTkNphrvOIpnnYwrGOw6ellXZtLWekf2rafgjpaGVE00QyuS4PyL9M84HDXVnW1AL7fQ7KwNgRYaAbM2gVxGxf"}],"group":"cf-nel","max_age":604800}',
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -55600,6 +66784,188 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .delete("/contacts/v1/contact/vid/44151", {})
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(200, { vid: 44151, deleted: true, reason: "OK" }, [
+    "Date",
+    "Tue, 22 Feb 2022 02:08:33 GMT",
+    "Content-Type",
+    "application/json;charset=utf-8",
+    "Content-Length",
+    "42",
+    "Connection",
+    "close",
+    "CF-Ray",
+    "6e14aad13a37e084-FOR",
+    "Strict-Transport-Security",
+    "max-age=31536000; includeSubDomains; preload",
+    "Vary",
+    "Accept-Encoding",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Access-Control-Allow-Credentials",
+    "false",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "X-HubSpot-Correlation-Id",
+    "ee147d46-186c-4c38-bebd-5a8fce4f8275",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249633",
+    "X-HubSpot-RateLimit-Interval-Milliseconds",
+    "10000",
+    "X-HubSpot-RateLimit-Max",
+    "100",
+    "X-HubSpot-RateLimit-Remaining",
+    "67",
+    "X-HubSpot-RateLimit-Secondly",
+    "10",
+    "X-HubSpot-RateLimit-Secondly-Remaining",
+    "6",
+    "X-Trace",
+    "2B2902CA053A5F877340085905370CB4F89895F57C000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=2J%2Fa5o87Uw40PYGI7xX7Vvd6%2BiY4sMKzmd%2Fs70mE6MM%2BVE3Pie%2FHNxzFLZ0DJQz2lwM6Y6abmXl5arTH9UCpQ2hqhpx9GqPWUcTr2w7tmftYLiVKhWSm9QQnRWNskk3t"}],"group":"cf-nel","max_age":604800}',
+    "NEL",
+    '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+    "Server",
+    "cloudflare",
+    "alt-svc",
+    'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+  ]);
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/contact/email/jake.jill@mailinator.com/profile", {})
+  .query({
+    propertyMode: "value_only",
+    formSubmissionMode: "none",
+    hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      vid: 44201,
+      "canonical-vid": 44201,
+      "merged-vids": [],
+      "portal-id": 20858235,
+      "is-contact": true,
+      properties: {
+        hs_is_unworked: { value: "true" },
+        firstname: { value: "Jake" },
+        lastmodifieddate: { value: "1645495710688" },
+        num_unique_conversion_events: { value: "0" },
+        hs_pipeline: { value: "contacts-lifecycle-pipeline" },
+        createdate: { value: "1645495710212" },
+        hs_lifecyclestage_subscriber_date: { value: "1645495710212" },
+        hs_all_contact_vids: { value: "44201" },
+        hs_is_contact: { value: "true" },
+        num_conversion_events: { value: "0" },
+        hs_object_id: { value: "44201" },
+        hs_email_domain: { value: "mailinator.com" },
+        lifecyclestage: { value: "subscriber" },
+        email: { value: "jake.jill@mailinator.com" },
+      },
+      "list-memberships": [],
+      "identity-profiles": [
+        {
+          vid: 44201,
+          "saved-at-timestamp": 1645495710240,
+          "deleted-changed-timestamp": 0,
+          identities: [
+            {
+              type: "EMAIL",
+              value: "jake.jill@mailinator.com",
+              timestamp: 1645495710212,
+              "is-primary": true,
+            },
+            {
+              type: "LEAD_GUID",
+              value: "6e219432-115b-4eee-9843-1fb02d6e5845",
+              timestamp: 1645495710237,
+            },
+          ],
+>>>>>>> chore: add additional destination option.
+        },
+      ],
+      "has-more": false,
+    },
+    [
+      "Date",
+<<<<<<< HEAD
+      "Thu, 17 Feb 2022 18:57:26 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:34 GMT",
+>>>>>>> chore: add additional destination option.
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+<<<<<<< HEAD
+      "6df13dcb6c3b1764-EWR",
+=======
+      "6e14aad3de2be084-FOR",
+>>>>>>> chore: add additional destination option.
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
+      "81981acf-5cae-4b02-8ae2-6d8240a4b9de",
+=======
+      "11ed3191-428f-486e-a2f7-487f63e68de1",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249632",
+>>>>>>> chore: add additional destination option.
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
+      "43",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "4",
+      "X-Trace",
+      "2B2ED7833DA37AA606985796479D30D75F39134E00000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=PtX4oWnWLk%2BbSXcluvqBQWX6OAsmIsP%2BCiZuYeIMcMZ8Rlbt4gAjbJOnb4AnzMepH3rNej3qyY%2BVQHH2Jj4jkHBaQYQDI9ZdZHNIv0ET%2BBNYQHuyR1DQw1LCVEaQUf21"}],"group":"cf-nel","max_age":604800}',
+=======
+      "66",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2B9DD0093660C18BB147FF279BDBC8A41C81CCF843000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=zj3CyQbNrcaoV8s7ragG%2FdyPOt8Uypq1sDq2C63D5zhHLAT8fKI2TAIjVJ76ffWxXvTLDcLPXG1JmhnYB1WkXLHh4C5hzmP9L%2B5qh3wO5rfFFTYBJo7%2Ba7AemdoJJYmW"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
   .delete("/contacts/v1/lists/672")
   .once()
   .reply(204, "", [
@@ -55609,6 +66975,22 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "close",
     "CF-Ray",
     "6df13dcc0fc5e6ec-EWR",
+=======
+  .delete("/contacts/v1/contact/vid/44201", {})
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(200, { vid: 44201, deleted: true, reason: "OK" }, [
+    "Date",
+    "Tue, 22 Feb 2022 02:08:34 GMT",
+    "Content-Type",
+    "application/json;charset=utf-8",
+    "Content-Length",
+    "42",
+    "Connection",
+    "close",
+    "CF-Ray",
+    "6e14aad548742745-FOR",
+>>>>>>> chore: add additional destination option.
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains; preload",
     "CF-Cache-Status",
@@ -55618,12 +67000,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
     "cf1c5b93-9045-456c-8f13-1efe44792437",
+=======
+    "5104b1a4-7123-43b4-80c6-e68d36b3dee5",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249631",
+>>>>>>> chore: add additional destination option.
     "X-HubSpot-RateLimit-Interval-Milliseconds",
     "10000",
     "X-HubSpot-RateLimit-Max",
     "100",
     "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
     "42",
     "X-HubSpot-RateLimit-Secondly",
     "10",
@@ -55633,6 +67024,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "2B0D0049B21AD7DEE2F51778E8C514E356D0ADB33E000000000000000000",
     "Report-To",
     '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=ZOhFEYzISjHi9bZe1SyTjHqUto%2BJHCar%2Fcgj9R2mPl8FlwB2gbnIg7oSTLH2JgCuzGenMUnrhklPmSaEK54HiiSgi7U81B9D1ow5gILDbq2P3Z0NxIu56D6%2F0OaFQpm5"}],"group":"cf-nel","max_age":604800}',
+=======
+    "69",
+    "X-HubSpot-RateLimit-Secondly",
+    "10",
+    "X-HubSpot-RateLimit-Secondly-Remaining",
+    "6",
+    "X-Trace",
+    "2BAEEFF6C21484FC6FD681303C4B4663BD9CE71579000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=oL2UITn2TzM7a7qVGvgolMQtwHimpGhAgsZVm%2BUV5s5v4hYZWUz137teKQyTs5Q6Mc4deMkxVKw66Mj1cNutHlrGuFAmS5MVlfNpEcVFKfAMFoXL%2BCMfZuQZbXfdSce1"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
     "NEL",
     '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
     "Server",
@@ -55782,19 +67184,34 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 624,
           internalListId: 624,
           createdAt: 1634665348999,
           updatedAt: 1634665348999,
           name: "High Value Cusotmers",
+=======
+          portalId: 20858235,
+          listId: 67,
+          internalListId: 67,
+          createdAt: 1645495691989,
+          updatedAt: 1645495691989,
+          name: "List Four",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1634665476551,
             processing: "DONE",
             lastProcessingStateChangeAt: 1634665349262,
+=======
+            lastSizeChangeAt: 1645495713778,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495692149,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -55804,6 +67221,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 554,
           internalListId: 554,
@@ -55855,14 +67273,28 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           createdAt: 1645124232745,
           updatedAt: 1645124232745,
           name: "List Four",
+=======
+          portalId: 20858235,
+          listId: 64,
+          internalListId: 64,
+          createdAt: 1645495682180,
+          updatedAt: 1645495682180,
+          name: "List One",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1645124245918,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124232946,
+=======
+            lastSizeChangeAt: 1645495706165,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495682333,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -55872,20 +67304,34 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 674,
           internalListId: 674,
           createdAt: 1645124231086,
           updatedAt: 1645124231086,
+=======
+          portalId: 20858235,
+          listId: 66,
+          internalListId: 66,
+          createdAt: 1645495689464,
+          updatedAt: 1645495689464,
+>>>>>>> chore: add additional destination option.
           name: "List Three",
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1645124240411,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124231299,
+=======
+            lastSizeChangeAt: 1645495703317,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495689627,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -55895,11 +67341,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 673,
           internalListId: 673,
           createdAt: 1645124227704,
           updatedAt: 1645124227704,
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+>>>>>>> chore: add additional destination option.
           name: "List Two",
           listType: "STATIC",
           authorId: 13534722,
@@ -55994,9 +67448,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1632401940035,
             processing: "DONE",
             lastProcessingStateChangeAt: 1629388533258,
+=======
+            lastSizeChangeAt: 1645495703324,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -56010,7 +67470,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:26 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:34 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -56018,7 +67482,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13dcd9d8532ca-EWR",
+=======
+      "6e14aad77edecf8e-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -56030,12 +67498,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "715ba1f1-696f-4d5d-a683-c971bda2e03e",
+=======
+      "abbbe546-cd9d-47d1-ac86-33f1e5397048",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249630",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "41",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -56045,6 +67522,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2B67BAE79A6FF63F01E56059735CE6B351FBF7B7E2000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=JVwUWRtf5rlw1Mwa8E8XGskNPWMEUnzgF08kb5zSH7kb66KlkId5t2iyU8PcUnjY%2FSlQ8yS%2Fbf%2BTU62TY3POr%2FoY7mB1tHibBLdsTVb4SSJJbBYB7YgorqAtIch5QQA6"}],"group":"cf-nel","max_age":604800}',
+=======
+      "68",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2BCA8D315E5B2226108A48B317272058A5EF399487000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=rMXp6%2BnT9ODQRZjIr387I4vAuLi7xFerOrwiV8sANmovOt3qBEan01s5gzIG55FSwaM5p2iQuQkWQIK9AVRyOc0pKfXNB8N7dDexaExIrDH3Thunr%2FynjYe58g9wQSsd"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -56054,6 +67542,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
   .delete("/contacts/v1/lists/673")
   .once()
   .reply(204, "", [
@@ -56063,6 +67552,18 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "close",
     "CF-Ray",
     "6df13dce6dde8c30-EWR",
+=======
+  .delete("/contacts/v1/lists/64")
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Tue, 22 Feb 2022 02:08:34 GMT",
+    "Connection",
+    "close",
+    "CF-Ray",
+    "6e14aad8cd4de084-FOR",
+>>>>>>> chore: add additional destination option.
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains; preload",
     "CF-Cache-Status",
@@ -56072,12 +67573,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
     "ee2b587e-a008-4e85-a488-2931f40b9754",
+=======
+    "768f5ad5-7c36-49c5-bdc5-1f27138a1b98",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249629",
+>>>>>>> chore: add additional destination option.
     "X-HubSpot-RateLimit-Interval-Milliseconds",
     "10000",
     "X-HubSpot-RateLimit-Max",
     "100",
     "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
     "40",
     "X-HubSpot-RateLimit-Secondly",
     "10",
@@ -56087,6 +67597,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "2BD79BED935CE6D46E76EB5F8BBFF5A3A3FF729A5C000000000000000000",
     "Report-To",
     '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=2EaQjGFp%2BareIUyq77FiFcgA9FiyryKS%2FfvKZB5svW5FnjlhezvZT%2BBCUH3%2FVVV0zI8AIAOX%2F2GR9Zgf0LkCFZpSKeO5P6Z7vuxT2tD%2FdxN2S50SAObjKJJRJ2u5qU%2FD"}],"group":"cf-nel","max_age":604800}',
+=======
+    "67",
+    "X-HubSpot-RateLimit-Secondly",
+    "10",
+    "X-HubSpot-RateLimit-Secondly-Remaining",
+    "6",
+    "X-Trace",
+    "2B86E8C2A0F06188B9AAF9C722119E03045A564FC2000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=%2Fqv5ZfdXoYJCCEUtJP%2BMPL%2FIDCAi2OiPsN7GRj%2F5QRQL7KusbbxtvBpc%2FOaLTWeLWxtUKVsckA8AjdwU5%2Fz1irqD6DxhZe4KofiF2h9McyywVODlf4i%2Ff9Lxif47FtTt"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
     "NEL",
     '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
     "Server",
@@ -56303,20 +67824,34 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 675,
           internalListId: 675,
           createdAt: 1645124232745,
           updatedAt: 1645124232745,
+=======
+          portalId: 20858235,
+          listId: 67,
+          internalListId: 67,
+          createdAt: 1645495691989,
+          updatedAt: 1645495691989,
+>>>>>>> chore: add additional destination option.
           name: "List Four",
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1645124245918,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124232946,
+=======
+            lastSizeChangeAt: 1645495713778,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495692149,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -56326,20 +67861,34 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 674,
           internalListId: 674,
           createdAt: 1645124231086,
           updatedAt: 1645124231086,
+=======
+          portalId: 20858235,
+          listId: 66,
+          internalListId: 66,
+          createdAt: 1645495689464,
+          updatedAt: 1645495689464,
+>>>>>>> chore: add additional destination option.
           name: "List Three",
           listType: "STATIC",
           authorId: 13534722,
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1645124240411,
             processing: "DONE",
             lastProcessingStateChangeAt: 1645124231299,
+=======
+            lastSizeChangeAt: 1645495703317,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495689627,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -56349,6 +67898,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 623,
           internalListId: 623,
@@ -56421,13 +67971,27 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           createdAt: 1629388533048,
           updatedAt: 1629388533048,
           name: "Speaks Spanish",
+=======
+          portalId: 20858235,
+          listId: 65,
+          internalListId: 65,
+          createdAt: 1645495684161,
+          updatedAt: 1645495684161,
+          name: "List Two",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1632401940035,
             processing: "DONE",
             lastProcessingStateChangeAt: 1629388533258,
+=======
+            lastSizeChangeAt: 1645495703324,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495684337,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -56441,7 +68005,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:27 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:35 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -56449,7 +68017,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13dcfab0a3350-EWR",
+=======
+      "6e14aadb294e273d-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -56461,12 +68033,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "94c0cc64-12f1-40db-a7d3-46e556f7b896",
+=======
+      "20cb1398-aa36-493e-b8d9-dae7c7381fc0",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249628",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "45",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -56476,6 +68057,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2BDF2F921B716EE1EF274A0F559CEA1B1EAF8FD30F000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=jDJs7RX1Y26HBrZVmfMP8mKhcwBY1kU97S5nB9imIWTpW8YAbUZPFwIH%2BthK4IDqO01qskg4q00RYBeSWk11REuA%2B%2FkYwlY4WyESKcKBQnuprOiF4AfRiZPIu1SlpBmw"}],"group":"cf-nel","max_age":604800}',
+=======
+      "70",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2B9FDEE3C23B2F98B0DDCE0F2209D4D24DE6D9EB35000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=LEAAw9gcv3yHc%2BvNSAZSh5zLZPjdYZt%2F%2Fbyh2bp7mb2BSHO54AAhVqYC4mBBYfTEPKDt85lAW%2FtMadtDL%2BL%2FcB5c3gYRA3Xl8wcHMUWI%2F0AWsupnxW1QQ%2FCtDo%2BFxEus"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -56485,6 +68077,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
   .delete("/contacts/v1/lists/674")
   .once()
   .reply(204, "", [
@@ -56494,6 +68087,18 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "close",
     "CF-Ray",
     "6df13dd09f630cd1-EWR",
+=======
+  .delete("/contacts/v1/lists/65")
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Tue, 22 Feb 2022 02:08:35 GMT",
+    "Connection",
+    "close",
+    "CF-Ray",
+    "6e14aadc6aa62743-FOR",
+>>>>>>> chore: add additional destination option.
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains; preload",
     "CF-Cache-Status",
@@ -56503,12 +68108,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
     "c779567b-592c-4672-8ac6-01af067683b3",
+=======
+    "ad7e6320-6079-4e2d-928f-1b0c8ee4d81e",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249627",
+>>>>>>> chore: add additional destination option.
     "X-HubSpot-RateLimit-Interval-Milliseconds",
     "10000",
     "X-HubSpot-RateLimit-Max",
     "100",
     "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
     "44",
     "X-HubSpot-RateLimit-Secondly",
     "10",
@@ -56518,6 +68132,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "2BA84AE081C8AEC4E46917573FAF16C3B95DB5E63B000000000000000000",
     "Report-To",
     '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=EMPVY0FMfa1ka4rNcNmN2TCeJse6sZqJfHUPxVH5kWVzjQiZfmuM7uYcusDO1wz6yQfAXEkmXR%2FGjEJG2yK63q7BzTkLnkyBp7tdaIHaJBP8PsczRtdRnnytFqlS73Vs"}],"group":"cf-nel","max_age":604800}',
+=======
+    "69",
+    "X-HubSpot-RateLimit-Secondly",
+    "10",
+    "X-HubSpot-RateLimit-Secondly-Remaining",
+    "6",
+    "X-Trace",
+    "2B21B260D4525F43FAF6263A021C36061553C63F29000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=DPCSNRw3J1gjW72Zz9H2q8pZJRVHCKjHtBxXndjSB%2Bxa47Hx1MgenrigvVLpy6tciTuAZY1Su%2F8WeNTLeGXUM9%2Bhnr4ptC%2BmWZhoKzGS0Lrtrq4EKq1N4nbMgcgCi%2Brl"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
     "NEL",
     '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
     "Server",
@@ -56557,6 +68182,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 627,
           internalListId: 627,
@@ -56585,13 +68211,27 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           createdAt: 1634665347746,
           updatedAt: 1634665347746,
           name: "Bought anything at all",
+=======
+          portalId: 20858235,
+          listId: 67,
+          internalListId: 67,
+          createdAt: 1645495691989,
+          updatedAt: 1645495691989,
+          name: "List Four",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1634665476559,
             processing: "DONE",
             lastProcessingStateChangeAt: 1634665347951,
+=======
+            lastSizeChangeAt: 1645495713778,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495692149,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -56601,16 +68241,26 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 562,
           internalListId: 562,
           createdAt: 1632402381791,
           updatedAt: 1632402381791,
           name: "Cool People",
+=======
+          portalId: 20858235,
+          listId: 66,
+          internalListId: 66,
+          createdAt: 1645495689464,
+          updatedAt: 1645495689464,
+          name: "List Three",
+>>>>>>> chore: add additional destination option.
           listType: "STATIC",
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1634665193431,
             processing: "DONE",
             lastProcessingStateChangeAt: 1632402381930,
@@ -56680,6 +68330,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
             lastSizeChangeAt: 1634665476551,
             processing: "DONE",
             lastProcessingStateChangeAt: 1634665349262,
+=======
+            lastSizeChangeAt: 1645495703317,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495689627,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -56688,6 +68343,116 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           teamIds: [],
           dynamic: false,
         },
+<<<<<<< HEAD
+=======
+      ],
+      "has-more": false,
+    },
+    [
+      "Date",
+      "Tue, 22 Feb 2022 02:08:35 GMT",
+      "Content-Type",
+      "application/json;charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "CF-Ray",
+      "6e14aade9de42755-FOR",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload",
+      "Vary",
+      "Accept-Encoding",
+      "CF-Cache-Status",
+      "DYNAMIC",
+      "Access-Control-Allow-Credentials",
+      "false",
+      "Expect-CT",
+      'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+      "X-HubSpot-Correlation-Id",
+      "3c9d7037-19b3-442f-ab24-a27acea94450",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249626",
+      "X-HubSpot-RateLimit-Interval-Milliseconds",
+      "10000",
+      "X-HubSpot-RateLimit-Max",
+      "100",
+      "X-HubSpot-RateLimit-Remaining",
+      "68",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "6",
+      "X-Trace",
+      "2BC1AC366E0D99676CD892BB26ED3B5088F1D81530000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=DKh67KuY0I%2B2tirOCTTIqezHQbAwqSljXzLXmmCE%2B%2BYxCZs8ULmqMR%2FJ5PwnwpNLeutl7iCxc1bTEAZfNQv05j5loPWbykev1SDBgFjwphYDPIQV4YC%2FPDmTAb4aEmPZ"}],"group":"cf-nel","max_age":604800}',
+      "NEL",
+      '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+      "Server",
+      "cloudflare",
+      "alt-svc",
+      'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+    ]
+  );
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .delete("/contacts/v1/lists/66")
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Tue, 22 Feb 2022 02:08:36 GMT",
+    "Connection",
+    "close",
+    "CF-Ray",
+    "6e14aadfde092749-FOR",
+    "Strict-Transport-Security",
+    "max-age=31536000; includeSubDomains; preload",
+    "CF-Cache-Status",
+    "DYNAMIC",
+    "Access-Control-Allow-Credentials",
+    "false",
+    "Expect-CT",
+    'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+    "X-HubSpot-Correlation-Id",
+    "777820b1-1c76-470a-a95e-1c35e1df26aa",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249625",
+    "X-HubSpot-RateLimit-Interval-Milliseconds",
+    "10000",
+    "X-HubSpot-RateLimit-Max",
+    "100",
+    "X-HubSpot-RateLimit-Remaining",
+    "67",
+    "X-HubSpot-RateLimit-Secondly",
+    "10",
+    "X-HubSpot-RateLimit-Secondly-Remaining",
+    "6",
+    "X-Trace",
+    "2B3EABB0D038B5685B6D9E50BC3710D15A964AF349000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=JA6EU6XiSOdLPjBjxM1d67lndBLb1k5UWjDBHP%2B3XMHpX2OxU%2FWkJ8pua2SSc9xD1bfoT3XTXBEHvqnu4qaKlibc7L0WaF6G894LzqaHpYNehLonhzg6%2BxcNwlSeIKw3"}],"group":"cf-nel","max_age":604800}',
+    "NEL",
+    '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
+    "Server",
+    "cloudflare",
+    "alt-svc",
+    'h3=":443"; ma=86400, h3-29=":443"; ma=86400',
+  ]);
+nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+  .get("/contacts/v1/lists/static")
+  .query({ count: "999", hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(
+    200,
+    {
+      offset: 500,
+      lists: [
+>>>>>>> chore: add additional destination option.
         {
           portalId: 7974676,
           listId: 554,
@@ -56734,11 +68499,19 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           dynamic: false,
         },
         {
+<<<<<<< HEAD
           portalId: 7974676,
           listId: 675,
           internalListId: 675,
           createdAt: 1645124232745,
           updatedAt: 1645124232745,
+=======
+          portalId: 20858235,
+          listId: 67,
+          internalListId: 67,
+          createdAt: 1645495691989,
+          updatedAt: 1645495691989,
+>>>>>>> chore: add additional destination option.
           name: "List Four",
           listType: "STATIC",
           authorId: 13534722,
@@ -56833,9 +68606,15 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           filters: [],
           metaData: {
             size: 0,
+<<<<<<< HEAD
             lastSizeChangeAt: 1632401940035,
             processing: "DONE",
             lastProcessingStateChangeAt: 1629388533258,
+=======
+            lastSizeChangeAt: 1645495713778,
+            processing: "DONE",
+            lastProcessingStateChangeAt: 1645495692149,
+>>>>>>> chore: add additional destination option.
             error: "",
             listReferencesCount: null,
             parentFolderId: null,
@@ -56849,7 +68628,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:27 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:36 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -56857,7 +68640,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13dd21f568ca2-EWR",
+=======
+      "6e14aae1fc62275d-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -56869,12 +68656,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "fb3ef2af-5cd6-4591-820f-b42b2b7068ce",
+=======
+      "37f4d5f2-7c66-460b-909f-5028ec253479",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249624",
+>>>>>>> chore: add additional destination option.
       "X-HubSpot-RateLimit-Interval-Milliseconds",
       "10000",
       "X-HubSpot-RateLimit-Max",
       "100",
       "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
       "43",
       "X-HubSpot-RateLimit-Secondly",
       "10",
@@ -56884,6 +68680,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "2BB39D204CD43C3595160B31E20EF608CFFAFDAAA8000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=zJpWZ7hcjxYprLs0PRQq%2B5TsJiIua8R6fKAjejUrXpb6w42cF5arTbBR28cfChSILMs4UEs0SLMrnKsjk1Ay%2FG%2BGhlOOu9C4r1UfTPl7GrX7tzew4xq3XPEFw4ss7dV7"}],"group":"cf-nel","max_age":604800}',
+=======
+      "70",
+      "X-HubSpot-RateLimit-Secondly",
+      "10",
+      "X-HubSpot-RateLimit-Secondly-Remaining",
+      "7",
+      "X-Trace",
+      "2BBCE123F52C472FA41D7F5B95D57192A314D70E67000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=OaisZkSdy2CTwpqQLEE14AQCYjLJfGcNb80F5wWP1AMjqqckhgIKge7hcRuI2xLH1leidCzlgd22O7tTIFFky4UnmqhMOgKQrJCipNxmpKi7NAEYYbEjkXBp%2B%2BlDhDhh"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -56893,6 +68700,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
+<<<<<<< HEAD
   .delete("/contacts/v1/lists/675")
   .once()
   .reply(204, "", [
@@ -56902,6 +68710,18 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "close",
     "CF-Ray",
     "6df13dd30ea20ce1-EWR",
+=======
+  .delete("/contacts/v1/lists/67")
+  .query({ hapikey: "a31ef454-1835-4b88-8d3a-eefc0b688ded" })
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Tue, 22 Feb 2022 02:08:36 GMT",
+    "Connection",
+    "close",
+    "CF-Ray",
+    "6e14aae34a56cf8e-FOR",
+>>>>>>> chore: add additional destination option.
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains; preload",
     "CF-Cache-Status",
@@ -56911,12 +68731,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
     "f5928de4-894f-4f0c-968d-1bdb72d9aa1c",
+=======
+    "fe6e5b2b-2ffe-4fd0-9620-0afbc39f5390",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249623",
+>>>>>>> chore: add additional destination option.
     "X-HubSpot-RateLimit-Interval-Milliseconds",
     "10000",
     "X-HubSpot-RateLimit-Max",
     "100",
     "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
     "42",
     "X-HubSpot-RateLimit-Secondly",
     "10",
@@ -56926,6 +68755,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "2B9369E14FFDC7B67C182445344193C3ED0107534B000000000000000000",
     "Report-To",
     '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=V%2BqaDcKK0wQRczU4%2BTAzN58sXCp%2BEZseb9Uvvy6mvgwh%2BGZG8w6tSkSyCAVXCWaBNqSYASGal2QbIRcK55Wvg4WXP9jMiFHCGmaRsqY3Y4C3Pn15R5xz5R2M7WqIlybo"}],"group":"cf-nel","max_age":604800}',
+=======
+    "69",
+    "X-HubSpot-RateLimit-Secondly",
+    "10",
+    "X-HubSpot-RateLimit-Secondly-Remaining",
+    "6",
+    "X-Trace",
+    "2B36FA333DEF2A2D1C3A975A89208A8D8829BF8B33000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=zYmS1V9vqcxvORcWGdEjvk%2Byrq9OIdK9CJdHIPuaScESarEiMQ89KQzyircmhsVahnSowdJTvyHcLncVW0uLJH33Ff0ffp%2F7XTaPxma0plBRbfuBSiTXlUVrns1qNhaZ"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
     "NEL",
     '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
     "Server",
@@ -56965,6 +68805,7 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       total: 2,
       results: [
         {
+<<<<<<< HEAD
           id: "7945061896",
           properties: {
             createdate: "2022-02-17T18:56:54.727Z",
@@ -56986,13 +68827,40 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
           },
           createdAt: "2022-02-17T18:56:54.727Z",
           updatedAt: "2022-02-17T18:57:19.455Z",
+=======
+          id: "7977984559",
+          properties: {
+            createdate: "2022-02-22T02:07:48.429Z",
+            domain: "samba.grouparoo.com",
+            hs_lastmodifieddate: "2022-02-22T02:08:17.404Z",
+            hs_object_id: "7977984559",
+          },
+          createdAt: "2022-02-22T02:07:48.429Z",
+          updatedAt: "2022-02-22T02:08:17.404Z",
+          archived: false,
+        },
+        {
+          id: "7977984560",
+          properties: {
+            createdate: "2022-02-22T02:07:48.429Z",
+            domain: "bossa.grouparoo.com",
+            hs_lastmodifieddate: "2022-02-22T02:07:58.082Z",
+            hs_object_id: "7977984560",
+          },
+          createdAt: "2022-02-22T02:07:48.429Z",
+          updatedAt: "2022-02-22T02:07:58.082Z",
+>>>>>>> chore: add additional destination option.
           archived: false,
         },
       ],
     },
     [
       "Date",
+<<<<<<< HEAD
       "Thu, 17 Feb 2022 18:57:27 GMT",
+=======
+      "Tue, 22 Feb 2022 02:08:36 GMT",
+>>>>>>> chore: add additional destination option.
       "Content-Type",
       "application/json;charset=utf-8",
       "Transfer-Encoding",
@@ -57000,7 +68868,11 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "CF-Ray",
+<<<<<<< HEAD
       "6df13dd4cf748c47-EWR",
+=======
+      "6e14aae54d532743-FOR",
+>>>>>>> chore: add additional destination option.
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload",
       "Vary",
@@ -57012,11 +68884,23 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
       "Expect-CT",
       'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
       "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
       "6adb30e7-bf51-48e4-8c5a-2dc19768dc26",
       "X-Trace",
       "2B4204CD1921F1EC5320ED142BD1FD7975FD0630FD000000000000000000",
       "Report-To",
       '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=%2BPgi%2F8OjUMAo%2BTfpAKeoGVIq%2FygFyG9AEBLPXpYqni4wiPKYa9ACJZ%2BQjonym%2BeX0j9cLafTPmPRB52AW4klMx%2BrpHUBQTSlUDCyCee831kDfK0%2FR6h7LsjQ0KqHCfZd"}],"group":"cf-nel","max_age":604800}',
+=======
+      "8e7b2cee-1bb6-408c-83c7-d04f6ccacb40",
+      "X-HubSpot-RateLimit-Daily",
+      "250000",
+      "X-HubSpot-RateLimit-Daily-Remaining",
+      "249622",
+      "X-Trace",
+      "2B8BC9304A245FF1ECC29BAF28DB1A23F8A3605393000000000000000000",
+      "Report-To",
+      '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=XS2uMep9OADv6qZ9tCPLvILQAowGyafJfzw56%2F2KeQ7DtWrK0k7GMPwNHHG6utQYOy%2BGks2VQqKt5rFdDKlPPSBn1wieOazn2XJNtb5ZSWGAjhv%2BjvfIfhCcww5aGmOF"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
       "NEL",
       '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
       "Server",
@@ -57027,16 +68911,28 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   );
 nock("https://api.hubapi.com:443", { encodedQueryParams: true })
   .post("/crm/v3/objects/COMPANY/batch/archive", {
+<<<<<<< HEAD
     inputs: [{ id: "7945061896" }, { id: "7945061897" }],
+=======
+    inputs: [{ id: "7977984559" }, { id: "7977984560" }],
+>>>>>>> chore: add additional destination option.
   })
   .once()
   .reply(204, "", [
     "Date",
+<<<<<<< HEAD
     "Thu, 17 Feb 2022 18:57:28 GMT",
     "Connection",
     "close",
     "CF-Ray",
     "6df13dd5ad48e841-EWR",
+=======
+    "Tue, 22 Feb 2022 02:08:37 GMT",
+    "Connection",
+    "close",
+    "CF-Ray",
+    "6e14aae6e8f7e07c-FOR",
+>>>>>>> chore: add additional destination option.
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains; preload",
     "CF-Cache-Status",
@@ -57046,12 +68942,21 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "Expect-CT",
     'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
     "X-HubSpot-Correlation-Id",
+<<<<<<< HEAD
     "65740599-ffad-44db-83e2-a67bae937480",
+=======
+    "0ee9dc05-6b85-40fc-aba4-0331c3665ee3",
+    "X-HubSpot-RateLimit-Daily",
+    "250000",
+    "X-HubSpot-RateLimit-Daily-Remaining",
+    "249621",
+>>>>>>> chore: add additional destination option.
     "X-HubSpot-RateLimit-Interval-Milliseconds",
     "10000",
     "X-HubSpot-RateLimit-Max",
     "100",
     "X-HubSpot-RateLimit-Remaining",
+<<<<<<< HEAD
     "41",
     "X-HubSpot-RateLimit-Secondly",
     "10",
@@ -57061,6 +68966,17 @@ nock("https://api.hubapi.com:443", { encodedQueryParams: true })
     "2B312974D4510D7B11EB8272129E528EBB5C2E2311000000000000000000",
     "Report-To",
     '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=X3tU5c445e9%2BHc43mFmZSIK02VN98St2cF4QsMkkoKCrHyvUcDGvIeTPI3ZS3pz2sf9ZK4usalhWUtS3UmOb2KcWIzGXJJ4lVKnvaSJBay1RNGQWz7A1%2FHHmbjOhMDJt"}],"group":"cf-nel","max_age":604800}',
+=======
+    "70",
+    "X-HubSpot-RateLimit-Secondly",
+    "10",
+    "X-HubSpot-RateLimit-Secondly-Remaining",
+    "7",
+    "X-Trace",
+    "2BB77FE2E55042DB6A989935CA4687DCD6133B59F8000000000000000000",
+    "Report-To",
+    '{"endpoints":[{"url":"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=4Fw5Yyaxob%2BOzi7xv19bfN7cd1%2FUDuRKfzzaqtVNO3QHQZiaS5YggYQYdJRz5rNFiueanWB46wY32SDIjDgAKYiVoXURYedP1KAC7%2Fod%2Fg4RHX9nu0rHWVbRp6IGPJfI"}],"group":"cf-nel","max_age":604800}',
+>>>>>>> chore: add additional destination option.
     "NEL",
     '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}',
     "Server",

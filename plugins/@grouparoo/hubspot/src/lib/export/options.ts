@@ -33,11 +33,13 @@ class OptionsHandler {
     return out;
   }
 
-  public async getContactDestinationOptions(): Promise<DestinationOptionsMethodResponse> {
+  public async getContactDestinationOptions({
+    destinationOptions,
+  }): Promise<DestinationOptionsMethodResponse> {
     const { appOptions } = this.cacheData;
     this.client = await connect(appOptions);
     const out: DestinationOptionsMethodResponse = {};
-    Object.assign(out, await this.getContactOptions());
+    Object.assign(out, await this.getContactOptions(destinationOptions));
     return out;
   }
 
@@ -65,8 +67,10 @@ class OptionsHandler {
     );
   }
 
-  private async getContactOptions() {
-    const searchableAndUniqueProperties = [
+  private async getContactOptions(
+    destinationOptions: SimpleDestinationOptions
+  ) {
+    const searchableCompanyFields = [
       "website",
       "phone",
       "domain",
@@ -74,26 +78,33 @@ class OptionsHandler {
       "hs_object_id",
     ];
     const out: DestinationOptionsMethodResponse = {
-      companyKey: { type: "typeahead", options: [], descriptions: [] },
-      companyKey: { type: "typeahead", options: [], descriptions: [] },
+      companyKey: {
+        type: "typeahead",
+        options: searchableCompanyFields,
+        descriptions: [],
+      },
+      companyRecordField: {
+        type: "typeahead",
+        options: [],
+        descriptions: [],
+      },
     };
-    const companySchema = await this.getSchema("COMPANY");
-    const companyProperties = companySchema?.properties;
-    const objectsToSort = [];
-    companyProperties.map((object) => {
-      if (searchableAndUniqueProperties.includes(object.name)) {
-        objectsToSort.push({
-          option: object.name,
-          description: object.description,
-        });
-      }
-    });
-    objectsToSort
-      .sort((a, b) => a.option.localeCompare(b.description))
-      .map((object) => {
-        out.companyKey.options.push(object.option);
-        out.companyKey.descriptions.push(object.description);
-      });
+
+    if (
+      !searchableCompanyFields.includes(
+        destinationOptions.companyKey?.toString()
+      )
+    ) {
+      destinationOptions.companyKey = null;
+    }
+
+    const contactFields = await this.getObjectMatchNames("CONTACT");
+    out.companyRecordField.options = contactFields;
+    if (
+      !contactFields.includes(destinationOptions.companyRecordField?.toString())
+    ) {
+      destinationOptions.companyRecordField = null;
+    }
     return out;
   }
 

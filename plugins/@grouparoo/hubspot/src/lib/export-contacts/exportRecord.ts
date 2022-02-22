@@ -8,6 +8,7 @@ import {
 import { HubspotClient } from "../client/client";
 import { connect } from "../connect";
 import { addToList, removeFromList } from "./listMethods";
+import { checkOptionsIntegrity } from "./destinationMappingOptions";
 
 const deleteContactOrClearGroups = async (
   client: HubspotClient,
@@ -43,23 +44,23 @@ export const exportRecord: ExportRecordPluginMethod = async ({
     oldGroups,
   },
 }) => {
+  checkOptionsIntegrity(destinationOptions);
   // if we received no mapped data... just exit
   if (Object.keys(newRecordProperties).length === 0) {
     return { success: true };
   }
-
   const client = await connect(appOptions);
 
   const email = newRecordProperties["email"]; // this is how we will identify records
   const oldEmail = oldRecordProperties["email"];
-  const companyKey = destinationOptions?.companyKey;
-  const companyMappingKey = companyKey ? `Company.${companyKey}` : null;
+  const companyKey = destinationOptions?.companyKey?.toString();
+  const companyRecordField = destinationOptions?.companyRecordField?.toString();
   if (!email) {
     throw new Error(`newRecordProperties[email] is a required mapping`);
   }
-  if (companyKey && !newRecordProperties[companyMappingKey]) {
+  if (companyKey && !newRecordProperties[companyRecordField]) {
     throw new Error(
-      `newRecordProperties[${companyMappingKey}] is a required mapping`
+      `newRecordProperties[${companyRecordField}] is a required mapping`
     );
   }
 
@@ -97,9 +98,6 @@ export const exportRecord: ExportRecordPluginMethod = async ({
       );
       const formattedDataFields = {};
       for (const key of Object.keys(payload)) {
-        if (key.startsWith("Company.")) {
-          continue;
-        }
         formattedDataFields[key] = formatVar(payload[key]);
       }
 
@@ -138,8 +136,8 @@ export const exportRecord: ExportRecordPluginMethod = async ({
 
       // handle associations.
       if (companyKey) {
-        const oldCompanyKeyValue = oldRecordProperties[companyMappingKey];
-        const newCompanyKeyValue = newRecordProperties[companyMappingKey];
+        const oldCompanyKeyValue = oldRecordProperties[companyRecordField];
+        const newCompanyKeyValue = newRecordProperties[companyRecordField];
         if (!contact) {
           contact = await client.getContactByEmail(email);
         }
@@ -147,6 +145,7 @@ export const exportRecord: ExportRecordPluginMethod = async ({
           client,
           contact,
           companyKey.toString(),
+          companyRecordField.toString(),
           oldCompanyKeyValue,
           newCompanyKeyValue
         );
@@ -180,6 +179,7 @@ async function syncAssociations(
   client: HubspotClient,
   contact: any,
   companyKey: string,
+  companyRecordField: string,
   oldCompanyKeyValue: string,
   newCompanyKeyValue: string
 ) {

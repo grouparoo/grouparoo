@@ -4,7 +4,10 @@ import { OptionsHandler } from "../export/options";
 export const destinationOptions: DestinationOptionsMethod = async ({
   appId,
   appOptions,
+  destinationOptions,
 }) => {
   const optionHandler = new OptionsHandler({ appId, appOptions });
-  return await optionHandler.getContactDestinationOptions();
+  return await optionHandler.getContactDestinationOptions({
+    destinationOptions,
+  });
 };

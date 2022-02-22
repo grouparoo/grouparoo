@@ -28,6 +28,12 @@ export const contactsDestinationConnection: PluginConnection = {
       description:
         "Links a Contact to a company by something other than the Hubspot default (email domain).",
     },
+    {
+      key: "companyRecordField",
+      displayName: "Company Contact Field",
+      required: false,
+      description: "Which Contact field is the reference to the Company?",
+    },
   ],
   methods: {
     exportRecord,

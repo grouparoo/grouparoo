@@ -37,6 +37,19 @@ describe("hubspot/destinationOptions", () => {
           "hs_object_id",
         ])
       );
+
+option = result.companyRecordField;
+    expect(option.type).toEqual("typeahead");
+    expect(option.options).toEqual(
+      expect.arrayContaining([
+        "address",
+        "associatedcompanyid",
+        "company",
+        "email",
+        "website",
+        "work_email",
+      ])
+    );
     });
   });
 });

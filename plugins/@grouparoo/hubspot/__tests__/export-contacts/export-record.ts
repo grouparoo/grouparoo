@@ -10,6 +10,7 @@ const appId = "app_ds789a789gdf789jh.m678rt90-90-3k";
 let apiClient: HubspotClient;
 let user: any;
 const companyKey = "domain";
+const companyRecordField = "website";
 const company1 = { name: "bossa", domain: "bossa.grouparoo.com" };
 const company2 = { name: "samba", domain: "samba.grouparoo.com" };
 const phoneNumber = "+5583999999999";

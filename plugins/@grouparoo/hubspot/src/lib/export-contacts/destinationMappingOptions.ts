@@ -9,10 +9,23 @@ const importantFields = ["firstname", "lastname", "company"];
 
 export const destinationMappingOptions: DestinationMappingOptionsMethod =
   async ({ appOptions, destinationOptions }) => {
+    checkOptionsIntegrity(destinationOptions);
     const client = await connect(appOptions);
     const required = getRequiredFields();
-
     const known = await getUserFields(client, appOptions);
+    if (destinationOptions.companyRecordField) {
+      let index = -1;
+      for (let i = 0; i < known.length; i++) {
+        if (known[i].key === destinationOptions.companyRecordField) {
+          index = i;
+          break;
+        }
+      }
+      if (index >= 0) {
+        required.push(known[index]);
+        known.splice(index, 1);
+      }
+    }
     return {
       labels: {
         property: {
@@ -96,3 +109,26 @@ export const getUserFields = async (
   }
   return out;
 };
+
+export function checkOptionsIntegrity(options) {
+  if (!options) {
+    return;
+  }
+  const companyKeys = ["companyKey", "companyRecordField"];
+  // needs either none or all keys
+  let count = 0;
+  for (const key of companyKeys) {
+    const value = options ? (options[key] || "").toString().trim() : "";
+    if (value.length > 0) {
+      options[key] = value;
+      count++;
+    } else {
+      options[key] = null;
+    }
+  }
+  if (count > 0 && companyKeys.length !== count) {
+    throw new Error(
+      `To associate Contacts to Companies, all related options must be set.`
+    );
+  }
+}
