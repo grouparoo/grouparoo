@@ -6,7 +6,7 @@ import { WebAppContext } from "../../contexts/webApp";
 import { Models } from "../../utils/apiData";
 import { renderNestedContextProviders } from "../../utils/contextHelper";
 
-interface ContextProviderProps {
+export interface ContextProviderProps {
   webAppContext?: WebAppContext;
   client?: Client;
   model?: Models.GrouparooModelType;

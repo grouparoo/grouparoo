@@ -1,8 +1,8 @@
-import { act, render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import mockAxios from "jest-mock-axios";
 import Component from "../../components/navigation/SetupStepsNavProgressBar";
 import { Actions } from "../../utils/apiData";
-import { TestContextProvider } from "../__utils__/ContextProvider";
+import { asyncRenderWithContext } from "../__utils__/renderWithContext";
 
 const useRouter = jest.spyOn(require("next/router"), "useRouter");
 
@@ -18,13 +18,7 @@ describe("setupStepsNavProgressBar", () => {
     for (const page of ["/", "/session/sign-in"]) {
       it(`does not render on ${page}`, async () => {
         useRouter.mockImplementation(() => ({ pathname: page, asPath: page }));
-        await act(async () => {
-          render(
-            <TestContextProvider>
-              <Component />
-            </TestContextProvider>
-          );
-        });
+        await asyncRenderWithContext(<Component />);
         expect(screen.queryByTestId("setupStepsProgressBar")).toBeNull();
       });
     }
@@ -44,14 +38,7 @@ describe("setupStepsNavProgressBar", () => {
     });
 
     it("doesn't display without steps", async () => {
-      await act(async () => {
-        render(
-          <TestContextProvider>
-            <Component />
-          </TestContextProvider>
-        );
-      });
-
+      await asyncRenderWithContext(<Component />);
       expect(screen.queryByTestId("setupStepsProgressBar")).toBeNull();
     });
 
@@ -78,13 +65,7 @@ describe("setupStepsNavProgressBar", () => {
         ],
       };
 
-      await act(async () => {
-        render(
-          <TestContextProvider>
-            <Component />
-          </TestContextProvider>
-        );
-      });
+      await asyncRenderWithContext(<Component />);
 
       expect(mockAxios).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -122,13 +103,7 @@ describe("setupStepsNavProgressBar", () => {
         ],
       };
 
-      await act(async () => {
-        render(
-          <TestContextProvider>
-            <Component />
-          </TestContextProvider>
-        );
-      });
+      await asyncRenderWithContext(<Component />);
 
       mockAxios.mockResponse({ data: stepsResponse });
       await expect(
