@@ -1,5 +1,4 @@
 import { Badge } from "react-bootstrap";
-import EnterpriseLink from "../GrouparooLink";
 
 export default function TypeBadge({
   type,
