@@ -189,6 +189,20 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
     }
   };
 
+  const watchedFields = watch();
+
+  const hasAllRequiredFields = useMemo(() => {
+    return pluginOptions
+      .filter((opt) => opt.required)
+      .reduce(
+        (acc, opt) =>
+          acc &&
+          !!watchedFields.options[opt.key] &&
+          watchedFields.options[opt.key] !== "",
+        true
+      );
+  }, [pluginOptions, watchedFields]);
+
   return (
     <>
       <Head>
@@ -356,12 +370,11 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
                                       Boolean(app.locked) || loadingOAuth
                                     }
                                     loading={loadingOAuth}
-                                    variant="outline-primary"
+                                    variant={"outline-primary"}
                                     onClick={() => startOAuthLogin(opt.key)}
                                   >
-                                    Sign in with OAuth
+                                    Request Token
                                   </LoadingButton>
-
                                   <Form.Control
                                     className="mt-2"
                                     required={opt.required}
@@ -412,6 +425,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
                   size="sm"
                   onClick={test}
                   loading={testLoading}
+                  disabled={!hasAllRequiredFields}
                 >
                   Test Connection
                 </LoadingButton>
