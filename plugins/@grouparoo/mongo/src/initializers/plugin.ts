@@ -4,7 +4,6 @@ import { connect } from "./../lib/connect";
 import { disconnect } from "./../lib/disconnect";
 import { test } from "./../lib/test";
 import { getConnection as getTableConnection } from "../lib/table-import/connection";
-import { getConnection as getQueryConnection } from "../lib/query-import/connection";
 
 const packageJSON = require("./../../package.json");
 
@@ -42,7 +41,7 @@ export class Plugins extends Initializer {
           methods: { test, connect, disconnect },
         },
       ],
-      connections: [getTableConnection(), getQueryConnection()],
+      connections: [getTableConnection()],
     });
   }
 }
