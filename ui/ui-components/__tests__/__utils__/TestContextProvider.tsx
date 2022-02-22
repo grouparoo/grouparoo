@@ -6,13 +6,13 @@ import { WebAppContext } from "../../contexts/webApp";
 import { Models } from "../../utils/apiData";
 import { renderNestedContextProviders } from "../../utils/contextHelper";
 
-export interface ContextProviderProps {
+export interface TestContextProviderProps {
   webAppContext?: WebAppContext;
   client?: Client;
   model?: Models.GrouparooModelType;
 }
 
-export const TestContextProvider: FC<ContextProviderProps> = ({
+export const TestContextProvider: FC<TestContextProviderProps> = ({
   children,
   webAppContext = {},
   client = new Client(),

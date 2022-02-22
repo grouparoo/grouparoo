@@ -1,19 +1,19 @@
 import { render } from "@testing-library/react";
 import React from "react";
 import {
-  ContextProviderProps,
+  TestContextProviderProps,
   TestContextProvider,
 } from "./TestContextProvider";
 import { renderAndWait } from "./renderAndWait";
 
 export const renderWithContext = (
   jsx: React.ReactNode,
-  contextData: ContextProviderProps = {}
+  contextData: TestContextProviderProps = {}
 ) => render(<TestContextProvider {...contextData}>{jsx}</TestContextProvider>);
 
 export const asyncRenderWithContext = (
   jsx: React.ReactNode,
-  contextData: ContextProviderProps = {},
+  contextData: TestContextProviderProps = {},
   timeout?: number
 ) =>
   renderAndWait(
