@@ -13,7 +13,7 @@ exports.default = async function buildConfig() {
 
 
       options: {
-        schemaId: "2-3039", // Hubspot Custom Object Schema ID
+        schemaId: "2-3039", // HubSpot Custom Object Schema ID
         primaryKey: "email", // property that will uniquely represent the custom object
       },
 

@@ -13,10 +13,10 @@ export const contactsSupportedSyncModes: DestinationSyncMode[] = [
 
 export const contactsDestinationConnection: PluginConnection = {
   name: "hubspot-export-contacts",
-  displayName: "Hubspot Export Contacts",
+  displayName: "HubSpot Export Contacts",
   direction: "export",
   description:
-    "Export Records as Hubspot Contacts and add them to Contact Lists.",
+    "Export Records as HubSpot Contacts and add them to Contact Lists.",
   apps: ["hubspot", "hubspot-oauth"],
   syncModes: contactsSupportedSyncModes,
   defaultSyncMode: "sync",
@@ -26,7 +26,7 @@ export const contactsDestinationConnection: PluginConnection = {
       displayName: "Company Key",
       required: false,
       description:
-        "Links a Contact to a company by something other than the Hubspot default (email domain).",
+        "Links a Contact to a company by something other than the HubSpot default (email domain).",
     },
   ],
   methods: {

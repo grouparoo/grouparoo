@@ -216,10 +216,10 @@ describe("integration/runs/hubspot", () => {
     expect(error).toBeUndefined();
     expect(options.labels).toEqual({
       property: {
-        singular: "Hubspot Contact Property",
-        plural: "Hubspot Contact Properties",
+        singular: "HubSpot Contact Property",
+        plural: "HubSpot Contact Properties",
       },
-      group: { singular: "Hubspot List", plural: "Hubspot Lists" },
+      group: { singular: "HubSpot List", plural: "HubSpot Lists" },
     });
     expect(options.properties.required).toEqual([
       { key: "email", type: "email" },

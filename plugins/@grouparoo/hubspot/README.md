@@ -1,6 +1,6 @@
 # @grouparoo/hubspot
 
-A [Grouparoo](https://www.grouparoo.com) plugin for connecting to [Hubspot](https://www.hubspot.com/).
+A [Grouparoo](https://www.grouparoo.com) plugin for connecting to [HubSpot](https://www.hubspot.com/).
 
 Learn more about Grouparoo Plugins at [www.grouparoo.com/docs/integrations](https://www.grouparoo.com/docs/integrations).
 
@@ -10,4 +10,4 @@ In your Grouparoo project, run `grouparoo install @grouparoo/hubspot`.
 
 ## Attribution
 
-The Hubspot icon used in this plugin is from https://www.hubspot.com/style-guide
+The HubSpot icon used in this plugin is from https://www.hubspot.com/style-guide

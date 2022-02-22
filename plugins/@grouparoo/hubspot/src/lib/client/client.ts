@@ -12,7 +12,7 @@ class HubspotClient {
   private static formatAPIError(error: unknown) {
     if (axios.isAxiosError(error) && error.response.data?.status === "error") {
       const newError = new Error(
-        `[ Hubspot API ] ${error.message}: ${JSON.stringify(
+        `[ HubSpot API ] ${error.message}: ${JSON.stringify(
           error.response.data
         )}`
       );
