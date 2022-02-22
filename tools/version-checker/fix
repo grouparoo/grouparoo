@@ -9,7 +9,7 @@ cd ../..
 echo "Fixing package versions..."
 echo ""
 
-./node_modules/.bin/syncpack fix-mismatches
+./monorepo/node_modules/.bin/syncpack fix-mismatches
 pnpm install
 
 echo ""
