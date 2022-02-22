@@ -112,7 +112,8 @@ describe("models/destinationsCache", () => {
 
     test("after a destination is updated, the local cache should be invalid", async () => {
       DestinationsCache.expires = new Date().getTime() + 1000 * 30;
-      await destination.update({ key: "LAST NAME" });
+      await destination.update({ name: "NEW NAME" });
+      await helper.sleep(10);
       expect(DestinationsCache.expires).toEqual(0);
     });
 
@@ -151,6 +152,7 @@ describe("models/destinationsCache", () => {
       DestinationsCache.instances = [await helper.factories.destination()];
       DestinationsCache.expires = new Date().getTime() + 1000 * 30;
       const found = await DestinationsCache.findOneWithCache(destination.id);
+      await helper.sleep(10);
       expect(found.id).toEqual(destination.id);
       expect(DestinationsCache.expires).toBe(0);
     });
@@ -158,6 +160,7 @@ describe("models/destinationsCache", () => {
     test("a cache miss without a secondary find will not invalidate the cache", async () => {
       DestinationsCache.expires = new Date().getTime() + 1000 * 30;
       const found = await DestinationsCache.findOneWithCache("missing");
+      await helper.sleep(10);
       expect(found).toBeNull();
       expect(DestinationsCache.expires).not.toBe(0);
     });

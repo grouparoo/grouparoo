@@ -134,6 +134,7 @@ describe("models/propertiesCache", () => {
         where: { key: "lastName" },
       });
       await lastNameProperty.update({ key: "LAST NAME" });
+      await helper.sleep(10);
       expect(PropertiesCache.expires).toEqual(0);
     });
 
@@ -182,6 +183,7 @@ describe("models/propertiesCache", () => {
       const found = await PropertiesCache.findOneWithCache(
         firstNameProperty.id
       );
+      await helper.sleep(10);
       expect(found.id).toEqual(firstNameProperty.id);
       expect(PropertiesCache.expires).toBe(0);
     });
@@ -189,6 +191,7 @@ describe("models/propertiesCache", () => {
     test("a cache miss without a secondary find will not invalidate the cache", async () => {
       PropertiesCache.expires = new Date().getTime() + 1000 * 30;
       const found = await PropertiesCache.findOneWithCache("missing");
+      await helper.sleep(10);
       expect(found).toBeNull();
       expect(PropertiesCache.expires).not.toBe(0);
     });
