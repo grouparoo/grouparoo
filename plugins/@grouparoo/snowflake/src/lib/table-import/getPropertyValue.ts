@@ -1,4 +1,4 @@
-import { makeWhereClause, castValue } from "./util";
+import { makeWhereClause, castValue } from "../shared/util";
 import { validateQuery } from "../validateQuery";
 import {
   GetPropertyValueMethod,

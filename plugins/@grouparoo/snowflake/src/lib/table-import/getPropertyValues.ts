@@ -1,4 +1,4 @@
-import { makeWhereClause } from "./util";
+import { makeWhereClause } from "../shared/util";
 import { validateQuery } from "../validateQuery";
 import {
   GetPropertyValuesMethod,
