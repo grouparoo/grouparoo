@@ -370,10 +370,6 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
                       disabled={loading}
                     />
                   </Form.Group>
-                  <Form.Group controlId="sourceId">
-                    <Form.Label>Property Source</Form.Label>
-                    <Form.Control as="input" disabled value={source.name} />
-                  </Form.Group>
                   <hr />
                   <p>
                     <strong>
