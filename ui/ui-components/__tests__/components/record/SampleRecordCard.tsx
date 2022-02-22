@@ -1,10 +1,8 @@
-import { act, render } from "@testing-library/react";
 import SampleRecordCard, {
   RecordType,
   SampleRecordCardProps,
 } from "../../../components/record/SampleRecordCard";
 import { Models } from "../../../utils/apiData";
-import { TestContextProvider } from "../../__utils__/TestContextProvider";
 import { asyncRenderWithContext } from "../../__utils__/renderWithContext";
 
 describe("SampleRecordCard", () => {
