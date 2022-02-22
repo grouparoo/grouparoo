@@ -175,7 +175,7 @@ describe("hubspot/exportRecord", () => {
       await cleanUp(true);
     }, helper.setupTime);
 
-    test("cannot create record on Hubspot if sync mode does not allow it", async () => {
+    test("cannot create record on HubSpot if sync mode does not allow it", async () => {
       user = await apiClient.getContactByEmail(email);
       expect(user).toBe(null);
 
@@ -191,7 +191,7 @@ describe("hubspot/exportRecord", () => {
       ).rejects.toThrow(/sync mode does not allow creating/);
     });
 
-    test("can create record on Hubspot", async () => {
+    test("can create record on HubSpot", async () => {
       user = await apiClient.getContactByEmail(email);
       expect(user).toBe(null);
 

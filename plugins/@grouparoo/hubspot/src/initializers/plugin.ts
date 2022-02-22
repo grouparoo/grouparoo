@@ -25,9 +25,10 @@ export class Plugins extends Initializer {
             {
               key: "hapikey",
               type: "password",
-              displayName: "Hubspot API Key",
+              displayName: "HubSpot API Key",
               required: true,
-              description: "Hubspot hapikey (api) key.",
+              description:
+                "HubSpot API key. You can get the API key in HubSpot under Settings > Integrations > API Key.",
             },
           ],
           methods: { test, parallelism },
@@ -41,7 +42,7 @@ export class Plugins extends Initializer {
               type: "oauth-token",
               displayName: "OAuth Refresh Token",
               required: true,
-              description: "Hubspot OAuth refresh token.",
+              description: "HubSpot OAuth refresh token.",
             },
           ],
           methods: { test, parallelism },

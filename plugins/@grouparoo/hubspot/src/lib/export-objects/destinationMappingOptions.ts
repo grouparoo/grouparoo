@@ -30,8 +30,8 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod =
     return {
       labels: {
         property: {
-          singular: "Hubspot Custom Object Property",
-          plural: "Hubspot Custom Object Properties",
+          singular: "HubSpot Custom Object Property",
+          plural: "HubSpot Custom Object Properties",
         },
       },
       properties: {

@@ -53,7 +53,7 @@ export default class HubspotObjects {
     // so try a few times and wait random amounts
     // we also limit parallelism to 4 for this reason
     let attempt = 0;
-    let lastError = new Error("Hubspot search issue");
+    let lastError = new Error("HubSpot search issue");
     while (attempt < 8) {
       attempt++;
       try {

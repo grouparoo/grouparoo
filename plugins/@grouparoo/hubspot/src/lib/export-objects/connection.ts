@@ -13,10 +13,10 @@ export const objectsSupportedSyncModes: DestinationSyncMode[] = [
 
 export const objectsDestinationConnection: PluginConnection = {
   name: "hubspot-export-objects",
-  displayName: "Hubspot Export Objects",
+  displayName: "HubSpot Export Objects",
   direction: "export",
   description:
-    "Export Records as Hubspot Custom Objects or Hubspot standard objects.",
+    "Export Records as HubSpot Custom Objects or Hubspot standard objects.",
   apps: ["hubspot", "hubspot-oauth"],
   syncModes: objectsSupportedSyncModes,
   defaultSyncMode: "sync",
@@ -25,7 +25,7 @@ export const objectsDestinationConnection: PluginConnection = {
       key: "schemaId",
       displayName: "Schema",
       required: true,
-      description: "Which object in Hubspot represents a Grouparoo record?",
+      description: "Which object in HubSpot represents a Grouparoo record?",
     },
     {
       key: "primaryKey",
