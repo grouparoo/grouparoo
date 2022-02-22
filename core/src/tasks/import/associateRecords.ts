@@ -1,7 +1,6 @@
 import { plugin } from "../../modules/plugin";
 import { ImportOps } from "../../modules/ops/import";
 import { config } from "actionhero";
-import { CLS } from "../../modules/cls";
 import { CLSTask } from "../../classes/tasks/clsTask";
 
 export class ImportAssociateRecords extends CLSTask {

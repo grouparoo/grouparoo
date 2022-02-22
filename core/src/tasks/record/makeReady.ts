@@ -1,6 +1,5 @@
 import { config } from "actionhero";
 import { CLSTask } from "../../classes/tasks/clsTask";
-import { CLS } from "../../modules/cls";
 import { RecordOps } from "../../modules/ops/record";
 
 export class GrouparooRecordsMakeReady extends CLSTask {
