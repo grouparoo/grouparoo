@@ -19,6 +19,7 @@ import { generateClient } from "../../../client/client";
 import { FormTypeahead } from "../../../components/Typeahead";
 import { withServerErrorHandler } from "../../../utils/withServerErrorHandler";
 import { NextPageWithInferredProps } from "../../../utils/pageHelper";
+import TypeBadge from "../../../components/badges/TypeBadge";
 
 export const getServerSideProps = withServerErrorHandler(async (ctx) => {
   const { id } = ctx.query;
@@ -200,6 +201,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
         icon={app.icon}
         title={appName}
         badges={[
+          <TypeBadge type={app.type} />,
           <SourceBadge object={app} />,
           <DestinationBadge object={app} />,
           <LockedBadge object={app} />,
@@ -226,10 +228,6 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group controlId="type">
-                <Form.Label>Type</Form.Label>
-                <Form.Control as="input" value={app.type} disabled />
-              </Form.Group>
               <div data-screenshotid="appOptions">
                 {pluginOptions.length > 0 ? (
                   <>
