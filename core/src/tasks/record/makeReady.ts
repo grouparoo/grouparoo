@@ -1,5 +1,6 @@
 import { config } from "actionhero";
 import { CLSTask } from "../../classes/tasks/clsTask";
+import { CLS } from "../../modules/cls";
 import { RecordOps } from "../../modules/ops/record";
 
 export class GrouparooRecordsMakeReady extends CLSTask {
@@ -22,6 +23,9 @@ export class GrouparooRecordsMakeReady extends CLSTask {
       partialRecords.map((r) => r.id),
       toExport
     );
+
+    // more to do!
+    if (partialRecords.length > 0) await CLS.enqueueTaskIn(1000, this.name, {});
 
     return partialRecords.length;
   }

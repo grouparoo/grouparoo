@@ -24,7 +24,7 @@ export class ImportAssociateRecords extends CLSTask {
     );
 
     // more to do!
-    if (imports.length > 0) await CLS.enqueueTask(this.name, {});
+    if (imports.length > 0) await CLS.enqueueTaskIn(1000, this.name, {});
 
     return imports.length;
   }
