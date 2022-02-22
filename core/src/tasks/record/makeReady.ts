@@ -7,7 +7,7 @@ export class GrouparooRecordsMakeReady extends CLSTask {
   name = "records:makeReady";
   description =
     "If all of a GrouparooRecord's Properties are ready, mark the record ready and start the export";
-  frequency = 1000 * 10;
+  frequency = 1000 * 5;
   queue = "records";
   inputs = {} as const;
 
@@ -23,9 +23,6 @@ export class GrouparooRecordsMakeReady extends CLSTask {
       partialRecords.map((r) => r.id),
       toExport
     );
-
-    // more to do!
-    if (partialRecords.length > 0) await CLS.enqueueTaskIn(1000, this.name, {});
 
     return partialRecords.length;
   }

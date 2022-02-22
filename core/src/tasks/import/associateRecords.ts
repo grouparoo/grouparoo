@@ -7,7 +7,7 @@ import { CLSTask } from "../../classes/tasks/clsTask";
 export class ImportAssociateRecords extends CLSTask {
   name = "import:associateRecords";
   description = "ensure that imports are associated to records";
-  frequency = 1000 * 10;
+  frequency = 1000 * 5;
   queue = "imports";
   inputs = {} as const;
 
@@ -22,9 +22,6 @@ export class ImportAssociateRecords extends CLSTask {
       limit,
       delayMs
     );
-
-    // more to do!
-    if (imports.length > 0) await CLS.enqueueTaskIn(1000, this.name, {});
 
     return imports.length;
   }
