@@ -395,21 +395,16 @@ export namespace RecordOps {
 
     // TODO: This select may be slower than allowing the upsert to throw like we used to
     // However, the previous upsert method was really hard to deal with because it would throw and ruin/end the transaction
-    const duplicateRecordAnds = bulkCreates
+    const duplicateRecordRawValues = bulkCreates
       .filter((bc) => bc.unique && !bc.invalidValue)
-      .map((bc) => {
-        return {
-          rawValue: bc.rawValue,
-          recordId: { [Op.ne]: bc.recordId },
-        };
-      });
+      .map((bc) => bc.rawValue);
     const duplicateRecordPropertyMatches =
-      duplicateRecordAnds.length > 0
+      duplicateRecordRawValues.length > 0
         ? await RecordProperty.findAll({
+            attributes: ["rawValue", "recordId", "propertyId"],
             where: {
-              rawValue: { [Op.ne]: null },
+              rawValue: duplicateRecordRawValues,
               unique: true,
-              [Op.and]: duplicateRecordAnds,
             },
           })
         : [];
@@ -418,11 +413,12 @@ export namespace RecordOps {
         bulkCreates.findIndex(
           (bc) =>
             !bc.invalidValue &&
-            bc.recordId !== duplicate.recordId &&
-            bc.rawValue === duplicate.rawValue
+            bc.rawValue === duplicate.rawValue &&
+            bc.propertyId === duplicate.propertyId &&
+            bc.recordId !== duplicate.recordId
         );
-      let matchIdx = getMatchIdx();
 
+      let matchIdx = getMatchIdx();
       while (matchIdx >= 0) {
         bulkCreates[matchIdx].invalidReason = InvalidReasons.Duplicate;
         bulkCreates[matchIdx].invalidValue = bulkCreates[matchIdx].rawValue;
@@ -431,22 +427,26 @@ export namespace RecordOps {
       }
     }
 
-    if (bulkCreates.length > 0) {
-      await RecordProperty.bulkCreate(bulkCreates, {
-        updateOnDuplicate: [
-          "state",
-          "unique",
-          "stateChangedAt",
-          "confirmedAt",
-          "valueChangedAt",
-          "startedAt",
-          "rawValue",
-          "invalidValue",
-          "invalidReason",
-          "updatedAt",
-        ],
-      });
+    while (bulkCreates.length > 0) {
+      await RecordProperty.bulkCreate(
+        bulkCreates.splice(0, config.batchSize.internalWrite),
+        {
+          updateOnDuplicate: [
+            "state",
+            "unique",
+            "stateChangedAt",
+            "confirmedAt",
+            "valueChangedAt",
+            "startedAt",
+            "rawValue",
+            "invalidValue",
+            "invalidReason",
+            "updatedAt",
+          ],
+        }
+      );
     }
+
     if (bulkDeletes.where.id.length > 0) {
       await RecordProperty.destroy(bulkDeletes);
     }
@@ -537,9 +537,15 @@ export namespace RecordOps {
       }
     }
 
-    if (bulkArgs.length > 0) await RecordProperty.bulkCreate(bulkArgs);
+    const total = bulkArgs.length;
 
-    return bulkArgs.length;
+    while (bulkArgs.length > 0) {
+      await RecordProperty.bulkCreate(
+        bulkArgs.splice(0, config.batchSize.internalWrite)
+      );
+    }
+
+    return total;
   }
 
   export async function updateGroupMemberships(records: GrouparooRecord[]) {

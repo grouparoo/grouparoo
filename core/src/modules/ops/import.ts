@@ -118,15 +118,20 @@ export namespace ImportOps {
 
     await RecordOps.markPendingByIds(bulkImportUpdates.map((i) => i.recordId));
 
-    await Import.bulkCreate(bulkImportUpdates, {
-      updateOnDuplicate: [
-        "state",
-        "createdRecord",
-        "recordId",
-        "recordAssociatedAt",
-        "updatedAt",
-      ],
-    });
+    while (bulkImportUpdates.length > 0) {
+      await Import.bulkCreate(
+        bulkImportUpdates.splice(0, config.batchSize.internalWrite),
+        {
+          updateOnDuplicate: [
+            "state",
+            "createdRecord",
+            "recordId",
+            "recordAssociatedAt",
+            "updatedAt",
+          ],
+        }
+      );
+    }
 
     return imports;
   }
