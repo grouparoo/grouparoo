@@ -13,6 +13,14 @@ import {
 } from "../../../../src";
 import { api, specHelper } from "actionhero";
 import { Op } from "sequelize";
+import {
+  ExportedRecord,
+  ExportRecordPluginMethod,
+} from "../../../../src/classes/plugin";
+
+type ExportArgs = Partial<
+  Omit<Parameters<ExportRecordPluginMethod>[0], "export"> & ExportedRecord
+>;
 
 const mockLog = jest.fn();
 const logSpy = jest
@@ -25,7 +33,7 @@ describe("models/destination - with custom exportRecord plugin", () => {
   let model: GrouparooModel;
   let app: App;
   let destination: Destination;
-  let exportArgs: Record<string, any> = {
+  let exportArgs: ExportArgs = {
     app: null,
     appOptions: null,
     destination: null,
@@ -82,7 +90,7 @@ describe("models/destination - with custom exportRecord plugin", () => {
           apps: ["test-template-app"],
           direction: "export",
           options: [],
-          syncModes: ["sync", "enrich", "additive"],
+          syncModes: ["append", "create", "sync", "enrich", "additive"],
           methods: {
             destinationMappingOptions: async () => {
               return {
@@ -654,7 +662,7 @@ describe("models/destination - with custom exportRecord plugin", () => {
       await record.destroy();
     });
 
-    test.each(["additive", "enrich"])(
+    test.each(["append", "create", "additive", "enrich"])(
       "if record is removed from destination's tracked group in %p syncMode, toDelete is false and groups are cleared",
       async (syncMode) => {
         await destination.update({ syncMode });
@@ -857,6 +865,28 @@ describe("models/destination - with custom exportRecord plugin", () => {
       });
 
       afterEach(async () => {
+        await record.destroy();
+      });
+
+      test("Append syncMode only allows creating records", async () => {
+        await destination.update({ syncMode: "append" });
+
+        await destination.sendExport(_export, true);
+        expect(exportArgs.syncOperations.create).toBe(true);
+        expect(exportArgs.syncOperations.update).toBe(false);
+        expect(exportArgs.syncOperations.delete).toBe(false);
+
+        await record.destroy();
+      });
+
+      test("Create syncMode only allows creating records", async () => {
+        await destination.update({ syncMode: "create" });
+
+        await destination.sendExport(_export, true);
+        expect(exportArgs.syncOperations.create).toBe(true);
+        expect(exportArgs.syncOperations.update).toBe(false);
+        expect(exportArgs.syncOperations.delete).toBe(false);
+
         await record.destroy();
       });
 

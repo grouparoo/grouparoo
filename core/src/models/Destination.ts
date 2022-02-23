@@ -53,7 +53,7 @@ export interface SimpleDestinationGroupMembership {
 }
 export interface SimpleDestinationOptions extends OptionHelper.SimpleOptions {}
 
-const SYNC_MODES = ["sync", "additive", "enrich"] as const;
+const SYNC_MODES = ["append", "create", "sync", "additive", "enrich"] as const;
 export type DestinationSyncMode = typeof SYNC_MODES[number];
 
 const DESTINATION_COLLECTIONS = ["none", "group", "model"] as const;
@@ -74,6 +74,26 @@ export const DestinationSyncModeData: Record<
     operations: DestinationSyncOperations;
   }
 > = {
+  append: {
+    key: "append",
+    displayName: "Append",
+    description: "Create new records (create)",
+    operations: {
+      create: true,
+      update: false,
+      delete: false,
+    },
+  },
+  create: {
+    key: "create",
+    displayName: "Create",
+    description: "Create new records, but only when they don't exist (create)",
+    operations: {
+      create: true,
+      update: false,
+      delete: false,
+    },
+  },
   sync: {
     key: "sync",
     displayName: "Sync",

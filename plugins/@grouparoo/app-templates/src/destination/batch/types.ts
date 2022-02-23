@@ -15,12 +15,34 @@ export enum BatchGroupMode {
 
 export enum BatchSyncMode {
   // these values actually used in destinationOptions settings
+  Append = "Append", // create
+  Create = "Create", // create only if it doesn't exist
   Sync = "Sync", // create, update, delete (default)
   Enrich = "Enrich", // update only (no create or delete)
   Additive = "Additive", // create or update (no delete)
 }
 
-export const BatchSyncModeData = {
+export const BatchSyncModeData: Record<
+  BatchSyncMode,
+  {
+    create: boolean;
+    update: boolean;
+    delete: boolean;
+    description: string;
+  }
+> = {
+  [BatchSyncMode.Append]: {
+    create: true,
+    update: false,
+    delete: false,
+    description: "Create new records (create)",
+  },
+  [BatchSyncMode.Create]: {
+    create: true,
+    update: false,
+    delete: false,
+    description: "Create new records, but only when they don't exist (create)",
+  },
   [BatchSyncMode.Sync]: {
     create: true,
     update: true,
