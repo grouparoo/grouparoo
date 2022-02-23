@@ -261,7 +261,7 @@ export class Destination extends CommonModel<Destination> {
     saveCache = true
   ) {
     if (externallyValidate) await this.validateMappings(mappings, saveCache);
-    await MappingHelper.setMapping(this, mappings);
+    await MappingHelper.setMapping(this, mappings, externallyValidate);
     await Destination.invalidateCache();
   }
 

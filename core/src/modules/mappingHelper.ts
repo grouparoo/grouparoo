@@ -68,7 +68,8 @@ export namespace MappingHelper {
 
   export async function setMapping(
     instance: (Source | Destination) & { afterSetMapping?: Function },
-    mappings: Mappings
+    mappings: Mappings,
+    externallyValidate = true
   ) {
     delete instance.mappings;
     await LockableHelper.beforeUpdateOptions(instance);
@@ -133,7 +134,7 @@ export namespace MappingHelper {
         );
       }
 
-      if (instance instanceof Source)
+      if (externallyValidate && instance instanceof Source)
         await validateRemoteKey(instance, remoteKey);
 
       const mapping = await Mapping.create({

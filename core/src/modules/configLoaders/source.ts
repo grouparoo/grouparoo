@@ -75,7 +75,7 @@ export async function loadSource(
       );
       mapping[Object.keys(extractNonNullParts(configObject, "mapping"))[0]] =
         mappedRecordProperty.key;
-      await source.setMapping(mapping);
+      await source.setMapping(mapping, externallyValidate);
     }
   }
 

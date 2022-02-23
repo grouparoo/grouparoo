@@ -181,8 +181,8 @@ export class Source extends CommonModel<Source> {
     return MappingHelper.getMapping(this);
   }
 
-  async setMapping(mappings: SourceMapping) {
-    return MappingHelper.setMapping(this, mappings);
+  async setMapping(mappings: SourceMapping, externallyValidate = true) {
+    return MappingHelper.setMapping(this, mappings, externallyValidate);
   }
 
   async afterSetMapping() {
