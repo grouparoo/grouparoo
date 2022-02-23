@@ -4,10 +4,8 @@ import {
   Destination,
   Group,
   GrouparooRecord,
-  Source,
   Run,
   App,
-  Property,
   GrouparooModel,
   GroupMember,
 } from "../../src";
@@ -20,7 +18,6 @@ import {
   DestinationExport,
   DestinationExportArrayProperties,
   DestinationMappingOptions,
-  DestinationRecordPreview,
   DestinationsList,
   DestinationView,
 } from "../../src/actions/destinations";
@@ -410,126 +407,6 @@ describe("actions/destinations", () => {
           },
         ]);
         expect(configSpy).toBeCalledTimes(1);
-      });
-
-      test("an administrator can get a preview of a record to be exported to a destination, existing mapping & destinationGroupMemberships + no record", async () => {
-        connection.params = {
-          csrfToken,
-          id,
-          groupId: group.id,
-        };
-        const { error, record: _record } =
-          await specHelper.runAction<DestinationRecordPreview>(
-            "destination:recordPreview",
-            connection
-          );
-        expect(error).toBeUndefined();
-        expect(_record.properties["primary-id"].values).toEqual([1]);
-        expect(_record.properties["something-else"].values).toEqual([
-          "yoshi@example.com",
-        ]);
-        expect(_record.groupNames).toEqual(["remote-group-tag"]);
-      });
-
-      test("an administrator can get a preview of a record to be exported to a destination, existing mapping & destinationGroupMemberships + record", async () => {
-        connection.params = {
-          csrfToken,
-          id,
-          recordId: record.id,
-        };
-        const { error, record: _record } =
-          await specHelper.runAction<DestinationRecordPreview>(
-            "destination:recordPreview",
-            connection
-          );
-        expect(error).toBeUndefined();
-        expect(_record.properties["primary-id"].values).toEqual([1]);
-        expect(_record.properties["something-else"].values).toEqual([
-          "yoshi@example.com",
-        ]);
-        expect(_record.groupNames).toEqual(["remote-group-tag"]);
-      });
-
-      test("an administrator can get a preview of a record to be exported to a destination, updated mapping & destinationGroupMemberships", async () => {
-        const destinationGroupMemberships: Record<string, string> = {};
-        destinationGroupMemberships[group.id] = "another-group-tag";
-
-        connection.params = {
-          csrfToken,
-          id,
-          recordId: record.id,
-          destinationGroupMemberships,
-          mapping: {
-            "primary-id": "userId",
-            email: "email",
-          },
-        };
-        const { error, record: _record } =
-          await specHelper.runAction<DestinationRecordPreview>(
-            "destination:recordPreview",
-            connection
-          );
-        expect(error).toBeUndefined();
-        expect(_record.properties["primary-id"].values).toEqual([1]);
-        expect(_record.properties["email"].values).toEqual([
-          "yoshi@example.com",
-        ]);
-        expect(_record.groupNames).toEqual(["another-group-tag"]);
-      });
-
-      test("an administrator can get a preview of a record to be exported to a destination, with an un-set optional property", async () => {
-        connection.params = {
-          csrfToken,
-          id,
-          recordId: record.id,
-          mapping: {
-            "primary-id": "userId",
-            "something-new-null": null,
-            "something-new-undefined": undefined,
-            "something-new-string": "",
-          },
-        };
-        const { error, record: _record } =
-          await specHelper.runAction<DestinationRecordPreview>(
-            "destination:recordPreview",
-            connection
-          );
-        expect(error).toBeUndefined();
-        expect(_record.properties["primary-id"].values).toEqual([1]);
-        expect(_record.properties["something-new-null"]).toBeFalsy();
-        expect(_record.properties["something-new-undefined"]).toBeFalsy();
-        expect(_record.properties["something-new-string"]).toBeFalsy();
-      });
-
-      test("destination:recordPreview will not fail if a new record property has just been created or there are missing properties", async () => {
-        const source = await Source.findOne({ where: { state: "ready" } });
-        const colorProperty = await Property.create({
-          key: "color",
-          type: "string",
-          sourceId: source.id,
-        });
-        await colorProperty.setOptions({ column: "new_rule" });
-        await colorProperty.update({ state: "ready" });
-
-        connection.params = {
-          csrfToken,
-          id,
-          groupId: group.id,
-          mapping: {
-            "primary-id": "userId",
-            color: "color",
-          },
-        };
-        const { error, record: _record } =
-          await specHelper.runAction<DestinationRecordPreview>(
-            "destination:recordPreview",
-            connection
-          );
-        expect(error).toBeUndefined();
-        expect(_record.properties["primary-id"].values).toEqual([1]);
-        expect(_record.properties["color"].values).toEqual([null]);
-
-        await colorProperty.destroy();
       });
 
       test("an administrator can view a destination", async () => {

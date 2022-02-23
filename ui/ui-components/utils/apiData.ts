@@ -46,9 +46,6 @@ export namespace Models {
   export type DestinationGroupMembershipType = Partial<
     AsyncReturnType<DestinationGroupMembership["apiData"]>
   >;
-  export type DestinationRecordPreviewType = Partial<
-    AsyncReturnType<Destination["recordPreview"]>
-  >;
   export type ExportType = Partial<AsyncReturnType<Export["apiData"]>>;
   export type ExportProcessorType = Partial<
     AsyncReturnType<ExportProcessor["apiData"]>
