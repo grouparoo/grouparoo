@@ -2,10 +2,10 @@ import { useCallback, useMemo, useState } from "react";
 import SampleRecordCard, {
   SampleRecordCardProps,
 } from "../record/SampleRecordCard";
-import { Actions, Models } from "../../utils/apiData";
+import { Models } from "../../utils/apiData";
 import { useDebouncedValue } from "../../hooks/useDebouncedValue";
 import { useApi } from "../../contexts/api";
-import { useGrouparooModel } from "../../contexts/grouparooModel";
+import { RecordView } from "@grouparoo/core/src/actions/records";
 
 interface Props {
   destination: Models.DestinationType;
@@ -31,9 +31,6 @@ const DestinationSampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
   collection,
   ...props
 }) => {
-  const {
-    model: { id: modelId },
-  } = useGrouparooModel();
   const { client } = useApi();
   const debouncedDestination = useDebouncedValue(destination, 1000);
   const [warning, setWarning] = useState<string>();
@@ -53,22 +50,11 @@ const DestinationSampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
 
   const fetchRecord = useCallback<SampleRecordCardProps["fetchRecord"]>(
     async (recordId: string) => {
-      const destinationGroupMemberships: Record<string, string> =
-        debouncedDestination.destinationGroupMemberships.reduce((acc, dgm) => {
-          acc[dgm.groupId] = dgm.remoteKey;
-          return acc;
-        }, {} as Record<string, string>);
-
-      const response = await client.request<Actions.DestinationRecordPreview>(
+      const response = await client.requestAction<RecordView>(
         "get",
-        `/destination/${debouncedDestination.id}/recordPreview`,
+        `/record/${recordId}`,
         {
-          groupId,
-          modelId,
-          collection,
-          mapping: debouncedDestination.mapping,
-          destinationGroupMemberships,
-          recordId,
+          id: recordId, // TODO: Remove this once requestAction can handle route params
         }
       );
 
@@ -83,7 +69,7 @@ const DestinationSampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
         (!response.record || !response.record.groupIds.includes(groupId))
       ) {
         warning = `
-          This Grouparoo Record will not be sent to the Destination because it‘s not in the selected Group.
+          This Grouparoo Record will not be sent to the Destination because it's not in the selected Group.
           You can switch to a random Record to get one that will export.
         `;
       }
@@ -92,15 +78,7 @@ const DestinationSampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
 
       return response;
     },
-    [
-      debouncedDestination.destinationGroupMemberships,
-      debouncedDestination.id,
-      debouncedDestination.mapping,
-      client,
-      groupId,
-      modelId,
-      collection,
-    ]
+    [client, groupId, collection]
   );
 
   return (

@@ -24,6 +24,8 @@ import { useApi } from "../../contexts/api";
 import Cookies from "universal-cookie";
 import { isBrowser } from "../../utils/isBrowser";
 import { useGrouparooModel } from "../../contexts/grouparooModel";
+import { DestinationExport } from "@grouparoo/core/src/actions/destinations";
+import { useRouter } from "next/router";
 
 export type RecordType =
   | Models.GrouparooRecordType
@@ -48,7 +50,6 @@ export interface SampleRecordCardProps {
   reloadKey?: string;
   warning?: string;
   groupId?: string;
-
   record?: RecordType;
   groups?: Models.GroupType[];
   destinations?: Models.DestinationType[];
@@ -121,9 +122,12 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   const {
     model: { id: modelId },
   } = useGrouparooModel();
+  const router = useRouter();
+  const { destinationId } = router.query;
 
   const [loading, setLoading] = useState(false);
   const [importing, setImporting] = useState(false);
+  const [exporting, setExporting] = useState(false);
   const [addingRecord, setAddingRecord] = useState(false);
   const [hasRecords, setHasRecords] = useState(true);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -134,6 +138,11 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   );
   const [recordId, setRecordId] = useState(
     () => props.record?.id || getCachedSampleRecordId(modelId)
+  );
+
+  const canExportRecord = useMemo(
+    () => destinations?.find(({ id }) => id === destinationId),
+    [destinationId, destinations]
   );
 
   const saveRecord = useCallback(
@@ -327,6 +336,37 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
     return result;
   }, [record, hideViewAllRecords, totalRecords, modelId, disabled]);
 
+  const importRecord = useCallback(async () => {
+    setImporting(true);
+    const response = await client.request<Actions.RecordImport>(
+      "post",
+      `/record/${record.id}/import`
+    );
+    if (response?.record) {
+      setRecord(response.record);
+      setGroups(response.groups);
+      successHandler.set({ message: "Import Complete!" });
+    } else {
+      loadRecord(); // we may have done a partial import
+    }
+    setImporting(false);
+  }, [client, loadRecord, record?.id]);
+
+  const exportRecord = useCallback(async () => {
+    setExporting(true);
+    const response = await client.requestAction<DestinationExport>(
+      "post",
+      `/destination/${destinationId}/export`,
+      { recordId: record.id, id: destinationId.toString() }
+    );
+    if (response?.success) {
+      successHandler.set({ message: "Export Complete!" });
+    } else {
+      errorHandler.set({ message: "Export Failed" });
+    }
+    setExporting(false);
+  }, [client, destinationId, record?.id]);
+
   if (!sortedPropertyKeys?.length && !properties.length) {
     return (
       <ManagedCard title="Sample Record">
@@ -342,22 +382,6 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
       </ManagedCard>
     );
   }
-
-  const importRecord = async () => {
-    setImporting(true);
-    const response = await client.request<Actions.RecordImport>(
-      "post",
-      `/record/${record.id}/import`
-    );
-    if (response?.record) {
-      setRecord(response.record);
-      setGroups(response.groups);
-      successHandler.set({ message: "Import Complete!" });
-    } else {
-      loadRecord(); // we may have done a partial import
-    }
-    setImporting(false);
-  };
 
   const actions = [
     <LoadingButton
@@ -381,13 +405,25 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
       <LoadingButton
         disabled={disabled || !record || loading}
         loading={importing}
-        onClick={() => {
-          importRecord();
-        }}
+        onClick={importRecord}
         size="sm"
         variant="outline-success"
       >
         Import Record Data
+      </LoadingButton>
+    );
+  }
+
+  if (canExportRecord) {
+    actions.push(
+      <LoadingButton
+        disabled={disabled || !record || loading || !!warning}
+        loading={exporting}
+        onClick={exportRecord}
+        size="sm"
+        variant="outline-success"
+      >
+        Export Record Data
       </LoadingButton>
     );
   }

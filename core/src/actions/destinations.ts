@@ -325,10 +325,12 @@ export class DestinationView extends AuthenticatedAction {
 
 export class DestinationExport extends AuthenticatedAction {
   name = "destination:export";
-  description = "export the members of the groups tracked by this destination";
+  description =
+    "export the member or members of the groups tracked by this destination";
   permission: ActionPermission = { topic: "destination", mode: "write" };
   inputs = {
-    id: { required: true },
+    id: { required: true, inPath: true },
+    recordId: { required: false },
   } as const;
 
   async runWithinTransaction({
@@ -337,89 +339,13 @@ export class DestinationExport extends AuthenticatedAction {
     params: ParamsFrom<DestinationExport>;
   }) {
     const destination = await Destination.findById(params.id);
-    await destination.exportMembers();
-    return { success: true };
-  }
-}
-
-export class DestinationRecordPreview extends AuthenticatedAction {
-  name = "destination:recordPreview";
-  description = "view a preview of a record being exported to this destination";
-  outputExample = {};
-  permission: ActionPermission = { topic: "destination", mode: "read" };
-  inputs = {
-    id: { required: true },
-    collection: { required: false },
-    groupId: { required: false },
-    modelId: { required: false },
-    recordId: { required: false },
-    mapping: { required: false, formatter: APIData.ensureObject },
-    destinationGroupMemberships: {
-      required: false,
-      formatter: APIData.ensureObject,
-    },
-  } as const;
-
-  async runWithinTransaction({
-    params,
-  }: {
-    params: ParamsFrom<DestinationRecordPreview>;
-  }) {
-    const destination = await Destination.findById(params.id);
-
-    let record: GrouparooRecord;
-    const collection = params.collection ?? destination.collection;
-
     if (params.recordId) {
-      record = await GrouparooRecord.findById(params.recordId);
-    } else if (collection === "group" && params.groupId) {
-      const group = await Group.findById(params.groupId);
-      const groupMember = await GroupMember.findOne({
-        where: { groupId: group.id },
-      });
-      if (groupMember) {
-        record = await GrouparooRecord.findById(groupMember.recordId);
-      }
-    } else if (params.modelId) {
-      record = await GrouparooRecord.findOne({
-        where: { modelId: params.modelId },
-      });
+      const record = await GrouparooRecord.findById(params.recordId);
+      await destination.exportRecord(record);
+    } else {
+      await destination.exportMembers();
     }
-
-    if (!record) return;
-
-    await record.buildNullProperties(); // the preview may include a brand new property
-
-    let mapping = params.mapping;
-    if (!mapping) {
-      mapping = await destination.getMapping();
-    }
-
-    let destinationGroupMemberships = params.destinationGroupMemberships;
-    if (!destinationGroupMemberships) {
-      const destinationGroupMembershipsArray =
-        await destination.getDestinationGroupMemberships();
-      destinationGroupMemberships = {};
-      destinationGroupMembershipsArray.map(
-        (dgm) => (destinationGroupMemberships[dgm.groupId] = dgm.remoteKey)
-      );
-    }
-
-    if (
-      !params.mapping &&
-      !params.groupId &&
-      !params.destinationGroupMemberships
-    ) {
-      await destination.checkRecordWillBeExported(record);
-    }
-
-    return {
-      record: await destination.recordPreview(
-        record,
-        mapping,
-        destinationGroupMemberships
-      ),
-    };
+    return { success: true };
   }
 }
 
