@@ -268,6 +268,12 @@ describe("models/app", () => {
         /otherThing is not an option for a test-plugin-app app/
       );
 
+      await expect(
+        app.setOptions({ fileId: "abc123", environment: "my house" })
+      ).rejects.toThrow(
+        /"my house" is not a valid value for test-plugin-app app option "environment"/
+      );
+
       await app.destroy();
     });
 

@@ -539,6 +539,20 @@ describe("models/destination", () => {
         );
       });
 
+      test("a valid value for options with multiple choices must be provided ", async () => {
+        const destination = await helper.factories.destination();
+        expect(destination.id).toBeTruthy();
+
+        await expect(
+          destination.setOptions({
+            table: "users_out",
+            tableWithOptions: "something_else",
+          })
+        ).rejects.toThrow(
+          /"something_else" is not a valid value for test-plugin-export destination option "tableWithOptions"/
+        );
+      });
+
       test("required mappings must be included in the mappings", async () => {
         destination = await helper.factories.destination();
         await expect(

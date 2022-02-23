@@ -215,6 +215,12 @@ describe("models/schedule", () => {
         /otherThing is not an option for a test-plugin-import schedule/
       );
 
+      await expect(
+        schedule.setOptions({ maxColumn: "some_nonexistent_col" })
+      ).rejects.toThrow(
+        /"some_nonexistent_col" is not a valid value for test-plugin-import schedule option "maxColumn"/
+      );
+
       await schedule.destroy();
     });
 

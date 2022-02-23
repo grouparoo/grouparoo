@@ -397,6 +397,15 @@ describe("models/source", () => {
         /otherThing is not an option for a test-plugin-import source/
       );
 
+      await expect(
+        source.setOptions({
+          table: "abc",
+          tableWithOptions: "abc",
+        })
+      ).rejects.toThrow(
+        /"abc" is not a valid value for test-plugin-import source option "tableWithOptions"/
+      );
+
       await source.destroy();
     });
 
@@ -735,6 +744,10 @@ describe("models/source", () => {
         appId: app.id,
         modelId: model.id,
       });
+      await source.setOptions({
+        table: "users",
+        tableWithOptions: "users",
+      });
     });
 
     afterAll(async () => {
@@ -762,6 +775,16 @@ describe("models/source", () => {
           id: "TheUserID",
         })
       ).rejects.toThrow(/cannot find property TheUserID/);
+    });
+
+    test("it throws an error if the mapping is for an invalid remoteKey", async () => {
+      await expect(
+        source.setMapping({
+          someRandomKey: "userId",
+        })
+      ).rejects.toThrow(
+        /"someRandomKey" is not a valid remote mapping key for source test source/
+      );
     });
 
     test("array properties cannot be used for mappings", async () => {
@@ -831,7 +854,7 @@ describe("models/source", () => {
       });
       expect(myEmailProperty.isPrimaryKey).toBe(false);
 
-      await source.setMapping({ userId: "userId" });
+      await source.setMapping({ id: "userId" });
     });
 
     test("will throw error when mapping to own property and primary key is owned by other source", async () => {

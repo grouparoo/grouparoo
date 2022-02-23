@@ -474,6 +474,14 @@ describe("models/property", () => {
     ).rejects.toThrow(
       /otherThing is not an option for a test-plugin-import property/
     );
+
+    const source = await property.$get("source");
+    await source.setOptions({ table: "users", tableWithOptions: "users" });
+    await expect(
+      property.setOptions({ column: "some_nonexistent_col" })
+    ).rejects.toThrow(
+      /"some_nonexistent_col" is not a valid value for test-plugin-import property option "column"/
+    );
   });
 
   test("options will have mustache keys converted to mustache ids", async () => {
