@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Row, Col, Form, Badge, Button, Table, Alert } from "react-bootstrap";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useState, useRef } from "react";
+import { useState, useRef, FormEvent, useMemo } from "react";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { successHandler } from "../../../../../eventHandlers";
 import DestinationTabs from "../../../../../components/tabs/Destination";
@@ -97,7 +97,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
   const [unlockedGroups, setUnlockedGroups] = useState<string[]>([]);
   const { destinationId } = router.query;
 
-  const update = async (event) => {
+  const update = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
 
@@ -166,6 +166,15 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
     }
   });
 
+  const destinationAllowedProperties = useMemo(
+    () =>
+      [
+        ...mappingOptions.properties.known,
+        ...mappingOptions.properties.required,
+      ].map((p) => p.key),
+    [mappingOptions.properties.known, mappingOptions.properties.required]
+  );
+
   const optionalMappingRemoteKeys = Object.keys(destination.mapping).filter(
     (key) => {
       if (
@@ -182,8 +191,15 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
     }
   );
 
-  function updateMapping(key, value, oldKey = null) {
-    const _destination = Object.assign({}, destination);
+  function updateMapping(key: string, value: string, oldKey = null) {
+    const _destination = { ...destination };
+
+    for (const key in _destination.mapping) {
+      if (!destinationAllowedProperties.includes(key)) {
+        delete _destination.mapping[key];
+      }
+    }
+
     let destinationMappingKeys = Object.keys(_destination.mapping);
     let insertIndex = destinationMappingKeys.length - 1;
 
@@ -225,7 +241,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
     remoteKey,
     oldGroupId = null
   ) {
-    const _destination = Object.assign({}, destination);
+    const _destination = { ...destination };
     _destination.destinationGroupMemberships =
       _destination.destinationGroupMemberships.filter(
         (dgm) => dgm.groupId !== oldGroupId
@@ -255,9 +271,8 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
 
     setDestination(_destination);
   }
-
   function toggleUnlockedProperty(key) {
-    const _unlockedProperties = Object.assign({}, unlockedProperties);
+    const _unlockedProperties = { ...unlockedProperties };
     _unlockedProperties[destination.mapping[key]] = _unlockedProperties[
       destination.mapping[key]
     ]
@@ -267,7 +282,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
   }
 
   function toggleUnlockedGroup(groupId) {
-    const _unlockedGroups = [].concat(unlockedGroups);
+    const _unlockedGroups = [...unlockedGroups];
     if (_unlockedGroups.includes(groupId)) {
       const index = _unlockedGroups.indexOf(groupId);
       _unlockedGroups.splice(index, 1);
@@ -277,7 +292,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
     setUnlockedGroups(_unlockedGroups);
   }
 
-  const groupsAvailalbeForDestinationGroupMemberships = groups
+  const groupsAvailableForDestinationGroupMemberships = groups
     .filter(
       (group) =>
         !destination.destinationGroupMemberships
@@ -289,7 +304,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
       if (a.name < b.name) return -1;
       return 0;
     })
-    .sort((a, b) => {
+    .sort((a) => {
       if (a.id === groupId) return -1;
       return 1;
     });
@@ -507,14 +522,25 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
                                             ].includes(type)
                                           )
                                           .filter(filterRuleForArrayProperties)
-                                          .filter(
-                                            (rule) =>
+                                          .filter((rule) => {
+                                            const sourceKey = Object.entries(
+                                              destination.mapping
+                                            ).find(
+                                              ([, d]) => d === rule.key
+                                            )?.[0];
+                                            return (
                                               rule.key ===
                                                 destination.mapping[key] ||
-                                              !Object.values(
-                                                destination.mapping
-                                              ).includes(rule.key)
-                                          )
+                                              !(
+                                                Object.values(
+                                                  destination.mapping
+                                                ).includes(rule.key) &&
+                                                destinationAllowedProperties.includes(
+                                                  sourceKey
+                                                )
+                                              )
+                                            );
+                                          })
                                           .map((rule) => (
                                             <option
                                               key={`opt-known-${rule.id}`}
@@ -835,14 +861,14 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
                                 id="taggedGroup"
                                 ref={taggedGroupRef}
                                 disabled={
-                                  groupsAvailalbeForDestinationGroupMemberships.length ===
+                                  groupsAvailableForDestinationGroupMemberships.length ===
                                   0
                                 }
                                 placeholder={`Choose a group...`}
                                 onChange={(selected) => {
                                   taggedGroupRef.current.clear();
                                   const chosenGroup =
-                                    groupsAvailalbeForDestinationGroupMemberships.filter(
+                                    groupsAvailableForDestinationGroupMemberships.filter(
                                       (g) => g.name === selected[0]
                                     )[0];
 
@@ -851,7 +877,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
                                     chosenGroup.name
                                   );
                                 }}
-                                options={groupsAvailalbeForDestinationGroupMemberships.map(
+                                options={groupsAvailableForDestinationGroupMemberships.map(
                                   ({ name }) => name
                                 )}
                               />
