@@ -219,12 +219,12 @@ function getRowData(
   const updated_at = getUpdatedAt(myId, tableName, created_at); // updated sometime after that
 
   if (page > 1) {
-    myId = perPage * page + myId;
+    myId = perPage * (page - 1) + myId;
 
     if (isRoot) {
       typeId = myId;
     } else {
-      typeId = numOfRoot * page + typeId;
+      typeId = numOfRoot * (page - 1) + typeId;
     }
   }
 
