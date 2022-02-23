@@ -1,6 +1,1928 @@
 const nock = require("nock");
 
 nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
+  .get("/3.0/lists", {})
+  .query({ count: "1000" })
+  .once()
+  .reply(
+    200,
+    {
+      lists: [
+        {
+          id: "1b724bb934",
+          web_id: 382062,
+          name: "UI Config",
+          permission_reminder: "You aren't a real person - this is a demo.",
+          use_archive_bar: true,
+          campaign_defaults: {
+            from_name: "Grouparoo",
+            from_email: "fake-evan@grouparoo.com",
+            subject: "",
+            language: "en",
+          },
+          notify_on_subscribe: "",
+          notify_on_unsubscribe: "",
+          date_created: "2020-08-12T16:21:04+00:00",
+          list_rating: 0,
+          email_type_option: false,
+          subscribe_url_short: "http://eepurl.com/haJ6YH",
+          subscribe_url_long:
+            "https://grouparoo.us3.list-manage.com/subscribe?u=5f6e3ecf127508cdb5e31e90b&id=1b724bb934",
+          beamer_address: "us3-0c2a01eabd-992b9e38fb@inbound.mailchimp.com",
+          visibility: "prv",
+          double_optin: false,
+          has_welcome: false,
+          marketing_permissions: false,
+          modules: [],
+          stats: {
+            member_count: 1,
+            unsubscribe_count: 0,
+            cleaned_count: 0,
+            member_count_since_send: 1,
+            unsubscribe_count_since_send: 0,
+            cleaned_count_since_send: 0,
+            campaign_count: 0,
+            campaign_last_sent: "",
+            merge_field_count: 13,
+            avg_sub_rate: 406,
+            avg_unsub_rate: 0,
+            target_sub_rate: 0,
+            open_rate: 0,
+            click_rate: 0,
+            last_sub_date: "2022-01-18T23:17:07+00:00",
+            last_unsub_date: "",
+          },
+          _links: [
+            {
+              rel: "self",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+            },
+            {
+              rel: "parent",
+              href: "https://us3.api.mailchimp.com/3.0/lists",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+            },
+            {
+              rel: "update",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934",
+              method: "PATCH",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/PATCH.json",
+            },
+            {
+              rel: "batch-sub-unsub-members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934",
+              method: "POST",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST-Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST.json",
+            },
+            {
+              rel: "delete",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934",
+              method: "DELETE",
+            },
+            {
+              rel: "abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/abuse-reports",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Abuse/Collection.json",
+            },
+            {
+              rel: "activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/activity",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
+            },
+            {
+              rel: "clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/clients",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
+            },
+            {
+              rel: "growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/growth-history",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Growth/Collection.json",
+            },
+            {
+              rel: "interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/interest-categories",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json",
+            },
+            {
+              rel: "members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/members",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json",
+            },
+            {
+              rel: "merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/merge-fields",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/MergeFields/Collection.json",
+            },
+            {
+              rel: "segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/segments",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Segments/Collection.json",
+            },
+            {
+              rel: "webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/webhooks",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Webhooks/Collection.json",
+            },
+            {
+              rel: "signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/signup-forms",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/SignupForms/Collection.json",
+            },
+            {
+              rel: "locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/locations",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Locations/Collection.json",
+            },
+          ],
+        },
+        {
+          id: "a36b032126",
+          web_id: 382274,
+          name: "Demo-Environment",
+          permission_reminder: "A test email list",
+          use_archive_bar: true,
+          campaign_defaults: {
+            from_name: "Grouparoo Staging",
+            from_email: "no-reply@grouparoo.com",
+            subject: "",
+            language: "en",
+          },
+          notify_on_subscribe: "",
+          notify_on_unsubscribe: "",
+          date_created: "2020-08-25T00:18:03+00:00",
+          list_rating: 0,
+          email_type_option: false,
+          subscribe_url_short: "http://eepurl.com/hbEP6f",
+          subscribe_url_long:
+            "https://grouparoo.us3.list-manage.com/subscribe?u=5f6e3ecf127508cdb5e31e90b&id=a36b032126",
+          beamer_address: "us3-0c2a01eabd-453791f0ab@inbound.mailchimp.com",
+          visibility: "prv",
+          double_optin: true,
+          has_welcome: false,
+          marketing_permissions: true,
+          modules: [],
+          stats: {
+            member_count: 0,
+            unsubscribe_count: 0,
+            cleaned_count: 0,
+            member_count_since_send: 0,
+            unsubscribe_count_since_send: 0,
+            cleaned_count_since_send: 0,
+            campaign_count: 0,
+            campaign_last_sent: "",
+            merge_field_count: 5,
+            avg_sub_rate: 346,
+            avg_unsub_rate: 0,
+            target_sub_rate: 0,
+            open_rate: 0,
+            click_rate: 0,
+            last_sub_date: "",
+            last_unsub_date: "2022-01-12T15:41:33+00:00",
+          },
+          _links: [
+            {
+              rel: "self",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+            },
+            {
+              rel: "parent",
+              href: "https://us3.api.mailchimp.com/3.0/lists",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+            },
+            {
+              rel: "update",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "PATCH",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/PATCH.json",
+            },
+            {
+              rel: "batch-sub-unsub-members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "POST",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST-Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST.json",
+            },
+            {
+              rel: "delete",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "DELETE",
+            },
+            {
+              rel: "abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/abuse-reports",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Abuse/Collection.json",
+            },
+            {
+              rel: "activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/activity",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
+            },
+            {
+              rel: "clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/clients",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
+            },
+            {
+              rel: "growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/growth-history",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Growth/Collection.json",
+            },
+            {
+              rel: "interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/interest-categories",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json",
+            },
+            {
+              rel: "members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/members",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json",
+            },
+            {
+              rel: "merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/merge-fields",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/MergeFields/Collection.json",
+            },
+            {
+              rel: "segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/segments",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Segments/Collection.json",
+            },
+            {
+              rel: "webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/webhooks",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Webhooks/Collection.json",
+            },
+            {
+              rel: "signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/signup-forms",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/SignupForms/Collection.json",
+            },
+            {
+              rel: "locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/locations",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Locations/Collection.json",
+            },
+          ],
+        },
+        {
+          id: "6f890f62ee",
+          web_id: 365697,
+          name: "Demo (Andy)",
+          permission_reminder: "DEMO",
+          use_archive_bar: true,
+          campaign_defaults: {
+            from_name: "Grouparoo Demo",
+            from_email: "hello@grouparoo.com",
+            subject: "",
+            language: "en",
+          },
+          notify_on_subscribe: "",
+          notify_on_unsubscribe: "",
+          date_created: "2020-02-11T17:12:54+00:00",
+          list_rating: 0,
+          email_type_option: false,
+          subscribe_url_short: "http://eepurl.com/gSKdJ1",
+          subscribe_url_long:
+            "https://grouparoo.us3.list-manage.com/subscribe?u=5f6e3ecf127508cdb5e31e90b&id=6f890f62ee",
+          beamer_address: "us3-0c2a01eabd-80bbdfd596@inbound.mailchimp.com",
+          visibility: "pub",
+          double_optin: false,
+          has_welcome: false,
+          marketing_permissions: false,
+          modules: [],
+          stats: {
+            member_count: 1,
+            unsubscribe_count: 0,
+            cleaned_count: 0,
+            member_count_since_send: 1,
+            unsubscribe_count_since_send: 0,
+            cleaned_count_since_send: 0,
+            campaign_count: 0,
+            campaign_last_sent: "",
+            merge_field_count: 10,
+            avg_sub_rate: 3115,
+            avg_unsub_rate: 0,
+            target_sub_rate: 0,
+            open_rate: 0,
+            click_rate: 0,
+            last_sub_date: "2022-02-15T22:02:44+00:00",
+            last_unsub_date: "2021-11-23T13:56:49+00:00",
+          },
+          _links: [
+            {
+              rel: "self",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+            },
+            {
+              rel: "parent",
+              href: "https://us3.api.mailchimp.com/3.0/lists",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+            },
+            {
+              rel: "update",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee",
+              method: "PATCH",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/PATCH.json",
+            },
+            {
+              rel: "batch-sub-unsub-members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee",
+              method: "POST",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST-Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST.json",
+            },
+            {
+              rel: "delete",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee",
+              method: "DELETE",
+            },
+            {
+              rel: "abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/abuse-reports",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Abuse/Collection.json",
+            },
+            {
+              rel: "activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/activity",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
+            },
+            {
+              rel: "clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/clients",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
+            },
+            {
+              rel: "growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/growth-history",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Growth/Collection.json",
+            },
+            {
+              rel: "interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/interest-categories",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json",
+            },
+            {
+              rel: "members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/members",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json",
+            },
+            {
+              rel: "merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/merge-fields",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/MergeFields/Collection.json",
+            },
+            {
+              rel: "segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/segments",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Segments/Collection.json",
+            },
+            {
+              rel: "webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/webhooks",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Webhooks/Collection.json",
+            },
+            {
+              rel: "signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/signup-forms",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/SignupForms/Collection.json",
+            },
+            {
+              rel: "locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/locations",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Locations/Collection.json",
+            },
+          ],
+        },
+        {
+          id: "7cf8c94812",
+          web_id: 390273,
+          name: "Grouparoo Newsletter",
+          permission_reminder:
+            "You joined the Grouparoo mailing list either from our website, our blog, or from using our product.",
+          use_archive_bar: true,
+          campaign_defaults: {
+            from_name: "Brian Leonard",
+            from_email: "brian.leonard@grouparoo.com",
+            subject: "",
+            language: "en",
+          },
+          notify_on_subscribe: "",
+          notify_on_unsubscribe: "",
+          date_created: "2021-03-13T01:35:42+00:00",
+          list_rating: 3,
+          email_type_option: false,
+          subscribe_url_short: "http://eepurl.com/hs2d2P",
+          subscribe_url_long:
+            "https://grouparoo.us3.list-manage.com/subscribe?u=5f6e3ecf127508cdb5e31e90b&id=7cf8c94812",
+          beamer_address: "us3-0c2a01eabd-8fb7b9ab22@inbound.mailchimp.com",
+          visibility: "prv",
+          double_optin: false,
+          has_welcome: false,
+          marketing_permissions: false,
+          modules: [],
+          stats: {
+            member_count: 197,
+            unsubscribe_count: 20,
+            cleaned_count: 32,
+            member_count_since_send: 15,
+            unsubscribe_count_since_send: 2,
+            cleaned_count_since_send: 4,
+            campaign_count: 19,
+            campaign_last_sent: "2022-02-23T14:57:16+00:00",
+            merge_field_count: 4,
+            avg_sub_rate: 28,
+            avg_unsub_rate: 1,
+            target_sub_rate: 4,
+            open_rate: 44.57646607895745,
+            click_rate: 7.877280265339967,
+            last_sub_date: "2022-02-23T11:45:36+00:00",
+            last_unsub_date: "2022-02-18T07:01:03+00:00",
+          },
+          _links: [
+            {
+              rel: "self",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+            },
+            {
+              rel: "parent",
+              href: "https://us3.api.mailchimp.com/3.0/lists",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+            },
+            {
+              rel: "update",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812",
+              method: "PATCH",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/PATCH.json",
+            },
+            {
+              rel: "batch-sub-unsub-members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812",
+              method: "POST",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST-Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST.json",
+            },
+            {
+              rel: "delete",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812",
+              method: "DELETE",
+            },
+            {
+              rel: "abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/abuse-reports",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Abuse/Collection.json",
+            },
+            {
+              rel: "activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/activity",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
+            },
+            {
+              rel: "clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/clients",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
+            },
+            {
+              rel: "growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/growth-history",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Growth/Collection.json",
+            },
+            {
+              rel: "interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/interest-categories",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json",
+            },
+            {
+              rel: "members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/members",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json",
+            },
+            {
+              rel: "merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/merge-fields",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/MergeFields/Collection.json",
+            },
+            {
+              rel: "segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/segments",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Segments/Collection.json",
+            },
+            {
+              rel: "webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/webhooks",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Webhooks/Collection.json",
+            },
+            {
+              rel: "signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/signup-forms",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/SignupForms/Collection.json",
+            },
+            {
+              rel: "locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/locations",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Locations/Collection.json",
+            },
+          ],
+        },
+        {
+          id: "a36b032126",
+          web_id: 383113,
+          name: "Test Source",
+          permission_reminder: "Testing Grouparoo source",
+          use_archive_bar: true,
+          campaign_defaults: {
+            from_name: "Grouparoo",
+            from_email: "test@grouparoo.com",
+            subject: "",
+            language: "en",
+          },
+          notify_on_subscribe: "",
+          notify_on_unsubscribe: "",
+          date_created: "2020-11-10T19:32:49+00:00",
+          list_rating: 0,
+          email_type_option: false,
+          subscribe_url_short: "http://eepurl.com/hivDK9",
+          subscribe_url_long:
+            "https://grouparoo.us3.list-manage.com/subscribe?u=5f6e3ecf127508cdb5e31e90b&id=a36b032126",
+          beamer_address: "us3-0c2a01eabd-c14b2192b3@inbound.mailchimp.com",
+          visibility: "prv",
+          double_optin: false,
+          has_welcome: false,
+          marketing_permissions: false,
+          modules: [],
+          stats: {
+            member_count: 10,
+            unsubscribe_count: 0,
+            cleaned_count: 0,
+            member_count_since_send: 0,
+            unsubscribe_count_since_send: 0,
+            cleaned_count_since_send: 0,
+            campaign_count: 0,
+            campaign_last_sent: "",
+            merge_field_count: 7,
+            avg_sub_rate: 1360,
+            avg_unsub_rate: 2,
+            target_sub_rate: 2,
+            open_rate: 0,
+            click_rate: 0,
+            last_sub_date: "2022-02-23T16:25:57+00:00",
+            last_unsub_date: "2021-12-09T15:22:52+00:00",
+          },
+          _links: [
+            {
+              rel: "self",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+            },
+            {
+              rel: "parent",
+              href: "https://us3.api.mailchimp.com/3.0/lists",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+            },
+            {
+              rel: "update",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "PATCH",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/PATCH.json",
+            },
+            {
+              rel: "batch-sub-unsub-members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "POST",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST-Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST.json",
+            },
+            {
+              rel: "delete",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "DELETE",
+            },
+            {
+              rel: "abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/abuse-reports",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Abuse/Collection.json",
+            },
+            {
+              rel: "activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/activity",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
+            },
+            {
+              rel: "clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/clients",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
+            },
+            {
+              rel: "growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/growth-history",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Growth/Collection.json",
+            },
+            {
+              rel: "interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/interest-categories",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json",
+            },
+            {
+              rel: "members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/members",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json",
+            },
+            {
+              rel: "merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/merge-fields",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/MergeFields/Collection.json",
+            },
+            {
+              rel: "segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/segments",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Segments/Collection.json",
+            },
+            {
+              rel: "webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/webhooks",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Webhooks/Collection.json",
+            },
+            {
+              rel: "signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/signup-forms",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/SignupForms/Collection.json",
+            },
+            {
+              rel: "locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/locations",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Locations/Collection.json",
+            },
+          ],
+        },
+      ],
+      total_items: 5,
+      constraints: {
+        may_create: false,
+        max_instances: 5,
+        current_total_instances: 5,
+      },
+      _links: [
+        {
+          rel: "self",
+          href: "https://us3.api.mailchimp.com/3.0/lists",
+          method: "GET",
+          targetSchema:
+            "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+          schema:
+            "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+        },
+        {
+          rel: "create",
+          href: "https://us3.api.mailchimp.com/3.0/lists",
+          method: "POST",
+          targetSchema:
+            "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+          schema:
+            "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/POST.json",
+        },
+      ],
+    },
+    [
+      "Server",
+      "openresty",
+      "Content-Type",
+      "application/json; charset=utf-8",
+      "Vary",
+      "Accept-Encoding",
+      "X-Request-Id",
+      "f9565a73-b156-328b-4afa-248259e5e365",
+      "Link",
+      '<https://us3.api.mailchimp.com/schema/3.0/Lists/Collection.json>; rel="describedBy"',
+      "Content-Length",
+      "28612",
+      "Date",
+      "Wed, 23 Feb 2022 19:29:26 GMT",
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
+  .get("/3.0/lists", {})
+  .query({ count: "1000" })
+  .once()
+  .reply(
+    200,
+    {
+      lists: [
+        {
+          id: "1b724bb934",
+          web_id: 382062,
+          name: "UI Config",
+          permission_reminder: "You aren't a real person - this is a demo.",
+          use_archive_bar: true,
+          campaign_defaults: {
+            from_name: "Grouparoo",
+            from_email: "fake-evan@grouparoo.com",
+            subject: "",
+            language: "en",
+          },
+          notify_on_subscribe: "",
+          notify_on_unsubscribe: "",
+          date_created: "2020-08-12T16:21:04+00:00",
+          list_rating: 0,
+          email_type_option: false,
+          subscribe_url_short: "http://eepurl.com/haJ6YH",
+          subscribe_url_long:
+            "https://grouparoo.us3.list-manage.com/subscribe?u=5f6e3ecf127508cdb5e31e90b&id=1b724bb934",
+          beamer_address: "us3-0c2a01eabd-992b9e38fb@inbound.mailchimp.com",
+          visibility: "prv",
+          double_optin: false,
+          has_welcome: false,
+          marketing_permissions: false,
+          modules: [],
+          stats: {
+            member_count: 1,
+            unsubscribe_count: 0,
+            cleaned_count: 0,
+            member_count_since_send: 1,
+            unsubscribe_count_since_send: 0,
+            cleaned_count_since_send: 0,
+            campaign_count: 0,
+            campaign_last_sent: "",
+            merge_field_count: 13,
+            avg_sub_rate: 406,
+            avg_unsub_rate: 0,
+            target_sub_rate: 0,
+            open_rate: 0,
+            click_rate: 0,
+            last_sub_date: "2022-01-18T23:17:07+00:00",
+            last_unsub_date: "",
+          },
+          _links: [
+            {
+              rel: "self",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+            },
+            {
+              rel: "parent",
+              href: "https://us3.api.mailchimp.com/3.0/lists",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+            },
+            {
+              rel: "update",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934",
+              method: "PATCH",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/PATCH.json",
+            },
+            {
+              rel: "batch-sub-unsub-members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934",
+              method: "POST",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST-Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST.json",
+            },
+            {
+              rel: "delete",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934",
+              method: "DELETE",
+            },
+            {
+              rel: "abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/abuse-reports",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Abuse/Collection.json",
+            },
+            {
+              rel: "activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/activity",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
+            },
+            {
+              rel: "clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/clients",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
+            },
+            {
+              rel: "growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/growth-history",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Growth/Collection.json",
+            },
+            {
+              rel: "interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/interest-categories",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json",
+            },
+            {
+              rel: "members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/members",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json",
+            },
+            {
+              rel: "merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/merge-fields",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/MergeFields/Collection.json",
+            },
+            {
+              rel: "segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/segments",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Segments/Collection.json",
+            },
+            {
+              rel: "webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/webhooks",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Webhooks/Collection.json",
+            },
+            {
+              rel: "signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/signup-forms",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/SignupForms/Collection.json",
+            },
+            {
+              rel: "locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/locations",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Locations/Collection.json",
+            },
+          ],
+        },
+        {
+          id: "a36b032126",
+          web_id: 382274,
+          name: "Demo-Environment",
+          permission_reminder: "A test email list",
+          use_archive_bar: true,
+          campaign_defaults: {
+            from_name: "Grouparoo Staging",
+            from_email: "no-reply@grouparoo.com",
+            subject: "",
+            language: "en",
+          },
+          notify_on_subscribe: "",
+          notify_on_unsubscribe: "",
+          date_created: "2020-08-25T00:18:03+00:00",
+          list_rating: 0,
+          email_type_option: false,
+          subscribe_url_short: "http://eepurl.com/hbEP6f",
+          subscribe_url_long:
+            "https://grouparoo.us3.list-manage.com/subscribe?u=5f6e3ecf127508cdb5e31e90b&id=a36b032126",
+          beamer_address: "us3-0c2a01eabd-453791f0ab@inbound.mailchimp.com",
+          visibility: "prv",
+          double_optin: true,
+          has_welcome: false,
+          marketing_permissions: true,
+          modules: [],
+          stats: {
+            member_count: 0,
+            unsubscribe_count: 0,
+            cleaned_count: 0,
+            member_count_since_send: 0,
+            unsubscribe_count_since_send: 0,
+            cleaned_count_since_send: 0,
+            campaign_count: 0,
+            campaign_last_sent: "",
+            merge_field_count: 5,
+            avg_sub_rate: 346,
+            avg_unsub_rate: 0,
+            target_sub_rate: 0,
+            open_rate: 0,
+            click_rate: 0,
+            last_sub_date: "",
+            last_unsub_date: "2022-01-12T15:41:33+00:00",
+          },
+          _links: [
+            {
+              rel: "self",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+            },
+            {
+              rel: "parent",
+              href: "https://us3.api.mailchimp.com/3.0/lists",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+            },
+            {
+              rel: "update",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "PATCH",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/PATCH.json",
+            },
+            {
+              rel: "batch-sub-unsub-members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "POST",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST-Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST.json",
+            },
+            {
+              rel: "delete",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "DELETE",
+            },
+            {
+              rel: "abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/abuse-reports",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Abuse/Collection.json",
+            },
+            {
+              rel: "activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/activity",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
+            },
+            {
+              rel: "clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/clients",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
+            },
+            {
+              rel: "growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/growth-history",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Growth/Collection.json",
+            },
+            {
+              rel: "interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/interest-categories",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json",
+            },
+            {
+              rel: "members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/members",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json",
+            },
+            {
+              rel: "merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/merge-fields",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/MergeFields/Collection.json",
+            },
+            {
+              rel: "segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/segments",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Segments/Collection.json",
+            },
+            {
+              rel: "webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/webhooks",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Webhooks/Collection.json",
+            },
+            {
+              rel: "signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/signup-forms",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/SignupForms/Collection.json",
+            },
+            {
+              rel: "locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/locations",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Locations/Collection.json",
+            },
+          ],
+        },
+        {
+          id: "6f890f62ee",
+          web_id: 365697,
+          name: "Demo (Andy)",
+          permission_reminder: "DEMO",
+          use_archive_bar: true,
+          campaign_defaults: {
+            from_name: "Grouparoo Demo",
+            from_email: "hello@grouparoo.com",
+            subject: "",
+            language: "en",
+          },
+          notify_on_subscribe: "",
+          notify_on_unsubscribe: "",
+          date_created: "2020-02-11T17:12:54+00:00",
+          list_rating: 0,
+          email_type_option: false,
+          subscribe_url_short: "http://eepurl.com/gSKdJ1",
+          subscribe_url_long:
+            "https://grouparoo.us3.list-manage.com/subscribe?u=5f6e3ecf127508cdb5e31e90b&id=6f890f62ee",
+          beamer_address: "us3-0c2a01eabd-80bbdfd596@inbound.mailchimp.com",
+          visibility: "pub",
+          double_optin: false,
+          has_welcome: false,
+          marketing_permissions: false,
+          modules: [],
+          stats: {
+            member_count: 1,
+            unsubscribe_count: 0,
+            cleaned_count: 0,
+            member_count_since_send: 1,
+            unsubscribe_count_since_send: 0,
+            cleaned_count_since_send: 0,
+            campaign_count: 0,
+            campaign_last_sent: "",
+            merge_field_count: 10,
+            avg_sub_rate: 3115,
+            avg_unsub_rate: 0,
+            target_sub_rate: 0,
+            open_rate: 0,
+            click_rate: 0,
+            last_sub_date: "2022-02-15T22:02:44+00:00",
+            last_unsub_date: "2021-11-23T13:56:49+00:00",
+          },
+          _links: [
+            {
+              rel: "self",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+            },
+            {
+              rel: "parent",
+              href: "https://us3.api.mailchimp.com/3.0/lists",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+            },
+            {
+              rel: "update",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee",
+              method: "PATCH",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/PATCH.json",
+            },
+            {
+              rel: "batch-sub-unsub-members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee",
+              method: "POST",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST-Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST.json",
+            },
+            {
+              rel: "delete",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee",
+              method: "DELETE",
+            },
+            {
+              rel: "abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/abuse-reports",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Abuse/Collection.json",
+            },
+            {
+              rel: "activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/activity",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
+            },
+            {
+              rel: "clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/clients",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
+            },
+            {
+              rel: "growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/growth-history",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Growth/Collection.json",
+            },
+            {
+              rel: "interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/interest-categories",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json",
+            },
+            {
+              rel: "members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/members",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json",
+            },
+            {
+              rel: "merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/merge-fields",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/MergeFields/Collection.json",
+            },
+            {
+              rel: "segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/segments",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Segments/Collection.json",
+            },
+            {
+              rel: "webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/webhooks",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Webhooks/Collection.json",
+            },
+            {
+              rel: "signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/signup-forms",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/SignupForms/Collection.json",
+            },
+            {
+              rel: "locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/locations",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Locations/Collection.json",
+            },
+          ],
+        },
+        {
+          id: "7cf8c94812",
+          web_id: 390273,
+          name: "Grouparoo Newsletter",
+          permission_reminder:
+            "You joined the Grouparoo mailing list either from our website, our blog, or from using our product.",
+          use_archive_bar: true,
+          campaign_defaults: {
+            from_name: "Brian Leonard",
+            from_email: "brian.leonard@grouparoo.com",
+            subject: "",
+            language: "en",
+          },
+          notify_on_subscribe: "",
+          notify_on_unsubscribe: "",
+          date_created: "2021-03-13T01:35:42+00:00",
+          list_rating: 3,
+          email_type_option: false,
+          subscribe_url_short: "http://eepurl.com/hs2d2P",
+          subscribe_url_long:
+            "https://grouparoo.us3.list-manage.com/subscribe?u=5f6e3ecf127508cdb5e31e90b&id=7cf8c94812",
+          beamer_address: "us3-0c2a01eabd-8fb7b9ab22@inbound.mailchimp.com",
+          visibility: "prv",
+          double_optin: false,
+          has_welcome: false,
+          marketing_permissions: false,
+          modules: [],
+          stats: {
+            member_count: 197,
+            unsubscribe_count: 20,
+            cleaned_count: 32,
+            member_count_since_send: 15,
+            unsubscribe_count_since_send: 2,
+            cleaned_count_since_send: 4,
+            campaign_count: 19,
+            campaign_last_sent: "2022-02-23T14:57:16+00:00",
+            merge_field_count: 4,
+            avg_sub_rate: 28,
+            avg_unsub_rate: 1,
+            target_sub_rate: 4,
+            open_rate: 44.57646607895745,
+            click_rate: 7.877280265339967,
+            last_sub_date: "2022-02-23T11:45:36+00:00",
+            last_unsub_date: "2022-02-18T07:01:03+00:00",
+          },
+          _links: [
+            {
+              rel: "self",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+            },
+            {
+              rel: "parent",
+              href: "https://us3.api.mailchimp.com/3.0/lists",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+            },
+            {
+              rel: "update",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812",
+              method: "PATCH",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/PATCH.json",
+            },
+            {
+              rel: "batch-sub-unsub-members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812",
+              method: "POST",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST-Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST.json",
+            },
+            {
+              rel: "delete",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812",
+              method: "DELETE",
+            },
+            {
+              rel: "abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/abuse-reports",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Abuse/Collection.json",
+            },
+            {
+              rel: "activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/activity",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
+            },
+            {
+              rel: "clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/clients",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
+            },
+            {
+              rel: "growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/growth-history",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Growth/Collection.json",
+            },
+            {
+              rel: "interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/interest-categories",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json",
+            },
+            {
+              rel: "members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/members",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json",
+            },
+            {
+              rel: "merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/merge-fields",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/MergeFields/Collection.json",
+            },
+            {
+              rel: "segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/segments",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Segments/Collection.json",
+            },
+            {
+              rel: "webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/webhooks",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Webhooks/Collection.json",
+            },
+            {
+              rel: "signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/signup-forms",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/SignupForms/Collection.json",
+            },
+            {
+              rel: "locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/locations",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Locations/Collection.json",
+            },
+          ],
+        },
+        {
+          id: "a36b032126",
+          web_id: 383113,
+          name: "Test Source",
+          permission_reminder: "Testing Grouparoo source",
+          use_archive_bar: true,
+          campaign_defaults: {
+            from_name: "Grouparoo",
+            from_email: "test@grouparoo.com",
+            subject: "",
+            language: "en",
+          },
+          notify_on_subscribe: "",
+          notify_on_unsubscribe: "",
+          date_created: "2020-11-10T19:32:49+00:00",
+          list_rating: 0,
+          email_type_option: false,
+          subscribe_url_short: "http://eepurl.com/hivDK9",
+          subscribe_url_long:
+            "https://grouparoo.us3.list-manage.com/subscribe?u=5f6e3ecf127508cdb5e31e90b&id=a36b032126",
+          beamer_address: "us3-0c2a01eabd-c14b2192b3@inbound.mailchimp.com",
+          visibility: "prv",
+          double_optin: false,
+          has_welcome: false,
+          marketing_permissions: false,
+          modules: [],
+          stats: {
+            member_count: 10,
+            unsubscribe_count: 0,
+            cleaned_count: 0,
+            member_count_since_send: 0,
+            unsubscribe_count_since_send: 0,
+            cleaned_count_since_send: 0,
+            campaign_count: 0,
+            campaign_last_sent: "",
+            merge_field_count: 7,
+            avg_sub_rate: 1360,
+            avg_unsub_rate: 2,
+            target_sub_rate: 2,
+            open_rate: 0,
+            click_rate: 0,
+            last_sub_date: "2022-02-23T16:25:57+00:00",
+            last_unsub_date: "2021-12-09T15:22:52+00:00",
+          },
+          _links: [
+            {
+              rel: "self",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+            },
+            {
+              rel: "parent",
+              href: "https://us3.api.mailchimp.com/3.0/lists",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+            },
+            {
+              rel: "update",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "PATCH",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/PATCH.json",
+            },
+            {
+              rel: "batch-sub-unsub-members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "POST",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST-Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST.json",
+            },
+            {
+              rel: "delete",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "DELETE",
+            },
+            {
+              rel: "abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/abuse-reports",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Abuse/Collection.json",
+            },
+            {
+              rel: "activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/activity",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
+            },
+            {
+              rel: "clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/clients",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
+            },
+            {
+              rel: "growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/growth-history",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Growth/Collection.json",
+            },
+            {
+              rel: "interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/interest-categories",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json",
+            },
+            {
+              rel: "members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/members",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json",
+            },
+            {
+              rel: "merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/merge-fields",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/MergeFields/Collection.json",
+            },
+            {
+              rel: "segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/segments",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Segments/Collection.json",
+            },
+            {
+              rel: "webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/webhooks",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Webhooks/Collection.json",
+            },
+            {
+              rel: "signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/signup-forms",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/SignupForms/Collection.json",
+            },
+            {
+              rel: "locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/locations",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Locations/Collection.json",
+            },
+          ],
+        },
+      ],
+      total_items: 5,
+      constraints: {
+        may_create: false,
+        max_instances: 5,
+        current_total_instances: 5,
+      },
+      _links: [
+        {
+          rel: "self",
+          href: "https://us3.api.mailchimp.com/3.0/lists",
+          method: "GET",
+          targetSchema:
+            "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+          schema:
+            "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+        },
+        {
+          rel: "create",
+          href: "https://us3.api.mailchimp.com/3.0/lists",
+          method: "POST",
+          targetSchema:
+            "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+          schema:
+            "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/POST.json",
+        },
+      ],
+    },
+    [
+      "Server",
+      "openresty",
+      "Content-Type",
+      "application/json; charset=utf-8",
+      "Vary",
+      "Accept-Encoding",
+      "X-Request-Id",
+      "f0e8b2f8-c89b-4feb-6a74-bb44df993ac5",
+      "Link",
+      '<https://us3.api.mailchimp.com/schema/3.0/Lists/Collection.json>; rel="describedBy"',
+      "Date",
+      "Wed, 23 Feb 2022 19:29:26 GMT",
+      "Content-Length",
+      "28612",
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
   .get("/3.0/lists/a36b032126/merge-fields", {})
   .once()
   .reply(
@@ -361,13 +2283,13 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "X-Request-Id",
-      "74266153-4753-0867-4eef-0ec66f326c31",
+      "0e416d21-1a38-85c3-f3ab-3f8d5ed444b4",
       "Link",
       '<https://us3.api.mailchimp.com/schema/3.0/Lists/MergeFields/Collection.json>; rel="describedBy"',
       "Content-Length",
       "8805",
       "Date",
-      "Wed, 23 Feb 2022 16:26:11 GMT",
+      "Wed, 23 Feb 2022 19:29:27 GMT",
       "Connection",
       "close",
     ]
@@ -1589,13 +3511,2896 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "X-Request-Id",
-      "4ad5a5e8-8fb0-d2b1-b364-b004fe7b8c04",
+      "b330eb23-f84e-e28a-6268-eb4f3f271ba5",
       "Link",
       '<https://us3.api.mailchimp.com/schema/3.0/Lists/Members/Collection.json>; rel="describedBy"',
       "Content-Length",
       "33874",
       "Date",
-      "Wed, 23 Feb 2022 16:26:11 GMT",
+      "Wed, 23 Feb 2022 19:29:27 GMT",
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
+  .get("/3.0/lists", {})
+  .query({ count: "1000" })
+  .once()
+  .reply(
+    200,
+    {
+      lists: [
+        {
+          id: "1b724bb934",
+          web_id: 382062,
+          name: "UI Config",
+          permission_reminder: "You aren't a real person - this is a demo.",
+          use_archive_bar: true,
+          campaign_defaults: {
+            from_name: "Grouparoo",
+            from_email: "fake-evan@grouparoo.com",
+            subject: "",
+            language: "en",
+          },
+          notify_on_subscribe: "",
+          notify_on_unsubscribe: "",
+          date_created: "2020-08-12T16:21:04+00:00",
+          list_rating: 0,
+          email_type_option: false,
+          subscribe_url_short: "http://eepurl.com/haJ6YH",
+          subscribe_url_long:
+            "https://grouparoo.us3.list-manage.com/subscribe?u=5f6e3ecf127508cdb5e31e90b&id=1b724bb934",
+          beamer_address: "us3-0c2a01eabd-992b9e38fb@inbound.mailchimp.com",
+          visibility: "prv",
+          double_optin: false,
+          has_welcome: false,
+          marketing_permissions: false,
+          modules: [],
+          stats: {
+            member_count: 1,
+            unsubscribe_count: 0,
+            cleaned_count: 0,
+            member_count_since_send: 1,
+            unsubscribe_count_since_send: 0,
+            cleaned_count_since_send: 0,
+            campaign_count: 0,
+            campaign_last_sent: "",
+            merge_field_count: 13,
+            avg_sub_rate: 406,
+            avg_unsub_rate: 0,
+            target_sub_rate: 0,
+            open_rate: 0,
+            click_rate: 0,
+            last_sub_date: "2022-01-18T23:17:07+00:00",
+            last_unsub_date: "",
+          },
+          _links: [
+            {
+              rel: "self",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+            },
+            {
+              rel: "parent",
+              href: "https://us3.api.mailchimp.com/3.0/lists",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+            },
+            {
+              rel: "update",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934",
+              method: "PATCH",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/PATCH.json",
+            },
+            {
+              rel: "batch-sub-unsub-members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934",
+              method: "POST",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST-Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST.json",
+            },
+            {
+              rel: "delete",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934",
+              method: "DELETE",
+            },
+            {
+              rel: "abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/abuse-reports",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Abuse/Collection.json",
+            },
+            {
+              rel: "activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/activity",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
+            },
+            {
+              rel: "clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/clients",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
+            },
+            {
+              rel: "growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/growth-history",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Growth/Collection.json",
+            },
+            {
+              rel: "interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/interest-categories",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json",
+            },
+            {
+              rel: "members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/members",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json",
+            },
+            {
+              rel: "merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/merge-fields",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/MergeFields/Collection.json",
+            },
+            {
+              rel: "segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/segments",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Segments/Collection.json",
+            },
+            {
+              rel: "webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/webhooks",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Webhooks/Collection.json",
+            },
+            {
+              rel: "signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/signup-forms",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/SignupForms/Collection.json",
+            },
+            {
+              rel: "locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/locations",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Locations/Collection.json",
+            },
+          ],
+        },
+        {
+          id: "a36b032126",
+          web_id: 382274,
+          name: "Demo-Environment",
+          permission_reminder: "A test email list",
+          use_archive_bar: true,
+          campaign_defaults: {
+            from_name: "Grouparoo Staging",
+            from_email: "no-reply@grouparoo.com",
+            subject: "",
+            language: "en",
+          },
+          notify_on_subscribe: "",
+          notify_on_unsubscribe: "",
+          date_created: "2020-08-25T00:18:03+00:00",
+          list_rating: 0,
+          email_type_option: false,
+          subscribe_url_short: "http://eepurl.com/hbEP6f",
+          subscribe_url_long:
+            "https://grouparoo.us3.list-manage.com/subscribe?u=5f6e3ecf127508cdb5e31e90b&id=a36b032126",
+          beamer_address: "us3-0c2a01eabd-453791f0ab@inbound.mailchimp.com",
+          visibility: "prv",
+          double_optin: true,
+          has_welcome: false,
+          marketing_permissions: true,
+          modules: [],
+          stats: {
+            member_count: 0,
+            unsubscribe_count: 0,
+            cleaned_count: 0,
+            member_count_since_send: 0,
+            unsubscribe_count_since_send: 0,
+            cleaned_count_since_send: 0,
+            campaign_count: 0,
+            campaign_last_sent: "",
+            merge_field_count: 5,
+            avg_sub_rate: 346,
+            avg_unsub_rate: 0,
+            target_sub_rate: 0,
+            open_rate: 0,
+            click_rate: 0,
+            last_sub_date: "",
+            last_unsub_date: "2022-01-12T15:41:33+00:00",
+          },
+          _links: [
+            {
+              rel: "self",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+            },
+            {
+              rel: "parent",
+              href: "https://us3.api.mailchimp.com/3.0/lists",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+            },
+            {
+              rel: "update",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "PATCH",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/PATCH.json",
+            },
+            {
+              rel: "batch-sub-unsub-members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "POST",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST-Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST.json",
+            },
+            {
+              rel: "delete",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "DELETE",
+            },
+            {
+              rel: "abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/abuse-reports",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Abuse/Collection.json",
+            },
+            {
+              rel: "activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/activity",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
+            },
+            {
+              rel: "clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/clients",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
+            },
+            {
+              rel: "growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/growth-history",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Growth/Collection.json",
+            },
+            {
+              rel: "interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/interest-categories",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json",
+            },
+            {
+              rel: "members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/members",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json",
+            },
+            {
+              rel: "merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/merge-fields",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/MergeFields/Collection.json",
+            },
+            {
+              rel: "segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/segments",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Segments/Collection.json",
+            },
+            {
+              rel: "webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/webhooks",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Webhooks/Collection.json",
+            },
+            {
+              rel: "signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/signup-forms",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/SignupForms/Collection.json",
+            },
+            {
+              rel: "locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/locations",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Locations/Collection.json",
+            },
+          ],
+        },
+        {
+          id: "6f890f62ee",
+          web_id: 365697,
+          name: "Demo (Andy)",
+          permission_reminder: "DEMO",
+          use_archive_bar: true,
+          campaign_defaults: {
+            from_name: "Grouparoo Demo",
+            from_email: "hello@grouparoo.com",
+            subject: "",
+            language: "en",
+          },
+          notify_on_subscribe: "",
+          notify_on_unsubscribe: "",
+          date_created: "2020-02-11T17:12:54+00:00",
+          list_rating: 0,
+          email_type_option: false,
+          subscribe_url_short: "http://eepurl.com/gSKdJ1",
+          subscribe_url_long:
+            "https://grouparoo.us3.list-manage.com/subscribe?u=5f6e3ecf127508cdb5e31e90b&id=6f890f62ee",
+          beamer_address: "us3-0c2a01eabd-80bbdfd596@inbound.mailchimp.com",
+          visibility: "pub",
+          double_optin: false,
+          has_welcome: false,
+          marketing_permissions: false,
+          modules: [],
+          stats: {
+            member_count: 1,
+            unsubscribe_count: 0,
+            cleaned_count: 0,
+            member_count_since_send: 1,
+            unsubscribe_count_since_send: 0,
+            cleaned_count_since_send: 0,
+            campaign_count: 0,
+            campaign_last_sent: "",
+            merge_field_count: 10,
+            avg_sub_rate: 3115,
+            avg_unsub_rate: 0,
+            target_sub_rate: 0,
+            open_rate: 0,
+            click_rate: 0,
+            last_sub_date: "2022-02-15T22:02:44+00:00",
+            last_unsub_date: "2021-11-23T13:56:49+00:00",
+          },
+          _links: [
+            {
+              rel: "self",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+            },
+            {
+              rel: "parent",
+              href: "https://us3.api.mailchimp.com/3.0/lists",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+            },
+            {
+              rel: "update",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee",
+              method: "PATCH",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/PATCH.json",
+            },
+            {
+              rel: "batch-sub-unsub-members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee",
+              method: "POST",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST-Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST.json",
+            },
+            {
+              rel: "delete",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee",
+              method: "DELETE",
+            },
+            {
+              rel: "abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/abuse-reports",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Abuse/Collection.json",
+            },
+            {
+              rel: "activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/activity",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
+            },
+            {
+              rel: "clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/clients",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
+            },
+            {
+              rel: "growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/growth-history",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Growth/Collection.json",
+            },
+            {
+              rel: "interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/interest-categories",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json",
+            },
+            {
+              rel: "members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/members",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json",
+            },
+            {
+              rel: "merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/merge-fields",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/MergeFields/Collection.json",
+            },
+            {
+              rel: "segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/segments",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Segments/Collection.json",
+            },
+            {
+              rel: "webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/webhooks",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Webhooks/Collection.json",
+            },
+            {
+              rel: "signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/signup-forms",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/SignupForms/Collection.json",
+            },
+            {
+              rel: "locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/locations",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Locations/Collection.json",
+            },
+          ],
+        },
+        {
+          id: "7cf8c94812",
+          web_id: 390273,
+          name: "Grouparoo Newsletter",
+          permission_reminder:
+            "You joined the Grouparoo mailing list either from our website, our blog, or from using our product.",
+          use_archive_bar: true,
+          campaign_defaults: {
+            from_name: "Brian Leonard",
+            from_email: "brian.leonard@grouparoo.com",
+            subject: "",
+            language: "en",
+          },
+          notify_on_subscribe: "",
+          notify_on_unsubscribe: "",
+          date_created: "2021-03-13T01:35:42+00:00",
+          list_rating: 3,
+          email_type_option: false,
+          subscribe_url_short: "http://eepurl.com/hs2d2P",
+          subscribe_url_long:
+            "https://grouparoo.us3.list-manage.com/subscribe?u=5f6e3ecf127508cdb5e31e90b&id=7cf8c94812",
+          beamer_address: "us3-0c2a01eabd-8fb7b9ab22@inbound.mailchimp.com",
+          visibility: "prv",
+          double_optin: false,
+          has_welcome: false,
+          marketing_permissions: false,
+          modules: [],
+          stats: {
+            member_count: 197,
+            unsubscribe_count: 20,
+            cleaned_count: 32,
+            member_count_since_send: 15,
+            unsubscribe_count_since_send: 2,
+            cleaned_count_since_send: 4,
+            campaign_count: 19,
+            campaign_last_sent: "2022-02-23T14:57:16+00:00",
+            merge_field_count: 4,
+            avg_sub_rate: 28,
+            avg_unsub_rate: 1,
+            target_sub_rate: 4,
+            open_rate: 44.57646607895745,
+            click_rate: 7.877280265339967,
+            last_sub_date: "2022-02-23T11:45:36+00:00",
+            last_unsub_date: "2022-02-18T07:01:03+00:00",
+          },
+          _links: [
+            {
+              rel: "self",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+            },
+            {
+              rel: "parent",
+              href: "https://us3.api.mailchimp.com/3.0/lists",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+            },
+            {
+              rel: "update",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812",
+              method: "PATCH",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/PATCH.json",
+            },
+            {
+              rel: "batch-sub-unsub-members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812",
+              method: "POST",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST-Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST.json",
+            },
+            {
+              rel: "delete",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812",
+              method: "DELETE",
+            },
+            {
+              rel: "abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/abuse-reports",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Abuse/Collection.json",
+            },
+            {
+              rel: "activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/activity",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
+            },
+            {
+              rel: "clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/clients",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
+            },
+            {
+              rel: "growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/growth-history",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Growth/Collection.json",
+            },
+            {
+              rel: "interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/interest-categories",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json",
+            },
+            {
+              rel: "members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/members",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json",
+            },
+            {
+              rel: "merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/merge-fields",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/MergeFields/Collection.json",
+            },
+            {
+              rel: "segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/segments",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Segments/Collection.json",
+            },
+            {
+              rel: "webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/webhooks",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Webhooks/Collection.json",
+            },
+            {
+              rel: "signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/signup-forms",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/SignupForms/Collection.json",
+            },
+            {
+              rel: "locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/locations",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Locations/Collection.json",
+            },
+          ],
+        },
+        {
+          id: "a36b032126",
+          web_id: 383113,
+          name: "Test Source",
+          permission_reminder: "Testing Grouparoo source",
+          use_archive_bar: true,
+          campaign_defaults: {
+            from_name: "Grouparoo",
+            from_email: "test@grouparoo.com",
+            subject: "",
+            language: "en",
+          },
+          notify_on_subscribe: "",
+          notify_on_unsubscribe: "",
+          date_created: "2020-11-10T19:32:49+00:00",
+          list_rating: 0,
+          email_type_option: false,
+          subscribe_url_short: "http://eepurl.com/hivDK9",
+          subscribe_url_long:
+            "https://grouparoo.us3.list-manage.com/subscribe?u=5f6e3ecf127508cdb5e31e90b&id=a36b032126",
+          beamer_address: "us3-0c2a01eabd-c14b2192b3@inbound.mailchimp.com",
+          visibility: "prv",
+          double_optin: false,
+          has_welcome: false,
+          marketing_permissions: false,
+          modules: [],
+          stats: {
+            member_count: 10,
+            unsubscribe_count: 0,
+            cleaned_count: 0,
+            member_count_since_send: 0,
+            unsubscribe_count_since_send: 0,
+            cleaned_count_since_send: 0,
+            campaign_count: 0,
+            campaign_last_sent: "",
+            merge_field_count: 7,
+            avg_sub_rate: 1360,
+            avg_unsub_rate: 2,
+            target_sub_rate: 2,
+            open_rate: 0,
+            click_rate: 0,
+            last_sub_date: "2022-02-23T16:25:57+00:00",
+            last_unsub_date: "2021-12-09T15:22:52+00:00",
+          },
+          _links: [
+            {
+              rel: "self",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+            },
+            {
+              rel: "parent",
+              href: "https://us3.api.mailchimp.com/3.0/lists",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+            },
+            {
+              rel: "update",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "PATCH",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/PATCH.json",
+            },
+            {
+              rel: "batch-sub-unsub-members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "POST",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST-Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST.json",
+            },
+            {
+              rel: "delete",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "DELETE",
+            },
+            {
+              rel: "abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/abuse-reports",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Abuse/Collection.json",
+            },
+            {
+              rel: "activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/activity",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
+            },
+            {
+              rel: "clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/clients",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
+            },
+            {
+              rel: "growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/growth-history",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Growth/Collection.json",
+            },
+            {
+              rel: "interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/interest-categories",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json",
+            },
+            {
+              rel: "members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/members",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json",
+            },
+            {
+              rel: "merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/merge-fields",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/MergeFields/Collection.json",
+            },
+            {
+              rel: "segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/segments",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Segments/Collection.json",
+            },
+            {
+              rel: "webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/webhooks",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Webhooks/Collection.json",
+            },
+            {
+              rel: "signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/signup-forms",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/SignupForms/Collection.json",
+            },
+            {
+              rel: "locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/locations",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Locations/Collection.json",
+            },
+          ],
+        },
+      ],
+      total_items: 5,
+      constraints: {
+        may_create: false,
+        max_instances: 5,
+        current_total_instances: 5,
+      },
+      _links: [
+        {
+          rel: "self",
+          href: "https://us3.api.mailchimp.com/3.0/lists",
+          method: "GET",
+          targetSchema:
+            "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+          schema:
+            "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+        },
+        {
+          rel: "create",
+          href: "https://us3.api.mailchimp.com/3.0/lists",
+          method: "POST",
+          targetSchema:
+            "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+          schema:
+            "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/POST.json",
+        },
+      ],
+    },
+    [
+      "Server",
+      "openresty",
+      "Content-Type",
+      "application/json; charset=utf-8",
+      "Vary",
+      "Accept-Encoding",
+      "X-Request-Id",
+      "ef08eca6-78d6-71bf-89af-cc332e6a76a2",
+      "Link",
+      '<https://us3.api.mailchimp.com/schema/3.0/Lists/Collection.json>; rel="describedBy"',
+      "Date",
+      "Wed, 23 Feb 2022 19:29:28 GMT",
+      "Content-Length",
+      "28612",
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
+  .get("/3.0/lists", {})
+  .query({ count: "1000" })
+  .once()
+  .reply(
+    200,
+    {
+      lists: [
+        {
+          id: "1b724bb934",
+          web_id: 382062,
+          name: "UI Config",
+          permission_reminder: "You aren't a real person - this is a demo.",
+          use_archive_bar: true,
+          campaign_defaults: {
+            from_name: "Grouparoo",
+            from_email: "fake-evan@grouparoo.com",
+            subject: "",
+            language: "en",
+          },
+          notify_on_subscribe: "",
+          notify_on_unsubscribe: "",
+          date_created: "2020-08-12T16:21:04+00:00",
+          list_rating: 0,
+          email_type_option: false,
+          subscribe_url_short: "http://eepurl.com/haJ6YH",
+          subscribe_url_long:
+            "https://grouparoo.us3.list-manage.com/subscribe?u=5f6e3ecf127508cdb5e31e90b&id=1b724bb934",
+          beamer_address: "us3-0c2a01eabd-992b9e38fb@inbound.mailchimp.com",
+          visibility: "prv",
+          double_optin: false,
+          has_welcome: false,
+          marketing_permissions: false,
+          modules: [],
+          stats: {
+            member_count: 1,
+            unsubscribe_count: 0,
+            cleaned_count: 0,
+            member_count_since_send: 1,
+            unsubscribe_count_since_send: 0,
+            cleaned_count_since_send: 0,
+            campaign_count: 0,
+            campaign_last_sent: "",
+            merge_field_count: 13,
+            avg_sub_rate: 406,
+            avg_unsub_rate: 0,
+            target_sub_rate: 0,
+            open_rate: 0,
+            click_rate: 0,
+            last_sub_date: "2022-01-18T23:17:07+00:00",
+            last_unsub_date: "",
+          },
+          _links: [
+            {
+              rel: "self",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+            },
+            {
+              rel: "parent",
+              href: "https://us3.api.mailchimp.com/3.0/lists",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+            },
+            {
+              rel: "update",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934",
+              method: "PATCH",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/PATCH.json",
+            },
+            {
+              rel: "batch-sub-unsub-members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934",
+              method: "POST",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST-Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST.json",
+            },
+            {
+              rel: "delete",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934",
+              method: "DELETE",
+            },
+            {
+              rel: "abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/abuse-reports",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Abuse/Collection.json",
+            },
+            {
+              rel: "activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/activity",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
+            },
+            {
+              rel: "clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/clients",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
+            },
+            {
+              rel: "growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/growth-history",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Growth/Collection.json",
+            },
+            {
+              rel: "interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/interest-categories",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json",
+            },
+            {
+              rel: "members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/members",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json",
+            },
+            {
+              rel: "merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/merge-fields",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/MergeFields/Collection.json",
+            },
+            {
+              rel: "segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/segments",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Segments/Collection.json",
+            },
+            {
+              rel: "webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/webhooks",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Webhooks/Collection.json",
+            },
+            {
+              rel: "signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/signup-forms",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/SignupForms/Collection.json",
+            },
+            {
+              rel: "locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/locations",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Locations/Collection.json",
+            },
+          ],
+        },
+        {
+          id: "a36b032126",
+          web_id: 382274,
+          name: "Demo-Environment",
+          permission_reminder: "A test email list",
+          use_archive_bar: true,
+          campaign_defaults: {
+            from_name: "Grouparoo Staging",
+            from_email: "no-reply@grouparoo.com",
+            subject: "",
+            language: "en",
+          },
+          notify_on_subscribe: "",
+          notify_on_unsubscribe: "",
+          date_created: "2020-08-25T00:18:03+00:00",
+          list_rating: 0,
+          email_type_option: false,
+          subscribe_url_short: "http://eepurl.com/hbEP6f",
+          subscribe_url_long:
+            "https://grouparoo.us3.list-manage.com/subscribe?u=5f6e3ecf127508cdb5e31e90b&id=a36b032126",
+          beamer_address: "us3-0c2a01eabd-453791f0ab@inbound.mailchimp.com",
+          visibility: "prv",
+          double_optin: true,
+          has_welcome: false,
+          marketing_permissions: true,
+          modules: [],
+          stats: {
+            member_count: 0,
+            unsubscribe_count: 0,
+            cleaned_count: 0,
+            member_count_since_send: 0,
+            unsubscribe_count_since_send: 0,
+            cleaned_count_since_send: 0,
+            campaign_count: 0,
+            campaign_last_sent: "",
+            merge_field_count: 5,
+            avg_sub_rate: 346,
+            avg_unsub_rate: 0,
+            target_sub_rate: 0,
+            open_rate: 0,
+            click_rate: 0,
+            last_sub_date: "",
+            last_unsub_date: "2022-01-12T15:41:33+00:00",
+          },
+          _links: [
+            {
+              rel: "self",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+            },
+            {
+              rel: "parent",
+              href: "https://us3.api.mailchimp.com/3.0/lists",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+            },
+            {
+              rel: "update",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "PATCH",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/PATCH.json",
+            },
+            {
+              rel: "batch-sub-unsub-members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "POST",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST-Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST.json",
+            },
+            {
+              rel: "delete",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "DELETE",
+            },
+            {
+              rel: "abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/abuse-reports",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Abuse/Collection.json",
+            },
+            {
+              rel: "activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/activity",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
+            },
+            {
+              rel: "clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/clients",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
+            },
+            {
+              rel: "growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/growth-history",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Growth/Collection.json",
+            },
+            {
+              rel: "interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/interest-categories",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json",
+            },
+            {
+              rel: "members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/members",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json",
+            },
+            {
+              rel: "merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/merge-fields",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/MergeFields/Collection.json",
+            },
+            {
+              rel: "segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/segments",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Segments/Collection.json",
+            },
+            {
+              rel: "webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/webhooks",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Webhooks/Collection.json",
+            },
+            {
+              rel: "signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/signup-forms",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/SignupForms/Collection.json",
+            },
+            {
+              rel: "locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/locations",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Locations/Collection.json",
+            },
+          ],
+        },
+        {
+          id: "6f890f62ee",
+          web_id: 365697,
+          name: "Demo (Andy)",
+          permission_reminder: "DEMO",
+          use_archive_bar: true,
+          campaign_defaults: {
+            from_name: "Grouparoo Demo",
+            from_email: "hello@grouparoo.com",
+            subject: "",
+            language: "en",
+          },
+          notify_on_subscribe: "",
+          notify_on_unsubscribe: "",
+          date_created: "2020-02-11T17:12:54+00:00",
+          list_rating: 0,
+          email_type_option: false,
+          subscribe_url_short: "http://eepurl.com/gSKdJ1",
+          subscribe_url_long:
+            "https://grouparoo.us3.list-manage.com/subscribe?u=5f6e3ecf127508cdb5e31e90b&id=6f890f62ee",
+          beamer_address: "us3-0c2a01eabd-80bbdfd596@inbound.mailchimp.com",
+          visibility: "pub",
+          double_optin: false,
+          has_welcome: false,
+          marketing_permissions: false,
+          modules: [],
+          stats: {
+            member_count: 1,
+            unsubscribe_count: 0,
+            cleaned_count: 0,
+            member_count_since_send: 1,
+            unsubscribe_count_since_send: 0,
+            cleaned_count_since_send: 0,
+            campaign_count: 0,
+            campaign_last_sent: "",
+            merge_field_count: 10,
+            avg_sub_rate: 3115,
+            avg_unsub_rate: 0,
+            target_sub_rate: 0,
+            open_rate: 0,
+            click_rate: 0,
+            last_sub_date: "2022-02-15T22:02:44+00:00",
+            last_unsub_date: "2021-11-23T13:56:49+00:00",
+          },
+          _links: [
+            {
+              rel: "self",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+            },
+            {
+              rel: "parent",
+              href: "https://us3.api.mailchimp.com/3.0/lists",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+            },
+            {
+              rel: "update",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee",
+              method: "PATCH",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/PATCH.json",
+            },
+            {
+              rel: "batch-sub-unsub-members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee",
+              method: "POST",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST-Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST.json",
+            },
+            {
+              rel: "delete",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee",
+              method: "DELETE",
+            },
+            {
+              rel: "abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/abuse-reports",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Abuse/Collection.json",
+            },
+            {
+              rel: "activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/activity",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
+            },
+            {
+              rel: "clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/clients",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
+            },
+            {
+              rel: "growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/growth-history",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Growth/Collection.json",
+            },
+            {
+              rel: "interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/interest-categories",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json",
+            },
+            {
+              rel: "members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/members",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json",
+            },
+            {
+              rel: "merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/merge-fields",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/MergeFields/Collection.json",
+            },
+            {
+              rel: "segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/segments",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Segments/Collection.json",
+            },
+            {
+              rel: "webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/webhooks",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Webhooks/Collection.json",
+            },
+            {
+              rel: "signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/signup-forms",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/SignupForms/Collection.json",
+            },
+            {
+              rel: "locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/locations",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Locations/Collection.json",
+            },
+          ],
+        },
+        {
+          id: "7cf8c94812",
+          web_id: 390273,
+          name: "Grouparoo Newsletter",
+          permission_reminder:
+            "You joined the Grouparoo mailing list either from our website, our blog, or from using our product.",
+          use_archive_bar: true,
+          campaign_defaults: {
+            from_name: "Brian Leonard",
+            from_email: "brian.leonard@grouparoo.com",
+            subject: "",
+            language: "en",
+          },
+          notify_on_subscribe: "",
+          notify_on_unsubscribe: "",
+          date_created: "2021-03-13T01:35:42+00:00",
+          list_rating: 3,
+          email_type_option: false,
+          subscribe_url_short: "http://eepurl.com/hs2d2P",
+          subscribe_url_long:
+            "https://grouparoo.us3.list-manage.com/subscribe?u=5f6e3ecf127508cdb5e31e90b&id=7cf8c94812",
+          beamer_address: "us3-0c2a01eabd-8fb7b9ab22@inbound.mailchimp.com",
+          visibility: "prv",
+          double_optin: false,
+          has_welcome: false,
+          marketing_permissions: false,
+          modules: [],
+          stats: {
+            member_count: 197,
+            unsubscribe_count: 20,
+            cleaned_count: 32,
+            member_count_since_send: 15,
+            unsubscribe_count_since_send: 2,
+            cleaned_count_since_send: 4,
+            campaign_count: 19,
+            campaign_last_sent: "2022-02-23T14:57:16+00:00",
+            merge_field_count: 4,
+            avg_sub_rate: 28,
+            avg_unsub_rate: 1,
+            target_sub_rate: 4,
+            open_rate: 44.57646607895745,
+            click_rate: 7.877280265339967,
+            last_sub_date: "2022-02-23T11:45:36+00:00",
+            last_unsub_date: "2022-02-18T07:01:03+00:00",
+          },
+          _links: [
+            {
+              rel: "self",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+            },
+            {
+              rel: "parent",
+              href: "https://us3.api.mailchimp.com/3.0/lists",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+            },
+            {
+              rel: "update",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812",
+              method: "PATCH",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/PATCH.json",
+            },
+            {
+              rel: "batch-sub-unsub-members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812",
+              method: "POST",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST-Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST.json",
+            },
+            {
+              rel: "delete",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812",
+              method: "DELETE",
+            },
+            {
+              rel: "abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/abuse-reports",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Abuse/Collection.json",
+            },
+            {
+              rel: "activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/activity",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
+            },
+            {
+              rel: "clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/clients",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
+            },
+            {
+              rel: "growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/growth-history",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Growth/Collection.json",
+            },
+            {
+              rel: "interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/interest-categories",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json",
+            },
+            {
+              rel: "members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/members",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json",
+            },
+            {
+              rel: "merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/merge-fields",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/MergeFields/Collection.json",
+            },
+            {
+              rel: "segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/segments",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Segments/Collection.json",
+            },
+            {
+              rel: "webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/webhooks",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Webhooks/Collection.json",
+            },
+            {
+              rel: "signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/signup-forms",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/SignupForms/Collection.json",
+            },
+            {
+              rel: "locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/locations",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Locations/Collection.json",
+            },
+          ],
+        },
+        {
+          id: "a36b032126",
+          web_id: 383113,
+          name: "Test Source",
+          permission_reminder: "Testing Grouparoo source",
+          use_archive_bar: true,
+          campaign_defaults: {
+            from_name: "Grouparoo",
+            from_email: "test@grouparoo.com",
+            subject: "",
+            language: "en",
+          },
+          notify_on_subscribe: "",
+          notify_on_unsubscribe: "",
+          date_created: "2020-11-10T19:32:49+00:00",
+          list_rating: 0,
+          email_type_option: false,
+          subscribe_url_short: "http://eepurl.com/hivDK9",
+          subscribe_url_long:
+            "https://grouparoo.us3.list-manage.com/subscribe?u=5f6e3ecf127508cdb5e31e90b&id=a36b032126",
+          beamer_address: "us3-0c2a01eabd-c14b2192b3@inbound.mailchimp.com",
+          visibility: "prv",
+          double_optin: false,
+          has_welcome: false,
+          marketing_permissions: false,
+          modules: [],
+          stats: {
+            member_count: 10,
+            unsubscribe_count: 0,
+            cleaned_count: 0,
+            member_count_since_send: 0,
+            unsubscribe_count_since_send: 0,
+            cleaned_count_since_send: 0,
+            campaign_count: 0,
+            campaign_last_sent: "",
+            merge_field_count: 7,
+            avg_sub_rate: 1360,
+            avg_unsub_rate: 2,
+            target_sub_rate: 2,
+            open_rate: 0,
+            click_rate: 0,
+            last_sub_date: "2022-02-23T16:25:57+00:00",
+            last_unsub_date: "2021-12-09T15:22:52+00:00",
+          },
+          _links: [
+            {
+              rel: "self",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+            },
+            {
+              rel: "parent",
+              href: "https://us3.api.mailchimp.com/3.0/lists",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+            },
+            {
+              rel: "update",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "PATCH",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/PATCH.json",
+            },
+            {
+              rel: "batch-sub-unsub-members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "POST",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST-Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST.json",
+            },
+            {
+              rel: "delete",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "DELETE",
+            },
+            {
+              rel: "abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/abuse-reports",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Abuse/Collection.json",
+            },
+            {
+              rel: "activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/activity",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
+            },
+            {
+              rel: "clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/clients",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
+            },
+            {
+              rel: "growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/growth-history",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Growth/Collection.json",
+            },
+            {
+              rel: "interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/interest-categories",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json",
+            },
+            {
+              rel: "members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/members",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json",
+            },
+            {
+              rel: "merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/merge-fields",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/MergeFields/Collection.json",
+            },
+            {
+              rel: "segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/segments",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Segments/Collection.json",
+            },
+            {
+              rel: "webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/webhooks",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Webhooks/Collection.json",
+            },
+            {
+              rel: "signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/signup-forms",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/SignupForms/Collection.json",
+            },
+            {
+              rel: "locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/locations",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Locations/Collection.json",
+            },
+          ],
+        },
+      ],
+      total_items: 5,
+      constraints: {
+        may_create: false,
+        max_instances: 5,
+        current_total_instances: 5,
+      },
+      _links: [
+        {
+          rel: "self",
+          href: "https://us3.api.mailchimp.com/3.0/lists",
+          method: "GET",
+          targetSchema:
+            "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+          schema:
+            "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+        },
+        {
+          rel: "create",
+          href: "https://us3.api.mailchimp.com/3.0/lists",
+          method: "POST",
+          targetSchema:
+            "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+          schema:
+            "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/POST.json",
+        },
+      ],
+    },
+    [
+      "Server",
+      "openresty",
+      "Content-Type",
+      "application/json; charset=utf-8",
+      "Vary",
+      "Accept-Encoding",
+      "X-Request-Id",
+      "84fc9dc1-947d-7cba-29b6-186e65141853",
+      "Link",
+      '<https://us3.api.mailchimp.com/schema/3.0/Lists/Collection.json>; rel="describedBy"',
+      "Date",
+      "Wed, 23 Feb 2022 19:29:28 GMT",
+      "Content-Length",
+      "28612",
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
+  .get("/3.0/lists", {})
+  .query({ count: "1000" })
+  .once()
+  .reply(
+    200,
+    {
+      lists: [
+        {
+          id: "1b724bb934",
+          web_id: 382062,
+          name: "UI Config",
+          permission_reminder: "You aren't a real person - this is a demo.",
+          use_archive_bar: true,
+          campaign_defaults: {
+            from_name: "Grouparoo",
+            from_email: "fake-evan@grouparoo.com",
+            subject: "",
+            language: "en",
+          },
+          notify_on_subscribe: "",
+          notify_on_unsubscribe: "",
+          date_created: "2020-08-12T16:21:04+00:00",
+          list_rating: 0,
+          email_type_option: false,
+          subscribe_url_short: "http://eepurl.com/haJ6YH",
+          subscribe_url_long:
+            "https://grouparoo.us3.list-manage.com/subscribe?u=5f6e3ecf127508cdb5e31e90b&id=1b724bb934",
+          beamer_address: "us3-0c2a01eabd-992b9e38fb@inbound.mailchimp.com",
+          visibility: "prv",
+          double_optin: false,
+          has_welcome: false,
+          marketing_permissions: false,
+          modules: [],
+          stats: {
+            member_count: 1,
+            unsubscribe_count: 0,
+            cleaned_count: 0,
+            member_count_since_send: 1,
+            unsubscribe_count_since_send: 0,
+            cleaned_count_since_send: 0,
+            campaign_count: 0,
+            campaign_last_sent: "",
+            merge_field_count: 13,
+            avg_sub_rate: 406,
+            avg_unsub_rate: 0,
+            target_sub_rate: 0,
+            open_rate: 0,
+            click_rate: 0,
+            last_sub_date: "2022-01-18T23:17:07+00:00",
+            last_unsub_date: "",
+          },
+          _links: [
+            {
+              rel: "self",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+            },
+            {
+              rel: "parent",
+              href: "https://us3.api.mailchimp.com/3.0/lists",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+            },
+            {
+              rel: "update",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934",
+              method: "PATCH",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/PATCH.json",
+            },
+            {
+              rel: "batch-sub-unsub-members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934",
+              method: "POST",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST-Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST.json",
+            },
+            {
+              rel: "delete",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934",
+              method: "DELETE",
+            },
+            {
+              rel: "abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/abuse-reports",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Abuse/Collection.json",
+            },
+            {
+              rel: "activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/activity",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
+            },
+            {
+              rel: "clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/clients",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
+            },
+            {
+              rel: "growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/growth-history",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Growth/Collection.json",
+            },
+            {
+              rel: "interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/interest-categories",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json",
+            },
+            {
+              rel: "members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/members",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json",
+            },
+            {
+              rel: "merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/merge-fields",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/MergeFields/Collection.json",
+            },
+            {
+              rel: "segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/segments",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Segments/Collection.json",
+            },
+            {
+              rel: "webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/webhooks",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Webhooks/Collection.json",
+            },
+            {
+              rel: "signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/signup-forms",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/SignupForms/Collection.json",
+            },
+            {
+              rel: "locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/locations",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Locations/Collection.json",
+            },
+          ],
+        },
+        {
+          id: "a36b032126",
+          web_id: 382274,
+          name: "Demo-Environment",
+          permission_reminder: "A test email list",
+          use_archive_bar: true,
+          campaign_defaults: {
+            from_name: "Grouparoo Staging",
+            from_email: "no-reply@grouparoo.com",
+            subject: "",
+            language: "en",
+          },
+          notify_on_subscribe: "",
+          notify_on_unsubscribe: "",
+          date_created: "2020-08-25T00:18:03+00:00",
+          list_rating: 0,
+          email_type_option: false,
+          subscribe_url_short: "http://eepurl.com/hbEP6f",
+          subscribe_url_long:
+            "https://grouparoo.us3.list-manage.com/subscribe?u=5f6e3ecf127508cdb5e31e90b&id=a36b032126",
+          beamer_address: "us3-0c2a01eabd-453791f0ab@inbound.mailchimp.com",
+          visibility: "prv",
+          double_optin: true,
+          has_welcome: false,
+          marketing_permissions: true,
+          modules: [],
+          stats: {
+            member_count: 0,
+            unsubscribe_count: 0,
+            cleaned_count: 0,
+            member_count_since_send: 0,
+            unsubscribe_count_since_send: 0,
+            cleaned_count_since_send: 0,
+            campaign_count: 0,
+            campaign_last_sent: "",
+            merge_field_count: 5,
+            avg_sub_rate: 346,
+            avg_unsub_rate: 0,
+            target_sub_rate: 0,
+            open_rate: 0,
+            click_rate: 0,
+            last_sub_date: "",
+            last_unsub_date: "2022-01-12T15:41:33+00:00",
+          },
+          _links: [
+            {
+              rel: "self",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+            },
+            {
+              rel: "parent",
+              href: "https://us3.api.mailchimp.com/3.0/lists",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+            },
+            {
+              rel: "update",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "PATCH",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/PATCH.json",
+            },
+            {
+              rel: "batch-sub-unsub-members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "POST",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST-Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST.json",
+            },
+            {
+              rel: "delete",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "DELETE",
+            },
+            {
+              rel: "abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/abuse-reports",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Abuse/Collection.json",
+            },
+            {
+              rel: "activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/activity",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
+            },
+            {
+              rel: "clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/clients",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
+            },
+            {
+              rel: "growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/growth-history",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Growth/Collection.json",
+            },
+            {
+              rel: "interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/interest-categories",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json",
+            },
+            {
+              rel: "members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/members",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json",
+            },
+            {
+              rel: "merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/merge-fields",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/MergeFields/Collection.json",
+            },
+            {
+              rel: "segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/segments",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Segments/Collection.json",
+            },
+            {
+              rel: "webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/webhooks",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Webhooks/Collection.json",
+            },
+            {
+              rel: "signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/signup-forms",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/SignupForms/Collection.json",
+            },
+            {
+              rel: "locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/locations",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Locations/Collection.json",
+            },
+          ],
+        },
+        {
+          id: "6f890f62ee",
+          web_id: 365697,
+          name: "Demo (Andy)",
+          permission_reminder: "DEMO",
+          use_archive_bar: true,
+          campaign_defaults: {
+            from_name: "Grouparoo Demo",
+            from_email: "hello@grouparoo.com",
+            subject: "",
+            language: "en",
+          },
+          notify_on_subscribe: "",
+          notify_on_unsubscribe: "",
+          date_created: "2020-02-11T17:12:54+00:00",
+          list_rating: 0,
+          email_type_option: false,
+          subscribe_url_short: "http://eepurl.com/gSKdJ1",
+          subscribe_url_long:
+            "https://grouparoo.us3.list-manage.com/subscribe?u=5f6e3ecf127508cdb5e31e90b&id=6f890f62ee",
+          beamer_address: "us3-0c2a01eabd-80bbdfd596@inbound.mailchimp.com",
+          visibility: "pub",
+          double_optin: false,
+          has_welcome: false,
+          marketing_permissions: false,
+          modules: [],
+          stats: {
+            member_count: 1,
+            unsubscribe_count: 0,
+            cleaned_count: 0,
+            member_count_since_send: 1,
+            unsubscribe_count_since_send: 0,
+            cleaned_count_since_send: 0,
+            campaign_count: 0,
+            campaign_last_sent: "",
+            merge_field_count: 10,
+            avg_sub_rate: 3115,
+            avg_unsub_rate: 0,
+            target_sub_rate: 0,
+            open_rate: 0,
+            click_rate: 0,
+            last_sub_date: "2022-02-15T22:02:44+00:00",
+            last_unsub_date: "2021-11-23T13:56:49+00:00",
+          },
+          _links: [
+            {
+              rel: "self",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+            },
+            {
+              rel: "parent",
+              href: "https://us3.api.mailchimp.com/3.0/lists",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+            },
+            {
+              rel: "update",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee",
+              method: "PATCH",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/PATCH.json",
+            },
+            {
+              rel: "batch-sub-unsub-members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee",
+              method: "POST",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST-Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST.json",
+            },
+            {
+              rel: "delete",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee",
+              method: "DELETE",
+            },
+            {
+              rel: "abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/abuse-reports",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Abuse/Collection.json",
+            },
+            {
+              rel: "activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/activity",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
+            },
+            {
+              rel: "clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/clients",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
+            },
+            {
+              rel: "growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/growth-history",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Growth/Collection.json",
+            },
+            {
+              rel: "interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/interest-categories",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json",
+            },
+            {
+              rel: "members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/members",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json",
+            },
+            {
+              rel: "merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/merge-fields",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/MergeFields/Collection.json",
+            },
+            {
+              rel: "segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/segments",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Segments/Collection.json",
+            },
+            {
+              rel: "webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/webhooks",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Webhooks/Collection.json",
+            },
+            {
+              rel: "signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/signup-forms",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/SignupForms/Collection.json",
+            },
+            {
+              rel: "locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/locations",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Locations/Collection.json",
+            },
+          ],
+        },
+        {
+          id: "7cf8c94812",
+          web_id: 390273,
+          name: "Grouparoo Newsletter",
+          permission_reminder:
+            "You joined the Grouparoo mailing list either from our website, our blog, or from using our product.",
+          use_archive_bar: true,
+          campaign_defaults: {
+            from_name: "Brian Leonard",
+            from_email: "brian.leonard@grouparoo.com",
+            subject: "",
+            language: "en",
+          },
+          notify_on_subscribe: "",
+          notify_on_unsubscribe: "",
+          date_created: "2021-03-13T01:35:42+00:00",
+          list_rating: 3,
+          email_type_option: false,
+          subscribe_url_short: "http://eepurl.com/hs2d2P",
+          subscribe_url_long:
+            "https://grouparoo.us3.list-manage.com/subscribe?u=5f6e3ecf127508cdb5e31e90b&id=7cf8c94812",
+          beamer_address: "us3-0c2a01eabd-8fb7b9ab22@inbound.mailchimp.com",
+          visibility: "prv",
+          double_optin: false,
+          has_welcome: false,
+          marketing_permissions: false,
+          modules: [],
+          stats: {
+            member_count: 197,
+            unsubscribe_count: 20,
+            cleaned_count: 32,
+            member_count_since_send: 15,
+            unsubscribe_count_since_send: 2,
+            cleaned_count_since_send: 4,
+            campaign_count: 19,
+            campaign_last_sent: "2022-02-23T14:57:16+00:00",
+            merge_field_count: 4,
+            avg_sub_rate: 28,
+            avg_unsub_rate: 1,
+            target_sub_rate: 4,
+            open_rate: 44.57646607895745,
+            click_rate: 7.877280265339967,
+            last_sub_date: "2022-02-23T11:45:36+00:00",
+            last_unsub_date: "2022-02-18T07:01:03+00:00",
+          },
+          _links: [
+            {
+              rel: "self",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+            },
+            {
+              rel: "parent",
+              href: "https://us3.api.mailchimp.com/3.0/lists",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+            },
+            {
+              rel: "update",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812",
+              method: "PATCH",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/PATCH.json",
+            },
+            {
+              rel: "batch-sub-unsub-members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812",
+              method: "POST",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST-Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST.json",
+            },
+            {
+              rel: "delete",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812",
+              method: "DELETE",
+            },
+            {
+              rel: "abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/abuse-reports",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Abuse/Collection.json",
+            },
+            {
+              rel: "activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/activity",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
+            },
+            {
+              rel: "clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/clients",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
+            },
+            {
+              rel: "growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/growth-history",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Growth/Collection.json",
+            },
+            {
+              rel: "interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/interest-categories",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json",
+            },
+            {
+              rel: "members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/members",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json",
+            },
+            {
+              rel: "merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/merge-fields",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/MergeFields/Collection.json",
+            },
+            {
+              rel: "segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/segments",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Segments/Collection.json",
+            },
+            {
+              rel: "webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/webhooks",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Webhooks/Collection.json",
+            },
+            {
+              rel: "signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/signup-forms",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/SignupForms/Collection.json",
+            },
+            {
+              rel: "locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/locations",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Locations/Collection.json",
+            },
+          ],
+        },
+        {
+          id: "a36b032126",
+          web_id: 383113,
+          name: "Test Source",
+          permission_reminder: "Testing Grouparoo source",
+          use_archive_bar: true,
+          campaign_defaults: {
+            from_name: "Grouparoo",
+            from_email: "test@grouparoo.com",
+            subject: "",
+            language: "en",
+          },
+          notify_on_subscribe: "",
+          notify_on_unsubscribe: "",
+          date_created: "2020-11-10T19:32:49+00:00",
+          list_rating: 0,
+          email_type_option: false,
+          subscribe_url_short: "http://eepurl.com/hivDK9",
+          subscribe_url_long:
+            "https://grouparoo.us3.list-manage.com/subscribe?u=5f6e3ecf127508cdb5e31e90b&id=a36b032126",
+          beamer_address: "us3-0c2a01eabd-c14b2192b3@inbound.mailchimp.com",
+          visibility: "prv",
+          double_optin: false,
+          has_welcome: false,
+          marketing_permissions: false,
+          modules: [],
+          stats: {
+            member_count: 10,
+            unsubscribe_count: 0,
+            cleaned_count: 0,
+            member_count_since_send: 0,
+            unsubscribe_count_since_send: 0,
+            cleaned_count_since_send: 0,
+            campaign_count: 0,
+            campaign_last_sent: "",
+            merge_field_count: 7,
+            avg_sub_rate: 1360,
+            avg_unsub_rate: 2,
+            target_sub_rate: 2,
+            open_rate: 0,
+            click_rate: 0,
+            last_sub_date: "2022-02-23T16:25:57+00:00",
+            last_unsub_date: "2021-12-09T15:22:52+00:00",
+          },
+          _links: [
+            {
+              rel: "self",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+            },
+            {
+              rel: "parent",
+              href: "https://us3.api.mailchimp.com/3.0/lists",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+            },
+            {
+              rel: "update",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "PATCH",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/PATCH.json",
+            },
+            {
+              rel: "batch-sub-unsub-members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "POST",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST-Response.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST.json",
+            },
+            {
+              rel: "delete",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126",
+              method: "DELETE",
+            },
+            {
+              rel: "abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/abuse-reports",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Abuse/Collection.json",
+            },
+            {
+              rel: "activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/activity",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
+            },
+            {
+              rel: "clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/clients",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
+            },
+            {
+              rel: "growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/growth-history",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Growth/Collection.json",
+            },
+            {
+              rel: "interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/interest-categories",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json",
+            },
+            {
+              rel: "members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/members",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json",
+            },
+            {
+              rel: "merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/merge-fields",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/MergeFields/Collection.json",
+            },
+            {
+              rel: "segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/segments",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Segments/Collection.json",
+            },
+            {
+              rel: "webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/webhooks",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Webhooks/Collection.json",
+            },
+            {
+              rel: "signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/signup-forms",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/SignupForms/Collection.json",
+            },
+            {
+              rel: "locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/a36b032126/locations",
+              method: "GET",
+              targetSchema:
+                "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
+              schema:
+                "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Locations/Collection.json",
+            },
+          ],
+        },
+      ],
+      total_items: 5,
+      constraints: {
+        may_create: false,
+        max_instances: 5,
+        current_total_instances: 5,
+      },
+      _links: [
+        {
+          rel: "self",
+          href: "https://us3.api.mailchimp.com/3.0/lists",
+          method: "GET",
+          targetSchema:
+            "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json",
+          schema:
+            "https://us3.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json",
+        },
+        {
+          rel: "create",
+          href: "https://us3.api.mailchimp.com/3.0/lists",
+          method: "POST",
+          targetSchema:
+            "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json",
+          schema:
+            "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/POST.json",
+        },
+      ],
+    },
+    [
+      "Server",
+      "openresty",
+      "Content-Type",
+      "application/json; charset=utf-8",
+      "Vary",
+      "Accept-Encoding",
+      "X-Request-Id",
+      "2d592982-0fa3-4e73-971d-fb510d0c8492",
+      "Link",
+      '<https://us3.api.mailchimp.com/schema/3.0/Lists/Collection.json>; rel="describedBy"',
+      "Date",
+      "Wed, 23 Feb 2022 19:29:28 GMT",
+      "Content-Length",
+      "28612",
       "Connection",
       "close",
     ]
@@ -2823,13 +7628,13 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "X-Request-Id",
-      "2986f017-92b5-dd6f-4dbf-067ec464fec7",
+      "dec7a68b-d951-8306-76d8-26ea076e73cd",
       "Link",
       '<https://us3.api.mailchimp.com/schema/3.0/Lists/Members/Collection.json>; rel="describedBy"',
+      "Date",
+      "Wed, 23 Feb 2022 19:29:29 GMT",
       "Content-Length",
       "33874",
-      "Date",
-      "Wed, 23 Feb 2022 16:26:12 GMT",
       "Connection",
       "close",
     ]
@@ -4058,13 +8863,13 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "X-Request-Id",
-      "073236fb-b6ff-c3fd-ecfb-0e418d1f789a",
+      "ce224ff0-693b-ac49-d945-3bd95566c456",
       "Link",
       '<https://us3.api.mailchimp.com/schema/3.0/Lists/Members/Collection.json>; rel="describedBy"',
+      "Date",
+      "Wed, 23 Feb 2022 19:29:29 GMT",
       "Content-Length",
       "33874",
-      "Date",
-      "Wed, 23 Feb 2022 16:26:12 GMT",
       "Connection",
       "close",
     ]
@@ -4124,11 +8929,11 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "X-Request-Id",
-      "a689ab4f-b5c2-6251-e181-52de7c1881d4",
+      "cc9f3639-b10e-2991-ad60-0c279af6f42e",
       "Link",
       '<https://us3.api.mailchimp.com/schema/3.0/Lists/Members/Collection.json>; rel="describedBy"',
       "Date",
-      "Wed, 23 Feb 2022 16:26:13 GMT",
+      "Wed, 23 Feb 2022 19:29:29 GMT",
       "Connection",
       "close",
     ]
@@ -4188,11 +8993,11 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "X-Request-Id",
-      "db8ab20d-5ea5-19fa-d0eb-7de123d86cb8",
+      "d172b536-1cb4-4d72-1de8-3df0c2e5a2a5",
       "Link",
       '<https://us3.api.mailchimp.com/schema/3.0/Lists/Members/Collection.json>; rel="describedBy"',
       "Date",
-      "Wed, 23 Feb 2022 16:26:13 GMT",
+      "Wed, 23 Feb 2022 19:29:30 GMT",
       "Connection",
       "close",
     ]
@@ -4718,13 +9523,13 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "X-Request-Id",
-      "77c6dddc-1864-6876-8b1e-03295cc9e5ad",
+      "a4f7b234-58a5-f065-c5bd-8b5b01ad1d92",
       "Link",
       '<https://us3.api.mailchimp.com/schema/3.0/Lists/Members/Collection.json>; rel="describedBy"',
       "Content-Length",
       "14035",
       "Date",
-      "Wed, 23 Feb 2022 16:26:14 GMT",
+      "Wed, 23 Feb 2022 19:29:30 GMT",
       "Connection",
       "close",
     ]
@@ -5251,13 +10056,13 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "X-Request-Id",
-      "564020cb-d400-e142-a71f-10962d079841",
+      "c1e089ae-7d79-880a-208b-cf08da54d18d",
       "Link",
       '<https://us3.api.mailchimp.com/schema/3.0/Lists/Members/Collection.json>; rel="describedBy"',
+      "Date",
+      "Wed, 23 Feb 2022 19:29:31 GMT",
       "Content-Length",
       "14035",
-      "Date",
-      "Wed, 23 Feb 2022 16:26:14 GMT",
       "Connection",
       "close",
     ]
@@ -5784,13 +10589,13 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "X-Request-Id",
-      "5a22f3cc-ff9c-49f9-6521-0f8562576af1",
+      "bb51e715-92b7-94fa-0fc5-ead5ad7a306e",
       "Link",
       '<https://us3.api.mailchimp.com/schema/3.0/Lists/Members/Collection.json>; rel="describedBy"',
       "Content-Length",
       "14061",
       "Date",
-      "Wed, 23 Feb 2022 16:26:14 GMT",
+      "Wed, 23 Feb 2022 19:29:31 GMT",
       "Connection",
       "close",
     ]
@@ -6085,11 +10890,11 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "X-Request-Id",
-      "5f677cab-22a2-a806-d895-719be2e1fbd0",
+      "088acb11-661c-2f42-ef4f-569b0c8240a2",
       "Link",
       '<https://us3.api.mailchimp.com/schema/3.0/Lists/Members/Collection.json>; rel="describedBy"',
       "Date",
-      "Wed, 23 Feb 2022 16:26:15 GMT",
+      "Wed, 23 Feb 2022 19:29:31 GMT",
       "Connection",
       "close",
     ]
@@ -6149,11 +10954,11 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding",
       "X-Request-Id",
-      "2314ca5d-6c65-df33-872b-2bd6e26dd8a0",
+      "a4a19cce-fc6b-2af8-1456-4462c38c2219",
       "Link",
       '<https://us3.api.mailchimp.com/schema/3.0/Lists/Members/Collection.json>; rel="describedBy"',
       "Date",
-      "Wed, 23 Feb 2022 16:26:15 GMT",
+      "Wed, 23 Feb 2022 19:29:31 GMT",
       "Connection",
       "close",
     ]
