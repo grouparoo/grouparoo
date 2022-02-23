@@ -27,7 +27,7 @@ describe("hubspot/destinationOptions", () => {
       const destinationOptions = {};
       const result = await runDestinationOptions({ destinationOptions });
       let option = result.companyKey;
-      expect(option.type).toEqual("list");
+      expect(option.type).toEqual("typeahead");
       expect(option.options).toEqual(
         expect.arrayContaining([
           "name",
