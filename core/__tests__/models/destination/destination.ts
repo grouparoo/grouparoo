@@ -870,57 +870,6 @@ describe("models/destination", () => {
         expect(destination.collection).toBe("none");
         expect(destination.groupId).toBe(null);
       });
-
-      test("recordPreview - without updates - with model", async () => {
-        const record = await helper.factories.record();
-        await record.addOrUpdateProperties({
-          userId: [1],
-          email: ["yoshi@example.com"],
-        });
-        await destination.updateTracking("model");
-
-        const mapping = {
-          "primary-id": "userId",
-          email: "email",
-        };
-
-        const destinationGroupMemberships: Record<string, string> = {};
-
-        const _record = await destination.recordPreview(
-          record,
-          mapping,
-          destinationGroupMemberships
-        );
-        expect(_record.properties["primary-id"].values[0]).toBe(1);
-        expect(_record.properties["email"].values[0]).toBe("yoshi@example.com");
-
-        await record.destroy();
-      });
-
-      test("destination record previews will convert the type of the property to match the destination", async () => {
-        const record = await helper.factories.record();
-        await record.addOrUpdateProperties({
-          userId: [1],
-          email: ["yoshi@example.com"],
-          ltv: [123],
-        });
-        await destination.updateTracking("model");
-
-        const mapping = {
-          "primary-id": "userId",
-          "string-property": "ltv",
-        };
-
-        const _record = await destination.recordPreview(record, mapping, {});
-
-        expect(_record.properties["primary-id"].values[0]).toBe(1);
-        expect(_record.properties["primary-id"].type).toBe("integer");
-
-        expect(_record.properties["string-property"].values[0]).toBe("123");
-        expect(_record.properties["string-property"].type).toBe("string");
-
-        await record.destroy();
-      });
     });
 
     describe("with groups", () => {
@@ -996,61 +945,6 @@ describe("models/destination", () => {
         await destination.updateTracking("none");
         _group = await destination.$get("group");
         expect(_group).toBe(null);
-      });
-
-      test("recordPreview - without updates - with group", async () => {
-        const record = await helper.factories.record();
-        await record.addOrUpdateProperties({
-          userId: [1],
-          email: ["yoshi@example.com"],
-        });
-        await GroupMember.create({ recordId: record.id, groupId: group.id });
-        await destination.updateTracking("group", group.id);
-
-        const mapping = {
-          "primary-id": "userId",
-          email: "email",
-        };
-
-        const destinationGroupMemberships: Record<string, string> = {};
-        destinationGroupMemberships[group.id] = "another-group-tag";
-
-        const _record = await destination.recordPreview(
-          record,
-          mapping,
-          destinationGroupMemberships
-        );
-        expect(_record.properties["primary-id"].values[0]).toBe(1);
-        expect(_record.properties["email"].values[0]).toBe("yoshi@example.com");
-        expect(_record.groupNames).toEqual(["another-group-tag"]);
-
-        await record.destroy();
-      });
-
-      test("destination record previews will convert the type of the property to match the destination", async () => {
-        const record = await helper.factories.record();
-        await record.addOrUpdateProperties({
-          userId: [1],
-          email: ["yoshi@example.com"],
-          ltv: [123],
-        });
-        await GroupMember.create({ recordId: record.id, groupId: group.id });
-        await destination.updateTracking("group", group.id);
-
-        const mapping = {
-          "primary-id": "userId",
-          "string-property": "ltv",
-        };
-
-        const _record = await destination.recordPreview(record, mapping, {});
-
-        expect(_record.properties["primary-id"].values[0]).toBe(1);
-        expect(_record.properties["primary-id"].type).toBe("integer");
-
-        expect(_record.properties["string-property"].values[0]).toBe("123");
-        expect(_record.properties["string-property"].type).toBe("string");
-
-        await record.destroy();
       });
 
       describe("relevantFor", () => {
