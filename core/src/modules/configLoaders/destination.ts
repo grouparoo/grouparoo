@@ -22,7 +22,7 @@ const sanitizeSyncMode = (
   if (syncMode === "additive" || syncMode === "enrich") {
     const newSyncMode = syncMode === "additive" ? "upsert" : "update";
     log(
-      `[ config ] Destination syncMode "${syncMode}" is now known as "${newSyncMode}".`,
+      `[ config ] Found syncMode "${syncMode}" in Destination config "${configId}". "${syncMode}" is still supported but value should be updated to new name: "${newSyncMode}".`,
       "warning"
     );
     return newSyncMode;
