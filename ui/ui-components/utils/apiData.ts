@@ -155,7 +155,6 @@ import {
   DestinationExport,
   DestinationExportArrayProperties,
   DestinationMappingOptions,
-  DestinationRecordPreview,
   DestinationView,
 } from "@grouparoo/core/src/actions/destinations";
 import {
@@ -428,7 +427,6 @@ export namespace Actions {
   export type DestinationView = AsyncReturnType<
     typeof DestinationView.prototype.runWithinTransaction
   >;
-
   export type ExportView = AsyncReturnType<
     typeof ExportView.prototype.runWithinTransaction
   >;
