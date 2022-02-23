@@ -356,7 +356,7 @@ describe("actions/schedules", () => {
         connection.params = {
           csrfToken,
           id,
-          options: { maxColumn: "createdAt" },
+          options: { maxColumn: "created_at" },
           state: "ready",
         };
         const { error, schedule } = await specHelper.runAction<ScheduleEdit>(

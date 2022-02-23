@@ -84,6 +84,7 @@ describe("models/destination - with custom exportRecord plugin", () => {
           options: [],
           syncModes: ["sync", "enrich", "additive"],
           methods: {
+            destinationOptions: async () => ({}),
             destinationMappingOptions: async () => {
               return {
                 labels: {

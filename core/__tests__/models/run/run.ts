@@ -53,7 +53,7 @@ describe("models/run", () => {
 
     beforeAll(async () => {
       source = await helper.factories.source();
-      await source.setOptions({ table: "table" });
+      await source.setOptions({ table: "users" });
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
       property = await Property.findOne();

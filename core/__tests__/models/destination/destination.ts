@@ -331,7 +331,10 @@ describe("models/destination", () => {
         const connectionOptions =
           await destination.destinationConnectionOptions();
         expect(connectionOptions).toEqual({
-          table: { type: "list", options: ["users_out", "users", "groups"] },
+          tableWithOptions: {
+            type: "list",
+            options: ["users_out", "users", "groups"],
+          },
         });
       }
     );
@@ -341,7 +344,10 @@ describe("models/destination", () => {
         options: "true",
       });
       expect(connectionOptions).toEqual({
-        table: { type: "list", options: ["users_out", "users", "groups"] },
+        tableWithOptions: {
+          type: "list",
+          options: ["users_out", "users", "groups"],
+        },
         receivedOptions: { type: "text", options: ["true"] },
       });
     });

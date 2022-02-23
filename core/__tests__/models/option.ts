@@ -254,6 +254,7 @@ describe("models/option", () => {
                 },
               ],
               methods: {
+                destinationOptions: async () => ({}),
                 exportRecord: async () => ({ success: true }),
               },
             },

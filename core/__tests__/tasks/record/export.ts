@@ -97,6 +97,7 @@ describe("tasks/record:export", () => {
                   return { success: true };
                 },
                 exportArrayProperties: async () => [],
+                destinationOptions: async () => ({}),
                 destinationMappingOptions: async () => {
                   return {
                     labels: {

@@ -112,9 +112,9 @@ describe("models/schedule", () => {
         sourceId: source.id,
       });
 
-      await schedule.setOptions({ maxColumn: "id" });
+      await schedule.setOptions({ maxColumn: "created_at" });
       const options = await schedule.getOptions();
-      expect(options).toEqual({ maxColumn: "id" });
+      expect(options).toEqual({ maxColumn: "created_at" });
 
       await schedule.destroy();
     });
@@ -126,7 +126,7 @@ describe("models/schedule", () => {
         sourceId: source.id,
       });
 
-      await schedule.setOptions({ maxColumn: "abc" });
+      await schedule.setOptions({ maxColumn: "created_at" });
 
       await schedule.destroy(); // doesn't throw
 
@@ -143,7 +143,7 @@ describe("models/schedule", () => {
         sourceId: source.id,
       });
 
-      await schedule.setOptions({ maxColumn: "abc" });
+      await schedule.setOptions({ maxColumn: "created_at" });
 
       const foreignOption = await Option.create({
         ownerId: schedule.id,
@@ -176,7 +176,7 @@ describe("models/schedule", () => {
         sourceId: source.id,
       });
 
-      await schedule.setOptions({ maxColumn: "col" });
+      await schedule.setOptions({ maxColumn: "updated_at" });
       await schedule.update({ state: "ready" });
 
       await Run.create({
@@ -210,7 +210,7 @@ describe("models/schedule", () => {
       );
 
       await expect(
-        schedule.setOptions({ maxColumn: "abc", otherThing: "false" })
+        schedule.setOptions({ maxColumn: "created_at", otherThing: "false" })
       ).rejects.toThrow(
         /otherThing is not an option for a test-plugin-import schedule/
       );
@@ -227,7 +227,7 @@ describe("models/schedule", () => {
           type: "test-plugin-import",
           sourceId: source.id,
         });
-        await schedule.setOptions({ maxColumn: "foo" });
+        await schedule.setOptions({ maxColumn: "created_at" });
         await schedule.update({ state: "ready" });
       });
 
@@ -424,7 +424,7 @@ describe("models/schedule", () => {
         expect(schedule.id).toBeTruthy();
 
         await expect(
-          schedule.setOptions({ maxColumn: "abc", something: "abc123" })
+          schedule.setOptions({ maxColumn: "created_at", something: "abc123" })
         ).rejects.toThrow(
           /something is not an option for a test-plugin-import schedule/
         );
@@ -531,7 +531,7 @@ describe("models/schedule", () => {
         expect((await schedule.$get("runs")).length).toBe(1);
         expect(run.highWaterMark).toEqual({ updated_at: 12345 });
 
-        await schedule.setOptions({ maxColumn: "createdAt" });
+        await schedule.setOptions({ maxColumn: "created_at" });
 
         await run.reload();
         expect(run.highWaterMark).toEqual({}); // the getter formats to an empty array
@@ -573,7 +573,7 @@ describe("models/schedule", () => {
           type: "test-plugin-import",
           sourceId: source.id,
         });
-        await schedule.setOptions({ maxColumn: "foo" });
+        await schedule.setOptions({ maxColumn: "created_at" });
         await schedule.update({ state: "ready" });
       });
 
@@ -866,7 +866,7 @@ describe("models/schedule", () => {
         sourceId: source.id,
         incremental: true,
       });
-      await schedule.setOptions({ maxColumn: "col" });
+      await schedule.setOptions({ maxColumn: "updated_at" });
       await schedule.update({ state: "ready" });
 
       const firstRun = await schedule.enqueueRun();
@@ -889,7 +889,7 @@ describe("models/schedule", () => {
         sourceId: source.id,
         incremental: false,
       });
-      await schedule.setOptions({ maxColumn: "col" });
+      await schedule.setOptions({ maxColumn: "updated_at" });
       await schedule.update({ state: "ready" });
 
       const firstRun = await schedule.enqueueRun();
@@ -911,7 +911,7 @@ describe("models/schedule", () => {
         name: "test plugin schedule",
         sourceId: source.id,
       });
-      await schedule.setOptions({ maxColumn: "col" });
+      await schedule.setOptions({ maxColumn: "updated_at" });
       await schedule.update({ state: "ready" });
 
       const run = await Run.create({

@@ -566,7 +566,7 @@ export namespace SourceOps {
             Object.assign(ruleOptions, propertyOptions);
           }
 
-          await property.setOptions(ruleOptions, false);
+          await property.setOptions(ruleOptions, false, false);
         }
 
         return property;

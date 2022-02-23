@@ -244,8 +244,7 @@ export namespace OptionHelper {
       throw new Error(`cannot get required options`);
     }
 
-    // TODO enable
-    const optionOptions = false
+    const optionOptions = externallyValidate
       ? await getOptionOptions(instance, options)
       : {};
 
@@ -272,7 +271,7 @@ export namespace OptionHelper {
 
       const val = options[k].toString();
       const opts = optionOptions[k];
-      if (opts && !opts.includes(val)) {
+      if (opts && opts.length > 0 && !opts.includes(val)) {
         throw new Error(
           `"${val}" is not a valid value for ${type} ${modelName<ModelWithOptions>(
             instance

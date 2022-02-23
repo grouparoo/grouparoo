@@ -343,7 +343,8 @@ describe("models/app", () => {
             name: "test-template-app",
             displayName: "test-template-app",
             options: [
-              { key: "test_key", type: "list", required: true },
+              { key: "test_key", type: "text", required: true },
+              { key: "test_options", type: "list", required: false },
               { key: "password", type: "password", required: false },
             ],
             methods: {
@@ -353,7 +354,10 @@ describe("models/app", () => {
               },
               appOptions: async () => {
                 return {
-                  test_key: { type: appOptionsReturnType, options: ["a", "b"] },
+                  test_options: {
+                    type: appOptionsReturnType,
+                    options: ["a", "b"],
+                  },
                 };
               },
               parallelism: async () => {
@@ -414,7 +418,8 @@ describe("models/app", () => {
       // original
       const optionsA = await app.appOptions();
       expect(optionsA).toEqual({
-        test_key: { type: "list", options: ["a", "b"] }, // dynamically defined
+        test_key: { type: "text" }, // statically defined
+        test_options: { type: "list", options: ["a", "b"] }, // dynamically defined
         password: { type: "password" }, // statically defined
       });
 
@@ -422,7 +427,8 @@ describe("models/app", () => {
       appOptionsReturnType = "pending";
       const optionsB = await app.appOptions();
       expect(optionsB).toEqual({
-        test_key: { type: "pending", options: ["a", "b"] }, // dynamically defined
+        test_key: { type: "text" }, // statically defined
+        test_options: { type: "pending", options: ["a", "b"] }, // dynamically defined
         password: { type: "password" }, // statically defined
       });
     });

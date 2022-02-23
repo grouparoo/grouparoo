@@ -46,6 +46,8 @@ import ExportProcessorFactory from "./factories/exportProcessor";
 import RunFactory from "./factories/run";
 import ApiKeyFactory from "./factories/apiKey";
 
+import { TestPluginData } from "./testPluginData";
+
 // types
 import {
   SourceOptionsMethodResponse,
@@ -402,15 +404,16 @@ export namespace helper {
           apps: ["test-plugin-app"],
           options: [
             { key: "table", required: true },
+            { key: "tableWithOptions", required: false },
             { key: "where", required: false },
           ],
           groupAggregations: [AggregationMethod.Exact],
           methods: {
             sourceOptions: async ({ sourceOptions }) => {
               const response: SourceOptionsMethodResponse = {
-                table: {
+                tableWithOptions: {
                   type: "list",
-                  options: ["users", "admins", "purchases"],
+                  options: Object.keys(TestPluginData),
                 },
               };
               if (sourceOptions.options)
@@ -421,39 +424,7 @@ export namespace helper {
               return response;
             },
             sourcePreview: async ({ sourceOptions }) => {
-              if (sourceOptions.table === "admins")
-                return [
-                  { id: 1, fname: "mario", lname: "mario" },
-                  { id: 2, fname: "luigi", lname: "mario" },
-                ];
-              if (sourceOptions.table === "users")
-                return [
-                  {
-                    id: 1,
-                    accountId: 42,
-                    firstName: "mario",
-                    lastName: "mario",
-                    email: "mario@nintendo.com",
-                    lastLoginAt: "2020-01-02",
-                    ltv: 500,
-                    isVIP: true,
-                    purchases: 123,
-                    purchaseAmounts: 12,
-                  },
-                  {
-                    id: 2,
-                    accountId: 12,
-                    firstName: "luigi",
-                    lastName: "mario",
-                    email: "mario@nintendo.com",
-                    lastLoginAt: "2020-01-02",
-                    ltv: 213,
-                    isVIP: false,
-                    purchases: 18,
-                    purchaseAmounts: 50,
-                  },
-                ];
-              return [];
+              return TestPluginData[sourceOptions.tableWithOptions] ?? [];
             },
             propertyOptions: async () => [
               {
@@ -461,35 +432,16 @@ export namespace helper {
                 required: true,
                 description: "the column to choose",
                 type: "list",
-                options: async () => {
-                  return [
-                    { key: "id", examples: [1, 2, 3] },
-                    { key: "accountId", examples: [1, 2, 3] },
-                    {
-                      key: "firstName",
-                      examples: ["mario", "luigi", "peach"],
-                    },
-                    {
-                      key: "lastName",
-                      examples: ["mario", "mario", "toadstool"],
-                    },
-                    {
-                      key: "email",
-                      examples: [
-                        "mario@nintendo.com",
-                        "luigi@nintendo.com",
-                        "peach@nintendo.com",
-                      ],
-                    },
-                    {
-                      key: "lastLoginAt",
-                      examples: ["2020-01-01", "2020-04-02", "2020-07-24"],
-                    },
-                    { key: "ltv", examples: [123.45, 100, 0] },
-                    { key: "isVIP", examples: [true, false, true] },
-                    { key: "purchases", examples: [10, 31, 212] },
-                    { key: "purchaseAmounts", examples: [50, 12, 0] },
-                  ];
+                options: async ({ sourceOptions }) => {
+                  const rows = TestPluginData[sourceOptions.tableWithOptions];
+                  if (rows) {
+                    const keys = Object.keys(rows[0]);
+                    return keys.map((k) => ({
+                      key: k,
+                      examples: rows.map((r) => r[k]),
+                    }));
+                  }
+                  return [];
                 },
               },
               {
@@ -505,6 +457,13 @@ export namespace helper {
                     { key: AggregationMethod.Max },
                   ];
                 },
+              },
+              {
+                key: "arbitraryText",
+                required: false,
+                description: "some text you want to set just because",
+                type: "text",
+                options: async () => [],
               },
             ],
             scheduleOptions: async () => [
@@ -569,6 +528,7 @@ export namespace helper {
           syncModes: ["sync", "enrich", "additive"],
           options: [
             { key: "table", required: true },
+            { key: "tableWithOptions", required: false },
             { key: "where", required: false },
             { key: "_failRemoteValidation", required: false },
           ],
@@ -578,7 +538,7 @@ export namespace helper {
             },
             destinationOptions: async ({ destinationOptions }) => {
               const response: DestinationOptionsMethodResponse = {
-                table: {
+                tableWithOptions: {
                   type: "list",
                   options: ["users_out", "users", "groups"],
                 },
@@ -629,6 +589,7 @@ export namespace helper {
           defaultSyncMode: "additive",
           options: [
             { key: "table", required: true },
+            { key: "tableWithOptions", required: false },
             { key: "where", required: false },
           ],
           methods: {
@@ -637,7 +598,7 @@ export namespace helper {
             },
             destinationOptions: async ({ destinationOptions }) => {
               const response: DestinationOptionsMethodResponse = {
-                table: { type: "list", options: ["users_out"] },
+                tableWithOptions: { type: "list", options: ["users_out"] },
               };
               if (destinationOptions.options)
                 response["receivedOptions"] = {

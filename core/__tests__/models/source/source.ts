@@ -625,7 +625,7 @@ describe("models/source", () => {
     });
 
     test("when options are set, the preview will return data", async () => {
-      await source.setOptions({ table: "users" });
+      await source.setOptions({ table: "users", tableWithOptions: "users" });
       const preview = await source.sourcePreview();
       expect(preview).toEqual([
         {
@@ -645,21 +645,37 @@ describe("models/source", () => {
           accountId: 12,
           firstName: "luigi",
           lastName: "mario",
-          email: "mario@nintendo.com",
+          email: "luigi@nintendo.com",
           lastLoginAt: "2020-01-02",
           ltv: 213,
           isVIP: false,
           purchases: 18,
           purchaseAmounts: 50,
         },
+        {
+          id: 3,
+          accountId: 42,
+          firstName: "peach",
+          lastName: "toadstool",
+          email: "peach@nintendo.com",
+          lastLoginAt: "2020-05-02",
+          ltv: 321,
+          isVIP: true,
+          purchases: 212,
+          purchaseAmounts: 0,
+        },
       ]);
     });
 
     test("preview can be run with arbitrary options", async () => {
-      const preview = await source.sourcePreview({ table: "admins" });
+      const preview = await source.sourcePreview({
+        table: "admins",
+        tableWithOptions: "admins",
+      });
       expect(preview).toEqual([
         { id: 1, fname: "mario", lname: "mario" },
         { id: 2, fname: "luigi", lname: "mario" },
+        { id: 3, fname: "peach", lname: "toadstool" },
       ]);
     });
   });
@@ -683,7 +699,10 @@ describe("models/source", () => {
     test("a source can return the options from the plugin", async () => {
       const connectionOptions = await source.sourceConnectionOptions();
       expect(connectionOptions).toEqual({
-        table: { options: ["users", "admins", "purchases"], type: "list" },
+        tableWithOptions: {
+          options: ["users", "admins", "purchases", "products"],
+          type: "list",
+        },
       });
     });
 
@@ -692,7 +711,10 @@ describe("models/source", () => {
         options: "true",
       });
       expect(connectionOptions).toEqual({
-        table: { options: ["users", "admins", "purchases"], type: "list" },
+        tableWithOptions: {
+          options: ["users", "admins", "purchases", "products"],
+          type: "list",
+        },
         receivedOptions: { type: "text", options: ["true"] },
       });
     });
@@ -829,7 +851,7 @@ describe("models/source", () => {
         appId: app.id,
         modelId: model.id,
       });
-      await source.setOptions({ table: "users" });
+      await source.setOptions({ table: "users", tableWithOptions: "users" });
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
     });
@@ -847,7 +869,7 @@ describe("models/source", () => {
           key: "column",
           options: [
             { examples: [1, 2, 3], key: "id" },
-            { examples: [1, 2, 3], key: "accountId" },
+            { examples: [42, 12, 42], key: "accountId" },
             { examples: ["mario", "luigi", "peach"], key: "firstName" },
             { examples: ["mario", "mario", "toadstool"], key: "lastName" },
             {
@@ -860,12 +882,12 @@ describe("models/source", () => {
             },
             {
               key: "lastLoginAt",
-              examples: ["2020-01-01", "2020-04-02", "2020-07-24"],
+              examples: ["2020-01-02", "2020-01-02", "2020-05-02"],
             },
-            { key: "ltv", examples: [123.45, 100, 0] },
+            { key: "ltv", examples: [500, 213, 321] },
             { key: "isVIP", examples: [true, false, true] },
-            { key: "purchases", examples: [10, 31, 212] },
-            { key: "purchaseAmounts", examples: [50, 12, 0] },
+            { key: "purchases", examples: [123, 18, 212] },
+            { key: "purchaseAmounts", examples: [12, 50, 0] },
           ],
           required: true,
           type: "list",
@@ -882,6 +904,14 @@ describe("models/source", () => {
           ],
           required: false,
           type: "list",
+        },
+        {
+          description: "some text you want to set just because",
+          displayName: undefined,
+          key: "arbitraryText",
+          options: [],
+          required: false,
+          type: "text",
         },
       ]);
     });
@@ -901,7 +931,7 @@ describe("models/source", () => {
         appId: app.id,
         modelId: model.id,
       });
-      await source.setOptions({ table: "users" });
+      await source.setOptions({ table: "users", tableWithOptions: "users" });
     });
 
     afterEach(async () => {
@@ -1049,11 +1079,11 @@ describe("models/source", () => {
         key: "uniqueId",
         type: "integer",
         mappedColumn: "id",
-        propertyOptions: { column: "my_column" },
+        propertyOptions: { column: "email" },
       });
 
       const options = await property.getOptions();
-      expect(options).toEqual({ column: "my_column" });
+      expect(options).toEqual({ column: "email" });
 
       await property.destroy();
     });
@@ -1233,7 +1263,7 @@ describe("models/source", () => {
         sourceId: source.id,
         name: "test schedule",
       });
-      await schedule.setOptions({ maxColumn: "abc" });
+      await schedule.setOptions({ maxColumn: "updated_at" });
       await schedule.update({ state: "ready" });
 
       const previousRun = await helper.factories.run(schedule, {

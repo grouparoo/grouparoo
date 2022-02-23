@@ -332,7 +332,7 @@ describe("integration/happyPath", () => {
         csrfToken,
         id: scheduleId,
         state: "ready",
-        options: { maxColumn: "updatedAt" },
+        options: { maxColumn: "updated_at" },
       };
       const { error, schedule } = await specHelper.runAction<ScheduleEdit>(
         "schedule:edit",

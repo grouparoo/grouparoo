@@ -29,7 +29,7 @@ describe("models/recordProperty", () => {
 
   beforeAll(async () => {
     source = await helper.factories.source();
-    await source.setOptions({ table: "test table" });
+    await source.setOptions({ table: "users" });
     await source.bootstrapUniqueProperty({
       key: "userId",
       type: "integer",
