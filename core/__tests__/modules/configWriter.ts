@@ -789,7 +789,7 @@ describe("modules/configWriter", () => {
 
     test("schedules don't transform env vars", async () => {
       process.env.GROUPAROO_OPTION__SCHEDULE__CONFIG_WRITER_ENV_VAR =
-        faker.database.column();
+        "created_at";
       const schedule: Schedule = await helper.factories.schedule(source, {
         options: { maxColumn: "CONFIG_WRITER_ENV_VAR" },
       });

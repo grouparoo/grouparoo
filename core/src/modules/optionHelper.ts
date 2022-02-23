@@ -81,8 +81,11 @@ export namespace OptionHelper {
       filteredOptions,
       false
     );
+    const optionsWithEnv = sourceEnvironmentVariableOptions(instance, {
+      ...sanitizedOptions,
+    });
 
-    await validateOptions(instance, sanitizedOptions, null, externallyValidate);
+    await validateOptions(instance, optionsWithEnv, null, externallyValidate);
     const oldOptionsWithoutEnv = await getOptions(instance, false);
     const oldOptionsWithEnv = await getOptions(instance, true);
 
