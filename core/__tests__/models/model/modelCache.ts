@@ -52,7 +52,6 @@ describe("models/modelsCache", () => {
     test("creating a model signals RPC", async () => {
       ModelsCache.expires = new Date().getTime();
       await makeModel();
-      await helper.sleep(10);
       expect(ModelsCache.expires).toBe(0);
     });
 
@@ -60,7 +59,6 @@ describe("models/modelsCache", () => {
       const mock = jest.fn();
       api.rpc.model.invalidateCache = mock;
       await makeModel();
-      await helper.sleep(10);
       expect(mock).toHaveBeenCalled();
     });
 
@@ -68,7 +66,6 @@ describe("models/modelsCache", () => {
       await makeModel();
       ModelsCache.expires = new Date().getTime();
       await model.update({ name: "new name" });
-      await helper.sleep(10);
       expect(ModelsCache.expires).toBe(0);
     });
 
@@ -76,7 +73,6 @@ describe("models/modelsCache", () => {
       await makeModel();
       ModelsCache.expires = new Date().getTime();
       await model.destroy();
-      await helper.sleep(10);
       expect(ModelsCache.expires).toBe(0);
     });
   });
@@ -92,7 +88,6 @@ describe("models/modelsCache", () => {
     test("after an model is updated, the local cache should be invalid", async () => {
       ModelsCache.expires = new Date().getTime() + 1000 * 30;
       await model.update({ name: "NEW NAME" });
-      await helper.sleep(10);
       expect(ModelsCache.expires).toEqual(0);
     });
 
@@ -129,7 +124,6 @@ describe("models/modelsCache", () => {
       ];
       ModelsCache.expires = new Date().getTime() + 1000 * 30;
       const found = await ModelsCache.findOneWithCache(model.id);
-      await helper.sleep(10);
       expect(found.id).toEqual(model.id);
       expect(ModelsCache.expires).toBe(0);
     });
@@ -137,7 +131,6 @@ describe("models/modelsCache", () => {
     test("a cache miss without a secondary find will not invalidate the cache", async () => {
       ModelsCache.expires = new Date().getTime() + 1000 * 30;
       const found = await ModelsCache.findOneWithCache("missing");
-      await helper.sleep(10);
       expect(found).toBeNull();
       expect(ModelsCache.expires).not.toBe(0);
     });

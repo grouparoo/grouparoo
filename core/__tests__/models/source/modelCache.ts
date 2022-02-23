@@ -54,7 +54,6 @@ describe("models/sourcesCache", () => {
     test("creating a source signals RPC", async () => {
       SourcesCache.expires = new Date().getTime();
       await makeSource();
-      await helper.sleep(10);
       expect(SourcesCache.expires).toBe(0);
     });
 
@@ -62,7 +61,6 @@ describe("models/sourcesCache", () => {
       const mock = jest.fn();
       api.rpc.source.invalidateCache = mock;
       await makeSource();
-      await helper.sleep(10);
       expect(mock).toHaveBeenCalled();
     });
 
@@ -70,7 +68,6 @@ describe("models/sourcesCache", () => {
       await makeSource();
       SourcesCache.expires = new Date().getTime();
       await source.update({ name: "new name" });
-      await helper.sleep(10);
       expect(SourcesCache.expires).toBe(0);
     });
 
@@ -78,7 +75,6 @@ describe("models/sourcesCache", () => {
       await makeSource();
       SourcesCache.expires = new Date().getTime();
       await source.setOptions({ table: "foo" });
-      await helper.sleep(10);
       expect(SourcesCache.expires).toBe(0);
     });
 
@@ -86,7 +82,6 @@ describe("models/sourcesCache", () => {
       await makeSource();
       SourcesCache.expires = new Date().getTime();
       await source.setMapping({ email: "email" });
-      await helper.sleep(10);
       expect(SourcesCache.expires).toBe(0);
     });
 
@@ -94,7 +89,6 @@ describe("models/sourcesCache", () => {
       await makeSource();
       SourcesCache.expires = new Date().getTime();
       await source.destroy();
-      await helper.sleep(10);
       expect(SourcesCache.expires).toBe(0);
     });
   });
@@ -111,7 +105,6 @@ describe("models/sourcesCache", () => {
     test("after a source is updated, the local cache should be invalid", async () => {
       SourcesCache.expires = new Date().getTime() + 1000 * 30;
       await source.update({ key: "LAST NAME" });
-      await helper.sleep(10);
       expect(SourcesCache.expires).toEqual(0);
     });
 
@@ -148,7 +141,6 @@ describe("models/sourcesCache", () => {
       SourcesCache.instances = [await helper.factories.source()];
       SourcesCache.expires = new Date().getTime() + 1000 * 30;
       const found = await SourcesCache.findOneWithCache(source.id);
-      await helper.sleep(10);
       expect(found.id).toEqual(source.id);
       expect(SourcesCache.expires).toBe(0);
     });
@@ -156,7 +148,6 @@ describe("models/sourcesCache", () => {
     test("a cache miss without a secondary find will not invalidate the cache", async () => {
       SourcesCache.expires = new Date().getTime() + 1000 * 30;
       const found = await SourcesCache.findOneWithCache("missing");
-      await helper.sleep(10);
       expect(found).toBeNull();
       expect(SourcesCache.expires).not.toBe(0);
     });

@@ -72,7 +72,6 @@ describe("models/propertiesCache", () => {
     test("creating a property signals RPC", async () => {
       PropertiesCache.expires = new Date().getTime();
       await makeProperty();
-      await helper.sleep(10);
       expect(PropertiesCache.expires).toBe(0);
     });
 
@@ -80,7 +79,6 @@ describe("models/propertiesCache", () => {
       await makeProperty();
       PropertiesCache.expires = new Date().getTime();
       await property.update({ key: "new key" });
-      await helper.sleep(10);
       expect(PropertiesCache.expires).toBe(0);
     });
 
@@ -88,7 +86,6 @@ describe("models/propertiesCache", () => {
       const mock = jest.fn();
       api.rpc.property.invalidateCache = mock;
       await makeProperty();
-      await helper.sleep(10);
       expect(mock).toHaveBeenCalled();
     });
 
@@ -96,7 +93,6 @@ describe("models/propertiesCache", () => {
       await makeProperty();
       PropertiesCache.expires = new Date().getTime();
       await property.setOptions({ column: "test other column" });
-      await helper.sleep(10);
       expect(PropertiesCache.expires).toBe(0);
     });
 
@@ -104,7 +100,6 @@ describe("models/propertiesCache", () => {
       await makeProperty();
       PropertiesCache.expires = new Date().getTime();
       await property.setFilters([{ op: "gt", match: 1, key: "id" }]);
-      await helper.sleep(10);
       expect(PropertiesCache.expires).toBe(0);
     });
 
@@ -112,7 +107,6 @@ describe("models/propertiesCache", () => {
       await makeProperty();
       PropertiesCache.expires = new Date().getTime();
       await property.destroy();
-      await helper.sleep(10);
       expect(PropertiesCache.expires).toBe(0);
     });
   });
@@ -134,7 +128,6 @@ describe("models/propertiesCache", () => {
         where: { key: "lastName" },
       });
       await lastNameProperty.update({ key: "LAST NAME" });
-      await helper.sleep(10);
       expect(PropertiesCache.expires).toEqual(0);
     });
 
@@ -183,7 +176,6 @@ describe("models/propertiesCache", () => {
       const found = await PropertiesCache.findOneWithCache(
         firstNameProperty.id
       );
-      await helper.sleep(10);
       expect(found.id).toEqual(firstNameProperty.id);
       expect(PropertiesCache.expires).toBe(0);
     });
@@ -191,7 +183,6 @@ describe("models/propertiesCache", () => {
     test("a cache miss without a secondary find will not invalidate the cache", async () => {
       PropertiesCache.expires = new Date().getTime() + 1000 * 30;
       const found = await PropertiesCache.findOneWithCache("missing");
-      await helper.sleep(10);
       expect(found).toBeNull();
       expect(PropertiesCache.expires).not.toBe(0);
     });
