@@ -151,7 +151,7 @@ describe("sendgrid/exportRecord", () => {
     expect(user).toBe(null);
     await expect(
       runExport({
-        syncOperations: DestinationSyncModeData.enrich.operations,
+        syncOperations: DestinationSyncModeData.update.operations,
         oldRecordProperties: {},
         newRecordProperties: { email, first_name },
         oldGroups: [],

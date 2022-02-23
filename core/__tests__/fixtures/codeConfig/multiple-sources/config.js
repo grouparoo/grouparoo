@@ -177,7 +177,7 @@ module.exports = async function getConfig() {
       appId: "data_warehouse", // id -> data_warehouse
       groupId: "email_group", // id -> email_group
       collection: "group",
-      syncMode: "additive",
+      syncMode: "upsert",
       modelId: "mod_profiles",
       options: {
         table: "output",

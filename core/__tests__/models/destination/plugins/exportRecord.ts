@@ -90,7 +90,7 @@ describe("models/destination - with custom exportRecord plugin", () => {
           apps: ["test-template-app"],
           direction: "export",
           options: [],
-          syncModes: ["append", "create", "sync", "enrich", "additive"],
+          syncModes: ["append", "create", "sync", "update", "upsert"],
           methods: {
             destinationMappingOptions: async () => {
               return {
@@ -662,7 +662,7 @@ describe("models/destination - with custom exportRecord plugin", () => {
       await record.destroy();
     });
 
-    test.each(["append", "create", "additive", "enrich"])(
+    test.each(["append", "create", "upsert", "update"])(
       "if record is removed from destination's tracked group in %p syncMode, toDelete is false and groups are cleared",
       async (syncMode) => {
         await destination.update({ syncMode });
@@ -899,8 +899,8 @@ describe("models/destination - with custom exportRecord plugin", () => {
         expect(exportArgs.syncOperations.delete).toBe(true);
       });
 
-      test("Enrich syncMode only allows updating records", async () => {
-        await destination.update({ syncMode: "enrich" });
+      test("Update syncMode only allows updating records", async () => {
+        await destination.update({ syncMode: "update" });
 
         await destination.sendExport(_export, true);
         expect(exportArgs.syncOperations.create).toBe(false);
@@ -910,8 +910,8 @@ describe("models/destination - with custom exportRecord plugin", () => {
         await record.destroy();
       });
 
-      test("Additive syncMode only allows creating and updating records", async () => {
-        await destination.update({ syncMode: "additive" });
+      test("Update syncMode only allows creating and updating records", async () => {
+        await destination.update({ syncMode: "upsert" });
 
         await destination.sendExport(_export, true);
         expect(exportArgs.syncOperations.create).toBe(true);

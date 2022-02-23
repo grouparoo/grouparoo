@@ -386,7 +386,7 @@ describe("models/destination", () => {
             description: "a test app connection",
             apps: ["test-destinationMapping-app"],
             direction: "export",
-            syncModes: ["sync", "additive", "enrich"],
+            syncModes: ["sync", "upsert", "update"],
             options: [],
             methods: {
               destinationMappingOptions: async () => {

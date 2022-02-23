@@ -288,7 +288,7 @@ export async function exportBatch(exportBatchOptions: ExportBatchOptions) {
       findSize,
       batchSize,
       groupMode: BatchGroupMode.TotalMembers,
-      syncMode: BatchSyncMode.Additive,
+      syncMode: BatchSyncMode.Upsert,
       syncOperations,
       appOptions,
       destinationOptions,

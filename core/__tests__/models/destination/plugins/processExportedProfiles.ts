@@ -98,7 +98,7 @@ describe("models/destination - with custom processExportedRecords", () => {
           description: "a test app connection",
           apps: ["test-template-app"],
           direction: "export",
-          syncModes: ["sync", "enrich", "additive"],
+          syncModes: ["sync", "update", "upsert"],
           options: [],
           methods: {
             destinationMappingOptions: async () => {

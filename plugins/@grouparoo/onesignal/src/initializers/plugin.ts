@@ -15,8 +15,8 @@ export class Plugins extends Initializer {
   }
 
   async initialize() {
-    const syncModes: DestinationSyncMode[] = ["enrich"];
-    const defaultSyncMode: DestinationSyncMode = "enrich";
+    const syncModes: DestinationSyncMode[] = ["update"];
+    const defaultSyncMode: DestinationSyncMode = "update";
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/onesignal/onesignal.png",

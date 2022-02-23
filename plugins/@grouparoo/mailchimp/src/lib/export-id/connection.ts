@@ -5,7 +5,7 @@ import { getDestinationOptions } from "../shared/connectionOptions";
 import { getDestinationMappingOptions } from "../shared/destinationMappingOptions";
 import { exportArrayProperties } from "../shared/exportArrayProperties";
 
-export const idSupportedSyncModes: DestinationSyncMode[] = ["enrich"];
+export const idSupportedSyncModes: DestinationSyncMode[] = ["update"];
 
 export const idDestinationConnection: PluginConnection = {
   name: "mailchimp-export-contacts-by-id",
@@ -15,7 +15,7 @@ export const idDestinationConnection: PluginConnection = {
     "Updates existing contacts in a Mailchimp list based on a known Mailchimp ID.",
   apps: ["mailchimp", "mailchimp-oauth"],
   syncModes: idSupportedSyncModes,
-  defaultSyncMode: "enrich",
+  defaultSyncMode: "update",
   options: [
     {
       key: "listId",

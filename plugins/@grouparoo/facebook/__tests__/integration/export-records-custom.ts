@@ -18,7 +18,7 @@ const destinationOptions = {
 };
 
 const syncOperations = DestinationSyncModeData.sync.operations;
-const additiveSyncOperations = DestinationSyncModeData.additive.operations;
+const upsertSyncOperations = DestinationSyncModeData.upsert.operations;
 
 let client: Client;
 
@@ -649,8 +649,8 @@ describe("facebook/audiences-custom/exportRecords", () => {
     expect(data).toContainEqual([sha(email3), "", sha("sam"), "", ""]);
   });
 
-  describe("Additive destination sync Mode", () => {
-    const syncOperations = additiveSyncOperations;
+  describe("Upsert destination sync Mode", () => {
+    const syncOperations = upsertSyncOperations;
     test("skips deleting", async () => {
       const { success, errors } = await exportRecords({
         appId,

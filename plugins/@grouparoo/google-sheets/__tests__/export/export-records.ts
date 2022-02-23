@@ -94,7 +94,7 @@ describe("google-sheets/exportRecords", () => {
       const { success, errors } = await exportBatch({
         appOptions,
         destinationId,
-        syncOperations: DestinationSyncModeData.enrich.operations,
+        syncOperations: DestinationSyncModeData.update.operations,
         destinationOptions,
         exports: [
           {
@@ -596,7 +596,7 @@ describe("google-sheets/exportRecords", () => {
         appOptions,
         destinationId,
         destinationOptions,
-        syncOperations: DestinationSyncModeData.additive.operations,
+        syncOperations: DestinationSyncModeData.upsert.operations,
         exports: [
           {
             recordId: id1,

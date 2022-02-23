@@ -10,7 +10,7 @@ import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination
 const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
 const appId = "app_f3bb07d8-0c4f-49b5-ad42-545f2e8632e2";
-const syncOperations = DestinationSyncModeData.additive.operations;
+const syncOperations = DestinationSyncModeData.upsert.operations;
 const destinationOptions = {
   primaryKey: "AccountNumber",
 };
@@ -41,7 +41,7 @@ const { findId, getUser, cleanUp, findReferenceId, getReferencedUserIds } =
     deleteReferenceValues,
   });
 
-describe("salesforce/sales-cloud/export-records/additive", () => {
+describe("salesforce/sales-cloud/export-records/upsert", () => {
   beforeAll(async () => {
     await cleanUp(false);
   }, helper.setupTime);

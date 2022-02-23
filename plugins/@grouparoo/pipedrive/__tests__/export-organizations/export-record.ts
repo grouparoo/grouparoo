@@ -154,7 +154,7 @@ describe("pipedrive/exportRecord", () => {
   test("can not create a Organization if sync mode does not allow it", async () => {
     await expect(
       runExport({
-        syncOperations: DestinationSyncModeData.enrich.operations,
+        syncOperations: DestinationSyncModeData.update.operations,
         oldRecordProperties: {},
         newRecordProperties: { Name: name2 },
         oldGroups: [],

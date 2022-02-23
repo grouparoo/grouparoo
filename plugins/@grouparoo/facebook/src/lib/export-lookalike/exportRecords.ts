@@ -14,7 +14,7 @@ export const exportRecords: ExportRecordsPluginMethod = async ({
   return exportFacebookRecords({
     appId,
     appOptions,
-    syncOperations: DestinationSyncModeData.additive.operations,
+    syncOperations: DestinationSyncModeData.upsert.operations,
     model: destinationModel(destinationOptions),
     exports: recordsToExport,
   });

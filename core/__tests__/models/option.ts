@@ -245,7 +245,7 @@ describe("models/option", () => {
               description: "a test app connection",
               apps: ["test-template-app"],
               direction: "export",
-              syncModes: ["sync", "additive", "enrich"],
+              syncModes: ["sync", "upsert", "update"],
               options: [
                 {
                   key: "test_default_key",

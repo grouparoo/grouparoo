@@ -360,7 +360,7 @@ describe("intercom/contacts/exportRecord/no create", () => {
         oldRecordProperties: {},
         newRecordProperties: {
           email: email3,
-          name: "Not Enrich",
+          name: "Not Update",
         },
         oldGroups: [],
         newGroups: ["Test Group X"],

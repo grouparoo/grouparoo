@@ -16,7 +16,7 @@ export class Plugins extends Initializer {
   }
 
   async initialize() {
-    const syncModes: DestinationSyncMode[] = ["sync", "additive", "enrich"];
+    const syncModes: DestinationSyncMode[] = ["sync", "upsert", "update"];
     const defaultSyncMode: DestinationSyncMode = "sync";
 
     plugin.registerPlugin({

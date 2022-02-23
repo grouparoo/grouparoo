@@ -135,7 +135,7 @@ describe("eloqua/exportRecord", () => {
       client,
       appId,
       appOptions,
-      syncOperations: DestinationSyncModeData.enrich.operations,
+      syncOperations: DestinationSyncModeData.update.operations,
       exports: [
         {
           recordId: id1,
@@ -602,7 +602,7 @@ describe("eloqua/exportRecord", () => {
     expect(user1.lastName).toEqual("Saran");
   });
 
-  test("can change the email address (both old and new emails exist) with ADDITIVE sync mode", async () => {
+  test("can change the email address (both old and new emails exist) with upsert sync mode", async () => {
     const exports = [
       {
         recordId: id1,
@@ -622,7 +622,7 @@ describe("eloqua/exportRecord", () => {
       client,
       appId,
       appOptions,
-      syncOperations: DestinationSyncModeData.additive.operations,
+      syncOperations: DestinationSyncModeData.upsert.operations,
       exports,
     });
     await indexUsers(newNock);
@@ -636,7 +636,7 @@ describe("eloqua/exportRecord", () => {
       appOptions,
       remoteKey: processExports.remoteKey,
       exports,
-      syncOperations: DestinationSyncModeData.additive.operations,
+      syncOperations: DestinationSyncModeData.upsert.operations,
     });
 
     expect(success).toBe(true);
@@ -652,7 +652,7 @@ describe("eloqua/exportRecord", () => {
     expect(user1.lastName).toBe("User");
   });
 
-  test("can change the email address with ADDITIVE sync mode", async () => {
+  test("can change the email address with upsert sync mode", async () => {
     const exports = [
       {
         recordId: id1,
@@ -672,7 +672,7 @@ describe("eloqua/exportRecord", () => {
       client,
       appId,
       appOptions,
-      syncOperations: DestinationSyncModeData.additive.operations,
+      syncOperations: DestinationSyncModeData.upsert.operations,
       exports,
     });
     await indexUsers(newNock);
@@ -686,7 +686,7 @@ describe("eloqua/exportRecord", () => {
       appOptions,
       remoteKey: processExports.remoteKey,
       exports,
-      syncOperations: DestinationSyncModeData.additive.operations,
+      syncOperations: DestinationSyncModeData.upsert.operations,
     });
 
     expect(success).toBe(true);
@@ -707,7 +707,7 @@ describe("eloqua/exportRecord", () => {
       client,
       appId,
       appOptions,
-      syncOperations: DestinationSyncModeData.additive.operations,
+      syncOperations: DestinationSyncModeData.upsert.operations,
       exports: [
         {
           recordId: id1,

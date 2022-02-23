@@ -18,8 +18,8 @@ export enum BatchSyncMode {
   Append = "Append", // create
   Create = "Create", // create only if it doesn't exist
   Sync = "Sync", // create, update, delete (default)
-  Enrich = "Enrich", // update only (no create or delete)
-  Additive = "Additive", // create or update (no delete)
+  Update = "Update", // update only (no create or delete)
+  Upsert = "Upsert", // create or update (no delete)
 }
 
 export const BatchSyncModeData: Record<
@@ -49,13 +49,13 @@ export const BatchSyncModeData: Record<
     delete: true,
     description: "Sync all records (create, update, delete)",
   },
-  [BatchSyncMode.Enrich]: {
+  [BatchSyncMode.Update]: {
     create: false,
     update: true,
     delete: false,
     description: "Only update existing objects (update)",
   },
-  [BatchSyncMode.Additive]: {
+  [BatchSyncMode.Upsert]: {
     create: true,
     update: true,
     delete: false,

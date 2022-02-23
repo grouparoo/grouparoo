@@ -10,7 +10,7 @@ import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination
 const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
 const appId = "app_f3bb07d8-0c4f-49b5-ad42-545f2e8662e9";
-const syncOperations = DestinationSyncModeData.enrich.operations;
+const syncOperations = DestinationSyncModeData.update.operations;
 const destinationOptions = {
   primaryKey: "Email",
   accountKey: "Name",
@@ -55,7 +55,7 @@ const {
   deleteReferenceValues,
 });
 
-describe("salesforce/sales-cloud/export-records/enrich", () => {
+describe("salesforce/sales-cloud/export-records/update", () => {
   beforeAll(async () => {
     await cleanUp(false);
   }, helper.setupTime);
