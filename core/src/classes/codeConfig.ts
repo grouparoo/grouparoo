@@ -6,6 +6,7 @@ import {
 } from "../modules/ruleOpsDictionary";
 import {
   DestinationCollection,
+  DestinationLegacySyncMode,
   DestinationSyncMode,
 } from "../models/Destination";
 import { PropertyFiltersWithKey } from "../models/Property";
@@ -55,12 +56,16 @@ export interface AppConfigurationObject extends ConfigurationObject {
   options?: { [key: string]: any };
 }
 
+export type DestinationConfigSyncMode =
+  | DestinationSyncMode
+  | DestinationLegacySyncMode;
+
 export interface DestinationConfigurationObject extends ConfigurationObject {
   name: string;
   type: string;
   appId: string;
   modelId: string;
-  syncMode: DestinationSyncMode;
+  syncMode: DestinationConfigSyncMode;
   collection: DestinationCollection;
   groupId?: string;
   options?: { [key: string]: any };

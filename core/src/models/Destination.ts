@@ -53,8 +53,17 @@ export interface SimpleDestinationGroupMembership {
 }
 export interface SimpleDestinationOptions extends OptionHelper.SimpleOptions {}
 
-const SYNC_MODES = ["append", "create", "sync", "upsert", "update"] as const;
+export const SYNC_MODES = [
+  "append",
+  "create",
+  "sync",
+  "upsert",
+  "update",
+] as const;
+export const LEGACY_SYNC_MODES = ["additive", "enrich"] as const;
+
 export type DestinationSyncMode = typeof SYNC_MODES[number];
+export type DestinationLegacySyncMode = typeof LEGACY_SYNC_MODES[number];
 
 const DESTINATION_COLLECTIONS = ["none", "group", "model"] as const;
 export type DestinationCollection = typeof DESTINATION_COLLECTIONS[number];
