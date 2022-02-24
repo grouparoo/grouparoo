@@ -117,11 +117,13 @@ export class SentryInitializer extends Initializer {
 function cleanupSentryTransaction(
   transaction: ReturnType<typeof Sentry.startTransaction>
 ) {
-  for (const span of transaction["spanRecorder"].spans) {
-    // trim the description (where the SQL transaction would go) down to sentrySpanLengthLimit chars max
-    if (span.description && span.description.length > sentrySpanLengthLimit) {
-      span.description =
-        span.description.slice(0, sentrySpanLengthLimit) + "...";
+  if (transaction["spanRecorder"]) {
+    for (const span of transaction["spanRecorder"].spans) {
+      // trim the description (where the SQL transaction would go) down to sentrySpanLengthLimit chars max
+      if (span.description && span.description.length > sentrySpanLengthLimit) {
+        span.description =
+          span.description.slice(0, sentrySpanLengthLimit) + "...";
+      }
     }
   }
 }
