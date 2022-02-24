@@ -274,7 +274,8 @@ export class Destination extends CommonModel<Destination> {
     externallyValidate = true
   ) {
     await this.validateUniqueAppAndOptionsForGroup(options);
-    return OptionHelper.setOptions(this, options, externallyValidate);
+    await this.validateOptions(options, externallyValidate);
+    return OptionHelper.setOptions(this, options);
   }
 
   async afterSetOptions(hasChanges: boolean) {
@@ -333,9 +334,26 @@ export class Destination extends CommonModel<Destination> {
     return this.getDestinationGroupMemberships();
   }
 
-  async validateOptions(options?: SimpleDestinationOptions) {
+  async validateOptions(
+    options?: SimpleDestinationOptions,
+    externallyValidate = true
+  ) {
     if (!options) options = await this.getOptions(true);
-    return OptionHelper.validateOptions(this, options, null);
+    const { pluginConnection } = await this.getPlugin();
+    if (!pluginConnection) {
+      throw new Error(`cannot find a pluginConnection for type ${this.type}`);
+    }
+
+    const optionsSpec: OptionHelper.OptionsSpec = pluginConnection.options;
+
+    if (externallyValidate) {
+      const connectionOptions = await this.destinationConnectionOptions(
+        options
+      );
+      OptionHelper.mergeOptionOptions(optionsSpec, connectionOptions);
+    }
+
+    return OptionHelper.validateOptions(this, options, optionsSpec);
   }
 
   async getPlugin() {

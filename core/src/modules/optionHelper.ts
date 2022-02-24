@@ -8,8 +8,8 @@ import {
 import { Option } from "./../models/Option";
 import { Source } from "./../models/Source";
 import { Destination } from "./../models/Destination";
-import { Schedule, SimpleScheduleOptions } from "./../models/Schedule";
-import { Property, SimplePropertyOptions } from "../models/Property";
+import { Schedule } from "./../models/Schedule";
+import { Property } from "../models/Property";
 import { App } from "./../models/App";
 import { LockableHelper } from "./lockableHelper";
 import { plural } from "pluralize";
@@ -66,26 +66,37 @@ export namespace OptionHelper {
     return optionsObject;
   }
 
-  export async function setOptions(
-    instance: (Source | Destination | Schedule | Property | App) & {
-      afterSetOptions?: Function;
-    },
+  async function prepareOptions(
+    instance: ModelWithOptions,
     options: SimpleOptions,
-    externallyValidate = true
+    sourceFromEnvironment = false
   ) {
-    delete instance.__options;
-
     const filteredOptions = filterEmptyOptions(options);
     const sanitizedOptions = await replaceObfuscatedOptions(
       instance,
       filteredOptions,
       false
     );
-    const optionsWithEnv = sourceEnvironmentVariableOptions(instance, {
-      ...sanitizedOptions,
-    });
 
-    await validateOptions(instance, optionsWithEnv, null, externallyValidate);
+    if (sourceFromEnvironment) {
+      return sourceEnvironmentVariableOptions(instance, {
+        ...sanitizedOptions,
+      });
+    }
+
+    return sanitizedOptions;
+  }
+
+  export async function setOptions(
+    instance: (Source | Destination | Schedule | Property | App) & {
+      afterSetOptions?: Function;
+    },
+    options: SimpleOptions
+  ) {
+    delete instance.__options;
+
+    const sanitizedOptions = await prepareOptions(instance, options, false);
+
     const oldOptionsWithoutEnv = await getOptions(instance, false);
     const oldOptionsWithEnv = await getOptions(instance, true);
 
@@ -201,55 +212,41 @@ export namespace OptionHelper {
     return match;
   }
 
+  export type OptionsSpec = {
+    key: string;
+    required: boolean;
+    options?: string[];
+  }[];
+
   export async function validateOptions(
     instance: ModelWithOptions & {
       name?: string;
       key?: string;
     },
     options: SimpleOptions,
-    allowEmpty = false,
-    externallyValidate = true
+    optionsSpec: OptionsSpec,
+    allowEmpty = false
   ) {
-    let requiredOptions: string[];
-    let allOptions: string[];
+    options = await prepareOptions(instance, options, true);
+    const type = await getInstanceType(instance);
 
     if (allowEmpty && Object.keys(options).length === 0) {
       return;
     }
 
-    const type = await getInstanceType(instance);
-
-    if (instance instanceof Source) {
-      requiredOptions = await getRequiredConnectionOptions(instance);
-      const { pluginConnection } = await getPlugin(instance);
-      allOptions = pluginConnection.options.map((o) => o.key);
-    } else if (instance instanceof Destination) {
-      requiredOptions = await getRequiredConnectionOptions(instance);
-      const { pluginConnection } = await getPlugin(instance);
-      allOptions = pluginConnection.options.map((o) => o.key);
-    } else if (instance instanceof Schedule) {
-      const scheduleOptions = await getScheduleOptions(instance, options);
-      allOptions = scheduleOptions.map((o) => o.key);
-      requiredOptions = scheduleOptions
-        .filter((o) => o.required)
-        .map((o) => o.key);
-    } else if (instance instanceof Property) {
-      const propertyOptions = await getPropertyOptions(instance, options);
-      allOptions = propertyOptions.map((o) => o.key);
-      requiredOptions = propertyOptions
-        .filter((o) => o.required)
-        .map((o) => o.key);
-    } else if (instance instanceof App) {
-      requiredOptions = await getRequiredAppOptions(instance);
-      const { pluginApp } = await getPlugin(instance);
-      allOptions = pluginApp.options.map((o) => o.key);
-    } else {
-      throw new Error(`cannot get required options`);
-    }
-
-    const optionOptions = externallyValidate
-      ? await getOptionOptions(instance, options)
-      : {};
+    const allOptions = optionsSpec.map((o) => o.key);
+    const requiredOptions = optionsSpec
+      .filter((o) => o.required)
+      .map((o) => o.key);
+    const optionOptions: Record<string, string[]> = optionsSpec
+      .filter((o) => o.options)
+      .reduce(
+        (optionOptions, opt) => ({
+          ...optionOptions,
+          [opt.key]: opt.options,
+        }),
+        {}
+      );
 
     requiredOptions.forEach((requiredOption) => {
       if (!options[requiredOption]) {
@@ -284,122 +281,18 @@ export namespace OptionHelper {
     }
   }
 
-  export async function getRequiredConnectionOptions(
-    instance: Source | Destination
+  export function mergeOptionOptions(
+    optionsSpec: OptionsSpec,
+    optionOptions: {
+      [key: string]: { options?: string[] };
+    }
   ) {
-    const { pluginConnection } = await getPlugin(instance);
-    const type = await getInstanceType(instance);
-
-    if (!pluginConnection) {
-      throw new Error(`cannot find a pluginConnection for type ${type}`);
-    }
-
-    return pluginConnection.options.filter((o) => o.required).map((o) => o.key);
-  }
-
-  export async function getScheduleOptions(
-    instance: Schedule,
-    scheduleOptions: SimpleScheduleOptions
-  ) {
-    const { pluginConnection } = await getPlugin(instance);
-    const type = await getInstanceType(instance);
-
-    if (!pluginConnection) {
-      throw new Error(`cannot find a pluginConnection for type ${type}`);
-    }
-
-    if (!pluginConnection.methods.scheduleOptions) return [];
-
-    const scheduleOptionOptions =
-      await pluginConnection.methods.scheduleOptions({
-        schedule: instance,
-        scheduleId: instance.id,
-        scheduleOptions,
-      });
-
-    return scheduleOptionOptions;
-  }
-
-  export async function getPropertyOptions(
-    instance: Property,
-    propertyOptions: SimplePropertyOptions
-  ) {
-    const { pluginConnection } = await getPlugin(instance);
-    const type = await getInstanceType(instance);
-    if (!pluginConnection) {
-      throw new Error(`cannot find a pluginConnection for type ${type}`);
-    }
-
-    if (!pluginConnection.methods.propertyOptions) return [];
-
-    const propertyOptionOptions =
-      await pluginConnection.methods.propertyOptions({
-        property: instance,
-        propertyId: instance.id,
-        propertyOptions,
-      });
-
-    return propertyOptionOptions;
-  }
-
-  export async function getOptionOptions(
-    instance: ModelWithOptions,
-    options: SimpleOptions
-  ): Promise<Record<string, string[]>> {
-    if (instance instanceof Property) {
-      const pluginOptions = await instance.pluginOptions(options);
-      return optionOptionsFromArray(pluginOptions);
-    } else if (instance instanceof Schedule) {
-      const pluginOptions = await instance.pluginOptions();
-      return optionOptionsFromArray(pluginOptions);
-    } else if (instance instanceof Destination) {
-      const destinationConnectionOptions =
-        await instance.destinationConnectionOptions(options);
-      return optionOptionsFromObject(destinationConnectionOptions);
-    } else if (instance instanceof App) {
-      const appOptions = await instance.appOptions();
-      return optionOptionsFromObject(appOptions);
-    } else if (instance instanceof Source) {
-      const sourceConnectionOptions = await instance.sourceConnectionOptions(
-        options
-      );
-      return optionOptionsFromObject(sourceConnectionOptions);
-    }
-  }
-
-  async function optionOptionsFromObject(options: {
-    [key: string]: { options?: string[] };
-  }) {
-    const optionOptions: Record<string, string[]> = {};
-    for (const [key, option] of Object.entries(options)) {
-      if (option.options) {
-        optionOptions[key] = option.options;
+    for (const option of optionsSpec) {
+      const opts = optionOptions[option.key]?.options;
+      if (opts) {
+        option.options = opts;
       }
     }
-    return optionOptions;
-  }
-
-  async function optionOptionsFromArray(
-    options: { key: string; options?: { key: string }[] }[]
-  ) {
-    return options
-      .filter((o) => o.options)
-      .reduce(
-        (optionOptions, opt) => ({
-          ...optionOptions,
-          [opt.key]: opt.options.map((optionOption) => optionOption.key),
-        }),
-        {}
-      );
-  }
-
-  export async function getRequiredAppOptions(instance: App) {
-    const { pluginApp } = await getPlugin(instance);
-    const type = await getInstanceType(instance);
-
-    if (!pluginApp) throw new Error(`cannot find a pluginApp for type ${type}`);
-
-    return pluginApp.options.filter((o) => o.required).map((o) => o.key);
   }
 
   async function getInstanceType(

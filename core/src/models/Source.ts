@@ -146,16 +146,32 @@ export class Source extends CommonModel<Source> {
   }
 
   async setOptions(options: SimpleSourceOptions, externallyValidate = true) {
-    return OptionHelper.setOptions(this, options, externallyValidate);
+    await this.validateOptions(options, externallyValidate);
+    return OptionHelper.setOptions(this, options);
   }
 
   async afterSetOptions(hasChanges: boolean) {
     if (hasChanges) await Source.invalidateCache();
   }
 
-  async validateOptions(options?: SimpleSourceOptions) {
+  async validateOptions(
+    options?: SimpleSourceOptions,
+    externallyValidate = true
+  ) {
     if (!options) options = await this.getOptions(true);
-    return OptionHelper.validateOptions(this, options);
+    const { pluginConnection } = await this.getPlugin();
+    if (!pluginConnection) {
+      throw new Error(`cannot find a pluginConnection for type ${this.type}`);
+    }
+
+    const optionsSpec: OptionHelper.OptionsSpec = pluginConnection.options;
+
+    if (externallyValidate) {
+      const connectionOptions = await this.sourceConnectionOptions(options);
+      OptionHelper.mergeOptionOptions(optionsSpec, connectionOptions);
+    }
+
+    return OptionHelper.validateOptions(this, options, optionsSpec);
   }
 
   async getPlugin() {

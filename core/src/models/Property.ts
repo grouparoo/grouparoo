@@ -201,7 +201,8 @@ export class Property extends CommonModel<Property> {
         );
     }
 
-    return OptionHelper.setOptions(this, options, externallyValidate);
+    if (externallyValidate) await this.validateOptions(options);
+    return OptionHelper.setOptions(this, options);
   }
 
   async afterSetOptions(hasChanges: boolean) {
@@ -214,13 +215,13 @@ export class Property extends CommonModel<Property> {
   async validateOptions(options?: SimplePropertyOptions, allowEmpty = false) {
     if (!options) options = await this.getOptions(true);
 
-    const response = await OptionHelper.validateOptions(
-      this,
-      options,
-      allowEmpty
-    );
+    const pluginOptions = await this.pluginOptions(options);
+    const optionsSpec: OptionHelper.OptionsSpec = pluginOptions.map((opt) => ({
+      ...opt,
+      options: opt.options.map((o) => o.key),
+    }));
 
-    return response;
+    await OptionHelper.validateOptions(this, options, optionsSpec, allowEmpty);
   }
 
   async getPlugin() {

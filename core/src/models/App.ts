@@ -113,7 +113,8 @@ export class App extends CommonModel<App> {
   }
 
   async setOptions(options: SimpleAppOptions, externallyValidate = true) {
-    return OptionHelper.setOptions(this, options, externallyValidate);
+    await this.validateOptions(options, externallyValidate);
+    return OptionHelper.setOptions(this, options);
   }
 
   async afterSetOptions(hasChanges: boolean) {
@@ -128,9 +129,20 @@ export class App extends CommonModel<App> {
     }
   }
 
-  async validateOptions(options?: SimpleAppOptions) {
+  async validateOptions(options?: SimpleAppOptions, externallyValidate = true) {
     if (!options) options = await this.getOptions(true);
-    return OptionHelper.validateOptions(this, options, null);
+    const { pluginApp } = await this.getPlugin();
+    if (!pluginApp)
+      throw new Error(`cannot find a pluginApp for type ${this.type}`);
+
+    const optionsSpec: OptionHelper.OptionsSpec = pluginApp.options;
+
+    if (externallyValidate) {
+      const appOptions = await this.appOptions();
+      OptionHelper.mergeOptionOptions(optionsSpec, appOptions);
+    }
+
+    return OptionHelper.validateOptions(this, options, optionsSpec);
   }
 
   async getPlugin() {
