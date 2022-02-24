@@ -29,7 +29,6 @@ export const DEFAULT: { [namespace]: () => RoutesConfig } = {
         { path: "/v:apiVersion/destination/:id/connectionOptions", action: "destination:connectionOptions" },
         { path: "/v:apiVersion/destination/:id/exportArrayProperties", action: "destination:exportArrayProperties" },
         { path: "/v:apiVersion/destination/:id/mappingOptions", action: "destination:mappingOptions" },
-        { path: "/v:apiVersion/destination/:id/recordPreview", action: "destination:recordPreview" },
         { path: "/v:apiVersion/destinations/connectionApps", action: "destinations:connectionApps" },
         { path: "/v:apiVersion/export/:id", action: "export:view" },
         { path: "/v:apiVersion/exportProcessor/:id", action: "exportProcessor:view" },
