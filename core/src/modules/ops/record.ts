@@ -290,6 +290,14 @@ export namespace RecordOps {
 
     // load existing record properties
     const existingRecordProperties = await RecordProperty.findAll({
+      attributes: [
+        "id",
+        "recordId",
+        "propertyId",
+        "position",
+        "rawValue",
+        "valueChangedAt",
+      ],
       where: { recordId: { [Op.in]: records.map((p) => p.id) } },
     });
 
