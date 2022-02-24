@@ -1,5 +1,4 @@
 import SampleRecordCard, {
-  RecordType,
   SampleRecordCardProps,
 } from "../../../components/record/SampleRecordCard";
 import { Models } from "../../../utils/apiData";
@@ -55,7 +54,7 @@ describe("SampleRecordCard", () => {
   });
 
   it("should render with 1 record", async () => {
-    const record: RecordType = {
+    const record: Models.GrouparooRecordType = {
       id: "test-record",
       modelId,
       properties: {
@@ -81,7 +80,7 @@ describe("SampleRecordCard", () => {
       },
     };
     const fetchRecord: (recordId?: string) => Promise<{
-      record?: RecordType;
+      record?: Models.GrouparooRecordType;
       groups?: Models.GroupType[];
       destinations?: Models.DestinationType[];
     }> = async () => {
@@ -110,7 +109,7 @@ describe("SampleRecordCard", () => {
 
   it("should render with 1 record in config mode", async () => {
     require("../../../components/record/SampleRecordCard").isConfigUI = true;
-    const record: RecordType = {
+    const record: Models.GrouparooRecordType = {
       id: "test-record",
       modelId,
       properties: {
@@ -136,7 +135,7 @@ describe("SampleRecordCard", () => {
       },
     };
     const fetchRecord: (recordId?: string) => Promise<{
-      record?: RecordType;
+      record?: Models.GrouparooRecordType;
       groups?: Models.GroupType[];
       destinations?: Models.DestinationType[];
     }> = async () => {
@@ -165,7 +164,7 @@ describe("SampleRecordCard", () => {
 
   it("should render with 1 record that has a group and destination, in config mode", async () => {
     require("../../../components/record/SampleRecordCard").isConfigUI = true;
-    const record: RecordType = {
+    const record: Models.GrouparooRecordType = {
       id: "test-record",
       modelId,
       properties: {
@@ -201,7 +200,7 @@ describe("SampleRecordCard", () => {
       name: "test-destination",
     };
     const fetchRecord: (recordId?: string) => Promise<{
-      record?: RecordType;
+      record?: Models.GrouparooRecordType;
       groups?: Models.GroupType[];
       destinations?: Models.DestinationType[];
     }> = async () => {
