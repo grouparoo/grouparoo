@@ -945,6 +945,10 @@ jobs:
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
+      - image: mcr.microsoft.com/playwright:focal
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - restore_cache:
@@ -1006,6 +1010,10 @@ jobs:
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
+      - image: mcr.microsoft.com/playwright:focal
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - restore_cache:
@@ -1063,7 +1071,7 @@ jobs:
           password: $DOCKERHUB_PASSWORD
         environment:
           POSTGRES_PASSWORD: password
-      - image: selenium/standalone-chrome:latest
+      - image: mcr.microsoft.com/playwright:focal
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -1103,9 +1111,7 @@ jobs:
           command: cd core && ./bin/create_test_databases
       - run:
           name: test
-          command: cd ui/ui-enterprise && ./node_modules/.bin/jest --ci --maxWorkers 2 --passWithNoTests
-          environment:
-            SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
+          command: cd ui/ui-enterprise && ./node_modules/.bin/playwright test
   test-ui-config:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
@@ -1125,6 +1131,10 @@ jobs:
         environment:
           POSTGRES_PASSWORD: password
       - image: selenium/standalone-chrome:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: mcr.microsoft.com/playwright:focal
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
