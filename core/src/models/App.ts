@@ -135,12 +135,13 @@ export class App extends CommonModel<App> {
     if (!pluginApp)
       throw new Error(`cannot find a pluginApp for type ${this.type}`);
 
-    const optionsSpec: OptionHelper.OptionsSpec = pluginApp.options;
-
-    if (externallyValidate) {
-      const appOptions = await this.appOptions();
-      OptionHelper.mergeOptionOptions(optionsSpec, appOptions);
-    }
+    const appOptions = externallyValidate ? await this.appOptions() : {};
+    const optionsSpec: OptionHelper.OptionsSpec = pluginApp.options.map(
+      (opt) => ({
+        ...opt,
+        options: appOptions[opt.key]?.options ?? [],
+      })
+    );
 
     return OptionHelper.validateOptions(this, options, optionsSpec);
   }

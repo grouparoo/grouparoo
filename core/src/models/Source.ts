@@ -164,12 +164,16 @@ export class Source extends CommonModel<Source> {
       throw new Error(`cannot find a pluginConnection for type ${this.type}`);
     }
 
-    const optionsSpec: OptionHelper.OptionsSpec = pluginConnection.options;
+    const connectionOptions = externallyValidate
+      ? await this.sourceConnectionOptions(options)
+      : {};
 
-    if (externallyValidate) {
-      const connectionOptions = await this.sourceConnectionOptions(options);
-      OptionHelper.mergeOptionOptions(optionsSpec, connectionOptions);
-    }
+    const optionsSpec: OptionHelper.OptionsSpec = pluginConnection.options.map(
+      (opt) => ({
+        ...opt,
+        options: connectionOptions[opt.key]?.options ?? [],
+      })
+    );
 
     return OptionHelper.validateOptions(this, options, optionsSpec);
   }

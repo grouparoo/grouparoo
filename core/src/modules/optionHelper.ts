@@ -281,20 +281,6 @@ export namespace OptionHelper {
     }
   }
 
-  export function mergeOptionOptions(
-    optionsSpec: OptionsSpec,
-    optionOptions: {
-      [key: string]: { options?: string[] };
-    }
-  ) {
-    for (const option of optionsSpec) {
-      const opts = optionOptions[option.key]?.options;
-      if (opts) {
-        option.options = opts;
-      }
-    }
-  }
-
   async function getInstanceType(
     instance: ModelWithOptions & {
       type?: string;
