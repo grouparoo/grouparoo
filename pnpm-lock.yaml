@@ -1964,6 +1964,7 @@ importers:
       moment: 2.29.1
       next: 12.0.10
       nprogress: 0.2.0
+      playwright: 1.19.0
       pluralize: 8.0.0
       prettier: 2.5.1
       prop-types: 15.8.1
@@ -2005,6 +2006,7 @@ importers:
       moment: 2.29.1
       next: 12.0.10_c8b9326ff74e5d84aa8a08ae614cae9e
       nprogress: 0.2.0
+      playwright: 1.19.0
       pluralize: 8.0.0
       prettier: 2.5.1
       prop-types: 15.8.1
@@ -5878,7 +5880,7 @@ packages:
   /axios/0.24.0:
     resolution: {integrity: sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==}
     dependencies:
-      follow-redirects: 1.14.8_debug@4.3.3
+      follow-redirects: 1.14.8
     transitivePeerDependencies:
       - debug
 
@@ -8170,7 +8172,6 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
-    dev: false
 
   /follow-redirects/1.14.8_debug@3.2.7:
     resolution: {integrity: sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==}
@@ -8194,6 +8195,7 @@ packages:
         optional: true
     dependencies:
       debug: 4.3.3
+    dev: false
 
   /follow-redirects/1.5.10:
     resolution: {integrity: sha512-0V5l4Cizzvqt5D44aTXbFZz+FtyXV1vrDN6qrelxtfYQKW0KO0W2T/hkE8xvGa/540LkZlkaUjO4ailYTFtHVQ==}
@@ -15544,7 +15546,7 @@ packages:
       '@types/jest': 27.4.0
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
-      jest: 27.5.1_ts-node@10.4.0
+      jest: 27.5.1
       jest-util: 27.5.1
       json5: 2.2.0
       lodash.memoize: 4.1.2
