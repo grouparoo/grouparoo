@@ -52,7 +52,7 @@ describe("models/appsCache", () => {
     });
 
     test("creating an app signals RPC", async () => {
-      AppsCache.expires = new Date().getTime();
+      AppsCache.expires = Date.now();
       await makeApp();
       expect(AppsCache.expires).toBe(0);
     });
@@ -66,21 +66,21 @@ describe("models/appsCache", () => {
 
     test("updating an app signals RPC", async () => {
       await makeApp();
-      AppsCache.expires = new Date().getTime();
+      AppsCache.expires = Date.now();
       await app.update({ name: "new name" });
       expect(AppsCache.expires).toBe(0);
     });
 
     test("calling setOptions signals RPC", async () => {
       await makeApp();
-      AppsCache.expires = new Date().getTime();
+      AppsCache.expires = Date.now();
       await app.setOptions({ fileId: "foo" });
       expect(AppsCache.expires).toBe(0);
     });
 
     test("destroying an app signals RPC", async () => {
       await makeApp();
-      AppsCache.expires = new Date().getTime();
+      AppsCache.expires = Date.now();
       await app.destroy();
       expect(AppsCache.expires).toBe(0);
     });
@@ -94,8 +94,14 @@ describe("models/appsCache", () => {
       expect(AppsCache.expires).toEqual(0);
     });
 
+    beforeEach(async () => {
+      await helper.sleep(1000); // wait for any pub/sub to complete
+      AppsCache.expires = 0;
+      await AppsCache.findAllWithCache();
+    });
+
     test("after an app is updated, the local cache should be invalid", async () => {
-      AppsCache.expires = new Date().getTime() + 1000 * 30;
+      AppsCache.expires = Date.now() + 1000 * 30;
       await app.update({ name: "NEW NAME" });
       expect(AppsCache.expires).toEqual(0);
     });
@@ -129,14 +135,15 @@ describe("models/appsCache", () => {
 
     test("a cache miss with a secondary find will invalidate the cache", async () => {
       AppsCache.instances = [await helper.factories.app()];
-      AppsCache.expires = new Date().getTime() + 1000 * 30;
+      AppsCache.expires = Date.now() + 1000 * 30;
       const found = await AppsCache.findOneWithCache(app.id);
       expect(found.id).toEqual(app.id);
       expect(AppsCache.expires).toBe(0);
     });
 
     test("a cache miss without a secondary find will not invalidate the cache", async () => {
-      AppsCache.expires = new Date().getTime() + 1000 * 30;
+      AppsCache.expires = Date.now() + 1000 * 30;
+      expect(AppsCache.expires).not.toBe(0);
       const found = await AppsCache.findOneWithCache("missing");
       expect(found).toBeNull();
       expect(AppsCache.expires).not.toBe(0);

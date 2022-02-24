@@ -7,7 +7,7 @@ async function findAllWithCache(
   modelId?: string,
   state?: GrouparooModel["state"]
 ) {
-  const now = new Date().getTime();
+  const now = Date.now();
   if (this.expires > now && this.instances.length > 0) {
     return this.instances.filter((a) => !state || a.state === state);
   } else {

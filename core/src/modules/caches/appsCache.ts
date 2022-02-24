@@ -8,7 +8,7 @@ async function findAllWithCache(
   modelId?: string,
   state?: App["state"]
 ) {
-  const now = new Date().getTime();
+  const now = Date.now();
   if (this.expires > now && this.instances.length > 0) {
     return this.instances.filter((a) => !state || a.state === state);
   } else {
@@ -34,7 +34,6 @@ async function findOneWithCache(
     instance = await App.unscoped().findOne({ where, include: this.include() });
     if (instance) this.invalidate();
   }
-
   return instance;
 }
 
