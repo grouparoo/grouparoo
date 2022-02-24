@@ -315,7 +315,7 @@ export namespace DestinationOps {
   ) {
     const bulkCreates: CreationAttributes<Export>[] = [];
 
-    if (records.length === 0) return;
+    if (records.length === 0) return [];
     if (destination.modelId !== records[0].modelId) {
       throw new Error(
         `destination ${destination.id} and record ${records[0].id} do not share the same modelId`

@@ -1207,34 +1207,43 @@ export namespace RecordOps {
     const imports = await Import.findAll({
       where: { state: "processing", recordId: recordIds },
     });
+    const destinationRecords: Record<string, GrouparooRecord[]> = {};
+    const destinations = await DestinationsCache.findAllWithCache();
+    for (const { id } of destinations) destinationRecords[id] = [];
+
+    for (const record of records) {
+      const destinations = await DestinationOps.relevantFor(
+        record,
+        record.groupMembers.map((gm) => gm.group)
+      );
+
+      // check for explicit destinations to export to from each import
+      for (const _import of imports) {
+        if (
+          _import.recordId === record.id &&
+          _import.data?._meta?.destinationId &&
+          !destinations
+            .map((d) => d.id)
+            .includes(_import.data?._meta?.destinationId)
+        ) {
+          const destination = await DestinationsCache.findOneWithCache(
+            _import.data._meta.destinationId
+          );
+          if (destination) destinations.push(destination);
+        }
+      }
+
+      for (const { id } of destinations) destinationRecords[id].push(record);
+    }
 
     if (toExport) {
-      for (const record of records) {
-        const destinations = await DestinationOps.relevantFor(
-          record,
-          record.groupMembers.map((gm) => gm.group)
+      for (const destination of destinations) {
+        await DestinationOps.exportRecords(
+          destination,
+          destinationRecords[destination.id],
+          false,
+          force
         );
-
-        // check for explicit destinations to export to from each import
-        for (const _import of imports) {
-          if (
-            _import.recordId === record.id &&
-            _import.data?._meta?.destinationId &&
-            !destinations
-              .map((d) => d.id)
-              .includes(_import.data?._meta?.destinationId)
-          ) {
-            const destination = await DestinationsCache.findOneWithCache(
-              _import.data._meta.destinationId
-            );
-            if (destination) destinations.push(destination);
-          }
-        }
-
-        // make the exports
-        for (const destination of destinations) {
-          await destination.exportRecord(record, false, force);
-        }
       }
     }
 
