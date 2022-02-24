@@ -20,6 +20,8 @@
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
+    environment:
+      NODE_ENV: development
 {{{custom_docker}}}
     steps:
       - checkout
