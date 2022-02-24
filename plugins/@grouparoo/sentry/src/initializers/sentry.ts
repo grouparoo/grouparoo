@@ -5,7 +5,7 @@ import { ApiKey, plugin, TeamMember } from "@grouparoo/core";
 import domain from "domain";
 const packageJSON = require("./../../package.json");
 
-const sentrySpanLengthLimit = 1000;
+const sentrySpanLengthLimit = 2000;
 
 export class SentryInitializer extends Initializer {
   constructor() {
