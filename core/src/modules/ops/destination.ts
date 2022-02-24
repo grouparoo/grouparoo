@@ -333,11 +333,6 @@ export namespace DestinationOps {
     const mapping = await destination.getMapping();
     const syncMode = await destination.getSyncMode();
 
-    let mappedOldRecordProperties: ExportRecordPropertiesWithType = {};
-    let mappedNewRecordProperties: ExportRecordPropertiesWithType = {};
-    let oldGroupNames: string[] = [];
-    let newGroupNames: string[] = [];
-
     const newGroupMembers = await GroupMember.findAll({
       where: { recordId: records.map((r) => r.id) },
       include: [Group],
@@ -357,6 +352,11 @@ export namespace DestinationOps {
     const exportArrayProperties = await getExportArrayProperties(destination);
 
     for (const record of records) {
+      let mappedOldRecordProperties: ExportRecordPropertiesWithType = {};
+      let mappedNewRecordProperties: ExportRecordPropertiesWithType = {};
+      let oldGroupNames: string[] = [];
+      let newGroupNames: string[] = [];
+
       const newRecordProperties = await record.getProperties();
       const newGroups = newGroupMembers
         .filter((gm) => gm.recordId === record.id)
