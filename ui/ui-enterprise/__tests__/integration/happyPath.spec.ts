@@ -1,12 +1,22 @@
-import path from "path";
-process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/ui-enterprise": { path: path.join(__dirname, "..", "..") },
-});
 import { test, expect } from "@playwright/test";
 import { BrowserContext, Page } from "playwright";
+import { helper } from "@grouparoo/spec-helper";
+
+let serverProcess;
+
+test.beforeAll(async () => {
+  serverProcess = await helper.startGrouparooTestServerDetached({
+    port: 3100,
+    truncate: true,
+  });
+});
+
+test.afterAll(async () => {
+  await helper.stopGrouparooTestServerDetached(serverProcess);
+});
 
 test.describe("login and initialization flow", () => {
-  const port = 3000;
+  const port = 3100;
   const url = `http://localhost:${port}`;
 
   // TODO: update spechelper to play nicely with playwright
@@ -18,6 +28,7 @@ test.describe("login and initialization flow", () => {
   const companyName = "Mario Bros. Plumbing";
 
   let page: Page;
+
   test.beforeAll(async ({ browser }) => {
     const context: BrowserContext = await browser.newContext();
     page = await context.newPage();
@@ -42,10 +53,7 @@ test.describe("login and initialization flow", () => {
   });
 
   test("it can initialize the first team", async () => {
-    await page.locator('input[name="companyName"]').click();
-    await page
-      .locator('input[name="companyName"]')
-      .fill("Mario Bros. Plumbing");
+    await page.locator('input[name="companyName"]').fill(companyName);
     await page.locator('input[name="firstName"]').fill(firstName);
     await page.locator('input[name="lastName"]').fill(lastName);
     await page.locator('input[name="email"]').fill(email);
