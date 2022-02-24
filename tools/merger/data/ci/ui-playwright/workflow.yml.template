@@ -1,0 +1,5 @@
+      - {{{job_name}}}:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
