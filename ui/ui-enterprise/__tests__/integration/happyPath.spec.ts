@@ -13,7 +13,7 @@ test.beforeAll(async () => {
     port: 3100,
     truncate: true,
   });
-  console.log("beforeAll");
+  console.log(serverProcess);
 });
 
 test.afterAll(async () => {
