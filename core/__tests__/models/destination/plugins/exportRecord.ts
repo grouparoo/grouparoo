@@ -910,7 +910,7 @@ describe("models/destination - with custom exportRecord plugin", () => {
         await record.destroy();
       });
 
-      test("Update syncMode only allows creating and updating records", async () => {
+      test("Upsert syncMode only allows creating and updating records", async () => {
         await destination.update({ syncMode: "upsert" });
 
         await destination.sendExport(_export, true);
