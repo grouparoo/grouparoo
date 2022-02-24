@@ -4,6 +4,16 @@ import SampleRecordCard, {
 import { Models } from "../../../utils/apiData";
 import { asyncRenderWithContext } from "../../__utils__/renderWithContext";
 
+jest.mock("next/router", () => {
+  return {
+    useRouter: () => ({
+      query: { destinationId: "asdf" },
+      asPath: "",
+      pathname: "",
+    }),
+  };
+});
+
 describe("SampleRecordCard", () => {
   let cardProps: SampleRecordCardProps;
   const modelId = "test-model";
