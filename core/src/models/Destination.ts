@@ -546,14 +546,16 @@ export class Destination extends CommonModel<Destination> {
     saveExports = true,
     toDelete?: boolean
   ) {
-    return DestinationOps.exportRecord(
+    const exports = await DestinationOps.exportRecords(
       this,
-      record,
+      [record],
       sync,
       force,
       saveExports,
       toDelete
     );
+
+    return exports[0];
   }
 
   async sendExport(_export: Export, sync = false) {

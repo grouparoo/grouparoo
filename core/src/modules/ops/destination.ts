@@ -280,10 +280,7 @@ export namespace DestinationOps {
 
   export async function getExportArrayProperties(destination: Destination) {
     const { pluginConnection } = await destination.getPlugin();
-    const app = await destination.$get("app", {
-      scope: null,
-      include: [Option],
-    });
+    const app = await AppsCache.findOneWithCache(destination.appId);
     const connection = await app.getConnection();
     const appOptions = await app.getOptions(true);
     const destinationOptions = await destination.getOptions(true);
@@ -306,196 +303,210 @@ export namespace DestinationOps {
   }
 
   /**
-   * Given a Destination and a GrouparooRecord (and lots of related data), create all the exports that should be sent
+   * Given a Destination and GrouparooRecords (and lots of related data), create all the exports that should be sent
    */
-  export async function exportRecord(
+  export async function exportRecords(
     destination: Destination,
-    record: GrouparooRecord,
+    records: GrouparooRecord[],
     synchronous = false,
     force = false,
     saveExports = true,
     toDelete?: boolean
   ) {
-    if (destination.modelId !== record.modelId) {
+    const bulkCreates: CreationAttributes<Export>[] = [];
+
+    if (records.length === 0) return;
+    if (destination.modelId !== records[0].modelId) {
       throw new Error(
-        `destination ${destination.id} and record ${record.id} do not share the same modelId`
+        `destination ${destination.id} and record ${records[0].id} do not share the same modelId`
       );
     }
 
     const app = await AppsCache.findOneWithCache(destination.appId);
     const appOptions = await app.getOptions();
     await app.validateOptions(appOptions);
-    const properties = await PropertiesCache.findAllWithCache(record.modelId);
+    const properties = await PropertiesCache.findAllWithCache(
+      destination.modelId
+    );
     const destinationGroupMemberships =
       await destination.getDestinationGroupMemberships();
     const mapping = await destination.getMapping();
+    const syncMode = await destination.getSyncMode();
 
     let mappedOldRecordProperties: ExportRecordPropertiesWithType = {};
     let mappedNewRecordProperties: ExportRecordPropertiesWithType = {};
     let oldGroupNames: string[] = [];
     let newGroupNames: string[] = [];
 
-    let newGroups = await Group.findAll({
-      include: [{ model: GroupMember, where: { recordId: record.id } }],
+    const newGroupMembers = await GroupMember.findAll({
+      where: { recordId: records.map((r) => r.id) },
+      include: [Group],
     });
-
-    // Do we need to delete this record from the destination?
-    // If toDelete was not provided explicitly, determine what to do
-    if (typeof toDelete !== "boolean") {
-      toDelete = false;
-      if (destination.collection === "none") {
-        toDelete = true;
-      } else if (destination.collection === "group") {
-        if (!destination.groupId) {
-          toDelete = true;
-        } else if (!newGroups.map((g) => g.id).includes(destination.groupId)) {
-          toDelete = true;
-        }
-      }
-    }
-
-    let newRecordProperties = await record.getProperties();
 
     // New and old properties and groups are in the context of this destination and what it has currently been sent
     // If there is not a mostRecentExport, both old groups and old record properties are an empty collection
-    const mostRecentExport = await Export.findOne({
-      where: {
-        destinationId: destination.id,
-        recordId: record.id,
-        state: "complete",
-      },
-      order: [["completedAt", "desc"]],
-    });
-
-    if (mostRecentExport && mostRecentExport.toDelete !== true) {
-      mappedOldRecordProperties = JSON.parse(
-        // @ts-ignore
-        mostRecentExport.getDataValue("newRecordProperties")
-      );
-      oldGroupNames = mostRecentExport.newGroups;
-    }
-
-    // We want to be able to delete records that have been removed from their source
-    // (new properties would be set to null, so we need the old values to reference them)
-    const primaryKeyRecordProperties = Object.values(newRecordProperties).find(
-      (p) => p.isPrimaryKey
+    const mostRecentExportIds = await getMostRecentExportIds(
+      destination,
+      records.map((r) => r.id)
     );
-    const forceOldPropertyValues =
-      toDelete &&
-      primaryKeyRecordProperties &&
-      primaryKeyRecordProperties.values[0] === null;
-
-    for (const k in mapping) {
-      const property = properties.find((r) => r.key === mapping[k]);
-      if (!property) throw new Error(`cannot find rule for ${mapping[k]}`);
-      const { type } = property;
-
-      if (forceOldPropertyValues) {
-        mappedNewRecordProperties[k] =
-          mappedOldRecordProperties[k] !== undefined
-            ? mappedOldRecordProperties[k]
-            : { type, rawValue: null };
-      } else {
-        mappedNewRecordProperties[k] = {
-          type,
-          rawValue: newRecordProperties[mapping[k]]
-            ? await Promise.all(
-                newRecordProperties[mapping[k]].values.map(async (v) => {
-                  const response = await RecordPropertyOps.buildRawValue(
-                    v,
-                    type
-                  );
-                  return response.rawValue;
-                })
-              )
-            : null,
-        };
-      }
-    }
+    const mostRecentExports = await Export.findAll({
+      where: { id: mostRecentExportIds },
+    });
 
     // Send only the properties from the array that should be sent to the Destination, otherwise send the first entry in the array of record properties
     const exportArrayProperties = await getExportArrayProperties(destination);
 
-    for (const k in mappedNewRecordProperties) {
-      if (
-        mappedNewRecordProperties[k] &&
-        !exportArrayProperties.includes(k) &&
-        !exportArrayProperties.includes("*")
-      ) {
-        mappedNewRecordProperties[k].rawValue
-          ? (mappedNewRecordProperties[k].rawValue = Array.isArray(
-              mappedNewRecordProperties[k].rawValue
-            )
-              ? mappedNewRecordProperties[k].rawValue[0]
-              : mappedNewRecordProperties[k].rawValue)
-          : delete mappedNewRecordProperties[k];
-      }
-    }
-
-    newGroupNames = newGroups
-      .filter((group) =>
-        destinationGroupMemberships.map((dgm) => dgm.groupId).includes(group.id)
-      )
-      .map(
-        (group) =>
-          destinationGroupMemberships.filter(
-            (dgm) => dgm.groupId === group.id
-          )[0].remoteKey
+    for (const record of records) {
+      const newRecordProperties = await record.getProperties();
+      const newGroups = newGroupMembers
+        .filter((gm) => gm.recordId === record.id)
+        .map((gm) => gm.group);
+      const mostRecentExport = mostRecentExports.find(
+        (e) => e.recordId === record.id
       );
 
-    const syncMode = await destination.getSyncMode();
-    const canDelete = syncMode
-      ? DestinationSyncModeData[syncMode].operations.delete
-      : true;
-    if (toDelete && !canDelete) {
-      // If sync mode does not allow deleting, don't delete and just clear groups
-      newGroupNames = [];
-      toDelete = false;
+      // Do we need to delete this record from the destination?
+      // If toDelete was not provided explicitly, determine what to do
+      if (typeof toDelete !== "boolean") {
+        toDelete = false;
+        if (destination.collection === "none") {
+          toDelete = true;
+        } else if (destination.collection === "group") {
+          if (!destination.groupId) {
+            toDelete = true;
+          } else if (
+            !newGroups.map((g) => g.id).includes(destination.groupId)
+          ) {
+            toDelete = true;
+          }
+        }
+      }
+
+      if (mostRecentExport && mostRecentExport.toDelete !== true) {
+        mappedOldRecordProperties = JSON.parse(
+          // @ts-ignore
+          mostRecentExport.getDataValue("newRecordProperties")
+        );
+        oldGroupNames = mostRecentExport.newGroups;
+      }
+
+      // We want to be able to delete records that have been removed from their source
+      // (new properties would be set to null, so we need the old values to reference them)
+      const primaryKeyRecordProperties = Object.values(
+        newRecordProperties
+      ).find((p) => p.isPrimaryKey);
+      const forceOldPropertyValues =
+        toDelete &&
+        primaryKeyRecordProperties &&
+        primaryKeyRecordProperties.values[0] === null;
+
+      for (const k in mapping) {
+        const property = properties.find((r) => r.key === mapping[k]);
+        if (!property) throw new Error(`cannot find rule for ${mapping[k]}`);
+        const { type } = property;
+
+        if (forceOldPropertyValues) {
+          mappedNewRecordProperties[k] =
+            mappedOldRecordProperties[k] !== undefined
+              ? mappedOldRecordProperties[k]
+              : { type, rawValue: null };
+        } else {
+          mappedNewRecordProperties[k] = {
+            type,
+            rawValue: newRecordProperties[mapping[k]]
+              ? await Promise.all(
+                  newRecordProperties[mapping[k]].values.map(async (v) => {
+                    const response = await RecordPropertyOps.buildRawValue(
+                      v,
+                      type
+                    );
+                    return response.rawValue;
+                  })
+                )
+              : null,
+          };
+        }
+      }
+
+      for (const k in mappedNewRecordProperties) {
+        if (
+          mappedNewRecordProperties[k] &&
+          !exportArrayProperties.includes(k) &&
+          !exportArrayProperties.includes("*")
+        ) {
+          mappedNewRecordProperties[k].rawValue
+            ? (mappedNewRecordProperties[k].rawValue = Array.isArray(
+                mappedNewRecordProperties[k].rawValue
+              )
+                ? mappedNewRecordProperties[k].rawValue[0]
+                : mappedNewRecordProperties[k].rawValue)
+            : delete mappedNewRecordProperties[k];
+        }
+      }
+
+      newGroupNames = newGroups
+        .filter((group) =>
+          destinationGroupMemberships
+            .map((dgm) => dgm.groupId)
+            .includes(group.id)
+        )
+        .map(
+          (group) =>
+            destinationGroupMemberships.filter(
+              (dgm) => dgm.groupId === group.id
+            )[0].remoteKey
+        );
+
+      const canDelete = syncMode
+        ? DestinationSyncModeData[syncMode].operations.delete
+        : true;
+      if (toDelete && !canDelete) {
+        // If sync mode does not allow deleting, don't delete and just clear groups
+        newGroupNames = [];
+        toDelete = false;
+      }
+
+      // determine if there are changes between this export and the previous one
+      let hasChanges = true;
+      if (
+        !force &&
+        mostRecentExport &&
+        deepStrictEqualBoolean(
+          mappedOldRecordProperties,
+          mappedNewRecordProperties
+        ) &&
+        deepStrictEqualBoolean(oldGroupNames.sort(), newGroupNames.sort()) &&
+        !toDelete &&
+        (!mostRecentExport || !mostRecentExport.toDelete)
+      ) {
+        hasChanges = false;
+      }
+
+      bulkCreates.push({
+        destinationId: destination.id,
+        recordId: record.id,
+        startedAt: synchronous ? new Date() : undefined,
+        oldRecordProperties: mappedOldRecordProperties,
+        newRecordProperties: mappedNewRecordProperties,
+        oldGroups: oldGroupNames.sort(),
+        newGroups: newGroupNames.sort(),
+        state: "pending",
+        sendAt: new Date(),
+        hasChanges,
+        toDelete,
+        force,
+      });
     }
 
-    // determine if there are changes between this export and the previous one
-    let hasChanges = true;
-    if (
-      !force &&
-      mostRecentExport &&
-      deepStrictEqualBoolean(
-        mappedOldRecordProperties,
-        mappedNewRecordProperties
-      ) &&
-      deepStrictEqualBoolean(oldGroupNames.sort(), newGroupNames.sort()) &&
-      !toDelete &&
-      (!mostRecentExport || !mostRecentExport.toDelete)
-    ) {
-      hasChanges = false;
-    }
-
-    let _export: Export;
-    const exportArgs: CreationAttributes<Export> = {
-      destinationId: destination.id,
-      recordId: record.id,
-      startedAt: synchronous ? new Date() : undefined,
-      oldRecordProperties: mappedOldRecordProperties,
-      newRecordProperties: mappedNewRecordProperties,
-      oldGroups: oldGroupNames.sort(),
-      newGroups: newGroupNames.sort(),
-      state: "pending",
-      sendAt: new Date(),
-      hasChanges,
-      toDelete,
-      force,
-    };
-
-    if (saveExports) {
-      _export = await Export.create(exportArgs);
-    } else {
-      _export = Export.build(exportArgs);
-    }
+    const exports = saveExports
+      ? await Export.bulkCreate(bulkCreates)
+      : Export.bulkBuild(bulkCreates);
 
     if (synchronous && saveExports) {
-      await destination.sendExports([_export], synchronous);
+      await destination.sendExports(exports, synchronous);
     }
 
-    return _export;
+    return exports;
   }
 
   function transformError(error: Error, recordId: string): ErrorWithRecordId {
@@ -919,6 +930,39 @@ export namespace DestinationOps {
     });
   }
 
+  async function getMostRecentExportIds(
+    destination: Destination,
+    recordIds: string[]
+  ) {
+    const mostRecentExportIds = await Export.sequelize
+      .query(
+        {
+          query: `
+SELECT
+  "id"
+FROM (
+  SELECT
+    "id",
+    ROW_NUMBER() OVER (PARTITION BY "exports"."recordId" ORDER BY "exports"."createdAt" DESC) AS __rownum
+  FROM
+    "exports"
+  WHERE
+    "exports"."destinationId" = ?
+    AND "exports"."recordId" IN (?)) AS __ranked
+WHERE
+  "__ranked"."__rownum" = 1;`,
+          values: [destination.id, recordIds],
+        },
+        {
+          type: "SELECT",
+          model: Export,
+        }
+      )
+      .then((exports) => exports.map((e) => e.id));
+
+    return mostRecentExportIds;
+  }
+
   export async function sendExports(
     destination: Destination,
     givenExports: Export[],
@@ -945,34 +989,11 @@ export namespace DestinationOps {
     await ExportOps.completeBatch(exportsWithoutChanges);
     if (exportsWithChanges.length === 0) return;
 
-    const mostRecentExportIds = await Export.sequelize
-      .query(
-        {
-          query: `
-    SELECT
-      "id"
-    FROM (
-      SELECT
-        "id",
-        ROW_NUMBER() OVER (PARTITION BY "exports"."recordId" ORDER BY "exports"."createdAt" DESC) AS __rownum
-      FROM
-        "exports"
-      WHERE
-        "exports"."destinationId" = ?
-        AND "exports"."recordId" IN (?)) AS __ranked
-    WHERE
-      "__ranked"."__rownum" = 1;`,
-          values: [
-            destination.id,
-            exportsWithChanges.map(({ recordId }) => recordId),
-          ],
-        },
-        {
-          type: "SELECT",
-          model: Export,
-        }
-      )
-      .then((exports) => exports.map((e) => e.id));
+    const mostRecentExportIds = await getMostRecentExportIds(
+      destination,
+      exportsWithChanges.map(({ recordId }) => recordId)
+    );
+
     try {
       for (const consideredExport of exportsWithChanges) {
         if (!mostRecentExportIds.includes(consideredExport.id)) {
