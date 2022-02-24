@@ -86,7 +86,7 @@ export const DestinationSyncModeData: Record<
   append: {
     key: "append",
     displayName: "Append",
-    description: "Create new records (create)",
+    description: "Always create new records (create)",
     operations: {
       create: true,
       update: false,
@@ -96,7 +96,7 @@ export const DestinationSyncModeData: Record<
   create: {
     key: "create",
     displayName: "Create",
-    description: "Create new records, but only when they don't exist (create)",
+    description: "Create new records if they don‘t already exist (create)",
     operations: {
       create: true,
       update: false,
@@ -116,7 +116,8 @@ export const DestinationSyncModeData: Record<
   upsert: {
     key: "upsert",
     displayName: "Upsert",
-    description: "Sync all records, but do not delete (create, update)",
+    description:
+      "Create new records if they don‘t already exist, or update existing records (create, update)",
     operations: {
       create: true,
       update: true,
