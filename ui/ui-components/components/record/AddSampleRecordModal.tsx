@@ -1,11 +1,12 @@
 import { Modal } from "react-bootstrap";
 import { Models } from "../../utils/apiData";
 import AddSampleRecordForm from "./AddSampleRecordForm";
+import type { RecordType } from "./SampleRecordCard";
 
 interface Props {
   show: boolean;
   onRecordCreated: (
-    record: Models.GrouparooRecordType,
+    record: RecordType,
     groups: Models.GroupType[],
     destinations: Models.DestinationType[]
   ) => void;

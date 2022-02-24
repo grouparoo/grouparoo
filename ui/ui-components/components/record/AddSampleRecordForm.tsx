@@ -6,6 +6,7 @@ import { useGrouparooModel } from "../../contexts/grouparooModel";
 import { errorHandler } from "../../eventHandlers";
 import { Actions, Models } from "../../utils/apiData";
 import LoadingButton from "../LoadingButton";
+import type { RecordType } from "./SampleRecordCard";
 
 const getInputType = (type?: Models.PropertyType["type"]): string => {
   switch (type) {
@@ -20,7 +21,7 @@ const getInputType = (type?: Models.PropertyType["type"]): string => {
 interface Props {
   properties: Models.PropertyType[];
   onSubmitComplete: (
-    record: Models.GrouparooRecordType,
+    record: RecordType,
     groups: Models.GroupType[],
     destinations: Models.DestinationType[]
   ) => void;

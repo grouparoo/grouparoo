@@ -27,9 +27,13 @@ import { useGrouparooModel } from "../../contexts/grouparooModel";
 import { DestinationExport } from "@grouparoo/core/src/actions/destinations";
 import { useRouter } from "next/router";
 
+export type RecordType =
+  | Models.GrouparooRecordType
+  | Models.DestinationRecordPreviewType;
+
 export interface SampleRecordCardProps {
   fetchRecord: (recordId?: string) => Promise<{
-    record?: Models.GrouparooRecordType;
+    record?: RecordType;
     groups?: Models.GroupType[];
     destinations?: Models.DestinationType[];
   }>;
@@ -127,9 +131,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   const [addingRecord, setAddingRecord] = useState(false);
   const [hasRecords, setHasRecords] = useState(true);
   const [totalRecords, setTotalRecords] = useState(0);
-  const [record, setRecord] = useState<Models.GrouparooRecordType>(
-    props.record
-  );
+  const [record, setRecord] = useState<RecordType>(props.record);
   const [groups, setGroups] = useState<Models.GroupType[]>(props.groups);
   const [destinations, setDestinations] = useState<Models.DestinationType[]>(
     props.destinations
@@ -145,7 +147,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
 
   const saveRecord = useCallback(
     (
-      record: Models.GrouparooRecordType,
+      record: RecordType,
       groups: Models.GroupType[],
       destinations: Models.DestinationType[]
     ) => {
@@ -553,6 +555,16 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
                       </Fragment>
                     );
                   })
+                : (record as Models.DestinationRecordPreviewType)?.groupNames
+                    ?.length
+                ? (
+                    record as Models.DestinationRecordPreviewType
+                  ).groupNames.map((groupName) => (
+                    <Fragment key={`group-name-${groupName}`}>
+                      {groupName}
+                      <br />
+                    </Fragment>
+                  ))
                 : "None"}
             </p>
           </>

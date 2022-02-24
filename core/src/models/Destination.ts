@@ -489,6 +489,34 @@ export class Destination extends CommonModel<Destination> {
     return DestinationOps.destinationMappingOptions(this, cached, saveCache);
   }
 
+  async recordPreview(
+    record: GrouparooRecord,
+    mapping: MappingHelper.Mappings,
+    destinationGroupMemberships: {
+      [groupId: string]: string;
+    }
+  ) {
+    return DestinationOps.recordPreview(
+      this,
+      record,
+      mapping,
+      destinationGroupMemberships
+    );
+  }
+
+  async checkRecordWillBeExported(record: GrouparooRecord) {
+    const recordGroupIds = (
+      await record.$get("groups", { attributes: ["id"] })
+    ).map((group) => group.id);
+    if (!recordGroupIds.includes(this.groupId)) {
+      throw new Error(
+        `record ${record.id} will not be exported by this destination`
+      );
+    }
+
+    return true;
+  }
+
   async exportRecord(
     record: GrouparooRecord,
     sync = false,
