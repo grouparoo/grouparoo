@@ -74,14 +74,16 @@ export interface DestinationSyncOperations {
   delete: boolean;
 }
 
+export interface DestinationSyncModeDataValues {
+  key: DestinationSyncMode;
+  displayName: string;
+  description: string;
+  operations: DestinationSyncOperations;
+}
+
 export const DestinationSyncModeData: Record<
   DestinationSyncMode,
-  {
-    key: DestinationSyncMode;
-    displayName: string;
-    description: string;
-    operations: DestinationSyncOperations;
-  }
+  DestinationSyncModeDataValues
 > = {
   append: {
     key: "append",

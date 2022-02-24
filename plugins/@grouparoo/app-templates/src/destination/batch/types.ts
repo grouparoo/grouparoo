@@ -7,6 +7,10 @@ import {
   SimpleDestinationOptions,
   ErrorWithRecordId,
 } from "@grouparoo/core";
+import {
+  DestinationSyncModeData,
+  DestinationSyncModeDataValues,
+} from "@grouparoo/core/dist/models/Destination";
 
 export enum BatchGroupMode {
   WithinGroup = "WithinGroup", // update group by group
@@ -22,46 +26,25 @@ export enum BatchSyncMode {
   Upsert = "Upsert", // create or update (no delete)
 }
 
-export const BatchSyncModeData: Record<
-  BatchSyncMode,
-  {
-    create: boolean;
-    update: boolean;
-    delete: boolean;
-    description: string;
-  }
-> = {
-  [BatchSyncMode.Append]: {
-    create: true,
-    update: false,
-    delete: false,
-    description: "Create new records (create)",
-  },
-  [BatchSyncMode.Create]: {
-    create: true,
-    update: false,
-    delete: false,
-    description: "Create new records, but only when they don't exist (create)",
-  },
-  [BatchSyncMode.Sync]: {
-    create: true,
-    update: true,
-    delete: true,
-    description: "Sync all records (create, update, delete)",
-  },
-  [BatchSyncMode.Update]: {
-    create: false,
-    update: true,
-    delete: false,
-    description: "Only update existing objects (update)",
-  },
-  [BatchSyncMode.Upsert]: {
-    create: true,
-    update: true,
-    delete: false,
-    description: "Sync all records, but do not delete (create, update)",
-  },
+type BatchSyncModeDataValues = DestinationSyncModeDataValues["operations"] & {
+  description: string;
 };
+
+const toBatchSyncModeData = (
+  values: DestinationSyncModeDataValues
+): BatchSyncModeDataValues => ({
+  ...values.operations,
+  description: values.description,
+});
+
+export const BatchSyncModeData: Record<BatchSyncMode, BatchSyncModeDataValues> =
+  {
+    [BatchSyncMode.Append]: toBatchSyncModeData(DestinationSyncModeData.append),
+    [BatchSyncMode.Create]: toBatchSyncModeData(DestinationSyncModeData.create),
+    [BatchSyncMode.Sync]: toBatchSyncModeData(DestinationSyncModeData.sync),
+    [BatchSyncMode.Update]: toBatchSyncModeData(DestinationSyncModeData.update),
+    [BatchSyncMode.Upsert]: toBatchSyncModeData(DestinationSyncModeData.upsert),
+  };
 
 export interface BatchExport extends ExportedRecord {
   foreignKeyValue?: string;
