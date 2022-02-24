@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Row, Col, Form, Badge, Button, Table, Alert } from "react-bootstrap";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useState, useRef, FormEvent, useMemo } from "react";
+import { useState, useRef, FormEvent, useMemo, useEffect } from "react";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { successHandler } from "../../../../../eventHandlers";
 import DestinationTabs from "../../../../../components/tabs/Destination";
@@ -175,6 +175,17 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
     [mappingOptions.properties.known, mappingOptions.properties.required]
   );
 
+  useEffect(() => {
+    setDestination((_destination) => {
+      for (const key in _destination.mapping) {
+        if (!destinationAllowedProperties.includes(key)) {
+          delete _destination.mapping[key];
+        }
+      }
+      return _destination;
+    });
+  }, [destination, destinationAllowedProperties]);
+
   const optionalMappingRemoteKeys = Object.keys(destination.mapping).filter(
     (key) => {
       if (
@@ -193,12 +204,6 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
 
   function updateMapping(key: string, value: string, oldKey = null) {
     const _destination = { ...destination };
-
-    for (const key in _destination.mapping) {
-      if (!destinationAllowedProperties.includes(key)) {
-        delete _destination.mapping[key];
-      }
-    }
 
     let destinationMappingKeys = Object.keys(_destination.mapping);
     let insertIndex = destinationMappingKeys.length - 1;
