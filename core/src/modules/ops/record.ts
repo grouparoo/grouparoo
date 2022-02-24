@@ -296,9 +296,6 @@ export namespace RecordOps {
     let recordOffset = 0;
     for (const record of records) {
       const properties = await PropertiesCache.findAllWithCache(record.modelId);
-
-      if (record.isNewRecord) await record.save();
-
       const keys = Object.keys(recordProperties[recordOffset]);
       checkKeys: for (const key of keys) {
         // this special, internal-ony key is used to send extra information though an Import.  `_meta` is prevented from being a valid Property key
@@ -510,7 +507,8 @@ export namespace RecordOps {
 
   export async function buildNullProperties(
     records: GrouparooRecord[],
-    state: RecordProperty["state"] = "pending"
+    state: RecordProperty["state"] = "pending",
+    skipPropertyLookup = false
   ) {
     const bulkArgs = [];
     const now = new Date();
@@ -520,7 +518,10 @@ export namespace RecordOps {
         record.modelId,
         "ready"
       );
-      const recordProperties = await record.getProperties();
+
+      const recordProperties = skipPropertyLookup
+        ? {}
+        : await record.getProperties();
 
       for (const key in properties) {
         const property = properties[key];
@@ -895,13 +896,35 @@ export namespace RecordOps {
           );
         }
 
-        data.record = await GrouparooRecord.create({ modelId });
+        // we want to prevent running buildNullProperties per-record, we will do it in bulk below
+        const record = GrouparooRecord.build({ modelId });
+        GrouparooRecord.generateId(record);
+        data.record = record;
         data.isNew = true;
       }
     }
 
+    const newRecords = await GrouparooRecord.bulkCreate(
+      response
+        .filter((d) => d.isNew)
+        .map((d) => {
+          return {
+            id: d.record.id,
+            state: d.record.state,
+            modelId: d.record.modelId,
+          };
+        })
+    );
+    for (const data of response) {
+      if (data.isNew) {
+        data.record = newRecords.find((r) => r.id === data.record.id);
+      }
+    }
+
     await buildNullProperties(
-      response.filter((d) => !d.error && d.isNew).map((d) => d.record)
+      response.filter((d) => !d.error && d.isNew).map((d) => d.record),
+      undefined,
+      true
     );
 
     await addOrUpdateProperties(

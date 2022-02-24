@@ -73,7 +73,7 @@ describe("test grouparoo records", () => {
 
       // make the record
       const response = await RecordOps.findOrCreateByUniqueRecordProperties(
-        [{ userId: ["person1@example.com"] }],
+        [{ userId: ["1"] }],
         ["-"],
         true
       );
