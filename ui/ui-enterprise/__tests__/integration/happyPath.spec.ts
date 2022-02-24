@@ -2,6 +2,10 @@ import { test, expect } from "@playwright/test";
 import { BrowserContext, Page } from "playwright";
 import { helper } from "@grouparoo/spec-helper";
 
+import AccountPageObject from "@grouparoo/ui-components/__tests__/__pageObjects__/account";
+import InitializePageObject from "@grouparoo/ui-components/__tests__/__pageObjects__/team/initialize";
+import SignInPageObject from "@grouparoo/ui-components/__tests__/__pageObjects__/session/sign-in";
+
 let serverProcess;
 
 test.beforeAll(async () => {
@@ -17,10 +21,7 @@ test.afterAll(async () => {
 
 test.describe("login and initialization flow", () => {
   const port = 3100;
-  const url = `http://localhost:${port}`;
 
-  // TODO: update spechelper to play nicely with playwright
-  // helper.grouparooTestServerDetached({ port, truncate: true }); TODO: this is set up to use jest.
   const firstName = "mario";
   const lastName = "mario";
   const email = "mario@example.com";
@@ -30,7 +31,9 @@ test.describe("login and initialization flow", () => {
   let page: Page;
 
   test.beforeAll(async ({ browser }) => {
-    const context: BrowserContext = await browser.newContext();
+    const context: BrowserContext = await browser.newContext({
+      baseURL: `http://localhost:${port}`,
+    });
     page = await context.newPage();
   });
   test.afterAll(async ({ browser }) => {
@@ -38,50 +41,52 @@ test.describe("login and initialization flow", () => {
   });
 
   test("it renders the homepage", async () => {
-    await page.goto(url);
+    await page.goto("/");
 
     await expect(page.locator("h2")).toHaveText(
       "Sync, Segment, and Send your Product Data Everywhere"
     );
     await expect(page.locator("#bottomNavigationMenu")).toContainText("Hello");
     await Promise.all([
-      page.waitForNavigation({ url: `${url}/team/initialize` }),
       page.locator('[data-testid="cta"]').click(),
+      page.waitForNavigation({ url: `/team/initialize` }),
     ]);
-    // form loads on button click
-    expect(page.locator('input[name="companyName"]')).toBeTruthy();
   });
 
   test("it can initialize the first team", async () => {
-    await page.locator('input[name="companyName"]').fill(companyName);
-    await page.locator('input[name="firstName"]').fill(firstName);
-    await page.locator('input[name="lastName"]').fill(lastName);
-    await page.locator('input[name="email"]').fill(email);
-    await page.locator('input[name="password"]').fill(password);
-    await page.locator('button:has-text("Submit")').click();
+    const teamInitializePage = new InitializePageObject(page);
+    await teamInitializePage.navigate();
+    await teamInitializePage.fill({
+      companyName,
+      firstName,
+      lastName,
+      email,
+      password,
+    });
+
     await page.waitForNavigation();
     expect(page.locator("text=Setup")).toBeTruthy();
   });
-  test("I can sign out", async () => {
-    await page.goto(`${url}/session/sign-out`);
-    await page.waitForNavigation();
-    expect(page.url()).toEqual(`${url}/`);
-  });
-  test("I can sign in", async () => {
-    await page.goto(`${url}/session/sign-in/`);
-    await page.locator('input[name="email"]').fill(email);
-    await page.locator('input[name="password"]').fill(password);
-    await page.locator('button:has-text("Sign In")').click();
 
-    await page.waitForNavigation();
-    expect(page.url()).toEqual(`${url}/setup`);
+  test("I can sign out", async () => {
+    await page.goto(`/session/sign-out`);
+    await page.waitForNavigation({ url: "/" });
+  });
+
+  test("I can sign in", async () => {
+    const signInPage = new SignInPageObject(page);
+    await signInPage.navigate();
+    await signInPage.fill({ email, password });
+    await page.waitForNavigation({ url: "/setup" });
   });
   test("I can change account information and see it reflected in the sidebar", async () => {
-    await page.goto(`${url}/account`);
-    await page.locator("#firstName").fill("Super Mario");
-    await page.locator('button[type="submit"]').click();
+    const updatedName = "Super Mario";
+    const accountPage = new AccountPageObject(page);
+    await accountPage.navigate();
+    await accountPage.fill({ firstName: updatedName });
+
     await expect(page.locator("#navigation-greeting")).toContainText(
-      "Hello Super Mario "
+      `Hello ${updatedName} `
     );
   });
 });
