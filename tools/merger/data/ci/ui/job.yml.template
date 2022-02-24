@@ -20,6 +20,10 @@
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
+      - image: mcr.microsoft.com/playwright:focal
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
 {{{custom_docker}}}
     steps:
       - checkout
