@@ -69,7 +69,7 @@ export async function loadProperty(
           }\` has been deprecated and replaced with \`${
             //@ts-ignore
             FilterHelper.deprecatedFilters[filter.op]
-          }\`. Read more at https://www.grouparoo.com/docs/config/code-config/properties`
+          }\`. Read more at https://www.grouparoo.com/docs/support/config-files#properties`
         );
       }
     }
