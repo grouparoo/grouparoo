@@ -13,6 +13,7 @@ test.beforeAll(async () => {
     port: 3100,
     truncate: true,
   });
+  console.log("beforeAll");
 });
 
 test.afterAll(async () => {
@@ -20,6 +21,7 @@ test.afterAll(async () => {
 });
 
 test.describe("login and initialization flow", () => {
+  console.log("inside describe");
   const port = 3100;
 
   const firstName = "mario";
@@ -35,6 +37,7 @@ test.describe("login and initialization flow", () => {
       baseURL: `http://localhost:${port}`,
     });
     page = await context.newPage();
+    console.log("beforeAll inside describe");
   });
   test.afterAll(async ({ browser }) => {
     browser.close();
