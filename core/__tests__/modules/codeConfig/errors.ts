@@ -192,7 +192,7 @@ describe("modules/codeConfig", () => {
           )
         );
         expect(errors[0]).toMatch(
-          "[ config ] error with Property `email` (email): Property filter `greater than` has been deprecated and replaced with `gt`. Read more at https://www.grouparoo.com/docs/config/code-config/properties"
+          "[ config ] error with Property `email` (email): Property filter `greater than` has been deprecated and replaced with `gt`. Read more at https://www.grouparoo.com/docs/support/config-files#properties"
         );
       });
     });
@@ -214,7 +214,7 @@ describe("modules/codeConfig", () => {
           )
         );
         expect(errors[0]).toMatch(
-          "[ config ] error with Schedule `Users Table Schedule` (users_table_schedule): Schedule filter `greater than` has been deprecated and replaced with `gt`. Read more at https://www.grouparoo.com/docs/config/code-config/sources"
+          "[ config ] error with Schedule `Users Table Schedule` (users_table_schedule): Schedule filter `greater than` has been deprecated and replaced with `gt`. Read more at https://www.grouparoo.com/docs/support/config-files#sources"
         );
       });
     });
