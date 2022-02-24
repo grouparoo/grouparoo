@@ -1202,7 +1202,11 @@ export namespace RecordOps {
   ) {
     const records = await GrouparooRecord.findAll({
       where: { id: recordIds, state: "ready" },
-      include: [RecordProperty, { model: GroupMember, include: [Group] }],
+      include: [RecordProperty],
+    });
+    const groupMembers = await GroupMember.findAll({
+      where: { recordId: recordIds },
+      include: [Group],
     });
     const imports = await Import.findAll({
       where: { state: "processing", recordId: recordIds },
@@ -1214,7 +1218,9 @@ export namespace RecordOps {
     for (const record of records) {
       const destinations = await DestinationOps.relevantFor(
         record,
-        record.groupMembers.map((gm) => gm.group)
+        groupMembers
+          .filter((gm) => gm.recordId === record.id)
+          .map((gm) => gm.group)
       );
 
       // check for explicit destinations to export to from each import
