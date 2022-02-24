@@ -54,9 +54,8 @@ describe("models/destinationsCache", () => {
     });
 
     test("creating a destination signals RPC", async () => {
-      DestinationsCache.expires = new Date().getTime();
+      DestinationsCache.expires = Date.now();
       await makeDestination();
-      await helper.sleep(10);
       expect(DestinationsCache.expires).toBe(0);
     });
 
@@ -64,39 +63,34 @@ describe("models/destinationsCache", () => {
       const mock = jest.fn();
       api.rpc.destination.invalidateCache = mock;
       await makeDestination();
-      await helper.sleep(10);
       expect(mock).toHaveBeenCalled();
     });
 
     test("updating a destination signals RPC", async () => {
       await makeDestination();
-      DestinationsCache.expires = new Date().getTime();
+      DestinationsCache.expires = Date.now();
       await destination.update({ name: "new name" });
-      await helper.sleep(10);
       expect(DestinationsCache.expires).toBe(0);
     });
 
     test("calling setOptions signals RPC", async () => {
       await makeDestination();
-      DestinationsCache.expires = new Date().getTime();
+      DestinationsCache.expires = Date.now();
       await destination.setOptions({ table: "foo" });
-      await helper.sleep(10);
       expect(DestinationsCache.expires).toBe(0);
     });
 
     test("calling setMapping signals RPC", async () => {
       await makeDestination();
-      DestinationsCache.expires = new Date().getTime();
+      DestinationsCache.expires = Date.now();
       await destination.setMapping({ "primary-id": "userId" });
-      await helper.sleep(10);
       expect(DestinationsCache.expires).toBe(0);
     });
 
     test("destroying a destination signals RPC", async () => {
       await makeDestination();
-      DestinationsCache.expires = new Date().getTime();
+      DestinationsCache.expires = Date.now();
       await destination.destroy();
-      await helper.sleep(10);
       expect(DestinationsCache.expires).toBe(0);
     });
   });
@@ -110,11 +104,17 @@ describe("models/destinationsCache", () => {
       expect(DestinationsCache.expires).toEqual(0);
     });
 
+    beforeEach(async () => {
+      await helper.sleep(1000); // wait for any pub/sub to complete
+      DestinationsCache.expires = 0;
+      await DestinationsCache.findAllWithCache();
+    });
+
     test("after a destination is updated, the local cache should be invalid", async () => {
-      DestinationsCache.expires = new Date().getTime() + 1000 * 30;
-      await destination.update({ name: "NEW NAME" });
-      await helper.sleep(10);
+      DestinationsCache.expires = Date.now() + 1000 * 30;
+      await destination.update({ name: "ANOTHER NAME" });
       expect(DestinationsCache.expires).toEqual(0);
+      await destination.update({ name: "NEW NAME" });
     });
 
     test("it will find by id by default", async () => {
@@ -150,17 +150,15 @@ describe("models/destinationsCache", () => {
 
     test("a cache miss with a secondary find will invalidate the cache", async () => {
       DestinationsCache.instances = [await helper.factories.destination()];
-      DestinationsCache.expires = new Date().getTime() + 1000 * 30;
+      DestinationsCache.expires = Date.now() + 1000 * 30;
       const found = await DestinationsCache.findOneWithCache(destination.id);
-      await helper.sleep(10);
       expect(found.id).toEqual(destination.id);
       expect(DestinationsCache.expires).toBe(0);
     });
 
     test("a cache miss without a secondary find will not invalidate the cache", async () => {
-      DestinationsCache.expires = new Date().getTime() + 1000 * 30;
+      DestinationsCache.expires = Date.now() + 1000 * 30;
       const found = await DestinationsCache.findOneWithCache("missing");
-      await helper.sleep(10);
       expect(found).toBeNull();
       expect(DestinationsCache.expires).not.toBe(0);
     });

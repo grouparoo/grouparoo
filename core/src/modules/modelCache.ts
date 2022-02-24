@@ -32,6 +32,7 @@ export class ModelCache<T extends StatefulCachedModel> {
     this.findAllWithCache = findAllWithCache.bind(this);
     this.findOneWithCache = findOneWithCache.bind(this);
     this.include = include;
+    this.instances = [];
   }
 
   invalidate() {

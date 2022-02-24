@@ -10,7 +10,7 @@ async function findAllWithCache(
   modelId?: string,
   state?: Property["state"]
 ) {
-  const now = new Date().getTime();
+  const now = Date.now();
   if (this.expires > now && this.instances.length > 0) {
     return modelId
       ? this.instances.filter(

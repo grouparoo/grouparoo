@@ -50,9 +50,8 @@ describe("models/modelsCache", () => {
     });
 
     test("creating a model signals RPC", async () => {
-      ModelsCache.expires = new Date().getTime();
+      ModelsCache.expires = Date.now();
       await makeModel();
-      await helper.sleep(10);
       expect(ModelsCache.expires).toBe(0);
     });
 
@@ -60,23 +59,20 @@ describe("models/modelsCache", () => {
       const mock = jest.fn();
       api.rpc.model.invalidateCache = mock;
       await makeModel();
-      await helper.sleep(10);
       expect(mock).toHaveBeenCalled();
     });
 
     test("updating a model signals RPC", async () => {
       await makeModel();
-      ModelsCache.expires = new Date().getTime();
+      ModelsCache.expires = Date.now();
       await model.update({ name: "new name" });
-      await helper.sleep(10);
       expect(ModelsCache.expires).toBe(0);
     });
 
     test("destroying a model signals RPC", async () => {
       await makeModel();
-      ModelsCache.expires = new Date().getTime();
+      ModelsCache.expires = Date.now();
       await model.destroy();
-      await helper.sleep(10);
       expect(ModelsCache.expires).toBe(0);
     });
   });
@@ -89,10 +85,15 @@ describe("models/modelsCache", () => {
       expect(ModelsCache.expires).toEqual(0);
     });
 
+    beforeEach(async () => {
+      await helper.sleep(1000); // wait for any pub/sub to complete
+      ModelsCache.expires = 0;
+      await ModelsCache.findAllWithCache();
+    });
+
     test("after an model is updated, the local cache should be invalid", async () => {
-      ModelsCache.expires = new Date().getTime() + 1000 * 30;
+      ModelsCache.expires = Date.now() + 1000 * 30;
       await model.update({ name: "NEW NAME" });
-      await helper.sleep(10);
       expect(ModelsCache.expires).toEqual(0);
     });
 
@@ -127,17 +128,15 @@ describe("models/modelsCache", () => {
       ModelsCache.instances = [
         await helper.factories.model({ name: "other model" }),
       ];
-      ModelsCache.expires = new Date().getTime() + 1000 * 30;
+      ModelsCache.expires = Date.now() + 1000 * 30;
       const found = await ModelsCache.findOneWithCache(model.id);
-      await helper.sleep(10);
       expect(found.id).toEqual(model.id);
       expect(ModelsCache.expires).toBe(0);
     });
 
     test("a cache miss without a secondary find will not invalidate the cache", async () => {
-      ModelsCache.expires = new Date().getTime() + 1000 * 30;
+      ModelsCache.expires = Date.now() + 1000 * 30;
       const found = await ModelsCache.findOneWithCache("missing");
-      await helper.sleep(10);
       expect(found).toBeNull();
       expect(ModelsCache.expires).not.toBe(0);
     });

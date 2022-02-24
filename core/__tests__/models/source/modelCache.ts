@@ -52,9 +52,8 @@ describe("models/sourcesCache", () => {
     });
 
     test("creating a source signals RPC", async () => {
-      SourcesCache.expires = new Date().getTime();
+      SourcesCache.expires = Date.now();
       await makeSource();
-      await helper.sleep(10);
       expect(SourcesCache.expires).toBe(0);
     });
 
@@ -62,39 +61,34 @@ describe("models/sourcesCache", () => {
       const mock = jest.fn();
       api.rpc.source.invalidateCache = mock;
       await makeSource();
-      await helper.sleep(10);
       expect(mock).toHaveBeenCalled();
     });
 
     test("updating a source signals RPC", async () => {
       await makeSource();
-      SourcesCache.expires = new Date().getTime();
+      SourcesCache.expires = Date.now();
       await source.update({ name: "new name" });
-      await helper.sleep(10);
       expect(SourcesCache.expires).toBe(0);
     });
 
     test("calling setOptions signals RPC", async () => {
       await makeSource();
-      SourcesCache.expires = new Date().getTime();
+      SourcesCache.expires = Date.now();
       await source.setOptions({ table: "foo" });
-      await helper.sleep(10);
       expect(SourcesCache.expires).toBe(0);
     });
 
     test("calling setMapping signals RPC", async () => {
       await makeSource();
-      SourcesCache.expires = new Date().getTime();
+      SourcesCache.expires = Date.now();
       await source.setMapping({ email: "email" });
-      await helper.sleep(10);
       expect(SourcesCache.expires).toBe(0);
     });
 
     test("destroying a source signals RPC", async () => {
       await makeSource();
-      SourcesCache.expires = new Date().getTime();
+      SourcesCache.expires = Date.now();
       await source.destroy();
-      await helper.sleep(10);
       expect(SourcesCache.expires).toBe(0);
     });
   });
@@ -108,11 +102,17 @@ describe("models/sourcesCache", () => {
       expect(SourcesCache.expires).toEqual(0);
     });
 
+    beforeEach(async () => {
+      await helper.sleep(1000); // wait for any pub/sub to complete
+      SourcesCache.expires = 0;
+      await SourcesCache.findAllWithCache();
+    });
+
     test("after a source is updated, the local cache should be invalid", async () => {
-      SourcesCache.expires = new Date().getTime() + 1000 * 30;
-      await source.update({ key: "LAST NAME" });
-      await helper.sleep(10);
+      SourcesCache.expires = Date.now() + 1000 * 30;
+      await source.update({ name: "ANOTHER NAME" });
       expect(SourcesCache.expires).toEqual(0);
+      await source.update({ name: "NEW NAME" });
     });
 
     test("it will find by id by default", async () => {
@@ -146,17 +146,15 @@ describe("models/sourcesCache", () => {
 
     test("a cache miss with a secondary find will invalidate the cache", async () => {
       SourcesCache.instances = [await helper.factories.source()];
-      SourcesCache.expires = new Date().getTime() + 1000 * 30;
+      SourcesCache.expires = Date.now() + 1000 * 30;
       const found = await SourcesCache.findOneWithCache(source.id);
-      await helper.sleep(10);
       expect(found.id).toEqual(source.id);
       expect(SourcesCache.expires).toBe(0);
     });
 
     test("a cache miss without a secondary find will not invalidate the cache", async () => {
-      SourcesCache.expires = new Date().getTime() + 1000 * 30;
+      SourcesCache.expires = Date.now() + 1000 * 30;
       const found = await SourcesCache.findOneWithCache("missing");
-      await helper.sleep(10);
       expect(found).toBeNull();
       expect(SourcesCache.expires).not.toBe(0);
     });
