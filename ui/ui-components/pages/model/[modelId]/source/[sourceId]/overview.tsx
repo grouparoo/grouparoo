@@ -92,6 +92,9 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
     [source.options]
   );
 
+  const showMapping =
+    source.previewAvailable && !source.connection.skipSourceMapping;
+
   return (
     <>
       <Head>
@@ -130,8 +133,8 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
               ))}
             </p>
           )}
-          {source.previewAvailable && !source.connection.skipSourceMapping ? (
-            Object.keys(source.mapping).length === 1 ? (
+          {showMapping &&
+            (Object.keys(source.mapping).length === 1 ? (
               <p>
                 <strong>Mapping:</strong>{" "}
                 <code>{Object.keys(source.mapping)[0]}</code> →{" "}
@@ -146,12 +149,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
                   <a>Set mapping</a>
                 </Link>
               </Alert>
-            )
-          ) : source.connection.skipSourceMapping ? (
-            <Alert variant="info">Automatic</Alert>
-          ) : (
-            <p>Mapping is not available for this connection type.</p>
-          )}
+            ))}
         </Col>
       </Row>
       <Row className="mb-4">
