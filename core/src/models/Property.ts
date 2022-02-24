@@ -218,7 +218,7 @@ export class Property extends CommonModel<Property> {
     const pluginOptions = await this.pluginOptions(options);
     const optionsSpec: OptionHelper.OptionsSpec = pluginOptions.map((opt) => ({
       ...opt,
-      options: opt.options.map((o) => o.key),
+      options: opt.options?.map((o) => o.key),
     }));
 
     await OptionHelper.validateOptions(this, options, optionsSpec, allowEmpty);

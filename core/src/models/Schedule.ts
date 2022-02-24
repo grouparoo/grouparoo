@@ -170,7 +170,7 @@ export class Schedule extends CommonModel<Schedule> {
     const pluginOptions = await this.pluginOptions();
     const optionsSpec: OptionHelper.OptionsSpec = pluginOptions.map((opt) => ({
       ...opt,
-      options: opt.options.map((o) => o.key),
+      options: opt.options?.map((o) => o.key),
     }));
 
     await OptionHelper.validateOptions(this, options, optionsSpec);
