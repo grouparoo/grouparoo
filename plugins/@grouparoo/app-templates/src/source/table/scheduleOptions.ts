@@ -3,6 +3,7 @@ import {
   GetColumnDefinitionsMethod,
   columnNameKey,
   tableNameKey,
+  sourceQueryKey,
 } from "./pluginMethods";
 import { getSortableColumnExamples } from "./getExamples";
 import { PluginConnectionScheduleOption } from "@grouparoo/core";
@@ -30,12 +31,14 @@ export const getScheduleOptions: GetScheduleOptionsMethod = async (
       type: "list",
       options: async ({ connection, appOptions, appId, sourceOptions }) => {
         const tableName = sourceOptions[tableNameKey]?.toString();
+        const sourceQuery = sourceOptions[sourceQueryKey]?.toString();
         return getSortableColumnExamples({
           connection,
           appOptions,
           sourceOptions,
           appId,
           tableName,
+          sourceQuery,
           getSampleRows,
           getColumns,
         });

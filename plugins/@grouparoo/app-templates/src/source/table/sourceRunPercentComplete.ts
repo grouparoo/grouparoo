@@ -1,6 +1,11 @@
 import { SourceRunPercentCompleteMethod } from "@grouparoo/core";
 import { getFilterOperation } from "./getFilterOperation";
-import { GetRowCountMethod, MatchCondition } from "./pluginMethods";
+import {
+  tableNameKey,
+  sourceQueryKey,
+  GetRowCountMethod,
+  MatchCondition,
+} from "./pluginMethods";
 import { getChangeVariables } from "./records";
 
 export interface GetSourceRunPercentCompleteMethod {
@@ -17,12 +22,13 @@ export const getSourceRunPercentComplete: GetSourceRunPercentCompleteMethod = ({
     appOptions,
     appId,
     source,
+    sourceOptions,
     schedule,
     highWaterMark,
     run,
     scheduleFilters,
   }) => {
-    const { tableName, highWaterMarkCondition } = await getChangeVariables({
+    const { highWaterMarkCondition } = await getChangeVariables({
       run,
       source,
       highWaterMark,
@@ -39,11 +45,15 @@ export const getSourceRunPercentComplete: GetSourceRunPercentCompleteMethod = ({
       });
     }
 
+    const tableName = sourceOptions[tableNameKey]?.toString();
+    const sourceQuery = sourceOptions[sourceQueryKey]?.toString();
+
     const count = await getRowCount({
       connection,
       appOptions,
       appId,
       tableName,
+      sourceQuery,
       matchConditions,
       highWaterMarkCondition,
       incremental: schedule.incremental,

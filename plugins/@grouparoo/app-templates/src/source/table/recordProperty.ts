@@ -9,6 +9,7 @@ import {
   GetPropertyValueMethod,
   columnNameKey,
   tableNameKey,
+  sourceQueryKey,
   aggregationMethodKey,
   sortColumnKey,
 } from "./pluginMethods";
@@ -33,6 +34,7 @@ export const getRecordProperty: GetRecordPropertyMethod = ({
     propertyOptions,
     propertyFilters,
   }) => {
+    const sourceQuery = sourceOptions[sourceQueryKey]?.toString();
     const tableName = sourceOptions[tableNameKey]?.toString();
     const matchName = Object.keys(sourceMapping)[0]; // tableCol
     const recordPropertyMatch = Object.values(sourceMapping)[0];
@@ -92,6 +94,7 @@ export const getRecordProperty: GetRecordPropertyMethod = ({
       appOptions,
       appId,
       tableName,
+      sourceQuery,
       columnName,
       sortColumn,
       matchConditions,

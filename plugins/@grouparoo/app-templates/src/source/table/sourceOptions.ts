@@ -11,7 +11,7 @@ import {
 
 export interface GetSourceOptionsMethod {
   (argument: {
-    getTables: GetTablesMethod;
+    getTables?: GetTablesMethod;
     sourceOptions?: SourceOptionsExtra;
   }): SourceOptionsMethod;
 }
@@ -25,16 +25,18 @@ export const getSourceOptions: GetSourceOptionsMethod = ({
     appOptions,
     appId,
   }) => {
-    const map: TableDefinitionMap = await getTables({
-      connection,
-      appOptions,
-      appId,
-    });
+    const response: SourceOptionsMethodResponse = {};
 
-    const tableNames = Object.keys(map).sort();
-    const response: SourceOptionsMethodResponse = {
-      [tableNameKey]: { type: "typeahead", options: tableNames },
-    };
+    if (getTables) {
+      const map: TableDefinitionMap = await getTables({
+        connection,
+        appOptions,
+        appId,
+      });
+
+      const tableNames = Object.keys(map).sort();
+      response[tableNameKey] = { type: "typeahead", options: tableNames };
+    }
 
     // TODO later: const getMore = extraSourceOptions?.method
     const extra = extraSourceOptions?.options || [];

@@ -6,17 +6,19 @@ import { makeHighwaterWhereClause } from "./getRows";
 import { validateQuery } from "../validateQuery";
 import format from "pg-format";
 import { makeWhereClause } from "./util";
+import { PostgresPoolClient } from "../connect";
 
 export const getRowCount: GetRowCountMethod = async ({
   incremental,
   connection,
   tableName,
+  sourceQuery,
   matchConditions,
   highWaterMarkCondition,
+  sourceOptions,
 }) => {
-  const params = [];
-  let query = `SELECT COUNT(*) AS __count FROM %I`;
-  params.push(tableName);
+  const params: string[] = [];
+  let query = `WITH __userQuery AS (${sourceQuery}) SELECT COUNT(*) AS __count FROM __userQuery`;
 
   if (incremental) {
     query += await makeHighwaterWhereClause(highWaterMarkCondition, params);

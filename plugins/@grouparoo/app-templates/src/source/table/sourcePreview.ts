@@ -2,6 +2,7 @@ import {
   GetSampleRowsMethod,
   GetColumnDefinitionsMethod,
   tableNameKey,
+  sourceQueryKey,
 } from "./pluginMethods";
 import { SourcePreviewMethod } from "@grouparoo/core";
 import { getExampleRows } from "./getExamples";
@@ -23,6 +24,7 @@ export const getSourcePreview: GetSourcePreviewMethod = ({
     appId,
     sourceOptions,
   }) => {
+    const sourceQuery = sourceOptions[sourceQueryKey]?.toString();
     const tableName = sourceOptions[tableNameKey]?.toString();
     return getExampleRows({
       connection,
@@ -30,6 +32,7 @@ export const getSourcePreview: GetSourcePreviewMethod = ({
       sourceOptions,
       appId,
       tableName,
+      sourceQuery,
       getSampleRows,
       getColumns,
     });

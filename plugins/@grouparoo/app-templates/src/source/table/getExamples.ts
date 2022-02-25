@@ -6,7 +6,7 @@ import {
   ColumnDefinitionMap,
   SimpleAppOptions,
 } from "./pluginMethods";
-import { FilterOperation, SimpleSourceOptions } from "@grouparoo/core";
+import { SimpleSourceOptions } from "@grouparoo/core";
 
 export interface GetExampleRowsMethod {
   (argument: {
@@ -14,7 +14,8 @@ export interface GetExampleRowsMethod {
     appOptions: SimpleAppOptions;
     sourceOptions?: SimpleSourceOptions;
     appId: string;
-    tableName: string;
+    sourceQuery?: string;
+    tableName?: string;
     columns?: ColumnDefinitionMap;
     getSampleRows: GetSampleRowsMethod;
     getColumns: GetColumnDefinitionsMethod;
@@ -27,7 +28,8 @@ export interface GetColumnExamplesMethod {
     appOptions: SimpleAppOptions;
     sourceOptions?: SimpleSourceOptions;
     appId: string;
-    tableName: string;
+    tableName?: string;
+    sourceQuery?: string;
     getSampleRows: GetSampleRowsMethod;
     getColumns: GetColumnDefinitionsMethod;
   }): Promise<
@@ -45,6 +47,7 @@ export const getExampleRows: GetExampleRowsMethod = async ({
   sourceOptions,
   appId,
   tableName,
+  sourceQuery,
   columns,
   getSampleRows,
   getColumns,
@@ -55,6 +58,7 @@ export const getExampleRows: GetExampleRowsMethod = async ({
     sourceOptions,
     appId,
     tableName,
+    sourceQuery,
   });
   if (!rows || rows.length === 0) {
     if (!columns) {
@@ -64,6 +68,7 @@ export const getExampleRows: GetExampleRowsMethod = async ({
         sourceOptions,
         appId,
         tableName,
+        sourceQuery,
       });
     }
     rows = makeRowsFromColumns(columns);
@@ -85,6 +90,7 @@ export const getColumnExamples: GetColumnExamplesMethod = async ({
   appOptions,
   appId,
   sourceOptions,
+  sourceQuery,
   tableName,
   getSampleRows,
   getColumns,
@@ -94,6 +100,7 @@ export const getColumnExamples: GetColumnExamplesMethod = async ({
     appOptions,
     sourceOptions,
     appId,
+    sourceQuery,
     tableName,
     getSampleRows,
     getColumns,
@@ -112,6 +119,7 @@ export const getSortableColumnExamples: GetColumnExamplesMethod = async ({
   appOptions,
   sourceOptions,
   appId,
+  sourceQuery,
   tableName,
   getSampleRows,
   getColumns,
@@ -121,6 +129,7 @@ export const getSortableColumnExamples: GetColumnExamplesMethod = async ({
     appOptions,
     sourceOptions,
     appId,
+    sourceQuery,
     tableName,
   });
   const rows = await getExampleRows({
@@ -129,6 +138,7 @@ export const getSortableColumnExamples: GetColumnExamplesMethod = async ({
     sourceOptions,
     appId,
     tableName,
+    sourceQuery,
     columns,
     getSampleRows,
     getColumns,

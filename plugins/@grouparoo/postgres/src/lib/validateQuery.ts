@@ -17,16 +17,16 @@ export function validateQuery(sql: string, allowLimitAndOffset = true) {
     throw new Error("please remove any offsets from the query");
   }
 
-  if (
-    lowerCaseSQL.indexOf("select") !== 0 &&
-    lowerCaseSQL.indexOf("insert") !== 0 &&
-    lowerCaseSQL.indexOf("update") !== 0 &&
-    lowerCaseSQL.indexOf("delete") !== 0
-  ) {
-    throw new Error(
-      "query should start with SELECT, INSERT, UPDATE, or DELETE"
-    );
-  }
+  // if (
+  //   lowerCaseSQL.indexOf("select") !== 0 &&
+  //   lowerCaseSQL.indexOf("insert") !== 0 &&
+  //   lowerCaseSQL.indexOf("update") !== 0 &&
+  //   lowerCaseSQL.indexOf("delete") !== 0
+  // ) {
+  //   throw new Error(
+  //     "query should start with SELECT, INSERT, UPDATE, or DELETE"
+  //   );
+  // }
 
   return sql;
 }
