@@ -116,6 +116,7 @@ describe("tasks/recordProperties:enqueue", () => {
       await helper.changeTimestamps(recordProperties, false, true);
 
       await specHelper.runTask("recordProperties:enqueue", {});
+      await specHelper.runTask("recordProperties:enqueue", {});
       const importRecordPropertiesTasks = await specHelper.findEnqueuedTasks(
         "recordProperty:importRecordProperties"
       );
