@@ -43,7 +43,7 @@ describe("actions/properties", () => {
     await Property.truncate();
 
     source = await helper.factories.source();
-    await source.setOptions({ table: "test table" });
+    await source.setOptions({ table: "users" });
     await source.bootstrapUniqueProperty({
       key: "userId",
       type: "integer",
@@ -421,7 +421,7 @@ describe("actions/properties", () => {
         model2 = await helper.factories.model({ name: "admins" });
 
         source2 = await helper.factories.source(null, { modelId: model2.id });
-        await source2.setOptions({ table: "test table" });
+        await source2.setOptions({ table: "admins" });
         await source2.bootstrapUniqueProperty({
           key: "adminId",
           type: "integer",

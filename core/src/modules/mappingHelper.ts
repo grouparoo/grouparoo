@@ -68,7 +68,8 @@ export namespace MappingHelper {
 
   export async function setMapping(
     instance: (Source | Destination) & { afterSetMapping?: Function },
-    mappings: Mappings
+    mappings: Mappings,
+    externallyValidate = true
   ) {
     delete instance.mappings;
     await LockableHelper.beforeUpdateOptions(instance);
@@ -133,6 +134,9 @@ export namespace MappingHelper {
         );
       }
 
+      if (externallyValidate && instance instanceof Source)
+        await validateRemoteKey(instance, remoteKey);
+
       const mapping = await Mapping.create({
         ownerId: instance.id,
         ownerType: modelName<Source | Destination>(instance),
@@ -148,6 +152,23 @@ export namespace MappingHelper {
     // if there's an afterSetMapping hook and we want to commit our changes
     if (typeof instance["afterSetMapping"] === "function") {
       await instance["afterSetMapping"]();
+    }
+  }
+
+  async function validateRemoteKey(instance: Source, remoteKey: string) {
+    const previewAvailable = await instance.previewAvailable();
+    if (!previewAvailable) return;
+
+    const sourcePreview = await instance.sourcePreview();
+    if (sourcePreview.length > 0) {
+      const validKeys = Object.keys(sourcePreview[0]);
+      if (!validKeys.includes(remoteKey)) {
+        throw new Error(
+          `"${remoteKey}" is not a valid remote mapping key for ${modelName(
+            instance
+          )} ${instance.name}`
+        );
+      }
     }
   }
 }

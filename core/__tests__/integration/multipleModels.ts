@@ -36,7 +36,7 @@ describe("multiple models", () => {
   test("a source can use the new model", async () => {
     const app = await App.findOne();
     source = await helper.factories.source(app, { modelId: model.id });
-    await source.setOptions({ table: "admin-users" });
+    await source.setOptions({ table: "admins" });
     await source.bootstrapUniqueProperty({
       key: "adminUserId",
       type: "integer",

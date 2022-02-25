@@ -169,7 +169,12 @@ describe("actions/sources", () => {
           connection
         );
       expect(error).toBeUndefined();
-      expect(options).toEqual({ table: { options: ["users"], type: "list" } });
+      expect(options).toEqual({
+        tableWithOptions: {
+          options: ["users", "admins", "purchases", "products"],
+          type: "list",
+        },
+      });
     });
 
     test("a source with no options will see an empty preview", async () => {
@@ -192,7 +197,7 @@ describe("actions/sources", () => {
       connection.params = {
         csrfToken,
         id,
-        options: { table: "users" },
+        options: { table: "admins", tableWithOptions: "admins" },
       };
       const { error, preview, columnSpeculation } =
         await specHelper.runAction<SourcePreview>("source:preview", connection);
@@ -200,6 +205,7 @@ describe("actions/sources", () => {
       expect(preview).toEqual([
         { id: 1, fname: "mario", lname: "mario" },
         { id: 2, fname: "luigi", lname: "mario" },
+        { id: 3, fname: "peach", lname: "toadstool" },
       ]);
       expect(columnSpeculation).toEqual({
         id: { isUnique: true, type: "integer", suggestedPropertyKey: "id" },
@@ -216,11 +222,28 @@ describe("actions/sources", () => {
       });
     });
 
+    test("a source can have options set", async () => {
+      connection.params = {
+        csrfToken,
+        id,
+        options: { table: "admins", tableWithOptions: "admins" },
+      };
+      const { error, source } = await specHelper.runAction<SourceEdit>(
+        "source:edit",
+        connection
+      );
+      expect(error).toBeUndefined();
+      expect(source.options).toEqual({
+        table: "admins",
+        tableWithOptions: "admins",
+      });
+      expect(configSpy).toBeCalledTimes(1);
+    });
+
     test("a source can provide default property options", async () => {
       connection.params = {
         csrfToken,
         id,
-        options: { table: "users" },
       };
       const { error, defaultPropertyOptions } =
         await specHelper.runAction<SourceDefaultPropertyOptions>(
@@ -234,9 +257,12 @@ describe("actions/sources", () => {
           displayName: undefined,
           key: "column",
           options: [
-            { examples: [1, 2, 3], key: "id" },
-            { examples: ["mario", "luigi", "peach"], key: "fname" },
-            { examples: ["mario", "mario", "toadstool"], key: "lname" },
+            { key: "id", examples: [1, 2, 3] },
+            { key: "fname", examples: ["mario", "luigi", "peach"] },
+            {
+              key: "lname",
+              examples: ["mario", "mario", "toadstool"],
+            },
           ],
           required: true,
           type: "list",
@@ -254,22 +280,16 @@ describe("actions/sources", () => {
           required: false,
           type: "list",
         },
+        {
+          description: "some text you want to set just because",
+          displayName: undefined,
+          key: "arbitraryText",
+          options: [],
+          primary: undefined,
+          required: false,
+          type: "text",
+        },
       ]);
-    });
-
-    test("a source can have options set", async () => {
-      connection.params = {
-        csrfToken,
-        id,
-        options: { table: "users" },
-      };
-      const { error, source } = await specHelper.runAction<SourceEdit>(
-        "source:edit",
-        connection
-      );
-      expect(error).toBeUndefined();
-      expect(source.options).toEqual({ table: "users" });
-      expect(configSpy).toBeCalledTimes(1);
     });
 
     test("a source with options set will return a preview", async () => {
@@ -285,6 +305,7 @@ describe("actions/sources", () => {
       expect(preview).toEqual([
         { id: 1, fname: "mario", lname: "mario" },
         { id: 2, fname: "luigi", lname: "mario" },
+        { id: 3, fname: "peach", lname: "toadstool" },
       ]);
     });
 
@@ -318,12 +339,18 @@ describe("actions/sources", () => {
     });
 
     describe("a source with column(s) that conflict with an existing property", () => {
-      let otherProperty: Property;
       let source: Source;
+      let otherSource: Source;
+      let otherProperty: Property;
+
       beforeAll(async () => {
         source = await Source.findOne();
+        otherSource = await helper.factories.source();
+        await otherSource.setOptions({ table: "users" });
+        await otherSource.setMapping({ id: "userId" });
+        await otherSource.update({ state: "ready" });
         otherProperty = await helper.factories.property(
-          source,
+          otherSource,
           {
             key: "Fname",
           },
@@ -332,14 +359,15 @@ describe("actions/sources", () => {
       });
 
       afterAll(async () => {
-        otherProperty.destroy();
+        await otherProperty.destroy();
+        await otherSource.destroy();
       });
 
       test("can provide suggested property keys", async () => {
         connection.params = {
           csrfToken,
           id,
-          options: { table: "users" },
+          options: { table: "admins", tableWithOptions: "admins" },
         };
         const { error, preview, columnSpeculation } =
           await specHelper.runAction<SourcePreview>(
@@ -350,6 +378,7 @@ describe("actions/sources", () => {
         expect(preview).toEqual([
           { id: 1, fname: "mario", lname: "mario" },
           { id: 2, fname: "luigi", lname: "mario" },
+          { id: 3, fname: "peach", lname: "toadstool" },
         ]);
         expect(columnSpeculation).toEqual({
           id: { isUnique: true, type: "integer", suggestedPropertyKey: "id" },

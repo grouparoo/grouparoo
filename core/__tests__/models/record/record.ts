@@ -67,7 +67,7 @@ describe("models/record", () => {
       await GrouparooRecord.truncate();
 
       source = await helper.factories.source();
-      await source.setOptions({ table: "test table" });
+      await source.setOptions({ table: "users" });
       await source.bootstrapUniqueProperty({
         key: "userId",
         type: "integer",
@@ -264,7 +264,7 @@ describe("models/record", () => {
 
       beforeAll(async () => {
         source = await helper.factories.source();
-        await source.setOptions({ table: "test table" });
+        await source.setOptions({ table: "users" });
         await source.bootstrapUniqueProperty({
           key: "userId",
           type: "integer",
@@ -801,7 +801,7 @@ describe("models/record", () => {
         type: "test-plugin-import",
         modelId: model.id,
       });
-      await source.setOptions({ table: "test table" });
+      await source.setOptions({ table: "users" });
       await source.bootstrapUniqueProperty({
         key: "userId",
         type: "integer",
@@ -893,6 +893,7 @@ describe("models/record", () => {
             direction: "import" as "import",
             options: [{ key: "table", required: true }],
             methods: {
+              propertyOptions: async () => [],
               recordProperty: async ({
                 property,
                 sourceOptions,

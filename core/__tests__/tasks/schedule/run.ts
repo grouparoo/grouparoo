@@ -142,7 +142,7 @@ describe("tasks/schedule:run", () => {
         name: "test plugin schedule",
         sourceId: source.id,
       });
-      await schedule.setOptions({ maxColumn: "col" });
+      await schedule.setOptions({ maxColumn: "updated_at" });
       await schedule.update({ state: "ready" });
 
       const run = await Run.create({

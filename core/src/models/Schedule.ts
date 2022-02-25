@@ -151,8 +151,8 @@ export class Schedule extends CommonModel<Schedule> {
     return OptionHelper.getOptions(this, sourceFromEnvironment);
   }
 
-  async setOptions(options: SimpleScheduleOptions) {
-    return OptionHelper.setOptions(this, options);
+  async setOptions(options: SimpleScheduleOptions, externallyValidate = true) {
+    return OptionHelper.setOptions(this, options, externallyValidate);
   }
 
   async afterSetOptions(hasChanges: boolean) {
@@ -163,9 +163,20 @@ export class Schedule extends CommonModel<Schedule> {
     await this.enqueueRun();
   }
 
-  async validateOptions(options?: SimpleScheduleOptions) {
+  async validateOptions(
+    options?: SimpleScheduleOptions,
+    externallyValidate = true
+  ) {
     if (!options) options = await this.getOptions(true);
-    return OptionHelper.validateOptions(this, options);
+    if (!externallyValidate) return;
+
+    const pluginOptions = await this.pluginOptions();
+    const optionsSpec: OptionHelper.OptionsSpec = pluginOptions.map((opt) => ({
+      ...opt,
+      options: opt.options?.map((o) => o.key),
+    }));
+
+    await OptionHelper.validateOptions(this, options, optionsSpec);
   }
 
   async getPlugin() {

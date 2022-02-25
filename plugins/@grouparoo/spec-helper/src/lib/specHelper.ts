@@ -46,6 +46,8 @@ import ExportProcessorFactory from "./factories/exportProcessor";
 import RunFactory from "./factories/run";
 import ApiKeyFactory from "./factories/apiKey";
 
+import { TestPluginData } from "./testPluginData";
+
 // types
 import {
   SourceOptionsMethodResponse,
@@ -350,6 +352,10 @@ export namespace helper {
               required: true,
             },
             {
+              key: "environment",
+              required: false,
+            },
+            {
               key: "password",
               required: false,
             },
@@ -373,7 +379,10 @@ export namespace helper {
             },
             appOptions: async () => {
               return {
-                fileId: { type: "list", options: ["a", "b"] },
+                environment: {
+                  type: "list",
+                  options: ["staging", "production"],
+                },
                 password: { type: "password" },
               };
             },
@@ -395,13 +404,17 @@ export namespace helper {
           apps: ["test-plugin-app"],
           options: [
             { key: "table", required: true },
+            { key: "tableWithOptions", required: false },
             { key: "where", required: false },
           ],
           groupAggregations: [AggregationMethod.Exact],
           methods: {
             sourceOptions: async ({ sourceOptions }) => {
               const response: SourceOptionsMethodResponse = {
-                table: { type: "list", options: ["users"] },
+                tableWithOptions: {
+                  type: "list",
+                  options: Object.keys(TestPluginData),
+                },
               };
               if (sourceOptions.options)
                 response["receivedOptions"] = {
@@ -410,11 +423,8 @@ export namespace helper {
                 };
               return response;
             },
-            sourcePreview: async () => {
-              return [
-                { id: 1, fname: "mario", lname: "mario" },
-                { id: 2, fname: "luigi", lname: "mario" },
-              ];
+            sourcePreview: async ({ sourceOptions }) => {
+              return TestPluginData[sourceOptions.tableWithOptions] ?? [];
             },
             propertyOptions: async () => [
               {
@@ -422,12 +432,16 @@ export namespace helper {
                 required: true,
                 description: "the column to choose",
                 type: "list",
-                options: async () => {
-                  return [
-                    { key: "id", examples: [1, 2, 3] },
-                    { key: "fname", examples: ["mario", "luigi", "peach"] },
-                    { key: "lname", examples: ["mario", "mario", "toadstool"] },
-                  ];
+                options: async ({ sourceOptions }) => {
+                  const rows = TestPluginData[sourceOptions.tableWithOptions];
+                  if (rows) {
+                    const keys = Object.keys(rows[0]);
+                    return keys.map((k) => ({
+                      key: k,
+                      examples: rows.map((r) => r[k]),
+                    }));
+                  }
+                  return [];
                 },
               },
               {
@@ -443,6 +457,13 @@ export namespace helper {
                     { key: AggregationMethod.Max },
                   ];
                 },
+              },
+              {
+                key: "arbitraryText",
+                required: false,
+                description: "some text you want to set just because",
+                type: "text",
+                options: async () => [],
               },
             ],
             scheduleOptions: async () => [
@@ -461,7 +482,7 @@ export namespace helper {
             ],
             uniquePropertyBootstrapOptions: async () => {
               return {
-                column: "__default_column",
+                column: "id",
               };
             },
             sourceFilters: async () => {
@@ -507,6 +528,7 @@ export namespace helper {
           syncModes: ["sync", "enrich", "additive"],
           options: [
             { key: "table", required: true },
+            { key: "tableWithOptions", required: false },
             { key: "where", required: false },
             { key: "_failRemoteValidation", required: false },
           ],
@@ -516,7 +538,10 @@ export namespace helper {
             },
             destinationOptions: async ({ destinationOptions }) => {
               const response: DestinationOptionsMethodResponse = {
-                table: { type: "list", options: ["users_out"] },
+                tableWithOptions: {
+                  type: "list",
+                  options: ["users_out", "users", "groups"],
+                },
               };
               if (destinationOptions.options)
                 response["receivedOptions"] = {
@@ -564,6 +589,7 @@ export namespace helper {
           defaultSyncMode: "additive",
           options: [
             { key: "table", required: true },
+            { key: "tableWithOptions", required: false },
             { key: "where", required: false },
           ],
           methods: {
@@ -572,7 +598,7 @@ export namespace helper {
             },
             destinationOptions: async ({ destinationOptions }) => {
               const response: DestinationOptionsMethodResponse = {
-                table: { type: "list", options: ["users_out"] },
+                tableWithOptions: { type: "list", options: ["users_out"] },
               };
               if (destinationOptions.options)
                 response["receivedOptions"] = {

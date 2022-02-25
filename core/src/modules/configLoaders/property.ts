@@ -49,7 +49,11 @@ export async function loadProperty(
     });
   }
 
-  await property.setOptions(extractNonNullParts(configObject, "options"), null);
+  await property.setOptions(
+    extractNonNullParts(configObject, "options"),
+    null,
+    externallyValidate
+  );
 
   await property.update({
     type: configObject.type,

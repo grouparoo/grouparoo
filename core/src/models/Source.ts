@@ -145,17 +145,36 @@ export class Source extends CommonModel<Source> {
     return OptionHelper.getOptions(this, sourceFromEnvironment);
   }
 
-  async setOptions(options: SimpleSourceOptions) {
-    return OptionHelper.setOptions(this, options);
+  async setOptions(options: SimpleSourceOptions, externallyValidate = true) {
+    return OptionHelper.setOptions(this, options, externallyValidate);
   }
 
   async afterSetOptions(hasChanges: boolean) {
     if (hasChanges) await Source.invalidateCache();
   }
 
-  async validateOptions(options?: SimpleSourceOptions) {
+  async validateOptions(
+    options?: SimpleSourceOptions,
+    externallyValidate = true
+  ) {
     if (!options) options = await this.getOptions(true);
-    return OptionHelper.validateOptions(this, options);
+    const { pluginConnection } = await this.getPlugin();
+    if (!pluginConnection) {
+      throw new Error(`cannot find a pluginConnection for type ${this.type}`);
+    }
+
+    const connectionOptions = externallyValidate
+      ? await this.sourceConnectionOptions(options)
+      : {};
+
+    const optionsSpec: OptionHelper.OptionsSpec = pluginConnection.options.map(
+      (opt) => ({
+        ...opt,
+        options: connectionOptions[opt.key]?.options ?? [],
+      })
+    );
+
+    return OptionHelper.validateOptions(this, options, optionsSpec);
   }
 
   async getPlugin() {
@@ -181,8 +200,8 @@ export class Source extends CommonModel<Source> {
     return MappingHelper.getMapping(this);
   }
 
-  async setMapping(mappings: SourceMapping) {
-    return MappingHelper.setMapping(this, mappings);
+  async setMapping(mappings: SourceMapping, externallyValidate = true) {
+    return MappingHelper.setMapping(this, mappings, externallyValidate);
   }
 
   async afterSetMapping() {

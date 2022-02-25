@@ -162,6 +162,7 @@ describe("tasks/export:send", () => {
               direction: "export",
               options: [],
               methods: {
+                destinationOptions: async () => ({}),
                 destinationMappingOptions: async () => {
                   return {
                     labels: {

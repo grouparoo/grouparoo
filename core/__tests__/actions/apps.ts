@@ -90,12 +90,13 @@ describe("actions/apps", () => {
       expect(error).toBeUndefined();
       expect(pluginOptions).toEqual([
         { key: "fileId", required: true },
+        { key: "environment", required: false },
         { key: "password", required: false },
         { key: "oAuthToken", type: "oauth-token", required: false },
         { key: "_failRemoteValidation", required: false },
       ]);
       expect(options).toEqual({
-        fileId: { options: ["a", "b"], type: "list" },
+        environment: { options: ["staging", "production"], type: "list" },
         password: { type: "password" },
         oAuthToken: { type: "oauth-token" },
       });

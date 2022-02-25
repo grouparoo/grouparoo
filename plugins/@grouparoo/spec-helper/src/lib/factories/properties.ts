@@ -24,13 +24,13 @@ export default async (
     )) ?? ((await ModelFactory({ id: modelId })) as GrouparooModel);
   const source = await SourceFactory(null, { modelId: model.id });
 
-  await source.setOptions({ table: "__test_table" });
+  await source.setOptions({ table: "users" });
   await source.bootstrapUniqueProperty({
     key: "userId",
     type: "integer",
     mappedColumn: "id",
   });
-  await source.setMapping({ userId: "userId" });
+  await source.setMapping({ id: "userId" });
   await source.update({ state: "ready" });
 
   const properties: Property[] = [];

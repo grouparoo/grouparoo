@@ -171,7 +171,10 @@ describe("actions/destinations", () => {
         );
       expect(error).toBeFalsy();
       expect(options).toEqual({
-        table: { type: "list", options: ["users_out"] },
+        tableWithOptions: {
+          type: "list",
+          options: ["users_out", "users", "groups"],
+        },
       });
     });
 

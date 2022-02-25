@@ -74,7 +74,7 @@ describe("models/sourcesCache", () => {
     test("calling setOptions signals RPC", async () => {
       await makeSource();
       SourcesCache.expires = Date.now();
-      await source.setOptions({ table: "foo" });
+      await source.setOptions({ table: "users" });
       expect(SourcesCache.expires).toBe(0);
     });
 

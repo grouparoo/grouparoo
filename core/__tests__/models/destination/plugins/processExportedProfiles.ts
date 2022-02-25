@@ -101,6 +101,7 @@ describe("models/destination - with custom processExportedRecords", () => {
           syncModes: ["sync", "enrich", "additive"],
           options: [],
           methods: {
+            destinationOptions: async () => ({}),
             destinationMappingOptions: async () => {
               return {
                 labels: {

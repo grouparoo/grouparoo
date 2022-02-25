@@ -375,6 +375,9 @@ describe("models/property", () => {
             recordProperty: async () => {
               return [];
             },
+            propertyOptions: async () => {
+              return [];
+            },
           },
         },
       ],
@@ -467,22 +470,34 @@ describe("models/property", () => {
     );
 
     await expect(
-      property.setOptions({ column: "userId", otherThing: "false" })
+      property.setOptions({ column: "id", otherThing: "false" })
     ).rejects.toThrow(
       /otherThing is not an option for a test-plugin-import property/
+    );
+
+    const source = await property.$get("source");
+    await source.setOptions({ table: "users", tableWithOptions: "users" });
+    await expect(
+      property.setOptions({ column: "some_nonexistent_col" })
+    ).rejects.toThrow(
+      /"some_nonexistent_col" is not a valid value for test-plugin-import property option "column"/
     );
   });
 
   test("options will have mustache keys converted to mustache ids", async () => {
     const property = await Property.findOne({ where: { key: "email" } });
     await property.setOptions({
-      column: "{{{ email }}}@example.com",
+      column: "email",
+      arbitraryText: "{{{ email }}}@example.com",
     });
     let options = await property.getOptions();
-    expect(options).toEqual({ column: "{{{ email }}}@example.com" }); //appears normal (but formatted) to the user
+    expect(options).toEqual({
+      column: "email",
+      arbitraryText: "{{{ email }}}@example.com",
+    }); //appears normal (but formatted) to the user
 
     const rawOption = await Option.findOne({
-      where: { ownerId: property.id },
+      where: { key: "arbitraryText", ownerId: property.id },
     });
     expect(rawOption.value).toBe(`{{{ ${property.id} }}}@example.com`);
   });
@@ -763,12 +778,24 @@ describe("models/property", () => {
                   description: "the column to choose",
                   type: "list" as PluginOptionType,
                   options: async () => {
-                    return [
+                    const opts = [
                       {
                         key: "id",
                         examples: [1, 2, 3],
                       },
                     ];
+
+                    if (
+                      propertyOptions?.column &&
+                      propertyOptions?.column !== "id"
+                    ) {
+                      opts.push({
+                        key: propertyOptions.column.toString(),
+                        examples: [1, 2, 3],
+                      });
+                    }
+
+                    return opts;
                   },
                 });
 
