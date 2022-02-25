@@ -24,7 +24,6 @@ import { useApi } from "../../contexts/api";
 import Cookies from "universal-cookie";
 import { isBrowser } from "../../utils/isBrowser";
 import { useGrouparooModel } from "../../contexts/grouparooModel";
-import { DestinationExport } from "@grouparoo/core/src/actions/destinations";
 import { useRouter } from "next/router";
 
 export type RecordType =
@@ -354,10 +353,10 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
 
   const exportRecord = useCallback(async () => {
     setExporting(true);
-    const response = await client.requestAction<DestinationExport>(
+    const response = await client.request<Actions.DestinationExport>(
       "post",
       `/destination/${destinationId}/export`,
-      { recordId: record.id, id: destinationId.toString() }
+      { recordId: record.id }
     );
     if (response?.success) {
       successHandler.set({ message: "Export Complete!" });
@@ -605,9 +604,8 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
         <AddSampleRecordModal
           properties={properties}
           show={addingRecord}
-          onRecordCreated={(record, destinations, groups) => {
+          onRecordCreated={(record) => {
             setRecordId(record?.id);
-            // saveRecord(record, destinations, groups);
           }}
           onHide={() => {
             setAddingRecord(false);

@@ -425,6 +425,9 @@ export namespace Actions {
   export type DestinationMappingOptions = AsyncReturnType<
     typeof DestinationMappingOptions.prototype.runWithinTransaction
   >;
+  export type DestinationRecordPreview = AsyncReturnType<
+    typeof DestinationRecordPreview.prototype.runWithinTransaction
+  >;
   export type DestinationView = AsyncReturnType<
     typeof DestinationView.prototype.runWithinTransaction
   >;

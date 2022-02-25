@@ -268,7 +268,7 @@ export class RecordView extends AuthenticatedAction {
   outputExample = {};
   permission: ActionPermission = { topic: "record", mode: "read" };
   inputs = {
-    id: { required: true, inPath: true },
+    id: { required: true },
   } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<RecordView> }) {

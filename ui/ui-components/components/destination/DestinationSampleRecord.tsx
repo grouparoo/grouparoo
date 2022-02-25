@@ -2,11 +2,10 @@ import { useCallback, useMemo, useState } from "react";
 import SampleRecordCard, {
   SampleRecordCardProps,
 } from "../record/SampleRecordCard";
-import { Models } from "../../utils/apiData";
+import { Actions, Models } from "../../utils/apiData";
 import { useDebouncedValue } from "../../hooks/useDebouncedValue";
 import { useApi } from "../../contexts/api";
 import { useGrouparooModel } from "../../contexts/grouparooModel";
-import { DestinationRecordPreview } from "@grouparoo/core/src/actions/destinations";
 
 interface Props {
   destination: Models.DestinationType;
@@ -60,11 +59,10 @@ const DestinationSampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
           return acc;
         }, {} as Record<string, string>);
 
-      const response = await client.requestAction<DestinationRecordPreview>(
+      const response = await client.request<Actions.DestinationRecordPreview>(
         "get",
         `/destination/${debouncedDestination.id}/recordPreview`,
         {
-          id: debouncedDestination.id, // TODO: Remove this when path params are correctly inferred
           groupId,
           modelId,
           collection,
