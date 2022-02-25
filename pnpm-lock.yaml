@@ -1899,6 +1899,7 @@ importers:
       '@grouparoo/spec-helper': 0.8.2-alpha.0
       '@grouparoo/ui-components': 0.8.2-alpha.0
       '@types/jest': '*'
+      '@playwright/test': 1.19.0
       '@types/react': '*'
       '@types/react-dom': '*'
       actionhero: 28.1.8
@@ -1906,16 +1907,14 @@ importers:
       enzyme: 3.11.0
       eslint: 8.8.0
       eslint-config-next: 12.0.10
-      jest: 27.5.1
-      jest-environment-webdriver: grouparoo/jest-webdriver#jest-v27-webdriver
       next: 12.0.10
+      playwright: 1.19.0
       prettier: 2.5.1
       prop-types: 15.8.1
       react: 17.0.2
       react-bootstrap: 1.6.4
       react-dom: 17.0.2
       react-hook-form: 7.22.5
-      ts-jest: 27.1.3
       typescript: 4.5.5
     dependencies:
       dotenv: 15.0.0
@@ -1928,18 +1927,16 @@ importers:
       '@grouparoo/core': link:../../core
       '@grouparoo/spec-helper': link:../../plugins/@grouparoo/spec-helper
       '@grouparoo/ui-components': link:../ui-components
-      '@types/jest': 27.4.0
+      '@playwright/test': 1.19.0
       '@types/react': 17.0.39
       '@types/react-dom': 17.0.11
       actionhero: 28.1.8
       enzyme: 3.11.0
       eslint: 8.8.0
       eslint-config-next: 12.0.10_9534215cc73b6f260bf33f1b86e3ae0e
-      jest: 27.5.1
-      jest-environment-webdriver: github.com/grouparoo/jest-webdriver/3fa07db08cc6901e740d1e927a20db55f9406398_jest@27.5.1
+      playwright: 1.19.0
       prettier: 2.5.1
       prop-types: 15.8.1
-      ts-jest: 27.1.3_1e2406a8ca2ae3dc934d01f9ee2aebbb
       typescript: 4.5.5
 
   ui/ui-components:
@@ -2087,6 +2084,7 @@ importers:
       '@grouparoo/ui-components': 0.8.2-alpha.0
       '@playwright/test': 1.19.0      
       '@types/jest': '*'
+      '@playwright/test': 1.19.0
       '@types/react': '*'
       '@types/react-dom': '*'
       actionhero: 28.1.8
@@ -2094,8 +2092,6 @@ importers:
       enzyme: 3.11.0
       eslint: 8.8.0
       eslint-config-next: 12.0.10
-      jest: 27.5.1
-      jest-environment-webdriver: grouparoo/jest-webdriver#jest-v27-webdriver
       next: 12.0.10
       playwright: 1.19.0
       prettier: 2.5.1
@@ -2104,7 +2100,6 @@ importers:
       react-bootstrap: 1.6.4
       react-dom: 17.0.2
       react-hook-form: 7.22.5
-      ts-jest: 27.1.3
       typescript: 4.5.5
     dependencies:
       dotenv: 15.0.0
@@ -2118,19 +2113,15 @@ importers:
       '@grouparoo/spec-helper': link:../../plugins/@grouparoo/spec-helper
       '@grouparoo/ui-components': link:../ui-components
       '@playwright/test': 1.19.0
-      '@types/jest': 27.4.0
       '@types/react': 17.0.39
       '@types/react-dom': 17.0.11
       actionhero: 28.1.8
       enzyme: 3.11.0
       eslint: 8.8.0
       eslint-config-next: 12.0.10_9534215cc73b6f260bf33f1b86e3ae0e
-      jest: 27.5.1
-      jest-environment-webdriver: github.com/grouparoo/jest-webdriver/3fa07db08cc6901e740d1e927a20db55f9406398_jest@27.5.1
       playwright: 1.19.0
       prettier: 2.5.1
       prop-types: 15.8.1
-      ts-jest: 27.1.3_1e2406a8ca2ae3dc934d01f9ee2aebbb
       typescript: 4.5.5
 
 packages:
@@ -15546,7 +15537,7 @@ packages:
       '@types/jest': 27.4.0
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
-      jest: 27.5.1
+      jest: 27.5.1_ts-node@10.4.0
       jest-util: 27.5.1
       json5: 2.2.0
       lodash.memoize: 4.1.2
