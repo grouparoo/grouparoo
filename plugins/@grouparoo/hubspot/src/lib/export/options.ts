@@ -33,11 +33,13 @@ class OptionsHandler {
     return out;
   }
 
-  public async getContactDestinationOptions(): Promise<DestinationOptionsMethodResponse> {
+  public async getContactDestinationOptions({
+    destinationOptions,
+  }): Promise<DestinationOptionsMethodResponse> {
     const { appOptions } = this.cacheData;
     this.client = await connect(appOptions);
     const out: DestinationOptionsMethodResponse = {};
-    Object.assign(out, await this.getContactOptions());
+    Object.assign(out, await this.getContactOptions(destinationOptions));
     return out;
   }
 
@@ -65,7 +67,9 @@ class OptionsHandler {
     );
   }
 
-  private async getContactOptions() {
+  private async getContactOptions(
+    destinationOptions: SimpleDestinationOptions
+  ) {
     const searchableAndUniqueProperties = [
       "website",
       "phone",
@@ -74,25 +78,19 @@ class OptionsHandler {
       "hs_object_id",
     ];
     const out: DestinationOptionsMethodResponse = {
-      companyKey: { type: "list", options: [], descriptions: [] },
+      companyKey: {
+        type: "typeahead",
+        options: searchableAndUniqueProperties,
+        descriptions: [],
+      },
     };
-    const companySchema = await this.getSchema("COMPANY");
-    const companyProperties = companySchema?.properties;
-    const objectsToSort = [];
-    companyProperties.map((object) => {
-      if (searchableAndUniqueProperties.includes(object.name)) {
-        objectsToSort.push({
-          option: object.name,
-          description: object.description,
-        });
-      }
-    });
-    objectsToSort
-      .sort((a, b) => a.option.localeCompare(b.description))
-      .map((object) => {
-        out.companyKey.options.push(object.option);
-        out.companyKey.descriptions.push(object.description);
-      });
+    if (
+      !searchableAndUniqueProperties.includes(
+        destinationOptions?.companyKey?.toString()
+      )
+    ) {
+      destinationOptions.companyKey = null;
+    }
     return out;
   }
 
