@@ -468,7 +468,10 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
                                       name={opt.key}
                                       disabled={loading}
                                       defaultChecked={
-                                        property.options[opt.key] === col.key
+                                        property.options[opt.key]
+                                          ? property.options[opt.key] ===
+                                            col.key
+                                          : col.default
                                       }
                                       onClick={() =>
                                         updateOption(opt.key, col.key)
