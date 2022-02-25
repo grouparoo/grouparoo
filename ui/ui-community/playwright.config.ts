@@ -27,7 +27,7 @@ const config: PlaywrightTestConfig = {
           {
             open: "on-failure",
             outputFolder: process.env.CI
-              ? "../../ui/ui-enterprise/__tests__/playwright-report/"
+              ? "../../ui/ui-community/__tests__/playwright-report/"
               : "./__tests__/playwright-report",
           },
         ],

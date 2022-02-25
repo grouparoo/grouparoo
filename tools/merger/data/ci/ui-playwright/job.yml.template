@@ -41,5 +41,5 @@
 {{{custom_steps}}}
       - run:
           name: test
-          command: cd {{{relative_path}}}/{{{test_section}}} && ./node_modules/.bin/playwright test --workers 2
+          command: cd {{{relative_path}}}/{{{test_section}}} && ./node_modules/.bin/playwright install && ./node_modules/.bin/playwright test --workers 2
 {{{custom_test}}}
