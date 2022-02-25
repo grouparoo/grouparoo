@@ -107,31 +107,42 @@ describe("tasks/recordProperties:enqueue", () => {
       await toad.markPending();
       await peach.markPending();
 
-      // shuffle the order of things so all the updated properties will be found in the first group
       const recordProperties = await RecordProperty.findAll({
         where: {
           propertyId: email.id,
           recordId: [mario, luigi, toad, peach].map((r) => r.id),
         },
       });
-
       await helper.changeTimestamps(recordProperties, false, true);
+
       await specHelper.runTask("recordProperties:enqueue", {});
       const importRecordPropertiesTasks = await specHelper.findEnqueuedTasks(
         "recordProperty:importRecordProperties"
       );
 
+      let seenRecordIds: string[] = [];
+
       expect(importRecordPropertiesTasks[0].args[0].propertyIds.sort()).toEqual(
         [userId.id, email.id].sort()
       );
-      expect(importRecordPropertiesTasks[0].args[0].recordIds.sort()).toEqual(
-        [mario.id, luigi.id].sort()
+      expect(importRecordPropertiesTasks[0].args[0].recordIds.length).toEqual(
+        2
+      );
+      seenRecordIds = seenRecordIds.concat(
+        importRecordPropertiesTasks[0].args[0].recordIds
       );
       expect(importRecordPropertiesTasks[1].args[0].propertyIds.sort()).toEqual(
         [userId.id, email.id].sort()
       );
-      expect(importRecordPropertiesTasks[1].args[0].recordIds.sort()).toEqual(
-        [toad.id, peach.id].sort()
+      expect(importRecordPropertiesTasks[1].args[0].recordIds.length).toEqual(
+        2
+      );
+      seenRecordIds = seenRecordIds.concat(
+        importRecordPropertiesTasks[1].args[0].recordIds
+      );
+
+      expect(seenRecordIds.sort()).toEqual(
+        [mario, luigi, toad, peach].map((r) => r.id).sort()
       );
     });
   });
