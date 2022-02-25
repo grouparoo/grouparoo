@@ -39,8 +39,8 @@
           command: cd core && ./bin/create_test_databases
       - run:
           name: install playwright dependencies
-          command: cd {{{relative_path}}}/{{{test_section}}} && ./node_modules/.bin/playwright install && ./node_modules/.bin/playwright install-deps
-{{{custom_steps}}} && sudo apt-get install libicu66 libvpx6 ttf-ubuntu-font-family libjpeg-turbo8
+          command: cd {{{relative_path}}}/{{{test_section}}} && ./node_modules/.bin/playwright install && ./node_modules/.bin/playwright install-deps && sudo apt-get install libicu66 libvpx6 ttf-ubuntu-font-family libjpeg-turbo8
+{{{custom_steps}}} 
       - run:
           name: test
           command: cd {{{relative_path}}}/{{{test_section}}} && ./node_modules/.bin/playwright test --workers 2
