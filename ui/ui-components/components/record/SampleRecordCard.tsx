@@ -50,7 +50,7 @@ export interface SampleRecordCardProps {
   reloadKey?: string;
   warning?: string;
   groupId?: string;
-  record?: Models.GrouparooRecordType;
+  record?: RecordType;
   groups?: Models.GroupType[];
   destinations?: Models.DestinationType[];
 }
@@ -532,6 +532,16 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
                   </Fragment>
                 );
               })
+            : (record as Models.DestinationRecordPreviewType)?.groupNames
+                ?.length
+            ? (record as Models.DestinationRecordPreviewType).groupNames.map(
+                (groupName) => (
+                  <Fragment key={`group-name-${groupName}`}>
+                    {groupName}
+                    <br />
+                  </Fragment>
+                )
+              )
             : "None"}
         </p>
         {destinations && (
@@ -555,16 +565,6 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
                       </Fragment>
                     );
                   })
-                : (record as Models.DestinationRecordPreviewType)?.groupNames
-                    ?.length
-                ? (
-                    record as Models.DestinationRecordPreviewType
-                  ).groupNames.map((groupName) => (
-                    <Fragment key={`group-name-${groupName}`}>
-                      {groupName}
-                      <br />
-                    </Fragment>
-                  ))
                 : "None"}
             </p>
           </>
