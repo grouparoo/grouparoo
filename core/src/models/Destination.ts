@@ -56,6 +56,9 @@ export interface SimpleDestinationOptions extends OptionHelper.SimpleOptions {}
 const SYNC_MODES = ["sync", "additive", "enrich"] as const;
 export type DestinationSyncMode = typeof SYNC_MODES[number];
 
+const DELIVERY_MODES = ["continual", "once"];
+export type DestinationDeliveryMode = typeof DELIVERY_MODES[number];
+
 const DESTINATION_COLLECTIONS = ["none", "group", "model"] as const;
 export type DestinationCollection = typeof DESTINATION_COLLECTIONS[number];
 
@@ -168,6 +171,11 @@ export class Destination extends CommonModel<Destination> {
   syncMode: DestinationSyncMode;
 
   @AllowNull(false)
+  @Default("continual")
+  @Column(DataType.ENUM(...DELIVERY_MODES))
+  deliveryMode: DestinationDeliveryMode;
+
+  @AllowNull(false)
   @Default("none")
   @Column(DataType.ENUM(...DESTINATION_COLLECTIONS))
   collection: DestinationCollection;
@@ -232,6 +240,7 @@ export class Destination extends CommonModel<Destination> {
       locked: this.locked,
       syncMode,
       syncModes: syncModeData,
+      deliveryMode: this.deliveryMode,
       collection: this.collection,
       app: app ? await app.apiData() : null,
       modelId: this.modelId,
