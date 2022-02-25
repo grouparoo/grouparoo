@@ -14,6 +14,7 @@ import { ConfigWriter } from "../modules/configWriter";
 import { APIData } from "../modules/apiData";
 import { ActionPermission } from "../models/Permission";
 import { WhereAttributeHash } from "sequelize/types";
+import { DestinationOps } from "../modules/ops/destination";
 
 export class DestinationsList extends AuthenticatedAction {
   name = "destinations:list";
@@ -420,11 +421,20 @@ export class DestinationRecordPreview extends AuthenticatedAction {
       await destination.checkRecordWillBeExported(record);
     }
 
+    const recordPreview = await destination.recordPreview(
+      record,
+      mapping,
+      destinationGroupMemberships
+    );
+
+    const groups = await record.$get("groups");
+    const destinations = await DestinationOps.relevantFor(record, groups);
+
     return {
-      record: await destination.recordPreview(
-        record,
-        mapping,
-        destinationGroupMemberships
+      record: recordPreview,
+      groups: await Promise.all(groups.map((group) => group.apiData())),
+      destinations: await Promise.all(
+        destinations.map((destination) => destination.apiData(false, false))
       ),
     };
   }

@@ -605,7 +605,10 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
         <AddSampleRecordModal
           properties={properties}
           show={addingRecord}
-          onRecordCreated={saveRecord}
+          onRecordCreated={(record, destinations, groups) => {
+            setRecordId(record?.id);
+            // saveRecord(record, destinations, groups);
+          }}
           onHide={() => {
             setAddingRecord(false);
           }}

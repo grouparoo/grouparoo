@@ -5,7 +5,6 @@ import SampleRecordCard, {
 import { Models } from "../../utils/apiData";
 import { useDebouncedValue } from "../../hooks/useDebouncedValue";
 import { useApi } from "../../contexts/api";
-import { RecordView } from "@grouparoo/core/src/actions/records";
 import { useGrouparooModel } from "../../contexts/grouparooModel";
 import { DestinationRecordPreview } from "@grouparoo/core/src/actions/destinations";
 
