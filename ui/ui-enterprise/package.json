@@ -25,7 +25,7 @@
     "start": "next start --port $PORT",
     "dev": "next dev",
     "pretest": "npm run lint && npm run prepare",
-    "test": "jest",
+    "test": "playwright test",
     "lint": "prettier --check pages __tests__"
   },
   "dependencies": {
@@ -37,9 +37,16 @@
     "react-hook-form": "7.22.5"
   },
   "devDependencies": {
+<<<<<<< HEAD
     "@grouparoo/core": "0.8.2-alpha.0",
     "@grouparoo/spec-helper": "0.8.2-alpha.0",
     "@grouparoo/ui-components": "0.8.2-alpha.0",
+=======
+    "@grouparoo/core": "0.8.1-alpha.3",
+    "@grouparoo/spec-helper": "0.8.1-alpha.3",
+    "@grouparoo/ui-components": "0.8.1-alpha.3",
+    "@playwright/test": "1.19.0",
+>>>>>>> b6db2693b (remove jest, add playwright, initial happy path poc)
     "@types/jest": "*",
     "@types/react": "*",
     "@types/react-dom": "*",
@@ -49,6 +56,7 @@
     "eslint-config-next": "12.0.10",
     "jest": "27.5.1",
     "jest-environment-webdriver": "grouparoo/jest-webdriver#jest-v27-webdriver",
+    "playwright": "1.19.0",
     "prettier": "2.5.1",
     "prop-types": "15.8.1",
     "ts-jest": "27.1.3",
