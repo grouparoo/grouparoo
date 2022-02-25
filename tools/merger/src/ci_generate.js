@@ -5,7 +5,7 @@ const Mustache = require("mustache");
 const { allPackagePaths, allPluginPaths } = require("../../shared/packages");
 const execSync = require("../../shared/exec");
 
-const docker_image = "cimg/node:current";
+const docker_image = "cimg/node:16.14";
 
 module.exports.cmd = async function (vargs) {
   const instance = new Generator(vargs);
