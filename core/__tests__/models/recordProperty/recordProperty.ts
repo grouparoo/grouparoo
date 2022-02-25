@@ -211,6 +211,7 @@ describe("models/recordProperty", () => {
           "someone.com",
           "someone.com@",
           "someone@site",
+          "someone @site.com",
         ];
 
         for (const e of badEmails) {
@@ -228,7 +229,7 @@ describe("models/recordProperty", () => {
           propertyId: emailProperty.id,
         });
 
-        const weirdEmails = [
+        const weirdEmailsGood = [
           "email@example.com",
           "firstname.lastname@example.com",
           "email@subdomain.example.com",
@@ -243,17 +244,28 @@ describe("models/recordProperty", () => {
           "email@example.museum",
           "email@example.co.jp",
           "firstname-lastname@example.com",
-          "much.”more unusual”@example.com",
           "very.unusual.”@”.unusual.com@example.com",
+        ];
+
+        const weirdEmailsBad = [
+          "much.”more unusual”@example.com",
           'very.”(),:;<>[]”.VERY.”very@\\ "very”.unusual@strange.example.com',
         ];
 
-        for (const e of weirdEmails) {
+        for (const e of weirdEmailsGood) {
           await recordProperty.setValue(e);
           const response = await recordProperty.getValue();
           expect(response).toBe(e);
           expect(recordProperty.invalidValue).toBe(null);
           expect(recordProperty.invalidReason).toBe(null);
+        }
+
+        for (const e of weirdEmailsBad) {
+          await recordProperty.setValue(e);
+          const response = await recordProperty.getValue();
+          expect(response).toBe(null);
+          expect(recordProperty.invalidValue).toBe(e);
+          expect(recordProperty.invalidReason).toBe("Invalid email value");
         }
       });
 
