@@ -1,6 +1,7 @@
   {{{job_name}}}:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
+      NODE_ENV: development
     docker:
       - image: {{{docker_image}}}
         auth:
@@ -20,8 +21,6 @@
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
-    environment:
-      NODE_ENV: development
 {{{custom_docker}}}
     steps:
       - checkout
