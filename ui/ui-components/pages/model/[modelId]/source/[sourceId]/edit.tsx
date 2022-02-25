@@ -78,7 +78,8 @@ const FormFieldGenerator = ({
   updateOption,
   register,
 }: FormFieldProps) => {
-  if (connectionOptions[opt.key]?.type === "typeahead") {
+  const optionType = connectionOptions[opt.key]?.type ?? opt.type;
+  if (optionType === "typeahead") {
     return (
       <>
         <FormTypeahead<FormData>
@@ -97,7 +98,7 @@ const FormFieldGenerator = ({
         <Form.Text className="text-muted">{opt.description}</Form.Text>
       </>
     );
-  } else if (connectionOptions[opt.key]?.type === "list") {
+  } else if (optionType === "list") {
     return (
       <>
         <Form.Control
@@ -127,7 +128,7 @@ const FormFieldGenerator = ({
         <Form.Text className="text-muted">{opt.description}</Form.Text>
       </>
     );
-  } else if (connectionOptions[opt.key]?.type === "pending") {
+  } else if (optionType === "pending") {
     return (
       <>
         <Form.Control
@@ -136,6 +137,30 @@ const FormFieldGenerator = ({
           type="text"
           value="pending another selection"
         ></Form.Control>
+      </>
+    );
+  } else if (optionType === "textarea") {
+    return (
+      <>
+        <Form.Control
+          required={opt.required}
+          as="textarea"
+          disabled={loading || loadingOptions}
+          rows={5}
+          value={source.options[opt.key]?.toString()}
+          placeholder={opt.placeholder}
+          style={{
+            fontFamily:
+              'SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+            color: "#e83e8c",
+          }}
+          name={`source.options.${opt.key}`}
+          {...register(`source.options.${opt.key}`, {
+            onChange: (e) =>
+              updateOption(e.target.id.replace("_opt~", ""), e.target.value),
+          })}
+        />
+        <Form.Text className="text-muted">{opt.description}</Form.Text>
       </>
     );
   } else {
