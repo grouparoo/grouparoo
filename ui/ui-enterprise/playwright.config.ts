@@ -19,18 +19,23 @@ const config: PlaywrightTestConfig = {
     timeout: 5000,
   },
 
-  reporter: [
-    [
-      "html",
-      { open: "always", outputFolder: "./__tests__/playwright-report/" },
-    ],
-  ],
+  reporter: process.env.CI
+    ? "list"
+    : [
+        [
+          "html",
+          {
+            open: "on-failure",
+            outputFolder: "<rootDir>/__tests__/playwright-report/",
+          },
+        ],
+      ],
 
   /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env.CI,
+  // forbidOnly: !!process.env.CI,
 
   /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
+  retries: 0,
 
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
@@ -104,7 +109,7 @@ const config: PlaywrightTestConfig = {
   ],
 
   /* Folder for test artifacts such as screenshots, videos, traces, etc. */
-  outputDir: "./__tests__/test-artifacts/",
+  outputDir: "<rootDir>/__tests__/test-artifacts/",
 
   /* Run your local dev server before starting the tests */
   // webServer: {

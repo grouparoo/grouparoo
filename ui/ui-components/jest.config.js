@@ -7,7 +7,8 @@ module.exports = {
   },
   testPathIgnorePatterns: [
     "<rootDir>/.next/",
-    "<rootDir>/__tests__/__utils__",
     "<rootDir>/__tests__/__mocks__",
+    "<rootDir>/__tests__/__pageObjects__",
+    "<rootDir>/__tests__/__utils__",
   ],
 };
