@@ -40,5 +40,5 @@
 {{{custom_steps}}}
       - run:
           name: test
-          command: cd {{{relative_path}}}/{{{test_section}}} && ./node_modules/.bin/playwright install && sudo ./node_modules/.bin/playwright install-deps && ./node_modules/.bin/playwright test --workers 2
+          command: cd {{{relative_path}}}/{{{test_section}}} && ./node_modules/.bin/playwright install && sudo ./node_modules/.bin/playwright install-deps && sudo apt-get install -y libgtk-3.so.0 libgdk-3.so.0 libX11-xcb.so.1 libXcomposite.so.1 libXcursor.so.1 libXdamage.so.1 libXfixes.so.3 libXi.so.6 libXrender.so.1 libdbus-glib-1.so.2 libpangocairo-1.0.so.0 libpango-1.0.so.0 libatk-1.0.so.0 libcairo-gobject.so.2 libcairo.so.2 libgdk_pixbuf-2.0.so.0 libxcb-shm.so.0 libpangoft2-1.0.so.0 libXt.so.6 && ./node_modules/.bin/playwright test --workers 2
 {{{custom_test}}}
