@@ -83,7 +83,7 @@ const DestinationSampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
         (!response.record || !response.record.groupIds.includes(groupId))
       ) {
         warning = `
-          This Grouparoo Record will not be sent to the Destination because it's not in the selected Group.
+          This Grouparoo Record will not be sent to the Destination because it‘s not in the selected Group.
           You can switch to a random Record to get one that will export.
         `;
       }
