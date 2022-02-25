@@ -1070,10 +1070,6 @@ jobs:
           password: $DOCKERHUB_PASSWORD
         environment:
           POSTGRES_PASSWORD: password
-      - image: mcr.microsoft.com/playwright:v1.19.0-focal
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - restore_cache:
@@ -1110,7 +1106,7 @@ jobs:
           command: cd core && ./bin/create_test_databases
       - run:
           name: install playwright dependencies
-          command: cd ui/ui-enterprise && ./node_modules/.bin/playwright install && ./node_modules/.bin/playwright install-deps && sudo apt-get install libicu66 libvpx6 ttf-ubuntu-font-family libjpeg-turbo8
+          command: cd ui/ui-enterprise && ./node_modules/.bin/playwright install && ./node_modules/.bin/playwright install-deps
       - run:
           name: test
           command: cd ui/ui-enterprise && ./node_modules/.bin/playwright test --workers 2

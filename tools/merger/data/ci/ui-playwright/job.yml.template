@@ -17,10 +17,6 @@
           password: $DOCKERHUB_PASSWORD
         environment:
           POSTGRES_PASSWORD: password
-      - image: mcr.microsoft.com/playwright:v1.19.0-focal
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
 {{{custom_docker}}}
     steps:
       - checkout
@@ -39,7 +35,7 @@
           command: cd core && ./bin/create_test_databases
       - run:
           name: install playwright dependencies
-          command: cd {{{relative_path}}}/{{{test_section}}} && ./node_modules/.bin/playwright install && ./node_modules/.bin/playwright install-deps && sudo apt-get install libicu66 libvpx6 ttf-ubuntu-font-family libjpeg-turbo8
+          command: cd {{{relative_path}}}/{{{test_section}}} && ./node_modules/.bin/playwright install && ./node_modules/.bin/playwright install-deps
 {{{custom_steps}}} 
       - run:
           name: test
