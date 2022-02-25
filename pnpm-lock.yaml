@@ -1898,8 +1898,8 @@ importers:
       '@grouparoo/core': 0.8.2-alpha.0
       '@grouparoo/spec-helper': 0.8.2-alpha.0
       '@grouparoo/ui-components': 0.8.2-alpha.0
-      '@types/jest': '*'
       '@playwright/test': 1.19.0
+      '@types/jest': '*'
       '@types/react': '*'
       '@types/react-dom': '*'
       actionhero: 28.1.8
@@ -1928,6 +1928,7 @@ importers:
       '@grouparoo/spec-helper': link:../../plugins/@grouparoo/spec-helper
       '@grouparoo/ui-components': link:../ui-components
       '@playwright/test': 1.19.0
+      '@types/jest': 27.4.0
       '@types/react': 17.0.39
       '@types/react-dom': 17.0.11
       actionhero: 28.1.8
@@ -2082,8 +2083,6 @@ importers:
       '@grouparoo/core': 0.8.2-alpha.0
       '@grouparoo/spec-helper': 0.8.2-alpha.0
       '@grouparoo/ui-components': 0.8.2-alpha.0
-      '@playwright/test': 1.19.0      
-      '@types/jest': '*'
       '@playwright/test': 1.19.0
       '@types/react': '*'
       '@types/react-dom': '*'
