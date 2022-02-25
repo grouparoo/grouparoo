@@ -91,11 +91,15 @@ export namespace OptionHelper {
     instance: (Source | Destination | Schedule | Property | App) & {
       afterSetOptions?: Function;
     },
-    options: SimpleOptions
+    options: SimpleOptions,
+    externallyValidate = true
   ) {
     delete instance.__options;
 
     const sanitizedOptions = await prepareOptions(instance, options, false);
+
+    if (typeof instance["validateOptions"] === "function")
+      await instance.validateOptions(sanitizedOptions, externallyValidate);
 
     const oldOptionsWithoutEnv = await getOptions(instance, false);
     const oldOptionsWithEnv = await getOptions(instance, true);

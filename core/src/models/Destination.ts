@@ -274,8 +274,7 @@ export class Destination extends CommonModel<Destination> {
     externallyValidate = true
   ) {
     await this.validateUniqueAppAndOptionsForGroup(options);
-    await this.validateOptions(options, externallyValidate);
-    return OptionHelper.setOptions(this, options);
+    return OptionHelper.setOptions(this, options, externallyValidate);
   }
 
   async afterSetOptions(hasChanges: boolean) {

@@ -113,8 +113,7 @@ export class App extends CommonModel<App> {
   }
 
   async setOptions(options: SimpleAppOptions, externallyValidate = true) {
-    await this.validateOptions(options, externallyValidate);
-    return OptionHelper.setOptions(this, options);
+    return OptionHelper.setOptions(this, options, externallyValidate);
   }
 
   async afterSetOptions(hasChanges: boolean) {
