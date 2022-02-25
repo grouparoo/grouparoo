@@ -220,6 +220,116 @@ jobs:
       - run:
           name: linter
           command: cd monorepo && pnpm run lint
+  test-core-.DS_Store:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: circleci/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd core && ./node_modules/.bin/jest __tests__/.DS_Store --ci --maxWorkers 2
+  test-core-.pnpm-debug.log:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: circleci/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd core && ./node_modules/.bin/jest __tests__/.pnpm-debug.log --ci --maxWorkers 2
   test-core-actions:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
@@ -1056,7 +1166,7 @@ jobs:
   test-ui-enterprise:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
-      NODE_ENV: development
+      NODE_ENV: "development"
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -1072,7 +1182,7 @@ jobs:
           password: $DOCKERHUB_PASSWORD
         environment:
           POSTGRES_PASSWORD: password
-      - image: mcr.microsoft.com/playwright:focal
+      - image: mcr.microsoft.com/playwright:v1.19.0-focal
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -1111,8 +1221,12 @@ jobs:
           name: create test databases
           command: cd core && ./bin/create_test_databases
       - run:
+          name: install playwright dependencies
+          command: cd ui/ui-enterprise && ./node_modules/.bin/playwright install && ./node_modules/.bin/playwright install-deps
+ && sudo apt-get install libicu66 libvpx6 ttf-ubuntu-font-family libjpeg-turbo8
+      - run:
           name: test
-          command: cd ui/ui-enterprise && ./node_modules/.bin/playwright install && sudo ./node_modules/.bin/playwright install-deps && sudo apt-get install -y libgtk-3.so.0 libgdk-3.so.0 libX11-xcb.so.1 libXcomposite.so.1 libXcursor.so.1 libXdamage.so.1 libXfixes.so.3 libXi.so.6 libXrender.so.1 libdbus-glib-1.so.2 libpangocairo-1.0.so.0 libpango-1.0.so.0 libatk-1.0.so.0 libcairo-gobject.so.2 libcairo.so.2 libgdk_pixbuf-2.0.so.0 libxcb-shm.so.0 libpangoft2-1.0.so.0 libXt.so.6 && ./node_modules/.bin/playwright test --workers 2
+          command: cd ui/ui-enterprise && ./node_modules/.bin/playwright test --workers 2
   test-ui-config:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
@@ -2769,7 +2883,7 @@ jobs:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
         environment:
-          MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+          MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
     steps:
       - checkout
       - restore_cache:
@@ -3812,6 +3926,16 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
+      - test-core-.DS_Store:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-.pnpm-debug.log:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
       - test-core-actions:
           filters:
             <<: *ignored-branches
@@ -4142,6 +4266,8 @@ workflows:
             <<: *ignored-branches
           requires:
             - linter
+            - test-core-.DS_Store
+            - test-core-.pnpm-debug.log
             - test-core-actions
             - test-core-bin
             - test-core-classes
