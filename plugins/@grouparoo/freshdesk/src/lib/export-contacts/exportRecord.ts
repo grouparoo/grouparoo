@@ -44,16 +44,7 @@ const handleContactChanges: ExportRecordPluginMethod<FreshdeskClient> = async ({
     newPKValue
   );
 
-  console.log(
-    "@@@",
-    primaryKeyFieldKey,
-    oldPKValue,
-    !!oldRecord,
-    newPKValue,
-    !!newRecord
-  );
-
-  const foundId = oldRecord?.id || newRecord?.id;
+  const foundId = newRecord?.id ?? oldRecord?.id;
 
   if (toDelete) {
     if (!syncOperations.delete) {

@@ -16,13 +16,16 @@ export class FreshdeskClient {
         return value;
       },
       (error) => {
-        console.log(error?.config, error?.response?.data);
         return Promise.reject(error);
       }
     );
   }
 
   async getContactBy(key: ContactSearchParams, value: string | number) {
+    if (value === undefined) {
+      return null;
+    }
+
     const response = await this.axios.get("/api/v2/contacts", {
       params: { [key]: value },
     });
@@ -34,6 +37,11 @@ export class FreshdeskClient {
 
   async getAllContacts() {
     const response = await this.axios.get("/api/v2/contacts");
+    return response.data;
+  }
+
+  async getContactById(id: number) {
+    const response = await this.axios.get(`/api/v2/contacts/${id}`);
     return response.data;
   }
 
@@ -71,6 +79,16 @@ export class FreshdeskClient {
         (company) => company.name.trim() === name.trim()
       ) ?? null
     );
+  }
+
+  async getAllCompanies() {
+    const response = await this.axios.get("/api/v2/companies");
+    return response.data;
+  }
+
+  async getCompanyById(id: number) {
+    const response = await this.axios.get(`/api/v2/companies/${id}`);
+    return response.data;
   }
 
   async createCompany(company: any) {

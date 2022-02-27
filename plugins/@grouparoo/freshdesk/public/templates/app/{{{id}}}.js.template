@@ -1,0 +1,14 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      class: "app",
+      id: {{{id}}},
+      name: {{{id}}},
+      type: "{{{__pluginName}}}",
+      options: {
+        domainName: "...", // Freshdesk Domain Name
+        apiKey: "..." // Freshdesk API Key
+      }
+    },
+  ];
+};

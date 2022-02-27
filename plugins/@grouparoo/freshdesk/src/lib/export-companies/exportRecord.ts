@@ -25,7 +25,7 @@ const handleCompanyChanges: ExportRecordPluginMethod<FreshdeskClient> = async ({
   const oldRecord = await connection.getCompanyByName(oldName);
   const newRecord = await connection.getCompanyByName(newName);
 
-  const foundId = oldRecord?.id || newRecord?.id;
+  const foundId = newRecord?.id || oldRecord?.id;
 
   if (toDelete) {
     if (!syncOperations.delete) {

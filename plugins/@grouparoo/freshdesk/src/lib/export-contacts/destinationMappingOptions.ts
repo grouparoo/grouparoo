@@ -32,7 +32,7 @@ export const getKnownFields = (primaryKey: string): KnownFreshdeskField[] => {
     },
     {
       key: "Mobile",
-      freshdeskKey: "modile",
+      freshdeskKey: "mobile",
       type: "phoneNumber",
       required: primaryKey === "Mobile",
       important: true,
@@ -43,11 +43,6 @@ export const getKnownFields = (primaryKey: string): KnownFreshdeskField[] => {
       type: "number",
       required: primaryKey === "External ID",
       important: true,
-    },
-    {
-      key: "Twitter ID",
-      freshdeskKey: "twitter_id",
-      type: "string",
     },
     {
       key: "Address",

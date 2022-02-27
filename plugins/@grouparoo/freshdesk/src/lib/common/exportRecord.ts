@@ -36,9 +36,12 @@ export function makePayload(
     const value = newRecordProperties[fieldName];
     if (knownFieldsMap.hasOwnProperty(fieldName)) {
       const field = knownFieldsMap[fieldName];
+      const formattedValue = formatVar(value);
       payload[field.freshdeskKey] = field.toArray
-        ? [formatVar(value)]
-        : formatVar(value);
+        ? formattedValue !== null
+          ? [formattedValue]
+          : []
+        : formattedValue;
     }
   }
 
@@ -57,7 +60,10 @@ function formatVar(value) {
   }
 
   if (value instanceof Date) {
-    return value.toISOString();
+    const year = value.getFullYear();
+    const month = (value.getMonth() + 1).toString().padStart(2, "0");
+    const day = value.getDate().toString().padStart(2, "0");
+    return `${year}-${month}-${day}`;
   }
 
   return value.toString();
