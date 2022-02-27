@@ -1,10 +1,7 @@
-import path from "path";
 import { Initializer } from "actionhero";
 import { DestinationSyncMode, plugin } from "@grouparoo/core";
 
 import { test } from "../lib/test";
-import { AppTemplate } from "@grouparoo/app-templates/dist/app";
-import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
 import { connect } from "../lib/connect";
 import { disconnect } from "../lib/disconnect";
 import { contactDestinationMappingOptions } from "../lib/export-contacts/destinationMappingOptions";
@@ -14,8 +11,6 @@ import { companyDestinationMappingOptions } from "../lib/export-companies/destin
 import { contactDestinationOptions } from "../lib/export-contacts/destinationOptions";
 import { companyDestinationOptions } from "../lib/export-companies/destinationOptions";
 import { exportArrayProperties } from "../lib/common/exportArrayProperties";
-
-const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
 
 const packageJSON = require("./../../package.json");
 
@@ -32,17 +27,6 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/freshdesk/freshdesk.png",
-      templates: [
-        new AppTemplate("freshdesk", [
-          path.join(templateRoot, "app", "*.template"),
-        ]),
-        new DestinationTemplate(
-          "freshdesk",
-          [path.join(templateRoot, "destination", "*.template")],
-          syncModes,
-          defaultSyncMode
-        ),
-      ],
       apps: [
         {
           name: "freshdesk",
