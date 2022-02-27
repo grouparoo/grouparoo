@@ -20,6 +20,7 @@ export interface NavigationItem {
   href?: string;
   mainPathSectionIdx?: number;
   small?: boolean;
+  subNavItems?: NavigationItem[];
 }
 
 export class NavigationList extends OptionallyAuthenticatedAction {
@@ -33,23 +34,14 @@ export class NavigationList extends OptionallyAuthenticatedAction {
   }: {
     session: { teamMember: TeamMember };
   }) {
-    let configUser: ConfigUser.ConfigUserType;
-    if (getGrouparooRunMode() === "cli:config") {
-      configUser = await ConfigUser.get();
-    }
-
     const navigationMode: NavigationMode =
       getGrouparooRunMode() === "cli:config"
-        ? configUser
+        ? (await ConfigUser.isAuthenticated())
           ? "config:authenticated"
           : "config:unauthenticated"
         : teamMember
         ? "authenticated"
         : "unauthenticated";
-
-    const isAuthenticated =
-      navigationMode === "authenticated" ||
-      navigationMode === "config:authenticated";
 
     const models = await GrouparooModel.findAll({
       order: [["name", "asc"]],
@@ -66,13 +58,13 @@ export class NavigationList extends OptionallyAuthenticatedAction {
         navResponse = await this.authenticatedNav(teamMember, models);
         break;
       case "unauthenticated":
-        navResponse = await this.unauthenticatedNav(teamMember);
+        navResponse = await this.unauthenticatedNav();
         break;
       case "config:authenticated":
-        navResponse = await this.authenticatedConfigNav(configUser, models);
+        navResponse = await this.authenticatedConfigNav(models);
         break;
       case "config:unauthenticated":
-        navResponse = await this.unauthenticatedConfigNav(configUser);
+        navResponse = await this.unauthenticatedConfigNav();
         break;
     }
 
@@ -107,6 +99,40 @@ export class NavigationList extends OptionallyAuthenticatedAction {
           icon: model.getIcon(),
           href: `/model/${model.id}/overview`,
           mainPathSectionIdx: 2,
+          subNavItems: [
+            {
+              type: "link",
+              title: "Model Data",
+              icon: "file-import",
+              href: `/model/${model.id}/overview#model-data`,
+              mainPathSectionIdx: 3,
+              small: true,
+            },
+            {
+              type: "link",
+              title: "Sample Record",
+              icon: "flask",
+              href: `/model/${model.id}/overview#sample-record`,
+              mainPathSectionIdx: 3,
+              small: true,
+            },
+            {
+              type: "link",
+              title: "Records",
+              icon: "file-alt",
+              href: `/model/${model.id}/records`,
+              mainPathSectionIdx: 3,
+              small: true,
+            },
+            {
+              type: "link",
+              title: "Destinations",
+              icon: "file-export",
+              href: `/model/${model.id}/overview#destinations`,
+              mainPathSectionIdx: 3,
+              small: true,
+            },
+          ],
         });
       });
     }
@@ -233,7 +259,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     return { navigationItems, platformItems, bottomMenuItems };
   }
 
-  async unauthenticatedNav(teamMember: TeamMember) {
+  async unauthenticatedNav() {
     const navigationItems: NavigationItem[] = [
       { type: "link", title: "Home", href: "/" },
       { type: "link", title: "About", href: "/about" },
@@ -257,10 +283,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     return { navigationItems, platformItems, bottomMenuItems };
   }
 
-  async authenticatedConfigNav(
-    configUser: ConfigUser.ConfigUserType,
-    models: GrouparooModel[]
-  ) {
+  async authenticatedConfigNav(models: GrouparooModel[]) {
     const navigationItems: NavigationItem[] = [
       {
         type: "link",
@@ -279,7 +302,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     };
   }
 
-  async unauthenticatedConfigNav(configUser: ConfigUser.ConfigUserType) {
+  async unauthenticatedConfigNav() {
     const navigationItems: NavigationItem[] = [
       { type: "link", title: "Home", href: "/" },
     ];

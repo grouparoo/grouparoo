@@ -29,7 +29,7 @@ describe("models/recordProperty", () => {
 
   beforeAll(async () => {
     source = await helper.factories.source();
-    await source.setOptions({ table: "test table" });
+    await source.setOptions({ table: "users" });
     await source.bootstrapUniqueProperty({
       key: "userId",
       type: "integer",
@@ -190,14 +190,14 @@ describe("models/recordProperty", () => {
         expect(response).toBe("mario@example.com");
       });
 
-      test("emails are lower cased", async () => {
+      test("emails are not lower cased", async () => {
         const recordProperty = new RecordProperty({
           recordId: record.id,
           propertyId: emailProperty.id,
         });
         await recordProperty.setValue("MARIO@example.com");
         const response = await recordProperty.getValue();
-        expect(response).toBe("mario@example.com");
+        expect(response).toBe("MARIO@example.com");
       });
 
       test("invalid emails set invalidValue", async () => {
@@ -211,10 +211,56 @@ describe("models/recordProperty", () => {
           "someone.com",
           "someone.com@",
           "someone@site",
-          "someone with spaces@site.com",
+          "someone @site.com",
         ];
 
         for (const e of badEmails) {
+          await recordProperty.setValue(e);
+          const response = await recordProperty.getValue();
+          expect(response).toBe(null);
+          expect(recordProperty.invalidValue).toBe(e);
+          expect(recordProperty.invalidReason).toBe("Invalid email value");
+        }
+      });
+
+      test("weird emails validate", async () => {
+        const recordProperty = new RecordProperty({
+          recordId: record.id,
+          propertyId: emailProperty.id,
+        });
+
+        const weirdEmailsGood = [
+          "email@example.com",
+          "firstname.lastname@example.com",
+          "email@subdomain.example.com",
+          "firstname+lastname@example.com",
+          "email@123.123.123.123",
+          "email@[123.123.123.123]",
+          '"email"@example.com',
+          "1234567890@example.com",
+          "email@example-one.com",
+          "_______@example.com",
+          "email@example.name",
+          "email@example.museum",
+          "email@example.co.jp",
+          "firstname-lastname@example.com",
+          "very.unusual.”@”.unusual.com@example.com",
+        ];
+
+        const weirdEmailsBad = [
+          "much.”more unusual”@example.com",
+          'very.”(),:;<>[]”.VERY.”very@\\ "very”.unusual@strange.example.com',
+        ];
+
+        for (const e of weirdEmailsGood) {
+          await recordProperty.setValue(e);
+          const response = await recordProperty.getValue();
+          expect(response).toBe(e);
+          expect(recordProperty.invalidValue).toBe(null);
+          expect(recordProperty.invalidReason).toBe(null);
+        }
+
+        for (const e of weirdEmailsBad) {
           await recordProperty.setValue(e);
           const response = await recordProperty.getValue();
           expect(response).toBe(null);
@@ -232,7 +278,7 @@ describe("models/recordProperty", () => {
           "Deleted-user-id-19430-Team-5051deleted-user-id-19430-team-5051XXXXXX@example.com";
         await recordProperty.setValue(value);
         const response = await recordProperty.getValue();
-        expect(response).toBe(value.toLowerCase());
+        expect(response).toBe(value);
       });
     });
 
@@ -272,7 +318,7 @@ describe("models/recordProperty", () => {
         expect(response).toBe("+1 412 888 9999");
       });
 
-      test("invalid numbers are stored", async () => {
+      test("invalid phone numbers are nulled out", async () => {
         const recordProperty = new RecordProperty({
           recordId: record.id,
           propertyId: phoneNumberProperty.id,

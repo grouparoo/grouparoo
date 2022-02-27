@@ -83,7 +83,7 @@ describe("actions/runs", () => {
     await helper.factories.record();
     const source = await helper.factories.source();
     await source.setMapping({ id: "userId" });
-    await source.setOptions({ table: "foo" });
+    await source.setOptions({ table: "users" });
     await source.update({ state: "ready" });
     const property = await helper.factories.property(source, undefined, {
       column: "foo",

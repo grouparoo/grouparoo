@@ -1,5 +1,4 @@
 import { CLSTask } from "../../classes/tasks/clsTask";
-import { App } from "../../models/App";
 import { AppRefreshQuery } from "../../models/AppRefreshQuery";
 import { CLS } from "../../modules/cls";
 import { getGrouparooRunMode } from "../../modules/runMode";
@@ -9,7 +8,6 @@ export class AppRefreshQueriesCheck extends CLSTask {
   description = "check all appRefreshQueries and run them";
   frequency = getGrouparooRunMode() === "cli:run" ? 0 : 1000 * 60; // Run every minute
   queue = "apps";
-  inputs = {};
 
   async runWithinTransaction() {
     const appRefreshQueries = await AppRefreshQuery.findAll();
@@ -18,9 +16,7 @@ export class AppRefreshQueriesCheck extends CLSTask {
       const shouldRun = await appRefreshQuery.shouldRun();
 
       if (shouldRun) {
-        const app = await App.findOne({
-          where: { id: appRefreshQuery.appId, state: "ready" },
-        });
+        const app = appRefreshQuery.$get("app", { where: { state: "ready" } });
 
         if (app) {
           await CLS.enqueueTask("appRefreshQuery:run", {

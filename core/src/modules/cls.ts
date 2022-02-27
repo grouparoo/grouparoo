@@ -31,7 +31,7 @@ export namespace CLS {
    * Wrap an Async function f in such a way that all enqueued afterCommit / enqueueTasks during invocation will be run afterwords
    * Returns the return value of function f
    */
-  export interface CLSWrapMethod {
+  export interface CLSWrapMethod<T = any> {
     (
       f: Function,
       options?: {
@@ -39,7 +39,7 @@ export namespace CLS {
         write?: boolean;
         priority?: boolean;
       }
-    ): Promise<any>;
+    ): Promise<T>;
   }
   export const wrap: CLSWrapMethod = async (f, options = {}) => {
     const { catchError } = options;

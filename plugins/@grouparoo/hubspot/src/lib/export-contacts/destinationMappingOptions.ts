@@ -28,12 +28,12 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod =
     return {
       labels: {
         property: {
-          singular: "Hubspot Contact Property",
-          plural: "Hubspot Contact Properties",
+          singular: "HubSpot Contact Property",
+          plural: "HubSpot Contact Properties",
         },
         group: {
-          singular: "Hubspot List",
-          plural: "Hubspot Lists",
+          singular: "HubSpot List",
+          plural: "HubSpot Lists",
         },
       },
       properties: {

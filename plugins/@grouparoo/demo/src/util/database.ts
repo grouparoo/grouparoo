@@ -8,7 +8,7 @@ export default class Database {
     this.dialect = config.sequelize.dialect;
   }
 
-  extractSql(object) {
+  extractSql(object: string | [string, object]) {
     if (typeof object === "string") {
       return { sql: object, params: null };
     }

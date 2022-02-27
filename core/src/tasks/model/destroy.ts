@@ -10,7 +10,7 @@ export class ModelDestroy extends CLSTask {
   queue = "models";
   inputs = {
     modelId: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ modelId }: ParamsFrom<ModelDestroy>) {
     const model = await GrouparooModel.scope(null).findOne({

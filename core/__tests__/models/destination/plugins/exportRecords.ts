@@ -75,6 +75,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
           syncModes: ["sync", "enrich", "additive"],
           options: [],
           methods: {
+            destinationOptions: async () => ({}),
             destinationMappingOptions: async () => {
               return {
                 labels: {
@@ -905,7 +906,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
 
       expect(newExport.oldRecordProperties).toEqual({});
       expect(newExport.newRecordProperties).toEqual({
-        customer_email: "newemail@example.com",
+        customer_email: "newEmail@example.com",
       });
       expect(newExport.oldGroups).toEqual([]);
       expect(newExport.newGroups).toEqual([group.name]);

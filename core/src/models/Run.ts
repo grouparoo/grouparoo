@@ -100,8 +100,8 @@ export class Run extends CommonModel<Run> {
   }
 
   // this is likely to always be a number, but in the case of a scrollId or other token, we'll store this as a string
-  @Column
-  sourceOffset: string;
+  @Column(DataType.STRING)
+  sourceOffset: string | number;
 
   @Default(0)
   @Column
@@ -137,7 +137,7 @@ export class Run extends CommonModel<Run> {
     return percentComplete;
   }
 
-  async afterBatch(newSate?: string) {
+  async afterBatch(newSate?: Run["state"]) {
     await this.reload();
 
     if (
@@ -299,12 +299,6 @@ export class Run extends CommonModel<Run> {
   }
 
   // --- Class Methods --- //
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
 
   @BeforeCreate
   static async ensureCreatorReady(instance: Run) {

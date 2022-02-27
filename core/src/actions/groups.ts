@@ -27,7 +27,7 @@ export class GroupsList extends AuthenticatedAction {
         ["createdAt", "desc"],
       ],
     },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<GroupsList> }) {
     const where: WhereAttributeHash = {};
@@ -77,7 +77,7 @@ export class GroupCreate extends AuthenticatedAction {
     matchType: { required: true, default: "all" },
     rules: { required: false, formatter: APIData.ensureArray },
     state: { required: false },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<GroupCreate> }) {
     const group = await Group.create({
@@ -106,7 +106,7 @@ export class GroupEdit extends AuthenticatedAction {
     name: { required: false },
     matchType: { required: false },
     rules: { required: false, formatter: APIData.ensureArray },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<GroupEdit> }) {
     const group = await Group.findById(params.id);
@@ -127,7 +127,7 @@ export class GroupRun extends AuthenticatedAction {
   permission: ActionPermission = { topic: "group", mode: "write" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<GroupRun> }) {
     const group = await Group.findById(params.id);
@@ -143,7 +143,7 @@ export class GroupView extends AuthenticatedAction {
   permission: ActionPermission = { topic: "group", mode: "read" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<GroupView> }) {
     const group = await Group.findById(params.id);
@@ -162,7 +162,7 @@ export class GroupCountComponentMembers extends AuthenticatedAction {
   inputs = {
     id: { required: true },
     rules: { required: false, formatter: APIData.ensureArray },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -188,7 +188,7 @@ export class GroupCountPotentialMembers extends AuthenticatedAction {
   inputs = {
     id: { required: true },
     rules: { required: false, formatter: APIData.ensureArray },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -212,7 +212,7 @@ export class GroupListDestinations extends AuthenticatedAction {
   permission: ActionPermission = { topic: "group", mode: "read" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -241,7 +241,7 @@ export class GroupDestroy extends AuthenticatedAction {
       default: false,
       formatter: APIData.ensureBoolean,
     },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<GroupDestroy> }) {
     const group = await Group.findById(params.id);

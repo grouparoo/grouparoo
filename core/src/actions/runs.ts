@@ -23,7 +23,7 @@ export class RunsList extends AuthenticatedAction {
       formatter: APIData.ensureArray,
       default: [["updatedAt", "desc"]],
     },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<RunsList> }) {
     let creatorId: string = params.creatorId;
@@ -67,7 +67,7 @@ export class RunEdit extends AuthenticatedAction {
   inputs = {
     id: { required: true },
     state: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<RunEdit> }) {
     const run = await Run.findById(params.id);
@@ -83,7 +83,7 @@ export class RunView extends AuthenticatedAction {
   permission: ActionPermission = { topic: "system", mode: "read" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<RunView> }) {
     const run = await Run.findById(params.id);

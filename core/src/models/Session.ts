@@ -37,12 +37,6 @@ export class Session extends CommonModel<Session> {
 
   // --- Class Methods --- //
 
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
-
   static async sweep() {
     const now = new Date();
     const count = await Session.destroy({

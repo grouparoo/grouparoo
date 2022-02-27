@@ -13,7 +13,7 @@ describe("integration/runs/internalRun", () => {
   describe("adding a new GrouparooRecord Property will import and sync all records", () => {
     test("adding a property with a query creates a run and internalRun task", async () => {
       source = await helper.factories.source();
-      await source.setOptions({ table: "test table" });
+      await source.setOptions({ table: "users" });
       await source.bootstrapUniqueProperty({
         key: "userId",
         type: "integer",

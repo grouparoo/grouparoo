@@ -32,7 +32,6 @@ export interface GrouparooPlugin {
   icon?: string;
   apps?: PluginApp[];
   connections?: PluginConnection[];
-  templates?: (ConfigTemplateConstructor | ConfigTemplate)[];
 }
 
 /**

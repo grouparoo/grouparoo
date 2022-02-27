@@ -1,21 +1,24 @@
-import { Fragment, useState } from "react";
-import { useOffset, updateURLParams } from "../../hooks/URLParams";
-import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ExportRetryById } from "@grouparoo/core/src/actions/exports";
+import { GetServerSidePropsContext } from "next";
 import Link from "next/link";
-import EnterpriseLink from "../GrouparooLink";
 import { useRouter } from "next/router";
-import { Row, Col, Button, ButtonGroup, Badge, Alert } from "react-bootstrap";
-import Pagination from "../Pagination";
-import LoadingTable from "../LoadingTable";
-import { Models, Actions } from "../../utils/apiData";
-import { ExportGroupsDiff, ExportRecordPropertiesDiff } from "./Diff";
-import { capitalize } from "../../utils/languageHelper";
+import { Fragment, useCallback, useState } from "react";
+import { Alert, Badge, Button, ButtonGroup, Col, Row } from "react-bootstrap";
+import { Client, generateClient } from "../../client/client";
+import { useApi } from "../../contexts/api";
+import { errorHandler, successHandler } from "../../eventHandlers";
+import { updateURLParams, useOffset } from "../../hooks/URLParams";
+import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
+import { Actions, Models } from "../../utils/apiData";
 import { formatTimestamp } from "../../utils/formatTimestamp";
+import { capitalize } from "../../utils/languageHelper";
 import StateBadge from "../badges/StateBadge";
 import { DurationTime } from "../DurationTime";
-import { useApi } from "../../contexts/api";
-import { generateClient } from "../../client/client";
-import { NextPageContext } from "next";
+import EnterpriseLink from "../GrouparooLink";
+import LoadingTable from "../LoadingTable";
+import Pagination from "../Pagination";
+import { ExportGroupsDiff, ExportRecordPropertiesDiff } from "./Diff";
 
 const states = [
   "all",
@@ -26,7 +29,35 @@ const states = [
   "complete",
 ];
 
-export default function ExportsList(props) {
+interface Props extends Awaited<ReturnType<typeof ExportsList.hydrate>> {
+  header?: React.ReactNode;
+}
+
+export const retryExport = async (
+  client: Client,
+  _export: Models.ExportType
+) => {
+  const { count } = await client.requestAction<ExportRetryById>(
+    "post",
+    `/export/retry/`,
+    {
+      exportId: _export.id,
+    },
+    { useCache: false }
+  );
+  if (count) {
+    successHandler.set({ message: "Export Retried" });
+    const { export: refreshedExport } =
+      await client.request<Actions.ExportView>("get", `/export/${_export.id}`);
+    return refreshedExport;
+  } else {
+    errorHandler.set({
+      message: "There was an issue retrying the export, please try again.",
+    });
+  }
+};
+
+export default function ExportsList(props: Props) {
   const { groups }: { groups: Models.GroupType[] } = props;
   const router = useRouter();
   const { client } = useApi();
@@ -48,6 +79,21 @@ export default function ExportsList(props) {
     }
   }
 
+  const doRetryExport = useCallback(
+    async (_export: Models.ExportType, index: number) => {
+      setLoading(true);
+      const refreshedExport = await retryExport(client, _export);
+      if (refreshedExport) {
+        setExports((_exports) => {
+          _exports[index] = refreshedExport;
+          return _exports;
+        });
+      }
+      setLoading(false);
+    },
+    [client]
+  );
+
   useSecondaryEffect(() => {
     load();
   }, [offset, limit, state]);
@@ -55,7 +101,7 @@ export default function ExportsList(props) {
   async function load() {
     updateURLParams(router, { state, offset });
     setLoading(true);
-    const response: Actions.ExportsList = await client.request(
+    const response = await client.request<Actions.ExportsList>(
       "get",
       `/exports`,
       {
@@ -158,7 +204,7 @@ export default function ExportsList(props) {
           </tr>
         </thead>
         <tbody>
-          {_exports.map((_export) => {
+          {_exports.map((_export, index) => {
             return (
               <Fragment key={`export-${_export.id}`}>
                 <tr>
@@ -170,6 +216,15 @@ export default function ExportsList(props) {
                     <br />
                     <span>State</span>:{" "}
                     <StateBadge state={_export.state} marginBottom={0} />
+                    {["failed", "canceled"].includes(_export.state) ? (
+                      <FontAwesomeIcon
+                        className="ml-1"
+                        icon="sync-alt"
+                        size="xs"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => doRetryExport(_export, index)}
+                      />
+                    ) : null}
                     <br />
                     {_export.exportProcessorId ? (
                       <>
@@ -274,26 +329,26 @@ export default function ExportsList(props) {
   );
 }
 
-ExportsList.hydrate = async (appContext: NextPageContext) => {
-  const client = generateClient(appContext);
+ExportsList.hydrate = async (ctx: GetServerSidePropsContext) => {
+  const client = generateClient(ctx);
 
-  const { id, limit, offset, state, recordId, destinationId } =
-    appContext.query;
-  const { groups } = await client.request("get", `/groups`);
+  const { id, limit, offset, state, recordId, destinationId } = ctx.query;
+  const { groups } = await client.request<Actions.GroupsList>("get", `/groups`);
 
   let exportProcessorId: string;
-  if (id && appContext.pathname.match("/exportProcessor/")) {
+  if (id && ctx.req.url.match("/exportProcessor/")) {
     exportProcessorId = String(id);
   }
 
-  const { exports: _exports, total } = await client.request("get", `/exports`, {
-    limit,
-    offset,
-    state: state === "all" ? undefined : state,
-    destinationId,
-    exportProcessorId,
-    recordId,
-  });
+  const { exports: _exports, total } =
+    await client.request<Actions.ExportsList>("get", `/exports`, {
+      limit,
+      offset,
+      state: state === "all" ? undefined : state,
+      destinationId,
+      exportProcessorId,
+      recordId,
+    });
 
   return { groups, _exports, total };
 };

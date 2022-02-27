@@ -1,34 +1,15 @@
 import { Initializer } from "actionhero";
 import { DestinationSyncMode, plugin } from "@grouparoo/core";
-import path from "path";
-
 import { appQuery } from "../lib/appQuery";
 import { test } from "./../lib/test";
 import { connect } from "./../lib/connect";
 import { disconnect } from "./../lib/disconnect";
 import { exportRecord } from "../lib/export/exportRecord";
 import { exportArrayProperties } from "../lib/export/exportArrayProperties";
-
 import { getConnection as getTableConnection } from "../lib/table-import/connection";
 import { getConnection as getQueryConnection } from "../lib/query-import/connection";
-
 import { destinationOptions } from "../lib/export/destinationOptions";
 import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
-
-import { getTables } from "../lib/table-import/getTables";
-import { getColumns } from "../lib/table-import/getColumns";
-
-const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
-import { AppTemplate } from "@grouparoo/app-templates/dist/app";
-import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
-import {
-  TableSourceTemplate,
-  TablePropertyTemplate,
-} from "@grouparoo/app-templates/dist/source/table";
-import {
-  QuerySourceTemplate,
-  QueryPropertyTemplate,
-} from "@grouparoo/app-templates/dist/source/query";
 
 const packageJSON = require("./../../package.json");
 
@@ -44,21 +25,6 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/sqlite/sqlite.png",
-      templates: [
-        new AppTemplate("sqlite", [
-          path.join(templateRoot, "app", "*.template"),
-        ]),
-        new TableSourceTemplate("sqlite", { getTables, getColumns }),
-        new TablePropertyTemplate("sqlite"),
-        new QuerySourceTemplate("sqlite"),
-        new QueryPropertyTemplate("sqlite"),
-        new DestinationTemplate(
-          "sqlite",
-          [path.join(templateRoot, "destination", "*.template")],
-          syncModes,
-          defaultSyncMode
-        ),
-      ],
       apps: [
         {
           name: "sqlite",

@@ -24,7 +24,7 @@ export default async (source?: Source, props: { [key: string]: any } = {}) => {
 
   if (!source) {
     source = await SourceFactory();
-    await source.setOptions({ table: "__testTable" });
+    await source.setOptions({ table: "users" });
     await source.setMapping({ id: "userId" });
     await source.update({ state: "ready" });
   }

@@ -4,6 +4,7 @@ import { Table } from "react-bootstrap";
 import Head from "next/head";
 import Link from "next/link";
 import ResqueTabs from "../../../components/tabs/Resque";
+import { Actions } from "../../../utils/apiData";
 
 export default function ResqueQueue(props) {
   const { client } = useApi();
@@ -14,7 +15,10 @@ export default function ResqueQueue(props) {
   }, []);
 
   async function load() {
-    let response = await client.request("get", `/resque/resqueDetails`);
+    let response = await client.request<Actions.ResqueResqueDetails>(
+      "get",
+      `/resque/resqueDetails`
+    );
     if (response?.resqueDetails?.queues) {
       setQueues(response.resqueDetails.queues);
     }

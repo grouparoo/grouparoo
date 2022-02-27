@@ -30,7 +30,7 @@ export interface ImportRecordProperties {
   [key: string]: any;
 }
 
-const IMPORT_CREATORS = ["run"] as const;
+const IMPORT_CREATORS = ["run", "group"] as const;
 
 const STATES = [
   "associating",
@@ -172,12 +172,6 @@ export class Import extends CommonModel<Import> {
 
   // --- Class Methods --- //
   static defaultState: typeof STATES[number] = "associating";
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
 
   @BeforeSave
   static async updateState(instance: Import) {

@@ -6,7 +6,12 @@ import { plugin } from "../modules/plugin";
 import { StatusMetric, StatusReporters } from "./../modules/statusReporters";
 
 export namespace Telemetry {
-  const TELEMETRY_CALL_TRIGGERS = ["timer", "team", "cli_run"] as const;
+  const TELEMETRY_CALL_TRIGGERS = [
+    "timer",
+    "team",
+    "cli_run",
+    "cli_config",
+  ] as const;
   export type TelemetryCallTrigger = typeof TELEMETRY_CALL_TRIGGERS[number];
 
   const telemetryPath = "/api/v1/telemetry";
@@ -40,7 +45,7 @@ export namespace Telemetry {
           body: JSON.stringify(await generateErrorPayload(error, trigger)),
         });
       } catch (newError) {
-        console.error(newError);
+        log(`[ telemetry ] ${newError}`, "debug");
       }
 
       if (toThrowOnError) {

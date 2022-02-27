@@ -57,7 +57,7 @@ export async function loadSchedule(
   });
 
   const options = extractNonNullParts(configObject, "options");
-  await schedule.setOptions(options);
+  await schedule.setOptions(options, externallyValidate);
 
   if (configObject.filters) {
     for (const filter of configObject.filters) {
@@ -68,7 +68,7 @@ export async function loadSchedule(
           }\` has been deprecated and replaced with \`${
             //@ts-ignore
             FilterHelper.deprecatedFilters[filter.op]
-          }\`. Read more at https://www.grouparoo.com/docs/config/code-config/sources`
+          }\`. Read more at https://www.grouparoo.com/docs/support/config-files#sources`
         );
       }
     }

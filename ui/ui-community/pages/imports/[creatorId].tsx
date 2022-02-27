@@ -1,8 +1,14 @@
 import Head from "next/head";
 import ImportList from "@grouparoo/ui-components/components/import/List";
 import { useRouter } from "next/router";
+import { withServerErrorHandler } from "@grouparoo/ui-components/utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "@grouparoo/ui-components/utils/pageHelper";
 
-export default function Page(props) {
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  return { props: await ImportList.hydrate(ctx) };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   const router = useRouter();
   const { query } = router;
 
@@ -15,8 +21,6 @@ export default function Page(props) {
       <ImportList {...props} />
     </>
   );
-}
-
-Page.getInitialProps = async (ctx) => {
-  return ImportList.hydrate(ctx);
 };
+
+export default Page;

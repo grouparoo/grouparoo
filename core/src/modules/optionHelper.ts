@@ -8,16 +8,17 @@ import {
 import { Option } from "./../models/Option";
 import { Source } from "./../models/Source";
 import { Destination } from "./../models/Destination";
-import { Schedule, SimpleScheduleOptions } from "./../models/Schedule";
-import { Property, SimplePropertyOptions } from "../models/Property";
+import { Schedule } from "./../models/Schedule";
+import { Property } from "../models/Property";
 import { App } from "./../models/App";
 import { LockableHelper } from "./lockableHelper";
 import { plural } from "pluralize";
 import { modelName } from "./modelName";
+import { SourcesCache } from "../modules/caches/sourcesCache";
 
 export const ObfuscatedOptionString = "__ObfuscatedOption";
 
-type ModelWithMapping = Source | Destination | Schedule | Property | App;
+type ModelWithOptions = Source | Destination | Schedule | Property | App;
 
 export namespace OptionHelper {
   export interface SimpleOptions {
@@ -25,7 +26,7 @@ export namespace OptionHelper {
   }
 
   export async function getOptions(
-    instance: ModelWithMapping,
+    instance: ModelWithOptions,
     sourceFromEnvironment = true,
     obfuscateSensitive = false
   ) {
@@ -38,7 +39,7 @@ export namespace OptionHelper {
       (await Option.findAll({
         where: {
           ownerId: instance.id,
-          ownerType: modelName<ModelWithMapping>(instance),
+          ownerType: modelName<ModelWithOptions>(instance),
         },
       }));
 
@@ -65,14 +66,11 @@ export namespace OptionHelper {
     return optionsObject;
   }
 
-  export async function setOptions(
-    instance: (Source | Destination | Schedule | Property | App) & {
-      afterSetOptions?: Function;
-    },
-    options: SimpleOptions
+  async function prepareOptions(
+    instance: ModelWithOptions,
+    options: SimpleOptions,
+    sourceFromEnvironment = false
   ) {
-    delete instance.__options;
-
     const filteredOptions = filterEmptyOptions(options);
     const sanitizedOptions = await replaceObfuscatedOptions(
       instance,
@@ -80,7 +78,29 @@ export namespace OptionHelper {
       false
     );
 
-    await validateOptions(instance, sanitizedOptions, null);
+    if (sourceFromEnvironment) {
+      return sourceEnvironmentVariableOptions(instance, {
+        ...sanitizedOptions,
+      });
+    }
+
+    return sanitizedOptions;
+  }
+
+  export async function setOptions(
+    instance: (Source | Destination | Schedule | Property | App) & {
+      afterSetOptions?: Function;
+    },
+    options: SimpleOptions,
+    externallyValidate = true
+  ) {
+    delete instance.__options;
+
+    const sanitizedOptions = await prepareOptions(instance, options, false);
+
+    if (typeof instance["validateOptions"] === "function")
+      await instance.validateOptions(sanitizedOptions, externallyValidate);
+
     const oldOptionsWithoutEnv = await getOptions(instance, false);
     const oldOptionsWithEnv = await getOptions(instance, true);
 
@@ -115,20 +135,18 @@ export namespace OptionHelper {
     await Option.destroy({
       where: {
         ownerId: instance.id,
-        ownerType: modelName<ModelWithMapping>(instance),
+        ownerType: modelName<ModelWithOptions>(instance),
       },
     });
 
     const newOptions: Option[] = [];
-    const keys = Object.keys(sanitizedOptions);
-    for (const i in keys) {
-      const key = keys[i];
+    for (const [key, value] of Object.entries(sanitizedOptions)) {
       const option = await Option.create({
         ownerId: instance.id,
-        ownerType: modelName<ModelWithMapping>(instance),
+        ownerType: modelName<ModelWithOptions>(instance),
         key,
-        value: sanitizedOptions[key],
-        type: typeof sanitizedOptions[key],
+        value: String(value),
+        type: typeof value as "string" | "number" | "boolean",
       });
       newOptions.push(option);
     }
@@ -198,55 +216,46 @@ export namespace OptionHelper {
     return match;
   }
 
+  export type OptionsSpec = {
+    key: string;
+    required: boolean;
+    options?: string[];
+  }[];
+
   export async function validateOptions(
-    instance: ModelWithMapping & {
+    instance: ModelWithOptions & {
       name?: string;
       key?: string;
     },
     options: SimpleOptions,
+    optionsSpec: OptionsSpec,
     allowEmpty = false
   ) {
-    let requiredOptions: string[];
-    let allOptions: string[];
+    options = await prepareOptions(instance, options, true);
+    const type = await getInstanceType(instance);
 
     if (allowEmpty && Object.keys(options).length === 0) {
       return;
     }
 
-    const type = await getInstanceType(instance);
-
-    if (instance instanceof Source) {
-      requiredOptions = await getRequiredConnectionOptions(instance);
-      const { pluginConnection } = await getPlugin(instance);
-      allOptions = pluginConnection.options.map((o) => o.key);
-    } else if (instance instanceof Destination) {
-      requiredOptions = await getRequiredConnectionOptions(instance);
-      const { pluginConnection } = await getPlugin(instance);
-      allOptions = pluginConnection.options.map((o) => o.key);
-    } else if (instance instanceof Schedule) {
-      const scheduleOptions = await getScheduleOptions(instance, options);
-      allOptions = scheduleOptions.map((o) => o.key);
-      requiredOptions = scheduleOptions
-        .filter((o) => o.required)
-        .map((o) => o.key);
-    } else if (instance instanceof Property) {
-      const propertyOptions = await getPropertyOptions(instance, options);
-      allOptions = propertyOptions.map((o) => o.key);
-      requiredOptions = propertyOptions
-        .filter((o) => o.required)
-        .map((o) => o.key);
-    } else if (instance instanceof App) {
-      requiredOptions = await getRequiredAppOptions(instance);
-      const { pluginApp } = await getPlugin(instance);
-      allOptions = pluginApp.options.map((o) => o.key);
-    } else {
-      throw new Error(`cannot get required options`);
-    }
+    const allOptions = optionsSpec.map((o) => o.key);
+    const requiredOptions = optionsSpec
+      .filter((o) => o.required)
+      .map((o) => o.key);
+    const optionOptions: Record<string, string[]> = optionsSpec
+      .filter((o) => o.options)
+      .reduce(
+        (optionOptions, opt) => ({
+          ...optionOptions,
+          [opt.key]: opt.options,
+        }),
+        {}
+      );
 
     requiredOptions.forEach((requiredOption) => {
       if (!options[requiredOption]) {
         throw new Error(
-          `${requiredOption} is required for a ${modelName<ModelWithMapping>(
+          `${requiredOption} is required for a ${modelName<ModelWithOptions>(
             instance
           )} of type ${type} (${instance["name"] || instance["key"]}, ${
             instance.id
@@ -258,83 +267,26 @@ export namespace OptionHelper {
     for (const k in options) {
       if (allOptions.indexOf(k) < 0) {
         throw new Error(
-          `${k} is not an option for a ${type} ${modelName<ModelWithMapping>(
+          `${k} is not an option for a ${type} ${modelName<ModelWithOptions>(
             instance
           )} (${instance["name"] || instance["key"]}, ${instance.id})`
+        );
+      }
+
+      const val = options[k].toString();
+      const opts = optionOptions[k];
+      if (opts && opts.length > 0 && !opts.includes(val)) {
+        throw new Error(
+          `"${val}" is not a valid value for ${type} ${modelName<ModelWithOptions>(
+            instance
+          )} option "${k}"`
         );
       }
     }
   }
 
-  export async function getRequiredConnectionOptions(
-    instance: Source | Destination
-  ) {
-    const { pluginConnection } = await getPlugin(instance);
-    const type = await getInstanceType(instance);
-
-    if (!pluginConnection) {
-      throw new Error(`cannot find a pluginConnection for type ${type}`);
-    }
-
-    return pluginConnection.options.filter((o) => o.required).map((o) => o.key);
-  }
-
-  export async function getScheduleOptions(
-    instance: Schedule,
-    scheduleOptions: SimpleScheduleOptions
-  ) {
-    const { pluginConnection } = await getPlugin(instance);
-    const type = await getInstanceType(instance);
-
-    if (!pluginConnection) {
-      throw new Error(`cannot find a pluginConnection for type ${type}`);
-    }
-
-    if (!pluginConnection.methods.scheduleOptions) return [];
-
-    const scheduleOptionOptions =
-      await pluginConnection.methods.scheduleOptions({
-        schedule: instance,
-        scheduleId: instance.id,
-        scheduleOptions,
-      });
-
-    return scheduleOptionOptions;
-  }
-
-  export async function getPropertyOptions(
-    instance: Property,
-    propertyOptions: SimplePropertyOptions
-  ) {
-    const { pluginConnection } = await getPlugin(instance);
-    const type = await getInstanceType(instance);
-    if (!pluginConnection) {
-      throw new Error(`cannot find a pluginConnection for type ${type}`);
-    }
-
-    if (!pluginConnection.methods.propertyOptions) return [];
-
-    const propertyOptionOptions =
-      await pluginConnection.methods.propertyOptions({
-        property: instance,
-        propertyId: instance.id,
-        propertyOptions,
-      });
-
-    return propertyOptionOptions;
-  }
-
-  export async function getRequiredAppOptions(instance: App) {
-    const { pluginApp } = await getPlugin(instance);
-    const type = await getInstanceType(instance);
-
-    if (!pluginApp) throw new Error(`cannot find a pluginApp for type ${type}`);
-
-    return pluginApp.options.filter((o) => o.required).map((o) => o.key);
-  }
-
   async function getInstanceType(
-    instance: ModelWithMapping & {
+    instance: ModelWithOptions & {
       type?: string;
       sourceId?: string;
     }
@@ -343,9 +295,9 @@ export namespace OptionHelper {
 
     if (!type || instance instanceof Property) {
       if (instance["sourceId"]) {
-        const source = await Source.scope(null).findOne({
-          where: { id: instance["sourceId"] },
-        });
+        const source = await SourcesCache.findOneWithCache(
+          instance["sourceId"]
+        );
         if (source) type = source.type;
       }
     }
@@ -384,17 +336,17 @@ export namespace OptionHelper {
    * Replace all values in a bundle of SimpleOptions with those values loaded from the ENV
    */
   export function sourceEnvironmentVariableOptions(
-    instance: ModelWithMapping,
+    instance: ModelWithOptions,
     options: SimpleOptions
   ) {
     const envOptionKeys = getEnvironmentVariableOptionsForTopic(
-      modelName<ModelWithMapping>(instance)
+      modelName<ModelWithOptions>(instance)
     );
 
     for (const k in options) {
       if (envOptionKeys.includes(options[k].toString()))
         options[k] = getEnvironmentVariableOption(
-          modelName<ModelWithMapping>(instance),
+          modelName<ModelWithOptions>(instance),
           options[k].toString()
         );
     }
@@ -402,7 +354,7 @@ export namespace OptionHelper {
     return options;
   }
 
-  async function getDefaultOptionValues(instance: ModelWithMapping) {
+  async function getDefaultOptionValues(instance: ModelWithOptions) {
     const plugin = await getPlugin(instance);
 
     let options: AppOptionsOption[] = [];
@@ -436,7 +388,7 @@ export namespace OptionHelper {
   }
 
   export async function getOptionsToObfuscate(
-    instance: ModelWithMapping,
+    instance: ModelWithOptions,
     obfuscateSensitive = false
   ) {
     const optionsToObfuscate: string[] = [];
@@ -470,7 +422,7 @@ export namespace OptionHelper {
   }
 
   export async function replaceObfuscatedOptions(
-    instance: ModelWithMapping,
+    instance: ModelWithOptions,
     options?: SimpleOptions,
     sourceFromEnvironment = true
   ) {

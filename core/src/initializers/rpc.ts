@@ -1,6 +1,22 @@
 import { Initializer, api, utils, log } from "actionhero";
 import { App } from "../models/App";
-import { Property } from "../models/Property";
+import { AppsCache } from "../modules/caches/appsCache";
+import { SourcesCache } from "../modules/caches/sourcesCache";
+import { PropertiesCache } from "../modules/caches/propertiesCache";
+import { DestinationsCache } from "../modules/caches/destinationsCache";
+import { ModelsCache } from "../modules/caches/modelsCache";
+
+declare module "actionhero" {
+  export interface Api {
+    rpc: {
+      model: Record<string, (arg: any) => void | Promise<void>>;
+      app: Record<string, (arg: any) => void | Promise<void>>;
+      source: Record<string, (arg: any) => void | Promise<void>>;
+      property: Record<string, (arg: any) => void | Promise<void>>;
+      destination: Record<string, (arg: any) => void | Promise<void>>;
+    };
+  }
+}
 
 export class GrouparooRPC extends Initializer {
   constructor() {
@@ -15,8 +31,11 @@ export class GrouparooRPC extends Initializer {
      * Here is where we list methods which will be invoked by `api.doCluster`
      */
     api.rpc = {
+      model: {},
       app: {},
+      source: {},
       property: {},
+      destination: {},
     };
 
     /**
@@ -36,10 +55,12 @@ export class GrouparooRPC extends Initializer {
     };
 
     /**
-     * Clear the per-instance Property cache
+     * Clear the caches
      */
-    api.rpc.property.invalidateCache = async () => {
-      Property.invalidateLocalCache();
-    };
+    api.rpc.model.invalidateCache = () => ModelsCache.invalidate();
+    api.rpc.app.invalidateCache = () => AppsCache.invalidate();
+    api.rpc.source.invalidateCache = () => SourcesCache.invalidate();
+    api.rpc.property.invalidateCache = () => PropertiesCache.invalidate();
+    api.rpc.destination.invalidateCache = () => DestinationsCache.invalidate();
   }
 }

@@ -1,21 +1,6 @@
-import path from "path";
-
 import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
-
-import {
-  TableSourceTemplate,
-  TablePropertyTemplate,
-} from "@grouparoo/app-templates/dist/source/table";
-import {
-  QuerySourceTemplate,
-  QueryPropertyTemplate,
-} from "@grouparoo/app-templates/dist/source/query";
-import { AppTemplate } from "@grouparoo/app-templates/dist/app";
-import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
 import { disconnect } from "@grouparoo/mysql/dist/lib/disconnect";
-import { getTables } from "@grouparoo/mysql/dist/lib/table-import/getTables";
-import { getColumns } from "@grouparoo/mysql/dist/lib/table-import/getColumns";
 import { connect } from "../lib/connect";
 import { getConnection as getTableConnection } from "../lib/table-import/connection";
 import { getConnection as getQueryConnection } from "../lib/query-import/connection";
@@ -24,7 +9,6 @@ import { test } from "@grouparoo/mysql/dist/lib/test";
 import { appQuery } from "@grouparoo/mysql/dist/lib/appQuery";
 
 const packageJSON = require("./../../package.json");
-const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
 
 export class Plugins extends Initializer {
   name = packageJSON.name;
@@ -33,18 +17,6 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/clickhouse/clickhouse.png",
-      templates: [
-        new AppTemplate("clickhouse", [
-          path.join(templateRoot, "app", "*.template"),
-        ]),
-        new TableSourceTemplate("clickhouse", { getTables, getColumns }),
-        new TablePropertyTemplate("clickhouse"),
-        new QuerySourceTemplate("clickhouse"),
-        new QueryPropertyTemplate("clickhouse"),
-        new DestinationTemplate("clickhouse", [
-          path.join(templateRoot, "destination", "*.template"),
-        ]),
-      ],
       apps: [
         {
           name: "clickhouse",

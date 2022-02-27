@@ -8,7 +8,7 @@ export class ImportAssociateRecords extends CLSTask {
   description = "ensure that imports are associated to records";
   frequency = 1000 * 10;
   queue = "imports";
-  inputs = {};
+  inputs = {} as const;
 
   async runWithinTransaction() {
     const limit: number = config.batchSize.imports;

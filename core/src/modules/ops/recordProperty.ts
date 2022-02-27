@@ -1,16 +1,15 @@
 import { parsePhoneNumberFromString, CountryCode } from "libphonenumber-js/max";
-import { plugin } from "../plugin";
 import isEmail from "../validators/isEmail";
 import isURL from "validator/lib/isURL";
 import { RecordProperty } from "../../models/RecordProperty";
-import { Option } from "../../models/Option";
 import { Property, PropertyTypes } from "../../models/Property";
 import { CLS } from "../cls";
 import { Op } from "sequelize";
 import { Source } from "../../models/Source";
 import { AggregationMethod, PluginConnection } from "../../classes/plugin";
-import { Filter } from "../../models/Filter";
-import { config, log } from "actionhero";
+import { log } from "actionhero";
+import { PropertiesCache } from "../../modules/caches/propertiesCache";
+import { plugin } from "../plugin";
 
 export namespace RecordPropertyOps {
   const defaultRecordPropertyProcessingDelay = 1000 * 60 * 5;
@@ -28,42 +27,40 @@ export namespace RecordPropertyOps {
       return { rawValue, invalidValue, invalidReason };
     }
 
-    const stringifiedValue = `${value}`.trim();
-
     try {
       switch (type) {
         case "float":
-          rawValue = await formatFloat(stringifiedValue);
+          rawValue = await formatFloat(value?.toString());
           break;
         case "integer":
-          rawValue = await formatInteger(stringifiedValue);
+          rawValue = await formatInteger(value?.toString());
           break;
         case "date":
           rawValue = await formatDate(value);
           break;
         case "string":
-          rawValue = await formatString(stringifiedValue);
+          rawValue = await formatString(value?.toString());
           break;
         case "email":
-          rawValue = await formatEmail(stringifiedValue);
+          rawValue = await formatEmail(value?.toString());
           break;
         case "phoneNumber":
-          rawValue = await formatPhoneNumber(stringifiedValue);
+          rawValue = await formatPhoneNumber(value?.toString());
           break;
         case "url":
-          rawValue = await formatURL(stringifiedValue);
+          rawValue = await formatURL(value?.toString());
           break;
         case "boolean":
-          rawValue = await formatBoolean(stringifiedValue);
+          rawValue = await formatBoolean(value?.toString());
           break;
         default:
           throw new Error(
-            `cannot coerce recordProperty ${stringifiedValue} to type ${type}`
+            `cannot coerce recordProperty ${value} to type ${type}`
           );
       }
     } catch (error) {
       rawValue = null;
-      invalidValue = stringifiedValue;
+      invalidValue = value?.toString();
       if (recordProperty && error instanceof Error) {
         error.message += ` for record ${recordProperty.recordId}`;
       }
@@ -118,10 +115,9 @@ export namespace RecordPropertyOps {
     }
     if (source.state !== "ready") return [];
     const { pluginConnection } = await source.getPlugin();
-    const properties = await source.$get("properties", {
-      where: { state: "ready" },
-      include: [Option, Filter],
-    });
+    const properties = (
+      await PropertiesCache.findAllWithCache(undefined, "ready")
+    ).filter((p) => p.sourceId === source.id);
 
     const pendingRecordPropertyIds: string[] = [];
     const unGroupedProperties: Property[] = [];
@@ -222,7 +218,7 @@ async function preparePropertyImports(
     ? "RecordProperty"
     : null;
 
-  await RecordProperty.updateAllinBatches(pendingRecordProperties, {
+  await RecordProperty.updateAllInBatches(pendingRecordProperties, {
     startedAt: new Date(),
   });
 
@@ -244,7 +240,7 @@ async function preparePropertyImports(
     }
   } else {
     // Schedule sources don't import properties on-demand, keep old value
-    await RecordProperty.updateAllinBatches(pendingRecordProperties, {
+    await RecordProperty.updateAllInBatches(pendingRecordProperties, {
       state: "ready",
       stateChangedAt: new Date(),
       confirmedAt: new Date(),
@@ -290,7 +286,7 @@ function formatURL(v: string) {
 function formatEmail(v: string) {
   // We do light validation on the email to ensure that it has an "@" and a "."
   if (!isEmail(v)) throw new Error(`email "${v}" is not valid`);
-  return v.toLocaleLowerCase();
+  return v;
 }
 
 async function formatPhoneNumber(v: string) {

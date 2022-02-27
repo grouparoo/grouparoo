@@ -87,7 +87,7 @@ describe("models/destination", () => {
       expect(destinationTwo.name).toBe("");
 
       await destinationOne.update({ name: "name" });
-      await destinationOne.setOptions({ table: "abc123" });
+      await destinationOne.setOptions({ table: "users_out" });
       await destinationOne.update({ state: "ready" });
 
       await expect(destinationTwo.update({ name: "name" })).rejects.toThrow(
@@ -127,7 +127,7 @@ describe("models/destination", () => {
       expect(destinationTwo.name).toBe("");
       expect(destinationThree.name).toBe("");
 
-      await destinationOne.setOptions({ table: "abc123" });
+      await destinationOne.setOptions({ table: "users_out" });
       await destinationOne.update({ state: "ready" });
 
       await destinationTwo.update({ state: "deleted", name: "asdf" });
@@ -186,7 +186,7 @@ describe("models/destination", () => {
         modelId: model.id,
       });
 
-      await destination.setOptions({ table: "table" });
+      await destination.setOptions({ table: "users_out" });
       await destination.setMapping({ "primary-id": "userId" });
       await destination.updateTracking("group", group.id);
       const destinationGroupMemberships: Record<string, string> = {};
@@ -265,7 +265,7 @@ describe("models/destination", () => {
         modelId: model.id,
       });
 
-      await destination.setOptions({ table: "table" });
+      await destination.setOptions({ table: "users_out" });
 
       const foreignOption = await Option.create({
         ownerId: destination.id,
@@ -331,7 +331,10 @@ describe("models/destination", () => {
         const connectionOptions =
           await destination.destinationConnectionOptions();
         expect(connectionOptions).toEqual({
-          table: { type: "list", options: ["users_out"] },
+          tableWithOptions: {
+            type: "list",
+            options: ["users_out", "users", "groups"],
+          },
         });
       }
     );
@@ -341,13 +344,16 @@ describe("models/destination", () => {
         options: "true",
       });
       expect(connectionOptions).toEqual({
-        table: { type: "list", options: ["users_out"] },
+        tableWithOptions: {
+          type: "list",
+          options: ["users_out", "users", "groups"],
+        },
         receivedOptions: { type: "text", options: ["true"] },
       });
     });
 
     describe("options trigger runs", () => {
-      const newTable = "__test_table";
+      const newTable = "users_out";
       let destination: Destination;
       let group: Group;
       let run: Run;
@@ -395,7 +401,7 @@ describe("models/destination", () => {
 
     describe("options from environment variables", () => {
       beforeAll(() => {
-        process.env.GROUPAROO_OPTION__DESTINATION__TEST_OPTION = "abc123";
+        process.env.GROUPAROO_OPTION__DESTINATION__TEST_OPTION = "users_out";
       });
 
       test("options can be set from an environment variable but not stored in the database", async () => {
@@ -408,7 +414,7 @@ describe("models/destination", () => {
 
         await destination.setOptions({ table: "TEST_OPTION" });
         const options = await destination.getOptions();
-        expect(options.table).toBe("abc123");
+        expect(options.table).toBe("users_out");
 
         const option = await Option.findOne({
           where: { ownerId: destination.id, key: "table" },
@@ -522,7 +528,7 @@ describe("models/destination", () => {
         await expect(
           destination.setOptions({
             something: "abc123",
-            table: "abc",
+            table: "users_out",
             primaryKey: "userID",
             groupsTable: "groups",
             groupForeignKey: "userId",
@@ -530,6 +536,20 @@ describe("models/destination", () => {
           })
         ).rejects.toThrow(
           /something is not an option for a test-plugin-export destination/
+        );
+      });
+
+      test("a valid value for options with multiple choices must be provided ", async () => {
+        const destination = await helper.factories.destination();
+        expect(destination.id).toBeTruthy();
+
+        await expect(
+          destination.setOptions({
+            table: "users_out",
+            tableWithOptions: "something_else",
+          })
+        ).rejects.toThrow(
+          /"something_else" is not a valid value for test-plugin-export destination option "tableWithOptions"/
         );
       });
 
@@ -611,7 +631,7 @@ describe("models/destination", () => {
 
       test("a destination that is ready cannot move back to draft", async () => {
         destination = await helper.factories.destination();
-        await destination.setOptions({ table: "users" });
+        await destination.setOptions({ table: "users_out" });
         await destination.update({ state: "ready" });
 
         await expect(destination.update({ state: "draft" })).rejects.toThrow(
@@ -675,7 +695,7 @@ describe("models/destination", () => {
           collection: "group",
         }); // does not throw, as first destination now has new options
 
-        await otherDestination.setOptions({ table: "purchases" }); // does not throw
+        await otherDestination.setOptions({ table: "groups" }); // does not throw
 
         await expect(
           otherDestination.setOptions({ table: "users" })
@@ -732,7 +752,7 @@ describe("models/destination", () => {
           collection: "model",
         }); // does not throw, as first destination now has new options
 
-        await otherDestination.setOptions({ table: "purchases" }); // does not throw
+        await otherDestination.setOptions({ table: "groups" }); // does not throw
 
         await expect(
           otherDestination.setOptions({ table: "users" })
@@ -767,7 +787,7 @@ describe("models/destination", () => {
           type: "test-plugin-export-batch", //has default mode "additive"
         });
 
-        await destination.setOptions({ table: "some table" });
+        await destination.setOptions({ table: "users" });
         await destination.update({ state: "ready" });
 
         const syncMode = await destination.getSyncMode();
@@ -783,7 +803,7 @@ describe("models/destination", () => {
           type: "test-plugin-export",
         });
 
-        await destination.setOptions({ table: "some table" });
+        await destination.setOptions({ table: "users" });
 
         await expect(destination.update({ state: "ready" })).rejects.toThrow(
           /Sync mode is required/
@@ -800,7 +820,7 @@ describe("models/destination", () => {
           syncMode: "RandomSyncMode",
         });
 
-        await destination.setOptions({ table: "some table" });
+        await destination.setOptions({ table: "users" });
 
         await expect(destination.update({ state: "ready" })).rejects.toThrow(
           /does not support sync mode/
@@ -1073,9 +1093,9 @@ describe("models/destination", () => {
           expect(destinations.length).toBe(0);
 
           // after the destinations are ready
-          await destination.setOptions({ table: "some table" });
+          await destination.setOptions({ table: "users" });
           await destination.update({ state: "ready" });
-          await otherGroupDestination.setOptions({ table: "some table" });
+          await otherGroupDestination.setOptions({ table: "users" });
           await otherGroupDestination.updateTracking("group", group.id);
           await modelDestination.updateTracking("model");
 
@@ -1171,12 +1191,13 @@ describe("models/destination", () => {
         await destination.save();
 
         await destination.setOptions({
-          table: "thing-{{{ now.sql }}}",
+          table: "users",
+          where: "thing-{{{ now.sql }}}",
         });
 
         const parameterizedOptions = await destination.parameterizedOptions();
         const now = new Date();
-        expect(parameterizedOptions.table).toMatch(
+        expect(parameterizedOptions.where).toMatch(
           `thing-${now.getFullYear()}`
         );
       });

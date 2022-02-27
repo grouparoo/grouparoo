@@ -32,6 +32,8 @@ import { Notification } from "../models/Notification";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
 import { ExportProcessor } from "../models/ExportProcessor";
+import { PropertiesCache } from "./caches/propertiesCache";
+import { oAuthAccessTokenGetter } from "../modules/oAuth";
 
 // the order matters here - the children need to come before the parents (destinationGroup -> destination)
 const models = [
@@ -66,6 +68,8 @@ const models = [
   Team,
   TeamMember,
 ];
+
+const _oAuthAccessTokenGetters: Record<string, oAuthAccessTokenGetter> = {};
 
 export namespace plugin {
   /**
@@ -352,9 +356,9 @@ export namespace plugin {
     //though we default to 3 brackets, if someone inputs the double bracket notation, we should accept it
     if (string.indexOf("{{") < 0) return string;
 
-    const properties = (await Property.findAllWithCache(modelId)).filter(
-      (p) => p.isArray === false
-    );
+    const properties = (
+      await PropertiesCache.findAllWithCache(modelId, "ready")
+    ).filter((p) => p.isArray === false);
 
     const data: Record<string, string> = {};
     properties.forEach((rule) => {
@@ -375,7 +379,7 @@ export namespace plugin {
     //though we default to 3 brackets, if someone inputs the double bracket notation, we should accept it
     if (string.indexOf("{{") < 0) return string;
 
-    const properties = await Property.findAllWithCache(modelId);
+    const properties = await PropertiesCache.findAllWithCache(modelId, "ready");
 
     const data: Record<string, string> = {};
     properties.forEach((rule) => {
@@ -387,5 +391,30 @@ export namespace plugin {
 
   export function setApmWrap(f: APMWrap) {
     api.apm.wrap = f;
+  }
+
+  /**
+   * Returns the access token for an OAuth-based plugin app that uses refresh tokens.
+   * Manages cache and expiration of the token.
+   * In order to use this, app OAuth access must first be setup by the Grouparoo team.
+   *
+   * @param providerName the name of the provider (e.g. hubspot)
+   * @param refreshToken the refresh token stored by the app options
+   * @returns the access token
+   */
+  export async function getOAuthAppAccessToken(
+    providerName: string,
+    refreshToken: string
+  ) {
+    let getter = _oAuthAccessTokenGetters[providerName];
+
+    if (!getter) {
+      getter = new oAuthAccessTokenGetter(providerName, refreshToken);
+      _oAuthAccessTokenGetters[providerName] = getter;
+    } else if (getter.refreshToken !== refreshToken) {
+      getter.refreshToken = refreshToken;
+    }
+
+    return await getter.getAccessToken();
   }
 }

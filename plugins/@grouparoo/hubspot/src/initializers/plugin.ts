@@ -1,21 +1,9 @@
-import path from "path";
 import { Initializer } from "actionhero";
-import { DestinationSyncMode, plugin } from "@grouparoo/core";
+import { plugin } from "@grouparoo/core";
 import { parallelism } from "../lib/parallelism";
 import { test } from "../lib/test";
-
-import {
-  contactsDestinationConnection,
-  contactsSupportedSyncModes,
-} from "../lib/export-contacts/connection";
-import {
-  objectsDestinationConnection,
-  objectsSupportedSyncModes,
-} from "../lib/export-objects/connection";
-
-const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
-import { AppTemplate } from "@grouparoo/app-templates/dist/app";
-import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
+import { contactsDestinationConnection } from "../lib/export-contacts/connection";
+import { objectsDestinationConnection } from "../lib/export-objects/connection";
 
 const packageJSON = require("./../../package.json");
 
@@ -26,28 +14,9 @@ export class Plugins extends Initializer {
   }
 
   async initialize() {
-    const defaultSyncMode: DestinationSyncMode = "sync";
-
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/hubspot/hubspot.png",
-      templates: [
-        new AppTemplate("hubspot", [
-          path.join(templateRoot, "app", "*.template"),
-        ]),
-        new DestinationTemplate(
-          "hubspot:contacts",
-          [path.join(templateRoot, "destination", "contacts", "*.template")],
-          contactsSupportedSyncModes,
-          defaultSyncMode
-        ),
-        new DestinationTemplate(
-          "hubspot:objects",
-          [path.join(templateRoot, "destination", "objects", "*.template")],
-          objectsSupportedSyncModes,
-          defaultSyncMode
-        ),
-      ],
       apps: [
         {
           name: "hubspot",
@@ -56,9 +25,24 @@ export class Plugins extends Initializer {
             {
               key: "hapikey",
               type: "password",
-              displayName: "Hubspot API Key",
+              displayName: "HubSpot API Key",
               required: true,
-              description: "Hubspot hapikey (api) key.",
+              description:
+                "HubSpot API key. You can get the API key in HubSpot under Settings > Integrations > API Key.",
+            },
+          ],
+          methods: { test, parallelism },
+        },
+        {
+          name: "hubspot-oauth",
+          displayName: "HubSpot (OAuth)",
+          options: [
+            {
+              key: "refreshToken",
+              type: "oauth-token",
+              displayName: "OAuth Refresh Token",
+              required: true,
+              description: "HubSpot OAuth refresh token.",
             },
           ],
           methods: { test, parallelism },

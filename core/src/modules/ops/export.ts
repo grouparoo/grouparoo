@@ -166,6 +166,32 @@ export namespace ExportOps {
   }
 
   /**
+   * Sets export(s) to pending
+   */
+  async function retryExport(
+    where: WhereOptions<Export>,
+    saveExports: boolean
+  ) {
+    if (saveExports) {
+      const [count] = await Export.update(
+        {
+          state: "pending",
+          sendAt: new Date(),
+          startedAt: null,
+          errorMessage: null,
+          errorLevel: null,
+          retryCount: 0,
+        },
+        { where }
+      );
+
+      return count;
+    }
+
+    return Export.count({ where });
+  }
+
+  /**
    * Finds failed exports within a time range and sets them back to pending
    */
   export async function retryFailedExports(
@@ -184,22 +210,24 @@ export namespace ExportOps {
 
     if (destination) where.destinationId = destination.id;
 
-    if (saveExports) {
-      const [count] = await Export.update(
-        {
-          state: "pending",
-          sendAt: new Date(),
-          startedAt: null,
-          errorMessage: null,
-          errorLevel: null,
-          retryCount: 0,
-        },
-        { where }
-      );
+    return retryExport(where, saveExports);
+  }
 
-      return count;
+  /**
+   * Finds finds and retries a failed or canceled export by id
+   */
+  export async function retryExportById(exportId: string) {
+    const where: WhereOptions<Export> = {
+      state: { [Op.in]: ["failed", "canceled"] },
+      id: exportId,
+    };
+
+    const count = await retryExport(where, true);
+
+    if (count === 0) {
+      throw new Error("No export found");
     }
 
-    return Export.count({ where });
+    return count;
   }
 }

@@ -275,12 +275,6 @@ export class Export extends CommonModel<Export> {
 
   static defaultState = "pending";
 
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
-
   @BeforeSave
   static async updateState(instance: Export) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
@@ -320,7 +314,7 @@ export class Export extends CommonModel<Export> {
     }
   }
 
-  static async retryFailed(
+  static retryFailed(
     startDate: Date,
     endDate: Date,
     destination?: Destination,
@@ -332,6 +326,10 @@ export class Export extends CommonModel<Export> {
       destination,
       saveExports
     );
+  }
+
+  static retryById(exportId: string) {
+    return ExportOps.retryExportById(exportId);
   }
 
   static async sweep(limit: number) {

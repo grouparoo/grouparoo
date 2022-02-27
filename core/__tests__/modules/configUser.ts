@@ -2,6 +2,7 @@ import fs from "fs";
 import os from "os";
 import { helper } from "@grouparoo/spec-helper";
 import { ConfigUser } from "../../src/modules/configUser";
+import * as GrouparooSubscriptionModule from "../../src/modules/grouparooSubscription";
 import { Setting, plugin } from "../../src";
 
 const workerId = process.env.JEST_WORKER_ID;
@@ -10,18 +11,28 @@ const configDir = `${os.tmpdir()}/test/${workerId}/configUser/config`;
 process.env.GROUPAROO_CONFIG_DIR = configDir;
 
 describe("modules/ConfigUser", () => {
-  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  helper.grouparooTestServer({
+    truncate: true,
+    enableTestPlugin: true,
+    resetSettings: true,
+  });
+
+  let grouparooSubscription: jest.SpyInstance;
 
   beforeEach(async () => {
     process.env.GROUPAROO_RUN_MODE = "cli:config";
 
+    grouparooSubscription = jest
+      .spyOn(GrouparooSubscriptionModule, "GrouparooSubscription")
+      .mockImplementation(() => undefined);
+
     const localFile = await ConfigUser.localUserFilePath();
     if (fs.existsSync(localFile)) fs.rmSync(localFile);
-    await Setting.truncate();
   });
 
   afterEach(async () => {
     process.env.GROUPAROO_RUN_MODE = undefined;
+    grouparooSubscription.mockRestore();
     const localFile = await ConfigUser.localUserFilePath();
     if (fs.existsSync(localFile)) fs.rmSync(localFile);
   });
@@ -52,19 +63,104 @@ describe("modules/ConfigUser", () => {
   });
 
   test("stores the company as the cluster name", async () => {
-    await plugin.registerSetting(
-      "testPlugin",
-      "cluster-name",
-      "My Grouparoo Cluster",
-      "My Grouparoo Cluster",
-      "Name of the cluster",
-      "string"
-    );
+    const setting = await Setting.findOne({ where: { key: "cluster-name" } });
+    expect(setting.value).not.toEqual("Grouparoo, Inc");
+
+    await ConfigUser.create({
+      email: "demo@grouparoo.com",
+      company: "Grouparoo, Inc",
+    });
+
+    await setting.reload();
+    expect(setting.value).toEqual("Grouparoo, Inc");
+  });
+
+  test("records that the user subscribed to the grouparoo newsletter", async () => {
     await ConfigUser.create({
       email: "demo@grouparoo.com",
       company: "My Company",
+      subscribed: true,
     });
-    const setting = await Setting.findOne({ where: { key: "cluster-name" } });
-    expect(setting.value).toEqual("My Company");
+
+    expect(grouparooSubscription).toHaveBeenCalledTimes(1);
+    expect(grouparooSubscription).toHaveBeenCalledWith({
+      email: "demo@grouparoo.com",
+      subscribed: true,
+    });
+  });
+
+  test("records that the user did not subscribe to the grouparoo newsletter", async () => {
+    await ConfigUser.create({
+      email: "demo@grouparoo.com",
+      company: "My Company",
+      subscribed: false,
+    });
+
+    expect(grouparooSubscription).toHaveBeenCalledTimes(1);
+    expect(grouparooSubscription).toHaveBeenCalledWith({
+      email: "demo@grouparoo.com",
+      subscribed: false,
+    });
+  });
+
+  describe("#isAuthenticated()", () => {
+    test("returns false if there is no user file", async () => {
+      const filePath = await ConfigUser.localUserFilePath();
+      expect(fs.existsSync(filePath)).toEqual(false);
+
+      const isAuthenticated = await ConfigUser.isAuthenticated();
+      expect(isAuthenticated).toEqual(false);
+    });
+
+    test("returns false if only a customerId is saved", async () => {
+      const filePath = await ConfigUser.localUserFilePath();
+      fs.writeFileSync(
+        filePath,
+        JSON.stringify({ customerId: "some-customer-id" })
+      );
+
+      const isAuthenticated = await ConfigUser.isAuthenticated();
+      expect(isAuthenticated).toEqual(false);
+    });
+
+    test("returns true if email=true", async () => {
+      const filePath = await ConfigUser.localUserFilePath();
+      fs.writeFileSync(filePath, JSON.stringify({ email: true }));
+
+      const isAuthenticated = await ConfigUser.isAuthenticated();
+      expect(isAuthenticated).toEqual(true);
+    });
+  });
+
+  describe("customerId", () => {
+    test("saves the customerId to .local/user.json", async () => {
+      const filePath = await ConfigUser.localUserFilePath();
+      expect(fs.existsSync(filePath)).toEqual(false);
+
+      const setting = await plugin.readSetting("telemetry", "customer-id");
+      await ConfigUser.loadOrStoreCustomerId();
+
+      expect(fs.existsSync(filePath)).toEqual(true);
+      const user = await ConfigUser.get();
+      expect(Object.keys(user)).toEqual(["customerId"]);
+      expect(user.customerId).toEqual(setting.value);
+    });
+
+    test("loads the customerId from .local/user.json", async () => {
+      const filePath = await ConfigUser.localUserFilePath();
+      expect(fs.existsSync(filePath)).toEqual(false);
+      fs.writeFileSync(
+        filePath,
+        JSON.stringify({ customerId: "my-customer-id" })
+      );
+
+      const setting = await plugin.readSetting("telemetry", "customer-id");
+      expect(setting.value).not.toEqual("my-customer-id");
+
+      await ConfigUser.loadOrStoreCustomerId();
+
+      await setting.reload();
+      expect(setting.value).toEqual("my-customer-id");
+    });
   });
 });

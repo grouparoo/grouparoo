@@ -15,13 +15,29 @@ import LoadingButton from "../../../components/LoadingButton";
 import LockedBadge from "../../../components/badges/LockedBadge";
 import { Actions, Models } from "../../../utils/apiData";
 import { grouparooUiEdition } from "../../../utils/uiEdition";
-import { NextPageContext } from "next";
 import { generateClient } from "../../../client/client";
 import { FormTypeahead } from "../../../components/Typeahead";
+import { withServerErrorHandler } from "../../../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../../../utils/pageHelper";
+import TypeBadge from "../../../components/badges/TypeBadge";
 
-export default function Page(
-  props: Awaited<ReturnType<typeof Page.getInitialProps>>
-) {
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const { id } = ctx.query;
+  const client = generateClient(ctx);
+  const { app } = await client.request<Actions.AppView>("get", `/app/${id}`);
+  const { options, pluginOptions, environmentVariableOptions } =
+    await client.request<Actions.AppOptions>("get", `/app/${id}/options`);
+  return {
+    props: {
+      app,
+      options,
+      pluginOptions,
+      environmentVariableOptions,
+    },
+  };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   const { environmentVariableOptions, options, pluginOptions } = props;
   const router = useRouter();
   const { client } = useApi();
@@ -173,6 +189,20 @@ export default function Page(
     }
   };
 
+  const watchedFields = watch();
+
+  const hasAllRequiredFields = useMemo(() => {
+    return pluginOptions
+      .filter((opt) => opt.required)
+      .reduce(
+        (acc, opt) =>
+          acc &&
+          !!watchedFields.options[opt.key] &&
+          watchedFields.options[opt.key] !== "",
+        true
+      );
+  }, [pluginOptions, watchedFields]);
+
   return (
     <>
       <Head>
@@ -185,6 +215,7 @@ export default function Page(
         icon={app.icon}
         title={appName}
         badges={[
+          <TypeBadge type={app.type} />,
           <SourceBadge object={app} />,
           <DestinationBadge object={app} />,
           <LockedBadge object={app} />,
@@ -211,12 +242,6 @@ export default function Page(
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group controlId="type">
-                <Form.Label>Type</Form.Label>
-                <Form.Control as="select" value={app.type} disabled>
-                  <option>{app.type}</option>
-                </Form.Control>
-              </Form.Group>
               <div data-screenshotid="appOptions">
                 {pluginOptions.length > 0 ? (
                   <>
@@ -345,12 +370,11 @@ export default function Page(
                                       Boolean(app.locked) || loadingOAuth
                                     }
                                     loading={loadingOAuth}
-                                    variant="outline-primary"
+                                    variant={"outline-primary"}
                                     onClick={() => startOAuthLogin(opt.key)}
                                   >
-                                    Sign in with OAuth
+                                    Request Token
                                   </LoadingButton>
-
                                   <Form.Control
                                     className="mt-2"
                                     required={opt.required}
@@ -401,6 +425,7 @@ export default function Page(
                   size="sm"
                   onClick={test}
                   loading={testLoading}
+                  disabled={!hasAllRequiredFields}
                 >
                   Test Connection
                 </LoadingButton>
@@ -447,21 +472,6 @@ export default function Page(
       </Row>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { id } = ctx.query;
-  const client = generateClient(ctx);
-  const { app } = await client.request<Actions.AppView>("get", `/app/${id}`);
-  const {
-    options,
-    pluginOptions,
-    environmentVariableOptions,
-  }: Actions.AppOptions = await client.request("get", `/app/${id}/options`);
-  return {
-    app,
-    options,
-    pluginOptions,
-    environmentVariableOptions,
-  };
 };
+
+export default Page;

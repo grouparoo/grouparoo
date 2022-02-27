@@ -6,6 +6,7 @@ import { useGrouparooModel } from "../../contexts/grouparooModel";
 import { errorHandler } from "../../eventHandlers";
 import { Actions, Models } from "../../utils/apiData";
 import LoadingButton from "../LoadingButton";
+import type { RecordType } from "./SampleRecordCard";
 
 const getInputType = (type?: Models.PropertyType["type"]): string => {
   switch (type) {
@@ -18,18 +19,21 @@ const getInputType = (type?: Models.PropertyType["type"]): string => {
 };
 
 interface Props {
-  modelId: string;
   properties: Models.PropertyType[];
-  onSubmitComplete: (record?: Models.GrouparooRecordType) => void;
+  onSubmitComplete: (
+    record: RecordType,
+    groups: Models.GroupType[],
+    destinations: Models.DestinationType[]
+  ) => void;
 }
 
 const AddSampleRecordForm: React.FC<Props> = ({
-  modelId,
   onSubmitComplete,
   properties,
 }) => {
-  // TODO: Remove me when 180627104-better-add-sample-record-logic-for-invalid-ids is merged
-  modelId = useGrouparooModel().model.id;
+  const {
+    model: { id: modelId },
+  } = useGrouparooModel();
   const { handleSubmit, register } = useForm();
   const [submitting, setSubmitting] = useState(false);
   const { client } = useApi();
@@ -69,7 +73,11 @@ const AddSampleRecordForm: React.FC<Props> = ({
       setSubmitting(false);
 
       if (response?.record) {
-        onSubmitComplete(response.record);
+        onSubmitComplete(
+          response.record,
+          response.groups,
+          response.destinations
+        );
       } else {
         errorHandler.set({
           message: `Could not add Sample Record.

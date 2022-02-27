@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Row, Col, Form } from "react-bootstrap";
-import { NextPage, NextPageContext } from "next";
+import { NextPage } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import StateBadge from "../../../../../components/badges/StateBadge";
@@ -16,12 +16,22 @@ import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 import { useApi } from "../../../../../contexts/api";
 import { generateClient } from "../../../../../client/client";
+import { withServerErrorHandler } from "../../../../../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../../../../../utils/pageHelper";
 
-interface Props {
-  group: Models.GroupType;
-}
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const { groupId, modelId } = ctx.query;
+  const client = generateClient(ctx);
+  const { group } = await client.request<Actions.GroupView>(
+    "get",
+    `/group/${groupId}`
+  );
+  ensureMatchingModel("Group", group.modelId, modelId.toString());
 
-const Page: NextPage<Props> = (props) => {
+  return { props: { group } };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = (props) => {
   const router = useRouter();
   const [group, setGroup] = useState<Models.GroupType>(props.group);
   const { client } = useApi();
@@ -199,15 +209,6 @@ const Page: NextPage<Props> = (props) => {
       </Row>
     </>
   );
-};
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { groupId, modelId } = ctx.query;
-  const client = generateClient(ctx);
-  const { group } = await client.request("get", `/group/${groupId}`);
-  ensureMatchingModel("Group", group.modelId, modelId.toString());
-
-  return { group };
 };
 
 export default Page;

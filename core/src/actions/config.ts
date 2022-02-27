@@ -15,10 +15,10 @@ export class ConfigValidate extends AuthenticatedAction {
   inputs = {
     local: {
       required: true,
-      default: "false",
+      default: false,
       formatter: APIData.ensureBoolean,
     },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -42,34 +42,12 @@ export class ConfigApply extends AuthenticatedAction {
       default: false,
       formatter: APIData.ensureBoolean,
     },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<ConfigApply> }) {
     return spawnPromise("./node_modules/.bin/grouparoo", [
       "apply",
       params.local === true ? `--validate` : null,
-    ]);
-  }
-}
-
-export class ConfigGenerate extends AuthenticatedAction {
-  name = "config:generate";
-  description = "I generate a new config file";
-  permission: ActionPermission = { topic: "system", mode: "write" };
-  inputs = {
-    id: { required: true },
-    parentId: { required: false },
-  };
-
-  async runWithinTransaction({
-    params,
-  }: {
-    params: ParamsFrom<ConfigGenerate>;
-  }) {
-    return spawnPromise("./node_modules/.bin/grouparoo", [
-      "generate",
-      params.id,
-      params.parentId,
     ]);
   }
 }
@@ -82,7 +60,7 @@ export class ConfigUserCreate extends OptionallyAuthenticatedAction {
     email: { required: true },
     company: { required: true },
     subscribed: { required: false, formatter: APIData.ensureBoolean },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,

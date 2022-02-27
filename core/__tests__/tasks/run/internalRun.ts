@@ -49,7 +49,7 @@ describe("tasks/run:internalRun", () => {
     });
 
     test("the task will mark every record as pending by default", async () => {
-      const run = await internalRun("test", "testId");
+      const run = await internalRun("teamMember", "testId");
       await specHelper.runTask("run:internalRun", { runId: run.id });
 
       await run.reload();

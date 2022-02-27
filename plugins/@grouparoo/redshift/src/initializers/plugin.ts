@@ -1,35 +1,15 @@
-import path from "path";
 import { Initializer } from "actionhero";
 import { DestinationSyncMode, plugin } from "@grouparoo/core";
-
 import { appQuery } from "@grouparoo/postgres/dist/lib/appQuery";
 import { test } from "@grouparoo/postgres/dist/lib/test";
 import { connect } from "@grouparoo/postgres/dist/lib/connect";
 import { disconnect } from "@grouparoo/postgres/dist/lib/disconnect";
-
 import { exportRecord } from "@grouparoo/postgres/dist/lib/export/exportRecord";
 import { exportArrayProperties } from "@grouparoo/postgres/dist/lib/export/exportArrayProperties";
-
 import { getConnection as getTableConnection } from "../lib/table-import/connection";
 import { getConnection as getQueryConnection } from "../lib/query-import/connection";
-
 import { destinationOptions } from "@grouparoo/postgres/dist/lib/export/destinationOptions";
 import { destinationMappingOptions } from "@grouparoo/postgres/dist/lib/export/destinationMappingOptions";
-
-import { getTables } from "@grouparoo/postgres/dist/lib/table-import/getTables";
-import { getColumns } from "@grouparoo/postgres/dist/lib/table-import/getColumns";
-
-const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
-import { AppTemplate } from "@grouparoo/app-templates/dist/app";
-import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
-import {
-  TableSourceTemplate,
-  TablePropertyTemplate,
-} from "@grouparoo/app-templates/dist/source/table";
-import {
-  QuerySourceTemplate,
-  QueryPropertyTemplate,
-} from "@grouparoo/app-templates/dist/source/query";
 
 const packageJSON = require("./../../package.json");
 
@@ -45,21 +25,6 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/redshift/redshift.png",
-      templates: [
-        new AppTemplate("redshift", [
-          path.join(templateRoot, "app", "*.template"),
-        ]),
-        new TableSourceTemplate("redshift", { getTables, getColumns }),
-        new TablePropertyTemplate("redshift"),
-        new QuerySourceTemplate("redshift"),
-        new QueryPropertyTemplate("redshift"),
-        new DestinationTemplate(
-          "redshift",
-          [path.join(templateRoot, "destination", "*.template")],
-          syncModes,
-          defaultSyncMode
-        ),
-      ],
       apps: [
         {
           name: "redshift",

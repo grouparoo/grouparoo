@@ -23,6 +23,7 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
     options: Parameters<typeof bqClient.query>[0],
     callback?: Parameters<typeof bqClient.query>[1]
   ) => {
+    // @ts-expect-error the BQ types think 'options' is a string, but it's an object
     log(`[ bigquery ] ${options.query}`, "debug", options.params);
     return queryShim(options, callback);
   };

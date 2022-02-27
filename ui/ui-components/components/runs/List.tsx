@@ -1,4 +1,4 @@
-import { NextPageContext } from "next";
+import { GetServerSidePropsContext } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useState } from "react";
@@ -301,19 +301,24 @@ export default function RunsList(props) {
 }
 
 RunsList.hydrate = async (
-  ctx: NextPageContext,
-  options: { topic?: string } = {}
+  ctx: GetServerSidePropsContext,
+  options?: { topic?: string }
 ) => {
+  const { topic = null } = options ?? {};
   const { sourceId, groupId, propertyId, limit, offset, stateFilter, error } =
     ctx.query;
   const client = generateClient(ctx);
-  const { runs, total } = await client.request("get", `/runs`, {
-    creatorId: sourceId ?? groupId ?? propertyId,
-    topic: options.topic,
-    limit,
-    offset,
-    state: stateFilter,
-    hasError: error,
-  });
-  return { runs, total, topic: options.topic };
+  const { runs, total } = await client.request<Actions.RunsList>(
+    "get",
+    `/runs`,
+    {
+      creatorId: sourceId ?? groupId ?? propertyId,
+      topic,
+      limit,
+      offset,
+      state: stateFilter,
+      hasError: error,
+    }
+  );
+  return { runs, total, topic };
 };

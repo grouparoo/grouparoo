@@ -5,7 +5,10 @@ import { Run } from "../models/Run";
  * This method will enqueue a run which creates an import for every record
  * Enqueuing a new internal run will end any previous runs for the same creator type
  */
-export async function internalRun(creatorType: string, creatorId: string) {
+export async function internalRun(
+  creatorType: Run["creatorType"],
+  creatorId: string
+) {
   const previousRuns = await Run.findAll({
     where: {
       creatorType,

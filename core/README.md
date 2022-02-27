@@ -52,6 +52,6 @@ grouparoo init .
 grouparoo config
 ```
 
-This will generate a `package.json`, `config` directory, and `.env` file for configuration.
+This will generate a `package.json` and `.env` file and launch our Config UI for you to begin configuring your Grouparoo instance.
 
 🦘

@@ -31,6 +31,7 @@ describe("demo users", () => {
       "demo_calculated_property_source",
       "demo_purchases",
       "demo_users",
+      "demo_users_queries",
     ]);
 
     const properties = (await Property.findAll()).map((o) => o.id).sort();
@@ -39,6 +40,7 @@ describe("demo users", () => {
       "email",
       "first_name",
       "full_name",
+      "ip_address",
       "language",
       "last_name",
       "last_purchase_category",

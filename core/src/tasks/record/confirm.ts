@@ -12,7 +12,7 @@ export class GrouparooRecordsConfirm extends CLSTask {
   description = "Confirm that records still exist in the source";
   frequency = 1000 * 30;
   queue = "records";
-  inputs = {};
+  inputs = {} as const;
 
   async runWithinTransaction() {
     const limit: number = config.batchSize.imports;

@@ -128,12 +128,4 @@ export class SetupStep extends CommonModel<SetupStep> {
 
     throw new Error(`Cannot find Setup Step Description for key ${this.key}`);
   }
-
-  // --- Class Methods --- //
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
 }

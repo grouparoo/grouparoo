@@ -51,15 +51,21 @@ import { RunOps } from "../modules/ops/runs";
 import { ModelGuard } from "../modules/modelGuard";
 import { getGrouparooRunMode } from "../modules/runMode";
 import { CommonModel } from "../classes/commonModel";
+import { PropertiesCache } from "../modules/caches/propertiesCache";
 
 export const GROUP_RULE_LIMIT = 10;
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+export interface GroupRuleOperation {
+  op: GroupRuleOpType;
+  description?: string;
+}
 
 export interface GroupRuleWithKey {
   key?: string;
   type?: Property["type"];
   topLevel?: boolean;
-  operation: { op: GroupRuleOpType; description?: string };
+  operation: GroupRuleOperation;
   match?: string | number | boolean;
   relativeMatchNumber?: number;
   relativeMatchUnit?: RelativeMatchUnitType;
@@ -180,9 +186,10 @@ export class Group extends CommonModel<Group> {
 
     for (const i in rules) {
       const rule: GroupRule = rules[i];
-      const property = await Property.findOneWithCache(
+      const property = await PropertiesCache.findOneWithCache(
         rule.propertyId,
-        this.modelId
+        this.modelId,
+        "ready"
       );
       const type = property
         ? property.type
@@ -472,9 +479,13 @@ export class Group extends CommonModel<Group> {
       const localWhereGroup: WhereAttributeHash = {};
       let rawValueMatch: WhereAttributeHash = {};
 
-      const property = await Property.findOne({
-        where: { key },
-      });
+      const property = await PropertiesCache.findOneWithCache(
+        key,
+        this.modelId,
+        "ready",
+        "key"
+      );
+
       if (!property && !topLevel) {
         throw new Error(`cannot find type for Property ${key}`);
       }
@@ -670,9 +681,10 @@ export class Group extends CommonModel<Group> {
     const convenientRules = this.toConvenientRules(groupRules);
 
     for (const rule of convenientRules) {
-      const property = await Property.findOneWithCache(
+      const property = await PropertiesCache.findOneWithCache(
         rule.key,
         modelId,
+        "ready",
         "key"
       );
       rules.push({
@@ -703,12 +715,6 @@ export class Group extends CommonModel<Group> {
   }
 
   // --- Class Methods --- //
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
 
   @BeforeCreate
   @BeforeSave

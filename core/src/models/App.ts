@@ -12,6 +12,7 @@ import {
   HasMany,
   HasOne,
   DefaultScope,
+  AfterSave,
 } from "sequelize-typescript";
 import { api, redis } from "actionhero";
 import { Op } from "sequelize";
@@ -27,6 +28,8 @@ import { APIData } from "../modules/apiData";
 import { AppConfigurationObject } from "../classes/codeConfig";
 import { AppRefreshQuery } from "./AppRefreshQuery";
 import { CommonModel } from "../classes/commonModel";
+import { AppsCache } from "../modules/caches/appsCache";
+import { CLS } from "../modules/cls";
 
 export interface SimpleAppOptions extends OptionHelper.SimpleOptions {}
 
@@ -109,11 +112,12 @@ export class App extends CommonModel<App> {
     );
   }
 
-  async setOptions(options: SimpleAppOptions) {
-    return OptionHelper.setOptions(this, options);
+  async setOptions(options: SimpleAppOptions, externallyValidate = true) {
+    return OptionHelper.setOptions(this, options, externallyValidate);
   }
 
   async afterSetOptions(hasChanges: boolean) {
+    if (hasChanges) await App.invalidateCache();
     if (hasChanges && this.state !== "draft" && !this.isNewRecord) {
       await redis.doCluster(
         "api.rpc.app.disconnect",
@@ -124,9 +128,21 @@ export class App extends CommonModel<App> {
     }
   }
 
-  async validateOptions(options?: SimpleAppOptions) {
+  async validateOptions(options?: SimpleAppOptions, externallyValidate = true) {
     if (!options) options = await this.getOptions(true);
-    return OptionHelper.validateOptions(this, options, null);
+    const { pluginApp } = await this.getPlugin();
+    if (!pluginApp)
+      throw new Error(`cannot find a pluginApp for type ${this.type}`);
+
+    const appOptions = externallyValidate ? await this.appOptions() : {};
+    const optionsSpec: OptionHelper.OptionsSpec = pluginApp.options.map(
+      (opt) => ({
+        ...opt,
+        options: appOptions[opt.key]?.options ?? [],
+      })
+    );
+
+    return OptionHelper.validateOptions(this, options, optionsSpec);
   }
 
   async getPlugin() {
@@ -283,12 +299,6 @@ export class App extends CommonModel<App> {
 
   // --- Class Methods --- //
 
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
-
   // Disconnect all Apps from their persistent connections
   static async disconnect(id?: string) {
     const apps = id
@@ -409,5 +419,14 @@ export class App extends CommonModel<App> {
     const key = instance.parallelismKey();
     const redis = api.redis.clients.client;
     return redis.del(key);
+  }
+
+  @AfterSave
+  @AfterDestroy
+  static async invalidateCache() {
+    AppsCache.invalidate();
+    await CLS.afterCommit(
+      async () => await redis.doCluster("api.rpc.app.invalidateCache")
+    );
   }
 }

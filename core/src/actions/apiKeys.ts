@@ -12,7 +12,7 @@ export class ApiKeysList extends AuthenticatedAction {
   inputs = {
     limit: { required: true, default: 100, formatter: APIData.ensureNumber },
     offset: { required: true, default: 0, formatter: APIData.ensureNumber },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<ApiKeysList> }) {
     const total = await ApiKey.count();
@@ -39,7 +39,7 @@ export class ApiKeyCreate extends AuthenticatedAction {
     permissionAllRead: { required: false },
     permissionAllWrite: { required: false },
     permissions: { required: false, formatter: APIData.ensureArray },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<ApiKeyCreate> }) {
     const apiKey = new ApiKey(params);
@@ -56,7 +56,7 @@ export class ApiKeyEdit extends AuthenticatedAction {
   outputExample = {};
   permission: ActionPermission = { topic: "apiKey", mode: "write" };
   inputs = {
-    id: { required: true },
+    id: { required: true as true },
     name: { required: false },
     permissionAllRead: { required: false },
     permissionAllWrite: { required: false },
@@ -89,7 +89,7 @@ export class ApiKeyView extends AuthenticatedAction {
   permission: ActionPermission = { topic: "apiKey", mode: "read" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<ApiKeyView> }) {
     const apiKey = await ApiKey.findById(params.id);
@@ -104,7 +104,7 @@ export class ApiKeyDestroy extends AuthenticatedAction {
   permission: ActionPermission = { topic: "apiKey", mode: "write" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,

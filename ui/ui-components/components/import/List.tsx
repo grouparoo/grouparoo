@@ -10,7 +10,7 @@ import { Models, Actions } from "../../utils/apiData";
 import { formatTimestamp } from "../../utils/formatTimestamp";
 import StateBadge from "../badges/StateBadge";
 import { capitalize } from "../../utils/languageHelper";
-import { NextPageContext } from "next";
+import { GetServerSidePropsContext } from "next";
 import { useApi } from "../../contexts/api";
 import { generateClient } from "../../client/client";
 
@@ -25,8 +25,11 @@ const states = [
 
 type ImportStateOption = typeof states[number];
 
-export default function ImportList(props) {
-  const { groups }: { groups: Models.GroupType[] } = props;
+interface Props extends Awaited<ReturnType<typeof ImportList.hydrate>> {
+  header?: React.ReactNode;
+}
+
+export default function ImportList(props: Props) {
   const router = useRouter();
   const { client } = useApi();
   const [loading, setLoading] = useState(false);
@@ -210,20 +213,23 @@ export default function ImportList(props) {
   );
 }
 
-ImportList.hydrate = async (ctx: NextPageContext) => {
+ImportList.hydrate = async (ctx: GetServerSidePropsContext) => {
   const client = generateClient(ctx);
   const { creatorId, limit, offset, state, recordId } = ctx.query;
 
-  const { imports, total } = await client.request("get", `/imports`, {
-    limit,
-    offset,
-    creatorId,
-    recordId,
-    state: state === "all" ? undefined : state,
-  });
+  const { imports, total } = await client.request<Actions.ImportsList>(
+    "get",
+    `/imports`,
+    {
+      limit,
+      offset,
+      creatorId,
+      recordId,
+      state: state === "all" ? undefined : state,
+    }
+  );
 
-  const { groups } = await client.request("get", `/groups`);
-  return { groups, imports, total };
+  return { imports, total };
 };
 
 function EventErrorMetadata({ import: _import }) {

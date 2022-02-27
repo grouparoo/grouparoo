@@ -73,6 +73,4 @@ export class Filter extends CommonModel<Filter> {
       updatedAt: APIData.formatDate(this.updatedAt),
     };
   }
-
-  // --- Class Methods --- //
 }

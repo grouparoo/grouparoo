@@ -13,7 +13,8 @@ export class SessionCreate extends CLSAction {
     email: { required: true },
     password: { required: false },
     requestId: { required: false },
-  };
+  } as const;
+
   outputExample = {};
 
   isWriteTransaction() {

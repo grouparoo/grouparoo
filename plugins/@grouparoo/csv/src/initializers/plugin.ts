@@ -1,8 +1,6 @@
 import { Initializer } from "actionhero";
 import { AggregationMethod, plugin } from "@grouparoo/core";
-
 import { test } from "../lib/test";
-
 import { sourceOptions } from "../lib/sourceOptions";
 import { sourcePreview } from "../lib/sourcePreview";
 import { importRecords } from "../lib/importRecords";
@@ -11,12 +9,6 @@ import { sourceRunPercentComplete } from "../lib/sourceRunPercentComplete";
 import { uniquePropertyBootstrapOptions } from "../lib/uniquePropertyBootstrapOptions";
 import { recordProperty } from "../lib/recordProperty";
 import { recordProperties } from "../lib/recordProperties";
-
-import {
-  CSVAppTemplate,
-  CSVSourceTemplate,
-  CSVPropertyTemplate,
-} from "../lib/templates";
 
 const packageJSON = require("./../../package.json");
 
@@ -30,7 +22,6 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/csv/csv.svg",
-      templates: [CSVAppTemplate, CSVSourceTemplate, CSVPropertyTemplate],
       apps: [
         {
           name: "csv",

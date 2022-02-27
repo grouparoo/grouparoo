@@ -18,7 +18,7 @@ export class NotificationsList extends AuthenticatedAction {
       formatter: APIData.ensureArray,
       default: [["createdAt", "desc"]],
     },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -55,7 +55,7 @@ export class NotificationView extends AuthenticatedAction {
   permission: ActionPermission = { topic: "notification", mode: "read" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,

@@ -49,7 +49,11 @@ export async function loadProperty(
     });
   }
 
-  await property.setOptions(extractNonNullParts(configObject, "options"), null);
+  await property.setOptions(
+    extractNonNullParts(configObject, "options"),
+    null,
+    externallyValidate
+  );
 
   await property.update({
     type: configObject.type,
@@ -69,7 +73,7 @@ export async function loadProperty(
           }\` has been deprecated and replaced with \`${
             //@ts-ignore
             FilterHelper.deprecatedFilters[filter.op]
-          }\`. Read more at https://www.grouparoo.com/docs/config/code-config/properties`
+          }\`. Read more at https://www.grouparoo.com/docs/support/config-files#properties`
         );
       }
     }

@@ -39,6 +39,8 @@ import { Run } from "./Run";
 import { Source } from "./Source";
 import { getGrouparooRunMode } from "../modules/runMode";
 import { CommonModel } from "../classes/commonModel";
+import { PropertiesCache } from "../modules/caches/propertiesCache";
+import { SourcesCache } from "../modules/caches/sourcesCache";
 
 const jsMap = {
   boolean: config?.sequelize?.dialect === "sqlite" ? "text" : "boolean", // there is no boolean type in SQLite
@@ -84,12 +86,6 @@ const STATE_TRANSITIONS = [
 ];
 
 export interface PropertyFiltersWithKey extends FilterHelper.FiltersWithKey {}
-
-export const CachedProperties = {
-  expires: 0,
-  TTL: env === "test" ? -1 : 1000 * 30,
-  properties: [] as Property[],
-};
 
 @DefaultScope(() => ({
   where: { state: { [Op.notIn]: ["draft"] } },
@@ -176,7 +172,7 @@ export class Property extends CommonModel<Property> {
 
   async getOptions(sourceFromEnvironment = true) {
     const options = await OptionHelper.getOptions(this, sourceFromEnvironment);
-    const source = await this.$get("source", { scope: null });
+    const source = await SourcesCache.findOneWithCache(this.sourceId);
 
     for (const i in options) {
       options[i] =
@@ -189,9 +185,13 @@ export class Property extends CommonModel<Property> {
     return options;
   }
 
-  async setOptions(options: SimplePropertyOptions, test = true) {
+  async setOptions(
+    options: SimplePropertyOptions,
+    test = true,
+    externallyValidate = true
+  ) {
     if (test) await this.test(options);
-    const source = await this.$get("source", { scope: null });
+    const source = await SourcesCache.findOneWithCache(this.sourceId);
 
     for (const i in options) {
       options[i] =
@@ -201,7 +201,7 @@ export class Property extends CommonModel<Property> {
         );
     }
 
-    return OptionHelper.setOptions(this, options);
+    return OptionHelper.setOptions(this, options, externallyValidate);
   }
 
   async afterSetOptions(hasChanges: boolean) {
@@ -211,16 +211,20 @@ export class Property extends CommonModel<Property> {
     }
   }
 
-  async validateOptions(options?: SimplePropertyOptions, allowEmpty = false) {
+  async validateOptions(
+    options?: SimplePropertyOptions,
+    externallyValidate = true
+  ) {
     if (!options) options = await this.getOptions(true);
+    if (!externallyValidate) return;
 
-    const response = await OptionHelper.validateOptions(
-      this,
-      options,
-      allowEmpty
-    );
+    const pluginOptions = await this.pluginOptions(options);
+    const optionsSpec: OptionHelper.OptionsSpec = pluginOptions.map((opt) => ({
+      ...opt,
+      options: opt.options?.map((o) => o.key),
+    }));
 
-    return response;
+    await OptionHelper.validateOptions(this, options, optionsSpec);
   }
 
   async getPlugin() {
@@ -304,71 +308,7 @@ export class Property extends CommonModel<Property> {
     };
   }
 
-  // --- Cache Methods --- //
-
-  static async findAllWithCache(modelId?: string): Promise<Property[]> {
-    const now = new Date().getTime();
-    if (
-      CachedProperties.expires > now &&
-      CachedProperties.properties.length > 0
-    ) {
-      return modelId
-        ? CachedProperties.properties.filter(
-            (p) => p?.source?.modelId === modelId
-          )
-        : CachedProperties.properties;
-    }
-
-    CachedProperties.properties = await Property.findAll({
-      include: [{ model: Source.unscoped(), required: false }],
-    });
-    CachedProperties.expires = now + CachedProperties.TTL;
-    return modelId
-      ? CachedProperties.properties.filter(
-          (p) => p?.source?.modelId === modelId
-        )
-      : CachedProperties.properties;
-  }
-
-  static async findOneWithCache(
-    value: string,
-    modelId?: string,
-    lookupKey: keyof Property = "id"
-  ) {
-    const properties = await Property.findAllWithCache(modelId);
-    let property = properties.find((p) => p[lookupKey] === value);
-
-    if (!property) {
-      property = await Property.findOne({
-        where: { [lookupKey]: value },
-        include: [{ model: Source.unscoped(), required: false }],
-      });
-      if (!property) await Property.invalidateCache();
-    }
-
-    return property;
-  }
-
-  static invalidateLocalCache() {
-    CachedProperties.expires = 0;
-  }
-
   // --- Class Methods --- //
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
-
-  @AfterSave
-  @AfterDestroy
-  static async invalidateCache() {
-    Property.invalidateLocalCache();
-    await CLS.afterCommit(
-      async () => await redis.doCluster("api.rpc.property.invalidateCache")
-    );
-  }
 
   @BeforeSave
   static async ensureUniqueKey(instance: Property) {
@@ -500,11 +440,6 @@ export class Property extends CommonModel<Property> {
       throw new Error(
         `Unique Property ${instance.key} (${instance.id}) cannot be mapped through a non-unique Property - ${mappedProperty.key} (${mappedProperty.id})`
       );
-
-    if (instance.isArray)
-      throw new Error(
-        `Array Property ${instance.key} (${instance.id}) cannot be mapped through a non-unique Property - ${mappedProperty.key} (${mappedProperty.id})`
-      );
   }
 
   @BeforeSave
@@ -622,5 +557,14 @@ export class Property extends CommonModel<Property> {
     await RecordProperty.destroy({
       where: { propertyId: instance.id },
     });
+  }
+
+  @AfterSave
+  @AfterDestroy
+  static async invalidateCache() {
+    PropertiesCache.invalidate();
+    await CLS.afterCommit(
+      async () => await redis.doCluster("api.rpc.property.invalidateCache")
+    );
   }
 }

@@ -74,8 +74,9 @@ class Generator {
       command,
     });
   }
+
   addCommands() {
-    this.addCommand("linter", "pnpm run lint");
+    this.addCommand("linter", "cd monorepo && pnpm run lint");
   }
 
   addCore() {
@@ -94,10 +95,10 @@ class Generator {
     });
 
     this.jobList.push({
-      type: "root",
-      job_name: `test-root`,
-      relative_path: `.`,
-      name: "root",
+      type: "monorepo",
+      job_name: `test-monorepo`,
+      relative_path: `monorepo`,
+      name: "monorepo",
     });
 
     this.jobList.push({

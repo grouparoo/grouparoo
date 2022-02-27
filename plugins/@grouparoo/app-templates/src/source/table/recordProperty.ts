@@ -51,7 +51,7 @@ export const getRecordProperty: GetRecordPropertyMethod = ({
       matchName === columnName &&
       aggregationMethod === AggregationMethod.Exact
     ) {
-      const tableMappingCol: string = Object.values(sourceMapping)[0];
+      const tableMappingCol = Object.values(sourceMapping)[0];
       const recordProperties = await record.getProperties();
       // if no property or no values, bail
       if (!recordProperties[tableMappingCol]?.values.length) {

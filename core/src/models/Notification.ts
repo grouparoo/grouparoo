@@ -42,12 +42,4 @@ export class Notification extends CommonModel<Notification> {
       readAt: APIData.formatDate(this.readAt),
     };
   }
-
-  // --- Class Methods --- //
-
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
 }

@@ -55,6 +55,7 @@ jobs:
             - apps/staging-enterprise/node_modules
             - cli/node_modules
             - core/node_modules
+            - monorepo/node_modules
             - node_modules
             - tools/log-parser/node_modules
             - tools/merger/node_modules
@@ -218,7 +219,7 @@ jobs:
           command: sudo npm install -g pnpm
       - run:
           name: linter
-          command: pnpm run lint
+          command: cd monorepo && pnpm run lint
   test-core-actions:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
@@ -769,7 +770,7 @@ jobs:
       - run:
           name: test
           command: cd core && ./node_modules/.bin/jest __tests__/tasks --ci --maxWorkers 2
-  test-root:
+  test-monorepo:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
@@ -803,8 +804,8 @@ jobs:
           name: update apt
           command: sudo apt update
       - run:
-          name: test-root
-          command: cd . && ./node_modules/.bin/jest ./__tests__/packages --ci --maxWorkers 2 --passWithNoTests
+          name: test-monorepo
+          command: cd monorepo && ./node_modules/.bin/jest ./__tests__/packages --ci --runInBand
   test-core-local-models:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
@@ -3850,7 +3851,7 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
-      - test-root:
+      - test-monorepo:
           filters:
             <<: *ignored-branches
           requires:
@@ -4140,7 +4141,7 @@ workflows:
             - test-core-notifiers
             - test-core-snapshots
             - test-core-tasks
-            - test-root
+            - test-monorepo
             - test-core-local-models
             - test-core-local-actions
             - test-core-local-tasks

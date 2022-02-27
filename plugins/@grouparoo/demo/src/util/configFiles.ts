@@ -71,6 +71,9 @@ async function generateConfig(
 
   for (const sourceName of sources) {
     copySource(configDir, sourceName);
+    if (db) {
+      copyDir(configDir, db.name(), sourceName);
+    }
   }
 
   for (const destinationName of destinations) {

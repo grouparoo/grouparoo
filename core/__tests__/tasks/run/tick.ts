@@ -71,7 +71,7 @@ describe("tasks/run:tick", () => {
   });
 
   test("running internal runs will be enqueued", async () => {
-    const run = await internalRun("test", "test");
+    const run = await internalRun("teamMember", "test");
     await helper.changeTimestamps([run]);
 
     const enqueued = await specHelper.runTask("run:tick", {});

@@ -11,7 +11,7 @@ export class RecordDestroy extends CLSTask {
   queue = "records";
   inputs = {
     recordId: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ recordId }: ParamsFrom<RecordDestroy>) {
     const record = await GrouparooRecord.findOne({

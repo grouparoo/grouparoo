@@ -62,22 +62,6 @@ export default async function Initialize(
 
   safelyCreateFile("gitignore", ".gitignore"); // we need to call the source file something other than `.gitignore` so it's not ignored by NPM
 
-  /**
-   * Copy Code Config README templates into the work directory. This also
-   * results in a skeleton structure representing the directories in which Code
-   * Config files will be generated.
-   */
-  const templates = Templates.getConfigTemplates();
-  templates.map(({ absoluteFilePath, relativeFilePath }) => {
-    const destDir = path.join(workDir, path.dirname(relativeFilePath)); // Create directory for file if it doesn't exist.
-    if (!fs.existsSync(destDir)) fs.mkdirpSync(destDir);
-    const destFilePath = path.join(workDir, relativeFilePath); // Copy the file into the working project's config directory.
-    if (!fs.existsSync(destFilePath)) {
-      fs.copyFileSync(absoluteFilePath, destFilePath);
-    }
-  });
-  logger.succeed("Created directories for config objects.");
-
   await NPM.install(logger, workDir);
 
   logger.succeed("Grouparoo project created!");
@@ -89,10 +73,10 @@ export default async function Initialize(
     " * Ensure that Postgres and Redis are running if you have enabled them in .env or your environment."
   );
   console.info(
-    " * You can now configure your Sources and Destinations via our local UI by running the `grouparoo config` command."
+    " * You can run `grouparoo config` to get started configuring your Model definitions, Sources, and Destinations."
   );
   console.info(
-    " * Visit www.grouparoo.com/docs to learn about configuring your Grouparoo application."
+    " * Visit www.grouparoo.com/docs/config to learn about configuring your Grouparoo application."
   );
   console.info("");
 }

@@ -15,7 +15,7 @@ export class OAuthListProviders extends Action {
   description = "list the available oAuth Providers";
   inputs = {
     type: { required: false },
-  };
+  } as const;
   outputExample = {};
 
   async run({ params }: { params: ParamsFrom<OAuthListProviders> }) {
@@ -45,7 +45,7 @@ export class OAuthClientStart extends CLSAction {
     type: { required: true },
     appId: { required: false },
     appOption: { required: false },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -92,7 +92,7 @@ export class OAuthClientEdit extends CLSAction {
   description = "edit an oAuth request given the requestId and token pair";
   inputs = {
     requestId: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -131,7 +131,7 @@ export class OAuthClientView extends CLSAction {
   description = "view and oAuth request";
   inputs = {
     requestId: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,

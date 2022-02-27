@@ -105,7 +105,6 @@ export class Schedule extends CommonModel<Schedule> {
   locked: string;
 
   @AllowNull(false)
-  @Default(true)
   @Column
   incremental: boolean;
 
@@ -152,8 +151,8 @@ export class Schedule extends CommonModel<Schedule> {
     return OptionHelper.getOptions(this, sourceFromEnvironment);
   }
 
-  async setOptions(options: SimpleScheduleOptions) {
-    return OptionHelper.setOptions(this, options);
+  async setOptions(options: SimpleScheduleOptions, externallyValidate = true) {
+    return OptionHelper.setOptions(this, options, externallyValidate);
   }
 
   async afterSetOptions(hasChanges: boolean) {
@@ -164,9 +163,20 @@ export class Schedule extends CommonModel<Schedule> {
     await this.enqueueRun();
   }
 
-  async validateOptions(options?: SimpleScheduleOptions) {
+  async validateOptions(
+    options?: SimpleScheduleOptions,
+    externallyValidate = true
+  ) {
     if (!options) options = await this.getOptions(true);
-    return OptionHelper.validateOptions(this, options);
+    if (!externallyValidate) return;
+
+    const pluginOptions = await this.pluginOptions();
+    const optionsSpec: OptionHelper.OptionsSpec = pluginOptions.map((opt) => ({
+      ...opt,
+      options: opt.options?.map((o) => o.key),
+    }));
+
+    await OptionHelper.validateOptions(this, options, optionsSpec);
   }
 
   async getPlugin() {
@@ -315,12 +325,6 @@ export class Schedule extends CommonModel<Schedule> {
 
   // --- Class Methods --- //
 
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
-
   @BeforeSave
   static async ensureSourceOptions(instance: Schedule) {
     const source = await Source.findById(instance.sourceId);
@@ -353,6 +357,16 @@ export class Schedule extends CommonModel<Schedule> {
     if (!instance.name) {
       const source = await Source.findById(instance.sourceId);
       instance.name = `${source.name} schedule`;
+    }
+  }
+
+  @BeforeValidate
+  static async ensureSetIncremental(instance: Schedule) {
+    if (instance.isNewRecord && typeof instance.incremental === "undefined") {
+      const { pluginConnection } = await instance.getPlugin();
+      instance.incremental = Boolean(
+        pluginConnection.supportIncrementalSchedule
+      );
     }
   }
 

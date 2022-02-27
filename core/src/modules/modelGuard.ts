@@ -1,18 +1,15 @@
-import { GrouparooModel } from "../models/GrouparooModel";
 import { GrouparooRecord } from "../models/GrouparooRecord";
 import { Source } from "../models/Source";
 import { Destination } from "../models/Destination";
 import { Group } from "../models/Group";
+import { ModelsCache } from "./caches/modelsCache";
 
 export namespace ModelGuard {
   export async function check(
     instance: GrouparooRecord | Source | Destination | Group
   ) {
     if (instance.isNewRecord) {
-      // we are creating a new instance
-      const model = await GrouparooModel.scope(null).findOne({
-        where: { id: instance.modelId },
-      });
+      const model = await ModelsCache.findOneWithCache(instance.modelId);
 
       if (!model) {
         throw new Error(`cannot find model with id "${instance.modelId}"`);

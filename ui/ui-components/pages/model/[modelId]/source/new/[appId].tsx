@@ -1,4 +1,3 @@
-import { NextPageContext } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState, Fragment, useEffect } from "react";
@@ -12,15 +11,31 @@ import { useApi } from "../../../../../contexts/api";
 import { useGrouparooModel } from "../../../../../contexts/grouparooModel";
 import { humanizePluginName } from "../../../../../utils/languageHelper";
 import { Actions } from "../../../../../utils/apiData";
+import { withServerErrorHandler } from "../../../../../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../../../../../utils/pageHelper";
 
-export default function Page(props) {
-  const {
-    connectionApps,
-    isPrimarySourceNotReady,
-  }: {
-    connectionApps: Actions.SourceConnectionApps["connectionApps"];
-    isPrimarySourceNotReady: boolean;
-  } = props;
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const client = generateClient(ctx);
+  const { modelId } = ctx.query;
+  const { connectionApps } = await client.request<Actions.SourceConnectionApps>(
+    "get",
+    `/sources/connectionApps`
+  );
+  const { sources, total: totalSources } =
+    await client.request<Actions.SourcesList>("get", "/sources", {
+      modelId,
+      limit: 1,
+    });
+  const isPrimarySourceNotReady =
+    totalSources === 1 && sources[0].state !== "ready";
+
+  return { props: { connectionApps, isPrimarySourceNotReady } };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  connectionApps,
+  isPrimarySourceNotReady,
+}) => {
   const router = useRouter();
   const { client } = useApi();
   const { model } = useGrouparooModel();
@@ -35,7 +50,7 @@ export default function Page(props) {
     if (isPrimarySourceNotReady) {
       router.push(`/model/${model.id}/overview`);
     }
-  }, [isPrimarySourceNotReady, model]);
+  }, [isPrimarySourceNotReady, model, router]);
 
   if (isPrimarySourceNotReady) {
     return null;
@@ -108,22 +123,6 @@ export default function Page(props) {
       ))}
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const client = generateClient(ctx);
-  const { modelId } = ctx.query;
-  const { connectionApps } = await client.request(
-    "get",
-    `/sources/connectionApps`
-  );
-  const { sources, total: totalSources } =
-    await client.request<Actions.SourcesList>("get", "/sources", {
-      modelId,
-      limit: 1,
-    });
-  const isPrimarySourceNotReady =
-    totalSources === 1 && sources[0].state !== "ready";
-
-  return { connectionApps, isPrimarySourceNotReady };
 };
+
+export default Page;

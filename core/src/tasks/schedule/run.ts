@@ -10,7 +10,7 @@ export class ScheduleRun extends RetryableTask {
   queue = "schedules";
   inputs = {
     runId: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ runId }: ParamsFrom<ScheduleRun>) {
     const run = await Run.scope(null).findOne({ where: { id: runId } });

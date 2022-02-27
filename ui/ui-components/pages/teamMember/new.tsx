@@ -5,22 +5,22 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Form } from "react-bootstrap";
 import LoadingButton from "../../components/LoadingButton";
-import {
-  errorHandler,
-  successHandler,
-  teamMemberHandler,
-} from "../../eventHandlers";
-import { Actions, Models } from "../../utils/apiData";
+import { successHandler, teamMemberHandler } from "../../eventHandlers";
+import { Actions } from "../../utils/apiData";
 import { grouparooUiEdition } from "../../utils/uiEdition";
 import { generateClient } from "../../client/client";
-import { NextPageContext } from "next";
+import { NextPageWithInferredProps } from "../../utils/pageHelper";
+import { withServerErrorHandler } from "../../utils/withServerErrorHandler";
 
-export default function Page(props) {
-  const {
-    teams,
-  }: {
-    teams: Models.TeamType[];
-  } = props;
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const client = generateClient(ctx);
+  const { teams } = await client.request<Actions.TeamsList>("get", `/teams`);
+  return { props: { teams } };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  teams,
+}) => {
   const router = useRouter();
   const { client } = useApi();
   const { handleSubmit, register } = useForm();
@@ -164,10 +164,6 @@ export default function Page(props) {
       </Form>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const client = generateClient(ctx);
-  const { teams } = await client.request("get", `/teams`);
-  return { teams };
 };
+
+export default Page;

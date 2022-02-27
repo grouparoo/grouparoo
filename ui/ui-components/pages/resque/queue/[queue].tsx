@@ -8,6 +8,7 @@ import Head from "next/head";
 import ResqueTabs from "../../../components/tabs/Resque";
 import LoadingButton from "../../../components/LoadingButton";
 import { errorHandler } from "../../../eventHandlers";
+import { Actions } from "../../../utils/apiData";
 
 export default function ResqueQueue(props) {
   const router = useRouter();
@@ -28,11 +29,15 @@ export default function ResqueQueue(props) {
   async function load() {
     updateURLParams(router, { offset });
     setLoading(true);
-    const response = await client.request("get", `/resque/queued`, {
-      queue: queue,
-      limit,
-      offset,
-    });
+    const response = await client.request<Actions.ResqueQueued>(
+      "get",
+      `/resque/queued`,
+      {
+        queue: queue,
+        limit,
+        offset,
+      }
+    );
     setLoading(false);
 
     setJobs(response.jobs);

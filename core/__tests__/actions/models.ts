@@ -83,7 +83,7 @@ describe("actions/models", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(types).toEqual(["profile", "account", "custom"]);
+      expect(types).toEqual(["profile", "account", "event", "custom"]);
       expect(configSpy).toBeCalledTimes(0);
     });
 

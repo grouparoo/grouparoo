@@ -1,5 +1,5 @@
 import { ConnectPluginAppMethod } from "@grouparoo/core";
-import { log } from "actionhero";
+import { ActionheroLogLevel, log } from "actionhero";
 import crypto from "crypto";
 import { Snowflake } from "snowflake-promise";
 import SnowflakeLogger from "snowflake-sdk/lib/logger";
@@ -54,7 +54,6 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
   client["schemaName"] = schema;
 
   await client.connect();
-
   const executeShim: typeof client.execute = client.execute.bind(client);
   (client as any).execute = (
     sqlText: Parameters<typeof client.execute>[0],
@@ -67,8 +66,8 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
   return client;
 };
 
-function logMessage(level) {
-  return function (...messageAndArgs) {
+function logMessage(level: ActionheroLogLevel) {
+  return function (...messageAndArgs: any[]) {
     const message = SnowflakeUtil.format(...messageAndArgs);
     log(message, level);
   };

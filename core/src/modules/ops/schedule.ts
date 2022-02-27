@@ -1,9 +1,9 @@
 import { Schedule } from "../../models/Schedule";
 import { Run, HighWaterMark } from "../../models/Run";
-import { Property } from "../../models/Property";
 import { Option } from "../../models/Option";
 import { Mapping } from "../../models/Mapping";
 import { log, config } from "actionhero";
+import { PropertiesCache } from "../caches/propertiesCache";
 
 export namespace ScheduleOps {
   export async function run(schedule: Schedule, run: Run) {
@@ -14,7 +14,10 @@ export namespace ScheduleOps {
       include: [Option, Mapping],
     });
     const app = await source.$get("app", { include: [Option], scope: null });
-    const properties = await Property.findAllWithCache(source.modelId);
+    const properties = await PropertiesCache.findAllWithCache(
+      source.modelId,
+      "ready"
+    );
     const { pluginConnection } = await source.getPlugin();
     const method = pluginConnection.methods.importRecords;
 
@@ -81,7 +84,7 @@ export namespace ScheduleOps {
 
     return {
       importsCount,
-      highWaterMark: nextHighWaterMark,
+      highWaterMark: schedule.incremental ? nextHighWaterMark : {},
       sourceOffset: nextSourceOffset,
     };
   }
@@ -119,7 +122,10 @@ export namespace ScheduleOps {
     const appOptions = await app.getOptions();
     const sourceOptions = await source.getOptions();
     const sourceMapping = await source.getMapping();
-    const properties = await Property.findAllWithCache(source.modelId);
+    const properties = await PropertiesCache.findAllWithCache(
+      source.modelId,
+      "ready"
+    );
     const scheduleOptions = await schedule.getOptions();
 
     const scheduleOptionOptions =

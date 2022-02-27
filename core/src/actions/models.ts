@@ -18,7 +18,7 @@ export class ModelsList extends AuthenticatedAction {
       formatter: APIData.ensureArray,
       default: [["createdAt", "desc"]],
     },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<ModelsList> }) {
     const total = await GrouparooModel.scope(null).count();
@@ -51,7 +51,7 @@ export class ModelCreate extends AuthenticatedAction {
     id: { required: false },
     name: { required: true },
     type: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<ModelCreate> }) {
     const model = await GrouparooModel.create(params);
@@ -67,7 +67,7 @@ export class ModelView extends AuthenticatedAction {
   permission: ActionPermission = { topic: "model", mode: "read" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<ModelView> }) {
     const model = await GrouparooModel.findById(params.id);
@@ -84,7 +84,7 @@ export class ModelEdit extends AuthenticatedAction {
     id: { required: true },
     name: { required: false },
     type: { required: false },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<ModelEdit> }) {
     const model = await GrouparooModel.findById(params.id);
@@ -101,7 +101,7 @@ export class ModelDestroy extends AuthenticatedAction {
   permission: ActionPermission = { topic: "model", mode: "write" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ params }: { params: ParamsFrom<ModelDestroy> }) {
     const model = await GrouparooModel.findById(params.id);

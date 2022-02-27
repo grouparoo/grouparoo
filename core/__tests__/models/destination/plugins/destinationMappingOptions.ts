@@ -389,6 +389,7 @@ describe("models/destination", () => {
             syncModes: ["sync", "additive", "enrich"],
             options: [],
             methods: {
+              destinationOptions: async () => ({}),
               destinationMappingOptions: async () => {
                 return {
                   labels: {

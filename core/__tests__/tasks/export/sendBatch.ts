@@ -173,6 +173,7 @@ describe("tasks/export:sendBatch", () => {
               direction: "export",
               options: [],
               methods: {
+                destinationOptions: async () => ({}),
                 destinationMappingOptions: async () => {
                   return {
                     labels: {

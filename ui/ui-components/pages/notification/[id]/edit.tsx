@@ -1,15 +1,26 @@
 import NotificationTabs from "../../../components/tabs/Notification";
 import Head from "next/head";
 import { Button } from "react-bootstrap";
-import { Models } from "../../../utils/apiData";
+import { Actions } from "../../../utils/apiData";
 import Markdown from "react-markdown";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { generateClient } from "../../../client/client";
-import { NextPageContext } from "next";
+import { withServerErrorHandler } from "../../../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../../../utils/pageHelper";
 
-export default function Page(props) {
-  const { notification }: { notification: Models.NotificationType } = props;
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const { id } = ctx.query;
+  const client = generateClient(ctx);
+  const { notification } = await client.request<Actions.NotificationView>(
+    "get",
+    `/notification/${id}`
+  );
+  return { props: { notification } };
+});
 
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  notification,
+}) => {
   return (
     <>
       <Head>
@@ -39,11 +50,6 @@ export default function Page(props) {
       ) : null}
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { id } = ctx.query;
-  const client = generateClient(ctx);
-  const { notification } = await client.request("get", `/notification/${id}`);
-  return { notification };
 };
+
+export default Page;

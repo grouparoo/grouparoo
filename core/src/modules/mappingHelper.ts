@@ -5,6 +5,7 @@ import { Source } from "./../models/Source";
 import { Destination } from "./../models/Destination";
 import { LockableHelper } from "./lockableHelper";
 import { modelName } from "./modelName";
+import { PropertiesCache } from "./caches/propertiesCache";
 
 export namespace MappingHelper {
   export type Mappings = Record<string, string>;
@@ -27,9 +28,10 @@ export namespace MappingHelper {
 
     for (const i in mappings) {
       const mapping = mappings[i];
-      const property = await Property.findOneWithCache(
+      const property = await PropertiesCache.findOneWithCache(
         mapping.propertyId,
-        instance.modelId
+        instance.modelId,
+        "ready"
       );
 
       if (!property) {
@@ -66,7 +68,8 @@ export namespace MappingHelper {
 
   export async function setMapping(
     instance: (Source | Destination) & { afterSetMapping?: Function },
-    mappings: Mappings
+    mappings: Mappings,
+    externallyValidate = true
   ) {
     delete instance.mappings;
     await LockableHelper.beforeUpdateOptions(instance);
@@ -102,9 +105,12 @@ export namespace MappingHelper {
     for (const i in keys) {
       const remoteKey = keys[i];
       const key = mappings[remoteKey];
-      const property = await Property.scope(null).findOne({
-        where: { key },
-      });
+      const property = await PropertiesCache.findOneWithCache(
+        key,
+        undefined,
+        "ready",
+        "key"
+      );
 
       if (!property) throw new Error(`cannot find property ${key}`);
       if (instance instanceof Source && property.isArray) {
@@ -128,6 +134,9 @@ export namespace MappingHelper {
         );
       }
 
+      if (externallyValidate && instance instanceof Source)
+        await validateRemoteKey(instance, remoteKey);
+
       const mapping = await Mapping.create({
         ownerId: instance.id,
         ownerType: modelName<Source | Destination>(instance),
@@ -143,6 +152,23 @@ export namespace MappingHelper {
     // if there's an afterSetMapping hook and we want to commit our changes
     if (typeof instance["afterSetMapping"] === "function") {
       await instance["afterSetMapping"]();
+    }
+  }
+
+  async function validateRemoteKey(instance: Source, remoteKey: string) {
+    const previewAvailable = await instance.previewAvailable();
+    if (!previewAvailable) return;
+
+    const sourcePreview = await instance.sourcePreview();
+    if (sourcePreview.length > 0) {
+      const validKeys = Object.keys(sourcePreview[0]);
+      if (!validKeys.includes(remoteKey)) {
+        throw new Error(
+          `"${remoteKey}" is not a valid remote mapping key for ${modelName(
+            instance
+          )} ${instance.name}`
+        );
+      }
     }
   }
 }

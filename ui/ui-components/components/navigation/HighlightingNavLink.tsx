@@ -2,7 +2,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMemo } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { navIconStyle, iconConstrainedStyle } from "../Navigation";
+import { navIconStyle, iconConstrainedStyle, navLiStyle } from "../Navigation";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { NavigationItem } from "@grouparoo/core/src/actions/navigation";
+
+interface Properties {
+  href: string;
+  text: React.ReactNode;
+  icon: string;
+  mainPathSectionIdx: number;
+  small: boolean;
+  subNavItems?: NavigationItem[];
+}
 
 export default function HighlightingNavLink({
   href,
@@ -10,7 +21,8 @@ export default function HighlightingNavLink({
   icon,
   mainPathSectionIdx,
   small,
-}) {
+  subNavItems,
+}: Properties) {
   const router = useRouter();
   const active = useMemo(() => {
     const pathParts = router?.asPath.split("/");
@@ -42,7 +54,7 @@ export default function HighlightingNavLink({
           {icon && (
             <FontAwesomeIcon
               style={iconConstrainedStyle}
-              icon={icon}
+              icon={icon as IconProp}
               size="xs"
             />
           )}{" "}
@@ -57,6 +69,7 @@ export default function HighlightingNavLink({
             paddingLeft: 0,
             marginLeft: small ? 0 : 4,
             color: "white",
+            ...navLiStyle,
           }}
         >
           <span
@@ -67,6 +80,18 @@ export default function HighlightingNavLink({
           </span>
         </a>
       </Link>
+      {active &&
+        subNavItems?.map((childNav) => (
+          <div key={childNav.href} className="ml-3">
+            <HighlightingNavLink
+              href={childNav.href}
+              mainPathSectionIdx={childNav.mainPathSectionIdx ?? 1}
+              text={childNav.title}
+              icon={childNav.icon}
+              small={childNav.small}
+            />
+          </div>
+        ))}
     </>
   );
 }

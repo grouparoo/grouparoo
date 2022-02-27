@@ -1,9 +1,9 @@
 import { api, env, config, ParamsFrom } from "actionhero";
+import { Worker } from "node-resque";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { CLS } from "../../modules/cls";
-import { Source } from "../../models/Source";
 import { RecordPropertyOps } from "../../modules/ops/recordProperty";
-import { Worker } from "node-resque";
+import { SourcesCache } from "../../modules/caches/sourcesCache";
 
 export class RecordPropertiesEnqueue extends CLSTask {
   name = "recordProperties:enqueue";
@@ -18,8 +18,7 @@ export class RecordPropertiesEnqueue extends CLSTask {
   ) {
     let count = 0;
     const limit: number = config.batchSize.recordProperties;
-
-    const sources = await Source.findAll();
+    const sources = await SourcesCache.findAllWithCache(undefined, "ready");
 
     for (const source of sources) {
       try {

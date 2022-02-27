@@ -15,7 +15,7 @@ export class TeamMembersList extends AuthenticatedAction {
   inputs = {
     id: { required: false },
     teamId: { required: false },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -53,7 +53,7 @@ export class TeamMemberCreate extends AuthenticatedAction {
       default: true,
       formatter: APIData.ensureBoolean,
     },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -85,7 +85,7 @@ export class TeamMemberView extends AuthenticatedAction {
   permission: ActionPermission = { topic: "team", mode: "read" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -117,7 +117,7 @@ export class TeamMemberEdit extends AuthenticatedAction {
     password: { required: false },
     email: { required: false },
     teamId: { required: false },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,
@@ -141,7 +141,7 @@ export class TeamMemberDestroy extends AuthenticatedAction {
   permission: ActionPermission = { topic: "team", mode: "write" };
   inputs = {
     id: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({
     params,

@@ -10,7 +10,7 @@ export class SourceDestroy extends CLSTask {
   queue = "sources";
   inputs = {
     sourceId: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ sourceId }: ParamsFrom<SourceDestroy>) {
     const source = await Source.scope(null).findOne({

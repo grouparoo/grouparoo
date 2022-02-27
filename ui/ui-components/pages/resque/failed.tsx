@@ -8,6 +8,7 @@ import Head from "next/head";
 import ResqueTabs from "../../components/tabs/Resque";
 import LoadingButton from "../../components/LoadingButton";
 import { successHandler } from "../../eventHandlers";
+import { Actions } from "../../utils/apiData";
 
 export default function ResqueFailedList(props) {
   const router = useRouter();
@@ -36,10 +37,14 @@ export default function ResqueFailedList(props) {
   async function load() {
     updateURLParams(router, { offset });
     setLoading(true);
-    const response = await client.request("get", "/resque/resqueFailed", {
-      offset,
-      limit,
-    });
+    const response = await client.request<Actions.ResqueResqueFailed>(
+      "get",
+      "/resque/resqueFailed",
+      {
+        offset,
+        limit,
+      }
+    );
 
     setFailed(response.failed);
     setTotal(response.total);

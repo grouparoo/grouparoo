@@ -22,7 +22,7 @@ export class Apply extends CLI {
       variadic: true,
       placeholder: "object ids",
     },
-  };
+  } as const;
 
   constructor() {
     super();

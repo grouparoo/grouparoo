@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Table, Row, Col } from "react-bootstrap";
 import Head from "next/head";
 import ResqueTabs from "../../components/tabs/Resque";
+import { Actions } from "../../utils/apiData";
 
 export default function ResqueRedis(props) {
   const { client } = useApi();
@@ -15,7 +16,10 @@ export default function ResqueRedis(props) {
 
   async function load() {
     setLoading(true);
-    const response = await client.request("get", `/resque/redisInfo`);
+    const response = await client.request<Actions.ResqueRedisInfo>(
+      "get",
+      `/resque/redisInfo`
+    );
     setLoading(false);
     if (response?.redisInfo) {
       setRedisInfo(response.redisInfo);

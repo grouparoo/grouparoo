@@ -39,7 +39,7 @@ describe("snowflake/table/scheduleOptions", () => {
       type: "snowflake-import-table",
     });
     await source.setOptions({ table: "PROFILES" });
-    await source.setMapping({ id: "userId" });
+    await source.setMapping({ ID: "userId" });
     await source.update({ state: "ready" });
 
     schedule = await helper.factories.schedule(source, {

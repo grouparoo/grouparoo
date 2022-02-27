@@ -1,6 +1,6 @@
 import Moment from "moment";
 import { config, cache, log } from "actionhero";
-import { Op } from "sequelize";
+import { Op, CreationAttributes } from "sequelize";
 import { deepStrictEqual } from "assert";
 import {
   Destination,
@@ -30,6 +30,8 @@ import { RecordPropertyOps } from "./recordProperty";
 import { Option } from "../../models/Option";
 import { getLock } from "../locks";
 import { ExportOps } from "./export";
+import { PropertiesCache } from "../caches/propertiesCache";
+import { DestinationsCache } from "../caches/destinationsCache";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -325,7 +327,7 @@ export namespace DestinationOps {
     });
     const appOptions = await app.getOptions();
     await app.validateOptions(appOptions);
-    const properties = await Property.findAllWithCache(record.modelId);
+    const properties = await PropertiesCache.findAllWithCache(record.modelId);
     const destinationGroupMemberships =
       await destination.getDestinationGroupMemberships();
     const mapping = await destination.getMapping();
@@ -470,7 +472,7 @@ export namespace DestinationOps {
     }
 
     let _export: Export;
-    const exportArgs = {
+    const exportArgs: CreationAttributes<Export> = {
       destinationId: destination.id,
       recordId: record.id,
       startedAt: synchronous ? new Date() : undefined,
@@ -586,19 +588,27 @@ export namespace DestinationOps {
     _exports: Export[]
   ): Promise<ExportedRecord[]> {
     const exportedRecords: ExportedRecord[] = [];
+    const destinationMappingOptions =
+      await destination.destinationMappingOptions();
+    const records = await GrouparooRecord.findAll({
+      where: { id: _exports.map((e) => e.recordId) },
+    });
+
     for (const _export of _exports) {
-      const record = await _export.$get("record"); // PERFORMANCE: get all records at once
+      const record = records.find((r) => (r.id = _export.recordId));
       exportedRecords.push({
         record,
         recordId: record?.id,
-        oldRecordProperties: await formatRecordPropertiesForDestination(
+        oldRecordProperties: formatRecordPropertiesForDestination(
           _export,
           destination,
+          destinationMappingOptions,
           "oldRecordProperties"
         ),
-        newRecordProperties: await formatRecordPropertiesForDestination(
+        newRecordProperties: formatRecordPropertiesForDestination(
           _export,
           destination,
+          destinationMappingOptions,
           "newRecordProperties"
         ),
         oldGroups: _export.oldGroups,
@@ -606,6 +616,7 @@ export namespace DestinationOps {
         toDelete: _export.toDelete,
       });
     }
+
     return exportedRecords;
   }
 
@@ -1066,9 +1077,10 @@ export namespace DestinationOps {
     return sendExports(destination, [_export], synchronous);
   }
 
-  async function formatRecordPropertiesForDestination(
+  function formatRecordPropertiesForDestination(
     _export: Export,
     destination: Destination,
+    destinationMappingOptions: DestinationMappingOptionsMethodResponse,
     key: "oldRecordProperties" | "newRecordProperties"
   ) {
     const response: { [key: string]: any } = {};
@@ -1076,8 +1088,6 @@ export namespace DestinationOps {
       //@ts-ignore
       _export["dataValues"][key]
     );
-    const destinationMappingOptions =
-      await destination.destinationMappingOptions();
     for (const k in rawProperties) {
       const type: Property["type"] = rawProperties[k].type;
       const value = _export[key][k];
@@ -1146,20 +1156,16 @@ export namespace DestinationOps {
     record: GrouparooRecord,
     groups: Group[] = []
   ) {
+    const destinations = await DestinationsCache.findAllWithCache(
+      record.modelId,
+      "ready"
+    );
     const combinedGroupIds = groups.map((g) => g.id);
-    const relevantDestinations =
-      combinedGroupIds.length > 0
-        ? await Destination.findAll({
-            where: {
-              [Op.or]: [
-                { collection: "model", modelId: record.modelId },
-                { collection: "group", groupId: { [Op.in]: combinedGroupIds } },
-              ],
-            },
-          })
-        : await Destination.findAll({
-            where: { collection: "model", modelId: record.modelId },
-          });
+    const relevantDestinations = destinations.filter(
+      (d) =>
+        (d.collection === "model" && d.modelId === record.modelId) ||
+        (d.collection === "group" && combinedGroupIds.includes(d.groupId))
+    );
 
     return relevantDestinations;
   }

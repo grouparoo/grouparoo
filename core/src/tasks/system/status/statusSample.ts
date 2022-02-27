@@ -10,7 +10,7 @@ export class StatusSample extends CLSTask {
   queue = "system";
   inputs = {
     index: { required: true, formatter: APIData.ensureNumber },
-  };
+  } as const;
 
   async runWithinTransaction({ index }: ParamsFrom<StatusSample>) {
     const method = Status.statusSampleReporters[index];

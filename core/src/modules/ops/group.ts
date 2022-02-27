@@ -1,4 +1,4 @@
-import Sequelize, { Op } from "sequelize";
+import Sequelize, { Op, CreationAttributes } from "sequelize";
 import { Group, GroupRuleWithKey } from "../../models/Group";
 import { GroupMember } from "../../models/GroupMember";
 import { Run } from "../../models/Run";
@@ -13,11 +13,11 @@ export namespace GroupOps {
    */
   export async function updateRecords(
     recordIds: string[],
-    creatorType: string,
+    creatorType: Import["creatorType"],
     creatorId: string,
     destinationId?: string
   ) {
-    const bulkData = [];
+    const bulkData: CreationAttributes<Import>[] = [];
     for (const recordId of recordIds) {
       bulkData.push({
         state: "importing",

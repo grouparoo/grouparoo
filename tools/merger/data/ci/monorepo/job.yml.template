@@ -1,0 +1,19 @@
+  {{{job_name}}}:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: {{{docker_image}}}
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+{{{custom_docker}}}
+    steps:
+      - checkout
+{{{restore_cache}}}
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: test-monorepo
+          command: cd {{{relative_path}}} && ./node_modules/.bin/jest ./__tests__/packages --ci --runInBand
+{{{custom_test}}}

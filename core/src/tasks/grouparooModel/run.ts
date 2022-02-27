@@ -1,11 +1,11 @@
 import { config, ParamsFrom } from "actionhero";
 import { Run } from "../../models/Run";
-import { GrouparooModel } from "../../models/GrouparooModel";
 import { GrouparooRecord } from "../../models/GrouparooRecord";
 import { RecordProperty } from "../../models/RecordProperty";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { GroupMember } from "../../models/GroupMember";
 import { GroupOps } from "../../modules/ops/group";
+import { ModelsCache } from "../../modules/caches/modelsCache";
 
 export class RunModel extends CLSTask {
   name = "grouparooModel:run";
@@ -15,7 +15,7 @@ export class RunModel extends CLSTask {
   queue = "runs";
   inputs = {
     runId: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ runId }: ParamsFrom<RunModel>) {
     const run = await Run.scope(null).findOne({ where: { id: runId } });
@@ -26,9 +26,7 @@ export class RunModel extends CLSTask {
     const offset: number = run.memberOffset || 0;
     const limit: number = run.memberLimit || config.batchSize.imports;
 
-    const model = await GrouparooModel.findOne({
-      where: { id: run.creatorId },
-    });
+    const model = await ModelsCache.findOneWithCache(run.creatorId);
     if (!model) return;
 
     const records = await GrouparooRecord.findAll({

@@ -31,7 +31,7 @@ describe("models/schedule", () => {
         appId: app.id,
         modelId: model.id,
       });
-      await source.setOptions({ table: "test table" });
+      await source.setOptions({ table: "users" });
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
     });
@@ -112,9 +112,9 @@ describe("models/schedule", () => {
         sourceId: source.id,
       });
 
-      await schedule.setOptions({ maxColumn: "id" });
+      await schedule.setOptions({ maxColumn: "created_at" });
       const options = await schedule.getOptions();
-      expect(options).toEqual({ maxColumn: "id" });
+      expect(options).toEqual({ maxColumn: "created_at" });
 
       await schedule.destroy();
     });
@@ -126,7 +126,7 @@ describe("models/schedule", () => {
         sourceId: source.id,
       });
 
-      await schedule.setOptions({ maxColumn: "abc" });
+      await schedule.setOptions({ maxColumn: "created_at" });
 
       await schedule.destroy(); // doesn't throw
 
@@ -143,7 +143,7 @@ describe("models/schedule", () => {
         sourceId: source.id,
       });
 
-      await schedule.setOptions({ maxColumn: "abc" });
+      await schedule.setOptions({ maxColumn: "created_at" });
 
       const foreignOption = await Option.create({
         ownerId: schedule.id,
@@ -176,7 +176,7 @@ describe("models/schedule", () => {
         sourceId: source.id,
       });
 
-      await schedule.setOptions({ maxColumn: "col" });
+      await schedule.setOptions({ maxColumn: "updated_at" });
       await schedule.update({ state: "ready" });
 
       await Run.create({
@@ -210,9 +210,15 @@ describe("models/schedule", () => {
       );
 
       await expect(
-        schedule.setOptions({ maxColumn: "abc", otherThing: "false" })
+        schedule.setOptions({ maxColumn: "created_at", otherThing: "false" })
       ).rejects.toThrow(
         /otherThing is not an option for a test-plugin-import schedule/
+      );
+
+      await expect(
+        schedule.setOptions({ maxColumn: "some_nonexistent_col" })
+      ).rejects.toThrow(
+        /"some_nonexistent_col" is not a valid value for test-plugin-import schedule option "maxColumn"/
       );
 
       await schedule.destroy();
@@ -227,7 +233,7 @@ describe("models/schedule", () => {
           type: "test-plugin-import",
           sourceId: source.id,
         });
-        await schedule.setOptions({ maxColumn: "foo" });
+        await schedule.setOptions({ maxColumn: "created_at" });
         await schedule.update({ state: "ready" });
       });
 
@@ -316,13 +322,99 @@ describe("models/schedule", () => {
         await expect(
           Schedule.create({
             name: "test schedule",
-            type: "test-plugin-import",
+            type: "test-plugin-source-no-schedule",
             sourceId: source.id,
           })
         ).rejects.toThrow(/cannot have a schedule/);
 
         await source.destroy();
         await app.destroy();
+      });
+    });
+
+    describe("with plugin that does not support incremental schedules", () => {
+      let app: App, source: Source;
+
+      beforeAll(async () => {
+        plugin.registerPlugin({
+          name: "test-plugin-no-incremental-schedule",
+          apps: [
+            {
+              name: "test-plugin-app-no-incremental-schedule",
+              displayName: "test-plugin-app-no-incremental-schedule",
+              options: [],
+              methods: {
+                test: async () => {
+                  return { success: true };
+                },
+              },
+            },
+          ],
+          connections: [
+            {
+              name: "test-plugin-source-no-incremental-schedule",
+              displayName: "test-plugin-source-no-incremental-schedule",
+              description: "a test connection",
+              apps: ["test-plugin-app-no-incremental-schedule"],
+              supportIncrementalSchedule: false,
+              direction: "import",
+              options: [],
+              methods: {
+                propertyOptions: async () => {
+                  return null;
+                },
+                recordProperty: async () => {
+                  return [];
+                },
+                importRecords: async () => ({
+                  highWaterMark: {},
+                  importsCount: 0,
+                  sourceOffset: 0,
+                }),
+              },
+            },
+          ],
+        });
+
+        app = await App.create({
+          type: "test-plugin-app-no-incremental-schedule",
+          name: "test app",
+        });
+        await app.update({ state: "ready" });
+        source = await Source.create({
+          type: "test-plugin-source-no-incremental-schedule",
+          appId: app.id,
+          modelId: model.id,
+        });
+        await source.update({ state: "ready" });
+      });
+
+      afterAll(async () => {
+        await source.destroy();
+        await app.destroy();
+      });
+
+      test("an incremental schedule cannot be created if the source does not support incremental schedules", async () => {
+        await expect(
+          Schedule.create({
+            name: "test schedule",
+            type: source.type,
+            sourceId: source.id,
+            incremental: true,
+          })
+        ).rejects.toThrow(/does not support incremental schedules/);
+      });
+
+      test("`incremental` defaults to false for schedules on plugins that don't support it", async () => {
+        const schedule = await Schedule.create({
+          name: "test schedule",
+          type: source.type,
+          sourceId: source.id,
+        });
+
+        expect(schedule.incremental).toBe(false);
+
+        await schedule.destroy();
       });
     });
 
@@ -338,7 +430,7 @@ describe("models/schedule", () => {
         expect(schedule.id).toBeTruthy();
 
         await expect(
-          schedule.setOptions({ maxColumn: "abc", something: "abc123" })
+          schedule.setOptions({ maxColumn: "created_at", something: "abc123" })
         ).rejects.toThrow(
           /something is not an option for a test-plugin-import schedule/
         );
@@ -445,7 +537,7 @@ describe("models/schedule", () => {
         expect((await schedule.$get("runs")).length).toBe(1);
         expect(run.highWaterMark).toEqual({ updated_at: 12345 });
 
-        await schedule.setOptions({ maxColumn: "createdAt" });
+        await schedule.setOptions({ maxColumn: "created_at" });
 
         await run.reload();
         expect(run.highWaterMark).toEqual({}); // the getter formats to an empty array
@@ -487,7 +579,7 @@ describe("models/schedule", () => {
           type: "test-plugin-import",
           sourceId: source.id,
         });
-        await schedule.setOptions({ maxColumn: "foo" });
+        await schedule.setOptions({ maxColumn: "created_at" });
         await schedule.update({ state: "ready" });
       });
 
@@ -714,6 +806,18 @@ describe("models/schedule", () => {
       await source.update({ state: "ready" });
     });
 
+    test("`incremental` defaults to true for schedules on plugins that support it", async () => {
+      const schedule = await Schedule.create({
+        name: "test schedule",
+        type: source.type,
+        sourceId: source.id,
+      });
+
+      expect(schedule.incremental).toBe(true);
+
+      await schedule.destroy();
+    });
+
     test.each(["ready", "deleted"])(
       "schedules can retrieve their options from a %p source",
       async (state) => {
@@ -768,7 +872,7 @@ describe("models/schedule", () => {
         sourceId: source.id,
         incremental: true,
       });
-      await schedule.setOptions({ maxColumn: "col" });
+      await schedule.setOptions({ maxColumn: "updated_at" });
       await schedule.update({ state: "ready" });
 
       const firstRun = await schedule.enqueueRun();
@@ -791,19 +895,19 @@ describe("models/schedule", () => {
         sourceId: source.id,
         incremental: false,
       });
-      await schedule.setOptions({ maxColumn: "col" });
+      await schedule.setOptions({ maxColumn: "updated_at" });
       await schedule.update({ state: "ready" });
 
       const firstRun = await schedule.enqueueRun();
       await specHelper.runTask("schedule:run", { runId: firstRun.id });
       await firstRun.reload();
-      expect(firstRun.highWaterMark).toEqual({ updated_at: 100 });
+      expect(firstRun.highWaterMark).toEqual({});
       await firstRun.update({ state: "complete", importsCreated: 100 });
 
       const secondRun = await schedule.enqueueRun();
       await specHelper.runTask("schedule:run", { runId: secondRun.id });
       await secondRun.reload();
-      expect(secondRun.highWaterMark).toEqual({ updated_at: 100 }); // starts over
+      expect(secondRun.highWaterMark).toEqual({});
 
       await schedule.destroy();
     });
@@ -813,7 +917,7 @@ describe("models/schedule", () => {
         name: "test plugin schedule",
         sourceId: source.id,
       });
-      await schedule.setOptions({ maxColumn: "col" });
+      await schedule.setOptions({ maxColumn: "updated_at" });
       await schedule.update({ state: "ready" });
 
       const run = await Run.create({

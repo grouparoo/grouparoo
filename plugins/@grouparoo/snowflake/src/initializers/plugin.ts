@@ -1,28 +1,12 @@
-import path from "path";
 import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
-
 import { appQuery } from "../lib/appQuery";
 import { connect } from "./../lib/connect";
 import { disconnect } from "./../lib/disconnect";
 import { test } from "./../lib/test";
-
 import { getConnection as getTableConnection } from "../lib/table-import/connection";
 import { getConnection as getQueryConnection } from "../lib/query-import/connection";
-
-import { getTables } from "../lib/table-import/getTables";
-import { getColumns } from "../lib/table-import/getColumns";
-
-const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
-import { AppTemplate } from "@grouparoo/app-templates/dist/app";
-import {
-  TableSourceTemplate,
-  TablePropertyTemplate,
-} from "@grouparoo/app-templates/dist/source/table";
-import {
-  QuerySourceTemplate,
-  QueryPropertyTemplate,
-} from "@grouparoo/app-templates/dist/source/query";
+import { destinationConnection } from "../lib/export/connection";
 
 const packageJSON = require("./../../package.json");
 
@@ -36,15 +20,6 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/snowflake/snowflake.png",
-      templates: [
-        new AppTemplate("snowflake", [
-          path.join(templateRoot, "app", "*.template"),
-        ]),
-        new TableSourceTemplate("snowflake", { getTables, getColumns }),
-        new TablePropertyTemplate("snowflake"),
-        new QuerySourceTemplate("snowflake"),
-        new QueryPropertyTemplate("snowflake"),
-      ],
       apps: [
         {
           name: "snowflake",
@@ -153,7 +128,11 @@ export class Plugins extends Initializer {
           methods: { test, connect, disconnect, appQuery },
         },
       ],
-      connections: [getTableConnection(), getQueryConnection()],
+      connections: [
+        getTableConnection(),
+        getQueryConnection(),
+        destinationConnection,
+      ],
     });
   }
 }

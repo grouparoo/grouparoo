@@ -1,19 +1,12 @@
-import path from "path";
 import { Initializer } from "actionhero";
 import { DestinationSyncMode, plugin } from "@grouparoo/core";
-
 import { test } from "./../lib/test";
 import { parallelism } from "./../lib/parallelism";
 import { appOptions } from "./../lib/appOptions";
-
 import { exportRecords } from "../lib/export/exportRecords";
 import { destinationOptions } from "../lib/export/destinationOptions";
 import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
 import { exportArrayProperties } from "../lib/export/exportArrayProperties";
-
-const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
-import { AppTemplate } from "@grouparoo/app-templates/dist/app";
-import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
 
 const packageJSON = require("./../../package.json");
 
@@ -29,17 +22,6 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/pardot/pardot.png",
-      templates: [
-        new AppTemplate("pardot", [
-          path.join(templateRoot, "app", "*.template"),
-        ]),
-        new DestinationTemplate(
-          "pardot",
-          [path.join(templateRoot, "destination", "*.template")],
-          syncModes,
-          defaultSyncMode
-        ),
-      ],
       apps: [
         {
           name: "pardot",

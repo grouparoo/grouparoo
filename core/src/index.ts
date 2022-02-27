@@ -51,6 +51,10 @@ export { Team } from "./models/Team";
 export { TeamMember } from "./models/TeamMember";
 export { AppRefreshQuery } from "./models/AppRefreshQuery";
 
+export { AppsCache } from "./modules/caches/appsCache";
+export { SourcesCache } from "./modules/caches/sourcesCache";
+export { PropertiesCache } from "./modules/caches/propertiesCache";
+
 export { Status } from "./modules/status";
 export { StatusMetric } from "./modules/statusReporters";
 export { GrouparooCLI } from "./modules/cli";
@@ -63,6 +67,8 @@ export * from "./modules/tableSpeculation";
 export * from "./modules/oAuth";
 
 export type { GrouparooRunMode } from "./modules/runMode";
+
+export type { Action, ParamsFrom } from "actionhero";
 
 // ensure config types are loaded
 import "./config/api";

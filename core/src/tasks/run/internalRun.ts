@@ -4,7 +4,7 @@ import { GrouparooRecord } from "../../models/GrouparooRecord";
 import { RecordProperty } from "../../models/RecordProperty";
 import { Property } from "../../models/Property";
 import { CLSTask } from "../../classes/tasks/clsTask";
-import { Op, WhereAttributeHash } from "sequelize";
+import { Op, WhereAttributeHash, CreationAttributes } from "sequelize";
 import { RecordOps } from "../../modules/ops/record";
 import { Import } from "../../models/Import";
 import { GroupMember } from "../../models/GroupMember";
@@ -16,7 +16,7 @@ export class RunInternalRun extends CLSTask {
   queue = "runs";
   inputs = {
     runId: { required: true },
-  };
+  } as const;
 
   async runWithinTransaction({ runId }: ParamsFrom<RunInternalRun>) {
     const run = await Run.scope(null).findOne({ where: { id: runId } });
@@ -84,7 +84,7 @@ export class RunInternalRun extends CLSTask {
           oldGroupIds,
           creatorType: "run",
           creatorId: run.id,
-        });
+        } as CreationAttributes<Import>);
       }
 
       await Import.bulkCreate(bulkImports);

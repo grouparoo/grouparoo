@@ -10,7 +10,7 @@ export class EnqueueExportProcessors extends RetryableTask {
     "check for pending export processors and enqueue other tasks to process them";
   frequency = 1000 * 30; // every 30 seconds
   queue = "exports";
-  inputs = {};
+  inputs = {} as const;
 
   async runWithinTransaction() {
     const delayMs =

@@ -1,10 +1,9 @@
 import { useApi } from "../../../../../contexts/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { NextPageContext } from "next";
 import { Row, Col, Form, Badge, Button, Table, Alert } from "react-bootstrap";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useState, useRef } from "react";
+import { useState, useRef, FormEvent, useMemo, useEffect } from "react";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { successHandler } from "../../../../../eventHandlers";
 import DestinationTabs from "../../../../../components/tabs/Destination";
@@ -18,17 +17,67 @@ import { Actions, Models } from "../../../../../utils/apiData";
 import { ensureMatchingModel } from "../../../../../utils/ensureMatchingModel";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 import { generateClient } from "../../../../../client/client";
+import { withServerErrorHandler } from "../../../../../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../../../../../utils/pageHelper";
 
-export default function Page(
-  props: Awaited<ReturnType<typeof Page.getInitialProps>>
-) {
-  const {
-    properties,
-    mappingOptions,
-    destinationTypeConversions,
-    groups,
-    exportArrayProperties,
-  } = props;
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const client = generateClient(ctx);
+  const { destinationId, modelId } = ctx.query;
+  const { destination } = await client.request<Actions.DestinationView>(
+    "get",
+    `/destination/${destinationId}`
+  );
+  ensureMatchingModel("Destination", destination.modelId, modelId.toString());
+  const { groups } = await client.request<Actions.GroupsList>(
+    "get",
+    `/groups`,
+    {
+      modelId: destination?.modelId,
+    }
+  );
+  const { properties } = await client.request<Actions.PropertiesList>(
+    "get",
+    `/properties`,
+    {
+      state: "ready",
+      modelId: destination?.modelId,
+    }
+  );
+
+  const { options: mappingOptions, destinationTypeConversions } =
+    await client.request<Actions.DestinationMappingOptions>(
+      "get",
+      `/destination/${destinationId}/mappingOptions`
+    );
+
+  const { exportArrayProperties } =
+    await client.request<Actions.DestinationExportArrayProperties>(
+      "get",
+      `/destination/${destinationId}/exportArrayProperties`
+    );
+
+  return {
+    props: {
+      destination,
+      properties,
+      mappingOptions,
+      destinationTypeConversions,
+      exportArrayProperties,
+      groups: groups
+        .filter((group) => group.state !== "draft")
+        .filter((group) => group.state !== "deleted"),
+    },
+  };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  properties,
+  mappingOptions,
+  destinationTypeConversions,
+  groups,
+  exportArrayProperties,
+  ...props
+}) => {
   const { client } = useApi();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -48,7 +97,7 @@ export default function Page(
   const [unlockedGroups, setUnlockedGroups] = useState<string[]>([]);
   const { destinationId } = router.query;
 
-  const update = async (event) => {
+  const update = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
 
@@ -117,6 +166,26 @@ export default function Page(
     }
   });
 
+  const destinationAllowedProperties = useMemo(
+    () =>
+      [
+        ...mappingOptions.properties.known,
+        ...mappingOptions.properties.required,
+      ].map((p) => p.key),
+    [mappingOptions.properties.known, mappingOptions.properties.required]
+  );
+
+  useEffect(() => {
+    setDestination((_destination) => {
+      for (const key in _destination.mapping) {
+        if (!destinationAllowedProperties.includes(key)) {
+          delete _destination.mapping[key];
+        }
+      }
+      return _destination;
+    });
+  }, [destination, destinationAllowedProperties]);
+
   const optionalMappingRemoteKeys = Object.keys(destination.mapping).filter(
     (key) => {
       if (
@@ -133,8 +202,9 @@ export default function Page(
     }
   );
 
-  function updateMapping(key, value, oldKey = null) {
-    const _destination = Object.assign({}, destination);
+  function updateMapping(key: string, value: string, oldKey = null) {
+    const _destination = { ...destination };
+
     let destinationMappingKeys = Object.keys(_destination.mapping);
     let insertIndex = destinationMappingKeys.length - 1;
 
@@ -176,7 +246,7 @@ export default function Page(
     remoteKey,
     oldGroupId = null
   ) {
-    const _destination = Object.assign({}, destination);
+    const _destination = { ...destination };
     _destination.destinationGroupMemberships =
       _destination.destinationGroupMemberships.filter(
         (dgm) => dgm.groupId !== oldGroupId
@@ -206,9 +276,8 @@ export default function Page(
 
     setDestination(_destination);
   }
-
   function toggleUnlockedProperty(key) {
-    const _unlockedProperties = Object.assign({}, unlockedProperties);
+    const _unlockedProperties = { ...unlockedProperties };
     _unlockedProperties[destination.mapping[key]] = _unlockedProperties[
       destination.mapping[key]
     ]
@@ -218,7 +287,7 @@ export default function Page(
   }
 
   function toggleUnlockedGroup(groupId) {
-    const _unlockedGroups = [].concat(unlockedGroups);
+    const _unlockedGroups = [...unlockedGroups];
     if (_unlockedGroups.includes(groupId)) {
       const index = _unlockedGroups.indexOf(groupId);
       _unlockedGroups.splice(index, 1);
@@ -228,7 +297,7 @@ export default function Page(
     setUnlockedGroups(_unlockedGroups);
   }
 
-  const groupsAvailalbeForDestinationGroupMemberships = groups
+  const groupsAvailableForDestinationGroupMemberships = groups
     .filter(
       (group) =>
         !destination.destinationGroupMemberships
@@ -240,7 +309,7 @@ export default function Page(
       if (a.name < b.name) return -1;
       return 0;
     })
-    .sort((a, b) => {
+    .sort((a) => {
       if (a.id === groupId) return -1;
       return 1;
     });
@@ -458,14 +527,25 @@ export default function Page(
                                             ].includes(type)
                                           )
                                           .filter(filterRuleForArrayProperties)
-                                          .filter(
-                                            (rule) =>
+                                          .filter((rule) => {
+                                            const sourceKey = Object.entries(
+                                              destination.mapping
+                                            ).find(
+                                              ([, d]) => d === rule.key
+                                            )?.[0];
+                                            return (
                                               rule.key ===
                                                 destination.mapping[key] ||
-                                              !Object.values(
-                                                destination.mapping
-                                              ).includes(rule.key)
-                                          )
+                                              !(
+                                                Object.values(
+                                                  destination.mapping
+                                                ).includes(rule.key) &&
+                                                destinationAllowedProperties.includes(
+                                                  sourceKey
+                                                )
+                                              )
+                                            );
+                                          })
                                           .map((rule) => (
                                             <option
                                               key={`opt-known-${rule.id}`}
@@ -786,14 +866,14 @@ export default function Page(
                                 id="taggedGroup"
                                 ref={taggedGroupRef}
                                 disabled={
-                                  groupsAvailalbeForDestinationGroupMemberships.length ===
+                                  groupsAvailableForDestinationGroupMemberships.length ===
                                   0
                                 }
                                 placeholder={`Choose a group...`}
                                 onChange={(selected) => {
                                   taggedGroupRef.current.clear();
                                   const chosenGroup =
-                                    groupsAvailalbeForDestinationGroupMemberships.filter(
+                                    groupsAvailableForDestinationGroupMemberships.filter(
                                       (g) => g.name === selected[0]
                                     )[0];
 
@@ -802,7 +882,7 @@ export default function Page(
                                     chosenGroup.name
                                   );
                                 }}
-                                options={groupsAvailalbeForDestinationGroupMemberships.map(
+                                options={groupsAvailableForDestinationGroupMemberships.map(
                                   ({ name }) => name
                                 )}
                               />
@@ -833,7 +913,6 @@ export default function Page(
         </Col>
         <Col xl={5}>
           <DestinationSampleRecord
-            modelId={destination.modelId}
             groupId={groupId}
             collection={collection}
             mappingOptions={mappingOptions}
@@ -845,52 +924,6 @@ export default function Page(
       </Row>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const client = generateClient(ctx);
-  const { destinationId, modelId } = ctx.query;
-  const { destination } = await client.request<Actions.DestinationView>(
-    "get",
-    `/destination/${destinationId}`
-  );
-  ensureMatchingModel("Destination", destination.modelId, modelId.toString());
-  const { groups } = await client.request<Actions.GroupsList>(
-    "get",
-    `/groups`,
-    {
-      modelId: destination?.modelId,
-    }
-  );
-  const { properties } = await client.request<Actions.PropertiesList>(
-    "get",
-    `/properties`,
-    {
-      state: "ready",
-      modelId: destination?.modelId,
-    }
-  );
-
-  const { options: mappingOptions, destinationTypeConversions } =
-    await client.request<Actions.DestinationMappingOptions>(
-      "get",
-      `/destination/${destinationId}/mappingOptions`
-    );
-
-  const { exportArrayProperties } =
-    await client.request<Actions.DestinationExportArrayProperties>(
-      "get",
-      `/destination/${destinationId}/exportArrayProperties`
-    );
-
-  return {
-    destination,
-    properties,
-    mappingOptions,
-    destinationTypeConversions,
-    exportArrayProperties,
-    groups: groups
-      .filter((group) => group.state !== "draft")
-      .filter((group) => group.state !== "deleted"),
-  };
 };
+
+export default Page;

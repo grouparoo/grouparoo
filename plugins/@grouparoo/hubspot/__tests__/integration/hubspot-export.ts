@@ -18,6 +18,7 @@ import {
 import { connect } from "../../src/lib/connect";
 import Axios from "axios";
 import { loadAppOptions, updater } from "../utils/nockHelper";
+import { HubspotClient } from "../../src/lib/client/client";
 
 const { newNock } = helper.useNock(__filename, updater);
 const appOptions = loadAppOptions(newNock);
@@ -25,7 +26,7 @@ const appOptions = loadAppOptions(newNock);
 const email1 = "luigi@example.com";
 const list1 = "<test> hubspot people";
 
-let client;
+let client: HubspotClient;
 
 async function cleanUp(suppressErrors) {
   try {
@@ -199,7 +200,7 @@ describe("integration/runs/hubspot", () => {
       );
     expect(error).toBeUndefined();
     expect(options.companyKey).not.toBe(undefined);
-    expect(options.companyKey.type).toBe("list");
+    expect(options.companyKey.type).toBe("typeahead");
   });
 
   test("we can read the hubspot mapping options", async () => {
@@ -215,10 +216,10 @@ describe("integration/runs/hubspot", () => {
     expect(error).toBeUndefined();
     expect(options.labels).toEqual({
       property: {
-        singular: "Hubspot Contact Property",
-        plural: "Hubspot Contact Properties",
+        singular: "HubSpot Contact Property",
+        plural: "HubSpot Contact Properties",
       },
-      group: { singular: "Hubspot List", plural: "Hubspot Lists" },
+      group: { singular: "HubSpot List", plural: "HubSpot Lists" },
     });
     expect(options.properties.required).toEqual([
       { key: "email", type: "email" },

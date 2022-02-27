@@ -11,14 +11,29 @@ import { successHandler } from "../../../eventHandlers";
 import { Models, Actions } from "../../../utils/apiData";
 import { formatTimestamp } from "../../../utils/formatTimestamp";
 import { generateClient } from "../../../client/client";
-import { NextPageContext } from "next";
+import { withServerErrorHandler } from "../../../utils/withServerErrorHandler";
+import { NextPageWithInferredProps } from "../../../utils/pageHelper";
 
-export default function Page(props) {
-  const {
-    quantizedTimeline,
-  }: {
-    quantizedTimeline: any;
-  } = props;
+export const getServerSideProps = withServerErrorHandler(async (ctx) => {
+  const { id } = ctx.query;
+  const client = generateClient(ctx);
+  const { run, quantizedTimeline } = await client.request<Actions.RunView>(
+    "get",
+    `/run/${id}`
+  );
+
+  return {
+    props: {
+      run,
+      quantizedTimeline,
+    },
+  };
+});
+
+const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
+  quantizedTimeline,
+  ...props
+}) => {
   const { client } = useApi();
   const [run, setRun] = useState<Models.RunType>(props.run);
   const { chartData, chartKeys } = buildChartData(quantizedTimeline);
@@ -151,14 +166,9 @@ export default function Page(props) {
       </Card>
     </>
   );
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  const { id } = ctx.query;
-  const client = generateClient(ctx);
-  const { run, quantizedTimeline } = await client.request("get", `/run/${id}`);
-  return { run, quantizedTimeline };
 };
+
+export default Page;
 
 function buildChartData(quantizedTimeline) {
   const chartData: { x: number; y: number }[][] = [];

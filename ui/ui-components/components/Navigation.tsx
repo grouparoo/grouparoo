@@ -15,7 +15,7 @@ import { truncate } from "../utils/truncate";
 import LinkButton from "./LinkButton";
 import { grouparooUiEdition } from "../utils/uiEdition";
 import { useWebAppContext } from "../contexts/webApp";
-import { errorHandler, sessionHandler } from "../eventHandlers";
+import { sessionHandler } from "../eventHandlers";
 
 export const navLiStyle: React.CSSProperties = {
   marginTop: 16,
@@ -207,6 +207,7 @@ export default function Navigation(props) {
                         }
                         icon={nav.icon}
                         small={nav.small}
+                        subNavItems={nav.subNavItems}
                       />
                     </li>
                   );

@@ -1,7 +1,8 @@
-import { log } from "actionhero";
+import { log, redis } from "actionhero";
 import { Op } from "sequelize";
 import {
   AfterDestroy,
+  AfterSave,
   AllowNull,
   BeforeCreate,
   BeforeDestroy,
@@ -37,10 +38,12 @@ import { Group } from "./Group";
 import { GroupRule } from "./GroupRule";
 import { Mapping } from "./Mapping";
 import { Option } from "./Option";
-import { Property } from "./Property";
 import { GrouparooModel } from "./GrouparooModel";
 import { ModelGuard } from "../modules/modelGuard";
 import { CommonModel } from "../classes/commonModel";
+import { PropertiesCache } from "../modules/caches/propertiesCache";
+import { DestinationsCache } from "../modules/caches/destinationsCache";
+import { CLS } from "../modules/cls";
 
 export interface DestinationMapping extends MappingHelper.Mappings {}
 export interface SimpleDestinationGroupMembership {
@@ -258,20 +261,27 @@ export class Destination extends CommonModel<Destination> {
     saveCache = true
   ) {
     if (externallyValidate) await this.validateMappings(mappings, saveCache);
-    return MappingHelper.setMapping(this, mappings);
+    await MappingHelper.setMapping(this, mappings, externallyValidate);
+    await Destination.invalidateCache();
   }
 
   async getOptions(sourceFromEnvironment = true) {
     return OptionHelper.getOptions(this, sourceFromEnvironment);
   }
 
-  async setOptions(options: SimpleDestinationOptions) {
+  async setOptions(
+    options: SimpleDestinationOptions,
+    externallyValidate = true
+  ) {
     await this.validateUniqueAppAndOptionsForGroup(options);
-    return OptionHelper.setOptions(this, options);
+    return OptionHelper.setOptions(this, options, externallyValidate);
   }
 
   async afterSetOptions(hasChanges: boolean) {
-    if (hasChanges) return this.exportMembers();
+    if (hasChanges) {
+      await Destination.invalidateCache();
+      return this.exportMembers();
+    }
   }
 
   async getExportArrayProperties() {
@@ -323,9 +333,28 @@ export class Destination extends CommonModel<Destination> {
     return this.getDestinationGroupMemberships();
   }
 
-  async validateOptions(options?: SimpleDestinationOptions) {
+  async validateOptions(
+    options?: SimpleDestinationOptions,
+    externallyValidate = true
+  ) {
     if (!options) options = await this.getOptions(true);
-    return OptionHelper.validateOptions(this, options, null);
+    const { pluginConnection } = await this.getPlugin();
+    if (!pluginConnection) {
+      throw new Error(`cannot find a pluginConnection for type ${this.type}`);
+    }
+
+    const connectionOptions = externallyValidate
+      ? await this.destinationConnectionOptions(options)
+      : {};
+
+    const optionsSpec: OptionHelper.OptionsSpec = pluginConnection.options.map(
+      (opt) => ({
+        ...opt,
+        options: connectionOptions[opt.key]?.options ?? [],
+      })
+    );
+
+    return OptionHelper.validateOptions(this, options, optionsSpec);
   }
 
   async getPlugin() {
@@ -396,7 +425,10 @@ export class Destination extends CommonModel<Destination> {
       false,
       saveCache
     );
-    const properties = await Property.findAllWithCache(this.modelId);
+    const properties = await PropertiesCache.findAllWithCache(
+      this.modelId,
+      "ready"
+    );
     const exportArrayProperties = await this.getExportArrayProperties();
 
     // check for array properties
@@ -617,12 +649,6 @@ export class Destination extends CommonModel<Destination> {
 
   // --- Class Methods --- //
 
-  static async findById(id: string) {
-    const instance = await this.scope(null).findOne({ where: { id } });
-    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
-    return instance;
-  }
-
   @BeforeCreate
   @BeforeSave
   static async ensureModel(instance: Destination) {
@@ -760,6 +786,15 @@ export class Destination extends CommonModel<Destination> {
     return Export.update(
       { destinationId: null },
       { where: { destinationId: instance.id } }
+    );
+  }
+
+  @AfterSave
+  @AfterDestroy
+  static async invalidateCache() {
+    DestinationsCache.invalidate();
+    await CLS.afterCommit(
+      async () => await redis.doCluster("api.rpc.destination.invalidateCache")
     );
   }
 }

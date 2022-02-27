@@ -4,8 +4,9 @@ import {
   extractNonNullParts,
   logModel,
 } from "../../classes/codeConfig";
-import { GrouparooRecord, Property } from "../.."; // configLoader imports need to be from root
+import { GrouparooRecord } from "../.."; // configLoader imports need to be from root
 import { getGrouparooRunMode } from "../runMode";
+import { PropertiesCache } from "../caches/propertiesCache";
 
 export async function loadRecord(
   configObject: RecordConfigurationObject,
@@ -33,7 +34,9 @@ export async function loadRecord(
 
   const nonNullProperties = extractNonNullParts(configObject, "properties");
 
-  const primaryKeyProperties = (await Property.findAllWithCache(record.modelId))
+  const primaryKeyProperties = (
+    await PropertiesCache.findAllWithCache(record.modelId, "ready")
+  )
     .filter((p) => p.isPrimaryKey === true)
     .map((p) => p.id);
 
