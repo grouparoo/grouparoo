@@ -39,10 +39,10 @@ const handleContactChanges: ExportRecordPluginMethod<FreshdeskClient> = async ({
     oldPKValue
   );
 
-  const newRecord = oldPKValue === newPKValue ? oldRecord : await connection.getContactBy(
-    primaryKeyFieldKey as any,
-    newPKValue
-  );
+  const newRecord =
+    oldPKValue === newPKValue
+      ? oldRecord
+      : await connection.getContactBy(primaryKeyFieldKey as any, newPKValue);
 
   const foundId = newRecord?.id ?? oldRecord?.id;
 

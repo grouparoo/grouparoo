@@ -76,7 +76,8 @@ export class FreshdeskClient {
 
     return (
       response.data?.companies?.find(
-        (company) => company.name.toLowerCase().trim() === name.toLowerCase().trim()
+        (company) =>
+          company.name.toLowerCase().trim() === name.toLowerCase().trim()
       ) ?? null
     );
   }
