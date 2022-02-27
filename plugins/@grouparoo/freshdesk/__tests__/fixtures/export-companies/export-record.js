@@ -1,6 +1,6 @@
 const nock = require("nock");
 
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies")
   .once()
   .reply(
@@ -98,7 +98,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .delete("/api/v2/companies/72000300328")
   .once()
   .reply(204, "", [
@@ -145,7 +145,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%20101" })
   .once()
@@ -197,7 +197,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/companies", { name: "Test Company 101" })
   .once()
   .reply(
@@ -267,7 +267,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies")
   .once()
   .reply(
@@ -365,7 +365,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%20101" })
   .once()
@@ -417,7 +417,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%20102" })
   .once()
@@ -469,7 +469,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .put("/api/v2/companies/72000300329", {
     name: "Test Company 102",
     domains: ["company102.com"],
@@ -540,7 +540,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies")
   .once()
   .reply(
@@ -638,7 +638,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies")
   .once()
   .reply(
@@ -736,7 +736,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%20199" })
   .once()
@@ -788,7 +788,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%20111" })
   .once()
@@ -840,7 +840,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/companies", { name: "Test Company 111" })
   .once()
   .reply(
@@ -910,7 +910,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies")
   .once()
   .reply(
@@ -1022,7 +1022,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies")
   .once()
   .reply(
@@ -1134,7 +1134,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/companies", { name: "Test Company 112" })
   .once()
   .reply(
@@ -1204,7 +1204,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%20111" })
   .once()
@@ -1256,7 +1256,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%20112" })
   .once()
@@ -1308,7 +1308,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .put("/api/v2/companies/72000300331", {
     name: "Test Company 112",
     description: "Some text",
@@ -1379,7 +1379,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies")
   .once()
   .reply(
@@ -1505,7 +1505,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies")
   .once()
   .reply(
@@ -1631,7 +1631,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%20111" })
   .once()
@@ -1683,7 +1683,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%20112" })
   .once()
@@ -1735,7 +1735,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .delete("/api/v2/companies/72000300331")
   .once()
   .reply(204, "", [
@@ -1782,7 +1782,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies")
   .once()
   .reply(
@@ -1894,7 +1894,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies")
   .once()
   .reply(
@@ -2006,7 +2006,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/companies", { name: "Test Company 131" })
   .once()
   .reply(
@@ -2076,7 +2076,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%20130" })
   .once()
@@ -2128,7 +2128,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%20131" })
   .once()
@@ -2180,7 +2180,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Another%20Name" })
   .once()
@@ -2232,7 +2232,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%20131" })
   .once()
@@ -2284,7 +2284,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%20131" })
   .once()
@@ -2336,7 +2336,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%20119" })
   .once()
@@ -2388,7 +2388,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/companies", {
     name: "Test Company 119",
     domains: ["company119.com"],
@@ -2467,7 +2467,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies")
   .once()
   .reply(
@@ -2607,7 +2607,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%20119" })
   .once()
@@ -2659,7 +2659,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%20120" })
   .once()
@@ -2711,7 +2711,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .put("/api/v2/companies/72000300334", {
     name: "Test Company 120",
     domains: ["company120.com"],
@@ -2788,7 +2788,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies")
   .once()
   .reply(
@@ -2928,7 +2928,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies")
   .once()
   .reply(
@@ -3068,7 +3068,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%20120" })
   .once()
@@ -3120,7 +3120,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%20121" })
   .once()
@@ -3172,7 +3172,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .put("/api/v2/companies/72000300334", {
     name: "Test Company 121",
     domains: [],
@@ -3249,7 +3249,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies")
   .once()
   .reply(
@@ -3389,7 +3389,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies")
   .once()
   .reply(
@@ -3529,7 +3529,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/companies", { name: "Test Company 124" })
   .once()
   .reply(
@@ -3599,7 +3599,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/companies", { name: "Test Company 125" })
   .once()
   .reply(
@@ -3669,7 +3669,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%20124" })
   .once()
@@ -3721,7 +3721,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%20124" })
   .once()
@@ -3773,7 +3773,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .delete("/api/v2/companies/72000300337")
   .once()
   .reply(204, "", [
@@ -3820,7 +3820,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies")
   .once()
   .reply(
@@ -3974,7 +3974,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%20125" })
   .once()
@@ -4026,7 +4026,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%20125" })
   .once()
@@ -4078,7 +4078,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .delete("/api/v2/companies/72000300338")
   .once()
   .reply(204, "", [
@@ -4125,7 +4125,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies")
   .once()
   .reply(
@@ -4265,7 +4265,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%20199" })
   .once()
@@ -4317,7 +4317,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%20199" })
   .once()
@@ -4369,7 +4369,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies")
   .once()
   .reply(
@@ -4510,237 +4510,331 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     ]
   );
 
-nock('https://grouparoodev.freshdesk.com:443', {"encodedQueryParams":true})
-  .get('/api/v2/companies')
-  .once().reply(200, [{"id":72000300322,"name":"Another Name","description":null,"note":null,"domains":[],"created_at":"2022-02-27T13:03:14Z","updated_at":"2022-02-27T13:03:14Z","custom_fields":{},"health_score":null,"account_tier":null,"renewal_date":null,"industry":null},{"id":72000206600,"name":"Company ABC","description":null,"note":null,"domains":[],"created_at":"2022-02-11T18:49:31Z","updated_at":"2022-02-11T18:49:31Z","custom_fields":{},"health_score":null,"account_tier":null,"renewal_date":null,"industry":null},{"id":72000300329,"name":"Test Company 102","description":null,"note":null,"domains":["company102.com"],"created_at":"2022-02-27T13:12:02Z","updated_at":"2022-02-27T13:14:16Z","custom_fields":{},"health_score":null,"account_tier":null,"renewal_date":null,"industry":null},{"id":72000300330,"name":"Test Company 111","description":null,"note":null,"domains":[],"created_at":"2022-02-27T13:14:30Z","updated_at":"2022-02-27T13:14:30Z","custom_fields":{},"health_score":null,"account_tier":null,"renewal_date":null,"industry":null},{"id":72000300334,"name":"Test Company 121","description":null,"note":null,"domains":[],"created_at":"2022-02-27T13:20:49Z","updated_at":"2022-02-27T13:24:56Z","custom_fields":{},"health_score":null,"account_tier":null,"renewal_date":null,"industry":null},{"id":72000300332,"name":"Test Company 131","description":null,"note":null,"domains":[],"created_at":"2022-02-27T13:18:42Z","updated_at":"2022-02-27T13:18:42Z","custom_fields":{},"health_score":null,"account_tier":null,"renewal_date":null,"industry":null}], [
-  'Date',
-  'Sun, 27 Feb 2022 13:27:09 GMT',
-  'Content-Type',
-  'application/json; charset=utf-8',
-  'Transfer-Encoding',
-  'chunked',
-  'Connection',
-  'close',
-  'Status',
-  '200 OK',
-  'Pragma',
-  'no-cache',
-  'X-Request-Id',
-  '6e928c9c-fe96-4364-8a00-6932ca6d1f3f',
-  'X-Freshdesk-Api-Version',
-  'latest=v2; requested=v2',
-  'X-Rack-Cache',
-  'miss',
-  'Cache-Control',
-  'must-revalidate, no-cache, no-store, private, max-age=0',
-  'X-Xss-Protection',
-  '1; mode=block',
-  'X-Ua-Compatible',
-  'IE=Edge,chrome=1',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Expires',
-  'Wed, 13 Oct 2010 00:00:00 UTC',
-  'Set-Cookie',
-  '_x_w=43_1; path=/; HttpOnly; secure',
-  'Set-Cookie',
-  '_x_m=x_c; path=/; HttpOnly; secure',
-  'X-Fw-Ratelimiting-Managed',
-  'true',
-  'X-Ratelimit-Total',
-  '700',
-  'X-Ratelimit-Remaining',
-  '688',
-  'X-Ratelimit-Used-Currentrequest',
-  '1',
-  'X-Envoy-Upstream-Service-Time',
-  '70',
-  'X-Trace-Id',
-  '00-da0de313e92b8ddf683e854b6d315987-9047553640177809-00',
-  'Server',
-  'fwe'
-]);
-nock('https://grouparoodev.freshdesk.com:443', {"encodedQueryParams":true})
-  .delete('/api/v2/companies/72000300329')
-  .once().reply(204, "", [
-  'Date',
-  'Sun, 27 Feb 2022 13:27:10 GMT',
-  'Connection',
-  'close',
-  'Status',
-  '204 No Content',
-  'Pragma',
-  'no-cache',
-  'X-Request-Id',
-  '0b09005f-263c-4668-b02b-737bda80e99d',
-  'X-Freshdesk-Api-Version',
-  'latest=v2; requested=v2',
-  'X-Rack-Cache',
-  'invalidate, pass',
-  'Cache-Control',
-  'no-cache, no-store, max-age=0, must-revalidate',
-  'X-Xss-Protection',
-  '1; mode=block',
-  'X-Ua-Compatible',
-  'IE=Edge,chrome=1',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Expires',
-  'Wed, 13 Oct 2010 00:00:00 UTC',
-  'Set-Cookie',
-  '_x_w=43_1; path=/; HttpOnly; secure',
-  'Set-Cookie',
-  '_x_m=x_c; path=/; HttpOnly; secure',
-  'X-Fw-Ratelimiting-Managed',
-  'true',
-  'X-Ratelimit-Total',
-  '700',
-  'X-Ratelimit-Remaining',
-  '687',
-  'X-Ratelimit-Used-Currentrequest',
-  '1',
-  'X-Envoy-Upstream-Service-Time',
-  '118',
-  'X-Trace-Id',
-  '00-b6a60ddee4869680b90cc62c7acdde79-de38a505833d0e6b-00',
-  'Server',
-  'fwe'
-]);
-nock('https://grouparoodev.freshdesk.com:443', {"encodedQueryParams":true})
-  .delete('/api/v2/companies/72000300330')
-  .once().reply(204, "", [
-  'Date',
-  'Sun, 27 Feb 2022 13:27:11 GMT',
-  'Connection',
-  'close',
-  'Status',
-  '204 No Content',
-  'Pragma',
-  'no-cache',
-  'X-Request-Id',
-  '0dd4fee1-9aa0-460b-916e-1fa745b674d7',
-  'X-Freshdesk-Api-Version',
-  'latest=v2; requested=v2',
-  'X-Rack-Cache',
-  'invalidate, pass',
-  'Cache-Control',
-  'no-cache, no-store, max-age=0, must-revalidate',
-  'X-Xss-Protection',
-  '1; mode=block',
-  'X-Ua-Compatible',
-  'IE=Edge,chrome=1',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Expires',
-  'Wed, 13 Oct 2010 00:00:00 UTC',
-  'Set-Cookie',
-  '_x_w=43_1; path=/; HttpOnly; secure',
-  'Set-Cookie',
-  '_x_m=x_c; path=/; HttpOnly; secure',
-  'X-Fw-Ratelimiting-Managed',
-  'true',
-  'X-Ratelimit-Total',
-  '700',
-  'X-Ratelimit-Remaining',
-  '686',
-  'X-Ratelimit-Used-Currentrequest',
-  '1',
-  'X-Envoy-Upstream-Service-Time',
-  '117',
-  'X-Trace-Id',
-  '00-fe29506aefbae746566065e8451db91a-e5df99f31bb222e6-00',
-  'Server',
-  'fwe'
-]);
-nock('https://grouparoodev.freshdesk.com:443', {"encodedQueryParams":true})
-  .delete('/api/v2/companies/72000300334')
-  .once().reply(204, "", [
-  'Date',
-  'Sun, 27 Feb 2022 13:27:11 GMT',
-  'Connection',
-  'close',
-  'Status',
-  '204 No Content',
-  'Pragma',
-  'no-cache',
-  'X-Request-Id',
-  'ad9219c9-9e90-494b-924c-a41241316bf6',
-  'X-Freshdesk-Api-Version',
-  'latest=v2; requested=v2',
-  'X-Rack-Cache',
-  'invalidate, pass',
-  'Cache-Control',
-  'no-cache, no-store, max-age=0, must-revalidate',
-  'X-Xss-Protection',
-  '1; mode=block',
-  'X-Ua-Compatible',
-  'IE=Edge,chrome=1',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Expires',
-  'Wed, 13 Oct 2010 00:00:00 UTC',
-  'Set-Cookie',
-  '_x_w=43_1; path=/; HttpOnly; secure',
-  'Set-Cookie',
-  '_x_m=x_c; path=/; HttpOnly; secure',
-  'X-Fw-Ratelimiting-Managed',
-  'true',
-  'X-Ratelimit-Total',
-  '700',
-  'X-Ratelimit-Remaining',
-  '685',
-  'X-Ratelimit-Used-Currentrequest',
-  '1',
-  'X-Envoy-Upstream-Service-Time',
-  '138',
-  'X-Trace-Id',
-  '00-5b6a3d4ebeebd1e24a5d1cbe5dbb8b24-f950c55ff56dae1f-00',
-  'Server',
-  'fwe'
-]);
-nock('https://grouparoodev.freshdesk.com:443', {"encodedQueryParams":true})
-  .delete('/api/v2/companies/72000300332')
-  .once().reply(204, "", [
-  'Date',
-  'Sun, 27 Feb 2022 13:27:12 GMT',
-  'Connection',
-  'close',
-  'Status',
-  '204 No Content',
-  'Pragma',
-  'no-cache',
-  'X-Request-Id',
-  '1f99f9c1-042d-446c-b44c-07d30801db40',
-  'X-Freshdesk-Api-Version',
-  'latest=v2; requested=v2',
-  'X-Rack-Cache',
-  'invalidate, pass',
-  'Cache-Control',
-  'no-cache, no-store, max-age=0, must-revalidate',
-  'X-Xss-Protection',
-  '1; mode=block',
-  'X-Ua-Compatible',
-  'IE=Edge,chrome=1',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Expires',
-  'Wed, 13 Oct 2010 00:00:00 UTC',
-  'Set-Cookie',
-  '_x_w=43_1; path=/; HttpOnly; secure',
-  'Set-Cookie',
-  '_x_m=x_c; path=/; HttpOnly; secure',
-  'X-Fw-Ratelimiting-Managed',
-  'true',
-  'X-Ratelimit-Total',
-  '700',
-  'X-Ratelimit-Remaining',
-  '684',
-  'X-Ratelimit-Used-Currentrequest',
-  '1',
-  'X-Envoy-Upstream-Service-Time',
-  '108',
-  'X-Trace-Id',
-  '00-5a72f244ad4eca545cc16e0898cf8e51-68faf045ea01cd31-00',
-  'Server',
-  'fwe'
-]);
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
+  .get("/api/v2/companies")
+  .once()
+  .reply(
+    200,
+    [
+      {
+        id: 72000300322,
+        name: "Another Name",
+        description: null,
+        note: null,
+        domains: [],
+        created_at: "2022-02-27T13:03:14Z",
+        updated_at: "2022-02-27T13:03:14Z",
+        custom_fields: {},
+        health_score: null,
+        account_tier: null,
+        renewal_date: null,
+        industry: null,
+      },
+      {
+        id: 72000206600,
+        name: "Company ABC",
+        description: null,
+        note: null,
+        domains: [],
+        created_at: "2022-02-11T18:49:31Z",
+        updated_at: "2022-02-11T18:49:31Z",
+        custom_fields: {},
+        health_score: null,
+        account_tier: null,
+        renewal_date: null,
+        industry: null,
+      },
+      {
+        id: 72000300329,
+        name: "Test Company 102",
+        description: null,
+        note: null,
+        domains: ["company102.com"],
+        created_at: "2022-02-27T13:12:02Z",
+        updated_at: "2022-02-27T13:14:16Z",
+        custom_fields: {},
+        health_score: null,
+        account_tier: null,
+        renewal_date: null,
+        industry: null,
+      },
+      {
+        id: 72000300330,
+        name: "Test Company 111",
+        description: null,
+        note: null,
+        domains: [],
+        created_at: "2022-02-27T13:14:30Z",
+        updated_at: "2022-02-27T13:14:30Z",
+        custom_fields: {},
+        health_score: null,
+        account_tier: null,
+        renewal_date: null,
+        industry: null,
+      },
+      {
+        id: 72000300334,
+        name: "Test Company 121",
+        description: null,
+        note: null,
+        domains: [],
+        created_at: "2022-02-27T13:20:49Z",
+        updated_at: "2022-02-27T13:24:56Z",
+        custom_fields: {},
+        health_score: null,
+        account_tier: null,
+        renewal_date: null,
+        industry: null,
+      },
+      {
+        id: 72000300332,
+        name: "Test Company 131",
+        description: null,
+        note: null,
+        domains: [],
+        created_at: "2022-02-27T13:18:42Z",
+        updated_at: "2022-02-27T13:18:42Z",
+        custom_fields: {},
+        health_score: null,
+        account_tier: null,
+        renewal_date: null,
+        industry: null,
+      },
+    ],
+    [
+      "Date",
+      "Sun, 27 Feb 2022 13:27:09 GMT",
+      "Content-Type",
+      "application/json; charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "Status",
+      "200 OK",
+      "Pragma",
+      "no-cache",
+      "X-Request-Id",
+      "6e928c9c-fe96-4364-8a00-6932ca6d1f3f",
+      "X-Freshdesk-Api-Version",
+      "latest=v2; requested=v2",
+      "X-Rack-Cache",
+      "miss",
+      "Cache-Control",
+      "must-revalidate, no-cache, no-store, private, max-age=0",
+      "X-Xss-Protection",
+      "1; mode=block",
+      "X-Ua-Compatible",
+      "IE=Edge,chrome=1",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Expires",
+      "Wed, 13 Oct 2010 00:00:00 UTC",
+      "Set-Cookie",
+      "_x_w=43_1; path=/; HttpOnly; secure",
+      "Set-Cookie",
+      "_x_m=x_c; path=/; HttpOnly; secure",
+      "X-Fw-Ratelimiting-Managed",
+      "true",
+      "X-Ratelimit-Total",
+      "700",
+      "X-Ratelimit-Remaining",
+      "688",
+      "X-Ratelimit-Used-Currentrequest",
+      "1",
+      "X-Envoy-Upstream-Service-Time",
+      "70",
+      "X-Trace-Id",
+      "00-da0de313e92b8ddf683e854b6d315987-9047553640177809-00",
+      "Server",
+      "fwe",
+    ]
+  );
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
+  .delete("/api/v2/companies/72000300329")
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Sun, 27 Feb 2022 13:27:10 GMT",
+    "Connection",
+    "close",
+    "Status",
+    "204 No Content",
+    "Pragma",
+    "no-cache",
+    "X-Request-Id",
+    "0b09005f-263c-4668-b02b-737bda80e99d",
+    "X-Freshdesk-Api-Version",
+    "latest=v2; requested=v2",
+    "X-Rack-Cache",
+    "invalidate, pass",
+    "Cache-Control",
+    "no-cache, no-store, max-age=0, must-revalidate",
+    "X-Xss-Protection",
+    "1; mode=block",
+    "X-Ua-Compatible",
+    "IE=Edge,chrome=1",
+    "X-Content-Type-Options",
+    "nosniff",
+    "Expires",
+    "Wed, 13 Oct 2010 00:00:00 UTC",
+    "Set-Cookie",
+    "_x_w=43_1; path=/; HttpOnly; secure",
+    "Set-Cookie",
+    "_x_m=x_c; path=/; HttpOnly; secure",
+    "X-Fw-Ratelimiting-Managed",
+    "true",
+    "X-Ratelimit-Total",
+    "700",
+    "X-Ratelimit-Remaining",
+    "687",
+    "X-Ratelimit-Used-Currentrequest",
+    "1",
+    "X-Envoy-Upstream-Service-Time",
+    "118",
+    "X-Trace-Id",
+    "00-b6a60ddee4869680b90cc62c7acdde79-de38a505833d0e6b-00",
+    "Server",
+    "fwe",
+  ]);
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
+  .delete("/api/v2/companies/72000300330")
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Sun, 27 Feb 2022 13:27:11 GMT",
+    "Connection",
+    "close",
+    "Status",
+    "204 No Content",
+    "Pragma",
+    "no-cache",
+    "X-Request-Id",
+    "0dd4fee1-9aa0-460b-916e-1fa745b674d7",
+    "X-Freshdesk-Api-Version",
+    "latest=v2; requested=v2",
+    "X-Rack-Cache",
+    "invalidate, pass",
+    "Cache-Control",
+    "no-cache, no-store, max-age=0, must-revalidate",
+    "X-Xss-Protection",
+    "1; mode=block",
+    "X-Ua-Compatible",
+    "IE=Edge,chrome=1",
+    "X-Content-Type-Options",
+    "nosniff",
+    "Expires",
+    "Wed, 13 Oct 2010 00:00:00 UTC",
+    "Set-Cookie",
+    "_x_w=43_1; path=/; HttpOnly; secure",
+    "Set-Cookie",
+    "_x_m=x_c; path=/; HttpOnly; secure",
+    "X-Fw-Ratelimiting-Managed",
+    "true",
+    "X-Ratelimit-Total",
+    "700",
+    "X-Ratelimit-Remaining",
+    "686",
+    "X-Ratelimit-Used-Currentrequest",
+    "1",
+    "X-Envoy-Upstream-Service-Time",
+    "117",
+    "X-Trace-Id",
+    "00-fe29506aefbae746566065e8451db91a-e5df99f31bb222e6-00",
+    "Server",
+    "fwe",
+  ]);
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
+  .delete("/api/v2/companies/72000300334")
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Sun, 27 Feb 2022 13:27:11 GMT",
+    "Connection",
+    "close",
+    "Status",
+    "204 No Content",
+    "Pragma",
+    "no-cache",
+    "X-Request-Id",
+    "ad9219c9-9e90-494b-924c-a41241316bf6",
+    "X-Freshdesk-Api-Version",
+    "latest=v2; requested=v2",
+    "X-Rack-Cache",
+    "invalidate, pass",
+    "Cache-Control",
+    "no-cache, no-store, max-age=0, must-revalidate",
+    "X-Xss-Protection",
+    "1; mode=block",
+    "X-Ua-Compatible",
+    "IE=Edge,chrome=1",
+    "X-Content-Type-Options",
+    "nosniff",
+    "Expires",
+    "Wed, 13 Oct 2010 00:00:00 UTC",
+    "Set-Cookie",
+    "_x_w=43_1; path=/; HttpOnly; secure",
+    "Set-Cookie",
+    "_x_m=x_c; path=/; HttpOnly; secure",
+    "X-Fw-Ratelimiting-Managed",
+    "true",
+    "X-Ratelimit-Total",
+    "700",
+    "X-Ratelimit-Remaining",
+    "685",
+    "X-Ratelimit-Used-Currentrequest",
+    "1",
+    "X-Envoy-Upstream-Service-Time",
+    "138",
+    "X-Trace-Id",
+    "00-5b6a3d4ebeebd1e24a5d1cbe5dbb8b24-f950c55ff56dae1f-00",
+    "Server",
+    "fwe",
+  ]);
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
+  .delete("/api/v2/companies/72000300332")
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Sun, 27 Feb 2022 13:27:12 GMT",
+    "Connection",
+    "close",
+    "Status",
+    "204 No Content",
+    "Pragma",
+    "no-cache",
+    "X-Request-Id",
+    "1f99f9c1-042d-446c-b44c-07d30801db40",
+    "X-Freshdesk-Api-Version",
+    "latest=v2; requested=v2",
+    "X-Rack-Cache",
+    "invalidate, pass",
+    "Cache-Control",
+    "no-cache, no-store, max-age=0, must-revalidate",
+    "X-Xss-Protection",
+    "1; mode=block",
+    "X-Ua-Compatible",
+    "IE=Edge,chrome=1",
+    "X-Content-Type-Options",
+    "nosniff",
+    "Expires",
+    "Wed, 13 Oct 2010 00:00:00 UTC",
+    "Set-Cookie",
+    "_x_w=43_1; path=/; HttpOnly; secure",
+    "Set-Cookie",
+    "_x_m=x_c; path=/; HttpOnly; secure",
+    "X-Fw-Ratelimiting-Managed",
+    "true",
+    "X-Ratelimit-Total",
+    "700",
+    "X-Ratelimit-Remaining",
+    "684",
+    "X-Ratelimit-Used-Currentrequest",
+    "1",
+    "X-Envoy-Upstream-Service-Time",
+    "108",
+    "X-Trace-Id",
+    "00-5a72f244ad4eca545cc16e0898cf8e51-68faf045ea01cd31-00",
+    "Server",
+    "fwe",
+  ]);

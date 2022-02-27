@@ -1,6 +1,6 @@
 const nock = require("nock");
 
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .once()
   .reply(
@@ -55,7 +55,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies")
   .once()
   .reply(
@@ -139,7 +139,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.101%40grouparoo.com" })
   .once()
@@ -195,7 +195,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/contacts", {
     name: "Contact 101",
     email: "contact.101@grouparoo.com",
@@ -286,7 +286,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.101%40grouparoo.com" })
   .once()
@@ -365,7 +365,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.101%40grouparoo.com" })
   .once()
@@ -444,7 +444,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.102%40grouparoo.com" })
   .once()
@@ -500,7 +500,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .put("/api/v2/contacts/72009533622", {
     name: "Contact 102",
     email: "contact.102@grouparoo.com",
@@ -589,7 +589,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.101%40grouparoo.com" })
   .once()
@@ -645,7 +645,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.102%40grouparoo.com" })
   .once()
@@ -724,7 +724,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.103%40grouparoo.com" })
   .once()
@@ -780,7 +780,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/contacts", {
     name: "Contact 103",
     email: "contact.103@grouparoo.com",
@@ -868,7 +868,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.103%40grouparoo.com" })
   .once()
@@ -947,7 +947,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.103%40grouparoo.com" })
   .once()
@@ -1026,7 +1026,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.103%40grouparoo.com" })
   .once()
@@ -1105,7 +1105,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .put("/api/v2/contacts/72009533623", {
     name: "Another Name",
     email: "contact.103@grouparoo.com",
@@ -1191,7 +1191,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.103%40grouparoo.com" })
   .once()
@@ -1270,7 +1270,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.103%40grouparoo.com" })
   .once()
@@ -1349,7 +1349,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.104%40grouparoo.com" })
   .once()
@@ -1405,7 +1405,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .put("/api/v2/contacts/72009533623", {
     name: "Contact 104",
     email: "contact.104@grouparoo.com",
@@ -1491,7 +1491,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.103%40grouparoo.com" })
   .once()
@@ -1547,7 +1547,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.104%40grouparoo.com" })
   .once()
@@ -1626,7 +1626,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ mobile: "777770105" })
   .once()
@@ -1682,7 +1682,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/contacts", {
     name: "Contact 105",
     mobile: "777770105",
@@ -1770,7 +1770,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ mobile: "777770105" })
   .once()
@@ -1849,7 +1849,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ mobile: "777770105" })
   .once()
@@ -1928,7 +1928,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ mobile: "777770105" })
   .once()
@@ -2007,7 +2007,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .put("/api/v2/contacts/72009533624", {
     name: "Another Name",
     mobile: "777770105",
@@ -2093,7 +2093,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ mobile: "777770105" })
   .once()
@@ -2172,7 +2172,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ mobile: "777770105" })
   .once()
@@ -2251,7 +2251,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ mobile: "777770106" })
   .once()
@@ -2307,7 +2307,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .put("/api/v2/contacts/72009533624", {
     name: "Contact 106",
     mobile: "777770106",
@@ -2393,7 +2393,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ mobile: "777770105" })
   .once()
@@ -2449,7 +2449,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ mobile: "777770106" })
   .once()
@@ -2528,7 +2528,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ phone: "888880107" })
   .once()
@@ -2584,7 +2584,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/contacts", {
     name: "Contact 107",
     phone: "888880107",
@@ -2672,7 +2672,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ phone: "888880107" })
   .once()
@@ -2751,7 +2751,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ phone: "888880107" })
   .once()
@@ -2830,7 +2830,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ phone: "888880107" })
   .once()
@@ -2909,7 +2909,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .put("/api/v2/contacts/72009533626", {
     name: "Another Name",
     phone: "888880107",
@@ -2995,7 +2995,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ phone: "888880107" })
   .once()
@@ -3074,7 +3074,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ phone: "888880107" })
   .once()
@@ -3153,7 +3153,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ phone: "888880108" })
   .once()
@@ -3209,7 +3209,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .put("/api/v2/contacts/72009533626", {
     name: "Contact 108",
     phone: "888880108",
@@ -3295,7 +3295,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ phone: "888880107" })
   .once()
@@ -3351,7 +3351,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ phone: "888880108" })
   .once()
@@ -3430,7 +3430,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ unique_external_id: "10109" })
   .once()
@@ -3486,7 +3486,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/contacts", {
     name: "Contact 109",
     unique_external_id: "10109",
@@ -3574,7 +3574,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ unique_external_id: "10109" })
   .once()
@@ -3653,7 +3653,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ unique_external_id: "10109" })
   .once()
@@ -3732,7 +3732,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ unique_external_id: "10109" })
   .once()
@@ -3811,7 +3811,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .put("/api/v2/contacts/72009533628", {
     name: "Another Name",
     unique_external_id: "10109",
@@ -3897,7 +3897,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ unique_external_id: "10109" })
   .once()
@@ -3976,7 +3976,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ unique_external_id: "10109" })
   .once()
@@ -4055,7 +4055,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ unique_external_id: "10110" })
   .once()
@@ -4111,7 +4111,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .put("/api/v2/contacts/72009533628", {
     name: "Contact 110",
     unique_external_id: "10110",
@@ -4197,7 +4197,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ unique_external_id: "10109" })
   .once()
@@ -4253,7 +4253,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ unique_external_id: "10110" })
   .once()
@@ -4332,7 +4332,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.199%40grouparoo.com" })
   .once()
@@ -4388,7 +4388,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.111%40grouparoo.com" })
   .once()
@@ -4444,7 +4444,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/contacts", {
     name: "Contact 111",
     email: "contact.111@grouparoo.com",
@@ -4532,7 +4532,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.199%40grouparoo.com" })
   .once()
@@ -4588,7 +4588,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.111%40grouparoo.com" })
   .once()
@@ -4667,7 +4667,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/contacts", {
     name: "Contact 112",
     email: "contact.112@grouparoo.com",
@@ -4754,7 +4754,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.111%40grouparoo.com" })
   .once()
@@ -4833,7 +4833,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.112%40grouparoo.com" })
   .once()
@@ -4912,7 +4912,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .put("/api/v2/contacts/72009533631", {
     name: "Contact 112",
     email: "contact.112@grouparoo.com",
@@ -4999,7 +4999,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.111%40grouparoo.com" })
   .once()
@@ -5078,7 +5078,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.112%40grouparoo.com" })
   .once()
@@ -5157,7 +5157,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.111%40grouparoo.com" })
   .once()
@@ -5236,7 +5236,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.112%40grouparoo.com" })
   .once()
@@ -5315,7 +5315,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .delete("/api/v2/contacts/72009533631/hard_delete")
   .query({ force: "true" })
   .once()
@@ -5363,7 +5363,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.111%40grouparoo.com" })
   .once()
@@ -5442,7 +5442,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.112%40grouparoo.com" })
   .once()
@@ -5498,7 +5498,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ mobile: "777770199" })
   .once()
@@ -5554,7 +5554,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ mobile: "777770113" })
   .once()
@@ -5610,7 +5610,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/contacts", {
     name: "Contact 113",
     mobile: "777770113",
@@ -5698,7 +5698,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ mobile: "777770199" })
   .once()
@@ -5754,7 +5754,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ mobile: "777770113" })
   .once()
@@ -5833,7 +5833,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/contacts", { name: "Contact 114", mobile: "777770114" })
   .once()
   .reply(
@@ -5917,7 +5917,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ mobile: "777770113" })
   .once()
@@ -5996,7 +5996,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ mobile: "777770114" })
   .once()
@@ -6075,7 +6075,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .put("/api/v2/contacts/72009533635", {
     name: "Contact 114",
     mobile: "777770114",
@@ -6162,7 +6162,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ mobile: "777770113" })
   .once()
@@ -6241,7 +6241,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ mobile: "777770114" })
   .once()
@@ -6320,7 +6320,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ mobile: "777770113" })
   .once()
@@ -6399,7 +6399,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ mobile: "777770114" })
   .once()
@@ -6478,7 +6478,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .delete("/api/v2/contacts/72009533635/hard_delete")
   .query({ force: "true" })
   .once()
@@ -6526,7 +6526,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ mobile: "777770113" })
   .once()
@@ -6605,7 +6605,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ mobile: "777770114" })
   .once()
@@ -6661,7 +6661,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ phone: "888880199" })
   .once()
@@ -6717,7 +6717,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ phone: "888880115" })
   .once()
@@ -6773,7 +6773,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/contacts", {
     name: "Contact 115",
     phone: "888880115",
@@ -6861,7 +6861,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ phone: "888880199" })
   .once()
@@ -6917,7 +6917,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ phone: "888880115" })
   .once()
@@ -6996,7 +6996,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/contacts", { name: "Contact 116", phone: "888880116" })
   .once()
   .reply(
@@ -7080,7 +7080,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ phone: "888880115" })
   .once()
@@ -7159,7 +7159,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ phone: "888880116" })
   .once()
@@ -7238,7 +7238,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .put("/api/v2/contacts/72009533639", {
     name: "Contact 116",
     phone: "888880116",
@@ -7325,7 +7325,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ phone: "888880115" })
   .once()
@@ -7404,7 +7404,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ phone: "888880116" })
   .once()
@@ -7483,7 +7483,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ phone: "888880115" })
   .once()
@@ -7562,7 +7562,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ phone: "888880116" })
   .once()
@@ -7641,7 +7641,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .delete("/api/v2/contacts/72009533639/hard_delete")
   .query({ force: "true" })
   .once()
@@ -7689,7 +7689,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ phone: "888880115" })
   .once()
@@ -7768,7 +7768,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ phone: "888880116" })
   .once()
@@ -7824,7 +7824,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ unique_external_id: "10199" })
   .once()
@@ -7880,7 +7880,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ unique_external_id: "10117" })
   .once()
@@ -7936,7 +7936,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/contacts", {
     name: "Contact 117",
     unique_external_id: "10117",
@@ -8024,7 +8024,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ unique_external_id: "10199" })
   .once()
@@ -8080,7 +8080,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ unique_external_id: "10117" })
   .once()
@@ -8159,7 +8159,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/contacts", {
     name: "Contact 118",
     unique_external_id: "10118",
@@ -8246,7 +8246,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ unique_external_id: "10117" })
   .once()
@@ -8325,7 +8325,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ unique_external_id: "10118" })
   .once()
@@ -8404,7 +8404,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .put("/api/v2/contacts/72009533642", {
     name: "Contact 118",
     unique_external_id: "10118",
@@ -8491,7 +8491,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ unique_external_id: "10117" })
   .once()
@@ -8570,7 +8570,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ unique_external_id: "10118" })
   .once()
@@ -8649,7 +8649,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ unique_external_id: "10117" })
   .once()
@@ -8728,7 +8728,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ unique_external_id: "10118" })
   .once()
@@ -8807,7 +8807,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .delete("/api/v2/contacts/72009533642/hard_delete")
   .query({ force: "true" })
   .once()
@@ -8855,7 +8855,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ unique_external_id: "10117" })
   .once()
@@ -8934,7 +8934,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ unique_external_id: "10118" })
   .once()
@@ -8990,7 +8990,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/contacts", {
     name: "Contact 131",
     email: "contact.131@grouparoo.com",
@@ -9077,7 +9077,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.130%40grouparoo.com" })
   .once()
@@ -9133,7 +9133,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.131%40grouparoo.com" })
   .once()
@@ -9212,7 +9212,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "new.email%40grouparoo.com" })
   .once()
@@ -9268,7 +9268,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.131%40grouparoo.com" })
   .once()
@@ -9347,7 +9347,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.131%40grouparoo.com" })
   .once()
@@ -9426,7 +9426,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.119%40grouparoo.com" })
   .once()
@@ -9482,7 +9482,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%201" })
   .once()
@@ -9534,7 +9534,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/companies", { name: "Test Company 1" })
   .once()
   .reply(
@@ -9604,7 +9604,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/contacts", {
     name: "Contact 119",
     email: "contact.119@grouparoo.com",
@@ -9699,7 +9699,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.119%40grouparoo.com" })
   .once()
@@ -9779,7 +9779,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/72000300350")
   .once()
   .reply(
@@ -9847,7 +9847,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.119%40grouparoo.com" })
   .once()
@@ -9927,7 +9927,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.120%40grouparoo.com" })
   .once()
@@ -9983,7 +9983,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%202" })
   .once()
@@ -10035,7 +10035,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/companies", { name: "Test Company 2" })
   .once()
   .reply(
@@ -10105,7 +10105,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .put("/api/v2/contacts/72009533644", {
     name: "Contact 120",
     email: "contact.120@grouparoo.com",
@@ -10198,7 +10198,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.119%40grouparoo.com" })
   .once()
@@ -10254,7 +10254,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.120%40grouparoo.com" })
   .once()
@@ -10334,7 +10334,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.120%40grouparoo.com" })
   .once()
@@ -10414,7 +10414,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.121%40grouparoo.com" })
   .once()
@@ -10470,7 +10470,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .put("/api/v2/contacts/72009533644", {
     name: "Contact 121",
     email: "contact.121@grouparoo.com",
@@ -10563,7 +10563,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.120%40grouparoo.com" })
   .once()
@@ -10619,7 +10619,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.121%40grouparoo.com" })
   .once()
@@ -10698,7 +10698,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.122%40grouparoo.com" })
   .once()
@@ -10754,7 +10754,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%203" })
   .once()
@@ -10806,7 +10806,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/companies", { name: "Test Company 3" })
   .once()
   .reply(
@@ -10876,7 +10876,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/contacts", {
     name: "Contact 122",
     email: "contact.122@grouparoo.com",
@@ -10965,7 +10965,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.122%40grouparoo.com" })
   .once()
@@ -11045,7 +11045,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.122%40grouparoo.com" })
   .once()
@@ -11125,7 +11125,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.122%40grouparoo.com" })
   .once()
@@ -11205,7 +11205,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.122%40grouparoo.com" })
   .once()
@@ -11285,7 +11285,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%204" })
   .once()
@@ -11337,7 +11337,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/companies", { name: "Test Company 4" })
   .once()
   .reply(
@@ -11407,7 +11407,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .put("/api/v2/contacts/72009533647", {
     name: "Contact 122",
     email: "contact.122@grouparoo.com",
@@ -11494,7 +11494,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.122%40grouparoo.com" })
   .once()
@@ -11574,7 +11574,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.123%40grouparoo.com" })
   .once()
@@ -11630,7 +11630,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/companies/autocomplete")
   .query({ name: "Test%20Company%204" })
   .once()
@@ -11693,7 +11693,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/contacts", {
     name: "Contact 123",
     email: "contact.123@grouparoo.com",
@@ -11782,7 +11782,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.122%40grouparoo.com" })
   .once()
@@ -11862,7 +11862,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.123%40grouparoo.com" })
   .once()
@@ -11942,7 +11942,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/contacts", {
     name: "Contact 124",
     email: "contact.124@grouparoo.com",
@@ -12029,7 +12029,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/contacts", {
     name: "Contact 125",
     email: "contact.125@grouparoo.com",
@@ -12116,7 +12116,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.124%40grouparoo.com" })
   .once()
@@ -12195,7 +12195,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.124%40grouparoo.com" })
   .once()
@@ -12274,7 +12274,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .delete("/api/v2/contacts/72009533682/hard_delete")
   .query({ force: "true" })
   .once()
@@ -12322,7 +12322,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.124%40grouparoo.com" })
   .once()
@@ -12378,7 +12378,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.125%40grouparoo.com" })
   .once()
@@ -12457,7 +12457,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.125%40grouparoo.com" })
   .once()
@@ -12536,7 +12536,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .delete("/api/v2/contacts/72009533683/hard_delete")
   .query({ force: "true" })
   .once()
@@ -12584,7 +12584,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     "Server",
     "fwe",
   ]);
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.125%40grouparoo.com" })
   .once()
@@ -12640,7 +12640,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.199%40grouparoo.com" })
   .once()
@@ -12696,7 +12696,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.199%40grouparoo.com" })
   .once()
@@ -12752,7 +12752,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.199%40grouparoo.com" })
   .once()
@@ -12808,7 +12808,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/contacts", {
     name: "Contact 126",
     email: "contact.126@grouparoo.com",
@@ -12895,7 +12895,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.126%40grouparoo.com" })
   .once()
@@ -12974,7 +12974,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.126%40grouparoo.com" })
   .once()
@@ -13053,7 +13053,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .put("/api/v2/contacts/72009533685", {
     name: "Contact 126",
     email: "contact.126@grouparoo.com",
@@ -13139,7 +13139,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.126%40grouparoo.com" })
   .once()
@@ -13218,7 +13218,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts/72009533685")
   .once()
   .reply(
@@ -13299,7 +13299,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.126%40grouparoo.com" })
   .once()
@@ -13378,7 +13378,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.126%40grouparoo.com" })
   .once()
@@ -13457,7 +13457,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .put("/api/v2/contacts/72009533685", {
     name: "Contact 126",
     email: "contact.126@grouparoo.com",
@@ -13543,7 +13543,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.126%40grouparoo.com" })
   .once()
@@ -13622,7 +13622,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts/72009533685")
   .once()
   .reply(
@@ -13703,7 +13703,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.127%40grouparoo.com" })
   .once()
@@ -13759,7 +13759,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/contacts", {
     name: "Contact 127",
     email: "contact.127@grouparoo.com",
@@ -13847,7 +13847,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.127%40grouparoo.com" })
   .once()
@@ -13926,7 +13926,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts/72009533686")
   .once()
   .reply(
@@ -14007,7 +14007,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.128%40grouparoo.com" })
   .once()
@@ -14063,7 +14063,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .post("/api/v2/contacts", {
     name: "Contact 128",
     email: "contact.128@grouparoo.com",
@@ -14151,7 +14151,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts")
   .query({ email: "contact.128%40grouparoo.com" })
   .once()
@@ -14230,7 +14230,7 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
       "fwe",
     ]
   );
-nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
   .get("/api/v2/contacts/72009533688")
   .once()
   .reply(
@@ -14312,1039 +14312,1509 @@ nock("https://grouparoodev.freshdesk.com:443", { encodedQueryParams: true })
     ]
   );
 
-nock('https://grouparoodev.freshdesk.com:443', {"encodedQueryParams":true})
-  .get('/api/v2/contacts')
-  .once().reply(200, [{"active":false,"address":null,"description":null,"email":"contact.102@grouparoo.com","id":72009533622,"job_title":null,"language":"en","mobile":"777770102","name":"Contact 102","phone":"888880102","time_zone":"Eastern Time (US & Canada)","twitter_id":null,"custom_fields":{},"facebook_id":null,"created_at":"2022-02-27T13:45:41Z","updated_at":"2022-02-27T13:45:44Z","csat_rating":null,"preferred_source":null,"company_id":null,"unique_external_id":"10102"},{"active":false,"address":null,"description":null,"email":"contact.104@grouparoo.com","id":72009533623,"job_title":null,"language":"en","mobile":null,"name":"Contact 104","phone":null,"time_zone":"Eastern Time (US & Canada)","twitter_id":null,"custom_fields":{},"facebook_id":null,"created_at":"2022-02-27T13:45:48Z","updated_at":"2022-02-27T13:45:54Z","csat_rating":null,"preferred_source":null,"company_id":null,"unique_external_id":null},{"active":false,"address":null,"description":null,"email":null,"id":72009533624,"job_title":null,"language":"en","mobile":"777770106","name":"Contact 106","phone":null,"time_zone":"Eastern Time (US & Canada)","twitter_id":null,"custom_fields":{},"facebook_id":null,"created_at":"2022-02-27T13:45:57Z","updated_at":"2022-02-27T13:46:03Z","csat_rating":null,"preferred_source":null,"company_id":null,"unique_external_id":null},{"active":false,"address":null,"description":null,"email":null,"id":72009533626,"job_title":null,"language":"en","mobile":null,"name":"Contact 108","phone":"888880108","time_zone":"Eastern Time (US & Canada)","twitter_id":null,"custom_fields":{},"facebook_id":null,"created_at":"2022-02-27T13:46:06Z","updated_at":"2022-02-27T13:46:12Z","csat_rating":null,"preferred_source":null,"company_id":null,"unique_external_id":null},{"active":false,"address":null,"description":null,"email":null,"id":72009533628,"job_title":null,"language":"en","mobile":null,"name":"Contact 110","phone":null,"time_zone":"Eastern Time (US & Canada)","twitter_id":null,"custom_fields":{},"facebook_id":null,"created_at":"2022-02-27T13:46:15Z","updated_at":"2022-02-27T13:46:21Z","csat_rating":null,"preferred_source":null,"company_id":null,"unique_external_id":"10110"},{"active":false,"address":null,"description":null,"email":"contact.111@grouparoo.com","id":72009533630,"job_title":null,"language":"en","mobile":null,"name":"Contact 111","phone":null,"time_zone":"Eastern Time (US & Canada)","twitter_id":null,"custom_fields":{},"facebook_id":null,"created_at":"2022-02-27T13:46:24Z","updated_at":"2022-02-27T13:46:24Z","csat_rating":null,"preferred_source":null,"company_id":null,"unique_external_id":null},{"active":false,"address":null,"description":null,"email":null,"id":72009533633,"job_title":null,"language":"en","mobile":"777770113","name":"Contact 113","phone":null,"time_zone":"Eastern Time (US & Canada)","twitter_id":null,"custom_fields":{},"facebook_id":null,"created_at":"2022-02-27T13:46:37Z","updated_at":"2022-02-27T13:46:37Z","csat_rating":null,"preferred_source":null,"company_id":null,"unique_external_id":null},{"active":false,"address":null,"description":null,"email":null,"id":72009533637,"job_title":null,"language":"en","mobile":null,"name":"Contact 115","phone":"888880115","time_zone":"Eastern Time (US & Canada)","twitter_id":null,"custom_fields":{},"facebook_id":null,"created_at":"2022-02-27T13:46:49Z","updated_at":"2022-02-27T13:46:49Z","csat_rating":null,"preferred_source":null,"company_id":null,"unique_external_id":null},{"active":false,"address":null,"description":null,"email":null,"id":72009533641,"job_title":null,"language":"en","mobile":null,"name":"Contact 117","phone":null,"time_zone":"Eastern Time (US & Canada)","twitter_id":null,"custom_fields":{},"facebook_id":null,"created_at":"2022-02-27T13:47:00Z","updated_at":"2022-02-27T13:47:00Z","csat_rating":null,"preferred_source":null,"company_id":null,"unique_external_id":"10117"},{"active":false,"address":null,"description":null,"email":"contact.121@grouparoo.com","id":72009533644,"job_title":null,"language":"en","mobile":null,"name":"Contact 121","phone":null,"time_zone":"Eastern Time (US & Canada)","twitter_id":null,"custom_fields":{},"facebook_id":null,"created_at":"2022-02-27T13:47:19Z","updated_at":"2022-02-27T13:47:28Z","csat_rating":null,"preferred_source":null,"company_id":null,"unique_external_id":null},{"active":false,"address":null,"description":null,"email":"contact.122@grouparoo.com","id":72009533647,"job_title":null,"language":"en","mobile":null,"name":"Contact 122","phone":null,"time_zone":"Eastern Time (US & Canada)","twitter_id":null,"custom_fields":{},"facebook_id":null,"created_at":"2022-02-27T13:47:32Z","updated_at":"2022-02-27T13:47:38Z","csat_rating":null,"preferred_source":null,"company_id":72000300353,"other_companies":[],"unique_external_id":null},{"active":false,"address":null,"description":null,"email":"contact.123@grouparoo.com","id":72009533681,"job_title":null,"language":"en","mobile":null,"name":"Contact 123","phone":null,"time_zone":"Eastern Time (US & Canada)","twitter_id":null,"custom_fields":{},"facebook_id":null,"created_at":"2022-02-27T13:49:41Z","updated_at":"2022-02-27T13:49:41Z","csat_rating":null,"preferred_source":null,"company_id":72000300353,"other_companies":[],"unique_external_id":null},{"active":false,"address":null,"description":null,"email":"contact.126@grouparoo.com","id":72009533685,"job_title":null,"language":"en","mobile":null,"name":"Contact 126","phone":null,"time_zone":"Eastern Time (US & Canada)","twitter_id":null,"custom_fields":{},"facebook_id":null,"created_at":"2022-02-27T13:49:53Z","updated_at":"2022-02-27T13:50:00Z","csat_rating":null,"preferred_source":null,"company_id":null,"unique_external_id":null},{"active":false,"address":null,"description":null,"email":"contact.127@grouparoo.com","id":72009533686,"job_title":null,"language":"en","mobile":null,"name":"Contact 127","phone":null,"time_zone":"Eastern Time (US & Canada)","twitter_id":null,"custom_fields":{},"facebook_id":null,"created_at":"2022-02-27T13:50:03Z","updated_at":"2022-02-27T13:50:03Z","csat_rating":null,"preferred_source":null,"company_id":null,"unique_external_id":null},{"active":false,"address":null,"description":null,"email":"contact.128@grouparoo.com","id":72009533688,"job_title":null,"language":"en","mobile":null,"name":"Contact 128","phone":null,"time_zone":"Eastern Time (US & Canada)","twitter_id":null,"custom_fields":{},"facebook_id":null,"created_at":"2022-02-27T13:50:06Z","updated_at":"2022-02-27T13:50:06Z","csat_rating":null,"preferred_source":null,"company_id":null,"unique_external_id":null},{"active":false,"address":null,"description":null,"email":"contact.131@grouparoo.com","id":72009533643,"job_title":null,"language":"en","mobile":null,"name":"Contact 131","phone":null,"time_zone":"Eastern Time (US & Canada)","twitter_id":null,"custom_fields":{},"facebook_id":null,"created_at":"2022-02-27T13:47:12Z","updated_at":"2022-02-27T13:47:12Z","csat_rating":null,"preferred_source":null,"company_id":null,"unique_external_id":null}], [
-  'Date',
-  'Sun, 27 Feb 2022 13:50:10 GMT',
-  'Content-Type',
-  'application/json; charset=utf-8',
-  'Transfer-Encoding',
-  'chunked',
-  'Connection',
-  'close',
-  'Status',
-  '200 OK',
-  'Pragma',
-  'no-cache',
-  'X-Request-Id',
-  'c36943e9-5b60-47ea-a815-f476316814b5',
-  'X-Freshdesk-Api-Version',
-  'latest=v2; requested=v2',
-  'X-Rack-Cache',
-  'miss',
-  'Cache-Control',
-  'must-revalidate, no-cache, no-store, private, max-age=0',
-  'X-Xss-Protection',
-  '1; mode=block',
-  'X-Ua-Compatible',
-  'IE=Edge,chrome=1',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Expires',
-  'Wed, 13 Oct 2010 00:00:00 UTC',
-  'Set-Cookie',
-  '_x_w=43_1; path=/; HttpOnly; secure',
-  'Set-Cookie',
-  '_x_m=x_c; path=/; HttpOnly; secure',
-  'X-Fw-Ratelimiting-Managed',
-  'true',
-  'X-Ratelimit-Total',
-  '200',
-  'X-Ratelimit-Remaining',
-  '173',
-  'X-Ratelimit-Used-Currentrequest',
-  '1',
-  'X-Envoy-Upstream-Service-Time',
-  '76',
-  'X-Trace-Id',
-  '00-9ec489dcae944bf1d1c5ab0fe3b3378e-af02c9d0a4b65cde-00',
-  'Server',
-  'fwe'
-]);
-nock('https://grouparoodev.freshdesk.com:443', {"encodedQueryParams":true})
-  .delete('/api/v2/contacts/72009533622/hard_delete')
-  .query({"force":"true"})
-  .once().reply(204, "", [
-  'Date',
-  'Sun, 27 Feb 2022 13:50:11 GMT',
-  'Connection',
-  'close',
-  'Status',
-  '204 No Content',
-  'Pragma',
-  'no-cache',
-  'X-Request-Id',
-  'eefabdee-b288-9fb6-9ddd-5d3039a9ab2a',
-  'X-Freshdesk-Api-Version',
-  'latest=v2; requested=v2',
-  'X-Rack-Cache',
-  'invalidate, pass',
-  'Cache-Control',
-  'no-cache, no-store, max-age=0, must-revalidate',
-  'X-Xss-Protection',
-  '1; mode=block',
-  'X-Ua-Compatible',
-  'IE=Edge,chrome=1',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Expires',
-  'Wed, 13 Oct 2010 00:00:00 UTC',
-  'Set-Cookie',
-  '_x_w=43_1; path=/; HttpOnly; secure',
-  'Set-Cookie',
-  '_x_m=x_c; path=/; HttpOnly; secure',
-  'X-Fw-Ratelimiting-Managed',
-  'true',
-  'X-Ratelimit-Total',
-  '700',
-  'X-Ratelimit-Remaining',
-  '661',
-  'X-Ratelimit-Used-Currentrequest',
-  '1',
-  'X-Envoy-Upstream-Service-Time',
-  '172',
-  'X-Trace-Id',
-  '00-f686b500e43362e0c36bc4c5b754eb06-3e686fce31e5d6aa-01',
-  'Server',
-  'fwe'
-]);
-nock('https://grouparoodev.freshdesk.com:443', {"encodedQueryParams":true})
-  .delete('/api/v2/contacts/72009533623/hard_delete')
-  .query({"force":"true"})
-  .once().reply(204, "", [
-  'Date',
-  'Sun, 27 Feb 2022 13:50:12 GMT',
-  'Connection',
-  'close',
-  'Status',
-  '204 No Content',
-  'Pragma',
-  'no-cache',
-  'X-Request-Id',
-  '494af654-f2d2-4fe0-a4f8-49c81a0c8ee4',
-  'X-Freshdesk-Api-Version',
-  'latest=v2; requested=v2',
-  'X-Rack-Cache',
-  'invalidate, pass',
-  'Cache-Control',
-  'no-cache, no-store, max-age=0, must-revalidate',
-  'X-Xss-Protection',
-  '1; mode=block',
-  'X-Ua-Compatible',
-  'IE=Edge,chrome=1',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Expires',
-  'Wed, 13 Oct 2010 00:00:00 UTC',
-  'Set-Cookie',
-  '_x_w=43_1; path=/; HttpOnly; secure',
-  'Set-Cookie',
-  '_x_m=x_c; path=/; HttpOnly; secure',
-  'X-Fw-Ratelimiting-Managed',
-  'true',
-  'X-Ratelimit-Total',
-  '700',
-  'X-Ratelimit-Remaining',
-  '660',
-  'X-Ratelimit-Used-Currentrequest',
-  '1',
-  'X-Envoy-Upstream-Service-Time',
-  '191',
-  'X-Trace-Id',
-  '00-98fb5e71639922155c38141c410612fb-f640094b4010776d-00',
-  'Server',
-  'fwe'
-]);
-nock('https://grouparoodev.freshdesk.com:443', {"encodedQueryParams":true})
-  .delete('/api/v2/contacts/72009533624/hard_delete')
-  .query({"force":"true"})
-  .once().reply(204, "", [
-  'Date',
-  'Sun, 27 Feb 2022 13:50:13 GMT',
-  'Connection',
-  'close',
-  'Status',
-  '204 No Content',
-  'Pragma',
-  'no-cache',
-  'X-Request-Id',
-  '74f54fa5-dd10-4797-8552-46457923d67d',
-  'X-Freshdesk-Api-Version',
-  'latest=v2; requested=v2',
-  'X-Rack-Cache',
-  'invalidate, pass',
-  'Cache-Control',
-  'no-cache, no-store, max-age=0, must-revalidate',
-  'X-Xss-Protection',
-  '1; mode=block',
-  'X-Ua-Compatible',
-  'IE=Edge,chrome=1',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Expires',
-  'Wed, 13 Oct 2010 00:00:00 UTC',
-  'Set-Cookie',
-  '_x_w=43_1; path=/; HttpOnly; secure',
-  'Set-Cookie',
-  '_x_m=x_c; path=/; HttpOnly; secure',
-  'X-Fw-Ratelimiting-Managed',
-  'true',
-  'X-Ratelimit-Total',
-  '700',
-  'X-Ratelimit-Remaining',
-  '659',
-  'X-Ratelimit-Used-Currentrequest',
-  '1',
-  'X-Envoy-Upstream-Service-Time',
-  '160',
-  'X-Trace-Id',
-  '00-2a5cb13ed6461f02af6c154add872635-7dece70c6a52b6c9-00',
-  'Server',
-  'fwe'
-]);
-nock('https://grouparoodev.freshdesk.com:443', {"encodedQueryParams":true})
-  .delete('/api/v2/contacts/72009533626/hard_delete')
-  .query({"force":"true"})
-  .once().reply(204, "", [
-  'Date',
-  'Sun, 27 Feb 2022 13:50:14 GMT',
-  'Connection',
-  'close',
-  'Status',
-  '204 No Content',
-  'Pragma',
-  'no-cache',
-  'X-Request-Id',
-  'c9e36c8b-94d2-40d1-a1cb-086622b72109',
-  'X-Freshdesk-Api-Version',
-  'latest=v2; requested=v2',
-  'X-Rack-Cache',
-  'invalidate, pass',
-  'Cache-Control',
-  'no-cache, no-store, max-age=0, must-revalidate',
-  'X-Xss-Protection',
-  '1; mode=block',
-  'X-Ua-Compatible',
-  'IE=Edge,chrome=1',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Expires',
-  'Wed, 13 Oct 2010 00:00:00 UTC',
-  'Set-Cookie',
-  '_x_w=43_1; path=/; HttpOnly; secure',
-  'Set-Cookie',
-  '_x_m=x_c; path=/; HttpOnly; secure',
-  'X-Fw-Ratelimiting-Managed',
-  'true',
-  'X-Ratelimit-Total',
-  '700',
-  'X-Ratelimit-Remaining',
-  '658',
-  'X-Ratelimit-Used-Currentrequest',
-  '1',
-  'X-Envoy-Upstream-Service-Time',
-  '150',
-  'X-Trace-Id',
-  '00-94a4c929c8d8f9a13c56dc027c96f846-35683306ffe05fac-00',
-  'Server',
-  'fwe'
-]);
-nock('https://grouparoodev.freshdesk.com:443', {"encodedQueryParams":true})
-  .delete('/api/v2/contacts/72009533628/hard_delete')
-  .query({"force":"true"})
-  .once().reply(204, "", [
-  'Date',
-  'Sun, 27 Feb 2022 13:50:15 GMT',
-  'Connection',
-  'close',
-  'Status',
-  '204 No Content',
-  'Pragma',
-  'no-cache',
-  'X-Request-Id',
-  'bda06ac3-04f0-47a5-babb-abf4dbdcd3f0',
-  'X-Freshdesk-Api-Version',
-  'latest=v2; requested=v2',
-  'X-Rack-Cache',
-  'invalidate, pass',
-  'Cache-Control',
-  'no-cache, no-store, max-age=0, must-revalidate',
-  'X-Xss-Protection',
-  '1; mode=block',
-  'X-Ua-Compatible',
-  'IE=Edge,chrome=1',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Expires',
-  'Wed, 13 Oct 2010 00:00:00 UTC',
-  'Set-Cookie',
-  '_x_w=43_1; path=/; HttpOnly; secure',
-  'Set-Cookie',
-  '_x_m=x_c; path=/; HttpOnly; secure',
-  'X-Fw-Ratelimiting-Managed',
-  'true',
-  'X-Ratelimit-Total',
-  '700',
-  'X-Ratelimit-Remaining',
-  '657',
-  'X-Ratelimit-Used-Currentrequest',
-  '1',
-  'X-Envoy-Upstream-Service-Time',
-  '156',
-  'X-Trace-Id',
-  '00-83a925ec91190faeb8a0bf7a67dfacd5-5fb2b06e342a94dc-00',
-  'Server',
-  'fwe'
-]);
-nock('https://grouparoodev.freshdesk.com:443', {"encodedQueryParams":true})
-  .delete('/api/v2/contacts/72009533630/hard_delete')
-  .query({"force":"true"})
-  .once().reply(204, "", [
-  'Date',
-  'Sun, 27 Feb 2022 13:50:16 GMT',
-  'Connection',
-  'close',
-  'Status',
-  '204 No Content',
-  'Pragma',
-  'no-cache',
-  'X-Request-Id',
-  '010b22de-2b17-422a-b29c-d63cd6854246',
-  'X-Freshdesk-Api-Version',
-  'latest=v2; requested=v2',
-  'X-Rack-Cache',
-  'invalidate, pass',
-  'Cache-Control',
-  'no-cache, no-store, max-age=0, must-revalidate',
-  'X-Xss-Protection',
-  '1; mode=block',
-  'X-Ua-Compatible',
-  'IE=Edge,chrome=1',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Expires',
-  'Wed, 13 Oct 2010 00:00:00 UTC',
-  'Set-Cookie',
-  '_x_w=43_1; path=/; HttpOnly; secure',
-  'Set-Cookie',
-  '_x_m=x_c; path=/; HttpOnly; secure',
-  'X-Fw-Ratelimiting-Managed',
-  'true',
-  'X-Ratelimit-Total',
-  '700',
-  'X-Ratelimit-Remaining',
-  '656',
-  'X-Ratelimit-Used-Currentrequest',
-  '1',
-  'X-Envoy-Upstream-Service-Time',
-  '181',
-  'X-Trace-Id',
-  '00-cab30b31b67822970ae02b198d8effa3-890ce5c5f326ca8a-00',
-  'Server',
-  'fwe'
-]);
-nock('https://grouparoodev.freshdesk.com:443', {"encodedQueryParams":true})
-  .delete('/api/v2/contacts/72009533633/hard_delete')
-  .query({"force":"true"})
-  .once().reply(204, "", [
-  'Date',
-  'Sun, 27 Feb 2022 13:50:16 GMT',
-  'Connection',
-  'close',
-  'Status',
-  '204 No Content',
-  'Pragma',
-  'no-cache',
-  'X-Request-Id',
-  '33b5b0ad-ab4c-4a4e-8676-69428b005611',
-  'X-Freshdesk-Api-Version',
-  'latest=v2; requested=v2',
-  'X-Rack-Cache',
-  'invalidate, pass',
-  'Cache-Control',
-  'no-cache, no-store, max-age=0, must-revalidate',
-  'X-Xss-Protection',
-  '1; mode=block',
-  'X-Ua-Compatible',
-  'IE=Edge,chrome=1',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Expires',
-  'Wed, 13 Oct 2010 00:00:00 UTC',
-  'Set-Cookie',
-  '_x_w=43_1; path=/; HttpOnly; secure',
-  'Set-Cookie',
-  '_x_m=x_c; path=/; HttpOnly; secure',
-  'X-Fw-Ratelimiting-Managed',
-  'true',
-  'X-Ratelimit-Total',
-  '700',
-  'X-Ratelimit-Remaining',
-  '655',
-  'X-Ratelimit-Used-Currentrequest',
-  '1',
-  'X-Envoy-Upstream-Service-Time',
-  '147',
-  'X-Trace-Id',
-  '00-77ae8b9495de8c561fb25e0c4300fd08-4d53ee084f536d89-00',
-  'Server',
-  'fwe'
-]);
-nock('https://grouparoodev.freshdesk.com:443', {"encodedQueryParams":true})
-  .delete('/api/v2/contacts/72009533637/hard_delete')
-  .query({"force":"true"})
-  .once().reply(204, "", [
-  'Date',
-  'Sun, 27 Feb 2022 13:50:17 GMT',
-  'Connection',
-  'close',
-  'Status',
-  '204 No Content',
-  'Pragma',
-  'no-cache',
-  'X-Request-Id',
-  '328d37e4-e5cb-40ec-bb8c-e887069c1366',
-  'X-Freshdesk-Api-Version',
-  'latest=v2; requested=v2',
-  'X-Rack-Cache',
-  'invalidate, pass',
-  'Cache-Control',
-  'no-cache, no-store, max-age=0, must-revalidate',
-  'X-Xss-Protection',
-  '1; mode=block',
-  'X-Ua-Compatible',
-  'IE=Edge,chrome=1',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Expires',
-  'Wed, 13 Oct 2010 00:00:00 UTC',
-  'Set-Cookie',
-  '_x_w=43_1; path=/; HttpOnly; secure',
-  'Set-Cookie',
-  '_x_m=x_c; path=/; HttpOnly; secure',
-  'X-Fw-Ratelimiting-Managed',
-  'true',
-  'X-Ratelimit-Total',
-  '700',
-  'X-Ratelimit-Remaining',
-  '654',
-  'X-Ratelimit-Used-Currentrequest',
-  '1',
-  'X-Envoy-Upstream-Service-Time',
-  '160',
-  'X-Trace-Id',
-  '00-68c652a62183698494791a6aa8d63c80-71d48db24e865395-00',
-  'Server',
-  'fwe'
-]);
-nock('https://grouparoodev.freshdesk.com:443', {"encodedQueryParams":true})
-  .delete('/api/v2/contacts/72009533641/hard_delete')
-  .query({"force":"true"})
-  .once().reply(204, "", [
-  'Date',
-  'Sun, 27 Feb 2022 13:50:18 GMT',
-  'Connection',
-  'close',
-  'Status',
-  '204 No Content',
-  'Pragma',
-  'no-cache',
-  'X-Request-Id',
-  '36a3d874-a42e-48ff-98e9-59c082910303',
-  'X-Freshdesk-Api-Version',
-  'latest=v2; requested=v2',
-  'X-Rack-Cache',
-  'invalidate, pass',
-  'Cache-Control',
-  'no-cache, no-store, max-age=0, must-revalidate',
-  'X-Xss-Protection',
-  '1; mode=block',
-  'X-Ua-Compatible',
-  'IE=Edge,chrome=1',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Expires',
-  'Wed, 13 Oct 2010 00:00:00 UTC',
-  'Set-Cookie',
-  '_x_w=43_1; path=/; HttpOnly; secure',
-  'Set-Cookie',
-  '_x_m=x_c; path=/; HttpOnly; secure',
-  'X-Fw-Ratelimiting-Managed',
-  'true',
-  'X-Ratelimit-Total',
-  '700',
-  'X-Ratelimit-Remaining',
-  '653',
-  'X-Ratelimit-Used-Currentrequest',
-  '1',
-  'X-Envoy-Upstream-Service-Time',
-  '158',
-  'X-Trace-Id',
-  '00-86f223d49f19afb8d337f8d64e50d358-e2b6f326be041d6b-00',
-  'Server',
-  'fwe'
-]);
-nock('https://grouparoodev.freshdesk.com:443', {"encodedQueryParams":true})
-  .delete('/api/v2/contacts/72009533644/hard_delete')
-  .query({"force":"true"})
-  .once().reply(204, "", [
-  'Date',
-  'Sun, 27 Feb 2022 13:50:19 GMT',
-  'Connection',
-  'close',
-  'Status',
-  '204 No Content',
-  'Pragma',
-  'no-cache',
-  'X-Request-Id',
-  '7df03d93-0edd-4479-b7c4-fee2f7467850',
-  'X-Freshdesk-Api-Version',
-  'latest=v2; requested=v2',
-  'X-Rack-Cache',
-  'invalidate, pass',
-  'Cache-Control',
-  'no-cache, no-store, max-age=0, must-revalidate',
-  'X-Xss-Protection',
-  '1; mode=block',
-  'X-Ua-Compatible',
-  'IE=Edge,chrome=1',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Expires',
-  'Wed, 13 Oct 2010 00:00:00 UTC',
-  'Set-Cookie',
-  '_x_w=43_1; path=/; HttpOnly; secure',
-  'Set-Cookie',
-  '_x_m=x_c; path=/; HttpOnly; secure',
-  'X-Fw-Ratelimiting-Managed',
-  'true',
-  'X-Ratelimit-Total',
-  '700',
-  'X-Ratelimit-Remaining',
-  '652',
-  'X-Ratelimit-Used-Currentrequest',
-  '1',
-  'X-Envoy-Upstream-Service-Time',
-  '156',
-  'X-Trace-Id',
-  '00-3a68ff99238a89f46b29bc2e9bb0ff4a-24158f99d1e0e368-00',
-  'Server',
-  'fwe'
-]);
-nock('https://grouparoodev.freshdesk.com:443', {"encodedQueryParams":true})
-  .delete('/api/v2/contacts/72009533647/hard_delete')
-  .query({"force":"true"})
-  .once().reply(204, "", [
-  'Date',
-  'Sun, 27 Feb 2022 13:50:19 GMT',
-  'Connection',
-  'close',
-  'Status',
-  '204 No Content',
-  'Pragma',
-  'no-cache',
-  'X-Request-Id',
-  'b17c5eac-2502-4427-9064-30b44613629b',
-  'X-Freshdesk-Api-Version',
-  'latest=v2; requested=v2',
-  'X-Rack-Cache',
-  'invalidate, pass',
-  'Cache-Control',
-  'no-cache, no-store, max-age=0, must-revalidate',
-  'X-Xss-Protection',
-  '1; mode=block',
-  'X-Ua-Compatible',
-  'IE=Edge,chrome=1',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Expires',
-  'Wed, 13 Oct 2010 00:00:00 UTC',
-  'Set-Cookie',
-  '_x_w=43_1; path=/; HttpOnly; secure',
-  'Set-Cookie',
-  '_x_m=x_c; path=/; HttpOnly; secure',
-  'X-Fw-Ratelimiting-Managed',
-  'true',
-  'X-Ratelimit-Total',
-  '700',
-  'X-Ratelimit-Remaining',
-  '651',
-  'X-Ratelimit-Used-Currentrequest',
-  '1',
-  'X-Envoy-Upstream-Service-Time',
-  '173',
-  'X-Trace-Id',
-  '00-5449bb118e29877b4e1a9afe0f291e16-2ed322dd81d9183c-00',
-  'Server',
-  'fwe'
-]);
-nock('https://grouparoodev.freshdesk.com:443', {"encodedQueryParams":true})
-  .delete('/api/v2/contacts/72009533681/hard_delete')
-  .query({"force":"true"})
-  .once().reply(204, "", [
-  'Date',
-  'Sun, 27 Feb 2022 13:50:20 GMT',
-  'Connection',
-  'close',
-  'Status',
-  '204 No Content',
-  'Pragma',
-  'no-cache',
-  'X-Request-Id',
-  '1ca18368-4ef6-4144-884f-e42ffd3c8c77',
-  'X-Freshdesk-Api-Version',
-  'latest=v2; requested=v2',
-  'X-Rack-Cache',
-  'invalidate, pass',
-  'Cache-Control',
-  'no-cache, no-store, max-age=0, must-revalidate',
-  'X-Xss-Protection',
-  '1; mode=block',
-  'X-Ua-Compatible',
-  'IE=Edge,chrome=1',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Expires',
-  'Wed, 13 Oct 2010 00:00:00 UTC',
-  'Set-Cookie',
-  '_x_w=43_1; path=/; HttpOnly; secure',
-  'Set-Cookie',
-  '_x_m=x_c; path=/; HttpOnly; secure',
-  'X-Fw-Ratelimiting-Managed',
-  'true',
-  'X-Ratelimit-Total',
-  '700',
-  'X-Ratelimit-Remaining',
-  '650',
-  'X-Ratelimit-Used-Currentrequest',
-  '1',
-  'X-Envoy-Upstream-Service-Time',
-  '162',
-  'X-Trace-Id',
-  '00-9982e84aa04849515794958ffe0d4228-c51d909ab61d0c0d-00',
-  'Server',
-  'fwe'
-]);
-nock('https://grouparoodev.freshdesk.com:443', {"encodedQueryParams":true})
-  .delete('/api/v2/contacts/72009533685/hard_delete')
-  .query({"force":"true"})
-  .once().reply(204, "", [
-  'Date',
-  'Sun, 27 Feb 2022 13:50:21 GMT',
-  'Connection',
-  'close',
-  'Status',
-  '204 No Content',
-  'Pragma',
-  'no-cache',
-  'X-Request-Id',
-  'ae9042c8-7a6f-47db-9868-9dfcb5813478',
-  'X-Freshdesk-Api-Version',
-  'latest=v2; requested=v2',
-  'X-Rack-Cache',
-  'invalidate, pass',
-  'Cache-Control',
-  'no-cache, no-store, max-age=0, must-revalidate',
-  'X-Xss-Protection',
-  '1; mode=block',
-  'X-Ua-Compatible',
-  'IE=Edge,chrome=1',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Expires',
-  'Wed, 13 Oct 2010 00:00:00 UTC',
-  'Set-Cookie',
-  '_x_w=43_1; path=/; HttpOnly; secure',
-  'Set-Cookie',
-  '_x_m=x_c; path=/; HttpOnly; secure',
-  'X-Fw-Ratelimiting-Managed',
-  'true',
-  'X-Ratelimit-Total',
-  '700',
-  'X-Ratelimit-Remaining',
-  '649',
-  'X-Ratelimit-Used-Currentrequest',
-  '1',
-  'X-Envoy-Upstream-Service-Time',
-  '146',
-  'X-Trace-Id',
-  '00-48f203ad32999231cf4a741b5803e50c-14f3f7968949aaae-00',
-  'Server',
-  'fwe'
-]);
-nock('https://grouparoodev.freshdesk.com:443', {"encodedQueryParams":true})
-  .delete('/api/v2/contacts/72009533686/hard_delete')
-  .query({"force":"true"})
-  .once().reply(204, "", [
-  'Date',
-  'Sun, 27 Feb 2022 13:50:22 GMT',
-  'Connection',
-  'close',
-  'Status',
-  '204 No Content',
-  'Pragma',
-  'no-cache',
-  'X-Request-Id',
-  'ade2d1c2-3eb9-44da-9d70-393f36c88aab',
-  'X-Freshdesk-Api-Version',
-  'latest=v2; requested=v2',
-  'X-Rack-Cache',
-  'invalidate, pass',
-  'Cache-Control',
-  'no-cache, no-store, max-age=0, must-revalidate',
-  'X-Xss-Protection',
-  '1; mode=block',
-  'X-Ua-Compatible',
-  'IE=Edge,chrome=1',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Expires',
-  'Wed, 13 Oct 2010 00:00:00 UTC',
-  'Set-Cookie',
-  '_x_w=43_1; path=/; HttpOnly; secure',
-  'Set-Cookie',
-  '_x_m=x_c; path=/; HttpOnly; secure',
-  'X-Fw-Ratelimiting-Managed',
-  'true',
-  'X-Ratelimit-Total',
-  '700',
-  'X-Ratelimit-Remaining',
-  '648',
-  'X-Ratelimit-Used-Currentrequest',
-  '1',
-  'X-Envoy-Upstream-Service-Time',
-  '156',
-  'X-Trace-Id',
-  '00-2d72d16e9aa236fa4035b9e332fc245e-be27cb105e4687a5-00',
-  'Server',
-  'fwe'
-]);
-nock('https://grouparoodev.freshdesk.com:443', {"encodedQueryParams":true})
-  .delete('/api/v2/contacts/72009533688/hard_delete')
-  .query({"force":"true"})
-  .once().reply(204, "", [
-  'Date',
-  'Sun, 27 Feb 2022 13:50:22 GMT',
-  'Connection',
-  'close',
-  'Status',
-  '204 No Content',
-  'Pragma',
-  'no-cache',
-  'X-Request-Id',
-  '9d91e134-d534-44f5-a455-482452e364d6',
-  'X-Freshdesk-Api-Version',
-  'latest=v2; requested=v2',
-  'X-Rack-Cache',
-  'invalidate, pass',
-  'Cache-Control',
-  'no-cache, no-store, max-age=0, must-revalidate',
-  'X-Xss-Protection',
-  '1; mode=block',
-  'X-Ua-Compatible',
-  'IE=Edge,chrome=1',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Expires',
-  'Wed, 13 Oct 2010 00:00:00 UTC',
-  'Set-Cookie',
-  '_x_w=43_1; path=/; HttpOnly; secure',
-  'Set-Cookie',
-  '_x_m=x_c; path=/; HttpOnly; secure',
-  'X-Fw-Ratelimiting-Managed',
-  'true',
-  'X-Ratelimit-Total',
-  '700',
-  'X-Ratelimit-Remaining',
-  '647',
-  'X-Ratelimit-Used-Currentrequest',
-  '1',
-  'X-Envoy-Upstream-Service-Time',
-  '140',
-  'X-Trace-Id',
-  '00-c22f52e81f1d4709dff0a9d14dd21409-8e71d0dbc7898ba4-00',
-  'Server',
-  'fwe'
-]);
-nock('https://grouparoodev.freshdesk.com:443', {"encodedQueryParams":true})
-  .delete('/api/v2/contacts/72009533643/hard_delete')
-  .query({"force":"true"})
-  .once().reply(204, "", [
-  'Date',
-  'Sun, 27 Feb 2022 13:50:23 GMT',
-  'Connection',
-  'close',
-  'Status',
-  '204 No Content',
-  'Pragma',
-  'no-cache',
-  'X-Request-Id',
-  'f167f0c1-3238-9406-a8c3-dfb4ce0f161f',
-  'X-Freshdesk-Api-Version',
-  'latest=v2; requested=v2',
-  'X-Rack-Cache',
-  'invalidate, pass',
-  'Cache-Control',
-  'no-cache, no-store, max-age=0, must-revalidate',
-  'X-Xss-Protection',
-  '1; mode=block',
-  'X-Ua-Compatible',
-  'IE=Edge,chrome=1',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Expires',
-  'Wed, 13 Oct 2010 00:00:00 UTC',
-  'Set-Cookie',
-  '_x_w=43_1; path=/; HttpOnly; secure',
-  'Set-Cookie',
-  '_x_m=x_c; path=/; HttpOnly; secure',
-  'X-Fw-Ratelimiting-Managed',
-  'true',
-  'X-Ratelimit-Total',
-  '700',
-  'X-Ratelimit-Remaining',
-  '646',
-  'X-Ratelimit-Used-Currentrequest',
-  '1',
-  'X-Envoy-Upstream-Service-Time',
-  '171',
-  'X-Trace-Id',
-  '00-89ac3a43c2f501ce91b5730124fc6d6f-bf49f6b0330ee38a-01',
-  'Server',
-  'fwe'
-]);
-nock('https://grouparoodev.freshdesk.com:443', {"encodedQueryParams":true})
-  .get('/api/v2/companies')
-  .once().reply(200, [{"id":72000300322,"name":"Another Name","description":null,"note":null,"domains":[],"created_at":"2022-02-27T13:03:14Z","updated_at":"2022-02-27T13:03:14Z","custom_fields":{},"health_score":null,"account_tier":null,"renewal_date":null,"industry":null},{"id":72000206600,"name":"Company ABC","description":null,"note":null,"domains":[],"created_at":"2022-02-11T18:49:31Z","updated_at":"2022-02-11T18:49:31Z","custom_fields":{},"health_score":null,"account_tier":null,"renewal_date":null,"industry":null},{"id":72000300350,"name":"Test Company 1","description":null,"note":null,"domains":[],"created_at":"2022-02-27T13:47:18Z","updated_at":"2022-02-27T13:47:18Z","custom_fields":{},"health_score":null,"account_tier":null,"renewal_date":null,"industry":null},{"id":72000300351,"name":"Test Company 2","description":null,"note":null,"domains":[],"created_at":"2022-02-27T13:47:23Z","updated_at":"2022-02-27T13:47:23Z","custom_fields":{},"health_score":null,"account_tier":null,"renewal_date":null,"industry":null},{"id":72000300352,"name":"Test Company 3","description":null,"note":null,"domains":[],"created_at":"2022-02-27T13:47:32Z","updated_at":"2022-02-27T13:47:32Z","custom_fields":{},"health_score":null,"account_tier":null,"renewal_date":null,"industry":null},{"id":72000300353,"name":"Test Company 4","description":null,"note":null,"domains":[],"created_at":"2022-02-27T13:47:37Z","updated_at":"2022-02-27T13:47:37Z","custom_fields":{},"health_score":null,"account_tier":null,"renewal_date":null,"industry":null}], [
-  'Date',
-  'Sun, 27 Feb 2022 13:50:24 GMT',
-  'Content-Type',
-  'application/json; charset=utf-8',
-  'Transfer-Encoding',
-  'chunked',
-  'Connection',
-  'close',
-  'Status',
-  '200 OK',
-  'Pragma',
-  'no-cache',
-  'X-Request-Id',
-  '7bc3757b-4ae3-4d66-81b4-c175963e65ef',
-  'X-Freshdesk-Api-Version',
-  'latest=v2; requested=v2',
-  'X-Rack-Cache',
-  'miss',
-  'Cache-Control',
-  'must-revalidate, no-cache, no-store, private, max-age=0',
-  'X-Xss-Protection',
-  '1; mode=block',
-  'X-Ua-Compatible',
-  'IE=Edge,chrome=1',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Expires',
-  'Wed, 13 Oct 2010 00:00:00 UTC',
-  'Set-Cookie',
-  '_x_w=43_1; path=/; HttpOnly; secure',
-  'Set-Cookie',
-  '_x_m=x_c; path=/; HttpOnly; secure',
-  'X-Fw-Ratelimiting-Managed',
-  'true',
-  'X-Ratelimit-Total',
-  '700',
-  'X-Ratelimit-Remaining',
-  '645',
-  'X-Ratelimit-Used-Currentrequest',
-  '1',
-  'X-Envoy-Upstream-Service-Time',
-  '76',
-  'X-Trace-Id',
-  '00-d1e3bafce03832030b9aa4b64a45a285-a5d7945b042c9d18-00',
-  'Server',
-  'fwe'
-]);
-nock('https://grouparoodev.freshdesk.com:443', {"encodedQueryParams":true})
-  .delete('/api/v2/companies/72000300350')
-  .once().reply(204, "", [
-  'Date',
-  'Sun, 27 Feb 2022 13:50:24 GMT',
-  'Connection',
-  'close',
-  'Status',
-  '204 No Content',
-  'Pragma',
-  'no-cache',
-  'X-Request-Id',
-  '122020e8-c65a-4705-8cdb-69e067b8ce9b',
-  'X-Freshdesk-Api-Version',
-  'latest=v2; requested=v2',
-  'X-Rack-Cache',
-  'invalidate, pass',
-  'Cache-Control',
-  'no-cache, no-store, max-age=0, must-revalidate',
-  'X-Xss-Protection',
-  '1; mode=block',
-  'X-Ua-Compatible',
-  'IE=Edge,chrome=1',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Expires',
-  'Wed, 13 Oct 2010 00:00:00 UTC',
-  'Set-Cookie',
-  '_x_w=43_1; path=/; HttpOnly; secure',
-  'Set-Cookie',
-  '_x_m=x_c; path=/; HttpOnly; secure',
-  'X-Fw-Ratelimiting-Managed',
-  'true',
-  'X-Ratelimit-Total',
-  '700',
-  'X-Ratelimit-Remaining',
-  '644',
-  'X-Ratelimit-Used-Currentrequest',
-  '1',
-  'X-Envoy-Upstream-Service-Time',
-  '103',
-  'X-Trace-Id',
-  '00-812b16b614cf43142440674ed7f33b82-1182b7ef5e204697-00',
-  'Server',
-  'fwe'
-]);
-nock('https://grouparoodev.freshdesk.com:443', {"encodedQueryParams":true})
-  .delete('/api/v2/companies/72000300351')
-  .once().reply(204, "", [
-  'Date',
-  'Sun, 27 Feb 2022 13:50:25 GMT',
-  'Connection',
-  'close',
-  'Status',
-  '204 No Content',
-  'Pragma',
-  'no-cache',
-  'X-Request-Id',
-  'a59d6a0d-33d7-44a2-a5ac-c3627a23e7ed',
-  'X-Freshdesk-Api-Version',
-  'latest=v2; requested=v2',
-  'X-Rack-Cache',
-  'invalidate, pass',
-  'Cache-Control',
-  'no-cache, no-store, max-age=0, must-revalidate',
-  'X-Xss-Protection',
-  '1; mode=block',
-  'X-Ua-Compatible',
-  'IE=Edge,chrome=1',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Expires',
-  'Wed, 13 Oct 2010 00:00:00 UTC',
-  'Set-Cookie',
-  '_x_w=43_1; path=/; HttpOnly; secure',
-  'Set-Cookie',
-  '_x_m=x_c; path=/; HttpOnly; secure',
-  'X-Fw-Ratelimiting-Managed',
-  'true',
-  'X-Ratelimit-Total',
-  '700',
-  'X-Ratelimit-Remaining',
-  '643',
-  'X-Ratelimit-Used-Currentrequest',
-  '1',
-  'X-Envoy-Upstream-Service-Time',
-  '187',
-  'X-Trace-Id',
-  '00-0c49e84abc75b5543121c1aff04172dd-d571c675335af248-00',
-  'Server',
-  'fwe'
-]);
-nock('https://grouparoodev.freshdesk.com:443', {"encodedQueryParams":true})
-  .delete('/api/v2/companies/72000300352')
-  .once().reply(204, "", [
-  'Date',
-  'Sun, 27 Feb 2022 13:50:26 GMT',
-  'Connection',
-  'close',
-  'Status',
-  '204 No Content',
-  'Pragma',
-  'no-cache',
-  'X-Request-Id',
-  '96435c42-052a-4a89-b3df-0328e370f769',
-  'X-Freshdesk-Api-Version',
-  'latest=v2; requested=v2',
-  'X-Rack-Cache',
-  'invalidate, pass',
-  'Cache-Control',
-  'no-cache, no-store, max-age=0, must-revalidate',
-  'X-Xss-Protection',
-  '1; mode=block',
-  'X-Ua-Compatible',
-  'IE=Edge,chrome=1',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Expires',
-  'Wed, 13 Oct 2010 00:00:00 UTC',
-  'Set-Cookie',
-  '_x_w=43_1; path=/; HttpOnly; secure',
-  'Set-Cookie',
-  '_x_m=x_c; path=/; HttpOnly; secure',
-  'X-Fw-Ratelimiting-Managed',
-  'true',
-  'X-Ratelimit-Total',
-  '700',
-  'X-Ratelimit-Remaining',
-  '642',
-  'X-Ratelimit-Used-Currentrequest',
-  '1',
-  'X-Envoy-Upstream-Service-Time',
-  '111',
-  'X-Trace-Id',
-  '00-cf3b4e0d737941c20bc911d1042a2a44-6277b1d9084b445c-00',
-  'Server',
-  'fwe'
-]);
-nock('https://grouparoodev.freshdesk.com:443', {"encodedQueryParams":true})
-  .delete('/api/v2/companies/72000300353')
-  .once().reply(204, "", [
-  'Date',
-  'Sun, 27 Feb 2022 13:50:27 GMT',
-  'Connection',
-  'close',
-  'Status',
-  '204 No Content',
-  'Pragma',
-  'no-cache',
-  'X-Request-Id',
-  'b9b9d11c-d646-48b3-90ad-4e07c79c8ba4',
-  'X-Freshdesk-Api-Version',
-  'latest=v2; requested=v2',
-  'X-Rack-Cache',
-  'invalidate, pass',
-  'Cache-Control',
-  'no-cache, no-store, max-age=0, must-revalidate',
-  'X-Xss-Protection',
-  '1; mode=block',
-  'X-Ua-Compatible',
-  'IE=Edge,chrome=1',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Expires',
-  'Wed, 13 Oct 2010 00:00:00 UTC',
-  'Set-Cookie',
-  '_x_w=43_1; path=/; HttpOnly; secure',
-  'Set-Cookie',
-  '_x_m=x_c; path=/; HttpOnly; secure',
-  'X-Fw-Ratelimiting-Managed',
-  'true',
-  'X-Ratelimit-Total',
-  '700',
-  'X-Ratelimit-Remaining',
-  '641',
-  'X-Ratelimit-Used-Currentrequest',
-  '1',
-  'X-Envoy-Upstream-Service-Time',
-  '138',
-  'X-Trace-Id',
-  '00-731138d91458b3011c390b4c8971254d-55d3dfbe027e80ce-00',
-  'Server',
-  'fwe'
-]);
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
+  .get("/api/v2/contacts")
+  .once()
+  .reply(
+    200,
+    [
+      {
+        active: false,
+        address: null,
+        description: null,
+        email: "contact.102@grouparoo.com",
+        id: 72009533622,
+        job_title: null,
+        language: "en",
+        mobile: "777770102",
+        name: "Contact 102",
+        phone: "888880102",
+        time_zone: "Eastern Time (US & Canada)",
+        twitter_id: null,
+        custom_fields: {},
+        facebook_id: null,
+        created_at: "2022-02-27T13:45:41Z",
+        updated_at: "2022-02-27T13:45:44Z",
+        csat_rating: null,
+        preferred_source: null,
+        company_id: null,
+        unique_external_id: "10102",
+      },
+      {
+        active: false,
+        address: null,
+        description: null,
+        email: "contact.104@grouparoo.com",
+        id: 72009533623,
+        job_title: null,
+        language: "en",
+        mobile: null,
+        name: "Contact 104",
+        phone: null,
+        time_zone: "Eastern Time (US & Canada)",
+        twitter_id: null,
+        custom_fields: {},
+        facebook_id: null,
+        created_at: "2022-02-27T13:45:48Z",
+        updated_at: "2022-02-27T13:45:54Z",
+        csat_rating: null,
+        preferred_source: null,
+        company_id: null,
+        unique_external_id: null,
+      },
+      {
+        active: false,
+        address: null,
+        description: null,
+        email: null,
+        id: 72009533624,
+        job_title: null,
+        language: "en",
+        mobile: "777770106",
+        name: "Contact 106",
+        phone: null,
+        time_zone: "Eastern Time (US & Canada)",
+        twitter_id: null,
+        custom_fields: {},
+        facebook_id: null,
+        created_at: "2022-02-27T13:45:57Z",
+        updated_at: "2022-02-27T13:46:03Z",
+        csat_rating: null,
+        preferred_source: null,
+        company_id: null,
+        unique_external_id: null,
+      },
+      {
+        active: false,
+        address: null,
+        description: null,
+        email: null,
+        id: 72009533626,
+        job_title: null,
+        language: "en",
+        mobile: null,
+        name: "Contact 108",
+        phone: "888880108",
+        time_zone: "Eastern Time (US & Canada)",
+        twitter_id: null,
+        custom_fields: {},
+        facebook_id: null,
+        created_at: "2022-02-27T13:46:06Z",
+        updated_at: "2022-02-27T13:46:12Z",
+        csat_rating: null,
+        preferred_source: null,
+        company_id: null,
+        unique_external_id: null,
+      },
+      {
+        active: false,
+        address: null,
+        description: null,
+        email: null,
+        id: 72009533628,
+        job_title: null,
+        language: "en",
+        mobile: null,
+        name: "Contact 110",
+        phone: null,
+        time_zone: "Eastern Time (US & Canada)",
+        twitter_id: null,
+        custom_fields: {},
+        facebook_id: null,
+        created_at: "2022-02-27T13:46:15Z",
+        updated_at: "2022-02-27T13:46:21Z",
+        csat_rating: null,
+        preferred_source: null,
+        company_id: null,
+        unique_external_id: "10110",
+      },
+      {
+        active: false,
+        address: null,
+        description: null,
+        email: "contact.111@grouparoo.com",
+        id: 72009533630,
+        job_title: null,
+        language: "en",
+        mobile: null,
+        name: "Contact 111",
+        phone: null,
+        time_zone: "Eastern Time (US & Canada)",
+        twitter_id: null,
+        custom_fields: {},
+        facebook_id: null,
+        created_at: "2022-02-27T13:46:24Z",
+        updated_at: "2022-02-27T13:46:24Z",
+        csat_rating: null,
+        preferred_source: null,
+        company_id: null,
+        unique_external_id: null,
+      },
+      {
+        active: false,
+        address: null,
+        description: null,
+        email: null,
+        id: 72009533633,
+        job_title: null,
+        language: "en",
+        mobile: "777770113",
+        name: "Contact 113",
+        phone: null,
+        time_zone: "Eastern Time (US & Canada)",
+        twitter_id: null,
+        custom_fields: {},
+        facebook_id: null,
+        created_at: "2022-02-27T13:46:37Z",
+        updated_at: "2022-02-27T13:46:37Z",
+        csat_rating: null,
+        preferred_source: null,
+        company_id: null,
+        unique_external_id: null,
+      },
+      {
+        active: false,
+        address: null,
+        description: null,
+        email: null,
+        id: 72009533637,
+        job_title: null,
+        language: "en",
+        mobile: null,
+        name: "Contact 115",
+        phone: "888880115",
+        time_zone: "Eastern Time (US & Canada)",
+        twitter_id: null,
+        custom_fields: {},
+        facebook_id: null,
+        created_at: "2022-02-27T13:46:49Z",
+        updated_at: "2022-02-27T13:46:49Z",
+        csat_rating: null,
+        preferred_source: null,
+        company_id: null,
+        unique_external_id: null,
+      },
+      {
+        active: false,
+        address: null,
+        description: null,
+        email: null,
+        id: 72009533641,
+        job_title: null,
+        language: "en",
+        mobile: null,
+        name: "Contact 117",
+        phone: null,
+        time_zone: "Eastern Time (US & Canada)",
+        twitter_id: null,
+        custom_fields: {},
+        facebook_id: null,
+        created_at: "2022-02-27T13:47:00Z",
+        updated_at: "2022-02-27T13:47:00Z",
+        csat_rating: null,
+        preferred_source: null,
+        company_id: null,
+        unique_external_id: "10117",
+      },
+      {
+        active: false,
+        address: null,
+        description: null,
+        email: "contact.121@grouparoo.com",
+        id: 72009533644,
+        job_title: null,
+        language: "en",
+        mobile: null,
+        name: "Contact 121",
+        phone: null,
+        time_zone: "Eastern Time (US & Canada)",
+        twitter_id: null,
+        custom_fields: {},
+        facebook_id: null,
+        created_at: "2022-02-27T13:47:19Z",
+        updated_at: "2022-02-27T13:47:28Z",
+        csat_rating: null,
+        preferred_source: null,
+        company_id: null,
+        unique_external_id: null,
+      },
+      {
+        active: false,
+        address: null,
+        description: null,
+        email: "contact.122@grouparoo.com",
+        id: 72009533647,
+        job_title: null,
+        language: "en",
+        mobile: null,
+        name: "Contact 122",
+        phone: null,
+        time_zone: "Eastern Time (US & Canada)",
+        twitter_id: null,
+        custom_fields: {},
+        facebook_id: null,
+        created_at: "2022-02-27T13:47:32Z",
+        updated_at: "2022-02-27T13:47:38Z",
+        csat_rating: null,
+        preferred_source: null,
+        company_id: 72000300353,
+        other_companies: [],
+        unique_external_id: null,
+      },
+      {
+        active: false,
+        address: null,
+        description: null,
+        email: "contact.123@grouparoo.com",
+        id: 72009533681,
+        job_title: null,
+        language: "en",
+        mobile: null,
+        name: "Contact 123",
+        phone: null,
+        time_zone: "Eastern Time (US & Canada)",
+        twitter_id: null,
+        custom_fields: {},
+        facebook_id: null,
+        created_at: "2022-02-27T13:49:41Z",
+        updated_at: "2022-02-27T13:49:41Z",
+        csat_rating: null,
+        preferred_source: null,
+        company_id: 72000300353,
+        other_companies: [],
+        unique_external_id: null,
+      },
+      {
+        active: false,
+        address: null,
+        description: null,
+        email: "contact.126@grouparoo.com",
+        id: 72009533685,
+        job_title: null,
+        language: "en",
+        mobile: null,
+        name: "Contact 126",
+        phone: null,
+        time_zone: "Eastern Time (US & Canada)",
+        twitter_id: null,
+        custom_fields: {},
+        facebook_id: null,
+        created_at: "2022-02-27T13:49:53Z",
+        updated_at: "2022-02-27T13:50:00Z",
+        csat_rating: null,
+        preferred_source: null,
+        company_id: null,
+        unique_external_id: null,
+      },
+      {
+        active: false,
+        address: null,
+        description: null,
+        email: "contact.127@grouparoo.com",
+        id: 72009533686,
+        job_title: null,
+        language: "en",
+        mobile: null,
+        name: "Contact 127",
+        phone: null,
+        time_zone: "Eastern Time (US & Canada)",
+        twitter_id: null,
+        custom_fields: {},
+        facebook_id: null,
+        created_at: "2022-02-27T13:50:03Z",
+        updated_at: "2022-02-27T13:50:03Z",
+        csat_rating: null,
+        preferred_source: null,
+        company_id: null,
+        unique_external_id: null,
+      },
+      {
+        active: false,
+        address: null,
+        description: null,
+        email: "contact.128@grouparoo.com",
+        id: 72009533688,
+        job_title: null,
+        language: "en",
+        mobile: null,
+        name: "Contact 128",
+        phone: null,
+        time_zone: "Eastern Time (US & Canada)",
+        twitter_id: null,
+        custom_fields: {},
+        facebook_id: null,
+        created_at: "2022-02-27T13:50:06Z",
+        updated_at: "2022-02-27T13:50:06Z",
+        csat_rating: null,
+        preferred_source: null,
+        company_id: null,
+        unique_external_id: null,
+      },
+      {
+        active: false,
+        address: null,
+        description: null,
+        email: "contact.131@grouparoo.com",
+        id: 72009533643,
+        job_title: null,
+        language: "en",
+        mobile: null,
+        name: "Contact 131",
+        phone: null,
+        time_zone: "Eastern Time (US & Canada)",
+        twitter_id: null,
+        custom_fields: {},
+        facebook_id: null,
+        created_at: "2022-02-27T13:47:12Z",
+        updated_at: "2022-02-27T13:47:12Z",
+        csat_rating: null,
+        preferred_source: null,
+        company_id: null,
+        unique_external_id: null,
+      },
+    ],
+    [
+      "Date",
+      "Sun, 27 Feb 2022 13:50:10 GMT",
+      "Content-Type",
+      "application/json; charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "Status",
+      "200 OK",
+      "Pragma",
+      "no-cache",
+      "X-Request-Id",
+      "c36943e9-5b60-47ea-a815-f476316814b5",
+      "X-Freshdesk-Api-Version",
+      "latest=v2; requested=v2",
+      "X-Rack-Cache",
+      "miss",
+      "Cache-Control",
+      "must-revalidate, no-cache, no-store, private, max-age=0",
+      "X-Xss-Protection",
+      "1; mode=block",
+      "X-Ua-Compatible",
+      "IE=Edge,chrome=1",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Expires",
+      "Wed, 13 Oct 2010 00:00:00 UTC",
+      "Set-Cookie",
+      "_x_w=43_1; path=/; HttpOnly; secure",
+      "Set-Cookie",
+      "_x_m=x_c; path=/; HttpOnly; secure",
+      "X-Fw-Ratelimiting-Managed",
+      "true",
+      "X-Ratelimit-Total",
+      "200",
+      "X-Ratelimit-Remaining",
+      "173",
+      "X-Ratelimit-Used-Currentrequest",
+      "1",
+      "X-Envoy-Upstream-Service-Time",
+      "76",
+      "X-Trace-Id",
+      "00-9ec489dcae944bf1d1c5ab0fe3b3378e-af02c9d0a4b65cde-00",
+      "Server",
+      "fwe",
+    ]
+  );
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
+  .delete("/api/v2/contacts/72009533622/hard_delete")
+  .query({ force: "true" })
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Sun, 27 Feb 2022 13:50:11 GMT",
+    "Connection",
+    "close",
+    "Status",
+    "204 No Content",
+    "Pragma",
+    "no-cache",
+    "X-Request-Id",
+    "eefabdee-b288-9fb6-9ddd-5d3039a9ab2a",
+    "X-Freshdesk-Api-Version",
+    "latest=v2; requested=v2",
+    "X-Rack-Cache",
+    "invalidate, pass",
+    "Cache-Control",
+    "no-cache, no-store, max-age=0, must-revalidate",
+    "X-Xss-Protection",
+    "1; mode=block",
+    "X-Ua-Compatible",
+    "IE=Edge,chrome=1",
+    "X-Content-Type-Options",
+    "nosniff",
+    "Expires",
+    "Wed, 13 Oct 2010 00:00:00 UTC",
+    "Set-Cookie",
+    "_x_w=43_1; path=/; HttpOnly; secure",
+    "Set-Cookie",
+    "_x_m=x_c; path=/; HttpOnly; secure",
+    "X-Fw-Ratelimiting-Managed",
+    "true",
+    "X-Ratelimit-Total",
+    "700",
+    "X-Ratelimit-Remaining",
+    "661",
+    "X-Ratelimit-Used-Currentrequest",
+    "1",
+    "X-Envoy-Upstream-Service-Time",
+    "172",
+    "X-Trace-Id",
+    "00-f686b500e43362e0c36bc4c5b754eb06-3e686fce31e5d6aa-01",
+    "Server",
+    "fwe",
+  ]);
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
+  .delete("/api/v2/contacts/72009533623/hard_delete")
+  .query({ force: "true" })
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Sun, 27 Feb 2022 13:50:12 GMT",
+    "Connection",
+    "close",
+    "Status",
+    "204 No Content",
+    "Pragma",
+    "no-cache",
+    "X-Request-Id",
+    "494af654-f2d2-4fe0-a4f8-49c81a0c8ee4",
+    "X-Freshdesk-Api-Version",
+    "latest=v2; requested=v2",
+    "X-Rack-Cache",
+    "invalidate, pass",
+    "Cache-Control",
+    "no-cache, no-store, max-age=0, must-revalidate",
+    "X-Xss-Protection",
+    "1; mode=block",
+    "X-Ua-Compatible",
+    "IE=Edge,chrome=1",
+    "X-Content-Type-Options",
+    "nosniff",
+    "Expires",
+    "Wed, 13 Oct 2010 00:00:00 UTC",
+    "Set-Cookie",
+    "_x_w=43_1; path=/; HttpOnly; secure",
+    "Set-Cookie",
+    "_x_m=x_c; path=/; HttpOnly; secure",
+    "X-Fw-Ratelimiting-Managed",
+    "true",
+    "X-Ratelimit-Total",
+    "700",
+    "X-Ratelimit-Remaining",
+    "660",
+    "X-Ratelimit-Used-Currentrequest",
+    "1",
+    "X-Envoy-Upstream-Service-Time",
+    "191",
+    "X-Trace-Id",
+    "00-98fb5e71639922155c38141c410612fb-f640094b4010776d-00",
+    "Server",
+    "fwe",
+  ]);
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
+  .delete("/api/v2/contacts/72009533624/hard_delete")
+  .query({ force: "true" })
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Sun, 27 Feb 2022 13:50:13 GMT",
+    "Connection",
+    "close",
+    "Status",
+    "204 No Content",
+    "Pragma",
+    "no-cache",
+    "X-Request-Id",
+    "74f54fa5-dd10-4797-8552-46457923d67d",
+    "X-Freshdesk-Api-Version",
+    "latest=v2; requested=v2",
+    "X-Rack-Cache",
+    "invalidate, pass",
+    "Cache-Control",
+    "no-cache, no-store, max-age=0, must-revalidate",
+    "X-Xss-Protection",
+    "1; mode=block",
+    "X-Ua-Compatible",
+    "IE=Edge,chrome=1",
+    "X-Content-Type-Options",
+    "nosniff",
+    "Expires",
+    "Wed, 13 Oct 2010 00:00:00 UTC",
+    "Set-Cookie",
+    "_x_w=43_1; path=/; HttpOnly; secure",
+    "Set-Cookie",
+    "_x_m=x_c; path=/; HttpOnly; secure",
+    "X-Fw-Ratelimiting-Managed",
+    "true",
+    "X-Ratelimit-Total",
+    "700",
+    "X-Ratelimit-Remaining",
+    "659",
+    "X-Ratelimit-Used-Currentrequest",
+    "1",
+    "X-Envoy-Upstream-Service-Time",
+    "160",
+    "X-Trace-Id",
+    "00-2a5cb13ed6461f02af6c154add872635-7dece70c6a52b6c9-00",
+    "Server",
+    "fwe",
+  ]);
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
+  .delete("/api/v2/contacts/72009533626/hard_delete")
+  .query({ force: "true" })
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Sun, 27 Feb 2022 13:50:14 GMT",
+    "Connection",
+    "close",
+    "Status",
+    "204 No Content",
+    "Pragma",
+    "no-cache",
+    "X-Request-Id",
+    "c9e36c8b-94d2-40d1-a1cb-086622b72109",
+    "X-Freshdesk-Api-Version",
+    "latest=v2; requested=v2",
+    "X-Rack-Cache",
+    "invalidate, pass",
+    "Cache-Control",
+    "no-cache, no-store, max-age=0, must-revalidate",
+    "X-Xss-Protection",
+    "1; mode=block",
+    "X-Ua-Compatible",
+    "IE=Edge,chrome=1",
+    "X-Content-Type-Options",
+    "nosniff",
+    "Expires",
+    "Wed, 13 Oct 2010 00:00:00 UTC",
+    "Set-Cookie",
+    "_x_w=43_1; path=/; HttpOnly; secure",
+    "Set-Cookie",
+    "_x_m=x_c; path=/; HttpOnly; secure",
+    "X-Fw-Ratelimiting-Managed",
+    "true",
+    "X-Ratelimit-Total",
+    "700",
+    "X-Ratelimit-Remaining",
+    "658",
+    "X-Ratelimit-Used-Currentrequest",
+    "1",
+    "X-Envoy-Upstream-Service-Time",
+    "150",
+    "X-Trace-Id",
+    "00-94a4c929c8d8f9a13c56dc027c96f846-35683306ffe05fac-00",
+    "Server",
+    "fwe",
+  ]);
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
+  .delete("/api/v2/contacts/72009533628/hard_delete")
+  .query({ force: "true" })
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Sun, 27 Feb 2022 13:50:15 GMT",
+    "Connection",
+    "close",
+    "Status",
+    "204 No Content",
+    "Pragma",
+    "no-cache",
+    "X-Request-Id",
+    "bda06ac3-04f0-47a5-babb-abf4dbdcd3f0",
+    "X-Freshdesk-Api-Version",
+    "latest=v2; requested=v2",
+    "X-Rack-Cache",
+    "invalidate, pass",
+    "Cache-Control",
+    "no-cache, no-store, max-age=0, must-revalidate",
+    "X-Xss-Protection",
+    "1; mode=block",
+    "X-Ua-Compatible",
+    "IE=Edge,chrome=1",
+    "X-Content-Type-Options",
+    "nosniff",
+    "Expires",
+    "Wed, 13 Oct 2010 00:00:00 UTC",
+    "Set-Cookie",
+    "_x_w=43_1; path=/; HttpOnly; secure",
+    "Set-Cookie",
+    "_x_m=x_c; path=/; HttpOnly; secure",
+    "X-Fw-Ratelimiting-Managed",
+    "true",
+    "X-Ratelimit-Total",
+    "700",
+    "X-Ratelimit-Remaining",
+    "657",
+    "X-Ratelimit-Used-Currentrequest",
+    "1",
+    "X-Envoy-Upstream-Service-Time",
+    "156",
+    "X-Trace-Id",
+    "00-83a925ec91190faeb8a0bf7a67dfacd5-5fb2b06e342a94dc-00",
+    "Server",
+    "fwe",
+  ]);
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
+  .delete("/api/v2/contacts/72009533630/hard_delete")
+  .query({ force: "true" })
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Sun, 27 Feb 2022 13:50:16 GMT",
+    "Connection",
+    "close",
+    "Status",
+    "204 No Content",
+    "Pragma",
+    "no-cache",
+    "X-Request-Id",
+    "010b22de-2b17-422a-b29c-d63cd6854246",
+    "X-Freshdesk-Api-Version",
+    "latest=v2; requested=v2",
+    "X-Rack-Cache",
+    "invalidate, pass",
+    "Cache-Control",
+    "no-cache, no-store, max-age=0, must-revalidate",
+    "X-Xss-Protection",
+    "1; mode=block",
+    "X-Ua-Compatible",
+    "IE=Edge,chrome=1",
+    "X-Content-Type-Options",
+    "nosniff",
+    "Expires",
+    "Wed, 13 Oct 2010 00:00:00 UTC",
+    "Set-Cookie",
+    "_x_w=43_1; path=/; HttpOnly; secure",
+    "Set-Cookie",
+    "_x_m=x_c; path=/; HttpOnly; secure",
+    "X-Fw-Ratelimiting-Managed",
+    "true",
+    "X-Ratelimit-Total",
+    "700",
+    "X-Ratelimit-Remaining",
+    "656",
+    "X-Ratelimit-Used-Currentrequest",
+    "1",
+    "X-Envoy-Upstream-Service-Time",
+    "181",
+    "X-Trace-Id",
+    "00-cab30b31b67822970ae02b198d8effa3-890ce5c5f326ca8a-00",
+    "Server",
+    "fwe",
+  ]);
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
+  .delete("/api/v2/contacts/72009533633/hard_delete")
+  .query({ force: "true" })
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Sun, 27 Feb 2022 13:50:16 GMT",
+    "Connection",
+    "close",
+    "Status",
+    "204 No Content",
+    "Pragma",
+    "no-cache",
+    "X-Request-Id",
+    "33b5b0ad-ab4c-4a4e-8676-69428b005611",
+    "X-Freshdesk-Api-Version",
+    "latest=v2; requested=v2",
+    "X-Rack-Cache",
+    "invalidate, pass",
+    "Cache-Control",
+    "no-cache, no-store, max-age=0, must-revalidate",
+    "X-Xss-Protection",
+    "1; mode=block",
+    "X-Ua-Compatible",
+    "IE=Edge,chrome=1",
+    "X-Content-Type-Options",
+    "nosniff",
+    "Expires",
+    "Wed, 13 Oct 2010 00:00:00 UTC",
+    "Set-Cookie",
+    "_x_w=43_1; path=/; HttpOnly; secure",
+    "Set-Cookie",
+    "_x_m=x_c; path=/; HttpOnly; secure",
+    "X-Fw-Ratelimiting-Managed",
+    "true",
+    "X-Ratelimit-Total",
+    "700",
+    "X-Ratelimit-Remaining",
+    "655",
+    "X-Ratelimit-Used-Currentrequest",
+    "1",
+    "X-Envoy-Upstream-Service-Time",
+    "147",
+    "X-Trace-Id",
+    "00-77ae8b9495de8c561fb25e0c4300fd08-4d53ee084f536d89-00",
+    "Server",
+    "fwe",
+  ]);
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
+  .delete("/api/v2/contacts/72009533637/hard_delete")
+  .query({ force: "true" })
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Sun, 27 Feb 2022 13:50:17 GMT",
+    "Connection",
+    "close",
+    "Status",
+    "204 No Content",
+    "Pragma",
+    "no-cache",
+    "X-Request-Id",
+    "328d37e4-e5cb-40ec-bb8c-e887069c1366",
+    "X-Freshdesk-Api-Version",
+    "latest=v2; requested=v2",
+    "X-Rack-Cache",
+    "invalidate, pass",
+    "Cache-Control",
+    "no-cache, no-store, max-age=0, must-revalidate",
+    "X-Xss-Protection",
+    "1; mode=block",
+    "X-Ua-Compatible",
+    "IE=Edge,chrome=1",
+    "X-Content-Type-Options",
+    "nosniff",
+    "Expires",
+    "Wed, 13 Oct 2010 00:00:00 UTC",
+    "Set-Cookie",
+    "_x_w=43_1; path=/; HttpOnly; secure",
+    "Set-Cookie",
+    "_x_m=x_c; path=/; HttpOnly; secure",
+    "X-Fw-Ratelimiting-Managed",
+    "true",
+    "X-Ratelimit-Total",
+    "700",
+    "X-Ratelimit-Remaining",
+    "654",
+    "X-Ratelimit-Used-Currentrequest",
+    "1",
+    "X-Envoy-Upstream-Service-Time",
+    "160",
+    "X-Trace-Id",
+    "00-68c652a62183698494791a6aa8d63c80-71d48db24e865395-00",
+    "Server",
+    "fwe",
+  ]);
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
+  .delete("/api/v2/contacts/72009533641/hard_delete")
+  .query({ force: "true" })
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Sun, 27 Feb 2022 13:50:18 GMT",
+    "Connection",
+    "close",
+    "Status",
+    "204 No Content",
+    "Pragma",
+    "no-cache",
+    "X-Request-Id",
+    "36a3d874-a42e-48ff-98e9-59c082910303",
+    "X-Freshdesk-Api-Version",
+    "latest=v2; requested=v2",
+    "X-Rack-Cache",
+    "invalidate, pass",
+    "Cache-Control",
+    "no-cache, no-store, max-age=0, must-revalidate",
+    "X-Xss-Protection",
+    "1; mode=block",
+    "X-Ua-Compatible",
+    "IE=Edge,chrome=1",
+    "X-Content-Type-Options",
+    "nosniff",
+    "Expires",
+    "Wed, 13 Oct 2010 00:00:00 UTC",
+    "Set-Cookie",
+    "_x_w=43_1; path=/; HttpOnly; secure",
+    "Set-Cookie",
+    "_x_m=x_c; path=/; HttpOnly; secure",
+    "X-Fw-Ratelimiting-Managed",
+    "true",
+    "X-Ratelimit-Total",
+    "700",
+    "X-Ratelimit-Remaining",
+    "653",
+    "X-Ratelimit-Used-Currentrequest",
+    "1",
+    "X-Envoy-Upstream-Service-Time",
+    "158",
+    "X-Trace-Id",
+    "00-86f223d49f19afb8d337f8d64e50d358-e2b6f326be041d6b-00",
+    "Server",
+    "fwe",
+  ]);
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
+  .delete("/api/v2/contacts/72009533644/hard_delete")
+  .query({ force: "true" })
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Sun, 27 Feb 2022 13:50:19 GMT",
+    "Connection",
+    "close",
+    "Status",
+    "204 No Content",
+    "Pragma",
+    "no-cache",
+    "X-Request-Id",
+    "7df03d93-0edd-4479-b7c4-fee2f7467850",
+    "X-Freshdesk-Api-Version",
+    "latest=v2; requested=v2",
+    "X-Rack-Cache",
+    "invalidate, pass",
+    "Cache-Control",
+    "no-cache, no-store, max-age=0, must-revalidate",
+    "X-Xss-Protection",
+    "1; mode=block",
+    "X-Ua-Compatible",
+    "IE=Edge,chrome=1",
+    "X-Content-Type-Options",
+    "nosniff",
+    "Expires",
+    "Wed, 13 Oct 2010 00:00:00 UTC",
+    "Set-Cookie",
+    "_x_w=43_1; path=/; HttpOnly; secure",
+    "Set-Cookie",
+    "_x_m=x_c; path=/; HttpOnly; secure",
+    "X-Fw-Ratelimiting-Managed",
+    "true",
+    "X-Ratelimit-Total",
+    "700",
+    "X-Ratelimit-Remaining",
+    "652",
+    "X-Ratelimit-Used-Currentrequest",
+    "1",
+    "X-Envoy-Upstream-Service-Time",
+    "156",
+    "X-Trace-Id",
+    "00-3a68ff99238a89f46b29bc2e9bb0ff4a-24158f99d1e0e368-00",
+    "Server",
+    "fwe",
+  ]);
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
+  .delete("/api/v2/contacts/72009533647/hard_delete")
+  .query({ force: "true" })
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Sun, 27 Feb 2022 13:50:19 GMT",
+    "Connection",
+    "close",
+    "Status",
+    "204 No Content",
+    "Pragma",
+    "no-cache",
+    "X-Request-Id",
+    "b17c5eac-2502-4427-9064-30b44613629b",
+    "X-Freshdesk-Api-Version",
+    "latest=v2; requested=v2",
+    "X-Rack-Cache",
+    "invalidate, pass",
+    "Cache-Control",
+    "no-cache, no-store, max-age=0, must-revalidate",
+    "X-Xss-Protection",
+    "1; mode=block",
+    "X-Ua-Compatible",
+    "IE=Edge,chrome=1",
+    "X-Content-Type-Options",
+    "nosniff",
+    "Expires",
+    "Wed, 13 Oct 2010 00:00:00 UTC",
+    "Set-Cookie",
+    "_x_w=43_1; path=/; HttpOnly; secure",
+    "Set-Cookie",
+    "_x_m=x_c; path=/; HttpOnly; secure",
+    "X-Fw-Ratelimiting-Managed",
+    "true",
+    "X-Ratelimit-Total",
+    "700",
+    "X-Ratelimit-Remaining",
+    "651",
+    "X-Ratelimit-Used-Currentrequest",
+    "1",
+    "X-Envoy-Upstream-Service-Time",
+    "173",
+    "X-Trace-Id",
+    "00-5449bb118e29877b4e1a9afe0f291e16-2ed322dd81d9183c-00",
+    "Server",
+    "fwe",
+  ]);
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
+  .delete("/api/v2/contacts/72009533681/hard_delete")
+  .query({ force: "true" })
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Sun, 27 Feb 2022 13:50:20 GMT",
+    "Connection",
+    "close",
+    "Status",
+    "204 No Content",
+    "Pragma",
+    "no-cache",
+    "X-Request-Id",
+    "1ca18368-4ef6-4144-884f-e42ffd3c8c77",
+    "X-Freshdesk-Api-Version",
+    "latest=v2; requested=v2",
+    "X-Rack-Cache",
+    "invalidate, pass",
+    "Cache-Control",
+    "no-cache, no-store, max-age=0, must-revalidate",
+    "X-Xss-Protection",
+    "1; mode=block",
+    "X-Ua-Compatible",
+    "IE=Edge,chrome=1",
+    "X-Content-Type-Options",
+    "nosniff",
+    "Expires",
+    "Wed, 13 Oct 2010 00:00:00 UTC",
+    "Set-Cookie",
+    "_x_w=43_1; path=/; HttpOnly; secure",
+    "Set-Cookie",
+    "_x_m=x_c; path=/; HttpOnly; secure",
+    "X-Fw-Ratelimiting-Managed",
+    "true",
+    "X-Ratelimit-Total",
+    "700",
+    "X-Ratelimit-Remaining",
+    "650",
+    "X-Ratelimit-Used-Currentrequest",
+    "1",
+    "X-Envoy-Upstream-Service-Time",
+    "162",
+    "X-Trace-Id",
+    "00-9982e84aa04849515794958ffe0d4228-c51d909ab61d0c0d-00",
+    "Server",
+    "fwe",
+  ]);
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
+  .delete("/api/v2/contacts/72009533685/hard_delete")
+  .query({ force: "true" })
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Sun, 27 Feb 2022 13:50:21 GMT",
+    "Connection",
+    "close",
+    "Status",
+    "204 No Content",
+    "Pragma",
+    "no-cache",
+    "X-Request-Id",
+    "ae9042c8-7a6f-47db-9868-9dfcb5813478",
+    "X-Freshdesk-Api-Version",
+    "latest=v2; requested=v2",
+    "X-Rack-Cache",
+    "invalidate, pass",
+    "Cache-Control",
+    "no-cache, no-store, max-age=0, must-revalidate",
+    "X-Xss-Protection",
+    "1; mode=block",
+    "X-Ua-Compatible",
+    "IE=Edge,chrome=1",
+    "X-Content-Type-Options",
+    "nosniff",
+    "Expires",
+    "Wed, 13 Oct 2010 00:00:00 UTC",
+    "Set-Cookie",
+    "_x_w=43_1; path=/; HttpOnly; secure",
+    "Set-Cookie",
+    "_x_m=x_c; path=/; HttpOnly; secure",
+    "X-Fw-Ratelimiting-Managed",
+    "true",
+    "X-Ratelimit-Total",
+    "700",
+    "X-Ratelimit-Remaining",
+    "649",
+    "X-Ratelimit-Used-Currentrequest",
+    "1",
+    "X-Envoy-Upstream-Service-Time",
+    "146",
+    "X-Trace-Id",
+    "00-48f203ad32999231cf4a741b5803e50c-14f3f7968949aaae-00",
+    "Server",
+    "fwe",
+  ]);
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
+  .delete("/api/v2/contacts/72009533686/hard_delete")
+  .query({ force: "true" })
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Sun, 27 Feb 2022 13:50:22 GMT",
+    "Connection",
+    "close",
+    "Status",
+    "204 No Content",
+    "Pragma",
+    "no-cache",
+    "X-Request-Id",
+    "ade2d1c2-3eb9-44da-9d70-393f36c88aab",
+    "X-Freshdesk-Api-Version",
+    "latest=v2; requested=v2",
+    "X-Rack-Cache",
+    "invalidate, pass",
+    "Cache-Control",
+    "no-cache, no-store, max-age=0, must-revalidate",
+    "X-Xss-Protection",
+    "1; mode=block",
+    "X-Ua-Compatible",
+    "IE=Edge,chrome=1",
+    "X-Content-Type-Options",
+    "nosniff",
+    "Expires",
+    "Wed, 13 Oct 2010 00:00:00 UTC",
+    "Set-Cookie",
+    "_x_w=43_1; path=/; HttpOnly; secure",
+    "Set-Cookie",
+    "_x_m=x_c; path=/; HttpOnly; secure",
+    "X-Fw-Ratelimiting-Managed",
+    "true",
+    "X-Ratelimit-Total",
+    "700",
+    "X-Ratelimit-Remaining",
+    "648",
+    "X-Ratelimit-Used-Currentrequest",
+    "1",
+    "X-Envoy-Upstream-Service-Time",
+    "156",
+    "X-Trace-Id",
+    "00-2d72d16e9aa236fa4035b9e332fc245e-be27cb105e4687a5-00",
+    "Server",
+    "fwe",
+  ]);
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
+  .delete("/api/v2/contacts/72009533688/hard_delete")
+  .query({ force: "true" })
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Sun, 27 Feb 2022 13:50:22 GMT",
+    "Connection",
+    "close",
+    "Status",
+    "204 No Content",
+    "Pragma",
+    "no-cache",
+    "X-Request-Id",
+    "9d91e134-d534-44f5-a455-482452e364d6",
+    "X-Freshdesk-Api-Version",
+    "latest=v2; requested=v2",
+    "X-Rack-Cache",
+    "invalidate, pass",
+    "Cache-Control",
+    "no-cache, no-store, max-age=0, must-revalidate",
+    "X-Xss-Protection",
+    "1; mode=block",
+    "X-Ua-Compatible",
+    "IE=Edge,chrome=1",
+    "X-Content-Type-Options",
+    "nosniff",
+    "Expires",
+    "Wed, 13 Oct 2010 00:00:00 UTC",
+    "Set-Cookie",
+    "_x_w=43_1; path=/; HttpOnly; secure",
+    "Set-Cookie",
+    "_x_m=x_c; path=/; HttpOnly; secure",
+    "X-Fw-Ratelimiting-Managed",
+    "true",
+    "X-Ratelimit-Total",
+    "700",
+    "X-Ratelimit-Remaining",
+    "647",
+    "X-Ratelimit-Used-Currentrequest",
+    "1",
+    "X-Envoy-Upstream-Service-Time",
+    "140",
+    "X-Trace-Id",
+    "00-c22f52e81f1d4709dff0a9d14dd21409-8e71d0dbc7898ba4-00",
+    "Server",
+    "fwe",
+  ]);
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
+  .delete("/api/v2/contacts/72009533643/hard_delete")
+  .query({ force: "true" })
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Sun, 27 Feb 2022 13:50:23 GMT",
+    "Connection",
+    "close",
+    "Status",
+    "204 No Content",
+    "Pragma",
+    "no-cache",
+    "X-Request-Id",
+    "f167f0c1-3238-9406-a8c3-dfb4ce0f161f",
+    "X-Freshdesk-Api-Version",
+    "latest=v2; requested=v2",
+    "X-Rack-Cache",
+    "invalidate, pass",
+    "Cache-Control",
+    "no-cache, no-store, max-age=0, must-revalidate",
+    "X-Xss-Protection",
+    "1; mode=block",
+    "X-Ua-Compatible",
+    "IE=Edge,chrome=1",
+    "X-Content-Type-Options",
+    "nosniff",
+    "Expires",
+    "Wed, 13 Oct 2010 00:00:00 UTC",
+    "Set-Cookie",
+    "_x_w=43_1; path=/; HttpOnly; secure",
+    "Set-Cookie",
+    "_x_m=x_c; path=/; HttpOnly; secure",
+    "X-Fw-Ratelimiting-Managed",
+    "true",
+    "X-Ratelimit-Total",
+    "700",
+    "X-Ratelimit-Remaining",
+    "646",
+    "X-Ratelimit-Used-Currentrequest",
+    "1",
+    "X-Envoy-Upstream-Service-Time",
+    "171",
+    "X-Trace-Id",
+    "00-89ac3a43c2f501ce91b5730124fc6d6f-bf49f6b0330ee38a-01",
+    "Server",
+    "fwe",
+  ]);
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
+  .get("/api/v2/companies")
+  .once()
+  .reply(
+    200,
+    [
+      {
+        id: 72000300322,
+        name: "Another Name",
+        description: null,
+        note: null,
+        domains: [],
+        created_at: "2022-02-27T13:03:14Z",
+        updated_at: "2022-02-27T13:03:14Z",
+        custom_fields: {},
+        health_score: null,
+        account_tier: null,
+        renewal_date: null,
+        industry: null,
+      },
+      {
+        id: 72000206600,
+        name: "Company ABC",
+        description: null,
+        note: null,
+        domains: [],
+        created_at: "2022-02-11T18:49:31Z",
+        updated_at: "2022-02-11T18:49:31Z",
+        custom_fields: {},
+        health_score: null,
+        account_tier: null,
+        renewal_date: null,
+        industry: null,
+      },
+      {
+        id: 72000300350,
+        name: "Test Company 1",
+        description: null,
+        note: null,
+        domains: [],
+        created_at: "2022-02-27T13:47:18Z",
+        updated_at: "2022-02-27T13:47:18Z",
+        custom_fields: {},
+        health_score: null,
+        account_tier: null,
+        renewal_date: null,
+        industry: null,
+      },
+      {
+        id: 72000300351,
+        name: "Test Company 2",
+        description: null,
+        note: null,
+        domains: [],
+        created_at: "2022-02-27T13:47:23Z",
+        updated_at: "2022-02-27T13:47:23Z",
+        custom_fields: {},
+        health_score: null,
+        account_tier: null,
+        renewal_date: null,
+        industry: null,
+      },
+      {
+        id: 72000300352,
+        name: "Test Company 3",
+        description: null,
+        note: null,
+        domains: [],
+        created_at: "2022-02-27T13:47:32Z",
+        updated_at: "2022-02-27T13:47:32Z",
+        custom_fields: {},
+        health_score: null,
+        account_tier: null,
+        renewal_date: null,
+        industry: null,
+      },
+      {
+        id: 72000300353,
+        name: "Test Company 4",
+        description: null,
+        note: null,
+        domains: [],
+        created_at: "2022-02-27T13:47:37Z",
+        updated_at: "2022-02-27T13:47:37Z",
+        custom_fields: {},
+        health_score: null,
+        account_tier: null,
+        renewal_date: null,
+        industry: null,
+      },
+    ],
+    [
+      "Date",
+      "Sun, 27 Feb 2022 13:50:24 GMT",
+      "Content-Type",
+      "application/json; charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "Status",
+      "200 OK",
+      "Pragma",
+      "no-cache",
+      "X-Request-Id",
+      "7bc3757b-4ae3-4d66-81b4-c175963e65ef",
+      "X-Freshdesk-Api-Version",
+      "latest=v2; requested=v2",
+      "X-Rack-Cache",
+      "miss",
+      "Cache-Control",
+      "must-revalidate, no-cache, no-store, private, max-age=0",
+      "X-Xss-Protection",
+      "1; mode=block",
+      "X-Ua-Compatible",
+      "IE=Edge,chrome=1",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Expires",
+      "Wed, 13 Oct 2010 00:00:00 UTC",
+      "Set-Cookie",
+      "_x_w=43_1; path=/; HttpOnly; secure",
+      "Set-Cookie",
+      "_x_m=x_c; path=/; HttpOnly; secure",
+      "X-Fw-Ratelimiting-Managed",
+      "true",
+      "X-Ratelimit-Total",
+      "700",
+      "X-Ratelimit-Remaining",
+      "645",
+      "X-Ratelimit-Used-Currentrequest",
+      "1",
+      "X-Envoy-Upstream-Service-Time",
+      "76",
+      "X-Trace-Id",
+      "00-d1e3bafce03832030b9aa4b64a45a285-a5d7945b042c9d18-00",
+      "Server",
+      "fwe",
+    ]
+  );
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
+  .delete("/api/v2/companies/72000300350")
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Sun, 27 Feb 2022 13:50:24 GMT",
+    "Connection",
+    "close",
+    "Status",
+    "204 No Content",
+    "Pragma",
+    "no-cache",
+    "X-Request-Id",
+    "122020e8-c65a-4705-8cdb-69e067b8ce9b",
+    "X-Freshdesk-Api-Version",
+    "latest=v2; requested=v2",
+    "X-Rack-Cache",
+    "invalidate, pass",
+    "Cache-Control",
+    "no-cache, no-store, max-age=0, must-revalidate",
+    "X-Xss-Protection",
+    "1; mode=block",
+    "X-Ua-Compatible",
+    "IE=Edge,chrome=1",
+    "X-Content-Type-Options",
+    "nosniff",
+    "Expires",
+    "Wed, 13 Oct 2010 00:00:00 UTC",
+    "Set-Cookie",
+    "_x_w=43_1; path=/; HttpOnly; secure",
+    "Set-Cookie",
+    "_x_m=x_c; path=/; HttpOnly; secure",
+    "X-Fw-Ratelimiting-Managed",
+    "true",
+    "X-Ratelimit-Total",
+    "700",
+    "X-Ratelimit-Remaining",
+    "644",
+    "X-Ratelimit-Used-Currentrequest",
+    "1",
+    "X-Envoy-Upstream-Service-Time",
+    "103",
+    "X-Trace-Id",
+    "00-812b16b614cf43142440674ed7f33b82-1182b7ef5e204697-00",
+    "Server",
+    "fwe",
+  ]);
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
+  .delete("/api/v2/companies/72000300351")
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Sun, 27 Feb 2022 13:50:25 GMT",
+    "Connection",
+    "close",
+    "Status",
+    "204 No Content",
+    "Pragma",
+    "no-cache",
+    "X-Request-Id",
+    "a59d6a0d-33d7-44a2-a5ac-c3627a23e7ed",
+    "X-Freshdesk-Api-Version",
+    "latest=v2; requested=v2",
+    "X-Rack-Cache",
+    "invalidate, pass",
+    "Cache-Control",
+    "no-cache, no-store, max-age=0, must-revalidate",
+    "X-Xss-Protection",
+    "1; mode=block",
+    "X-Ua-Compatible",
+    "IE=Edge,chrome=1",
+    "X-Content-Type-Options",
+    "nosniff",
+    "Expires",
+    "Wed, 13 Oct 2010 00:00:00 UTC",
+    "Set-Cookie",
+    "_x_w=43_1; path=/; HttpOnly; secure",
+    "Set-Cookie",
+    "_x_m=x_c; path=/; HttpOnly; secure",
+    "X-Fw-Ratelimiting-Managed",
+    "true",
+    "X-Ratelimit-Total",
+    "700",
+    "X-Ratelimit-Remaining",
+    "643",
+    "X-Ratelimit-Used-Currentrequest",
+    "1",
+    "X-Envoy-Upstream-Service-Time",
+    "187",
+    "X-Trace-Id",
+    "00-0c49e84abc75b5543121c1aff04172dd-d571c675335af248-00",
+    "Server",
+    "fwe",
+  ]);
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
+  .delete("/api/v2/companies/72000300352")
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Sun, 27 Feb 2022 13:50:26 GMT",
+    "Connection",
+    "close",
+    "Status",
+    "204 No Content",
+    "Pragma",
+    "no-cache",
+    "X-Request-Id",
+    "96435c42-052a-4a89-b3df-0328e370f769",
+    "X-Freshdesk-Api-Version",
+    "latest=v2; requested=v2",
+    "X-Rack-Cache",
+    "invalidate, pass",
+    "Cache-Control",
+    "no-cache, no-store, max-age=0, must-revalidate",
+    "X-Xss-Protection",
+    "1; mode=block",
+    "X-Ua-Compatible",
+    "IE=Edge,chrome=1",
+    "X-Content-Type-Options",
+    "nosniff",
+    "Expires",
+    "Wed, 13 Oct 2010 00:00:00 UTC",
+    "Set-Cookie",
+    "_x_w=43_1; path=/; HttpOnly; secure",
+    "Set-Cookie",
+    "_x_m=x_c; path=/; HttpOnly; secure",
+    "X-Fw-Ratelimiting-Managed",
+    "true",
+    "X-Ratelimit-Total",
+    "700",
+    "X-Ratelimit-Remaining",
+    "642",
+    "X-Ratelimit-Used-Currentrequest",
+    "1",
+    "X-Envoy-Upstream-Service-Time",
+    "111",
+    "X-Trace-Id",
+    "00-cf3b4e0d737941c20bc911d1042a2a44-6277b1d9084b445c-00",
+    "Server",
+    "fwe",
+  ]);
+nock("https://test.freshdesk.com:443", { encodedQueryParams: true })
+  .delete("/api/v2/companies/72000300353")
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Sun, 27 Feb 2022 13:50:27 GMT",
+    "Connection",
+    "close",
+    "Status",
+    "204 No Content",
+    "Pragma",
+    "no-cache",
+    "X-Request-Id",
+    "b9b9d11c-d646-48b3-90ad-4e07c79c8ba4",
+    "X-Freshdesk-Api-Version",
+    "latest=v2; requested=v2",
+    "X-Rack-Cache",
+    "invalidate, pass",
+    "Cache-Control",
+    "no-cache, no-store, max-age=0, must-revalidate",
+    "X-Xss-Protection",
+    "1; mode=block",
+    "X-Ua-Compatible",
+    "IE=Edge,chrome=1",
+    "X-Content-Type-Options",
+    "nosniff",
+    "Expires",
+    "Wed, 13 Oct 2010 00:00:00 UTC",
+    "Set-Cookie",
+    "_x_w=43_1; path=/; HttpOnly; secure",
+    "Set-Cookie",
+    "_x_m=x_c; path=/; HttpOnly; secure",
+    "X-Fw-Ratelimiting-Managed",
+    "true",
+    "X-Ratelimit-Total",
+    "700",
+    "X-Ratelimit-Remaining",
+    "641",
+    "X-Ratelimit-Used-Currentrequest",
+    "1",
+    "X-Envoy-Upstream-Service-Time",
+    "138",
+    "X-Trace-Id",
+    "00-731138d91458b3011c390b4c8971254d-55d3dfbe027e80ce-00",
+    "Server",
+    "fwe",
+  ]);

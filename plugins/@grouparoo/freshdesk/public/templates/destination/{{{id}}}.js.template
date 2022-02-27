@@ -4,7 +4,7 @@ exports.default = async function buildConfig() {
       id: {{{id}}},
       name: {{{id}}},
       class: "destination",
-      type: "pipedrive-export-persons",
+      type: "freshdesk-export-contac",
       appId: {{{appId}}}, // The ID of the App this Destination uses - e.g. `appId: "pipedrive_app"`
       modelId: "mod_profiles", // The ID of the Grouparoo Model that this Destination will send
       collection: "group", // What collection of Records should be sent?  "group" requires a groupId below, and "model" will sync all Records from "modelId"
