@@ -10,10 +10,10 @@ import {
 import { NonAbstract } from "sequelize-typescript/dist/shared/types";
 import validator from "validator";
 import * as uuid from "uuid";
-import { Op, Attributes } from "sequelize";
+import { Op, Attributes, where, fn, col } from "sequelize";
 import { config } from "actionhero";
+import { WhereOptions } from "sequelize/types";
 
-type Columns<T> = Exclude<T, Function>;
 export type CommonModelStatic<M> = (new () => M) &
   NonAbstract<typeof CommonModel>;
 
@@ -111,5 +111,38 @@ export abstract class CommonModel<T> extends Model {
         where: { id: { [Op.in]: queue.splice(0, max) } },
       });
     }
+  }
+
+  /**
+   * Common code for ensuring a unique property
+   */
+  public async ensureUnique<
+    T extends CommonModel<T> & { name?: string; key?: string }
+  >(this: T, klass: CommonModelStatic<T>) {
+    const whereOpts: WhereOptions<{
+      id: string;
+      state: string;
+      name?: string;
+      key?: string;
+    }> = {
+      id: { [Op.ne]: this.id },
+      state: { [Op.notIn]: ["draft", "deleted"] },
+    };
+    if (this.name) {
+      whereOpts.name = this.name;
+    } else {
+      whereOpts.key = where(fn("LOWER", col("key")), this.key.toLowerCase());
+    }
+
+    const count = await klass.count({
+      where: whereOpts,
+    });
+    if (count > 0)
+      // This assumes the unique key is either key or name.
+      throw new Error(
+        `${this.key ? "key" : "name"} "${
+          this.key ?? this.name
+        }" is already in use`
+      );
   }
 }

@@ -1,4 +1,4 @@
-import { config, env, redis } from "actionhero";
+import { config, redis } from "actionhero";
 import Sequelize, { Op, WhereOptions } from "sequelize";
 import {
   AfterDestroy,
@@ -312,20 +312,7 @@ export class Property extends CommonModel<Property> {
 
   @BeforeSave
   static async ensureUniqueKey(instance: Property) {
-    const count = await Property.count({
-      where: {
-        id: { [Op.ne]: instance.id },
-        key: Sequelize.where(
-          Sequelize.fn("LOWER", Sequelize.col("key")),
-          instance.key.toLowerCase()
-        ),
-        state: { [Op.notIn]: ["draft", "deleted"] },
-      },
-    });
-
-    if (count > 0) {
-      throw new Error(`key "${instance.key}" is already in use`);
-    }
+    await instance.ensureUnique(Property);
   }
 
   @BeforeSave
