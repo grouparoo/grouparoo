@@ -220,116 +220,6 @@ jobs:
       - run:
           name: linter
           command: cd monorepo && pnpm run lint
-  test-core-.DS_Store:
-    environment:
-      GROUPAROO_TELEMETRY_ENABLED: "false"
-    docker:
-      - image: circleci/node:16.8.0
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
-      - image: redis:latest
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
-      - image: circleci/postgres:9
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
-        environment:
-          POSTGRES_PASSWORD: password
-    steps:
-      - checkout
-      - restore_cache:
-          <<: *module-other-cache
-      - restore_cache:
-          <<: *plugin-1-cache
-      - restore_cache:
-          <<: *plugin-2-cache
-      - restore_cache:
-          <<: *plugin-3-cache
-      - restore_cache:
-          <<: *plugin-4-cache
-      - restore_cache:
-          <<: *dist-1-cache
-      - restore_cache:
-          <<: *dist-2-cache
-      - restore_cache:
-          <<: *dist-3-cache
-      - restore_cache:
-          <<: *dist-4-cache
-      - restore_cache:
-          <<: *core-cache
-      - run:
-          name: update apt
-          command: sudo apt update
-      - run:
-          name: install postgresql client
-          command: sudo apt install -y postgresql-client
-      - run:
-          name: Wait for DB
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
-      - run:
-          name: create test databases
-          command: cd core && ./bin/create_test_databases
-      - run:
-          name: test
-          command: cd core && ./node_modules/.bin/jest __tests__/.DS_Store --ci --maxWorkers 2
-  test-core-.pnpm-debug.log:
-    environment:
-      GROUPAROO_TELEMETRY_ENABLED: "false"
-    docker:
-      - image: circleci/node:16.8.0
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
-      - image: redis:latest
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
-      - image: circleci/postgres:9
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
-        environment:
-          POSTGRES_PASSWORD: password
-    steps:
-      - checkout
-      - restore_cache:
-          <<: *module-other-cache
-      - restore_cache:
-          <<: *plugin-1-cache
-      - restore_cache:
-          <<: *plugin-2-cache
-      - restore_cache:
-          <<: *plugin-3-cache
-      - restore_cache:
-          <<: *plugin-4-cache
-      - restore_cache:
-          <<: *dist-1-cache
-      - restore_cache:
-          <<: *dist-2-cache
-      - restore_cache:
-          <<: *dist-3-cache
-      - restore_cache:
-          <<: *dist-4-cache
-      - restore_cache:
-          <<: *core-cache
-      - run:
-          name: update apt
-          command: sudo apt update
-      - run:
-          name: install postgresql client
-          command: sudo apt install -y postgresql-client
-      - run:
-          name: Wait for DB
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
-      - run:
-          name: create test databases
-          command: cd core && ./bin/create_test_databases
-      - run:
-          name: test
-          command: cd core && ./node_modules/.bin/jest __tests__/.pnpm-debug.log --ci --maxWorkers 2
   test-core-actions:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
@@ -1166,7 +1056,7 @@ jobs:
   test-ui-enterprise:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
-      NODE_ENV: "development"
+      NODE_ENV: development
     docker:
       - image: circleci/node:16.8.0
         auth:
@@ -1222,8 +1112,7 @@ jobs:
           command: cd core && ./bin/create_test_databases
       - run:
           name: install playwright dependencies
-          command: cd ui/ui-enterprise && ./node_modules/.bin/playwright install && ./node_modules/.bin/playwright install-deps
- && sudo apt-get install libicu66 libvpx6 ttf-ubuntu-font-family libjpeg-turbo8
+          command: cd ui/ui-enterprise && ./node_modules/.bin/playwright install && ./node_modules/.bin/playwright install-deps && sudo apt-get install libicu66 libvpx6 ttf-ubuntu-font-family libjpeg-turbo8
       - run:
           name: test
           command: cd ui/ui-enterprise && ./node_modules/.bin/playwright test --workers 2
@@ -2883,7 +2772,7 @@ jobs:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
         environment:
-          MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+          MYSQL_ALLOW_EMPTY_PASSWORD: "true"
     steps:
       - checkout
       - restore_cache:
@@ -3926,16 +3815,6 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
-      - test-core-.DS_Store:
-          filters:
-            <<: *ignored-branches
-          requires:
-            - build
-      - test-core-.pnpm-debug.log:
-          filters:
-            <<: *ignored-branches
-          requires:
-            - build
       - test-core-actions:
           filters:
             <<: *ignored-branches
@@ -4266,8 +4145,6 @@ workflows:
             <<: *ignored-branches
           requires:
             - linter
-            - test-core-.DS_Store
-            - test-core-.pnpm-debug.log
             - test-core-actions
             - test-core-bin
             - test-core-classes
