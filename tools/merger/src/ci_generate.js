@@ -145,7 +145,7 @@ class Generator {
 
   addUiEnterprise() {
     this.jobList.push({
-      type: "ui-playwright",
+      type: "ui",
       test_section: "ui-enterprise",
       job_name: `test-ui-enterprise`,
       relative_path: `ui`,
@@ -158,6 +158,13 @@ class Generator {
       type: "ui",
       test_section: "ui-config",
       job_name: `test-ui-config`,
+      relative_path: `ui`,
+      name: "ui",
+    });
+    this.jobList.push({
+      type: "ui-fs",
+      test_section: "ui-config",
+      job_name: `test-ui-config-fs`,
       relative_path: `ui`,
       name: "ui",
     });

@@ -1,6 +1,7 @@
   {{{job_name}}}:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
+      NODE_ENV: development
     docker:
       - image: {{{docker_image}}}
         auth:
@@ -16,14 +17,6 @@
           password: $DOCKERHUB_PASSWORD
         environment:
           POSTGRES_PASSWORD: password
-      - image: selenium/standalone-chrome:latest
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
-      - image: mcr.microsoft.com/playwright:focal
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
 {{{custom_docker}}}
     steps:
       - checkout
@@ -40,10 +33,11 @@
       - run:
           name: create test databases
           command: cd core && ./bin/create_test_databases
-{{{custom_steps}}}
+      - run:
+          name: install playwright dependencies
+          command: cd {{{relative_path}}}/{{{test_section}}} && ./node_modules/.bin/playwright install && ./node_modules/.bin/playwright install-deps
+{{{custom_steps}}} 
       - run:
           name: test
-          command: cd {{{relative_path}}}/{{{test_section}}} && ./node_modules/.bin/jest --ci --maxWorkers 2 --passWithNoTests
-          environment:
-            SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
+          command: cd {{{relative_path}}}/{{{test_section}}} && ./node_modules/.bin/playwright test --workers 2
 {{{custom_test}}}

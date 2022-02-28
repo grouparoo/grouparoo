@@ -8,7 +8,7 @@ const port = 30000 + parseInt(process.env.TEST_WORKER_INDEX ?? "0");
  */
 const config: PlaywrightTestConfig = {
   globalSetup: "./playwrightGlobalSetup",
-  testDir: "./__tests__/",
+  testDir: "./__tests__/integration",
 
   /* Maximum time one test can run for. */
   timeout: 30 * 1000,
@@ -29,7 +29,7 @@ const config: PlaywrightTestConfig = {
           {
             open: "on-failure",
             outputFolder: process.env.CI
-              ? "../../ui/ui-config/__tests__/playwright-report/"
+              ? "../../ui/ui-community/__tests__/playwright-report/"
               : "./__tests__/playwright-report",
           },
         ],
@@ -113,7 +113,9 @@ const config: PlaywrightTestConfig = {
   ],
 
   /* Folder for test artifacts such as screenshots, videos, traces, etc. */
-  outputDir: "<rootDir>/__tests__/test-artifacts/",
+  outputDir: process.env.CI
+    ? "../../ui/ui-community/__tests__/playwright-report/"
+    : "./__tests__/playwright-report",
 
   /* Run your local dev server before starting the tests */
   // webServer: {
