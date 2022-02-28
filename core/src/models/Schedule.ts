@@ -408,14 +408,8 @@ export class Schedule extends CommonModel<Schedule> {
 
   @BeforeSave
   static async ensureUniqueName(instance: Schedule) {
-    const count = await Schedule.scope(null).count({
-      where: {
-        id: { [Op.ne]: instance.id },
-        name: instance.name,
-        state: { [Op.ne]: "draft" },
-      },
-    });
-    if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
+    // Note: This may be problematic
+    await instance.ensureUnique(Schedule);
   }
 
   @BeforeSave

@@ -418,14 +418,7 @@ export class Source extends CommonModel<Source> {
 
   @BeforeSave
   static async ensureUniqueName(instance: Source) {
-    const count = await Source.count({
-      where: {
-        id: { [Op.ne]: instance.id },
-        name: instance.name,
-        state: { [Op.notIn]: ["draft", "deleted"] },
-      },
-    });
-    if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
+    await instance.ensureUnique(Source);
   }
 
   @BeforeSave
