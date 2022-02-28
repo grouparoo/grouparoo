@@ -41,7 +41,7 @@
     "@types/node": "16.*.*",
     "@types/pg": "*",
     "@types/pg-format": "1.0.2",
-    "@typescript-eslint/eslint-plugin": "5.10.2",
+    "@typescript-eslint/eslint-plugin": "5.13.0",
     "@typescript-eslint/parser": "5.13.0",
     "actionhero": "28.1.8",
     "csv-parse": "4.16.3",
