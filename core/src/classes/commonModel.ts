@@ -130,7 +130,7 @@ export abstract class CommonModel<T> extends Model {
     };
 
     if (this.name !== undefined) {
-      whereOpts.name = this.name;
+      whereOpts.name = where(fn("LOWER", col("name")), this.name.toLowerCase());
     } else if (this.key !== undefined) {
       whereOpts.key = where(fn("LOWER", col("key")), this.key.toLowerCase());
     } else {

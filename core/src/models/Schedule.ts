@@ -408,7 +408,6 @@ export class Schedule extends CommonModel<Schedule> {
 
   @BeforeSave
   static async ensureUniqueName(instance: Schedule) {
-    // Note: This may be problematic
     await instance.ensureUnique(Schedule);
   }
 
