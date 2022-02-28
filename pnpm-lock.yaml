@@ -396,7 +396,7 @@ importers:
       '@types/node': 16.*.*
       actionhero: 28.1.8
       airtable: 0.11.1
-      axios: 0.24.0
+      axios: 0.26.0
       dotenv: 15.0.0
       fs-extra: 10.0.0
       jest: 27.5.1
@@ -410,7 +410,7 @@ importers:
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
       airtable: 0.11.1
-      axios: 0.24.0
+      axios: 0.26.0
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -499,7 +499,7 @@ importers:
       '@types/jest': '*'
       '@types/node': 16.*.*
       actionhero: 28.1.8
-      axios: 0.24.0
+      axios: 0.26.0
       dotenv: 15.0.0
       fs-extra: 10.0.0
       jest: 27.5.1
@@ -511,7 +511,7 @@ importers:
       typescript: 4.5.5
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      axios: 0.24.0
+      axios: 0.26.0
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -597,7 +597,7 @@ importers:
       '@types/jest': '*'
       '@types/node': 16.*.*
       actionhero: 28.1.8
-      axios: 0.24.0
+      axios: 0.26.0
       close.io: ^1.3.0
       dot-object: ^2.1.4
       dotenv: 15.0.0
@@ -610,7 +610,7 @@ importers:
       typescript: 4.5.5
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      axios: 0.24.0
+      axios: 0.26.0
       close.io: 1.3.0
       dot-object: 2.1.4
     devDependencies:
@@ -667,7 +667,7 @@ importers:
       '@types/jest': '*'
       '@types/node': 16.*.*
       actionhero: 28.1.8
-      axios: 0.24.0
+      axios: 0.26.0
       csv-parser: 3.0.0
       fs-extra: 10.0.0
       jest: 27.5.1
@@ -677,7 +677,7 @@ importers:
       type-fest: 2.11.1
       typescript: 4.5.5
     dependencies:
-      axios: 0.24.0
+      axios: 0.26.0
       csv-parser: 3.0.0
       fs-extra: 10.0.0
     devDependencies:
@@ -701,7 +701,7 @@ importers:
       '@types/jest': '*'
       '@types/node': 16.*.*
       actionhero: 28.1.8
-      axios: 0.24.0
+      axios: 0.26.0
       customerio-node: 3.1.4
       dotenv: 15.0.0
       fs-extra: 10.0.0
@@ -720,7 +720,7 @@ importers:
       '@types/jest': 27.4.0
       '@types/node': 16.11.22
       actionhero: 28.1.8
-      axios: 0.24.0
+      axios: 0.26.0
       dotenv: 15.0.0
       fs-extra: 10.0.0
       jest: 27.5.1
@@ -816,7 +816,7 @@ importers:
       '@types/jest': '*'
       '@types/node': 16.*.*
       actionhero: 28.1.8
-      axios: 0.24.0
+      axios: 0.26.0
       dotenv: 15.0.0
       fs-extra: 10.0.0
       jest: 27.5.1
@@ -827,7 +827,7 @@ importers:
       typescript: 4.5.5
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      axios: 0.24.0
+      axios: 0.26.0
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -935,7 +935,7 @@ importers:
       '@types/jest': '*'
       '@types/node': 16.*.*
       actionhero: 28.1.8
-      axios: 0.24.0
+      axios: 0.26.0
       dotenv: 15.0.0
       fs-extra: 10.0.0
       hubspot-api: 2.15.3
@@ -948,7 +948,7 @@ importers:
       typescript: 4.5.5
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      axios: 0.24.0
+      axios: 0.26.0
       hubspot-api: 2.15.3
     devDependencies:
       '@grouparoo/core': link:../../../core
@@ -1044,7 +1044,7 @@ importers:
       '@types/jest': '*'
       '@types/node': 16.*.*
       actionhero: 28.1.8
-      axios: 0.24.0
+      axios: 0.26.0
       dotenv: 15.0.0
       fs-extra: 10.0.0
       jest: 27.5.1
@@ -1056,7 +1056,7 @@ importers:
       typescript: 4.5.5
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      axios: 0.24.0
+      axios: 0.26.0
       node-klaviyo: 1.1.3
     devDependencies:
       '@grouparoo/core': link:../../../core
@@ -1108,7 +1108,7 @@ importers:
       '@types/jest': '*'
       '@types/node': 16.*.*
       actionhero: 28.1.8
-      axios: 0.24.0
+      axios: 0.26.0
       dotenv: 15.0.0
       fs-extra: 10.0.0
       jest: 27.5.1
@@ -1121,7 +1121,7 @@ importers:
       typescript: 4.5.5
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      axios: 0.24.0
+      axios: 0.26.0
       mailchimp-api-v3: 1.15.0
     devDependencies:
       '@grouparoo/core': link:../../../core
@@ -1147,7 +1147,7 @@ importers:
       '@types/jest': '*'
       '@types/node': 16.*.*
       actionhero: 28.1.8
-      axios: 0.24.0
+      axios: 0.26.0
       dotenv: 15.0.0
       fs-extra: 10.0.0
       jest: 27.5.1
@@ -1160,7 +1160,7 @@ importers:
       typescript: 4.5.5
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      axios: 0.24.0
+      axios: 0.26.0
       node-mailjet: 3.3.5
     devDependencies:
       '@grouparoo/core': link:../../../core
@@ -1221,7 +1221,7 @@ importers:
       '@types/jest': '*'
       '@types/node': 16.*.*
       actionhero: 28.1.8
-      axios: 0.24.0
+      axios: 0.26.0
       dotenv: 15.0.0
       fs-extra: 10.0.0
       jest: 27.5.1
@@ -1232,7 +1232,7 @@ importers:
       typescript: 4.5.5
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      axios: 0.24.0
+      axios: 0.26.0
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -1382,7 +1382,7 @@ importers:
       '@types/jest': '*'
       '@types/node': 16.*.*
       actionhero: 28.1.8
-      axios: 0.24.0
+      axios: 0.26.0
       dotenv: 15.0.0
       form-data: 4.0.0
       fs-extra: 10.0.0
@@ -1395,7 +1395,7 @@ importers:
       typescript: 4.5.5
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      axios: 0.24.0
+      axios: 0.26.0
       form-data: 4.0.0
       jsforce: 1.11.0
     devDependencies:
@@ -1421,7 +1421,7 @@ importers:
       '@types/jest': '*'
       '@types/node': 16.*.*
       actionhero: 28.1.8
-      axios: 0.24.0
+      axios: 0.26.0
       dotenv: 15.0.0
       fs-extra: 10.0.0
       jest: 27.5.1
@@ -1432,7 +1432,7 @@ importers:
       typescript: 4.5.5
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      axios: 0.24.0
+      axios: 0.26.0
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -1504,7 +1504,7 @@ importers:
       '@types/jest': '*'
       '@types/node': 16.*.*
       actionhero: 28.1.8
-      axios: 0.24.0
+      axios: 0.26.0
       jest: 27.5.1
       prom-client: 14.0.1
       ts-jest: 27.1.3
@@ -1517,7 +1517,7 @@ importers:
       '@types/jest': 27.4.0
       '@types/node': 16.11.22
       actionhero: 28.1.8
-      axios: 0.24.0
+      axios: 0.26.0
       jest: 27.5.1
       ts-jest: 27.1.3_1e2406a8ca2ae3dc934d01f9ee2aebbb
       typescript: 4.5.5
@@ -1758,7 +1758,7 @@ importers:
       '@types/jest': '*'
       '@types/node': 16.*.*
       actionhero: 28.1.8
-      axios: 0.24.0
+      axios: 0.26.0
       fs-extra: 10.0.0
       jest: 27.5.1
       nock: 13.2.2
@@ -1769,7 +1769,7 @@ importers:
       uuid: 8.3.2
     dependencies:
       '@faker-js/faker': 6.0.0-alpha.7
-      axios: 0.24.0
+      axios: 0.26.0
       fs-extra: 10.0.0
       nock: 13.2.2
       prettier: 2.5.1
@@ -1831,7 +1831,7 @@ importers:
       '@types/jest': '*'
       '@types/node': 16.*.*
       actionhero: 28.1.8
-      axios: 0.24.0
+      axios: 0.26.0
       dotenv: 15.0.0
       fs-extra: 10.0.0
       jest: 27.5.1
@@ -1842,7 +1842,7 @@ importers:
       typescript: 4.5.5
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      axios: 0.24.0
+      axios: 0.26.0
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -1954,7 +1954,7 @@ importers:
       '@types/jest': '*'
       '@types/react': '*'
       '@types/react-dom': '*'
-      axios: 0.24.0
+      axios: 0.26.0
       bootstrap: 4.6.0
       fast-json-stable-stringify: ^2.1.0
       isomorphic-fetch: 3.0.0
@@ -1996,7 +1996,7 @@ importers:
       '@types/jest': 27.4.0
       '@types/react': 17.0.39
       '@types/react-dom': 17.0.11
-      axios: 0.24.0
+      axios: 0.26.0
       bootstrap: 4.6.0
       isomorphic-fetch: 3.0.0
       jest: 27.5.1
@@ -5518,8 +5518,8 @@ packages:
       - debug
     dev: false
 
-  /axios/0.24.0:
-    resolution: {integrity: sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==}
+  /axios/0.26.0:
+    resolution: {integrity: sha512-lKoGLMYtHvFrPVt3r+RBMp9nh34N0M8zEfCWqdWZx6phynIEhQqAdydpyBAAG211zlhX9Rgu08cOamy6XjE5Og==}
     dependencies:
       follow-redirects: 1.14.8_debug@4.3.3
     transitivePeerDependencies:
