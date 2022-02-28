@@ -30,9 +30,7 @@ test.describe("login and initialization flow", () => {
   let page: Page;
 
   test.beforeAll(async ({ browser }) => {
-    const context: BrowserContext = await browser.newContext({
-      baseURL: `http://localhost:${port}`,
-    });
+    const context: BrowserContext = await browser.newContext();
     page = await context.newPage();
   });
 
