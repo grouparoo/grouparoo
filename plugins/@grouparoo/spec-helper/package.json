@@ -29,7 +29,7 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@faker-js/faker": "6.0.0-alpha.5",
+    "@faker-js/faker": "6.0.0-alpha.7",
     "axios": "0.24.0",
     "fs-extra": "10.0.0",
     "nock": "13.2.2",

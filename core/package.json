@@ -74,7 +74,7 @@
     "ws": "8.4.2"
   },
   "devDependencies": {
-    "@faker-js/faker": "6.0.0-alpha.5",
+    "@faker-js/faker": "6.0.0-alpha.7",
     "@grouparoo/spec-helper": "0.8.2-alpha.0",
     "@types/bcryptjs": "2.4.2",
     "@types/cls-hooked": "4.3.3",
