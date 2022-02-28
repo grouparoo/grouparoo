@@ -7,10 +7,11 @@ import InitializePageObject from "@grouparoo/ui-components/__tests__/__pageObjec
 import SignInPageObject from "@grouparoo/ui-components/__tests__/__pageObjects__/session/sign-in";
 
 let serverProcess;
+const port = 30000 + parseInt(process.env.TEST_WORKER_INDEX ?? "0");
 
 test.beforeAll(async () => {
   serverProcess = await helper.startGrouparooTestServerDetached({
-    port: 3100,
+    port: port,
     truncate: true,
   });
 });
@@ -20,8 +21,6 @@ test.afterAll(async () => {
 });
 
 test.describe("login and initialization flow", () => {
-  const port = 3100;
-
   const firstName = "mario";
   const lastName = "mario";
   const email = "mario@example.com";
@@ -31,14 +30,12 @@ test.describe("login and initialization flow", () => {
   let page: Page;
 
   test.beforeAll(async ({ browser }) => {
-    const context: BrowserContext = await browser.newContext({
-      baseURL: `http://localhost:${port}`,
-    });
+    const context: BrowserContext = await browser.newContext();
     page = await context.newPage();
-    console.log(page);
   });
+
   test.afterAll(async ({ browser }) => {
-    browser.close();
+    await browser.close();
   });
 
   test("it renders the homepage", async () => {

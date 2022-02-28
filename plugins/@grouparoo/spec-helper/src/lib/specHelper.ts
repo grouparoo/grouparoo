@@ -187,7 +187,7 @@ export namespace helper {
     resetSettings = false,
     runMode = "cli:start",
   }: {
-    port: number;
+    port: number | string;
     truncate?: boolean;
     resetSettings?: boolean;
     runMode?: GrouparooRunMode;
@@ -195,9 +195,13 @@ export namespace helper {
     let serverProcess: ChildProcessWithoutNullStreams;
 
     if (truncate || resetSettings) {
-      const dbName = `grouparoo_test-${port}.sqlite`;
-      if (fs.existsSync(dbName)) {
-        fs.unlinkSync(dbName);
+      const dbPath = path.join(
+        process.env.GROUPAROO_PARENT_PATH ?? "",
+        `grouparoo_test-${port}.sqlite`
+      );
+
+      if (fs.existsSync(dbPath)) {
+        fs.unlinkSync(dbPath);
       }
     }
 
@@ -222,8 +226,11 @@ export namespace helper {
         }
 
         if (String(data).match(/@grouparoo\/core Started/)) {
-          return resolve(null);
+          resolve(null);
         }
+
+        // Uncomment to see server log
+        // console.log(String(data));
       });
 
       serverProcess.stderr.on("data", (data) => console.log(String(data)));

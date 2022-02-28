@@ -1,6 +1,8 @@
 import type { PlaywrightTestConfig } from "@playwright/test";
 import { devices } from "@playwright/test";
 
+const port = 30000 + parseInt(process.env.TEST_WORKER_INDEX ?? "0");
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -49,7 +51,7 @@ const config: PlaywrightTestConfig = {
     actionTimeout: 0,
     headless: true,
     /* Base URL to use in actions like `await page.goto('/')`. */
-    // baseURL: 'http://localhost:3000',
+    baseURL: `http://localhost:${port}`,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
