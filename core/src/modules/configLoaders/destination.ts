@@ -12,6 +12,7 @@ import {
 } from "../../classes/codeConfig";
 import { App, Destination, Group, Property } from "../.."; // configLoader imports need to be from root
 
+import { Deprecation } from "../deprecation";
 import { DestinationSyncMode } from "../../models/Destination";
 import { ConfigWriter } from "../configWriter";
 
@@ -21,9 +22,10 @@ const sanitizeSyncMode = (
 ): DestinationSyncMode => {
   if (syncMode === "additive" || syncMode === "enrich") {
     const newSyncMode = syncMode === "additive" ? "upsert" : "update";
-    log(
-      `[ config ] Found syncMode "${syncMode}" in Destination config "${configId}". "${syncMode}" is still supported but value should be updated to new name: "${newSyncMode}".`,
-      "warning"
+    Deprecation.warnChanged(
+      "config",
+      `syncMode "${syncMode}" used in Destination "${configId}"`,
+      `${newSyncMode}`
     );
     return newSyncMode;
   }
