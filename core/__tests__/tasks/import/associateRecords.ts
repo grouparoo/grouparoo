@@ -86,22 +86,6 @@ describe("tasks/import:associateRecords", () => {
     expect(foundTasks.length).toBe(0);
   });
 
-  test("previously complete runs will be moved back to running if an import they created is found", async () => {
-    const schedule = await helper.factories.schedule();
-    const run = await helper.factories.run(schedule);
-    const _import = await helper.factories.import(run);
-    await run.update({ state: "complete" });
-
-    await run.reload();
-    expect(run.state).toBe("complete");
-
-    await api.resque.queue.connection.redis.flushdb();
-    await specHelper.runTask("import:associateRecords", {});
-
-    await run.reload();
-    expect(run.state).toBe("running");
-  });
-
   test("imports that have an error will not be tried again", async () => {
     const _import = await helper.factories.import();
     await api.resque.queue.connection.redis.flushdb();

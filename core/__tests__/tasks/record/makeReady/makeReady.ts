@@ -339,7 +339,6 @@ describe("tasks/record:makeReady", () => {
 
       const importA = await helper.factories.import(runA, {
         email: "mario@example.com",
-        firstName: "Mario",
         lastName: "Mario",
       });
 

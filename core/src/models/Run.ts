@@ -145,8 +145,8 @@ export class Run extends CommonModel<Run> {
       this.state !== newSate &&
       !["complete", "stopped"].includes(this.state)
     ) {
-      await this.determinePercentComplete();
-      await this.update({ state: newSate });
+      const percentComplete = await this.determinePercentComplete(true, false);
+      await this.update({ state: newSate, percentComplete });
     }
 
     if (this.state === "complete" && !this.completedAt) {

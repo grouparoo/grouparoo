@@ -237,33 +237,12 @@ describe("integration/runs/csv/remote", () => {
         await specHelper.runTask("schedule:run", { runId: run.id });
         await specHelper.runTask("schedule:run", { runId: run.id });
 
-        // run all enqueued associateRecord tasks
-        const foundAssociateTasks = await specHelper.findEnqueuedTasks(
-          "import:associateRecord"
-        );
-        expect(foundAssociateTasks.length).toEqual(10);
-        await Promise.all(
-          foundAssociateTasks.map((t) =>
-            specHelper.runTask("import:associateRecord", t.args[0])
-          )
-        );
-
+        await specHelper.runTask("import:associateRecords", {});
         await ImportWorkflow();
 
-        // run all enqueued export tasks
-        const foundExportTasks = await specHelper.findEnqueuedTasks(
-          "record:export"
-        );
-        expect(foundExportTasks.length).toEqual(10);
-
-        await Promise.all(
-          foundExportTasks.map((t) =>
-            specHelper.runTask("record:export", t.args[0])
-          )
-        );
-
         // check the run's completion percentage (before the run is complete)
-        await run.afterBatch();
+        await specHelper.runTask("schedule:run", { runId: run.id });
+        await run.determinePercentComplete();
         expect(run.percentComplete).toBe(100);
 
         // check the results of the run
@@ -323,35 +302,12 @@ describe("integration/runs/csv/remote", () => {
         await specHelper.runTask("schedule:run", { runId: run.id });
         await specHelper.runTask("schedule:run", { runId: run.id });
 
-        // run all enqueued associateRecord tasks
-        const foundAssociateTasks = await specHelper.findEnqueuedTasks(
-          "import:associateRecord"
-        );
-        expect(foundAssociateTasks.length).toEqual(10);
-
-        await Promise.all(
-          foundAssociateTasks.map((t) =>
-            specHelper.runTask("import:associateRecord", t.args[0])
-          )
-        );
-
+        await specHelper.runTask("import:associateRecords", {});
         await ImportWorkflow();
 
-        // run all enqueued export tasks
-        const foundExportTasks = await specHelper.findEnqueuedTasks(
-          "record:export"
-        );
-        // this count is de-duped from the previous run
-        expect(foundExportTasks.length).toEqual(10);
-
-        await Promise.all(
-          foundExportTasks.map((t) =>
-            specHelper.runTask("record:export", t.args[0])
-          )
-        );
-
         // check the run's completion percentage (before the run is complete)
-        await run.afterBatch();
+        await specHelper.runTask("schedule:run", { runId: run.id });
+        await run.determinePercentComplete();
         expect(run.percentComplete).toBe(100);
 
         // check the results of the run

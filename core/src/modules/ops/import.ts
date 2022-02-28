@@ -117,11 +117,6 @@ export namespace ImportOps {
       ],
     });
 
-    await Run.update(
-      { state: "running", completedAt: null },
-      { where: { state: "complete", id: runIds } }
-    );
-
     return imports;
   }
 }
