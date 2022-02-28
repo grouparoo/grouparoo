@@ -37,7 +37,7 @@
     "@types/jest": "*",
     "@types/node": "16.*.*",
     "actionhero": "28.1.8",
-    "axios": "0.24.0",
+    "axios": "0.26.0",
     "dotenv": "15.0.0",
     "fs-extra": "10.0.0",
     "jest": "27.5.1",

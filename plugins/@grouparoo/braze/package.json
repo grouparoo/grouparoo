@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@grouparoo/app-templates": "0.8.2-alpha.0",
-    "axios": "0.24.0"
+    "axios": "0.26.0"
   },
   "devDependencies": {
     "@grouparoo/core": "0.8.2-alpha.0",
