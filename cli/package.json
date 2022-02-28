@@ -37,7 +37,7 @@
     "glob": "7.2.0",
     "isomorphic-fetch": "3.0.0",
     "npm-check-updates": "12.2.1",
-    "ora": "5.4.1",
+    "ora": "6.1.0",
     "semver": "7.3.5"
   },
   "devDependencies": {
