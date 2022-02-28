@@ -1974,7 +1974,7 @@ importers:
       react-hook-form: 7.22.5
       react-markdown: 8.0.0
       react-moment: 1.1.1
-      recharts: 2.1.8
+      recharts: 2.1.9
       sass: 1.49.4
       stacktrace-js: 2.0.2
       swagger-ui-dist: 4.4.1
@@ -2015,7 +2015,7 @@ importers:
       react-hook-form: 7.22.5_react@17.0.2
       react-markdown: 8.0.0_a0c521d4794c7ad97f5f4c1c4a7d5818
       react-moment: 1.1.1_8c3aac099a456479df6de1fd023865c2
-      recharts: 2.1.8_75cb922c19ee1b7939faae9b4d1f4cf7
+      recharts: 2.1.9_75cb922c19ee1b7939faae9b4d1f4cf7
       sass: 1.49.4
       stacktrace-js: 2.0.2
       swagger-ui-dist: 4.4.1
@@ -5521,7 +5521,7 @@ packages:
   /axios/0.24.0:
     resolution: {integrity: sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==}
     dependencies:
-      follow-redirects: 1.14.8
+      follow-redirects: 1.14.8_debug@4.3.3
     transitivePeerDependencies:
       - debug
 
@@ -7758,6 +7758,7 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+    dev: false
 
   /follow-redirects/1.14.8_debug@3.2.7:
     resolution: {integrity: sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==}
@@ -7781,7 +7782,6 @@ packages:
         optional: true
     dependencies:
       debug: 4.3.3
-    dev: false
 
   /follow-redirects/1.5.10:
     resolution: {integrity: sha512-0V5l4Cizzvqt5D44aTXbFZz+FtyXV1vrDN6qrelxtfYQKW0KO0W2T/hkE8xvGa/540LkZlkaUjO4ailYTFtHVQ==}
@@ -13180,8 +13180,8 @@ packages:
       decimal.js-light: 2.5.1
     dev: true
 
-  /recharts/2.1.8_75cb922c19ee1b7939faae9b4d1f4cf7:
-    resolution: {integrity: sha512-Wi7ufdDGyvy/BPf1za1Ok7VeWB2KtEejaewO9ulmlUhvn5l5RPS4AOkrUfhtMRTTjgJ4K6AbWMDpwtDjczUHJA==}
+  /recharts/2.1.9_75cb922c19ee1b7939faae9b4d1f4cf7:
+    resolution: {integrity: sha512-VozH5uznUvGqD7n224FGj7cmMAenlS0HPCs+7r2HeeHiQK6un6z0CTZfWVAB860xbcr4m+BN/EGMPZmYWd34Rg==}
     engines: {node: '>=12'}
     peerDependencies:
       react: ^16.0.0 || ^17.0.0
