@@ -6,7 +6,7 @@ import { loadAppOptions, updater } from "../utils/nockHelper";
 import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 import { FreshdeskClient } from "../../src/lib/client";
 import { exportCompanyRecord } from "../../src/lib/export-companies/exportRecord";
-import { indexUsers, waitForIndexingCompany } from "../utils/shared";
+import { waitForIndexingCompany } from "../utils/shared";
 import { findCompanyFromAll } from "../utils/companyUtils";
 
 let client: FreshdeskClient;
@@ -103,8 +103,6 @@ describe("Freshdesk / Companies / Export Record / Basic functionality", () => {
       toDelete: false,
     });
 
-    await indexUsers(newNock);
-
     const company = await findCompanyFromAll(client, testCompanies[1].name);
     expect(company).toBeTruthy();
     expect(company.name).toBe(testCompanies[1].name);
@@ -143,8 +141,6 @@ describe("Freshdesk / Companies / Export Record / Basic functionality", () => {
       },
       toDelete: false,
     });
-
-    await indexUsers(newNock);
 
     {
       // Company 1 should not be exists
