@@ -125,7 +125,7 @@ class Generator {
 
   addUiComponents() {
     this.jobList.push({
-      type: "ui",
+      type: "ui-jest",
       test_section: "ui-components",
       job_name: `test-ui-components`,
       relative_path: `ui`,
@@ -161,8 +161,9 @@ class Generator {
       relative_path: `ui`,
       name: "ui",
     });
+
     this.jobList.push({
-      type: "ui-fs",
+      type: "ui-jest",
       test_section: "ui-config",
       job_name: `test-ui-config-fs`,
       relative_path: `ui`,
