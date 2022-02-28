@@ -100,7 +100,8 @@ export namespace ImportOps {
         await record.addOrUpdateProperties(_import.data, undefined, true);
       } catch (error) {
         if (env !== "test") log(`[ASSOCIATE IMPORT ERROR] ${error}`, "alert");
-        if (_import) await _import.setError(error, this.name);
+        if (_import)
+          await _import.setError(error, "processPendingImportsForAssociation");
       }
     }
 

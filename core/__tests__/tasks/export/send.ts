@@ -92,11 +92,6 @@ describe("tasks/export:send", () => {
     });
 
     test("export:send will be enqueued into a custom queue with the app type", async () => {
-      const foundExportTasks = await specHelper.findEnqueuedTasks(
-        "record:export"
-      );
-      expect(foundExportTasks.length).toBe(1);
-      await specHelper.runTask("record:export", foundExportTasks[0].args[0]);
       await specHelper.runTask("export:enqueue", {});
       const foundExportSendTasks = await specHelper.findEnqueuedTasks(
         "export:send"

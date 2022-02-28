@@ -47,9 +47,23 @@ describe("tasks/records:reEnqueueStuckExportingRecords", () => {
 
     await specHelper.runTask("records:reEnqueueStuckExportingRecords", {});
 
-    const foundTasks = await specHelper.findEnqueuedTasks("record:export");
-    expect(foundTasks.length).toEqual(1);
-    expect(foundTasks[0].args[0]).toEqual({ recordId: toad.id });
+    await mario.reload();
+    await luigi.reload();
+    await toad.reload();
+
+    expect(mario.state).toBe("ready");
+    expect(luigi.state).toBe("ready");
+    expect(toad.state).toBe("pending");
+
+    await specHelper.runTask("records:makeReady", {});
+
+    await mario.reload();
+    await luigi.reload();
+    await toad.reload();
+
+    expect(mario.state).toBe("ready");
+    expect(luigi.state).toBe("ready");
+    expect(toad.state).toBe("ready");
 
     await mario.destroy();
     await luigi.destroy();

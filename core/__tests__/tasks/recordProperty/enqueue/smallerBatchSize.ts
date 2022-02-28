@@ -62,13 +62,7 @@ describe("tasks/recordProperties:enqueue", () => {
             email: "luigi@example.com",
           });
 
-          await specHelper.runTask("import:associateRecord", {
-            importId: marioImport.id,
-          });
-          await specHelper.runTask("import:associateRecord", {
-            importId: luigiImport.id,
-          });
-
+          await specHelper.runTask("import:associateRecords", {});
           await specHelper.runTask("recordProperties:enqueue", {});
 
           const importRecordPropertiesTasks =

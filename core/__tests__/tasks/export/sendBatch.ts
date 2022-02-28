@@ -94,15 +94,9 @@ describe("tasks/export:sendBatch", () => {
     });
 
     test("export:sendBatch will be enqueued after a batch from the run", async () => {
-      const foundExportTasks = await specHelper.findEnqueuedTasks(
-        "record:export"
-      );
-      expect(foundExportTasks.length).toBe(1);
-      await specHelper.runTask("record:export", foundExportTasks[0].args[0]);
       let foundExportSendBatchTasks = await specHelper.findEnqueuedTasks(
         "export:sendBatch"
       );
-      expect(foundExportTasks.length).toBe(1);
       expect(foundExportSendBatchTasks.length).toBe(0);
 
       await specHelper.runTask("export:enqueue", {});

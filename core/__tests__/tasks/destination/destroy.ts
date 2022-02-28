@@ -100,11 +100,6 @@ describe("tasks/destination:destroy", () => {
     expect((await mario.$get("groups")).map((g) => g.id)).toEqual([group.id]);
 
     // create exports
-    const exportTasks = await specHelper.findEnqueuedTasks("record:export");
-    expect(exportTasks.length).toBe(1);
-    await Promise.all(
-      exportTasks.map((t) => specHelper.runTask("record:export", t.args[0]))
-    );
     expect(await Export.count()).toBe(1);
 
     // can't delete (has exports)

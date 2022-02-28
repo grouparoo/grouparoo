@@ -1080,7 +1080,7 @@ export namespace RecordOps {
       {
         where: {
           recordId: partialRecords.map((r) => r.id),
-          state: "importing",
+          state: ["importing", "processing"],
           recordAssociatedAt: { [Op.lt]: now },
         },
       }
@@ -1102,10 +1102,7 @@ export namespace RecordOps {
       include: [RecordProperty, { model: GroupMember, include: [Group] }],
     });
     const imports = await Import.findAll({
-      where: {
-        state: "importing",
-        recordId: recordIds,
-      },
+      where: { state: "processing", recordId: recordIds },
     });
 
     if (toExport) {

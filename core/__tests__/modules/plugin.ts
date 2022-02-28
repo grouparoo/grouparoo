@@ -337,13 +337,6 @@ describe("modules/plugin", () => {
 
         expect(_import.id).toBeTruthy();
         expect(_import.data).toEqual({ firstName: ["Peach"] });
-
-        const tasks = await specHelper.findEnqueuedTasks(
-          "import:associateRecord"
-        );
-
-        expect(tasks.length).toBe(1);
-        expect(tasks[0].args[0].importId).toBe(_import.id);
       });
     });
 
@@ -381,15 +374,6 @@ describe("modules/plugin", () => {
         expect(marioImport.data).toEqual({
           firstName: ["Mario"],
         });
-
-        const tasks = await specHelper.findEnqueuedTasks(
-          "import:associateRecord"
-        );
-
-        expect(tasks.length).toBe(2);
-        expect(tasks.map((t) => t.args[0].importId).sort()).toEqual(
-          [marioImport.id, peachImport.id].sort()
-        );
       });
     });
   });
