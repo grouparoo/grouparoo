@@ -14,6 +14,7 @@ import { ConfigWriter } from "../modules/configWriter";
 import { APIData } from "../modules/apiData";
 import { ActionPermission } from "../models/Permission";
 import { WhereAttributeHash } from "sequelize/types";
+import { DestinationOps } from "../modules/ops/destination";
 
 export class DestinationsList extends AuthenticatedAction {
   name = "destinations:list";
@@ -325,10 +326,12 @@ export class DestinationView extends AuthenticatedAction {
 
 export class DestinationExport extends AuthenticatedAction {
   name = "destination:export";
-  description = "export the members of the groups tracked by this destination";
+  description =
+    "export the member or members of the groups tracked by this destination";
   permission: ActionPermission = { topic: "destination", mode: "write" };
   inputs = {
-    id: { required: true },
+    id: { required: true, inPath: true },
+    recordId: { required: false },
   } as const;
 
   async runWithinTransaction({
@@ -337,7 +340,12 @@ export class DestinationExport extends AuthenticatedAction {
     params: ParamsFrom<DestinationExport>;
   }) {
     const destination = await Destination.findById(params.id);
-    await destination.exportMembers();
+    if (params.recordId) {
+      const record = await GrouparooRecord.findById(params.recordId);
+      await destination.exportRecord(record);
+    } else {
+      await destination.exportMembers();
+    }
     return { success: true };
   }
 }
@@ -413,11 +421,20 @@ export class DestinationRecordPreview extends AuthenticatedAction {
       await destination.checkRecordWillBeExported(record);
     }
 
+    const recordPreview = await destination.recordPreview(
+      record,
+      mapping,
+      destinationGroupMemberships
+    );
+
+    const groups = await record.$get("groups");
+    const destinations = await DestinationOps.relevantFor(record, groups);
+
     return {
-      record: await destination.recordPreview(
-        record,
-        mapping,
-        destinationGroupMemberships
+      record: recordPreview,
+      groups: await Promise.all(groups.map((group) => group.apiData())),
+      destinations: await Promise.all(
+        destinations.map((destination) => destination.apiData(false, false))
       ),
     };
   }

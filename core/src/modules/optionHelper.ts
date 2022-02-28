@@ -381,7 +381,8 @@ export namespace OptionHelper {
     const opts = Object.assign({}, options);
 
     Object.keys(opts).forEach((k) => {
-      if (opts[k] === "") delete opts[k];
+      if (typeof opts[k] === "undefined" || opts[k] === null || opts[k] === "")
+        delete opts[k];
     });
 
     return opts;

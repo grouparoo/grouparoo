@@ -113,7 +113,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
   async function exportRecord() {
     setLoading(true);
     successHandler.set({ message: "enqueued for export..." });
-    const response: Actions.RecordExport = await client.request(
+    const response = await client.request<Actions.RecordExport>(
       "post",
       `/record/${record.id}/export`
     );

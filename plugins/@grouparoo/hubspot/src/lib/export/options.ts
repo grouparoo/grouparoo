@@ -33,13 +33,11 @@ class OptionsHandler {
     return out;
   }
 
-  public async getContactDestinationOptions({
-    destinationOptions,
-  }): Promise<DestinationOptionsMethodResponse> {
+  public async getContactDestinationOptions(): Promise<DestinationOptionsMethodResponse> {
     const { appOptions } = this.cacheData;
     this.client = await connect(appOptions);
     const out: DestinationOptionsMethodResponse = {};
-    Object.assign(out, await this.getContactOptions(destinationOptions));
+    Object.assign(out, await this.getContactOptions());
     return out;
   }
 
@@ -67,9 +65,7 @@ class OptionsHandler {
     );
   }
 
-  private async getContactOptions(
-    destinationOptions: SimpleDestinationOptions
-  ) {
+  private async getContactOptions() {
     const searchableAndUniqueProperties = [
       "website",
       "phone",
@@ -84,13 +80,7 @@ class OptionsHandler {
         descriptions: [],
       },
     };
-    if (
-      !searchableAndUniqueProperties.includes(
-        destinationOptions?.companyKey?.toString()
-      )
-    ) {
-      destinationOptions.companyKey = null;
-    }
+
     return out;
   }
 
@@ -126,12 +116,6 @@ class OptionsHandler {
       const fields = await this.getObjectMatchNames(schemaId);
       out.primaryKey.type = "typeahead";
       out.primaryKey.options = fields;
-      if (!fields.includes(destinationOptions.primaryKey)) {
-        destinationOptions.primaryKey = null;
-      }
-    } else {
-      destinationOptions.schemaId = null;
-      destinationOptions.primaryKey = null;
     }
     return out;
   }
