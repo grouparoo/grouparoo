@@ -36,7 +36,7 @@
     "@types/jest": "*",
     "@types/react": "*",
     "@types/react-dom": "*",
-    "axios": "0.24.0",
+    "axios": "0.26.0",
     "bootstrap": "4.6.0",
     "isomorphic-fetch": "3.0.0",
     "jest": "27.5.1",
