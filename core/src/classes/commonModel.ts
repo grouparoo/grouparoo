@@ -128,10 +128,13 @@ export abstract class CommonModel<T> extends Model {
       id: { [Op.ne]: this.id },
       state: { [Op.notIn]: ["draft", "deleted"] },
     };
-    if (this.name) {
+
+    if (this.name !== undefined) {
       whereOpts.name = this.name;
-    } else {
+    } else if (this.key !== undefined) {
       whereOpts.key = where(fn("LOWER", col("key")), this.key.toLowerCase());
+    } else {
+      return;
     }
 
     const count = await klass.count({
