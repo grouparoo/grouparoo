@@ -39,17 +39,12 @@ export namespace ExportProcessorOps {
     });
 
     if (exportProcessors.length > 0) {
-      const updateResponse = await ExportProcessor.update(
+      await ExportProcessor.update(
         { startedAt: new Date() },
         {
           where: { id: { [Op.in]: exportProcessors.map((ep) => ep.id) } },
-          returning: true,
         }
       );
-
-      // For postgres only: we can update our result set with the rows that were updated, filtering out those which are no longer startedAt=null
-      // in SQLite this isn't possible, but contention is far less likely
-      if (updateResponse[1]) exportProcessors = updateResponse[1];
 
       const app = await destination.$get("app", { scope: null });
 
