@@ -285,8 +285,6 @@ export class Property extends CommonModel<Property> {
     return this.idIsDefault() ? ConfigWriter.generateId(this.key) : this.id;
   }
 
-  uniqueIdentifier = ["key", "sourceId"];
-
   async getConfigObject(): Promise<PropertyConfigurationObject> {
     const { key, type, unique, isArray } = this;
 
