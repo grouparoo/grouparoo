@@ -289,7 +289,7 @@ importers:
       node-resque: 9.1.5
       nodemon: 2.0.15
       pacote: 12.0.3
-      pg: 8.7.1
+      pg: 8.7.3
       pg-hstore: 2.3.4
       pluralize: 8.0.0
       prettier: 2.5.1
@@ -333,13 +333,13 @@ importers:
       node-resque: 9.1.5
       nodemon: 2.0.15
       pacote: 12.0.3
-      pg: 8.7.1
+      pg: 8.7.3
       pg-hstore: 2.3.4
       pluralize: 8.0.0
       prettier: 2.5.1
       reflect-metadata: 0.1.13
       semver: 7.3.5
-      sequelize: 6.15.0_98f032adade92d92d5295670c0365597
+      sequelize: 6.15.0_fb786f4f780a6d75185142c6566f176a
       sequelize-typescript: 2.1.2_49bad764f18ad7994c882aeb82eb95c7
       sqlite3: 5.0.2
       tar: 6.1.11
@@ -779,7 +779,7 @@ importers:
       jest: 27.5.1
       mongodb: 4.3.1
       mysql: 2.18.1
-      pg: 8.7.1
+      pg: 8.7.3
       prettier: 2.5.1
       replace-in-files: 3.0.0
       sequelize: 6.15.0
@@ -795,10 +795,10 @@ importers:
       isomorphic-fetch: 3.0.0
       mongodb: 4.3.1
       mysql: 2.18.1
-      pg: 8.7.1
+      pg: 8.7.3
       prettier: 2.5.1
       replace-in-files: 3.0.0
-      sequelize: 6.15.0_pg@8.7.1+sqlite3@5.0.2
+      sequelize: 6.15.0_pg@8.7.3+sqlite3@5.0.2
       sqlite3: 5.0.2
       uuid: 8.3.2
     devDependencies:
@@ -1503,7 +1503,7 @@ importers:
       eslint: 8.10.0
       fs-extra: 10.0.1
       jest: 27.5.1
-      pg: 8.7.1
+      pg: 8.7.3
       pg-format: 1.0.4
       pg-hstore: 2.3.4
       postgres-date: 2.1.0
@@ -1513,7 +1513,7 @@ importers:
       typescript: 4.6.2
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      pg: 8.7.1
+      pg: 8.7.3
       pg-format: 1.0.4
       pg-hstore: 2.3.4
       postgres-date: 2.1.0
@@ -1532,7 +1532,7 @@ importers:
       fs-extra: 10.0.1
       jest: 27.5.1
       prettier: 2.5.1
-      sequelize: 6.15.0_pg-hstore@2.3.4+pg@8.7.1
+      sequelize: 6.15.0_pg-hstore@2.3.4+pg@8.7.3
       ts-jest: 27.1.3_ac171f3d9f636bd8b4c3e7aa384f840e
       typescript: 4.6.2
 
@@ -5044,7 +5044,7 @@ packages:
       sequelize-typescript: '>=2.0.0'
     dependencies:
       actionhero: 28.1.8
-      sequelize: 6.15.0_98f032adade92d92d5295670c0365597
+      sequelize: 6.15.0_fb786f4f780a6d75185142c6566f176a
       sequelize-typescript: 2.1.2_49bad764f18ad7994c882aeb82eb95c7
       umzug: 3.0.0
     dev: false
@@ -12304,12 +12304,12 @@ packages:
     resolution: {integrity: sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw==}
     engines: {node: '>=4.0.0'}
 
-  /pg-pool/3.5.1_pg@8.7.1:
+  /pg-pool/3.5.1_pg@8.7.3:
     resolution: {integrity: sha512-6iCR0wVrro6OOHFsyavV+i6KYL4lVNyYAB9RD18w66xSzN+d8b66HiwuP30Gp1SH5O9T82fckkzsRjlrhD0ioQ==}
     peerDependencies:
       pg: '>=8.0'
     dependencies:
-      pg: 8.7.1
+      pg: 8.7.3
     dev: false
 
   /pg-protocol/1.5.0:
@@ -12325,8 +12325,8 @@ packages:
       postgres-date: 1.0.7
       postgres-interval: 1.2.0
 
-  /pg/8.7.1:
-    resolution: {integrity: sha512-7bdYcv7V6U3KAtWjpQJJBww0UEsWuh4yQ/EjNf2HeO/NnvKjpvhEIe/A/TleP6wtmSKnUnghs5A9jUoK6iDdkA==}
+  /pg/8.7.3:
+    resolution: {integrity: sha512-HPmH4GH4H3AOprDJOazoIcpI49XFsHCe8xlrjHkWiapdbHK+HLtbm/GQzXYAZwmPju/kzKhjaSfMACG+8cgJcw==}
     engines: {node: '>= 8.0.0'}
     peerDependencies:
       pg-native: '>=2.0.0'
@@ -12337,7 +12337,7 @@ packages:
       buffer-writer: 2.0.0
       packet-reader: 1.0.0
       pg-connection-string: 2.5.0
-      pg-pool: 3.5.1_pg@8.7.1
+      pg-pool: 3.5.1_pg@8.7.3
       pg-protocol: 1.5.0
       pg-types: 2.2.0
       pgpass: 1.0.5
@@ -13704,7 +13704,7 @@ packages:
       '@types/validator': 13.7.1
       glob: 7.2.0
       reflect-metadata: 0.1.13
-      sequelize: 6.15.0_98f032adade92d92d5295670c0365597
+      sequelize: 6.15.0_fb786f4f780a6d75185142c6566f176a
     dev: false
 
   /sequelize/6.15.0:
@@ -13755,7 +13755,7 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /sequelize/6.15.0_98f032adade92d92d5295670c0365597:
+  /sequelize/6.15.0_fb786f4f780a6d75185142c6566f176a:
     resolution: {integrity: sha512-Ks2jSaKMfICZ8jMlhH401fLw5ikE8Vqt6slcR2peKOn4lA3H+LRfXdlnAl/CUDO1MflFl7PhifnzPxwhamciGQ==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
@@ -13792,7 +13792,7 @@ packages:
       lodash: 4.17.21
       moment: 2.29.1
       moment-timezone: 0.5.34
-      pg: 8.7.1
+      pg: 8.7.3
       pg-connection-string: 2.5.0
       pg-hstore: 2.3.4
       retry-as-promised: 5.0.0
@@ -13807,7 +13807,7 @@ packages:
       - supports-color
     dev: false
 
-  /sequelize/6.15.0_pg-hstore@2.3.4+pg@8.7.1:
+  /sequelize/6.15.0_pg-hstore@2.3.4+pg@8.7.3:
     resolution: {integrity: sha512-Ks2jSaKMfICZ8jMlhH401fLw5ikE8Vqt6slcR2peKOn4lA3H+LRfXdlnAl/CUDO1MflFl7PhifnzPxwhamciGQ==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
@@ -13844,7 +13844,7 @@ packages:
       lodash: 4.17.21
       moment: 2.29.1
       moment-timezone: 0.5.34
-      pg: 8.7.1
+      pg: 8.7.3
       pg-connection-string: 2.5.0
       pg-hstore: 2.3.4
       retry-as-promised: 5.0.0
@@ -13858,7 +13858,7 @@ packages:
       - supports-color
     dev: true
 
-  /sequelize/6.15.0_pg@8.7.1+sqlite3@5.0.2:
+  /sequelize/6.15.0_pg@8.7.3+sqlite3@5.0.2:
     resolution: {integrity: sha512-Ks2jSaKMfICZ8jMlhH401fLw5ikE8Vqt6slcR2peKOn4lA3H+LRfXdlnAl/CUDO1MflFl7PhifnzPxwhamciGQ==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
@@ -13895,7 +13895,7 @@ packages:
       lodash: 4.17.21
       moment: 2.29.1
       moment-timezone: 0.5.34
-      pg: 8.7.1
+      pg: 8.7.3
       pg-connection-string: 2.5.0
       retry-as-promised: 5.0.0
       semver: 7.3.5
