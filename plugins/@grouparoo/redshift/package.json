@@ -38,7 +38,7 @@
     "@types/node": "16.*.*",
     "@types/pg": "*",
     "actionhero": "28.1.8",
-    "dotenv": "15.0.0",
+    "dotenv": "16.0.0",
     "jest": "27.5.1",
     "prettier": "2.5.1",
     "sequelize": "6.15.0",
