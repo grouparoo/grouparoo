@@ -706,7 +706,7 @@ importers:
       '@types/node': 16.*.*
       actionhero: 28.1.8
       axios: 0.26.0
-      customerio-node: 3.1.4
+      customerio-node: 3.2.0
       dotenv: 16.0.0
       fs-extra: 10.0.1
       jest: 27.5.1
@@ -717,7 +717,7 @@ importers:
       typescript: 4.6.2
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      customerio-node: 3.1.4
+      customerio-node: 3.2.0
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -5414,7 +5414,7 @@ packages:
   /axios/0.21.4:
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
     dependencies:
-      follow-redirects: 1.14.8_debug@4.3.3
+      follow-redirects: 1.14.8
     transitivePeerDependencies:
       - debug
     dev: false
@@ -5430,7 +5430,7 @@ packages:
   /axios/0.25.0_debug@4.3.3:
     resolution: {integrity: sha512-cD8FOb0tRH3uuEe6+evtAbgJtfxr7ly3fQjYcMcuPlgkwVS9xboaVIpcDV+cYQe+yGykgwZCs1pzjntcGa6l5g==}
     dependencies:
-      follow-redirects: 1.14.8_debug@4.3.3
+      follow-redirects: 1.14.8
     transitivePeerDependencies:
       - debug
     dev: false
@@ -5438,7 +5438,7 @@ packages:
   /axios/0.26.0:
     resolution: {integrity: sha512-lKoGLMYtHvFrPVt3r+RBMp9nh34N0M8zEfCWqdWZx6phynIEhQqAdydpyBAAG211zlhX9Rgu08cOamy6XjE5Og==}
     dependencies:
-      follow-redirects: 1.14.8_debug@4.3.3
+      follow-redirects: 1.14.8
     transitivePeerDependencies:
       - debug
 
@@ -6452,8 +6452,8 @@ packages:
       nub: 0.0.0
     dev: false
 
-  /customerio-node/3.1.4:
-    resolution: {integrity: sha512-IEMDNN30nf6I4Jp21JvOiC5ZbwiRhSLjf+jMcTV/LI5AHMhBWCdJH+TBHR6tRO3jBJ0EJr+NhtPR6HZZQROD7Q==}
+  /customerio-node/3.2.0:
+    resolution: {integrity: sha512-Hz9KWceuyuARDiWdYC50BbGNb+MMDT6LK//Q0/sEc2bGYLIoiBL2yAMxVd35kG+ktsyg0UHeBrkAGJ1XtNt4nw==}
     dev: false
 
   /d3-array/2.12.1:
@@ -7668,6 +7668,15 @@ packages:
   /fn.name/1.1.0:
     resolution: {integrity: sha512-GRnmB5gPyJpAhTQdSZTSp9uaPSvl09KoYcMQtsB9rQoOmzs9dH6ffeccH+Z+cv6P68Hu5bC6JjRh4Ah/mHSNRw==}
 
+  /follow-redirects/1.14.8:
+    resolution: {integrity: sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+
   /follow-redirects/1.14.8_debug@3.2.7:
     resolution: {integrity: sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==}
     engines: {node: '>=4.0'}
@@ -7679,17 +7688,6 @@ packages:
     dependencies:
       debug: 3.2.7
     dev: false
-
-  /follow-redirects/1.14.8_debug@4.3.3:
-    resolution: {integrity: sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dependencies:
-      debug: 4.3.3
 
   /follow-redirects/1.5.10:
     resolution: {integrity: sha512-0V5l4Cizzvqt5D44aTXbFZz+FtyXV1vrDN6qrelxtfYQKW0KO0W2T/hkE8xvGa/540LkZlkaUjO4ailYTFtHVQ==}
