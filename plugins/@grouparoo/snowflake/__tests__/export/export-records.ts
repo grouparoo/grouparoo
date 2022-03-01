@@ -10,8 +10,12 @@ import { loadAppOptions, updater } from "../utils/nockHelper";
 const { newNock } = helper.useNock(__filename, updater);
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 
-const { recordsDestinationTableName, groupsDestinationTableName } = getConfig();
-const destinationOptions = {
+const {
+  usersTableName,
+  recordsDestinationTableName,
+  groupsDestinationTableName,
+} = getConfig();
+let destinationOptions = {
   table: recordsDestinationTableName,
   primaryKey: "EMAIL",
   groupsTable: groupsDestinationTableName,
@@ -86,10 +90,19 @@ function generateLongRecords(count: number): Record<string, any>[] {
   const records = [];
   for (let i = 0; i < count; i++) {
     records.push({
-      [destinationOptions.primaryKey]: `user${i}@demo.com`,
+      EMAIL: `user${i}@demo.com`,
       ID: 1000 + i,
-      FIRST_NAME: `Fist Name ${i}`,
+      ACCOUNT_ID: 1000 + i,
+      FIRST_NAME: `'Fist Name ${i}'`,
       LAST_NAME: `Last Name ${i}`,
+      GENDER: i % 2 == 0 ? "M" : "F",
+      IP_ADDRESS: `192.168.1.${i}`,
+      IOS_APP: i % 2 == 0,
+      ANDROID_APP: i % 2 == 0,
+      VIP: i % 2 == 0,
+      LTV: (i * 1000) / 5,
+      DATE: new Date("2022-02-25T00:00:00.000Z"),
+      STAMP: new Date("2022-02-25T00:00:00.000Z").toISOString(),
     });
   }
   return records;
@@ -942,41 +955,62 @@ describe("snowflake/exportRecords", () => {
     expect(user3["FIRST_NAME"]).toBe("Liz");
   });
 
-  test("can handle batches with lots of records", async () => {
-    // generate records
-    const records = generateLongRecords(2);
+  test(
+    "can handle batches with lots of records",
+    async () => {
+      // generate records
+      const records = generateLongRecords(200);
+      destinationOptions = {
+        table: usersTableName,
+        primaryKey: "EMAIL",
+        groupsTable: groupsDestinationTableName,
+        groupForeignKey: "EMAIL",
+        groupColumnName: "GROUP_NAME",
+      };
 
-    // run batch export
-    const exports = makeExports(records);
-    const { success, errors } = await exportBatch({
-      appOptions,
-      destinationOptions,
-      syncOperations: DestinationSyncModeData.sync.operations,
-      exports,
-    });
+      // run batch export
+      const exports = makeExports(records);
+      const { success, errors } = await exportBatch({
+        appOptions,
+        destinationOptions,
+        syncOperations: DestinationSyncModeData.sync.operations,
+        exports,
+      });
 
-    expect(success).toBe(true);
-    expect(errors).toBeNull();
+      expect(success).toBe(true);
+      expect(errors).toBeNull();
 
-    const primaryKeys = records.map((p) => p[destinationOptions.primaryKey]);
+      const primaryKeys = records.map((p) => p[destinationOptions.primaryKey]);
 
-    let exportedRecords = await getRecordByPrimaryKeys(
-      destinationOptions.primaryKey,
-      primaryKeys
-    );
-
-    // verify all were created properly
-    for (const record of records) {
-      const user = getRecord(
-        exportedRecords,
-        record[destinationOptions.primaryKey]
+      let exportedRecords = await getRecordByPrimaryKeys(
+        destinationOptions.primaryKey,
+        primaryKeys
       );
-      expect(user).toBeTruthy();
-      expect(user[destinationOptions.primaryKey]).toBe(
-        record[destinationOptions.primaryKey]
-      );
-      expect(user["FIRST_NAME"]).toBe(record["FIRST_NAME"]);
-      expect(user["LAST_NAME"]).toBe(record["LAST_NAME"]);
-    }
-  });
+
+      // verify all were created properly
+      for (const record of records) {
+        const user = getRecord(
+          exportedRecords,
+          record[destinationOptions.primaryKey]
+        );
+        expect(user).toBeTruthy();
+        expect(user[destinationOptions.primaryKey]).toBe(
+          record[destinationOptions.primaryKey]
+        );
+        expect(user["ACCOUNT_ID"]).toBe(record["ACCOUNT_ID"]);
+        expect(user["FIRST_NAME"]).toBe(
+          record["FIRST_NAME"].replace(new RegExp("'", "gi"), "")
+        );
+        expect(user["LAST_NAME"]).toBe(record["LAST_NAME"]);
+        expect(user["GENDER"]).toBe(record["GENDER"]);
+        expect(user["IP_ADDRESS"]).toBe(record["IP_ADDRESS"]);
+        expect(user["IOS_APP"]).toBe(record["IOS_APP"]);
+        expect(user["ANDROID_APP"]).toBe(record["ANDROID_APP"]);
+        expect(user["VIP"]).toBe(record["VIP"]);
+        expect(user["LTV"]).toBe(record["LTV"]);
+        expect(user["DATE"]).toStrictEqual(record["DATE"]);
+      }
+    },
+    helper.longTime
+  );
 });

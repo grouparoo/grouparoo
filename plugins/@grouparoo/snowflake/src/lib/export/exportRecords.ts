@@ -254,7 +254,11 @@ function formatPayloadValues(payloadValues: string[]) {
   return payloadValues.reduce((prev, curr, idx) => {
     return (
       prev +
-      (!curr || curr.length === 0 ? null : `'${curr}'`) +
+      (curr === null ||
+      curr === undefined ||
+      curr.toString().trim().length === 0
+        ? null
+        : `'${curr.toString().replace(new RegExp("'", "gi"), "")}'`) +
       (idx === payloadValues.length - 1 ? "" : ", ")
     );
   }, "");
@@ -286,6 +290,9 @@ function buildPayload(user: any) {
 function formatVar(value) {
   if (value === undefined || value === null) {
     return null;
+  }
+  if (value instanceof Date) {
+    return value.toISOString();
   }
   return value;
 }
