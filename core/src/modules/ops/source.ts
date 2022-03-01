@@ -528,7 +528,7 @@ export namespace SourceOps {
       try {
         // manually run the hooks we want
         Property.generateId(property);
-        // await Property.ensureUnique.call(property);
+        await Property.ensureUnique.call(property);
         await Property.ensureNonArrayAndUnique(property);
 
         // danger zone!
