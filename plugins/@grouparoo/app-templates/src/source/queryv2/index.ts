@@ -1,2 +1,2 @@
 export * from "./meta";
-export * from "../table/options";
+export * from "../shared/options";

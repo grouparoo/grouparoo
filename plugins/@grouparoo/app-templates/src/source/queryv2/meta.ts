@@ -27,7 +27,7 @@ import {
   SourceOptionsExtra,
   AggregationMethod,
   sourceQueryKey,
-} from "../table/options";
+} from "../shared/options";
 
 export interface BuildConnectionMethod {
   (argument: {
@@ -35,6 +35,8 @@ export interface BuildConnectionMethod {
     displayName: string;
     description: string;
     apps: string[];
+    queryOptionDescription?: string;
+    queryOptionDisplayName?: string;
     sourceOptions?: SourceOptionsExtra;
     getSampleRows: GetSampleRowsMethod;
     getColumns: GetColumnDefinitionsMethod;
@@ -50,6 +52,8 @@ export const buildConnection: BuildConnectionMethod = ({
   displayName,
   description,
   apps,
+  queryOptionDescription = null,
+  queryOptionDisplayName = null,
   sourceOptions: additionalOptions,
   getSampleRows,
   getColumns,
@@ -100,8 +104,8 @@ export const buildConnection: BuildConnectionMethod = ({
     key: sourceQueryKey,
     type: "textarea",
     required: true,
-    displayName: "Query",
-    description: "The query to run",
+    displayName: queryOptionDisplayName || "Query",
+    description: queryOptionDescription || "The query to run",
     placeholder: "SELECT statement returning property values",
   });
 

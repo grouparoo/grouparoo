@@ -4,7 +4,6 @@ export * from "./scheduleOptions";
 export * from "./sourcePreview";
 export * from "./sourceOptions";
 export * from "./uniquePropertyBootstrapOptions";
-export * from "./sourceFilters";
 export * from "./recordProperty";
 export * from "./recordProperties";
 export * from "./records";

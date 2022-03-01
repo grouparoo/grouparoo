@@ -13,7 +13,6 @@ import {
   SourcePreviewMethod,
   getSourcePreview,
   SourceFilterMethod,
-  getSourceFilters,
   UniquePropertyBootstrapOptions,
   getUniquePropertyBootstrapOptions,
   RecordsPluginMethod,
@@ -30,7 +29,9 @@ import {
   GetRowCountMethod,
   SourceOptionsExtra,
   AggregationMethod,
-} from "./options";
+} from "../shared/options";
+
+import { getSourceFilters } from "./sourceFilters";
 
 export interface BuildConnectionMethod {
   (argument: {
