@@ -40,7 +40,7 @@
     "@types/pg": "*",
     "actionhero": "28.1.8",
     "csv-parse": "4.16.3",
-    "fs-extra": "10.0.0",
+    "fs-extra": "10.0.1",
     "jest": "27.5.1",
     "prettier": "2.5.1",
     "sequelize": "6.15.0",
