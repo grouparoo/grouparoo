@@ -70,7 +70,7 @@
     "ts-node": "10.5.0",
     "uuid": "8.3.2",
     "validator": "13.7.0",
-    "winston": "3.5.1",
+    "winston": "3.6.0",
     "ws": "8.5.0"
   },
   "devDependencies": {

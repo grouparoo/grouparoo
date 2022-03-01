@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "aws-sdk": "2.1083.0",
-    "winston": "3.5.1",
+    "winston": "3.6.0",
     "winston-cloudwatch": "3.1.1"
   },
   "devDependencies": {
