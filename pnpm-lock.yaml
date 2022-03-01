@@ -288,7 +288,7 @@ importers:
       nock: 13.2.4
       node-resque: 9.1.5
       nodemon: 2.0.15
-      pacote: 12.0.3
+      pacote: 13.0.3
       pg: 8.7.3
       pg-hstore: 2.3.4
       pluralize: 8.0.0
@@ -332,7 +332,7 @@ importers:
       mustache: 4.2.0
       node-resque: 9.1.5
       nodemon: 2.0.15
-      pacote: 12.0.3
+      pacote: 13.0.3
       pg: 8.7.3
       pg-hstore: 2.3.4
       pluralize: 8.0.0
@@ -3909,6 +3909,7 @@ packages:
   /@npmcli/fs/1.1.0:
     resolution: {integrity: sha512-VhP1qZLXcrXRIaPoqb4YA55JQxLNF3jNR4T55IdOJa3+IFJKNYHtPvtXx8slmeMavj37vCzCfrqQM1vWLsYKLA==}
     engines: {node: ^12.13.0 || ^14.15.0 || >=16}
+    deprecated: this version had an improper engines field added, update to 1.1.1
     dependencies:
       '@gar/promisify': 1.1.2
       semver: 7.3.5
@@ -3924,6 +3925,21 @@ packages:
       promise-retry: 2.0.1
       semver: 7.3.5
       which: 2.0.2
+
+  /@npmcli/git/3.0.0:
+    resolution: {integrity: sha512-xfSBJ+KBMZWWqRHFbEgIaXG/LtELHrQZMJ72Gkb3yWdHysu/7+VGOs8ME0c3td7QNQX57Ggo3kYL6ylcd70/kA==}
+    engines: {node: ^12.13.0 || ^14.15.0 || >=16}
+    dependencies:
+      '@npmcli/promise-spawn': 1.3.2
+      lru-cache: 7.4.0
+      mkdirp: 1.0.4
+      npm-pick-manifest: 7.0.0
+      proc-log: 2.0.0
+      promise-inflight: 1.0.1
+      promise-retry: 2.0.1
+      semver: 7.3.5
+      which: 2.0.2
+    dev: false
 
   /@npmcli/installed-package-contents/1.0.7:
     resolution: {integrity: sha512-9rufe0wnJusCQoLpV9ZPKIVP55itrM5BxOXs10DmdbRfgWtHy1LDyskbwRnBghuB0PrF7pNPOqREVtpz4HqzKw==}
@@ -3966,6 +3982,18 @@ packages:
       read-package-json-fast: 2.0.3
     transitivePeerDependencies:
       - supports-color
+
+  /@npmcli/run-script/3.0.0:
+    resolution: {integrity: sha512-jIdmUepw+kVP2WEE/+XrBIvrSF5miDutdGBrQ8May6uHVAvpAb0m3NRHcJ0lKWbQ1BxsRFsmTrjkdY99qTTVIw==}
+    engines: {node: ^12.13.0 || ^14.15.0 || >=16}
+    dependencies:
+      '@npmcli/node-gyp': 1.0.3
+      '@npmcli/promise-spawn': 1.3.2
+      node-gyp: 8.4.1
+      read-package-json-fast: 2.0.3
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /@octokit/auth-token/2.5.0:
     resolution: {integrity: sha512-r5FVUJCOLl19AxiuZD2VRZ/ORjp/4IN98Of6YJoJOkY75CIBuYfmiNHGrDwXr+aLGG55igl9QrxX3hbiXlLb+g==}
@@ -10385,6 +10413,11 @@ packages:
     dependencies:
       yallist: 4.0.0
 
+  /lru-cache/7.4.0:
+    resolution: {integrity: sha512-YOfuyWa/Ee+PXbDm40j9WXyJrzQUynVbgn4Km643UYcWNcrSfRkKL0WaiUcxcIbkXcVTgNpDqSnPXntWXT75cw==}
+    engines: {node: '>=12'}
+    dev: false
+
   /lru_map/0.3.3:
     resolution: {integrity: sha1-tcg1G5Rky9dQM1p5ZQoOwOVhGN0=}
     dev: false
@@ -10446,6 +10479,30 @@ packages:
       ssri: 8.0.1
     transitivePeerDependencies:
       - supports-color
+
+  /make-fetch-happen/10.0.3:
+    resolution: {integrity: sha512-CzarPHynPpHjhF5in/YapnO44rSZeYX5VCMfdXa99+gLwpbfFLh20CWa6dP/taV9Net9PWJwXNKtp/4ZTCQnag==}
+    engines: {node: ^12.13.0 || ^14.15.0 || >=16}
+    dependencies:
+      agentkeepalive: 4.2.0
+      cacache: 15.3.0
+      http-cache-semantics: 4.1.0
+      http-proxy-agent: 5.0.0
+      https-proxy-agent: 5.0.0
+      is-lambda: 1.0.1
+      lru-cache: 7.4.0
+      minipass: 3.1.6
+      minipass-collect: 1.0.2
+      minipass-fetch: 1.4.1
+      minipass-flush: 1.0.5
+      minipass-pipeline: 1.2.4
+      negotiator: 0.6.3
+      promise-retry: 2.0.1
+      socks-proxy-agent: 6.1.1
+      ssri: 8.0.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /make-fetch-happen/8.0.14:
     resolution: {integrity: sha512-EsS89h6l4vbfJEtBZnENTOFk8mCRpY5ru36Xe5bcX1KYIli2mkSHqoFsp5O1wMDvTJJzxe/4THpCTtygjeeGWQ==}
@@ -11509,7 +11566,6 @@ packages:
       is-core-module: 2.8.1
       semver: 7.3.5
       validate-npm-package-license: 3.0.4
-    dev: true
 
   /normalize-path/2.1.1:
     resolution: {integrity: sha1-GrKLVW4Zg2Oowab35vogE3/mrtk=}
@@ -11602,6 +11658,15 @@ packages:
       semver: 7.3.5
       validate-npm-package-name: 3.0.0
 
+  /npm-package-arg/9.0.0:
+    resolution: {integrity: sha512-yhzXxeor+Zfhe5MGwPdDumz6HtNlj2pMekWB95IX3CC6uDNgde0oPKHDCLDPoJqQfd0HqAWt+y4Hs5m7CK1+9Q==}
+    engines: {node: ^12.13.0 || ^14.15.0 || >=16}
+    dependencies:
+      hosted-git-info: 4.1.0
+      semver: 7.3.5
+      validate-npm-package-name: 3.0.0
+    dev: false
+
   /npm-packlist/1.4.8:
     resolution: {integrity: sha512-5+AZgwru5IevF5ZdnFglB5wNlHG1AOOuw28WhUq8/8emhBmLv6jX5by4WJCh7lW0uSYZYS6DXqIsyZVIXRZU9A==}
     dependencies:
@@ -11639,6 +11704,16 @@ packages:
       npm-package-arg: 8.1.5
       semver: 7.3.5
 
+  /npm-pick-manifest/7.0.0:
+    resolution: {integrity: sha512-njM1AcdioFaKd0JSGtLO09YA1WRwctjGQJbnHGmKS+u+uwP8oFvtZtOQWPYdxrnY5eJud3wn8OpH4sEIx6+GEQ==}
+    engines: {node: ^12.13.0 || ^14.15.0 || >=16}
+    dependencies:
+      npm-install-checks: 4.0.0
+      npm-normalize-package-bin: 1.0.1
+      npm-package-arg: 9.0.0
+      semver: 7.3.5
+    dev: false
+
   /npm-registry-fetch/11.0.0:
     resolution: {integrity: sha512-jmlgSxoDNuhAtxUIG6pVwwtz840i994dL14FoNVZisrmZW5kWd63IUTNv1m/hyRSGSqWjCUp/YZlS1BJyNp9XA==}
     engines: {node: '>=10'}
@@ -11665,6 +11740,21 @@ packages:
       npm-package-arg: 8.1.5
     transitivePeerDependencies:
       - supports-color
+
+  /npm-registry-fetch/13.0.0:
+    resolution: {integrity: sha512-MmiMuV9DU5gRuAU0jia952Qq+E4h7ZoUaeltCXivhClcqfOVKqNLZEQsRUOb6a8WQY+um8x97JcUuaWFoPoBBw==}
+    engines: {node: ^12.13.0 || ^14.15.0 || >=16}
+    dependencies:
+      make-fetch-happen: 10.0.3
+      minipass: 3.1.6
+      minipass-fetch: 1.4.1
+      minipass-json-stream: 1.0.1
+      minizlib: 2.1.2
+      npm-package-arg: 9.0.0
+      proc-log: 2.0.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /npm-registry-fetch/9.0.0:
     resolution: {integrity: sha512-PuFYYtnQ8IyVl6ib9d3PepeehcUeHN9IO5N/iCRhyg9tStQcqGQBRVHmfmMWPDERU3KwZoHFvbJ4FPXPspvzbA==}
@@ -12159,6 +12249,36 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
+  /pacote/13.0.3:
+    resolution: {integrity: sha512-8thQ06YoO01O1k5rvSpHS/XPJZucw2DPiiT1jI+ys8QaTN6ifAyxfyoABHBa8nIt/4wPdzly4GEPqshctHFoYA==}
+    engines: {node: ^12.13.0 || ^14.15.0 || >=16}
+    hasBin: true
+    dependencies:
+      '@npmcli/git': 3.0.0
+      '@npmcli/installed-package-contents': 1.0.7
+      '@npmcli/promise-spawn': 1.3.2
+      '@npmcli/run-script': 3.0.0
+      cacache: 15.3.0
+      chownr: 2.0.0
+      fs-minipass: 2.1.0
+      infer-owner: 1.0.4
+      minipass: 3.1.6
+      mkdirp: 1.0.4
+      npm-package-arg: 9.0.0
+      npm-packlist: 3.0.0
+      npm-pick-manifest: 7.0.0
+      npm-registry-fetch: 13.0.0
+      proc-log: 2.0.0
+      promise-retry: 2.0.1
+      read-package-json: 4.1.1
+      read-package-json-fast: 2.0.3
+      rimraf: 3.0.2
+      ssri: 8.0.1
+      tar: 6.1.11
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /pako/1.0.11:
     resolution: {integrity: sha512-4hLB8Py4zZce5s4yd9XzopqwVv/yGNhV1Bl8NTmCq1763HeK2+EwVTv+leGeL13Dnh2wfbqowVPXCIO0z4taYw==}
     dev: true
@@ -12482,6 +12602,11 @@ packages:
       nanoid: 3.1.32
       setheader: 1.0.2
       ultron: 1.1.1
+
+  /proc-log/2.0.0:
+    resolution: {integrity: sha512-I/35MfCX2H8jBUhKN8JB8nmqvQo/nKdrBodBY7L3RhDSPPyvOHwLYNmPuhwuJq7a7C3vgFKWGQM+ecPStcvOHA==}
+    engines: {node: ^12.13.0 || ^14.15.0 || >=16}
+    dev: false
 
   /process-nextick-args/2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
@@ -13008,7 +13133,6 @@ packages:
       json-parse-even-better-errors: 2.3.1
       normalize-package-data: 3.0.3
       npm-normalize-package-bin: 1.0.1
-    dev: true
 
   /read-package-tree/5.3.1:
     resolution: {integrity: sha512-mLUDsD5JVtlZxjSlPPx1RETkNjjvQYuweKwNVt1Sn8kP5Jh44pvYuUHCp6xSVDZWbNxVxG5lyZJ921aJH61sTw==}
@@ -14256,22 +14380,18 @@ packages:
     dependencies:
       spdx-expression-parse: 3.0.1
       spdx-license-ids: 3.0.11
-    dev: true
 
   /spdx-exceptions/2.3.0:
     resolution: {integrity: sha512-/tTrYOC7PPI1nUAgx34hUpqXuyJG+DTHJTnIULG4rDygi4xu/tfgmq1e1cIRwRzwZgo4NLySi+ricLkZkw4i5A==}
-    dev: true
 
   /spdx-expression-parse/3.0.1:
     resolution: {integrity: sha512-cbqHunsQWnJNE6KhVSMsMeH5H/L9EpymbzqTQ3uLwNCLZ1Q481oWaofqH7nO6V07xlXwY6PhQdQ2IedWx/ZK4Q==}
     dependencies:
       spdx-exceptions: 2.3.0
       spdx-license-ids: 3.0.11
-    dev: true
 
   /spdx-license-ids/3.0.11:
     resolution: {integrity: sha512-Ctl2BrFiM0X3MANYgj3CkygxhRmr9mi6xhejbdO960nF6EDJApTYpn0BQnDKlnNBULKiCN1n3w9EBkHK8ZWg+g==}
-    dev: true
 
   /spdx-ranges/2.1.1:
     resolution: {integrity: sha512-mcdpQFV7UDAgLpXEE/jOMqvK4LBoO0uTQg0uvXUewmEFhpiZx5yJSZITHB8w1ZahKdhfZqP5GPEOKLyEq5p8XA==}
@@ -15463,7 +15583,6 @@ packages:
     dependencies:
       spdx-correct: 3.1.1
       spdx-expression-parse: 3.0.1
-    dev: true
 
   /validate-npm-package-name/3.0.0:
     resolution: {integrity: sha1-X6kS2B630MdK/BQN5zF/DKffQ34=}
@@ -15660,7 +15779,7 @@ packages:
   /wide-align/1.1.5:
     resolution: {integrity: sha512-eDMORYaPNZ4sQIuuYPDHdQvf4gyCF9rEEV/yPxGfwPkRodwEgiMUUXTx/dex+Me0wxx53S+NgUHaP7y3MGlDmg==}
     dependencies:
-      string-width: 1.0.2
+      string-width: 4.2.3
 
   /widest-line/3.1.0:
     resolution: {integrity: sha512-NsmoXalsWVDMGupxZ5R08ka9flZjjiLvHVAWYOKtiKM8ujtZWr9cRffak+uSE48+Ob8ObalXpwyeUiyDD6QFgg==}
