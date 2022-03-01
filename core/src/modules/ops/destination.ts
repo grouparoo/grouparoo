@@ -342,7 +342,8 @@ export namespace DestinationOps {
     // If there is not a mostRecentExport, both old groups and old record properties are an empty collection
     const mostRecentExportIds = await getMostRecentExportIds(
       destination,
-      records.map((r) => r.id)
+      records.map((r) => r.id),
+      "complete"
     );
     const mostRecentExports = await Export.findAll({
       where: { id: mostRecentExportIds },
@@ -384,7 +385,6 @@ export namespace DestinationOps {
 
       if (mostRecentExport && mostRecentExport.toDelete !== true) {
         mappedOldRecordProperties = JSON.parse(
-          // @ts-ignore
           mostRecentExport.getDataValue("newRecordProperties")
         );
         oldGroupNames = mostRecentExport.newGroups;
@@ -932,8 +932,13 @@ export namespace DestinationOps {
 
   async function getMostRecentExportIds(
     destination: Destination,
-    recordIds: string[]
+    recordIds: string[],
+    state?: Export["state"]
   ) {
+    const values: (string | string[])[] = [destination.id];
+    if (state) values.push(state);
+    values.push(recordIds);
+
     const mostRecentExportIds = await Export.sequelize
       .query(
         {
@@ -948,10 +953,11 @@ FROM (
     "exports"
   WHERE
     "exports"."destinationId" = ?
+    ${state ? `AND state = ?` : ""}
     AND "exports"."recordId" IN (?)) AS __ranked
 WHERE
   "__ranked"."__rownum" = 1;`,
-          values: [destination.id, recordIds],
+          values,
         },
         {
           type: "SELECT",

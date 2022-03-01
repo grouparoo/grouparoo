@@ -384,7 +384,7 @@ export namespace RecordOps {
           position++;
         }
 
-        // delete old properties we didn't update
+        // delete old properties we didn't update with a position (array property) greater than we saw
         existingRecordProperties
           .filter(
             (p) =>
@@ -840,7 +840,6 @@ export namespace RecordOps {
       "ready"
     );
 
-    i = 0;
     for (const data of response) {
       if (data.error) continue;
 

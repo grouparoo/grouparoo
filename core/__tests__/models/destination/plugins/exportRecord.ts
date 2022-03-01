@@ -278,6 +278,68 @@ describe("models/destination - with custom exportRecord plugin", () => {
       await record.destroy();
     });
 
+    test("old properties will not be copied incomplete exports", async () => {
+      await destination.setMapping({
+        uid: "userId",
+        customer_email: "email",
+      });
+
+      const groupA = await helper.factories.group();
+
+      await destination.updateTracking("group", groupA.id);
+      await destination.setDestinationGroupMemberships({
+        [groupA.id]: groupA.name,
+      });
+
+      const record = await helper.factories.record();
+      await record.addOrUpdateProperties({
+        userId: [1001],
+        email: ["newemail@example.com"],
+      });
+      await GroupMember.create({ recordId: record.id, groupId: groupA.id });
+
+      const oldExport = await helper.factories.export(record, destination, {
+        newRecordProperties: {
+          customer_email: { type: "email", rawValue: "oldmail@example.com" },
+        },
+        state: "pending",
+        newGroups: [],
+        startedAt: new Date(),
+        completedAt: new Date(),
+      });
+      await specHelper.deleteEnqueuedTasks("exports:send", {
+        id: oldExport.id,
+      });
+
+      await destination.exportRecord(record);
+
+      await specHelper.runTask("export:enqueue", {});
+      const foundTasks = await specHelper.findEnqueuedTasks("export:send");
+      await specHelper.runTask("export:send", foundTasks[0].args[0]);
+
+      const _exports = await Export.findAll({
+        where: { destinationId: destination.id },
+        order: [["createdAt", "asc"]],
+      });
+      expect(_exports.length).toBe(2);
+      expect(_exports[1].destinationId).toBe(destination.id);
+      expect(_exports[1].recordId).toBe(record.id);
+      expect(
+        _exports[0].completedAt.getTime() - _exports[0].startedAt.getTime()
+      ).toBeGreaterThanOrEqual(0);
+      expect(_exports[1].errorMessage).toBeFalsy();
+      expect(_exports[1].oldRecordProperties).toEqual({});
+      expect(_exports[1].newRecordProperties).toEqual({
+        customer_email: "newemail@example.com",
+        uid: 1001,
+      });
+      expect(_exports[1].oldGroups).toEqual([]);
+      expect(_exports[1].newGroups).toEqual([groupA.name]);
+
+      await oldExport.destroy();
+      await record.destroy();
+    });
+
     test("record properties previously mapped but now removed will be included as oldRecordProperties in the export", async () => {
       await destination.setMapping({
         uid: "userId",
