@@ -43,6 +43,7 @@ export namespace ExportProcessorOps {
         { startedAt: new Date() },
         {
           where: { id: { [Op.in]: exportProcessors.map((ep) => ep.id) } },
+          returning: true,
         }
       );
 

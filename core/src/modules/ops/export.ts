@@ -103,6 +103,7 @@ export namespace ExportOps {
         { startedAt: new Date() },
         {
           where: { id: { [Op.in]: _exports.map((e) => e.id) } },
+          returning: true,
         }
       );
 
