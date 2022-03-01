@@ -34,7 +34,7 @@
     "fs-extra": "10.0.1",
     "nock": "13.2.4",
     "prettier": "2.5.1",
-    "sequelize": "6.15.0",
+    "sequelize": "6.17.0",
     "uuid": "8.3.2"
   },
   "devDependencies": {
