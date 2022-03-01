@@ -1,4 +1,4 @@
-import { makeWhereClause } from "./util";
+import { makeFromClause, makeWhereClause } from "./util";
 import { validateQuery } from "../validateQuery";
 import {
   GetRowsMethod,
@@ -12,6 +12,7 @@ import { PostgresPoolClient } from "../connect";
 export const getRows: GetRowsMethod<PostgresPoolClient> = async ({
   connection,
   tableName,
+  sourceQuery,
   highWaterMarkCondition,
   limit,
   sourceOffset,
@@ -22,10 +23,10 @@ export const getRows: GetRowsMethod<PostgresPoolClient> = async ({
   incremental,
 }) => {
   const params = [];
-  let query = `SELECT *, %I::text AS %I FROM %I`;
   params.push(highWaterMarkAndSortColumnASC);
   params.push(highWaterMarkKey);
-  params.push(tableName);
+  const from = makeFromClause({ tableName, sourceQuery }, params);
+  let query = `SELECT *, %I::text AS %I ${from}`;
 
   if (incremental) {
     query += await makeHighwaterWhereClause(highWaterMarkCondition, params);

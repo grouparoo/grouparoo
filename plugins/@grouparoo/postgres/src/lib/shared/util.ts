@@ -4,6 +4,20 @@ import {
   MatchCondition,
 } from "@grouparoo/app-templates/dist/source/table";
 
+export function makeFromClause(
+  { tableName, sourceQuery }: { tableName?: string; sourceQuery?: string },
+  params: (string | string[])[]
+) {
+  if (tableName) {
+    params.push(tableName);
+    return "FROM %I";
+  } else if (sourceQuery) {
+    return `FROM (${sourceQuery}) AS __sourceQuery`;
+  }
+
+  throw new Error("source must specify a table name or query");
+}
+
 export function makeWhereClause(
   matchCondition: MatchCondition,
   params: (DataResponse | DataResponse[])[]

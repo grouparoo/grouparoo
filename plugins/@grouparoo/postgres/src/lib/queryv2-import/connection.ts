@@ -1,10 +1,10 @@
 import { buildConnection } from "@grouparoo/app-templates/dist/source/queryv2";
-import { getSampleRows } from "./getSampleRows";
+import { getSampleRows } from "../shared/getSampleRows";
 import { getColumns } from "./getColumns";
-import { getRows } from "./getRows";
-import { getPropertyValue } from "./getPropertyValue";
-import { getPropertyValues } from "./getPropertyValues";
-import { getRowCount } from "./getRowCount";
+import { getRows } from "../shared/getRows";
+import { getPropertyValue } from "../shared/getPropertyValue";
+import { getPropertyValues } from "../shared/getPropertyValues";
+import { getRowCount } from "../shared/getRowCount";
 
 export function getConnection() {
   return buildConnection({

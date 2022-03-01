@@ -1,4 +1,4 @@
-import { makeWhereClause } from "./util";
+import { makeFromClause, makeWhereClause } from "./util";
 import { validateQuery } from "../validateQuery";
 import {
   GetPropertyValuesMethod,
@@ -11,6 +11,7 @@ import format from "pg-format";
 export const getPropertyValues: GetPropertyValuesMethod = async ({
   connection,
   tableName,
+  sourceQuery,
   columnNames,
   sortColumn,
   tablePrimaryKeyCol,
@@ -76,8 +77,8 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
     }
   }
 
-  query += ` FROM %I WHERE`;
-  params.push(tableName);
+  const from = makeFromClause({ tableName, sourceQuery }, params);
+  query += ` ${from} WHERE`;
 
   let addAnd = false;
 
