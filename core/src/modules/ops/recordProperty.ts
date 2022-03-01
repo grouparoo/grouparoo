@@ -156,6 +156,7 @@ export namespace RecordPropertyOps {
             [Op.or]: [null, { [Op.lt]: new Date().getTime() - delayMs }],
           },
         },
+        order: [["recordId", "asc"]],
         limit: limit * propertyGroups[aggregationMethod].length,
       });
 
@@ -180,6 +181,7 @@ export namespace RecordPropertyOps {
             [Op.or]: [null, { [Op.lt]: new Date().getTime() - delayMs }],
           },
         },
+        order: [["recordId", "asc"]],
         limit,
       });
 
