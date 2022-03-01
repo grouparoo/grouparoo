@@ -147,10 +147,14 @@ export abstract class CommonModel<T> extends Model {
     };
 
     instanceUniqueIdentifiers.forEach((identifier) => {
-      whereOpts[identifier] = where(
-        fn("LOWER", col(String(identifier))),
-        String(instance[identifier]).toLowerCase()
-      );
+      if (typeof instance[identifier] === "string") {
+        whereOpts[identifier] = where(
+          fn("LOWER", col(String(identifier))),
+          String(instance[identifier]).toLowerCase()
+        );
+      } else {
+        whereOpts[identifier] = instance[identifier];
+      }
     });
 
     if (instance.state) {
@@ -166,7 +170,7 @@ export abstract class CommonModel<T> extends Model {
       throw new Errors.UniqueError(
         instanceUniqueIdentifiers
           .map((id) => `${id} "${instance[id]}" is already in use`)
-          .join(", "),
+          .join(", ") + ` in table ${this.toString().split(" ")[1]}`,
         this.toString().split(" ")[1],
         instanceUniqueIdentifiers as string[],
         whereOpts

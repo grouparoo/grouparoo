@@ -141,6 +141,8 @@ export class Source extends CommonModel<Source> {
   @BelongsTo(() => GrouparooModel)
   model: GrouparooModel;
 
+  uniqueIdentifier = ["appId", "name"];
+
   async getOptions(sourceFromEnvironment = true) {
     return OptionHelper.getOptions(this, sourceFromEnvironment);
   }
