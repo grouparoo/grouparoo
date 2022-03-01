@@ -49,7 +49,8 @@ export class Mapping extends CommonModel<Mapping> {
   @BelongsTo(() => Property)
   property: Property;
 
-  uniqueIdentifier = ["ownerId", "ownerType", "propertyId", "remoteKey"];
+  // TODO: remoteKey can come into play here
+  uniqueIdentifier = ["ownerId", "ownerType", "propertyId"];
 
   async apiData() {
     return {
