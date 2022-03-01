@@ -30,7 +30,7 @@
   "dependencies": {
     "axios": "0.26.0",
     "csv-parser": "3.0.0",
-    "fs-extra": "10.0.0"
+    "fs-extra": "10.0.1"
   },
   "devDependencies": {
     "@grouparoo/core": "0.8.2-alpha.0",
