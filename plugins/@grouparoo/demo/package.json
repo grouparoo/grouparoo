@@ -35,7 +35,7 @@
     "isomorphic-fetch": "3.0.0",
     "mongodb": "4.3.1",
     "mysql": "2.18.1",
-    "pg": "8.7.1",
+    "pg": "8.7.3",
     "prettier": "2.5.1",
     "replace-in-files": "3.0.0",
     "sequelize": "6.15.0",
