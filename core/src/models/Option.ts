@@ -52,7 +52,7 @@ export class Option extends CommonModel<Option> {
   @BelongsTo(() => Destination, "ownerId")
   destination: Destination;
 
-  uniqueIdentifier = ["key", "ownerId"];
+  uniqueIdentifier = ["key", "ownerId", "ownerType"];
 
   async apiData() {
     return {
@@ -77,24 +77,6 @@ export class Option extends CommonModel<Option> {
   }
 
   // --- Class Methods --- //
-
-  @BeforeSave
-  static async ensureOneOwnerIdPerKey(instance: Option) {
-    const existing = await Option.scope(null).findOne({
-      where: {
-        id: { [Op.ne]: instance.id },
-        ownerId: instance.ownerId,
-        ownerType: instance.ownerType,
-        key: instance.key,
-      },
-    });
-    if (existing) {
-      throw new Error(
-        `There is already a Option for ${instance.ownerId} (${instance.ownerType}) and ${instance.key}`
-      );
-    }
-  }
-
   @BeforeSave
   static async validateType(instance: Option) {
     if (!OptionTypes.includes(instance.type)) {

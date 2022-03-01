@@ -1,4 +1,5 @@
 import { ActionProcessor, Connection } from "actionhero";
+import { Errors } from "..";
 
 const namespace = "errors";
 
@@ -143,17 +144,14 @@ export const DEFAULT = {
   },
 };
 
-export function GrouparooErrorSerializer(
-  error: Error & {
-    code: string | number;
-    sql?: string;
-    errors?: any;
-    fields?: any;
+export function GrouparooErrorSerializer(error: Errors.GrouparooError) {
+  if (error.serialize) {
+    return error.serialize();
   }
-) {
+
   let message = "";
-  let code: string = error.code ? error.code.toString() : undefined;
-  let fields = [];
+  let code = error.code?.toString() ?? undefined;
+  let fields: string[] = [];
   let sql = error.sql || null;
 
   if (error.errors) {

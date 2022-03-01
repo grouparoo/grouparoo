@@ -49,6 +49,8 @@ export class Mapping extends CommonModel<Mapping> {
   @BelongsTo(() => Property)
   property: Property;
 
+  uniqueIdentifier = ["ownerId", "ownerType", "propertyId", "remoteKey"];
+
   async apiData() {
     return {
       id: this.id,
@@ -59,41 +61,5 @@ export class Mapping extends CommonModel<Mapping> {
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),
     };
-  }
-
-  // --- Class Methods --- //
-
-  @BeforeSave
-  static async ensureOneOwnerPerProperty(instance: Mapping) {
-    const existing = await Mapping.scope(null).findOne({
-      where: {
-        id: { [Op.ne]: instance.id },
-        ownerId: instance.ownerId,
-        ownerType: instance.ownerType,
-        propertyId: instance.propertyId,
-      },
-    });
-    if (existing) {
-      throw new Error(
-        `There is already a Mapping for ${instance.ownerId} (${instance.ownerType}) and ${instance.propertyId}`
-      );
-    }
-  }
-
-  @BeforeSave
-  static async ensureOneOwnerPerRemoteKey(instance: Mapping) {
-    const existing = await Mapping.scope(null).findOne({
-      where: {
-        id: { [Op.ne]: instance.id },
-        ownerId: instance.ownerId,
-        ownerType: instance.ownerType,
-        remoteKey: instance.remoteKey,
-      },
-    });
-    if (existing) {
-      throw new Error(
-        `There is already a Mapping for to ${instance.ownerId} (${instance.ownerType}) and ${instance.remoteKey}`
-      );
-    }
   }
 }

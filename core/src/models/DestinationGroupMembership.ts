@@ -40,6 +40,8 @@ export class DestinationGroupMembership extends CommonModel<DestinationGroupMemb
   @BelongsTo(() => Destination)
   destination: Destination;
 
+  uniqueIdentifier = ["groupId", "destinationId", "remoteKey"];
+
   async apiData() {
     return {
       destinationId: this.destinationId,
@@ -48,43 +50,5 @@ export class DestinationGroupMembership extends CommonModel<DestinationGroupMemb
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),
     };
-  }
-
-  // --- Class Methods --- //
-
-  @BeforeSave
-  static async ensureOneDestinationPerGroup(
-    instance: DestinationGroupMembership
-  ) {
-    const existing = await DestinationGroupMembership.scope(null).findOne({
-      where: {
-        id: { [Op.ne]: instance.id },
-        destinationId: instance.destinationId,
-        groupId: instance.groupId,
-      },
-    });
-    if (existing) {
-      throw new Error(
-        `There is already a DestinationGroupMembership for ${instance.destinationId} and ${instance.groupId}`
-      );
-    }
-  }
-
-  @BeforeSave
-  static async ensureOneDestinationPerRemoteKey(
-    instance: DestinationGroupMembership
-  ) {
-    const existing = await DestinationGroupMembership.scope(null).findOne({
-      where: {
-        id: { [Op.ne]: instance.id },
-        destinationId: instance.destinationId,
-        remoteKey: instance.remoteKey,
-      },
-    });
-    if (existing) {
-      throw new Error(
-        `There is already a DestinationGroupMembership for ${instance.destinationId} and ${instance.remoteKey}`
-      );
-    }
   }
 }

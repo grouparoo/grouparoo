@@ -14,6 +14,7 @@ import * as uuid from "uuid";
 import { Op, Attributes, where, fn, col } from "sequelize";
 import { config } from "actionhero";
 import { WhereOptions } from "sequelize/types";
+import { Errors } from "../modules/errors";
 
 export type CommonModelStatic<M> = (new () => M) &
   NonAbstract<typeof CommonModel>;
@@ -29,7 +30,7 @@ export abstract class CommonModel<T> extends Model {
    */
   abstract idPrefix(): string;
 
-  uniqueIdentifier?: string | string[];
+  uniqueIdentifier?: string[];
 
   @Length({ min: 1, max: 191 })
   @Column({ primaryKey: true })
@@ -125,11 +126,7 @@ export abstract class CommonModel<T> extends Model {
   >(this: CommonModelStatic<T>, instance: T) {
     function getUniqueIdentifier(instance: T): (keyof typeof instance)[] {
       if (instance?.uniqueIdentifier) {
-        return (
-          Array.isArray(instance.uniqueIdentifier)
-            ? instance.uniqueIdentifier
-            : [instance.uniqueIdentifier]
-        ) as (keyof typeof instance)[];
+        return instance.uniqueIdentifier as (keyof typeof instance)[];
       } else {
         return instance?.name !== undefined
           ? ["name"]
@@ -164,12 +161,16 @@ export abstract class CommonModel<T> extends Model {
       where: whereOpts,
     });
 
-    if (duplicates > 0)
+    if (duplicates > 0) {
       // The unique key defaults to anything defined on the class, then name, then key.
-      throw new Error(
+      throw new Errors.UniqueError(
         instanceUniqueIdentifiers
           .map((id) => `${id} "${instance[id]}" is already in use`)
-          .join(", ")
+          .join(", "),
+        this.toString().split(" ")[1],
+        instanceUniqueIdentifiers as string[],
+        whereOpts
       );
+    }
   }
 }
