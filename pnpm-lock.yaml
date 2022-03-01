@@ -1953,7 +1953,7 @@ importers:
       react: 17.0.2
       react-bootstrap: 1.6.4
       react-dom: 17.0.2
-      react-hook-form: 7.22.5
+      react-hook-form: 7.27.1
       ts-jest: 27.1.3
       typescript: 4.6.2
     dependencies:
@@ -1962,7 +1962,7 @@ importers:
       react: 17.0.2
       react-bootstrap: 1.6.4_react-dom@17.0.2+react@17.0.2
       react-dom: 17.0.2_react@17.0.2
-      react-hook-form: 7.22.5_react@17.0.2
+      react-hook-form: 7.27.1_react@17.0.2
     devDependencies:
       '@grouparoo/core': link:../../core
       '@grouparoo/spec-helper': link:../../plugins/@grouparoo/spec-helper
@@ -2010,7 +2010,7 @@ importers:
       react-bootstrap: 1.6.4
       react-bootstrap-typeahead: 5.2.2
       react-dom: 17.0.2
-      react-hook-form: 7.22.5
+      react-hook-form: 7.27.1
       react-markdown: 8.0.0
       react-moment: 1.1.1
       recharts: 2.1.9
@@ -2051,7 +2051,7 @@ importers:
       react-bootstrap: 1.6.4_react-dom@17.0.2+react@17.0.2
       react-bootstrap-typeahead: 5.2.2_react-dom@17.0.2+react@17.0.2
       react-dom: 17.0.2_react@17.0.2
-      react-hook-form: 7.22.5_react@17.0.2
+      react-hook-form: 7.27.1_react@17.0.2
       react-markdown: 8.0.0_a0c521d4794c7ad97f5f4c1c4a7d5818
       react-moment: 1.1.1_8c3aac099a456479df6de1fd023865c2
       recharts: 2.1.9_75cb922c19ee1b7939faae9b4d1f4cf7
@@ -2086,7 +2086,7 @@ importers:
       react: 17.0.2
       react-bootstrap: 1.6.4
       react-dom: 17.0.2
-      react-hook-form: 7.22.5
+      react-hook-form: 7.27.1
       ts-jest: 27.1.3
       typescript: 4.6.2
     dependencies:
@@ -2098,7 +2098,7 @@ importers:
       react: 17.0.2
       react-bootstrap: 1.6.4_react-dom@17.0.2+react@17.0.2
       react-dom: 17.0.2_react@17.0.2
-      react-hook-form: 7.22.5_react@17.0.2
+      react-hook-form: 7.27.1_react@17.0.2
     devDependencies:
       '@grouparoo/core': link:../../core
       '@grouparoo/spec-helper': link:../../plugins/@grouparoo/spec-helper
@@ -2138,7 +2138,7 @@ importers:
       react: 17.0.2
       react-bootstrap: 1.6.4
       react-dom: 17.0.2
-      react-hook-form: 7.22.5
+      react-hook-form: 7.27.1
       ts-jest: 27.1.3
       typescript: 4.6.2
     dependencies:
@@ -2147,7 +2147,7 @@ importers:
       react: 17.0.2
       react-bootstrap: 1.6.4_react-dom@17.0.2+react@17.0.2
       react-dom: 17.0.2_react@17.0.2
-      react-hook-form: 7.22.5_react@17.0.2
+      react-hook-form: 7.27.1_react@17.0.2
     devDependencies:
       '@grouparoo/core': link:../../core
       '@grouparoo/spec-helper': link:../../plugins/@grouparoo/spec-helper
@@ -12860,8 +12860,8 @@ packages:
       react: 17.0.2
       scheduler: 0.20.2
 
-  /react-hook-form/7.22.5_react@17.0.2:
-    resolution: {integrity: sha512-Q2zaeQFXdVQ8l3hcywhltH+Nzj4vo50wMVujHDVN/1Xy9IOaSZJwYBXA2CYTpK6rq41fnXviw3jTLb04c7Gu9Q==}
+  /react-hook-form/7.27.1_react@17.0.2:
+    resolution: {integrity: sha512-N3a7A6zIQ8DJeThisVZGtOUabTbJw+7DHJidmB9w8m3chckv2ZWKb5MHps9d2pPJqmCDoWe53Bos56bYmJms5w==}
     engines: {node: '>=12.22.0'}
     peerDependencies:
       react: ^16.8.0 || ^17
