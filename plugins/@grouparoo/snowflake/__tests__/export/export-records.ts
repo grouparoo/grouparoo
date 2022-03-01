@@ -93,7 +93,7 @@ function generateLongRecords(count: number): Record<string, any>[] {
       EMAIL: `user${i}@demo.com`,
       ID: 1000 + i,
       ACCOUNT_ID: 1000 + i,
-      FIRST_NAME: `'Fist Name ${i}'`,
+      FIRST_NAME: `Fist Name ${i}`,
       LAST_NAME: `Last Name ${i}`,
       GENDER: i % 2 == 0 ? "M" : "F",
       IP_ADDRESS: `192.168.1.${i}`,
@@ -998,9 +998,7 @@ describe("snowflake/exportRecords", () => {
           record[destinationOptions.primaryKey]
         );
         expect(user["ACCOUNT_ID"]).toBe(record["ACCOUNT_ID"]);
-        expect(user["FIRST_NAME"]).toBe(
-          record["FIRST_NAME"].replace(new RegExp("'", "gi"), "")
-        );
+        expect(user["FIRST_NAME"]).toBe(record["FIRST_NAME"]);
         expect(user["LAST_NAME"]).toBe(record["LAST_NAME"]);
         expect(user["GENDER"]).toBe(record["GENDER"]);
         expect(user["IP_ADDRESS"]).toBe(record["IP_ADDRESS"]);

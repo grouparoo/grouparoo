@@ -77,7 +77,7 @@ const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async ({
   const primaryKey: string = config.destinationOptions.primaryKey?.toString();
   const payloads: any[] = [];
   let columns: any = [];
-  let columnsToSet: string = "";
+  let columnsToSet: string[] = [];
 
   const { primaryKeysToDelete, currentPrimaryKeyValues } =
     await treatCollisions(client, table, primaryKey, users);
@@ -86,9 +86,9 @@ const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async ({
     const payload = buildPayload(record);
     if (columns.length === 0 || columns.length < Object.keys(payload).length) {
       columns = Object.keys(payload);
-      columnsToSet = Object.keys(payload)
-        .map((entry) => `${entry} = newRecord.${entry}`)
-        .join(", ");
+      columnsToSet = Object.keys(payload).map(
+        (entry) => `${entry} = newRecord.${entry}`
+      );
     }
     payloads.push(payload);
   }
@@ -106,9 +106,7 @@ const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async ({
     const cleanedValues = formatPayloadValues(Object.values(payload));
     values.push(`(${cleanedValues})`);
   }
-  values = values.join(", ");
   columns.push("CURRENT_PRIMARY_KEY");
-  columns = columns.join(", ");
   const query = `UPDATE ${table} SET ${columnsToSet} FROM (VALUES ${values}) newRecord(${columns}) WHERE ${table}.${primaryKey} = newRecord.CURRENT_PRIMARY_KEY`;
   await client.execute(query);
 };
@@ -118,19 +116,24 @@ const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSe
   async ({ client, users, config }) => {
     const table: string = config.destinationOptions.table?.toString();
     const primaryKey: string = config.destinationOptions.primaryKey?.toString();
-    let values = [];
-    let columns = "";
+    const payloads: any[] = [];
+    let columns: any = [];
+
     for (const record of users) {
       const payload = buildPayload(record);
-      if (columns === "") {
-        columns = Object.keys(payload).join(", ");
+      if (
+        columns.length === 0 ||
+        columns.length < Object.keys(payload).length
+      ) {
+        columns = Object.keys(payload);
       }
-      const cleanedValues = formatPayloadValues(Object.values(payload));
-      if (users.length > 1) {
-        values.push(`(${cleanedValues})`);
-      } else {
-        values.push(`${cleanedValues}`);
-      }
+      payloads.push(payload);
+    }
+
+    let values: any = [];
+    for (let payload of payloads) {
+      payload = normalizePayload(payload, columns);
+      values.push(Object.values(payload));
     }
     const response = await insertValues(client, table, columns, values);
     if (
@@ -240,14 +243,12 @@ async function treatCollisions(
 async function insertValues(
   client: any,
   table: string,
-  columns: string,
+  columns: string[],
   values: string[]
 ) {
-  const valuesMethod = values.length <= 1 ? "SELECT" : "VALUES";
-  const query = `INSERT INTO ${table} (${columns}) ${valuesMethod} ${values.join(
-    ", "
-  )}`;
-  return client.execute(query);
+  const valuesPlaceholders = Array.from({ length: columns.length }, () => "?");
+  const query = `INSERT INTO ${table}(${columns}) VALUES(${valuesPlaceholders})`;
+  return client.execute(query, values);
 }
 
 function formatPayloadValues(payloadValues: string[]) {
@@ -419,15 +420,10 @@ const addToGroups: BatchMethodAddToGroups = async ({
     if (filtered.length > 0) {
       continue;
     }
-    const cleanedValues = formatPayloadValues(Object.values(payload));
-    if (payloads.length > 1) {
-      values.push(`(${cleanedValues})`);
-    } else {
-      values.push(`${cleanedValues}`);
-    }
+    values.push(Object.values(payload));
   }
   if (values.length > 0) {
-    await insertValues(client, groupsTable, columns.join(", "), values);
+    await insertValues(client, groupsTable, columns, values);
   }
 };
 
@@ -455,9 +451,7 @@ const removeFromGroups: BatchMethodRemoveFromGroups = async ({
   }
   const where1 = `${groupsTable}.${groupColumnName} = toDelete.${groupColumnName}`;
   const where2 = `${groupsTable}.${groupForeignKey} = toDelete.${groupForeignKey}`;
-  let query = `DELETE FROM "${groupsTable}" USING (VALUES ${values.join(
-    ", "
-  )}) toDelete(${columns}) WHERE ${where1} AND ${where2}`;
+  let query = `DELETE FROM "${groupsTable}" USING (VALUES ${values}) toDelete(${columns}) WHERE ${where1} AND ${where2}`;
   await client.execute(query);
 };
 
