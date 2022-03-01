@@ -38,7 +38,7 @@
     "@grouparoo/core": "0.8.2-alpha.0",
     "@grouparoo/spec-helper": "0.8.2-alpha.0",
     "@types/jest": "*",
-    "@types/node": "16.*.*",
+    "@types/node": "17.*.*",
     "actionhero": "28.1.8",
     "dotenv": "16.0.0",
     "fs-extra": "10.0.1",
