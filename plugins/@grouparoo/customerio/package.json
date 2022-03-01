@@ -38,7 +38,7 @@
     "@types/node": "16.*.*",
     "actionhero": "28.1.8",
     "axios": "0.26.0",
-    "dotenv": "15.0.0",
+    "dotenv": "16.0.0",
     "fs-extra": "10.0.1",
     "jest": "27.5.1",
     "nock": "13.2.2",
