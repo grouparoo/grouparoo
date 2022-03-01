@@ -941,14 +941,6 @@ jobs:
           password: $DOCKERHUB_PASSWORD
         environment:
           POSTGRES_PASSWORD: password
-      - image: selenium/standalone-chrome:latest
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
-      - image: mcr.microsoft.com/playwright:focal
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - restore_cache:
@@ -986,8 +978,6 @@ jobs:
       - run:
           name: test
           command: cd ui/ui-components && ./node_modules/.bin/jest --ci --maxWorkers 2 --passWithNoTests
-          environment:
-            SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
   test-ui-community:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
@@ -1046,7 +1036,7 @@ jobs:
           command: cd ui/ui-community && ./node_modules/.bin/playwright install && ./node_modules/.bin/playwright install-deps
       - run:
           name: test
-          command: cd ui/ui-community && ./node_modules/.bin/playwright test --workers 2
+          command: cd ui/ui-community && ./node_modules/.bin/playwright test
   test-ui-enterprise:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
@@ -1105,7 +1095,7 @@ jobs:
           command: cd ui/ui-enterprise && ./node_modules/.bin/playwright install && ./node_modules/.bin/playwright install-deps
       - run:
           name: test
-          command: cd ui/ui-enterprise && ./node_modules/.bin/playwright test --workers 2
+          command: cd ui/ui-enterprise && ./node_modules/.bin/playwright test
   test-ui-config:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
@@ -1164,7 +1154,7 @@ jobs:
           command: cd ui/ui-config && ./node_modules/.bin/playwright install && ./node_modules/.bin/playwright install-deps
       - run:
           name: test
-          command: cd ui/ui-config && ./node_modules/.bin/playwright test --workers 2
+          command: cd ui/ui-config && ./node_modules/.bin/playwright test
   test-ui-config-fs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
@@ -1183,14 +1173,6 @@ jobs:
           password: $DOCKERHUB_PASSWORD
         environment:
           POSTGRES_PASSWORD: password
-      - image: selenium/standalone-chrome:latest
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
-      - image: mcr.microsoft.com/playwright:focal
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - restore_cache:
@@ -1228,8 +1210,6 @@ jobs:
       - run:
           name: test
           command: cd ui/ui-config && ./node_modules/.bin/jest --ci --maxWorkers 2 --passWithNoTests
-          environment:
-            SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
   test-staging-community:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
@@ -2138,7 +2118,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
