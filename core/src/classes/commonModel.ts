@@ -124,16 +124,16 @@ export abstract class CommonModel<T> extends Model {
     T extends CommonModel<T> & { name?: string; key?: string; state?: string }
   >(this: CommonModelStatic<T>, instance: T) {
     function getUniqueIdentifier(instance: T): (keyof typeof instance)[] {
-      if (instance.uniqueIdentifier) {
+      if (instance?.uniqueIdentifier) {
         return (
           Array.isArray(instance.uniqueIdentifier)
             ? instance.uniqueIdentifier
             : [instance.uniqueIdentifier]
         ) as (keyof typeof instance)[];
       } else {
-        return instance.name !== undefined
+        return instance?.name !== undefined
           ? ["name"]
-          : instance.key !== undefined
+          : instance?.key !== undefined
           ? ["key"]
           : undefined;
       }
@@ -167,11 +167,9 @@ export abstract class CommonModel<T> extends Model {
     if (duplicates > 0)
       // The unique key defaults to anything defined on the class, then name, then key.
       throw new Error(
-        `Instance with unique identifiers (${instanceUniqueIdentifiers.join(
-          ", "
-        )}) has overlapping values: (${instanceUniqueIdentifiers
-          .map((id) => instance[id])
-          .join(", ")})`
+        instanceUniqueIdentifiers
+          .map((id) => `${id} "${instance[id]}" is already in use`)
+          .join(", ")
       );
   }
 }
