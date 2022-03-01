@@ -37,7 +37,7 @@
     "@types/node": "16.*.*",
     "@types/validator": "*",
     "actionhero": "28.1.8",
-    "ah-sequelize-plugin": "5.1.1",
+    "ah-sequelize-plugin": "5.1.2",
     "bcryptjs": "2.4.3",
     "cls-hooked": "4.2.2",
     "colors": "1.4.0",
