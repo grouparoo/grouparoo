@@ -265,7 +265,7 @@ importers:
       '@types/tar': 6.1.1
       '@types/validator': '*'
       actionhero: 28.1.8
-      ah-sequelize-plugin: 5.1.1
+      ah-sequelize-plugin: 5.1.2
       bcryptjs: 2.4.3
       cls-hooked: 4.2.2
       colors: 1.4.0
@@ -313,7 +313,7 @@ importers:
       '@types/node': 16.11.22
       '@types/validator': 13.7.1
       actionhero: 28.1.8
-      ah-sequelize-plugin: 5.1.1_47182906b9f7001bc4797f7fe8de859a
+      ah-sequelize-plugin: 5.1.2_47182906b9f7001bc4797f7fe8de859a
       bcryptjs: 2.4.3
       cls-hooked: 4.2.2
       colors: 1.4.0
@@ -5017,8 +5017,8 @@ packages:
       clean-stack: 2.2.0
       indent-string: 4.0.0
 
-  /ah-sequelize-plugin/5.1.1_47182906b9f7001bc4797f7fe8de859a:
-    resolution: {integrity: sha512-p1OrQvYqBG47cTqxOwtM6UYtwpQrkBmnoJaWZpAWkkAJS7m2j69g9okdli0qP75QUlfOTPBLyrNw1MJ9+lPMvQ==}
+  /ah-sequelize-plugin/5.1.2_47182906b9f7001bc4797f7fe8de859a:
+    resolution: {integrity: sha512-CGAC5i6p6w+k3vl3M+/EBImCB2X/og7kk4nL4XgwC6sphTqvEH8B4ClOEB7QOgrxbwNnD/umOWHuFKc8f+SXeg==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       actionhero: '>=22.0.0'
@@ -5414,7 +5414,7 @@ packages:
   /axios/0.21.4:
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
     dependencies:
-      follow-redirects: 1.14.8
+      follow-redirects: 1.14.8_debug@4.3.3
     transitivePeerDependencies:
       - debug
     dev: false
@@ -5430,7 +5430,7 @@ packages:
   /axios/0.25.0_debug@4.3.3:
     resolution: {integrity: sha512-cD8FOb0tRH3uuEe6+evtAbgJtfxr7ly3fQjYcMcuPlgkwVS9xboaVIpcDV+cYQe+yGykgwZCs1pzjntcGa6l5g==}
     dependencies:
-      follow-redirects: 1.14.8
+      follow-redirects: 1.14.8_debug@4.3.3
     transitivePeerDependencies:
       - debug
     dev: false
@@ -5438,7 +5438,7 @@ packages:
   /axios/0.26.0:
     resolution: {integrity: sha512-lKoGLMYtHvFrPVt3r+RBMp9nh34N0M8zEfCWqdWZx6phynIEhQqAdydpyBAAG211zlhX9Rgu08cOamy6XjE5Og==}
     dependencies:
-      follow-redirects: 1.14.8
+      follow-redirects: 1.14.8_debug@4.3.3
     transitivePeerDependencies:
       - debug
 
@@ -7668,15 +7668,6 @@ packages:
   /fn.name/1.1.0:
     resolution: {integrity: sha512-GRnmB5gPyJpAhTQdSZTSp9uaPSvl09KoYcMQtsB9rQoOmzs9dH6ffeccH+Z+cv6P68Hu5bC6JjRh4Ah/mHSNRw==}
 
-  /follow-redirects/1.14.8:
-    resolution: {integrity: sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-
   /follow-redirects/1.14.8_debug@3.2.7:
     resolution: {integrity: sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==}
     engines: {node: '>=4.0'}
@@ -7688,6 +7679,17 @@ packages:
     dependencies:
       debug: 3.2.7
     dev: false
+
+  /follow-redirects/1.14.8_debug@4.3.3:
+    resolution: {integrity: sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dependencies:
+      debug: 4.3.3
 
   /follow-redirects/1.5.10:
     resolution: {integrity: sha512-0V5l4Cizzvqt5D44aTXbFZz+FtyXV1vrDN6qrelxtfYQKW0KO0W2T/hkE8xvGa/540LkZlkaUjO4ailYTFtHVQ==}
