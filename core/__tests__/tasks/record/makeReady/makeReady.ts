@@ -270,6 +270,7 @@ describe("tasks/record:makeReady", () => {
               exportRecord: async () => {
                 return { success: true };
               },
+              destinationOptions: async () => null,
               exportArrayProperties: async () => [],
               destinationMappingOptions: async () => {
                 return {
