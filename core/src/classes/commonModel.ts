@@ -6,6 +6,7 @@ import {
   BeforeCreate,
   Length,
   BeforeBulkCreate,
+  BeforeSave,
 } from "sequelize-typescript";
 import { NonAbstract } from "sequelize-typescript/dist/shared/types";
 import validator from "validator";
@@ -114,38 +115,48 @@ export abstract class CommonModel<T> extends Model {
   }
 
   /**
-   * Common code for ensuring a unique property
+   * Ensures there isn't a duplicate version of this instance based on name or key.
    */
-  public async ensureUnique<
-    T extends CommonModel<T> & { name?: string; key?: string }
-  >(this: T, klass: CommonModelStatic<T>) {
-    const whereOpts: WhereOptions<{
-      id: string;
-      state: string;
-      name?: string;
-      key?: string;
-    }> = {
-      id: { [Op.ne]: this.id },
-      state: { [Op.notIn]: ["draft", "deleted"] },
-    };
+//   @BeforeSave
+//   public static async ensureUnique<
+//     T extends CommonModel<T> & { name?: string; key?: string }
+//   >(this: CommonModelStatic<T>, instance: T) {
+//     const instanceUniqueIdentifier: "name" | "key" =
+//       instance.name !== undefined
+//         ? "name"
+//         : instance.key !== undefined
+//         ? "key"
+//         : undefined;
 
-    if (this.name !== undefined) {
-      whereOpts.name = where(fn("LOWER", col("name")), this.name.toLowerCase());
-    } else if (this.key !== undefined) {
-      whereOpts.key = where(fn("LOWER", col("key")), this.key.toLowerCase());
-    } else {
-      return;
-    }
+//     debugger;
 
-    const count = await klass.count({
-      where: whereOpts,
-    });
-    if (count > 0)
-      // This assumes the unique key is either key or name.
-      throw new Error(
-        `${this.key ? "key" : "name"} "${
-          this.key ?? this.name
-        }" is already in use`
-      );
-  }
-}
+//     if (!instanceUniqueIdentifier) {
+//       return;
+//     }
+
+//     const whereOpts: WhereOptions<{
+//       id: string;
+//       state: string;
+//       name?: string;
+//       key?: string;
+//     }> = {
+//       id: { [Op.ne]: instance.id },
+//       state: { [Op.notIn]: ["draft", "deleted"] },
+//     };
+
+//     whereOpts[instanceUniqueIdentifier] = where(
+//       fn("LOWER", col(instanceUniqueIdentifier)),
+//       instance[instanceUniqueIdentifier].toLowerCase()
+//     );
+
+//     const duplicates = await this.count({
+//       where: whereOpts,
+//     });
+
+//     if (duplicates > 0)
+//       // This assumes the unique key is either key or name.
+//       throw new Error(
+//         `${instanceUniqueIdentifier} "${instance[instanceUniqueIdentifier]}" is already in use`
+//       );
+//   }
+// }

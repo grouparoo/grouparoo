@@ -407,11 +407,6 @@ export class Schedule extends CommonModel<Schedule> {
   }
 
   @BeforeSave
-  static async ensureUniqueName(instance: Schedule) {
-    await instance.ensureUnique(Schedule);
-  }
-
-  @BeforeSave
   static async updateState(instance: Schedule) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
   }

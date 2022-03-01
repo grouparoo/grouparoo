@@ -309,12 +309,6 @@ export class Property extends CommonModel<Property> {
   }
 
   // --- Class Methods --- //
-
-  @BeforeSave
-  static async ensureUniqueKey(instance: Property) {
-    await instance.ensureUnique(Property);
-  }
-
   @BeforeSave
   static async ensureUniquePrimaryKey(instance: Property) {
     if (instance.isPrimaryKey && !instance.unique) {

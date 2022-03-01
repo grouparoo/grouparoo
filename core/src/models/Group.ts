@@ -723,11 +723,6 @@ export class Group extends CommonModel<Group> {
   }
 
   @BeforeSave
-  static async ensureUniqueName(instance: Group) {
-    await instance.ensureUnique(Group);
-  }
-
-  @BeforeSave
   static async updateState(instance: Group) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
   }

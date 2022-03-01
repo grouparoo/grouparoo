@@ -715,11 +715,6 @@ export class Destination extends CommonModel<Destination> {
   }
 
   @BeforeSave
-  static async ensureUniqueName(instance: Destination) {
-    await instance.ensureUnique(Destination);
-  }
-
-  @BeforeSave
   static async ensureOnlyOneDestinationPerAppWithSameSettingsAndGroup(
     instance: Destination
   ) {

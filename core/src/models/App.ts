@@ -326,11 +326,6 @@ export class App extends CommonModel<App> {
   }
 
   @BeforeSave
-  static async ensureUniqueName(instance: App) {
-    await instance.ensureUnique(App);
-  }
-
-  @BeforeSave
   static async validateType(instance: App) {
     await instance.getPlugin(); // will throw if not found
   }

@@ -417,11 +417,6 @@ export class Source extends CommonModel<Source> {
   }
 
   @BeforeSave
-  static async ensureUniqueName(instance: Source) {
-    await instance.ensureUnique(Source);
-  }
-
-  @BeforeSave
   static async updateState(instance: Source) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
