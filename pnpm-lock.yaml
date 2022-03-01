@@ -277,7 +277,7 @@ importers:
       glob: 7.2.0
       grouparoo: 0.8.2-alpha.0
       ioredis: 4.28.5
-      ioredis-mock: 7.0.0
+      ioredis-mock: 7.1.0
       isomorphic-fetch: 3.0.0
       jest: 27.5.1
       jest-fetch-mock: 3.0.3
@@ -324,7 +324,7 @@ importers:
       glob: 7.2.0
       grouparoo: link:../cli
       ioredis: 4.28.5
-      ioredis-mock: 7.0.0_ioredis@4.28.5
+      ioredis-mock: 7.1.0_ioredis@4.28.5
       isomorphic-fetch: 3.0.0
       json5: 2.2.0
       libphonenumber-js: 1.9.49
@@ -8749,8 +8749,8 @@ packages:
     dependencies:
       loose-envify: 1.4.0
 
-  /ioredis-mock/7.0.0_ioredis@4.28.5:
-    resolution: {integrity: sha512-JLsog7ivJq6UyqFvcPnv/Cz+0BZY3UvdhpFWsvKSEBY7XM70Td0gq0MZFbZowwLe4D0daKxVCh6vw5i8Qx4Syw==}
+  /ioredis-mock/7.1.0_ioredis@4.28.5:
+    resolution: {integrity: sha512-Qq71Xf1ACz/k/DHF9ZH9owROLQSYGWGk/nOKIl1220mMuWRNWwLfgIxdK4KimuzZGNFpZLfN7QDAHrVjEfS0LA==}
     engines: {node: '>=12'}
     peerDependencies:
       ioredis: 4.x
