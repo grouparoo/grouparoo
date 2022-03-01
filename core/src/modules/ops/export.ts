@@ -99,16 +99,12 @@ export namespace ExportOps {
     });
 
     if (_exports.length > 0) {
-      const updateResponse = await Export.update(
+      await Export.update(
         { startedAt: new Date() },
         {
           where: { id: { [Op.in]: _exports.map((e) => e.id) } },
         }
       );
-
-      // For postgres only: we can update our result set with the rows that were updated, filtering out those which are no longer startedAt=null
-      // in SQLite this isn't possible, but contention is far less likely
-      if (updateResponse[1]) _exports = updateResponse[1];
 
       if (pluginConnection.methods.exportRecords) {
         // the plugin has a batch exportRecords method
