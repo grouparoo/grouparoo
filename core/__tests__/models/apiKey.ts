@@ -44,7 +44,9 @@ describe("models/apiKey", () => {
     test("apiKey names are unique", async () => {
       await ApiKey.create({ name: "test key" });
       const apiKey = new ApiKey({ name: "test key" });
-      await expect(apiKey.save()).rejects.toThrow(/Validation error/);
+      await expect(apiKey.save()).rejects.toThrow(
+        /name \"test key\" is already in use in table ApiKey/
+      );
     });
 
     test("apiKey names must be longer than 3 characters", async () => {
