@@ -343,7 +343,8 @@ export namespace DestinationOps {
     const mostRecentExportIds = await getMostRecentExportIds(
       destination,
       records.map((r) => r.id),
-      "complete"
+      "complete",
+      "completedAt"
     );
     const mostRecentExports = await Export.findAll({
       where: { id: mostRecentExportIds },
@@ -933,7 +934,8 @@ export namespace DestinationOps {
   async function getMostRecentExportIds(
     destination: Destination,
     recordIds: string[],
-    state?: Export["state"]
+    state?: Export["state"],
+    sortColumn: "createdAt" | "completedAt" = "createdAt"
   ) {
     const values: (string | string[])[] = [destination.id];
     if (state) values.push(state);
@@ -948,7 +950,7 @@ SELECT
 FROM (
   SELECT
     "id",
-    ROW_NUMBER() OVER (PARTITION BY "exports"."recordId" ORDER BY "exports"."createdAt" DESC) AS __rownum
+    ROW_NUMBER() OVER (PARTITION BY "exports"."recordId" ORDER BY "exports"."${sortColumn}" DESC) AS __rownum
   FROM
     "exports"
   WHERE
