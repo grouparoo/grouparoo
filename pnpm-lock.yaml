@@ -1694,7 +1694,7 @@ importers:
       '@grouparoo/app-templates': 0.8.2-alpha.0
       '@grouparoo/core': 0.8.2-alpha.0
       '@grouparoo/spec-helper': 0.8.2-alpha.0
-      '@sendgrid/client': 7.6.0
+      '@sendgrid/client': 7.6.1
       '@types/jest': '*'
       '@types/node': 16.*.*
       actionhero: 28.1.8
@@ -1708,7 +1708,7 @@ importers:
       typescript: 4.6.2
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      '@sendgrid/client': 7.6.0
+      '@sendgrid/client': 7.6.1
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -4190,8 +4190,8 @@ packages:
       string-argv: 0.3.1
     dev: false
 
-  /@sendgrid/client/7.6.0:
-    resolution: {integrity: sha512-cpBVZKLlMTO+vpE18krTixubYmZa98oTbLkqBDuTiA3zRkW+urrxg7pDR24TkI35Mid0Zru8jDHwnOiqrXu0TA==}
+  /@sendgrid/client/7.6.1:
+    resolution: {integrity: sha512-q4U5OhcbJjs+lLVv/LhZSc28feiVCFMgvG9aYcRI5X4tKArnrrGDWb5HMITR9vaAtX42TXhyPFjHr1fk/Q1loQ==}
     engines: {node: 6.* || 8.* || >=10.*}
     dependencies:
       '@sendgrid/helpers': 7.6.0
