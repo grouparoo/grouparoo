@@ -276,7 +276,7 @@ importers:
       fs-extra: 10.0.1
       glob: 7.2.0
       grouparoo: 0.8.2-alpha.0
-      ioredis: 4.28.3
+      ioredis: 4.28.5
       ioredis-mock: 7.0.0
       isomorphic-fetch: 3.0.0
       jest: 27.5.1
@@ -323,8 +323,8 @@ importers:
       fs-extra: 10.0.1
       glob: 7.2.0
       grouparoo: link:../cli
-      ioredis: 4.28.3
-      ioredis-mock: 7.0.0_ioredis@4.28.3
+      ioredis: 4.28.5
+      ioredis-mock: 7.0.0_ioredis@4.28.5
       isomorphic-fetch: 3.0.0
       json5: 2.2.0
       libphonenumber-js: 1.9.49
@@ -4985,7 +4985,7 @@ packages:
       etag: 1.8.1
       formidable: 2.0.1
       glob: 7.2.0
-      ioredis: 4.28.3
+      ioredis: 4.28.5
       mime: 3.0.0
       node-resque: 9.1.5
       primus: 8.0.5
@@ -8721,7 +8721,7 @@ packages:
     dependencies:
       loose-envify: 1.4.0
 
-  /ioredis-mock/7.0.0_ioredis@4.28.3:
+  /ioredis-mock/7.0.0_ioredis@4.28.5:
     resolution: {integrity: sha512-JLsog7ivJq6UyqFvcPnv/Cz+0BZY3UvdhpFWsvKSEBY7XM70Td0gq0MZFbZowwLe4D0daKxVCh6vw5i8Qx4Syw==}
     engines: {node: '>=12'}
     peerDependencies:
@@ -8729,13 +8729,13 @@ packages:
     dependencies:
       fengari: 0.1.4
       fengari-interop: 0.1.3_fengari@0.1.4
-      ioredis: 4.28.3
+      ioredis: 4.28.5
       redis-commands: 1.7.0
       standard-as-callback: 2.1.0
     dev: false
 
-  /ioredis/4.28.3:
-    resolution: {integrity: sha512-9JOWVgBnuSxpIgfpjc1OeY1OLmA4t2KOWWURTDRXky+eWO0LZhI33pQNT9gYxANUXfh5p/zYephYni6GPRsksQ==}
+  /ioredis/4.28.5:
+    resolution: {integrity: sha512-3GYo0GJtLqgNXj4YhrisLaNNvWSNwSS2wS4OELGfGxH8I69+XfNdnmV1AyN+ZqMh0i7eX+SWjrwFKDBDgfBC1A==}
     engines: {node: '>=6'}
     dependencies:
       cluster-key-slot: 1.1.0
@@ -11426,7 +11426,7 @@ packages:
     resolution: {integrity: sha512-bME1FCvbSWlzXXs7sPV0yQ6ZQJCfC+BUE5YOT/YcRM3awqswt8AqQkZDy+KJXYqOLHQGLdJztpKZj/1CKBdcdA==}
     engines: {node: '>=12.0.0'}
     dependencies:
-      ioredis: 4.28.3
+      ioredis: 4.28.5
     transitivePeerDependencies:
       - supports-color
 
