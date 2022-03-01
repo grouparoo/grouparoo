@@ -150,7 +150,19 @@ export class Source extends CommonModel<Source> {
   }
 
   async afterSetOptions(hasChanges: boolean) {
-    if (hasChanges) await Source.invalidateCache();
+    if (hasChanges) {
+      await Source.invalidateCache();
+
+      // check if properties are still valid
+      const properties = await this.$get("properties");
+      for (const property of properties) {
+        try {
+          await property.validateOptions();
+        } catch (err) {
+          throw new Error(`Error when validating properties: ${err}`);
+        }
+      }
+    }
   }
 
   async validateOptions(
