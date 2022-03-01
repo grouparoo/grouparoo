@@ -1,4 +1,3 @@
-import path from "path";
 import { PlaywrightTestConfig } from "@playwright/test";
 
 import "@grouparoo/spec-helper/dist/lib/environment";

@@ -34,10 +34,7 @@ test.afterAll(async () => {
 });
 
 test.describe("login and initialization flow", () => {
-  const firstName = "mario";
-  const lastName = "mario";
   const email = "mario@example.com";
-  const password = "P@ssw0rd";
   const companyName = "Mario Bros. Plumbing";
 
   let page: Page;
@@ -70,7 +67,7 @@ test.describe("login and initialization flow", () => {
     await page.waitForNavigation({ url: "/setup" });
   });
   test("visiting '/' after login displays a link to the setup steps", async () => {
-    page.goto("/");
+    await page.goto("/");
     await expect(page.locator(".btn-primary")).toHaveText("Set Up Grouparoo");
     await Promise.all([
       page.locator(".btn-primary").click(),
