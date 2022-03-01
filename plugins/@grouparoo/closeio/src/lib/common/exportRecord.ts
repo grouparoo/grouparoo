@@ -15,10 +15,28 @@ export const getExportRecordWithErrorHandling: (
   try {
     return await callback(args);
   } catch (error) {
-    if (error?.response?.status === 429) {
-      // look for the rate limit exceeded status code.
-      const retryIn = Math.floor(Math.random() * 10) + 1;
+    // find a better message for display from random stuff it returns
+    if (!error.message) {
+      error.message = "Close Error.";
+    }
+    if (error?.error?.message) {
+      error.message += " " + error?.error?.message;
+    } else if (error?.error) {
+      error.message += " " + JSON.stringify(error?.error);
+    }
+    if (error?.errors) {
+      error.message += " " + JSON.stringify(error?.errors);
+    }
+    if (error["field-errors"]) {
+      error.message += " " + JSON.stringify(error["field-errors"]);
+    }
 
+    if (error?.error?.rate_reset) {
+      // rate limited
+      const reset = parseFloat(error?.error?.rate_reset);
+      const retryIn = reset
+        ? Math.ceil(reset + 1)
+        : Math.floor(Math.random() * 10) + 1;
       return { error, success: false, retryDelay: 1000 * retryIn };
     }
     throw error;
