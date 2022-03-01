@@ -29,6 +29,8 @@ export abstract class CommonModel<T> extends Model {
    */
   abstract idPrefix(): string;
 
+  uniqueIdentifier?: string | string[];
+
   @Length({ min: 1, max: 191 })
   @Column({ primaryKey: true })
   id: string;
@@ -117,46 +119,59 @@ export abstract class CommonModel<T> extends Model {
   /**
    * Ensures there isn't a duplicate version of this instance based on name or key.
    */
-//   @BeforeSave
-//   public static async ensureUnique<
-//     T extends CommonModel<T> & { name?: string; key?: string }
-//   >(this: CommonModelStatic<T>, instance: T) {
-//     const instanceUniqueIdentifier: "name" | "key" =
-//       instance.name !== undefined
-//         ? "name"
-//         : instance.key !== undefined
-//         ? "key"
-//         : undefined;
+  @BeforeSave
+  public static async ensureUnique<
+    T extends CommonModel<T> & { name?: string; key?: string; state?: string }
+  >(this: CommonModelStatic<T>, instance: T) {
+    function getUniqueIdentifier(instance: T): (keyof typeof instance)[] {
+      if (instance.uniqueIdentifier) {
+        return (
+          Array.isArray(instance.uniqueIdentifier)
+            ? instance.uniqueIdentifier
+            : [instance.uniqueIdentifier]
+        ) as (keyof typeof instance)[];
+      } else {
+        return instance.name !== undefined
+          ? ["name"]
+          : instance.key !== undefined
+          ? ["key"]
+          : undefined;
+      }
+    }
 
-//     debugger;
+    const instanceUniqueIdentifiers = getUniqueIdentifier(instance);
 
-//     if (!instanceUniqueIdentifier) {
-//       return;
-//     }
+    if (!instanceUniqueIdentifiers) {
+      return;
+    }
 
-//     const whereOpts: WhereOptions<{
-//       id: string;
-//       state: string;
-//       name?: string;
-//       key?: string;
-//     }> = {
-//       id: { [Op.ne]: instance.id },
-//       state: { [Op.notIn]: ["draft", "deleted"] },
-//     };
+    const whereOpts: WhereOptions = {
+      id: { [Op.ne]: instance.id },
+    };
 
-//     whereOpts[instanceUniqueIdentifier] = where(
-//       fn("LOWER", col(instanceUniqueIdentifier)),
-//       instance[instanceUniqueIdentifier].toLowerCase()
-//     );
+    instanceUniqueIdentifiers.forEach((identifier) => {
+      whereOpts[identifier] = where(
+        fn("LOWER", col(String(identifier))),
+        String(instance[identifier]).toLowerCase()
+      );
+    });
 
-//     const duplicates = await this.count({
-//       where: whereOpts,
-//     });
+    if (instance.state) {
+      whereOpts.state = { [Op.notIn]: ["draft", "deleted"] };
+    }
 
-//     if (duplicates > 0)
-//       // This assumes the unique key is either key or name.
-//       throw new Error(
-//         `${instanceUniqueIdentifier} "${instance[instanceUniqueIdentifier]}" is already in use`
-//       );
-//   }
-// }
+    const duplicates = await this.count({
+      where: whereOpts,
+    });
+
+    if (duplicates > 0)
+      // The unique key defaults to anything defined on the class, then name, then key.
+      throw new Error(
+        `Instance with unique identifiers (${instanceUniqueIdentifiers.join(
+          ", "
+        )}) has overlapping values: (${instanceUniqueIdentifiers
+          .map((id) => instance[id])
+          .join(", ")})`
+      );
+  }
+}

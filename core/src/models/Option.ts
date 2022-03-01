@@ -52,6 +52,8 @@ export class Option extends CommonModel<Option> {
   @BelongsTo(() => Destination, "ownerId")
   destination: Destination;
 
+  uniqueIdentifier = ["key", "ownerId"];
+
   async apiData() {
     return {
       id: this.id,
