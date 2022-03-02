@@ -267,46 +267,13 @@ describe("integration/runs/google-sheets", () => {
         await specHelper.runTask("schedule:run", { runId: run.id });
         await specHelper.runTask("schedule:run", { runId: run.id });
 
-        // run all enqueued associateRecord tasks
-        const foundAssociateTasks = await specHelper.findEnqueuedTasks(
-          "import:associateRecord"
-        );
-        expect(foundAssociateTasks.length).toEqual(10);
-
-        await Promise.all(
-          foundAssociateTasks.map((t) =>
-            specHelper.runTask("import:associateRecord", t.args[0])
-          )
-        );
-
+        await specHelper.runTask("import:associateRecords", {});
         await ImportWorkflow();
-
-        // run all enqueued export tasks
-        const foundExportTasks = await specHelper.findEnqueuedTasks(
-          "record:export"
-        );
-        expect(foundExportTasks.length).toEqual(10);
-
-        await Promise.all(
-          foundExportTasks.map((t) =>
-            specHelper.runTask("record:export", t.args[0])
-          )
-        );
 
         // check the run's completion percentage (before the run is complete)
         await specHelper.runTask("schedule:run", { runId: run.id });
         await run.afterBatch();
         expect(run.percentComplete).toBe(100);
-
-        // check if the run is done
-        const foundRunDetermineStateTasks = await specHelper.findEnqueuedTasks(
-          "run:determineState"
-        );
-        await Promise.all(
-          foundRunDetermineStateTasks.map((t) =>
-            specHelper.runTask("run:determineState", t.args[0])
-          )
-        );
 
         // check the results of the run
         const recordsCount = await GrouparooRecord.count();
@@ -365,47 +332,12 @@ describe("integration/runs/google-sheets", () => {
         await specHelper.runTask("schedule:run", { runId: run.id });
         await specHelper.runTask("schedule:run", { runId: run.id });
 
-        // run all enqueued associateRecord tasks
-        const foundAssociateTasks = await specHelper.findEnqueuedTasks(
-          "import:associateRecord"
-        );
-
-        expect(foundAssociateTasks.length).toEqual(10);
-
-        await Promise.all(
-          foundAssociateTasks.map((t) =>
-            specHelper.runTask("import:associateRecord", t.args[0])
-          )
-        );
-
+        await specHelper.runTask("import:associateRecords", {});
         await ImportWorkflow();
-
-        // run all enqueued export tasks
-        const foundExportTasks = await specHelper.findEnqueuedTasks(
-          "record:export"
-        );
-        // this count is de-duped from the previous run
-        expect(foundExportTasks.length).toEqual(10);
-
-        await Promise.all(
-          foundExportTasks.map((t) =>
-            specHelper.runTask("record:export", t.args[0])
-          )
-        );
 
         // check the run's completion percentage (before the run is complete)
         await run.afterBatch();
         expect(run.percentComplete).toBe(100);
-
-        // check if the run is done
-        const foundRunDetermineStateTasks = await specHelper.findEnqueuedTasks(
-          "run:determineState"
-        );
-        await Promise.all(
-          foundRunDetermineStateTasks.map((t) =>
-            specHelper.runTask("run:determineState", t.args[0])
-          )
-        );
 
         // check the results of the run
         const recordsCount = await GrouparooRecord.count();

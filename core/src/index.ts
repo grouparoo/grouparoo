@@ -51,10 +51,6 @@ export { Team } from "./models/Team";
 export { TeamMember } from "./models/TeamMember";
 export { AppRefreshQuery } from "./models/AppRefreshQuery";
 
-export { AppsCache } from "./modules/caches/appsCache";
-export { SourcesCache } from "./modules/caches/sourcesCache";
-export { PropertiesCache } from "./modules/caches/propertiesCache";
-
 export { Status } from "./modules/status";
 export { StatusMetric } from "./modules/statusReporters";
 export { GrouparooCLI } from "./modules/cli";

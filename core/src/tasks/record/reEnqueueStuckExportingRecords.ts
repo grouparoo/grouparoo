@@ -2,7 +2,7 @@ import { config } from "actionhero";
 import Sequelize, { Op } from "sequelize";
 import { Import } from "../../models/Import";
 import { CLSTask } from "../../classes/tasks/clsTask";
-import { CLS } from "../../modules/cls";
+import { GrouparooRecord } from "../../models/GrouparooRecord";
 
 const delay = 60 * 60 * 1000; // 1 hour
 
@@ -16,19 +16,13 @@ export class GrouparooRecordsReEnqueueStuckExportingRecords extends CLSTask {
   async runWithinTransaction() {
     const limit: number = config.batchSize.exports;
     let offset = 0;
-    const toExport = process.env.GROUPAROO_DISABLE_EXPORTS
-      ? process.env.GROUPAROO_DISABLE_EXPORTS !== "true"
-      : true;
 
     let imports = await getStuckImports(limit, offset);
     while (imports.length > 0) {
-      if (toExport) {
-        for (const _import of imports) {
-          await CLS.enqueueTask("record:export", {
-            recordId: _import.recordId,
-          });
-        }
-      }
+      await GrouparooRecord.update(
+        { state: "pending" },
+        { where: { id: imports.map((i) => i.recordId) } }
+      );
 
       offset = offset + limit;
       imports = await getStuckImports(limit, offset);

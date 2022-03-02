@@ -227,13 +227,7 @@ describe("tasks/recordProperties:enqueue", () => {
             email: "luigi@example.com",
           });
 
-          await specHelper.runTask("import:associateRecord", {
-            importId: marioImport.id,
-          });
-          await specHelper.runTask("import:associateRecord", {
-            importId: luigiImport.id,
-          });
-
+          await specHelper.runTask("import:associateRecords", {});
           await specHelper.runTask("recordProperties:enqueue", {});
 
           const importRecordPropertiesTasks =
@@ -283,12 +277,7 @@ describe("tasks/recordProperties:enqueue", () => {
             email: "peach@example.com",
           });
 
-          await specHelper.runTask("import:associateRecord", {
-            importId: daisyImport.id,
-          });
-          await specHelper.runTask("import:associateRecord", {
-            importId: peachImport.id,
-          });
+          await specHelper.runTask("import:associateRecords", {});
 
           const pendingProperties = await RecordProperty.findAll({
             where: {

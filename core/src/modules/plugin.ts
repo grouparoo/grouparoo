@@ -1,4 +1,4 @@
-import { api } from "actionhero";
+import { api, config } from "actionhero";
 import { GrouparooPlugin } from "../classes/plugin";
 import { MustacheUtils } from "./mustacheUtils";
 import { APMWrap } from "./apm";
@@ -227,8 +227,16 @@ export namespace plugin {
       });
     }
 
-    const _imports =
-      bulkParams.length > 0 ? await Import.bulkCreate(bulkParams) : [];
+    if (bulkParams.length === 0) return [];
+
+    let _imports: Import[] = [];
+    while (bulkParams.length > 0) {
+      _imports = _imports.concat(
+        await Import.bulkCreate(
+          bulkParams.splice(0, config.batchSize.internalWrite)
+        )
+      );
+    }
 
     return _imports;
   }

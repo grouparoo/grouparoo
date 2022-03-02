@@ -76,13 +76,6 @@ describe("integration/runs/internalRun", () => {
       await record.reload();
       expect(record.state).toBe("ready");
 
-      // run all enqueued export tasks
-      const foundExportTasks = await specHelper.findEnqueuedTasks(
-        "record:export"
-      );
-      expect(foundExportTasks.length).toEqual(1);
-      await specHelper.runTask("record:export", foundExportTasks[0].args[0]);
-
       // run all export:send jobs
       const foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
       expect(foundSendTasks.length).toBe(0);

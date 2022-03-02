@@ -5,6 +5,8 @@ import { ApiKey, plugin, TeamMember } from "@grouparoo/core";
 import domain from "domain";
 const packageJSON = require("./../../package.json");
 
+const sentrySpanLengthLimit = 2000;
+
 export class SentryInitializer extends Initializer {
   constructor() {
     super();
@@ -96,6 +98,8 @@ export class SentryInitializer extends Initializer {
           );
         }
 
+        cleanupSentryTransaction(transaction);
+
         transaction.finish();
 
         return response;
@@ -107,5 +111,19 @@ export class SentryInitializer extends Initializer {
     try {
       await Sentry.close(2000);
     } catch (e) {}
+  }
+}
+
+function cleanupSentryTransaction(
+  transaction: ReturnType<typeof Sentry.startTransaction>
+) {
+  if (transaction["spanRecorder"]) {
+    for (const span of transaction["spanRecorder"].spans) {
+      // trim the description (where the SQL transaction would go) down to sentrySpanLengthLimit chars max
+      if (span.description && span.description.length > sentrySpanLengthLimit) {
+        span.description =
+          span.description.slice(0, sentrySpanLengthLimit) + "...";
+      }
+    }
   }
 }

@@ -166,32 +166,12 @@ export class Import extends CommonModel<Import> {
     }
   }
 
-  async associateRecord() {
-    return ImportOps.associateRecord(this);
-  }
-
   // --- Class Methods --- //
   static defaultState: typeof STATES[number] = "associating";
 
   @BeforeSave
   static async updateState(instance: Import) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
-  }
-
-  @AfterCreate
-  static async enqueueTask(instance: Import) {
-    if (!instance.recordId) {
-      await CLS.enqueueTaskIn(
-        config.tasks.timeout + 1,
-        "import:associateRecord",
-        { importId: instance.id }
-      );
-    }
-  }
-
-  @AfterBulkCreate
-  static async enqueueTasks(instances: Import[]) {
-    for (const instance of instances) await Import.enqueueTask(instance);
   }
 
   static async sweep(limit: number) {

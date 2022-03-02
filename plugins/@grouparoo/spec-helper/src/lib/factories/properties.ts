@@ -1,7 +1,7 @@
 import SourceFactory from "./source";
 import ModelFactory from "./model";
 import PropertyFactory from "./property";
-import { GrouparooModel, Property, Source } from "@grouparoo/core";
+import { GrouparooModel, Property } from "@grouparoo/core";
 
 export default async (
   modelId?: string,

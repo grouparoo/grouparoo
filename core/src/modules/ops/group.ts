@@ -1,3 +1,4 @@
+import { config } from "actionhero";
 import Sequelize, { Op, CreationAttributes } from "sequelize";
 import { Group, GroupRuleWithKey } from "../../models/Group";
 import { GroupMember } from "../../models/GroupMember";
@@ -29,7 +30,14 @@ export namespace GroupOps {
       });
     }
 
-    const _imports = await Import.bulkCreate(bulkData);
+    let _imports: Import[] = [];
+    while (bulkData.length > 0) {
+      _imports = _imports.concat(
+        await Import.bulkCreate(
+          bulkData.splice(0, config.batchSize.internalWrite)
+        )
+      );
+    }
 
     await RecordOps.markPendingByIds(recordIds, false);
 
@@ -96,18 +104,25 @@ export namespace GroupOps {
         }
       }
 
-      if (bulkCreateRecordIds.length > 0) {
+      while (bulkCreateRecordIds.length > 0) {
         await GroupMember.bulkCreate(
-          bulkCreateRecordIds.map((recordId) => {
-            return { recordId, groupId: group.id };
-          })
+          bulkCreateRecordIds
+            .splice(0, config.batchSize.internalWrite)
+            .map((recordId) => {
+              return { recordId, groupId: group.id };
+            })
         );
       }
 
-      if (bulkDestroyRecordIds.length > 0) {
+      while (bulkDestroyRecordIds.length > 0) {
         await GroupMember.destroy({
           where: {
-            recordId: { [Op.in]: bulkDestroyRecordIds },
+            recordId: {
+              [Op.in]: bulkDestroyRecordIds.splice(
+                0,
+                config.batchSize.internalWrite
+              ),
+            },
             groupId: group.id,
           },
         });

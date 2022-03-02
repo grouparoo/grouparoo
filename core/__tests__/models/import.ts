@@ -1,22 +1,11 @@
 import { helper } from "@grouparoo/spec-helper";
 import { Import, Run } from "../../src";
-import { specHelper } from "actionhero";
+import { ImportOps } from "../../src/modules/ops/import";
 
 describe("models/import", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
   beforeEach(async () => await Import.truncate());
-
-  test("creating an import enqueued a task to process it", async () => {
-    const _import = await Import.create({
-      data: {},
-      creatorType: "test",
-      creatorId: "",
-    });
-
-    const tasks = await specHelper.findEnqueuedTasks("import:associateRecord");
-    expect(tasks.length).toBe(1);
-  });
 
   test("the record can be associated", async () => {
     const record = await helper.factories.record();
@@ -30,7 +19,9 @@ describe("models/import", () => {
     expect(_import.recordId).toBeFalsy();
     expect(_import.state).toBe("associating");
 
-    await _import.associateRecord();
+    await ImportOps.processPendingImportsForAssociation();
+
+    await _import.reload();
     expect(_import.state).toBe("importing");
     expect(_import.recordId).toBe(record.id);
   });

@@ -85,22 +85,22 @@ describe("initializers/resque", () => {
 
     test("it will clear resque if the grouparoo version changes", async () => {
       await client.set("grouparoo:version", "x");
-      await task.enqueue("record:export", { recordId: "foo" });
+      await task.enqueue("record:destroy", { recordId: "foo" });
 
       await instance.start();
 
-      const foundTasks = await specHelper.findEnqueuedTasks("record:export");
+      const foundTasks = await specHelper.findEnqueuedTasks("record:destroy");
       expect(foundTasks.length).toBe(0);
       expect(await client.get("grouparoo:version")).toEqual(grouparooVersion);
     });
 
     test("it will not clear resque if the grouparoo version is the same", async () => {
       await client.set("grouparoo:version", grouparooVersion);
-      await task.enqueue("record:export", { recordId: "foo" });
+      await task.enqueue("record:destroy", { recordId: "foo" });
 
       await instance.start();
 
-      const foundTasks = await specHelper.findEnqueuedTasks("record:export");
+      const foundTasks = await specHelper.findEnqueuedTasks("record:destroy");
       expect(foundTasks.length).toBe(1);
       expect(await client.get("grouparoo:version")).toEqual(grouparooVersion);
     });

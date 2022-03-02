@@ -3,7 +3,7 @@ process.env.GROUPAROO_IMPORTS_BATCH_SIZE = "1";
 import { helper } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
 
-describe("tasks/record:makeExports", () => {
+describe("tasks/record:makeReady", () => {
   helper.grouparooTestServer({
     truncate: true,
     enableTestPlugin: true,
@@ -21,7 +21,7 @@ describe("tasks/record:makeExports", () => {
     await luigi.import();
     await luigi.update({ state: "pending" });
 
-    await specHelper.runTask("records:makeExports", {});
+    await specHelper.runTask("records:makeReady", {});
 
     await mario.reload();
     await luigi.reload();
