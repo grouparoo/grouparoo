@@ -259,7 +259,7 @@ describe("snowflake/exportRecords", () => {
           newRecordProperties: {
             [destinationOptions.primaryKey]: email1,
             ID: id1,
-            FIRST_NAME: "John",
+            FIRST_NAME: `'John'`,
             LAST_NAME: "Doe",
           },
           oldGroups: [],
@@ -289,7 +289,7 @@ describe("snowflake/exportRecords", () => {
     user1 = await getRecordByPrimaryKey(destinationOptions.primaryKey, email1);
     expect(user1).toBeTruthy();
     expect(user1[destinationOptions.primaryKey]).toBe(email1);
-    expect(user1["FIRST_NAME"]).toBe("John");
+    expect(user1["FIRST_NAME"]).toBe(`'John'`);
     expect(user1["LAST_NAME"]).toBe("Doe");
 
     user2 = await getRecordByPrimaryKey(destinationOptions.primaryKey, email2);
@@ -309,7 +309,7 @@ describe("snowflake/exportRecords", () => {
           oldRecordProperties: {
             [destinationOptions.primaryKey]: email1,
             ID: id1,
-            FIRST_NAME: "John",
+            FIRST_NAME: `'John'`,
             LAST_NAME: "Doe",
           },
           newRecordProperties: {

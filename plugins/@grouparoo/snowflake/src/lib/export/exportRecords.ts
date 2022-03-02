@@ -75,40 +75,29 @@ const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async ({
 }) => {
   const table: string = config.destinationOptions.table?.toString();
   const primaryKey: string = config.destinationOptions.primaryKey?.toString();
-  const payloads: any[] = [];
-  let columns: any = [];
-  let columnsToSet: string[] = [];
 
   const { primaryKeysToDelete, currentPrimaryKeyValues } =
     await treatCollisions(client, table, primaryKey, users);
-
-  for (const record of users) {
-    const payload = buildPayload(record);
-    if (columns.length === 0 || columns.length < Object.keys(payload).length) {
-      columns = Object.keys(payload);
-      columnsToSet = Object.keys(payload).map(
-        (entry) => `${entry} = newRecord.${entry}`
-      );
-    }
-    payloads.push(payload);
-  }
-
   if (primaryKeysToDelete.length > 0) {
     // delete/orphan old primary keys
     await deleteOrClearGroups(client, config, primaryKeysToDelete);
   }
-
-  let values: any = [];
-  for (let payload of payloads) {
-    payload = normalizePayload(payload, columns);
-    payload["currentPrimaryKeyValue"] =
-      currentPrimaryKeyValues[payload[primaryKey]];
-    const cleanedValues = formatPayloadValues(Object.values(payload));
-    values.push(`(${cleanedValues})`);
-  }
+  const { columnsToSet, columns, values } = buildColumnsAndValues(
+    users,
+    primaryKey,
+    currentPrimaryKeyValues
+  );
   columns.push("CURRENT_PRIMARY_KEY");
-  const query = `UPDATE ${table} SET ${columnsToSet} FROM (VALUES ${values}) newRecord(${columns}) WHERE ${table}.${primaryKey} = newRecord.CURRENT_PRIMARY_KEY`;
-  await client.execute(query);
+  const singleValuePlaceholder = Array.from(
+    { length: columns.length },
+    () => "?"
+  );
+  const valuesPlaceholders = Array.from(
+    { length: values.length },
+    () => `(${singleValuePlaceholder})`
+  );
+  const query = `UPDATE ${table} SET ${columnsToSet} FROM (VALUES ${valuesPlaceholders}) newRecord(${columns}) WHERE ${table}.${primaryKey} = newRecord.CURRENT_PRIMARY_KEY`;
+  await client.execute(query, values.flat());
 };
 
 // usually this is creating them. ideally upsert. set the destinationId on each when done
@@ -116,25 +105,7 @@ const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSe
   async ({ client, users, config }) => {
     const table: string = config.destinationOptions.table?.toString();
     const primaryKey: string = config.destinationOptions.primaryKey?.toString();
-    const payloads: any[] = [];
-    let columns: any = [];
-
-    for (const record of users) {
-      const payload = buildPayload(record);
-      if (
-        columns.length === 0 ||
-        columns.length < Object.keys(payload).length
-      ) {
-        columns = Object.keys(payload);
-      }
-      payloads.push(payload);
-    }
-
-    let values: any = [];
-    for (let payload of payloads) {
-      payload = normalizePayload(payload, columns);
-      values.push(Object.values(payload));
-    }
+    const { columns, values } = buildColumnsAndValues(users);
     const response = await insertValues(client, table, columns, values);
     if (
       response?.length > 0 &&
@@ -149,6 +120,38 @@ const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSe
       await treatErrors(client, table, primaryKey, primaryKeys, users);
     }
   };
+
+function buildColumnsAndValues(
+  users: BatchExport[],
+  primaryKey: string = null,
+  currentPrimaryKeyValues: any = null
+) {
+  const payloads: any[] = [];
+  let columns: any = [];
+  let columnsToSet: string = "";
+
+  for (const record of users) {
+    const payload = buildPayload(record);
+    if (columns.length < Object.keys(payload).length) {
+      columns = Object.keys(payload);
+      columnsToSet = Object.keys(payload)
+        .map((entry) => `${entry} = newRecord.${entry}`)
+        .join(", ");
+    }
+    payloads.push(payload);
+  }
+
+  let values: any[] = [];
+  for (let payload of payloads) {
+    payload = normalizePayload(payload, columns);
+    if (currentPrimaryKeyValues) {
+      payload["currentPrimaryKeyValue"] =
+        currentPrimaryKeyValues[payload[primaryKey]];
+    }
+    values.push(Object.values(payload));
+  }
+  return { columnsToSet, columns, values };
+}
 
 async function getRecords(
   client: any,
@@ -249,20 +252,6 @@ async function insertValues(
   const valuesPlaceholders = Array.from({ length: columns.length }, () => "?");
   const query = `INSERT INTO ${table}(${columns}) VALUES(${valuesPlaceholders})`;
   return client.execute(query, values);
-}
-
-function formatPayloadValues(payloadValues: string[]) {
-  return payloadValues.reduce((prev, curr, idx) => {
-    return (
-      prev +
-      (curr === null ||
-      curr === undefined ||
-      curr.toString().trim().length === 0
-        ? null
-        : `'${curr.toString().replace(new RegExp("'", "gi"), "")}'`) +
-      (idx === payloadValues.length - 1 ? "" : ", ")
-    );
-  }, "");
 }
 
 function normalizePayload(payload, columns) {
@@ -437,22 +426,25 @@ const removeFromGroups: BatchMethodRemoveFromGroups = async ({
     config.destinationOptions.groupForeignKey?.toString();
   const groupColumnName: string =
     config.destinationOptions.groupColumnName?.toString();
-
   const { payloads } = buildGroupsPayload(
     groupMap,
     groupColumnName,
     groupForeignKey
   );
   const columns = [groupColumnName, groupForeignKey];
-  const values = [];
-  for (const payload of payloads) {
-    const cleanedValues = formatPayloadValues(Object.values(payload));
-    values.push(`(${cleanedValues})`);
-  }
+  const values = payloads.map((payload) => Object.values(payload));
+  const singleValuePlaceholder = Array.from(
+    { length: columns.length },
+    () => "?"
+  );
+  const valuesPlaceholders = Array.from(
+    { length: values.length },
+    () => `(${singleValuePlaceholder})`
+  );
   const where1 = `${groupsTable}.${groupColumnName} = toDelete.${groupColumnName}`;
   const where2 = `${groupsTable}.${groupForeignKey} = toDelete.${groupForeignKey}`;
-  let query = `DELETE FROM "${groupsTable}" USING (VALUES ${values}) toDelete(${columns}) WHERE ${where1} AND ${where2}`;
-  await client.execute(query);
+  let query = `DELETE FROM "${groupsTable}" USING (VALUES ${valuesPlaceholders}) toDelete(${columns}) WHERE ${where1} AND ${where2}`;
+  await client.execute(query, values.flat());
 };
 
 // mess with the keys (lowercase emails, for example)
