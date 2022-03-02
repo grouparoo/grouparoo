@@ -40,7 +40,7 @@ describe("salesforce/sales-cloud/destinationMappingOptions", () => {
     destination = await Destination.create({
       name: "Salesforce Test Destination",
       type: "salesforce-export-contacts",
-      syncMode: DestinationSyncModeData.enrich.key,
+      syncMode: DestinationSyncModeData.update.key,
       appId: app.id,
       modelId: model.id,
     });

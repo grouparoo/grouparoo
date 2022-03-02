@@ -71,7 +71,7 @@ describe("customer.io/exportRecord", () => {
   test("can not create a customer if sync mode does not allow it", async () => {
     await expect(
       runExport({
-        syncOperations: DestinationSyncModeData.enrich.operations,
+        syncOperations: DestinationSyncModeData.update.operations,
         oldRecordProperties: {},
         newRecordProperties: { customer_id: customerId },
         oldGroups: [],

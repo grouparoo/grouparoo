@@ -4,7 +4,7 @@ import { destinationMappingOptions } from "./destinationMappingOptions";
 import { exportArrayProperties } from "./exportArrayProperties";
 import { DestinationSyncMode, PluginConnection } from "@grouparoo/core";
 
-export const supportedSyncModes: DestinationSyncMode[] = ["sync", "additive"];
+export const supportedSyncModes: DestinationSyncMode[] = ["sync", "upsert"];
 
 export function buildConnection(): PluginConnection {
   return {

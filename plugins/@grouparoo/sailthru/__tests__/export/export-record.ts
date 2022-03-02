@@ -115,7 +115,7 @@ describe("sailthru/exportRecord", () => {
   test("cannot create a record if sync mode does not allow it", async () => {
     await expect(
       runExport({
-        syncOperations: DestinationSyncModeData.enrich.operations,
+        syncOperations: DestinationSyncModeData.update.operations,
         oldRecordProperties: {},
         newRecordProperties: { email: email },
         oldGroups: [],

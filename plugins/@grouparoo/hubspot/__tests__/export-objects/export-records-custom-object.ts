@@ -163,7 +163,7 @@ describe("hubspot/exportRecords", () => {
       const { success, errors } = await exportBatch({
         appOptions,
         destinationOptions,
-        syncOperations: DestinationSyncModeData.enrich.operations,
+        syncOperations: DestinationSyncModeData.update.operations,
         exports: [
           {
             recordId: id1,
@@ -466,7 +466,7 @@ describe("hubspot/exportRecords", () => {
         const { success, errors } = await exportBatch({
           appOptions,
           destinationOptions,
-          syncOperations: DestinationSyncModeData.additive.operations,
+          syncOperations: DestinationSyncModeData.upsert.operations,
           exports: [
             {
               recordId: id1,

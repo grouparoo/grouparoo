@@ -74,7 +74,7 @@ export function testExportRecords(baseType: BaseType) {
             toDelete: false,
           },
         ],
-        DestinationSyncModeData.enrich.operations
+        DestinationSyncModeData.update.operations
       );
 
       expect(errors).not.toBeNull();
@@ -281,7 +281,7 @@ export function testExportRecords(baseType: BaseType) {
             toDelete: true,
           },
         ],
-        DestinationSyncModeData.additive.operations
+        DestinationSyncModeData.upsert.operations
       );
 
       expect(errors).not.toBeNull();

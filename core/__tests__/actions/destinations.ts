@@ -307,7 +307,7 @@ describe("actions/destinations", () => {
       connection.params = {
         csrfToken,
         id,
-        syncMode: "enrich",
+        syncMode: "update",
       };
       const { destination, error } =
         await specHelper.runAction<DestinationEdit>(
@@ -315,7 +315,7 @@ describe("actions/destinations", () => {
           connection
         );
       expect(error).toBeFalsy();
-      expect(destination.syncMode).toBe("enrich");
+      expect(destination.syncMode).toBe("update");
       expect(configSpy).toBeCalledTimes(1);
     });
 

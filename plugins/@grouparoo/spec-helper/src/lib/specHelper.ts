@@ -525,7 +525,7 @@ export namespace helper {
           direction: "export",
           description: "export records to nowhere",
           apps: ["test-plugin-app"],
-          syncModes: ["sync", "enrich", "additive"],
+          syncModes: ["sync", "update", "upsert"],
           options: [
             { key: "table", required: true },
             { key: "tableWithOptions", required: false },
@@ -585,8 +585,8 @@ export namespace helper {
           direction: "export",
           description: "export records to nowhere",
           apps: ["test-plugin-app"],
-          syncModes: ["sync", "enrich", "additive"],
-          defaultSyncMode: "additive",
+          syncModes: ["sync", "update", "upsert"],
+          defaultSyncMode: "upsert",
           options: [
             { key: "table", required: true },
             { key: "tableWithOptions", required: false },

@@ -72,7 +72,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
           description: "a test app connection",
           apps: ["test-template-app"],
           direction: "export",
-          syncModes: ["sync", "enrich", "additive"],
+          syncModes: ["sync", "update", "upsert"],
           options: [],
           methods: {
             destinationOptions: async () => ({}),
@@ -544,7 +544,7 @@ describe("models/destination - with custom exportRecords plugin", () => {
       await record.destroy();
     });
 
-    test.each(["enrich", "additive"])(
+    test.each(["update", "upsert"])(
       "if record is removed from destination's tracked group in %p syncMode, toDelete is false and groups are cleared",
       async (syncMode) => {
         await destination.update({ syncMode });

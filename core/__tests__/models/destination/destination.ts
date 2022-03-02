@@ -784,14 +784,14 @@ describe("models/destination", () => {
         const destination = await Destination.create({
           appId: app.id,
           modelId: model.id,
-          type: "test-plugin-export-batch", //has default mode "additive"
+          type: "test-plugin-export-batch", //has default mode "upsert"
         });
 
         await destination.setOptions({ table: "users" });
         await destination.update({ state: "ready" });
 
         const syncMode = await destination.getSyncMode();
-        expect(syncMode).toBe("additive");
+        expect(syncMode).toBe("upsert");
 
         await destination.destroy();
       });

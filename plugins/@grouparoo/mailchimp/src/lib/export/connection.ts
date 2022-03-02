@@ -7,8 +7,8 @@ import { exportArrayProperties } from "../shared/exportArrayProperties";
 
 export const emailSupportedSyncModes: DestinationSyncMode[] = [
   "sync",
-  "additive",
-  "enrich",
+  "upsert",
+  "update",
 ];
 
 export const emailDestinationConnection: PluginConnection = {

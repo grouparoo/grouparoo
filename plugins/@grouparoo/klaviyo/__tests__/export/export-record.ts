@@ -132,7 +132,7 @@ describe("klaviyo/exportRecord", () => {
   test("can not create a Profile if sync mode does not allow it", async () => {
     await expect(
       runExport({
-        syncOperations: DestinationSyncModeData.enrich.operations,
+        syncOperations: DestinationSyncModeData.update.operations,
         oldRecordProperties: {},
         newRecordProperties: {
           first_name: "Jimmy",

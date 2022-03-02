@@ -417,7 +417,7 @@ describe("mailjet/exportRecord", () => {
     // mailjet requires creating new user on FK change
     await expect(
       runExport({
-        syncOperations: DestinationSyncModeData.enrich.operations,
+        syncOperations: DestinationSyncModeData.update.operations,
         oldRecordProperties: {
           Email: email,
         },
@@ -443,9 +443,9 @@ describe("mailjet/exportRecord", () => {
     expect(newUser).toBe(null);
   });
 
-  test("change email when only old exists (ADDITIVE mode)", async () => {
+  test("change email when only old exists (upsert mode)", async () => {
     await runExport({
-      syncOperations: DestinationSyncModeData.additive.operations,
+      syncOperations: DestinationSyncModeData.upsert.operations,
       oldRecordProperties: {
         Email: email,
       },
@@ -487,10 +487,10 @@ describe("mailjet/exportRecord", () => {
     );
   });
 
-  test("change email when both exist (ADDITIVE mode)", async () => {
+  test("change email when both exist (upsert mode)", async () => {
     // mailjet requires deleting the old user on FK change
     await runExport({
-      syncOperations: DestinationSyncModeData.additive.operations,
+      syncOperations: DestinationSyncModeData.upsert.operations,
       oldRecordProperties: {
         Email: alternativeEmail,
       },

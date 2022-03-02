@@ -200,7 +200,7 @@ const extractFields = async (
     if (!field.nillable && !field.defaultedOnCreate) {
       // needs to be set to create
       const syncMode = await destination.getSyncMode();
-      if (syncMode === DestinationSyncModeData.enrich.key) {
+      if (syncMode === DestinationSyncModeData.update.key) {
         known.push({ key, type, important: true });
       } else {
         required.push({ key, type });

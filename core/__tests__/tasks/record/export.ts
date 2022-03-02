@@ -90,7 +90,7 @@ describe("tasks/record:export", () => {
               description: "a test app connection",
               apps: ["test-template-app"],
               direction: "export",
-              syncModes: ["sync", "additive", "enrich"],
+              syncModes: ["sync", "upsert", "update"],
               options: [],
               methods: {
                 exportRecord: async () => {

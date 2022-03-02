@@ -1,3 +1,5 @@
+import { log } from "actionhero";
+import { Op } from "sequelize";
 import {
   DestinationConfigurationObject,
   extractNonNullParts,
@@ -6,11 +8,30 @@ import {
   getCodeConfigLockKey,
   validateConfigObjectKeys,
   IdsByClass,
+  DestinationConfigSyncMode,
 } from "../../classes/codeConfig";
 import { App, Destination, Group, Property } from "../.."; // configLoader imports need to be from root
-import { Op } from "sequelize";
 
+import { Deprecation } from "../deprecation";
+import { DestinationSyncMode } from "../../models/Destination";
 import { ConfigWriter } from "../configWriter";
+
+const sanitizeSyncMode = (
+  syncMode: DestinationConfigSyncMode,
+  configId: string
+): DestinationSyncMode => {
+  if (syncMode === "additive" || syncMode === "enrich") {
+    const newSyncMode = syncMode === "additive" ? "upsert" : "update";
+    Deprecation.warnChanged(
+      "config",
+      `syncMode "${syncMode}" used in Destination "${configId}"`,
+      `${newSyncMode}`
+    );
+    return newSyncMode;
+  }
+
+  return syncMode;
+};
 
 export async function loadDestination(
   configObject: DestinationConfigurationObject,
@@ -37,13 +58,16 @@ export async function loadDestination(
       },
     },
   });
+
+  const syncMode = sanitizeSyncMode(configObject.syncMode, configObject.id);
+
   if (!destination) {
     isNew = true;
     destination = await Destination.create({
       id: configObject.id,
       name: configObject.name,
       type: configObject.type,
-      syncMode: configObject.syncMode,
+      syncMode,
       appId: app.id,
       modelId: configObject.modelId,
     });
@@ -58,7 +82,7 @@ export async function loadDestination(
   await destination.update({
     name: configObject.name,
     type: configObject.type,
-    syncMode: configObject.syncMode,
+    syncMode,
     modelId: configObject.modelId,
     locked: ConfigWriter.getLockKey(configObject),
   });

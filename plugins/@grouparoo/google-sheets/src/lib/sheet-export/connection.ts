@@ -7,8 +7,8 @@ import { exportArrayProperties } from "./exportArrayProperties";
 
 export const supportedSyncModes: DestinationSyncMode[] = [
   "sync",
-  "additive",
-  "enrich",
+  "upsert",
+  "update",
 ];
 
 export const destinationConnection: PluginConnection = {

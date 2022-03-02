@@ -53,8 +53,17 @@ export interface SimpleDestinationGroupMembership {
 }
 export interface SimpleDestinationOptions extends OptionHelper.SimpleOptions {}
 
-const SYNC_MODES = ["sync", "additive", "enrich"] as const;
+export const SYNC_MODES = [
+  "append",
+  "create",
+  "sync",
+  "upsert",
+  "update",
+] as const;
+export const LEGACY_SYNC_MODES = ["additive", "enrich"] as const;
+
 export type DestinationSyncMode = typeof SYNC_MODES[number];
+export type DestinationLegacySyncMode = typeof LEGACY_SYNC_MODES[number];
 
 const DESTINATION_COLLECTIONS = ["none", "group", "model"] as const;
 export type DestinationCollection = typeof DESTINATION_COLLECTIONS[number];
@@ -65,15 +74,37 @@ export interface DestinationSyncOperations {
   delete: boolean;
 }
 
+export interface DestinationSyncModeDataValues {
+  key: DestinationSyncMode;
+  displayName: string;
+  description: string;
+  operations: DestinationSyncOperations;
+}
+
 export const DestinationSyncModeData: Record<
   DestinationSyncMode,
-  {
-    key: DestinationSyncMode;
-    displayName: string;
-    description: string;
-    operations: DestinationSyncOperations;
-  }
+  DestinationSyncModeDataValues
 > = {
+  append: {
+    key: "append",
+    displayName: "Append",
+    description: "Always create new records (create)",
+    operations: {
+      create: true,
+      update: false,
+      delete: false,
+    },
+  },
+  create: {
+    key: "create",
+    displayName: "Create",
+    description: "Create new records if they don‘t already exist (create)",
+    operations: {
+      create: true,
+      update: false,
+      delete: false,
+    },
+  },
   sync: {
     key: "sync",
     displayName: "Sync",
@@ -84,19 +115,20 @@ export const DestinationSyncModeData: Record<
       delete: true,
     },
   },
-  additive: {
-    key: "additive",
-    displayName: "Additive",
-    description: "Sync all records, but do not delete (create, update)",
+  upsert: {
+    key: "upsert",
+    displayName: "Upsert",
+    description:
+      "Create new records if they don‘t already exist, or update existing records (create, update)",
     operations: {
       create: true,
       update: true,
       delete: false,
     },
   },
-  enrich: {
-    key: "enrich",
-    displayName: "Enrich",
+  update: {
+    key: "update",
+    displayName: "Update",
     description: "Only update existing records (update)",
     operations: {
       create: false,

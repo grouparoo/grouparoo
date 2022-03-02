@@ -54,7 +54,7 @@ module.exports = async function getConfig() {
       class: "Destination",
       type: "test-plugin-export",
       appId: "data_warehouse_2",
-      syncMode: "additive",
+      syncMode: "upsert",
       modelId: "mod_profiles",
       options: {
         table: "test-file-path.db",

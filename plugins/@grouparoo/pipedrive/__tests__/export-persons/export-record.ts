@@ -167,7 +167,7 @@ describe("pipedrive/exportRecord", () => {
   test("can not create a Person if sync mode does not allow it", async () => {
     await expect(
       runExport({
-        syncOperations: DestinationSyncModeData.enrich.operations,
+        syncOperations: DestinationSyncModeData.update.operations,
         oldRecordProperties: {},
         newRecordProperties: { Name: "Jimmy Doe", Email: email2 },
         oldGroups: [],

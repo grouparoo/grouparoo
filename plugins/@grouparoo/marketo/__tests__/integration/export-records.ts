@@ -139,7 +139,7 @@ describe("marketo/exportRecords", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
-      syncOperations: DestinationSyncModeData.enrich.operations,
+      syncOperations: DestinationSyncModeData.update.operations,
       exports: [
         {
           recordId: id1,
@@ -493,7 +493,7 @@ describe("marketo/exportRecords", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
-      syncOperations: DestinationSyncModeData.additive.operations,
+      syncOperations: DestinationSyncModeData.upsert.operations,
       exports: [
         {
           recordId: id1,

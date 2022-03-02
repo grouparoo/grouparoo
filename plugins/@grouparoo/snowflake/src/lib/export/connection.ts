@@ -11,7 +11,7 @@ export const destinationConnection: PluginConnection = {
   description:
     "Export Records to a Snowflake table.  Groups will be exported to a secondary table linked by a foreign key.",
   apps: ["snowflake", "snowflake-keypair"],
-  syncModes: ["sync", "additive", "enrich"],
+  syncModes: ["sync", "upsert", "update"],
   defaultSyncMode: "sync",
   options: [
     {

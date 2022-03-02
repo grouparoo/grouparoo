@@ -154,7 +154,7 @@ describe("iterable/exportRecord", () => {
   test("can not create a Person if sync mode does not allow it", async () => {
     await expect(
       runExport({
-        syncOperations: DestinationSyncModeData.enrich.operations,
+        syncOperations: DestinationSyncModeData.update.operations,
         oldRecordProperties: {},
         newRecordProperties: { email, name },
         oldGroups: [],

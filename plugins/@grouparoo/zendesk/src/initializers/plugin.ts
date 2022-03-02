@@ -16,7 +16,7 @@ export class Plugins extends Initializer {
 
   async initialize() {
     const defaultSyncMode: DestinationSyncMode = "sync";
-    const syncModes: DestinationSyncMode[] = ["sync", "additive", "enrich"];
+    const syncModes: DestinationSyncMode[] = ["sync", "upsert", "update"];
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/zendesk/zendesk.png",

@@ -166,7 +166,7 @@ describe("zendesk/exportRecord", () => {
   test("cannot create an user if sync mode does not allow it", async () => {
     await expect(
       runExport({
-        syncOperations: DestinationSyncModeData.enrich.operations,
+        syncOperations: DestinationSyncModeData.update.operations,
         oldRecordProperties: {},
         newRecordProperties: {
           name: "Jimmy Doe",

@@ -95,7 +95,7 @@ describe("braze/exportRecords", () => {
 
     const { success, errors } = await exportBatch({
       appOptions,
-      syncOperations: DestinationSyncModeData.enrich.operations,
+      syncOperations: DestinationSyncModeData.update.operations,
       exports: [
         {
           recordId: id1,
@@ -545,7 +545,7 @@ describe("braze/exportRecords", () => {
     async () => {
       const { success, errors } = await exportBatch({
         appOptions,
-        syncOperations: DestinationSyncModeData.additive.operations,
+        syncOperations: DestinationSyncModeData.upsert.operations,
         exports: [
           {
             recordId: id1,
