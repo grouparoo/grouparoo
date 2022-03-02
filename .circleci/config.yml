@@ -981,7 +981,6 @@ jobs:
   test-ui-community:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
-      NODE_ENV: development
     docker:
       - image: cimg/node:16.8.0
         auth:
@@ -1040,7 +1039,6 @@ jobs:
   test-ui-enterprise:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
-      NODE_ENV: development
     docker:
       - image: cimg/node:16.8.0
         auth:
@@ -1099,7 +1097,6 @@ jobs:
   test-ui-config:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
-      NODE_ENV: development
     docker:
       - image: cimg/node:16.8.0
         auth:
