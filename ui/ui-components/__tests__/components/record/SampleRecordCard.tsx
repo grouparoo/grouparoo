@@ -98,7 +98,12 @@ describe("SampleRecordCard", () => {
       return {
         record,
         groups: [],
-        destinations: [],
+        destinations: [
+          {
+            id: "asdf",
+            name: "asdf",
+          },
+        ],
       };
     };
     cardProps.fetchRecord = fetchRecord;
