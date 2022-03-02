@@ -192,16 +192,11 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
                 .sort()
                 .map((opt) => (
                   <Form.Group as={Col} key={`opt-${column}-${opt}`}>
-                    <Form.Row>
-                      <Col md={3}>
-                        <code>
-                          <Form.Label>{opt}: </Form.Label>
-                        </code>
-                      </Col>
-                      <Col>
-                        <strong>{options[opt].toString()}</strong>
-                        {/* We actually don't want to allow changes to the provided source options? */}
-                        {/* <Form.Control
+                    <strong>
+                      <code>{options[opt].toString()}</code>
+                    </strong>
+                    {/* We actually don't want to allow changes to the provided source options? */}
+                    {/* <Form.Control
                         size="sm"
                         type="text"
                         value={options[opt].toString()}
@@ -212,8 +207,6 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
                           setOptions(_options);
                         }}
                       /> */}
-                      </Col>
-                    </Form.Row>
                   </Form.Group>
                 ))}
             </Fragment>
@@ -374,7 +367,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
           <Table>
             <thead>
               <tr>
-                <th>Source Options</th>
+                <th>Source Option</th>
                 <th>{""}</th>
                 <th>Key</th>
                 <th>Type</th>
