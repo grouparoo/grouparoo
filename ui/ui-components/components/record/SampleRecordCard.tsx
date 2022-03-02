@@ -366,6 +366,176 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
     setExporting(false);
   }, [client, destinationId, record?.id]);
 
+  const content = useMemo(() => {
+    if (record && sortedPropertyKeys?.length) {
+      return (
+        <Row>
+          <Col style={{ minWidth: "75%" }}>
+            {propertiesTitle && <h6>{propertiesTitle}</h6>}
+            <Table bordered>
+              <colgroup>
+                <col span={1} style={{ width: "35%" }} />
+                <col span={1} style={{ width: "65%" }} />
+              </colgroup>
+              <tbody>
+                {sortedPropertyKeys.map((key, index) => {
+                  const property = record.properties[key];
+                  const isHighlightedProperty =
+                    highlightProperty?.id === property.id;
+                  const trClassName = isHighlightedProperty
+                    ? `table-${highlightPropertyError ? "danger" : "success"}`
+                    : undefined;
+                  const name =
+                    isHighlightedProperty && highlightProperty.key !== ""
+                      ? highlightProperty.key
+                      : key === ""
+                      ? "Draft"
+                      : key;
+
+                  return (
+                    <tr
+                      key={`property-${!key ? `draft-${index}` : key}`}
+                      className={trClassName}
+                    >
+                      <th scope="row">
+                        {isHighlightedProperty || propertyLinkDisabled ? (
+                          name
+                        ) : (
+                          <EnterpriseLink
+                            href={`/model/${modelId}/source/${property.sourceId}/property/${property.id}/edit`}
+                          >
+                            <a>{name}</a>
+                          </EnterpriseLink>
+                        )}
+                        {property.state !== "ready" && (
+                          <StateBadge state={property.state} marginBottom={0} />
+                        )}
+                      </th>
+                      <td>
+                        {isHighlightedProperty &&
+                        (property.values.length === 0 ||
+                          highlightPropertyError) ? (
+                          `${
+                            highlightPropertyError
+                              ? highlightPropertyError
+                              : "..."
+                          }`
+                        ) : (
+                          <ArrayRecordPropertyList
+                            type={property.type}
+                            values={property.values}
+                            invalidValue={property.invalidValue}
+                            invalidReason={property.invalidReason}
+                          />
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
+          </Col>
+          <Col
+            className={"text-center"}
+            xs={{ order: "first" }}
+            md={{ order: "last" }}
+          >
+            {email && (
+              <RecordImageFromEmail email={email} width={72} className="mb-4" />
+            )}
+            <h6>{groupsTitle}</h6>
+            <p>
+              {groups?.length
+                ? groups.map((group) => {
+                    return (
+                      <Fragment key={`group-${group.id}`}>
+                        <EnterpriseLink
+                          href={`/model/${group.modelId}/group/${group.id}/rules`}
+                        >
+                          {group.name}
+                        </EnterpriseLink>
+                        <br />
+                      </Fragment>
+                    );
+                  })
+                : (record as Models.DestinationRecordPreviewType)?.groupNames
+                    ?.length
+                ? (
+                    record as Models.DestinationRecordPreviewType
+                  ).groupNames.map((groupName) => (
+                    <Fragment key={`group-name-${groupName}`}>
+                      {groupName}
+                      <br />
+                    </Fragment>
+                  ))
+                : "None"}
+            </p>
+            {destinations && (
+              <>
+                <h6>Destinations</h6>
+                <p>
+                  {destinations?.length
+                    ? destinations.map((destination) => {
+                        return (
+                          <Fragment key={`destination-${destination.id}`}>
+                            {isConfigUI ? (
+                              destination.name
+                            ) : (
+                              <EnterpriseLink
+                                href={`/model/${destination.modelId}/destination/${destination.id}/data`}
+                              >
+                                <a>{destination.name}</a>
+                              </EnterpriseLink>
+                            )}
+                            <br />
+                          </Fragment>
+                        );
+                      })
+                    : "None"}
+                </p>
+              </>
+            )}
+          </Col>
+        </Row>
+      );
+    } else if (record && !sortedPropertyKeys?.length) {
+      return (
+        <Row>
+          <Col>
+            <p>You need to map a property to see your sample record.</p>
+          </Col>
+        </Row>
+      );
+    }
+
+    return (
+      <Row>
+        <Col>
+          <p>
+            A Sample Record can be used to validate your configuration is
+            importing the correct data to Groups and Destinations.
+          </p>
+          {!isConfigUI && (
+            <p>Run a Schedule on your Primary Source to generate Records.</p>
+          )}
+        </Col>
+      </Row>
+    );
+  }, [
+    destinations,
+    email,
+    groups,
+    groupsTitle,
+    highlightProperty?.id,
+    highlightProperty?.key,
+    highlightPropertyError,
+    modelId,
+    propertiesTitle,
+    propertyLinkDisabled,
+    record,
+    sortedPropertyKeys,
+  ]);
+
   if (!sortedPropertyKeys?.length && !properties.length) {
     return (
       <ManagedCard title="Sample Record">
@@ -441,150 +611,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
       </LoadingButton>
     );
   }
-
-  const content =
-    record && sortedPropertyKeys?.length ? (
-      <Row>
-        <Col style={{ minWidth: "75%" }}>
-          {propertiesTitle && <h6>{propertiesTitle}</h6>}
-          <Table bordered>
-            <colgroup>
-              <col span={1} style={{ width: "35%" }} />
-              <col span={1} style={{ width: "65%" }} />
-            </colgroup>
-            <tbody>
-              {sortedPropertyKeys.map((key, index) => {
-                const property = record.properties[key];
-                const isHighlightedProperty =
-                  highlightProperty?.id === property.id;
-                const trClassName = isHighlightedProperty
-                  ? `table-${highlightPropertyError ? "danger" : "success"}`
-                  : undefined;
-                const name =
-                  isHighlightedProperty && highlightProperty.key !== ""
-                    ? highlightProperty.key
-                    : key === ""
-                    ? "Draft"
-                    : key;
-
-                return (
-                  <tr
-                    key={`property-${!key ? `draft-${index}` : key}`}
-                    className={trClassName}
-                  >
-                    <th scope="row">
-                      {isHighlightedProperty || propertyLinkDisabled ? (
-                        name
-                      ) : (
-                        <EnterpriseLink
-                          href={`/model/${modelId}/source/${property.sourceId}/property/${property.id}/edit`}
-                        >
-                          <a>{name}</a>
-                        </EnterpriseLink>
-                      )}
-                      {property.state !== "ready" && (
-                        <StateBadge state={property.state} marginBottom={0} />
-                      )}
-                    </th>
-                    <td>
-                      {isHighlightedProperty &&
-                      (property.values.length === 0 ||
-                        highlightPropertyError) ? (
-                        `${
-                          highlightPropertyError
-                            ? highlightPropertyError
-                            : "..."
-                        }`
-                      ) : (
-                        <ArrayRecordPropertyList
-                          type={property.type}
-                          values={property.values}
-                          invalidValue={property.invalidValue}
-                          invalidReason={property.invalidReason}
-                        />
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </Table>
-        </Col>
-        <Col
-          className={"text-center"}
-          xs={{ order: "first" }}
-          md={{ order: "last" }}
-        >
-          {email && (
-            <RecordImageFromEmail email={email} width={72} className="mb-4" />
-          )}
-          <h6>{groupsTitle}</h6>
-          <p>
-            {groups?.length
-              ? groups.map((group) => {
-                  return (
-                    <Fragment key={`group-${group.id}`}>
-                      <EnterpriseLink
-                        href={`/model/${group.modelId}/group/${group.id}/rules`}
-                      >
-                        {group.name}
-                      </EnterpriseLink>
-                      <br />
-                    </Fragment>
-                  );
-                })
-              : (record as Models.DestinationRecordPreviewType)?.groupNames
-                  ?.length
-              ? (record as Models.DestinationRecordPreviewType).groupNames.map(
-                  (groupName) => (
-                    <Fragment key={`group-name-${groupName}`}>
-                      {groupName}
-                      <br />
-                    </Fragment>
-                  )
-                )
-              : "None"}
-          </p>
-          {destinations && (
-            <>
-              <h6>Destinations</h6>
-              <p>
-                {destinations?.length
-                  ? destinations.map((destination) => {
-                      return (
-                        <Fragment key={`destination-${destination.id}`}>
-                          {isConfigUI ? (
-                            destination.name
-                          ) : (
-                            <EnterpriseLink
-                              href={`/model/${destination.modelId}/destination/${destination.id}/data`}
-                            >
-                              <a>{destination.name}</a>
-                            </EnterpriseLink>
-                          )}
-                          <br />
-                        </Fragment>
-                      );
-                    })
-                  : "None"}
-              </p>
-            </>
-          )}
-        </Col>
-      </Row>
-    ) : (
-      <Row>
-        <Col>
-          <p>
-            A Sample Record can be used to validate your configuration is
-            importing the correct data to Groups and Destinations.
-          </p>
-          {!isConfigUI && (
-            <p>Run a Schedule on your Primary Source to generate Records.</p>
-          )}
-        </Col>
-      </Row>
-    );
+  console.log("asdf", record, sortedPropertyKeys);
 
   return (
     <ManagedCard
@@ -607,6 +634,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
           properties={properties}
           show={addingRecord}
           onRecordCreated={(recordId) => {
+            setHasRecords(true);
             setRecordId(recordId);
           }}
           onHide={() => {

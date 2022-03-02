@@ -123,8 +123,6 @@ const DestinationSampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
     }
   }, [destinationDirty, warning]);
 
-  console.log({ warning });
-
   return (
     <SampleRecordCard
       {...props}
