@@ -6,10 +6,13 @@ import { config } from "actionhero";
 import { userInfo } from "os";
 
 export const usersTableName = `users_${process.env.JEST_WORKER_ID || 1}`;
+export const usersSourceQuery = `SELECT id, account_id, first_name, last_name, email, ltv, ios_app, date, stamp FROM "${usersTableName}"`;
 export const purchasesTableName = `purchases_${
   process.env.JEST_WORKER_ID || 1
 }`;
+export const purchasesSourceQuery = `SELECT *, RANDOM() AS random_num FROM "${purchasesTableName}"`;
 export const accountsTableName = `accounts_${process.env.JEST_WORKER_ID || 1}`;
+export const accountsSourceQuery = `SELECT * FROM "${accountsTableName}"`;
 export const recordsDestinationTableName = `output_users_${
   process.env.JEST_WORKER_ID || 1
 }`;
@@ -147,7 +150,9 @@ export function getConfig() {
     appOptions,
     appId,
     usersTableName,
+    usersSourceQuery,
     purchasesTableName,
+    purchasesSourceQuery,
     recordsDestinationTableName,
     groupsDestinationTableName,
   };

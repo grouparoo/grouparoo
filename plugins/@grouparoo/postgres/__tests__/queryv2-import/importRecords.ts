@@ -11,16 +11,15 @@ import {
   plugin,
   Run,
   Schedule,
-  ScheduleFiltersWithKey,
   Source,
   SourceMapping,
 } from "@grouparoo/core";
 
-import { getConnection } from "../../src/lib/table-import/connection";
+import { getConnection } from "../../src/lib/queryv2-import/connection";
 import { PostgresPoolClient } from "../../src/lib/connect";
 const importRecords = getConnection().methods.importRecords;
 
-const { appOptions, usersTableName } = getConfig();
+const { appOptions, usersSourceQuery } = getConfig();
 let client: PostgresPoolClient;
 
 let source: Source;
@@ -32,12 +31,10 @@ async function runIt({
   highWaterMark,
   sourceOffset,
   limit,
-  scheduleFilters,
 }: {
   highWaterMark: HighWaterMark;
   sourceOffset: string | number;
   limit: number;
-  scheduleFilters: ScheduleFiltersWithKey[];
 }) {
   const imports: Record<string, unknown>[] = [];
   plugin.createImports = jest.fn(
@@ -65,7 +62,7 @@ async function runIt({
     sourceOffset,
     schedule,
     scheduleOptions: await schedule.getOptions(),
-    scheduleFilters,
+    scheduleFilters: [],
     runId: null,
     sourceId: null,
     scheduleId: null,
@@ -82,7 +79,7 @@ async function runIt({
   };
 }
 
-describe("postgres/table/importRecords", () => {
+describe("postgres/queryv2/importRecords", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
 
@@ -102,10 +99,10 @@ describe("postgres/table/importRecords", () => {
 
     source = await helper.factories.source(app, {
       name: "Importer",
-      type: "postgres-import-table",
+      type: "postgres-import-queryv2",
     });
     sourceMapping = { id: "userId" };
-    await source.setOptions({ table: usersTableName });
+    await source.setOptions({ query: usersSourceQuery });
     await source.setMapping(sourceMapping);
     await source.update({ state: "ready" });
 
@@ -118,12 +115,10 @@ describe("postgres/table/importRecords", () => {
     const limit = 100;
     const highWaterMark = {};
     const sourceOffset = 0;
-    const scheduleFilters: ScheduleFiltersWithKey[] = [];
     const { imports, importsCount } = await runIt({
       limit,
       highWaterMark,
       sourceOffset,
-      scheduleFilters,
     });
     expect(importsCount).toBe(10);
     const importedIds = imports.map((r) => r.id);
@@ -134,12 +129,10 @@ describe("postgres/table/importRecords", () => {
     const limit = 100;
     const highWaterMark = { stamp: "2020-02-07T12:13:14.000Z" };
     const sourceOffset = 0;
-    const scheduleFilters: ScheduleFiltersWithKey[] = [];
     const { imports, importsCount } = await runIt({
       limit,
       highWaterMark,
       sourceOffset,
-      scheduleFilters,
     });
     expect(importsCount).toBe(4);
     const importedIds = imports.map((r) => r.id);
@@ -150,12 +143,10 @@ describe("postgres/table/importRecords", () => {
     const limit = 100;
     const sourceOffset = 0;
     const highWaterMark = { stamp: "2020-02-11T12:13:14.000Z" }; // past the last one
-    const scheduleFilters: ScheduleFiltersWithKey[] = [];
     const { imports, importsCount } = await runIt({
       limit,
       highWaterMark,
       sourceOffset,
-      scheduleFilters,
     });
     expect(importsCount).toBe(0);
     const importedIds = imports.map((r) => r.id);
@@ -167,14 +158,12 @@ describe("postgres/table/importRecords", () => {
     async () => {
       const limit = 4;
       const highWaterMark = {};
-      const scheduleFilters: ScheduleFiltersWithKey[] = [];
       let importedIds;
 
       const page1 = await runIt({
         limit,
         sourceOffset: 0,
         highWaterMark,
-        scheduleFilters,
       });
       expect(page1.importsCount).toBe(4);
       expect(page1.sourceOffset).toBe(0);
@@ -187,7 +176,6 @@ describe("postgres/table/importRecords", () => {
         limit,
         highWaterMark: page1.highWaterMark,
         sourceOffset: page1.sourceOffset,
-        scheduleFilters,
       });
       expect(page2.importsCount).toBe(4);
       expect(page2.sourceOffset).toBe(0);
@@ -200,7 +188,6 @@ describe("postgres/table/importRecords", () => {
         limit,
         highWaterMark: page2.highWaterMark,
         sourceOffset: page2.sourceOffset,
-        scheduleFilters,
       });
       expect(page3.importsCount).toBe(4);
       expect(page3.sourceOffset).toBe(0);
@@ -210,25 +197,6 @@ describe("postgres/table/importRecords", () => {
     },
     helper.longTime
   );
-
-  test("can be filtered", async () => {
-    const limit = 100;
-    const highWaterMark = {};
-    const sourceOffset = 0;
-    const scheduleFilters: ScheduleFiltersWithKey[] = [
-      { key: "id", op: "gt", match: 4 },
-      { key: "id", op: "lt", match: 7 },
-    ];
-    const { imports, importsCount } = await runIt({
-      limit,
-      highWaterMark,
-      sourceOffset,
-      scheduleFilters,
-    });
-    expect(importsCount).toBe(2);
-    const importedIds = imports.map((r) => r.id);
-    expect(importedIds).toEqual([5, 6]);
-  });
 
   describe("not incremental", () => {
     beforeAll(async () => await schedule.update({ incremental: false }));
@@ -242,7 +210,6 @@ describe("postgres/table/importRecords", () => {
         limit,
         sourceOffset: 0,
         highWaterMark: {},
-        scheduleFilters: [],
       });
       expect(page1.importsCount).toBe(4);
       expect(page1.sourceOffset).toBe(4);
@@ -254,7 +221,6 @@ describe("postgres/table/importRecords", () => {
         limit,
         highWaterMark: {},
         sourceOffset: page1.sourceOffset,
-        scheduleFilters: [],
       });
       expect(page2.importsCount).toBe(4);
       expect(page2.sourceOffset).toBe(8);
@@ -266,31 +232,11 @@ describe("postgres/table/importRecords", () => {
         limit,
         highWaterMark: {},
         sourceOffset: page2.sourceOffset,
-        scheduleFilters: [],
       });
       expect(page3.importsCount).toBe(2);
       expect(page3.sourceOffset).toBe(12);
       importedIds = page3.imports.map((r) => r.id as number);
       expect(importedIds).toEqual([9, 10]);
-    });
-
-    test("can be filtered", async () => {
-      const limit = 100;
-      const highWaterMark = {};
-      const sourceOffset = 0;
-      const scheduleFilters: ScheduleFiltersWithKey[] = [
-        { key: "id", op: "gt", match: 4 },
-        { key: "id", op: "lt", match: 7 },
-      ];
-      const { imports, importsCount } = await runIt({
-        limit,
-        highWaterMark,
-        sourceOffset,
-        scheduleFilters,
-      });
-      expect(importsCount).toBe(2);
-      const importedIds = imports.map((r) => r.id as number);
-      expect(importedIds).toEqual([5, 6]);
     });
   });
 });
