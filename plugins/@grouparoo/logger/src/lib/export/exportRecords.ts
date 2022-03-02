@@ -1,5 +1,6 @@
 import { ExportRecordsPluginMethod } from "@grouparoo/core";
 import fs from "fs";
+import { EOL } from "os";
 import { getFilePath } from "../utils/getFilePath";
 import { log } from "actionhero";
 
@@ -8,7 +9,7 @@ export const exportRecords: ExportRecordsPluginMethod = async ({
   exports,
 }) => {
   const filePath = getFilePath(appOptions.filename?.toString());
-  let lines = [];
+  let lines: string[] = [];
 
   exports.map((_export) => {
     const {
@@ -35,14 +36,14 @@ export const exportRecords: ExportRecordsPluginMethod = async ({
 
   if (appOptions.stdout?.toString() === "true") {
     log(
-      `exporting ${lines.length} records:\r\n` +
-        lines.map((line) => ` ----> ${line}`).join("\r\n"),
+      `exporting ${lines.length} records:${EOL}` +
+        lines.map((line) => ` ----> ${line}`).join(EOL),
       "notice"
     );
   }
 
   await new Promise((resolve, reject) => {
-    fs.appendFile(filePath, lines.join("\r\n"), (error) => {
+    fs.appendFile(filePath, EOL + lines.join(EOL), (error) => {
       if (error) return reject(error);
       return resolve(null);
     });
