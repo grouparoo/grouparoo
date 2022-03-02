@@ -605,7 +605,7 @@ export namespace DestinationOps {
     });
 
     for (const _export of _exports) {
-      const record = records.find((r) => (r.id = _export.recordId));
+      const record = records.find((r) => r.id === _export.recordId);
       exportedRecords.push({
         record,
         recordId: record?.id,

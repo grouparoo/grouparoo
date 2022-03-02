@@ -12,7 +12,7 @@ export const exportRecords: ExportRecordsPluginMethod = async ({
 
   exports.map((_export) => {
     const {
-      record,
+      recordId,
       oldRecordProperties,
       newRecordProperties,
       oldGroups,
@@ -22,7 +22,7 @@ export const exportRecords: ExportRecordsPluginMethod = async ({
 
     const line = JSON.stringify({
       time: new Date(),
-      id: record.id,
+      id: recordId,
       oldRecordProperties,
       newRecordProperties,
       oldGroups,
