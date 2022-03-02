@@ -50,7 +50,7 @@ export class Mapping extends CommonModel<Mapping> {
   property: Property;
 
   // TODO: remoteKey can come into play here
-  uniqueIdentifier = ["ownerId", "ownerType", "propertyId"];
+  uniqueIdentifier = ["ownerId", "ownerType", "remoteKey"];
 
   async apiData() {
     return {
