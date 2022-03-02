@@ -195,18 +195,6 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
                     <strong>
                       <code>{options[opt].toString()}</code>
                     </strong>
-                    {/* We actually don't want to allow changes to the provided source options? */}
-                    {/* <Form.Control
-                        size="sm"
-                        type="text"
-                        value={options[opt].toString()}
-                        disabled={disabled}
-                        onChange={(e) => {
-                          const _options = makeLocal(options);
-                          _options[opt] = e.target.value;
-                          setOptions(_options);
-                        }}
-                      /> */}
                   </Form.Group>
                 ))}
             </Fragment>
@@ -367,7 +355,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
           <Table>
             <thead>
               <tr>
-                <th>Source Option</th>
+                <th>Source Column</th>
                 <th>{""}</th>
                 <th>Key</th>
                 <th>Type</th>
