@@ -330,7 +330,7 @@ export class DestinationExport extends AuthenticatedAction {
     "export the member or members of the groups tracked by this destination";
   permission: ActionPermission = { topic: "destination", mode: "write" };
   inputs = {
-    id: { required: true, inPath: true },
+    id: { required: true },
     recordId: { required: false },
   } as const;
 
@@ -342,7 +342,7 @@ export class DestinationExport extends AuthenticatedAction {
     const destination = await Destination.findById(params.id);
     if (params.recordId) {
       const record = await GrouparooRecord.findById(params.recordId);
-      await destination.exportRecord(record);
+      await destination.exportRecord(record, true);
     } else {
       await destination.exportMembers();
     }
