@@ -6,16 +6,16 @@ import {
 } from "@grouparoo/app-templates/dist/source/table";
 import format from "pg-format";
 import { PostgresPoolClient } from "../connect";
+import { makeFromClause } from "../shared/util";
 
 export const getColumns: GetColumnDefinitionsMethod<
   PostgresPoolClient
 > = async ({ connection, sourceQuery }) => {
-  // TODO check out using `fields` instead of `rows`
-  const { rows } = await connection.query(
-    format(
-      `WITH __userQuery AS (${sourceQuery}) SELECT * FROM __userQuery LIMIT 1`
-    )
-  );
+  const from = makeFromClause({ sourceQuery }, []);
+  const { rows } = await connection.query(format(`SELECT * ${from} LIMIT 1`));
+
+  if (rows.length === 0)
+    throw new Error("Source query must return at least one row");
 
   const map: ColumnDefinitionMap = {};
   if (rows.length > 0) {
