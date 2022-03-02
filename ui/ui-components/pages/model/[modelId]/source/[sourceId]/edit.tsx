@@ -147,7 +147,7 @@ const FormFieldGenerator = ({
           as="textarea"
           disabled={loading || loadingOptions}
           rows={5}
-          value={source.options[opt.key]?.toString()}
+          defaultValue={source.options[opt.key]?.toString()}
           placeholder={opt.placeholder}
           style={{
             fontFamily:
@@ -257,9 +257,10 @@ const Page: NextPage<Props> = ({
     [mappingColumn, mappingPropertyKey]
   );
 
-  const { handleSubmit, register, reset, watch, control } = useForm<FormData>({
-    defaultValues: resetFormData(source),
-  });
+  const { handleSubmit, register, reset, watch, control, getValues } =
+    useForm<FormData>({
+      defaultValues: resetFormData(source),
+    });
 
   const loadPreview = useCallback(
     async (previewAvailable = source.previewAvailable) => {
@@ -268,12 +269,12 @@ const Page: NextPage<Props> = ({
       }
 
       setPreviewLoading(true);
+      const options = getValues("source.options");
       const response = await client.request<Actions.SourcePreview>(
         "get",
         `/source/${sourceId}/preview`,
         {
-          options:
-            Object.keys(source.options).length > 0 ? source.options : null,
+          options: Object.keys(options).length > 0 ? options : null,
         },
         { useCache: false }
       );
