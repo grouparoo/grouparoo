@@ -68,8 +68,10 @@ export const buildConnection: BuildConnectionMethod = ({
   getPropertyValues,
   getRowCount,
 }) => {
+  const useAggregations = true;
   const propertyOptions: PropertyOptionsMethod = async (args) =>
     getPropertyOptions(args, {
+      useAggregations,
       getSampleRows,
       getColumns,
     });
@@ -90,17 +92,19 @@ export const buildConnection: BuildConnectionMethod = ({
     getColumns,
   });
   const uniquePropertyBootstrapOptions: UniquePropertyBootstrapOptions =
-    getUniquePropertyBootstrapOptions();
+    getUniquePropertyBootstrapOptions({ useAggregations });
   const importRecords: RecordsPluginMethod = getRecords({
     getRows,
   });
   const recordProperty: RecordPropertyPluginMethod = getPropertyValue
     ? getRecordProperty({
+        useAggregations,
         getPropertyValue,
       })
     : null;
   const recordProperties: RecordPropertiesPluginMethod = getPropertyValues
     ? getRecordProperties({
+        useAggregations,
         getPropertyValues,
       })
     : null;
