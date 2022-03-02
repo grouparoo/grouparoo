@@ -611,7 +611,6 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
       </LoadingButton>
     );
   }
-  console.log("asdf", record, sortedPropertyKeys);
 
   return (
     <ManagedCard
