@@ -87,11 +87,4 @@ describe("postgres/queryv2/propertyOptions", () => {
     value = column.examples[0];
     expect(typeof value).toEqual("number");
   });
-
-  test("gets aggregationMethod", async () => {
-    const response = await getOptionsForKey("aggregationMethod");
-
-    const methods = response.map((r) => r.key).sort();
-    expect(methods).toEqual(["exact"]);
-  });
 });

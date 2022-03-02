@@ -40,32 +40,22 @@ let sourceOptions: SimpleSourceOptions;
 async function getPropertyValues({
   columns,
   sourceMapping,
-  aggregationMethod,
-  sortColumn,
 }: {
   columns: string[];
   sourceMapping: SourceMapping;
-  aggregationMethod: string;
-  sortColumn?: string;
 }) {
   const arrays = await getPropertyArrays({
     columns,
     sourceMapping,
-    aggregationMethod,
-    sortColumn,
   });
   return arrays;
 }
 async function getPropertyArrays({
   columns,
   sourceMapping,
-  aggregationMethod,
-  sortColumn,
 }: {
   columns: string[];
   sourceMapping: SourceMapping;
-  aggregationMethod: string;
-  sortColumn?: string;
 }): Promise<[any, any]> {
   // TODO: Correct type above
   const properties = [
@@ -79,8 +69,6 @@ async function getPropertyArrays({
   for (const property of properties) {
     propertyOptions[property.id] = {
       column: columns[counter],
-      aggregationMethod,
-      sortColumn,
     };
     counter++;
   }
@@ -172,7 +160,6 @@ describe("postgres/queryv2/recordProperties", () => {
           const [values, properties] = await getPropertyValues({
             columns,
             sourceMapping,
-            aggregationMethod,
           });
           expect(values[record.id][properties[0].id]).toEqual(["Erie"]);
           expect(values[otherRecord.id][properties[0].id]).toEqual(["Cacilie"]);
@@ -183,7 +170,6 @@ describe("postgres/queryv2/recordProperties", () => {
           const [values, properties] = await getPropertyValues({
             columns,
             sourceMapping,
-            aggregationMethod,
           });
           expect(values[record.id][properties[0].id]).toEqual(["Erie"]);
           expect(values[otherRecord.id][properties[0].id]).toEqual(["Cacilie"]);
@@ -195,7 +181,6 @@ describe("postgres/queryv2/recordProperties", () => {
           const [values, properties] = await getPropertyValues({
             columns,
             sourceMapping,
-            aggregationMethod,
           });
           expect(values[record.id][properties[0].id]).toEqual(["Erie"]);
           expect(values[otherRecord.id][properties[0].id]).toEqual(["Cacilie"]);
@@ -208,7 +193,6 @@ describe("postgres/queryv2/recordProperties", () => {
           const [values, properties] = await getPropertyValues({
             columns,
             sourceMapping,
-            aggregationMethod,
           });
           expect(values[record.id][properties[0].id]).toEqual([259.12]);
           expect(values[otherRecord.id][properties[0].id]).toEqual([94.36]);
@@ -219,7 +203,6 @@ describe("postgres/queryv2/recordProperties", () => {
           const [values, properties] = await getPropertyValues({
             columns,
             sourceMapping,
-            aggregationMethod,
           });
           expect(values[record.id][properties[0].id]).toEqual([259.12]);
           expect(values[otherRecord.id][properties[0].id]).toEqual([94.36]);
@@ -232,7 +215,6 @@ describe("postgres/queryv2/recordProperties", () => {
           const [values, properties] = await getPropertyValues({
             columns,
             sourceMapping,
-            aggregationMethod,
           });
           expect(values[record.id][properties[0].id]).toEqual([true]);
           expect(values[otherRecord.id][properties[0].id]).toEqual([false]);
@@ -243,7 +225,6 @@ describe("postgres/queryv2/recordProperties", () => {
           const [values, properties] = await getPropertyValues({
             columns,
             sourceMapping,
-            aggregationMethod,
           });
           expect(values[record.id][properties[0].id]).toEqual([true]);
           expect(values[otherRecord.id][properties[0].id]).toEqual([false]);
@@ -256,7 +237,6 @@ describe("postgres/queryv2/recordProperties", () => {
           const [values, properties] = await getPropertyValues({
             columns,
             sourceMapping,
-            aggregationMethod,
           });
           expect(values[record.id][properties[0].id]).toEqual(["2020-02-01"]);
           expect(values[otherRecord.id][properties[0].id]).toEqual([
@@ -269,7 +249,6 @@ describe("postgres/queryv2/recordProperties", () => {
           const [values, properties] = await getPropertyValues({
             columns,
             sourceMapping,
-            aggregationMethod,
           });
           expect(values[record.id][properties[0].id]).toEqual(["2020-02-01"]);
           expect(values[otherRecord.id][properties[0].id]).toEqual([
@@ -284,7 +263,6 @@ describe("postgres/queryv2/recordProperties", () => {
           const [values, properties] = await getPropertyValues({
             columns,
             sourceMapping,
-            aggregationMethod,
           });
           expect(
             (<Date[]>values[record.id][properties[0].id])[0].toISOString()
@@ -299,7 +277,6 @@ describe("postgres/queryv2/recordProperties", () => {
           const [values, properties] = await getPropertyValues({
             columns,
             sourceMapping,
-            aggregationMethod,
           });
           expect(
             (<Date[]>values[record.id][properties[0].id])[0].toISOString()
@@ -329,7 +306,6 @@ describe("postgres/queryv2/recordProperties", () => {
         const [values, properties] = await getPropertyValues({
           columns,
           sourceMapping,
-          aggregationMethod: AggregationMethod.Exact,
         });
         expect(values[record.id][properties[0].id]).toEqual([
           "Apple",
@@ -385,7 +361,6 @@ describe("postgres/queryv2/recordProperties", () => {
       const [values] = await getPropertyValues({
         columns: ["name"],
         sourceMapping: { id: "accountId" },
-        aggregationMethod: "exact",
       });
       expect(values).toEqual({});
     });
@@ -397,7 +372,6 @@ describe("postgres/queryv2/recordProperties", () => {
       const [values, properties] = await getPropertyValues({
         columns: ["name"],
         sourceMapping: { id: "accountId" },
-        aggregationMethod: "exact",
       });
       expect(values[record.id][properties[0].id]).toEqual(["super_mega_corp"]);
       expect(values[otherRecord.id][properties[0].id]).toEqual([
@@ -414,7 +388,6 @@ describe("postgres/queryv2/recordProperties", () => {
       const [values] = await getPropertyValues({
         columns: ["first_name"],
         sourceMapping: { id: "badName" },
-        aggregationMethod: "exact",
       });
       expect(values[record.id]).toBeUndefined();
       expect(values[otherRecord.id]).toBeUndefined();
@@ -424,7 +397,6 @@ describe("postgres/queryv2/recordProperties", () => {
       const [values] = await getPropertyValues({
         columns: ["first_name"],
         sourceMapping: { id: "lastName" }, // set to NULL
-        aggregationMethod: "exact",
       });
       expect(values[record.id]).toBeUndefined();
       expect(values[otherRecord.id]).toBeUndefined();
