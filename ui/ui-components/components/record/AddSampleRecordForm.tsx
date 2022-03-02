@@ -6,7 +6,6 @@ import { useGrouparooModel } from "../../contexts/grouparooModel";
 import { errorHandler } from "../../eventHandlers";
 import { Actions, Models } from "../../utils/apiData";
 import LoadingButton from "../LoadingButton";
-import type { RecordType } from "./SampleRecordCard";
 
 const getInputType = (type?: Models.PropertyType["type"]): string => {
   switch (type) {
@@ -20,11 +19,7 @@ const getInputType = (type?: Models.PropertyType["type"]): string => {
 
 interface Props {
   properties: Models.PropertyType[];
-  onSubmitComplete: (
-    record: RecordType,
-    groups: Models.GroupType[],
-    destinations: Models.DestinationType[]
-  ) => void;
+  onSubmitComplete: (recordId: string) => void;
 }
 
 const AddSampleRecordForm: React.FC<Props> = ({
@@ -73,11 +68,7 @@ const AddSampleRecordForm: React.FC<Props> = ({
       setSubmitting(false);
 
       if (response?.record) {
-        onSubmitComplete(
-          response.record,
-          response.groups,
-          response.destinations
-        );
+        onSubmitComplete(response.record.id);
       } else {
         errorHandler.set({
           message: `Could not add Sample Record.

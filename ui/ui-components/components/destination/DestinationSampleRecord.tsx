@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import SampleRecordCard, {
   SampleRecordCardProps,
 } from "../record/SampleRecordCard";
@@ -6,18 +6,19 @@ import { Actions, Models } from "../../utils/apiData";
 import { useDebouncedValue } from "../../hooks/useDebouncedValue";
 import { useApi } from "../../contexts/api";
 import { useGrouparooModel } from "../../contexts/grouparooModel";
+import { DestinationMappingOptionsMethodResponse } from "@grouparoo/core";
 
 interface Props {
   destination: Models.DestinationType;
   collection: Models.DestinationType["collection"];
   groupId: string;
-  mappingOptions?: any;
+  mappingOptions: DestinationMappingOptionsMethodResponse;
+  destinationDirty: boolean;
 }
 
 type SampleRecordOmittedProps = Omit<
   SampleRecordCardProps,
   | "fetchRecord"
-  | "reloadKey"
   | "groupsTitle"
   | "propertiesTitle"
   | "propertyLinkDisabled"
@@ -29,6 +30,7 @@ const DestinationSampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
   mappingOptions,
   groupId,
   collection,
+  destinationDirty,
   ...props
 }) => {
   const {
@@ -47,10 +49,18 @@ const DestinationSampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
         debouncedDestination.group,
         debouncedDestination.mapping,
         debouncedDestination.destinationGroupMemberships,
+        warning,
       ]),
-    [debouncedDestination, groupId, collection]
+    [
+      groupId,
+      collection,
+      debouncedDestination.id,
+      debouncedDestination.group,
+      debouncedDestination.mapping,
+      debouncedDestination.destinationGroupMemberships,
+      warning,
+    ]
   );
-
   const fetchRecord = useCallback<SampleRecordCardProps["fetchRecord"]>(
     async (recordId: string) => {
       const destinationGroupMemberships: Record<string, string> =
@@ -102,6 +112,18 @@ const DestinationSampleRecord: React.FC<Props & SampleRecordOmittedProps> = ({
       collection,
     ]
   );
+
+  useEffect(() => {
+    const dirtyDestinationWarning =
+      "You need to save this destination to export it.";
+    if (destinationDirty && !warning) {
+      setWarning(dirtyDestinationWarning);
+    } else if (!destinationDirty && warning === dirtyDestinationWarning) {
+      setWarning("");
+    }
+  }, [destinationDirty, warning]);
+
+  console.log({ warning });
 
   return (
     <SampleRecordCard

@@ -116,13 +116,11 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   ...props
 }) => {
   const previousRecord = usePrevious(props.record);
-  const prevReloadKey = usePrevious(reloadKey);
   const { client } = useApi();
   const {
     model: { id: modelId },
   } = useGrouparooModel();
   const router = useRouter();
-  const { destinationId } = router.query;
 
   const [loading, setLoading] = useState(false);
   const [importing, setImporting] = useState(false);
@@ -139,10 +137,12 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
     () => props.record?.id || getCachedSampleRecordId(modelId)
   );
 
+  const { destinationId } = router.query;
   const canExportRecord = useMemo(
-    () => destinations?.find(({ id }) => id === destinationId),
+    () => !!destinations?.find(({ id }) => id === destinationId),
     [destinationId, destinations]
   );
+  const prevReloadKey = usePrevious(reloadKey);
 
   const saveRecord = useCallback(
     (
@@ -284,13 +284,13 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
       loadRecord();
     }
   }, [
-    record,
-    recordId,
-    loading,
     loadRecord,
     hasRecords,
     reloadKey,
     prevReloadKey,
+    loading,
+    record,
+    recordId,
   ]);
 
   const email = useMemo<string>(() => {
@@ -413,10 +413,12 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
     );
   }
 
-  if (canExportRecord) {
+  if (destinationId) {
     actions.push(
       <LoadingButton
-        disabled={disabled || !record || loading || !!warning}
+        disabled={
+          disabled || !record || loading || !!warning || !canExportRecord
+        }
         loading={exporting}
         onClick={exportRecord}
         size="sm"
@@ -440,18 +442,18 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
     );
   }
 
-  const content = record ? (
-    <Row>
-      <Col style={{ minWidth: "75%" }}>
-        {propertiesTitle && <h6>{propertiesTitle}</h6>}
-        <Table bordered>
-          <colgroup>
-            <col span={1} style={{ width: "35%" }} />
-            <col span={1} style={{ width: "65%" }} />
-          </colgroup>
-          <tbody>
-            {sortedPropertyKeys &&
-              sortedPropertyKeys.map((key, index) => {
+  const content =
+    record && sortedPropertyKeys?.length ? (
+      <Row>
+        <Col style={{ minWidth: "75%" }}>
+          {propertiesTitle && <h6>{propertiesTitle}</h6>}
+          <Table bordered>
+            <colgroup>
+              <col span={1} style={{ width: "35%" }} />
+              <col span={1} style={{ width: "65%" }} />
+            </colgroup>
+            <tbody>
+              {sortedPropertyKeys.map((key, index) => {
                 const property = record.properties[key];
                 const isHighlightedProperty =
                   highlightProperty?.id === property.id;
@@ -505,84 +507,84 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
                   </tr>
                 );
               })}
-          </tbody>
-        </Table>
-      </Col>
-      <Col
-        className={"text-center"}
-        xs={{ order: "first" }}
-        md={{ order: "last" }}
-      >
-        {email && (
-          <RecordImageFromEmail email={email} width={72} className="mb-4" />
-        )}
-        <h6>{groupsTitle}</h6>
-        <p>
-          {groups?.length
-            ? groups.map((group) => {
-                return (
-                  <Fragment key={`group-${group.id}`}>
-                    <EnterpriseLink
-                      href={`/model/${group.modelId}/group/${group.id}/rules`}
-                    >
-                      {group.name}
-                    </EnterpriseLink>
-                    <br />
-                  </Fragment>
-                );
-              })
-            : (record as Models.DestinationRecordPreviewType)?.groupNames
-                ?.length
-            ? (record as Models.DestinationRecordPreviewType).groupNames.map(
-                (groupName) => (
-                  <Fragment key={`group-name-${groupName}`}>
-                    {groupName}
-                    <br />
-                  </Fragment>
+            </tbody>
+          </Table>
+        </Col>
+        <Col
+          className={"text-center"}
+          xs={{ order: "first" }}
+          md={{ order: "last" }}
+        >
+          {email && (
+            <RecordImageFromEmail email={email} width={72} className="mb-4" />
+          )}
+          <h6>{groupsTitle}</h6>
+          <p>
+            {groups?.length
+              ? groups.map((group) => {
+                  return (
+                    <Fragment key={`group-${group.id}`}>
+                      <EnterpriseLink
+                        href={`/model/${group.modelId}/group/${group.id}/rules`}
+                      >
+                        {group.name}
+                      </EnterpriseLink>
+                      <br />
+                    </Fragment>
+                  );
+                })
+              : (record as Models.DestinationRecordPreviewType)?.groupNames
+                  ?.length
+              ? (record as Models.DestinationRecordPreviewType).groupNames.map(
+                  (groupName) => (
+                    <Fragment key={`group-name-${groupName}`}>
+                      {groupName}
+                      <br />
+                    </Fragment>
+                  )
                 )
-              )
-            : "None"}
-        </p>
-        {destinations && (
-          <>
-            <h6>Destinations</h6>
-            <p>
-              {destinations?.length
-                ? destinations.map((destination) => {
-                    return (
-                      <Fragment key={`destination-${destination.id}`}>
-                        {isConfigUI ? (
-                          destination.name
-                        ) : (
-                          <EnterpriseLink
-                            href={`/model/${destination.modelId}/destination/${destination.id}/data`}
-                          >
-                            <a>{destination.name}</a>
-                          </EnterpriseLink>
-                        )}
-                        <br />
-                      </Fragment>
-                    );
-                  })
-                : "None"}
-            </p>
-          </>
-        )}
-      </Col>
-    </Row>
-  ) : (
-    <Row>
-      <Col>
-        <p>
-          A Sample Record can be used to validate your configuration is
-          importing the correct data to Groups and Destinations.
-        </p>
-        {!isConfigUI && (
-          <p>Run a Schedule on your Primary Source to generate Records.</p>
-        )}
-      </Col>
-    </Row>
-  );
+              : "None"}
+          </p>
+          {destinations && (
+            <>
+              <h6>Destinations</h6>
+              <p>
+                {destinations?.length
+                  ? destinations.map((destination) => {
+                      return (
+                        <Fragment key={`destination-${destination.id}`}>
+                          {isConfigUI ? (
+                            destination.name
+                          ) : (
+                            <EnterpriseLink
+                              href={`/model/${destination.modelId}/destination/${destination.id}/data`}
+                            >
+                              <a>{destination.name}</a>
+                            </EnterpriseLink>
+                          )}
+                          <br />
+                        </Fragment>
+                      );
+                    })
+                  : "None"}
+              </p>
+            </>
+          )}
+        </Col>
+      </Row>
+    ) : (
+      <Row>
+        <Col>
+          <p>
+            A Sample Record can be used to validate your configuration is
+            importing the correct data to Groups and Destinations.
+          </p>
+          {!isConfigUI && (
+            <p>Run a Schedule on your Primary Source to generate Records.</p>
+          )}
+        </Col>
+      </Row>
+    );
 
   return (
     <ManagedCard
@@ -604,8 +606,8 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
         <AddSampleRecordModal
           properties={properties}
           show={addingRecord}
-          onRecordCreated={(record) => {
-            setRecordId(record?.id);
+          onRecordCreated={(recordId) => {
+            setRecordId(recordId);
           }}
           onHide={() => {
             setAddingRecord(false);
