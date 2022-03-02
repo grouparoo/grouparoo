@@ -131,7 +131,7 @@ export default function Navigation(props) {
               className="navbar-toggler"
               style={{
                 position: "absolute",
-                left: 190,
+                left: 182,
               }}
               onClick={toggleNavExpanded}
             >
