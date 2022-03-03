@@ -6,19 +6,6 @@ import { getConfigDir, getParentPath } from "./pluginDetails";
 import { CloudClient, CloudError, packageConfig } from "./cloud";
 import { mkdtemp, remove } from "fs-extra";
 
-async function logJob(cloud: CloudClient, jobId: string) {
-  if (jobId) {
-    const job = await cloud.getJob(jobId);
-    GrouparooCLI.logger.log(
-      GrouparooCLI.logger.cyanBold(
-        `\nLogging output for ${job.type} job (${jobId})\n`
-      )
-    );
-    GrouparooCLI.logger.log(job.logs);
-    GrouparooCLI.logger.log("");
-  }
-}
-
 export namespace CloudCLI {
   export async function pack(output: string) {
     const configDir = await getConfigDir(true);
@@ -38,6 +25,19 @@ export namespace CloudCLI {
     );
 
     GrouparooCLI.logger.log(`✅ Saved config archive to ${configArchive}`);
+  }
+
+  async function logJob(cloud: CloudClient, jobId: string) {
+    if (jobId) {
+      const job = await cloud.getJob(jobId);
+      GrouparooCLI.logger.log(
+        GrouparooCLI.logger.cyanBold(
+          `\nLogging output for ${job.type} job (${jobId})\n`
+        )
+      );
+      GrouparooCLI.logger.log(job.logs);
+      GrouparooCLI.logger.log("");
+    }
   }
 
   export async function push(params: {
