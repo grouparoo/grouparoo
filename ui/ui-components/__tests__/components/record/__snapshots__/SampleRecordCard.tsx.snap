@@ -30,6 +30,7 @@ exports[`SampleRecordCard should render with 1 record 1`] = `
           >
             <button
               class="btn btn-outline-primary btn-sm"
+              id="sample_record__view_record_button"
               type="button"
             >
               View Record
@@ -41,6 +42,7 @@ exports[`SampleRecordCard should render with 1 record 1`] = `
           >
             <button
               class="btn btn-outline-primary btn-sm"
+              id="sample_record__view_all_records_button"
               type="button"
             >
               View All 
@@ -64,6 +66,7 @@ exports[`SampleRecordCard should render with 1 record 1`] = `
         >
           <table
             class="table table-bordered"
+            id="sample_record__properties"
           >
             <colgroup>
               <col
@@ -76,8 +79,11 @@ exports[`SampleRecordCard should render with 1 record 1`] = `
               />
             </colgroup>
             <tbody>
-              <tr>
+              <tr
+                id="sample_record__property_row_fakeProperty"
+              >
                 <th
+                  id="sample_record__property_name_fakeProperty"
                   scope="row"
                 >
                   <span>
@@ -92,7 +98,9 @@ exports[`SampleRecordCard should render with 1 record 1`] = `
                     pending
                   </span>
                 </th>
-                <td>
+                <td
+                  id="sample_record__property_value_fakeProperty"
+                >
                   2
                   <br />
                 </td>
@@ -106,13 +114,17 @@ exports[`SampleRecordCard should render with 1 record 1`] = `
           <h6>
             Groups
           </h6>
-          <p>
+          <p
+            id="sample_record__groups"
+          >
             None
           </p>
           <h6>
             Destinations
           </h6>
-          <p>
+          <p
+            id="sample_record__destinations"
+          >
             <span>
               <a>
                 test-destination-name
@@ -130,6 +142,7 @@ exports[`SampleRecordCard should render with 1 record 1`] = `
         >
           <button
             class="btn btn-outline-success btn-sm"
+            id="sample_record__import_record_button"
             style="display: inline-flex; align-items: center; justify-content: center;"
             type="button"
           >
@@ -142,6 +155,7 @@ exports[`SampleRecordCard should render with 1 record 1`] = `
             
           <button
             class="btn btn-outline-primary btn-sm"
+            id="samplerecord__switch_random_record_button"
             style="display: inline-flex; align-items: center; justify-content: center;"
             type="button"
           >
@@ -154,6 +168,7 @@ exports[`SampleRecordCard should render with 1 record 1`] = `
             
           <button
             class="btn btn-outline-success btn-sm"
+            id="sample_record__export_record_button"
             style="display: inline-flex; align-items: center; justify-content: center;"
             type="button"
           >
@@ -201,6 +216,7 @@ exports[`SampleRecordCard should render with 1 record in config mode 1`] = `
           >
             <button
               class="btn btn-outline-primary btn-sm"
+              id="sample_record__view_record_button"
               type="button"
             >
               View Record
@@ -212,6 +228,7 @@ exports[`SampleRecordCard should render with 1 record in config mode 1`] = `
           >
             <button
               class="btn btn-outline-primary btn-sm"
+              id="sample_record__view_all_records_button"
               type="button"
             >
               View All 
@@ -235,6 +252,7 @@ exports[`SampleRecordCard should render with 1 record in config mode 1`] = `
         >
           <table
             class="table table-bordered"
+            id="sample_record__properties"
           >
             <colgroup>
               <col
@@ -247,8 +265,11 @@ exports[`SampleRecordCard should render with 1 record in config mode 1`] = `
               />
             </colgroup>
             <tbody>
-              <tr>
+              <tr
+                id="sample_record__property_row_fakeProperty"
+              >
                 <th
+                  id="sample_record__property_name_fakeProperty"
                   scope="row"
                 >
                   <span>
@@ -263,7 +284,9 @@ exports[`SampleRecordCard should render with 1 record in config mode 1`] = `
                     pending
                   </span>
                 </th>
-                <td>
+                <td
+                  id="sample_record__property_value_fakeProperty"
+                >
                   2
                   <br />
                 </td>
@@ -277,13 +300,17 @@ exports[`SampleRecordCard should render with 1 record in config mode 1`] = `
           <h6>
             Groups
           </h6>
-          <p>
+          <p
+            id="sample_record__groups"
+          >
             None
           </p>
           <h6>
             Destinations
           </h6>
-          <p>
+          <p
+            id="sample_record__destinations"
+          >
             None
           </p>
         </div>
@@ -296,6 +323,7 @@ exports[`SampleRecordCard should render with 1 record in config mode 1`] = `
         >
           <button
             class="btn btn-outline-success btn-sm"
+            id="sample_record__import_record_button"
             style="display: inline-flex; align-items: center; justify-content: center;"
             type="button"
           >
@@ -308,6 +336,7 @@ exports[`SampleRecordCard should render with 1 record in config mode 1`] = `
             
           <button
             class="btn btn-outline-primary btn-sm"
+            id="samplerecord__switch_random_record_button"
             style="display: inline-flex; align-items: center; justify-content: center;"
             type="button"
           >
@@ -321,6 +350,7 @@ exports[`SampleRecordCard should render with 1 record in config mode 1`] = `
           <button
             class="btn btn-outline-success btn-sm"
             disabled=""
+            id="sample_record__export_record_button"
             style="display: inline-flex; align-items: center; justify-content: center;"
             type="button"
           >
@@ -333,6 +363,7 @@ exports[`SampleRecordCard should render with 1 record in config mode 1`] = `
             
           <button
             class="btn btn-outline-primary btn-sm"
+            id="sample_record__add_record_button"
             style="display: inline-flex; align-items: center; justify-content: center;"
             type="button"
           >
@@ -380,6 +411,7 @@ exports[`SampleRecordCard should render with 1 record that has a group and desti
           >
             <button
               class="btn btn-outline-primary btn-sm"
+              id="sample_record__view_record_button"
               type="button"
             >
               View Record
@@ -391,6 +423,7 @@ exports[`SampleRecordCard should render with 1 record that has a group and desti
           >
             <button
               class="btn btn-outline-primary btn-sm"
+              id="sample_record__view_all_records_button"
               type="button"
             >
               View All 
@@ -414,6 +447,7 @@ exports[`SampleRecordCard should render with 1 record that has a group and desti
         >
           <table
             class="table table-bordered"
+            id="sample_record__properties"
           >
             <colgroup>
               <col
@@ -426,8 +460,11 @@ exports[`SampleRecordCard should render with 1 record that has a group and desti
               />
             </colgroup>
             <tbody>
-              <tr>
+              <tr
+                id="sample_record__property_row_fakeProperty"
+              >
                 <th
+                  id="sample_record__property_name_fakeProperty"
                   scope="row"
                 >
                   <span>
@@ -442,7 +479,9 @@ exports[`SampleRecordCard should render with 1 record that has a group and desti
                     pending
                   </span>
                 </th>
-                <td>
+                <td
+                  id="sample_record__property_value_fakeProperty"
+                >
                   2
                   <br />
                 </td>
@@ -456,7 +495,9 @@ exports[`SampleRecordCard should render with 1 record that has a group and desti
           <h6>
             Groups
           </h6>
-          <p>
+          <p
+            id="sample_record__groups"
+          >
             <span>
               test-group
             </span>
@@ -465,7 +506,9 @@ exports[`SampleRecordCard should render with 1 record that has a group and desti
           <h6>
             Destinations
           </h6>
-          <p>
+          <p
+            id="sample_record__destinations"
+          >
             test-destination
             <br />
           </p>
@@ -479,6 +522,7 @@ exports[`SampleRecordCard should render with 1 record that has a group and desti
         >
           <button
             class="btn btn-outline-success btn-sm"
+            id="sample_record__import_record_button"
             style="display: inline-flex; align-items: center; justify-content: center;"
             type="button"
           >
@@ -491,6 +535,7 @@ exports[`SampleRecordCard should render with 1 record that has a group and desti
             
           <button
             class="btn btn-outline-primary btn-sm"
+            id="samplerecord__switch_random_record_button"
             style="display: inline-flex; align-items: center; justify-content: center;"
             type="button"
           >
@@ -503,6 +548,7 @@ exports[`SampleRecordCard should render with 1 record that has a group and desti
             
           <button
             class="btn btn-outline-success btn-sm"
+            id="sample_record__export_record_button"
             style="display: inline-flex; align-items: center; justify-content: center;"
             type="button"
           >
@@ -515,6 +561,7 @@ exports[`SampleRecordCard should render with 1 record that has a group and desti
             
           <button
             class="btn btn-outline-primary btn-sm"
+            id="sample_record__add_record_button"
             style="display: inline-flex; align-items: center; justify-content: center;"
             type="button"
           >
@@ -562,6 +609,7 @@ exports[`SampleRecordCard should render with no records 1`] = `
           >
             <button
               class="btn btn-outline-primary btn-sm"
+              id="sample_record__view_all_records_button"
               type="button"
             >
               View All 
@@ -632,6 +680,7 @@ exports[`SampleRecordCard should render with no records in 'config mode' 1`] = `
           >
             <button
               class="btn btn-outline-primary btn-sm"
+              id="sample_record__view_all_records_button"
               type="button"
             >
               View All 
@@ -666,6 +715,7 @@ exports[`SampleRecordCard should render with no records in 'config mode' 1`] = `
           <button
             class="btn btn-outline-success btn-sm"
             disabled=""
+            id="sample_record__import_record_button"
             style="display: inline-flex; align-items: center; justify-content: center;"
             type="button"
           >
@@ -679,6 +729,7 @@ exports[`SampleRecordCard should render with no records in 'config mode' 1`] = `
           <button
             class="btn btn-outline-primary btn-sm"
             disabled=""
+            id="samplerecord__switch_random_record_button"
             style="display: inline-flex; align-items: center; justify-content: center;"
             type="button"
           >
@@ -692,6 +743,7 @@ exports[`SampleRecordCard should render with no records in 'config mode' 1`] = `
           <button
             class="btn btn-outline-success btn-sm"
             disabled=""
+            id="sample_record__export_record_button"
             style="display: inline-flex; align-items: center; justify-content: center;"
             type="button"
           >
@@ -704,6 +756,7 @@ exports[`SampleRecordCard should render with no records in 'config mode' 1`] = `
             
           <button
             class="btn btn-outline-primary btn-sm"
+            id="sample_record__add_record_button"
             style="display: inline-flex; align-items: center; justify-content: center;"
             type="button"
           >
