@@ -447,8 +447,7 @@ export class Destination extends CommonModel<Destination> {
     });
 
     // required
-    for (const i in destinationMappingOptions.properties.required) {
-      const opt = destinationMappingOptions.properties.required[i];
+    for (const opt of destinationMappingOptions.properties.required) {
       if (!mappings[opt.key]) {
         throw new Error(`${opt.key} is a required destination mapping option`);
       }
@@ -466,8 +465,7 @@ export class Destination extends CommonModel<Destination> {
     }
 
     // known
-    for (const i in destinationMappingOptions.properties.known) {
-      const opt = destinationMappingOptions.properties.known[i];
+    for (const opt of destinationMappingOptions.properties.known) {
       const property = properties.find((r) => r.key === mappings[opt.key]);
       const validDestinationTypes = property?.type
         ? Object.keys(destinationTypeConversions[property.type])
@@ -478,6 +476,22 @@ export class Destination extends CommonModel<Destination> {
           `${opt.key} requires a property of type ${opt.type}, but a ${property.type} (${property.key}) was mapped`
         );
       }
+    }
+
+    //if we are not allowed to create optional properties from grouparoo properties, make sure all are known/required
+    if (
+      destinationMappingOptions.properties.allowOptionalFromProperties === false
+    ) {
+      const allowedProperties = [
+        ...destinationMappingOptions.properties.known.map((p) => p.key),
+        ...destinationMappingOptions.properties.required.map((p) => p.key),
+      ];
+
+      Object.keys(mappings).forEach((mapping) => {
+        if (!allowedProperties.includes(mapping)) {
+          throw new Error("bad");
+        }
+      });
     }
 
     // optional rules can't be validated...

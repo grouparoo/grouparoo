@@ -405,7 +405,7 @@ describe("models/destination", () => {
                   properties: {
                     required,
                     known,
-                    allowOptionalFromProperties: true,
+                    allowOptionalFromProperties: false,
                   },
                 };
               },
@@ -463,7 +463,7 @@ describe("models/destination", () => {
           properties: {
             required,
             known,
-            allowOptionalFromProperties: true,
+            allowOptionalFromProperties: false,
           },
         });
 
@@ -495,6 +495,16 @@ describe("models/destination", () => {
       await expect(
         destination.setMapping({ "remote-id": "userId" })
       ).rejects.toThrow(/email is a required destination mapping option/);
+    });
+
+    test("mappings must map to a valid remote key unless allowOptionalFromProperties is true", async () => {
+      await expect(
+        destination.setMapping({
+          "remote-id": "userId",
+          email: "email",
+          "remote-id-that-is-bogus": "userId",
+        })
+      ).rejects.toThrow(/bad job/);
     });
 
     test("if a grouparoo type cannot be mapped to a matching destination type, an error is thrown", async () => {

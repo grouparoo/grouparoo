@@ -609,7 +609,7 @@ describe("models/destination", () => {
         expect(response.value).not.toBeFalsy();
       });
 
-      test("it throws an error if the mapping does not include the key of a recordPropertyRyle", async () => {
+      test("it throws an error if the mapping does not include the key of a recordPropertyRule", async () => {
         destination = await helper.factories.destination();
         await expect(
           destination.setMapping({
