@@ -15,7 +15,7 @@
   "devDependencies": {
     "lerna": "4.0.0",
     "lerna-changelog": "2.2.0",
-    "npm-check-updates": "12.2.1"
+    "npm-check-updates": "12.5.2"
   },
   "scripts": {
     "preinstall": "./bin/preinstall",
