@@ -7,7 +7,6 @@ import {
   BelongsTo,
   BeforeSave,
 } from "sequelize-typescript";
-import { Op } from "sequelize";
 import { App } from "./App";
 import { Source } from "./Source";
 import { Destination } from "./Destination";
