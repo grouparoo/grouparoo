@@ -1,5 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
+import { AggregationMethod } from "../../../../dist";
 import {
   PluginConnection,
   GrouparooModel,
@@ -22,6 +23,7 @@ describe("tasks/recordProperties:enqueue", () => {
   let testPluginConnection: PluginConnection;
   let prevRecordPropertyMethod: RecordPropertyPluginMethod;
   let prevRecordPropertiesMethod: RecordPropertiesPluginMethod;
+  let prevGroupAggregations: AggregationMethod[];
   beforeAll(async () => {
     const testPlugin: GrouparooPlugin = api.plugins.plugins.find(
       (a) => a.name === "@grouparoo/test-plugin"
@@ -33,6 +35,9 @@ describe("tasks/recordProperties:enqueue", () => {
 
     prevRecordPropertyMethod = testPluginConnection.methods.recordProperty;
     prevRecordPropertiesMethod = testPluginConnection.methods.recordProperties;
+    prevGroupAggregations = testPluginConnection.groupAggregations;
+
+    testPluginConnection.groupAggregations = [];
   });
 
   function resetPlugin() {
@@ -42,6 +47,7 @@ describe("tasks/recordProperties:enqueue", () => {
 
   afterAll(() => {
     resetPlugin();
+    testPluginConnection.groupAggregations = prevGroupAggregations;
   });
 
   describe("recordProperties:enqueue", () => {

@@ -11,6 +11,7 @@ import {
   GrouparooPlugin,
   Source,
   Schedule,
+  AggregationMethod,
 } from "../../../../src";
 
 describe("tasks/recordProperties:enqueue", () => {
@@ -19,8 +20,7 @@ describe("tasks/recordProperties:enqueue", () => {
 
   let propertiesCount: number;
   let testPluginConnection: PluginConnection;
-  let prevRecordPropertyMethod: RecordPropertyPluginMethod;
-  let prevRecordPropertiesMethod: RecordPropertiesPluginMethod;
+  let prevGroupAggregations: AggregationMethod[];
 
   beforeAll(async () => {
     const testPlugin: GrouparooPlugin = api.plugins.plugins.find(
@@ -31,8 +31,12 @@ describe("tasks/recordProperties:enqueue", () => {
       (c) => c.name === "test-plugin-import"
     );
 
-    prevRecordPropertyMethod = testPluginConnection.methods.recordProperty;
-    prevRecordPropertiesMethod = testPluginConnection.methods.recordProperties;
+    prevGroupAggregations = testPluginConnection.groupAggregations;
+    testPluginConnection.groupAggregations = [];
+  });
+
+  afterAll(() => {
+    testPluginConnection.groupAggregations = prevGroupAggregations;
   });
 
   describe("recordProperties:enqueue", () => {
