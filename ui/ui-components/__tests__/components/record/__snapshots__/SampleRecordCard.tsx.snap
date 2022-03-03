@@ -82,7 +82,7 @@ exports[`SampleRecordCard should render with 1 record 1`] = `
                 >
                   <span>
                     <a>
-                      asdf
+                      fakeProperty
                     </a>
                   </span>
                   <span
@@ -115,7 +115,7 @@ exports[`SampleRecordCard should render with 1 record 1`] = `
           <p>
             <span>
               <a>
-                asdf
+                test-destination-name
               </a>
             </span>
             <br />
@@ -253,7 +253,7 @@ exports[`SampleRecordCard should render with 1 record in config mode 1`] = `
                 >
                   <span>
                     <a>
-                      asdf
+                      fakeProperty
                     </a>
                   </span>
                   <span
@@ -432,7 +432,7 @@ exports[`SampleRecordCard should render with 1 record that has a group and desti
                 >
                   <span>
                     <a>
-                      asdf
+                      fakeProperty
                     </a>
                   </span>
                   <span
@@ -503,7 +503,6 @@ exports[`SampleRecordCard should render with 1 record that has a group and desti
             
           <button
             class="btn btn-outline-success btn-sm"
-            disabled=""
             style="display: inline-flex; align-items: center; justify-content: center;"
             type="button"
           >

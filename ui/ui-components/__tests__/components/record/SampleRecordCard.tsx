@@ -5,10 +5,12 @@ import SampleRecordCard, {
 import { Models } from "../../../utils/apiData";
 import { asyncRenderWithContext } from "../../__utils__/renderWithContext";
 
+const destinationId = "asdf";
+
 jest.mock("next/router", () => {
   return {
     useRouter: () => ({
-      query: { destinationId: "asdf" },
+      query: { destinationId },
       asPath: "",
       pathname: "",
     }),
@@ -69,7 +71,7 @@ describe("SampleRecordCard", () => {
       id: "test-record",
       modelId,
       properties: {
-        asdf: {
+        fakeProperty: {
           id: "fake-property",
           sourceId: "some-source",
           configId: "fake-config-id",
@@ -100,8 +102,8 @@ describe("SampleRecordCard", () => {
         groups: [],
         destinations: [
           {
-            id: "asdf",
-            name: "asdf",
+            id: destinationId,
+            name: "test-destination-name",
           },
         ],
       };
@@ -129,7 +131,7 @@ describe("SampleRecordCard", () => {
       id: "test-record",
       modelId,
       properties: {
-        asdf: {
+        fakeProperty: {
           id: "fake-property",
           sourceId: "some-source",
           configId: "fake-config-id",
@@ -184,7 +186,7 @@ describe("SampleRecordCard", () => {
       id: "test-record",
       modelId,
       properties: {
-        asdf: {
+        fakeProperty: {
           id: "fake-property",
           sourceId: "some-source",
           configId: "fake-config-id",
@@ -211,7 +213,7 @@ describe("SampleRecordCard", () => {
       name: "test-group",
     };
     const destination: Models.DestinationType = {
-      id: "test-destination-id",
+      id: destinationId,
       modelId,
       name: "test-destination",
     };
