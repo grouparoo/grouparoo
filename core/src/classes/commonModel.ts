@@ -13,8 +13,13 @@ import validator from "validator";
 import * as uuid from "uuid";
 import { Op, Attributes, where, fn, col } from "sequelize";
 import { config } from "actionhero";
-import { WhereOptions } from "sequelize/types";
+import { WhereOptions, WhereOperators } from "sequelize/types";
 import { Errors } from "../modules/errors";
+import { Where } from "sequelize/types/utils";
+
+type PartialRecord<K extends keyof any, T> = {
+  [P in K]?: T;
+};
 
 export type CommonModelStatic<M> = (new () => M) &
   NonAbstract<typeof CommonModel>;
@@ -124,9 +129,9 @@ export abstract class CommonModel<T> extends Model {
   public static async ensureUnique<
     T extends CommonModel<T> & { name?: string; key?: string; state?: string }
   >(this: CommonModelStatic<T>, instance: T) {
-    function getUniqueIdentifier(instance: T): (keyof typeof instance)[] {
+    function getUniqueIdentifier(instance: T): (keyof T)[] {
       if (instance?.uniqueIdentifier) {
-        return instance.uniqueIdentifier as (keyof typeof instance)[];
+        return instance.uniqueIdentifier as (keyof T)[];
       } else {
         return instance?.name !== undefined
           ? ["name"]
@@ -142,7 +147,7 @@ export abstract class CommonModel<T> extends Model {
       return;
     }
 
-    const whereOpts: WhereOptions = {
+    const whereOpts: PartialRecord<keyof T, WhereOperators | Where> = {
       id: { [Op.ne]: instance.id },
     };
 
@@ -162,7 +167,7 @@ export abstract class CommonModel<T> extends Model {
     }
 
     const duplicates = await this.count({
-      where: whereOpts,
+      where: whereOpts as WhereOptions<T>,
     });
 
     if (duplicates > 0) {

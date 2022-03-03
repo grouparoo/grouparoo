@@ -4,8 +4,5 @@ set -e
 cd "$(dirname "$0")"
 cd ../..
 
-BRANCH=`git rev-parse --abbrev-ref HEAD`
-if [[ $BRANCH == 'main' ]]; then
-  # Update the pnpm lockfile with any changes to dependencies
-  npx pnpm install --prefer-frozen-lockfile --ignore-scripts
-fi
+# Update the pnpm lockfile with any changes to dependencies
+npx pnpm install --prefer-frozen-lockfile --ignore-scripts
