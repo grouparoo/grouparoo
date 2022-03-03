@@ -3,11 +3,11 @@ import { Mapping, App, Source, Property, GrouparooModel } from "../../src";
 
 describe("models/mapping", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
-  let model: GrouparooModel;
-  let app: App;
-  let source: Source;
 
   describe("mappingHelper", () => {
+    let model: GrouparooModel;
+    let app: App;
+    let source: Source;
     beforeAll(async () => {
       app = await helper.factories.app();
       ({ model } = await helper.factories.properties());
@@ -19,6 +19,12 @@ describe("models/mapping", () => {
         modelId: model.id,
       });
       await source.setOptions({ table: "users" });
+    });
+
+    afterAll(async () => {
+      await Source.truncate({ restartIdentity: true, cascade: true });
+      await Property.truncate({ restartIdentity: true, cascade: true });
+      await App.truncate({ restartIdentity: true, cascade: true });
     });
 
     test("a source can have a mapping set", async () => {
@@ -80,6 +86,48 @@ describe("models/mapping", () => {
       await expect(otherSource.setMapping({ id: "userId" })).rejects.toThrow(
         /cannot map/
       );
+    });
+  });
+
+  describe("Mapping's uniqueIdentifier", () => {
+    let app: App;
+    let source: Source;
+    let property: Property;
+    let propertyKey = "userId";
+    let remoteKey = "id";
+
+    beforeAll(async () => {
+      app = await helper.factories.app();
+      source = await helper.factories.source(app);
+      await source.setOptions({ table: "test-table" });
+      await source.bootstrapUniqueProperty({
+        key: propertyKey,
+        type: "integer",
+        mappedColumn: remoteKey,
+      });
+      await source.setMapping({ [remoteKey]: propertyKey });
+      await source.update({ state: "ready" });
+      property = await Property.findOne();
+    });
+
+    it("should not allow a duplicate with the same combinations of ownerId, ownerType, and remoteKey", async () => {
+      const mapping = await Mapping.create({
+        ownerId: source.id,
+        ownerType: "foo",
+        propertyId: 1,
+        remoteKey: propertyKey,
+      });
+
+      await expect(
+        Mapping.create({
+          ownerId: source.id,
+          ownerType: "foo",
+          propertyId: 1,
+          remoteKey: propertyKey,
+        })
+      ).rejects.toThrow(/is already in use in table Mapping/);
+
+      await mapping.destroy();
     });
   });
 });
