@@ -12,8 +12,8 @@ describe("module/MappingHelper", () => {
   let source: Source;
   let property: Property;
 
-  let propertyKey: string = "userId";
-  let remoteKey: string = "id";
+  let propertyKey = "userId";
+  let remoteKey = "id";
 
   beforeAll(async () => {
     app = await helper.factories.app();

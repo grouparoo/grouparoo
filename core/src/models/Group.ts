@@ -723,18 +723,6 @@ export class Group extends CommonModel<Group> {
   }
 
   @BeforeSave
-  static async ensureUniqueName(instance: Group) {
-    const count = await Group.count({
-      where: {
-        id: { [Op.ne]: instance.id },
-        name: instance.name,
-        state: { [Op.notIn]: ["draft", "deleted"] },
-      },
-    });
-    if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
-  }
-
-  @BeforeSave
   static async updateState(instance: Group) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
   }

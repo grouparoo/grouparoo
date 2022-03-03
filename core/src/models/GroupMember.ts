@@ -39,6 +39,8 @@ export class GroupMember extends CommonModel<GroupMember> {
   @BelongsTo(() => GrouparooRecord)
   record: GrouparooRecord;
 
+  uniqueIdentifier = ["recordId", "groupId"];
+
   async apiData() {
     return {
       recordId: this.recordId,
@@ -50,23 +52,6 @@ export class GroupMember extends CommonModel<GroupMember> {
   }
 
   // --- Class Methods --- //
-
-  @BeforeSave
-  static async ensureOneRecordPerGroup(instance: GroupMember) {
-    const existing = await GroupMember.scope(null).findOne({
-      where: {
-        id: { [Op.ne]: instance.id },
-        recordId: instance.recordId,
-        groupId: instance.groupId,
-      },
-    });
-    if (existing) {
-      throw new Error(
-        `There is already a GroupMember for ${instance.recordId} and ${instance.groupId}`
-      );
-    }
-  }
-
   @BeforeCreate
   static async ensureModelMatch(instance: GroupMember) {
     const group = await instance.$get("group", { scope: null });

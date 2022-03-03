@@ -57,6 +57,8 @@ export class Filter extends CommonModel<Filter> {
   @BelongsTo(() => Schedule)
   schedule: Schedule;
 
+  uniqueIdentifier = ["position", "ownerId"];
+
   async apiData() {
     return {
       id: this.id,

@@ -141,6 +141,8 @@ export class Source extends CommonModel<Source> {
   @BelongsTo(() => GrouparooModel)
   model: GrouparooModel;
 
+  uniqueIdentifier = ["appId", "name"];
+
   async getOptions(sourceFromEnvironment = true) {
     return OptionHelper.getOptions(this, sourceFromEnvironment);
   }
@@ -414,18 +416,6 @@ export class Source extends CommonModel<Source> {
           app.type
         }". Supported App types: ${pluginConnection.apps.join(", ")}.`
       );
-  }
-
-  @BeforeSave
-  static async ensureUniqueName(instance: Source) {
-    const count = await Source.count({
-      where: {
-        id: { [Op.ne]: instance.id },
-        name: instance.name,
-        state: { [Op.notIn]: ["draft", "deleted"] },
-      },
-    });
-    if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
   }
 
   @BeforeSave

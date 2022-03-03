@@ -32,7 +32,9 @@ describe("models/grouparooModel", () => {
     test("model names are unique", async () => {
       await GrouparooModel.create({ name: "test model", type: "profile" });
       const model = new GrouparooModel({ name: "test model", type: "profile" });
-      await expect(model.save()).rejects.toThrow(/Validation error/);
+      await expect(model.save()).rejects.toThrow(
+        /name \"test model\" is already in use in table GrouparooModel/
+      );
     });
 
     test("model types need to be valid", async () => {

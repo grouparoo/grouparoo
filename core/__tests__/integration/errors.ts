@@ -44,11 +44,11 @@ describe("errors", () => {
     );
 
     expect(team).toBeFalsy();
-    expect(error).toEqual({
-      message: "name must be unique",
-      code: "unique violation",
-      fields: ["name"],
-      sql: 'INSERT INTO "teams" ("id","name","locked","permissionAllRead","permissionAllWrite","createdAt","updatedAt") VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING "id","name","locked","permissionAllRead","permissionAllWrite","createdAt","updatedAt";',
-    });
+    expect(error.message).toMatch(/name "new team" is already in use/);
+    expect(error.model).toBe("Team");
+    expect(error.whereOpts.id).toBeTruthy();
+    expect(error.whereOpts.name).toBeTruthy();
+    expect(error.fields).toEqual(["name"]);
+    expect(error.code).toBe("unique violation");
   });
 });

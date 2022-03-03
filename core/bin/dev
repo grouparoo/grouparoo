@@ -22,7 +22,9 @@ for p in $GROUPAROO_PIDS; do
   sleep 1
 done
 
+export TS_NODE_LOG_ERROR=true
+
 "$NODEMON" -e js,jsx,ts,tsx --signal SIGTERM --ignore dist --watch ./src --watch ../plugins/**/*.js \
---exec "$TS_NODE" --transpile-only --log-error src/grouparoo.ts \
+--exec node --inspect -r 'ts-node/register/transpile-only' src/grouparoo.ts \
 || exit 0
 

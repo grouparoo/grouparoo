@@ -82,6 +82,8 @@ export class Permission extends CommonModel<Permission> {
   @BelongsTo(() => ApiKey)
   apiKey: ApiKey;
 
+  uniqueIdentifier = ["ownerId", "topic"];
+
   async apiData() {
     return {
       id: this.id,
@@ -97,22 +99,6 @@ export class Permission extends CommonModel<Permission> {
   @BeforeSave
   static async noUpdateIfLocked(instance: LockableHelper.LockableModel) {
     await LockableHelper.beforeSave(instance);
-  }
-
-  @BeforeSave
-  static async ensureOneOwnerIdPerTopic(instance: Permission) {
-    const existing = await Permission.scope(null).findOne({
-      where: {
-        id: { [Op.ne]: instance.id },
-        ownerId: instance.ownerId,
-        topic: instance.topic,
-      },
-    });
-    if (existing) {
-      throw new Error(
-        `There is already a Permission for ${instance.ownerId} and ${instance.topic}`
-      );
-    }
   }
 
   static async authorizeAction(

@@ -326,18 +326,6 @@ export class App extends CommonModel<App> {
   }
 
   @BeforeSave
-  static async ensureUniqueName(instance: App) {
-    const count = await App.count({
-      where: {
-        id: { [Op.ne]: instance.id },
-        name: instance.name,
-        state: { [Op.notIn]: ["draft", "deleted"] },
-      },
-    });
-    if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
-  }
-
-  @BeforeSave
   static async validateType(instance: App) {
     await instance.getPlugin(); // will throw if not found
   }

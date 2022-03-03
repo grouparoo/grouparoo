@@ -6,14 +6,16 @@ import {
   BeforeCreate,
   Length,
   BeforeBulkCreate,
+  BeforeSave,
 } from "sequelize-typescript";
 import { NonAbstract } from "sequelize-typescript/dist/shared/types";
 import validator from "validator";
 import * as uuid from "uuid";
-import { Op, Attributes } from "sequelize";
+import { Op, Attributes, where, fn, col } from "sequelize";
 import { config } from "actionhero";
+import { WhereOptions } from "sequelize/types";
+import { Errors } from "../modules/errors";
 
-type Columns<T> = Exclude<T, Function>;
 export type CommonModelStatic<M> = (new () => M) &
   NonAbstract<typeof CommonModel>;
 
@@ -27,6 +29,8 @@ export abstract class CommonModel<T> extends Model {
    * return the prefix for this type of class' id
    */
   abstract idPrefix(): string;
+
+  uniqueIdentifier?: string[];
 
   @Length({ min: 1, max: 191 })
   @Column({ primaryKey: true })
@@ -110,6 +114,67 @@ export abstract class CommonModel<T> extends Model {
       await this.update(values, {
         where: { id: { [Op.in]: queue.splice(0, max) } },
       });
+    }
+  }
+
+  /**
+   * Ensures there isn't a duplicate version of this instance based on name or key.
+   */
+  @BeforeSave
+  public static async ensureUnique<
+    T extends CommonModel<T> & { name?: string; key?: string; state?: string }
+  >(this: CommonModelStatic<T>, instance: T) {
+    function getUniqueIdentifier(instance: T): (keyof typeof instance)[] {
+      if (instance?.uniqueIdentifier) {
+        return instance.uniqueIdentifier as (keyof typeof instance)[];
+      } else {
+        return instance?.name !== undefined
+          ? ["name"]
+          : instance?.key !== undefined
+          ? ["key"]
+          : undefined;
+      }
+    }
+
+    const instanceUniqueIdentifiers = getUniqueIdentifier(instance);
+
+    if (!instanceUniqueIdentifiers) {
+      return;
+    }
+
+    const whereOpts: WhereOptions = {
+      id: { [Op.ne]: instance.id },
+    };
+
+    instanceUniqueIdentifiers.forEach((identifier) => {
+      if (typeof instance[identifier] === "string") {
+        whereOpts[identifier] = where(
+          fn("LOWER", col(String(identifier))),
+          String(instance[identifier]).toLowerCase()
+        );
+      } else {
+        whereOpts[identifier] = instance[identifier];
+      }
+    });
+
+    if (instance.state) {
+      whereOpts.state = { [Op.notIn]: ["draft", "deleted"] };
+    }
+
+    const duplicates = await this.count({
+      where: whereOpts,
+    });
+
+    if (duplicates > 0) {
+      // The unique key defaults to anything defined on the class, then name, then key.
+      throw new Errors.UniqueError(
+        instanceUniqueIdentifiers
+          .map((id) => `${id} "${instance[id]}" is already in use`)
+          .join(", ") + ` in table ${this.toString().split(" ")[1]}`,
+        this.toString().split(" ")[1],
+        instanceUniqueIdentifiers as string[],
+        whereOpts
+      );
     }
   }
 }

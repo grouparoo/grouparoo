@@ -447,7 +447,9 @@ describe("models/group", () => {
     test("it cannot add a member a second time", async () => {
       await expect(
         GroupMember.create({ recordId: record.id, groupId: group.id })
-      ).rejects.toThrow(/There is already a GroupMember/);
+      ).rejects.toThrow(
+        `recordId "${record.id}" is already in use, groupId "${group.id}" is already in use in table GroupMember`
+      );
 
       const records = await group.$get("records");
       expect(records.length).toBe(1);

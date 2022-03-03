@@ -62,7 +62,9 @@ describe("models/team", () => {
     test("team names are unique", async () => {
       await Team.create({ name: "test team" });
       const team = new Team({ name: "test team" });
-      await expect(team.save()).rejects.toThrow(/Validation error/);
+      await expect(team.save()).rejects.toThrow(
+        /name \"test team\" is already in use/
+      );
     });
 
     test("team names must be longer than 3 characters", async () => {

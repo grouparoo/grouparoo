@@ -717,18 +717,6 @@ export class Destination extends CommonModel<Destination> {
   }
 
   @BeforeSave
-  static async ensureUniqueName(instance: Destination) {
-    const count = await Destination.count({
-      where: {
-        id: { [Op.ne]: instance.id },
-        name: instance.name,
-        state: { [Op.notIn]: ["draft", "deleted"] },
-      },
-    });
-    if (count > 0) throw new Error(`name "${instance.name}" is already in use`);
-  }
-
-  @BeforeSave
   static async ensureOnlyOneDestinationPerAppWithSameSettingsAndGroup(
     instance: Destination
   ) {

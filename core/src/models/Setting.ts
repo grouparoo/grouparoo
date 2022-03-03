@@ -6,7 +6,6 @@ import {
   DataType,
   BeforeDestroy,
 } from "sequelize-typescript";
-import { Op } from "sequelize";
 import { ConfigWriter } from "../modules/configWriter";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
@@ -64,6 +63,8 @@ export class Setting extends CommonModel<Setting> {
 
   @Column
   variant: string;
+
+  uniqueIdentifier = ["key", "pluginName"];
 
   async apiData() {
     return {
@@ -134,22 +135,6 @@ export class Setting extends CommonModel<Setting> {
   @BeforeSave
   static async noUpdateIfLocked(instance: Setting) {
     await LockableHelper.beforeSave(instance);
-  }
-
-  @BeforeSave
-  static async ensureOneKeyPerPluginName(instance: Setting) {
-    const existing = await Setting.scope(null).findOne({
-      where: {
-        id: { [Op.ne]: instance.id },
-        pluginName: instance.pluginName,
-        key: instance.key,
-      },
-    });
-    if (existing) {
-      throw new Error(
-        `There is already a Setting for ${instance.pluginName} and ${instance.key}`
-      );
-    }
   }
 
   @BeforeDestroy
