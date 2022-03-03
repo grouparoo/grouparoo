@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { BrowserContext, Page } from "playwright";
 import { helper } from "@grouparoo/spec-helper";
 
-import AccountPageObject from "@grouparoo/ui-components/__tests__/__pageObjects__/account";
+import TeamAccountPageObject from "@grouparoo/ui-components/__tests__/__pageObjects__/account";
 import InitializePageObject from "@grouparoo/ui-components/__tests__/__pageObjects__/team/initialize";
 import SignInPageObject from "@grouparoo/ui-components/__tests__/__pageObjects__/session/sign-in";
 
@@ -54,7 +54,7 @@ test.describe("login and initialization flow", () => {
   test("it can initialize the first team", async () => {
     const teamInitializePage = new InitializePageObject(page);
     await teamInitializePage.navigate();
-    await teamInitializePage.fill({
+    await teamInitializePage.fillAndSubmit({
       companyName,
       firstName,
       lastName,
@@ -74,14 +74,15 @@ test.describe("login and initialization flow", () => {
   test("I can sign in", async () => {
     const signInPage = new SignInPageObject(page);
     await signInPage.navigate();
-    await signInPage.fill({ email, password });
+    await signInPage.fillAndSubmit({ email, password });
     await page.waitForNavigation({ url: "/setup" });
   });
+
   test("I can change account information and see it reflected in the sidebar", async () => {
     const updatedName = "Super Mario";
-    const accountPage = new AccountPageObject(page);
+    const accountPage = new TeamAccountPageObject(page);
     await accountPage.navigate();
-    await accountPage.fill({ firstName: updatedName });
+    await accountPage.fillAndSubmit({ firstName: updatedName });
 
     await expect(page.locator("#navigation-greeting")).toContainText(
       `Hello ${updatedName} `

@@ -1,14 +1,19 @@
 import { Page } from "playwright";
+import PageObject from "./PageObject";
 
-export default class AccountPageObject {
-  constructor(readonly page: Page) {}
-
-  async navigate() {
-    await this.page.goto("/account");
+export default class TeamAccountPageObject extends PageObject {
+  constructor(page: Page) {
+    super(page, "/account");
   }
 
-  async fill({ firstName }: { firstName: string }) {
-    await this.page.locator("#firstName").fill(firstName);
-    await this.page.locator('button[type="submit"]').click();
+  async fillAndSubmit({ firstName }: { firstName: string }) {
+    await this.fillTextInputs(
+      {
+        firstName,
+      },
+      "id"
+    );
+
+    return await this.clickAsyncButton<void>({ text: "Update" }, "**/account");
   }
 }

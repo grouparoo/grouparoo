@@ -38,6 +38,8 @@
   },
   "devDependencies": {
     "@grouparoo/core": "0.8.2-alpha.1",
+    "@grouparoo/csv": "0.8.2-alpha.1",
+    "@grouparoo/logger": "0.8.2-alpha.1",
     "@grouparoo/spec-helper": "0.8.2-alpha.1",
     "@grouparoo/ui-components": "0.8.2-alpha.1",
     "@playwright/test": "1.19.2",

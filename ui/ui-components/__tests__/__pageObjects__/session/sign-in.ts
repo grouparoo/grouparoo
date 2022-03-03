@@ -1,13 +1,12 @@
 import { Page } from "playwright";
+import PageObject from "../PageObject";
 
-export default class SignInPageObject {
-  constructor(readonly page: Page) {}
-
-  async navigate() {
-    await this.page.goto("/session/sign-in");
+export default class SignInPageObject extends PageObject {
+  constructor(page: Page) {
+    super(page, "/session/sign-in");
   }
 
-  async fill({
+  async fillAndSubmit({
     email,
     password,
     companyName,
@@ -16,15 +15,20 @@ export default class SignInPageObject {
     password?: string;
     companyName?: string;
   }) {
-    await this.page.locator('input[name="email"]').fill(email);
-    if (password) {
-      await this.page.locator('input[name="password"]').fill(password);
-      await this.page.locator('button:has-text("Sign In")').click();
-    }
+    await this.fillTextInputs({ email });
 
-    if (companyName) {
-      await this.page.locator('input[name="company"]').fill(companyName);
-      await this.page.locator('button:has-text("Register")').click();
+    if (password) {
+      await this.fillTextInputs({ password });
+      return await this.clickAsyncButton<void>(
+        { text: "Sign In" },
+        "**/session"
+      );
+    } else if (companyName) {
+      await this.fillTextInputs({ company: companyName });
+      return await this.clickAsyncButton<void>(
+        { text: "Register" },
+        "**/config/user"
+      );
     }
   }
 }

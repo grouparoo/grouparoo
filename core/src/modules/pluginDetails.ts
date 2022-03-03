@@ -4,6 +4,7 @@ import path from "path";
 import tar from "tar";
 import fetch from "isomorphic-fetch";
 import { PackageJson } from "type-fest";
+import pluginInjection from "../config/pluginInjection";
 
 type GrouparooPackageJson = PackageJson & {
   grouparoo?: {
@@ -142,6 +143,9 @@ export function getPluginManifest() {
 
   // plugins
   let pluginNames = [...(manifest?.parent?.grouparoo?.plugins || [])];
+  pluginNames = pluginNames.concat(
+    Object.keys(pluginInjection).filter((value) => !value.includes("ui-"))
+  );
 
   const availableUiPlugins = [
     "@grouparoo/ui-enterprise",

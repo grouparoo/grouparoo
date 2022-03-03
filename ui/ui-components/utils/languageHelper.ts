@@ -15,3 +15,7 @@ export function capitalize(s: string) {
     })
     .join(" ");
 }
+
+export const kebabCase = (str: string) => str.replace(/\ /g, "-").toLowerCase();
+
+export const snakeCase = (str: string) => str.replace(/\ /g, "_").toLowerCase();

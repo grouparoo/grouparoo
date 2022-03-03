@@ -27,6 +27,7 @@ import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 import { generateClient } from "../../../../../client/client";
 import { withServerErrorHandler } from "../../../../../utils/withServerErrorHandler";
 import { NextPageWithInferredProps } from "../../../../../utils/pageHelper";
+import { snakeCase } from "../../../../../utils/languageHelper";
 
 export const getServerSideProps = withServerErrorHandler(async (ctx) => {
   const client = generateClient(ctx);
@@ -392,6 +393,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
                     <span className="text-primary">{destination.name}</span>?
                   </h5>
                   <Form.Control
+                    id="destination_select_collection"
                     as="select"
                     required={true}
                     value={collection === "model" ? "__model" : groupId}
@@ -454,6 +456,9 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
                                 <tr key={`required-mapping-${idx}`}>
                                   <td>
                                     <Form.Control
+                                      id={`destination_select_required_mapping_${snakeCase(
+                                        key
+                                      )}`}
                                       as="select"
                                       required={true}
                                       disabled={loading}
@@ -463,7 +468,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
                                       }
                                     >
                                       <option disabled value={""}>
-                                        choose a Property
+                                        Choose a Property
                                       </option>
                                       {properties
                                         .filter((rule) =>
@@ -526,6 +531,9 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
                                   <tr key={`known-mapping-${idx}`}>
                                     <td>
                                       <Form.Control
+                                        id={`destination_select_known_mapping_${snakeCase(
+                                          key
+                                        )}`}
                                         as="select"
                                         disabled={loading}
                                         required={false}

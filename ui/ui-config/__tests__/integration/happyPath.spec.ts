@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { BrowserContext, Page } from "playwright";
 import { helper } from "@grouparoo/spec-helper";
 
-import AccountPageObject from "@grouparoo/ui-components/__tests__/__pageObjects__/account";
+import TeamAccountPageObject from "@grouparoo/ui-components/__tests__/__pageObjects__/account";
 import InitializePageObject from "@grouparoo/ui-components/__tests__/__pageObjects__/team/initialize";
 import SignInPageObject from "@grouparoo/ui-components/__tests__/__pageObjects__/session/sign-in";
 
@@ -63,7 +63,7 @@ test.describe("login and initialization flow", () => {
   test("it signs in a configUser", async () => {
     const signInPage = new SignInPageObject(page);
     await signInPage.navigate();
-    await signInPage.fill({ email, companyName });
+    await signInPage.fillAndSubmit({ email, companyName });
     await page.waitForNavigation({ url: "/setup" });
   });
   test("visiting '/' after login displays a link to the setup steps", async () => {
