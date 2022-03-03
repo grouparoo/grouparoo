@@ -584,6 +584,16 @@ describe("models/destination", () => {
         });
       });
 
+      test("mappings can only map to existing properties", async () => {
+        destination = await helper.factories.destination();
+        await expect(
+          destination.setMapping({
+            "primary-id": "userId",
+            local_first_name: "not_a_real_property",
+          })
+        ).rejects.toThrow(/cannot find property not_a_real_property/);
+      });
+
       test("mapping data is cached", async () => {
         destination = await helper.factories.destination();
         const cacheKey = `destination:${destination.id}:mappingOptions`;
