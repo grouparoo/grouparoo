@@ -16,10 +16,7 @@ import { config } from "actionhero";
 import { WhereOptions, WhereOperators } from "sequelize/types";
 import { Errors } from "../modules/errors";
 import { Where } from "sequelize/types/utils";
-
-type PartialRecord<K extends keyof any, T> = {
-  [P in K]?: T;
-};
+import { PartialRecord } from "../utils/types";
 
 export type CommonModelStatic<M> = (new () => M) &
   NonAbstract<typeof CommonModel>;
