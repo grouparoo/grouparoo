@@ -9,6 +9,7 @@ module.exports = {
   },
   testPathIgnorePatterns: [
     "<rootDir>/.next/",
+    "<rootDir>/__tests__/integration",
     "<rootDir>/__tests__/utils",
     "<rootDir>/__tests__/__mocks__",
   ],

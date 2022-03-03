@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "@grouparoo/core": "0.8.2-alpha.0",
+    "@playwright/test": "1.19.0",
     "@types/jest": "*",
     "@types/node": "16.*.*",
     "actionhero": "28.1.8",

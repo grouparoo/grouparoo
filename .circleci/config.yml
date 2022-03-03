@@ -35,7 +35,7 @@ jobs:
   build:
     resource_class: "medium+"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -188,7 +188,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -224,7 +224,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -279,7 +279,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -334,7 +334,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -389,7 +389,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -444,7 +444,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -499,7 +499,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -554,7 +554,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -609,7 +609,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -664,7 +664,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -719,7 +719,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -774,7 +774,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -810,7 +810,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -849,7 +849,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -888,7 +888,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -927,7 +927,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -941,10 +941,6 @@ jobs:
           password: $DOCKERHUB_PASSWORD
         environment:
           POSTGRES_PASSWORD: password
-      - image: selenium/standalone-chrome:latest
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - restore_cache:
@@ -982,13 +978,11 @@ jobs:
       - run:
           name: test
           command: cd ui/ui-components && ./node_modules/.bin/jest --ci --maxWorkers 2 --passWithNoTests
-          environment:
-            SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
   test-ui-community:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -1002,10 +996,6 @@ jobs:
           password: $DOCKERHUB_PASSWORD
         environment:
           POSTGRES_PASSWORD: password
-      - image: selenium/standalone-chrome:latest
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - restore_cache:
@@ -1041,15 +1031,16 @@ jobs:
           name: create test databases
           command: cd core && ./bin/create_test_databases
       - run:
+          name: install playwright dependencies
+          command: cd ui/ui-community && ./node_modules/.bin/playwright install && ./node_modules/.bin/playwright install-deps
+      - run:
           name: test
-          command: cd ui/ui-community && ./node_modules/.bin/jest --ci --maxWorkers 2 --passWithNoTests
-          environment:
-            SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
+          command: cd ui/ui-community && ./node_modules/.bin/playwright test
   test-ui-enterprise:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -1063,10 +1054,6 @@ jobs:
           password: $DOCKERHUB_PASSWORD
         environment:
           POSTGRES_PASSWORD: password
-      - image: selenium/standalone-chrome:latest
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - restore_cache:
@@ -1102,15 +1089,16 @@ jobs:
           name: create test databases
           command: cd core && ./bin/create_test_databases
       - run:
+          name: install playwright dependencies
+          command: cd ui/ui-enterprise && ./node_modules/.bin/playwright install && ./node_modules/.bin/playwright install-deps
+      - run:
           name: test
-          command: cd ui/ui-enterprise && ./node_modules/.bin/jest --ci --maxWorkers 2 --passWithNoTests
-          environment:
-            SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
+          command: cd ui/ui-enterprise && ./node_modules/.bin/playwright test
   test-ui-config:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -1124,10 +1112,64 @@ jobs:
           password: $DOCKERHUB_PASSWORD
         environment:
           POSTGRES_PASSWORD: password
-      - image: selenium/standalone-chrome:latest
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: install playwright dependencies
+          command: cd ui/ui-config && ./node_modules/.bin/playwright install && ./node_modules/.bin/playwright install-deps
+      - run:
+          name: test
+          command: cd ui/ui-config && ./node_modules/.bin/playwright test
+  test-ui-config-fs:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
     steps:
       - checkout
       - restore_cache:
@@ -1165,13 +1207,11 @@ jobs:
       - run:
           name: test
           command: cd ui/ui-config && ./node_modules/.bin/jest --ci --maxWorkers 2 --passWithNoTests
-          environment:
-            SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
   test-staging-community:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -1233,7 +1273,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -1295,7 +1335,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -1350,7 +1390,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -1405,7 +1445,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -1460,7 +1500,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -1515,7 +1555,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -1570,7 +1610,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -1635,7 +1675,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -1690,7 +1730,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -1745,7 +1785,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -1800,7 +1840,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -1855,7 +1895,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -1910,7 +1950,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -1965,7 +2005,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -2020,7 +2060,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -2075,7 +2115,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -2130,7 +2170,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -2185,7 +2225,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -2240,7 +2280,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -2295,7 +2335,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -2350,7 +2390,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -2405,7 +2445,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -2460,7 +2500,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -2515,7 +2555,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -2570,7 +2610,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -2625,7 +2665,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -2680,7 +2720,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -2739,7 +2779,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -2806,7 +2846,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -2861,7 +2901,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -2916,7 +2956,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -2971,7 +3011,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -3026,7 +3066,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -3081,7 +3121,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -3136,7 +3176,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -3195,7 +3235,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -3250,7 +3290,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -3305,7 +3345,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -3360,7 +3400,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -3415,7 +3455,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -3470,7 +3510,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -3525,7 +3565,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -3580,7 +3620,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -3635,7 +3675,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -3690,7 +3730,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -3745,7 +3785,7 @@ jobs:
     environment:
       GROUPAROO_TELEMETRY_ENABLED: "false"
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -3779,7 +3819,7 @@ jobs:
           command: cd cli && pnpm test
   complete:
     docker:
-      - image: circleci/node:16.8.0
+      - image: cimg/node:16.8.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -3887,6 +3927,11 @@ workflows:
           requires:
             - build
       - test-ui-config:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-ui-config-fs:
           filters:
             <<: *ignored-branches
           requires:
@@ -4149,6 +4194,7 @@ workflows:
             - test-ui-community
             - test-ui-enterprise
             - test-ui-config
+            - test-ui-config-fs
             - test-staging-community
             - test-staging-enterprise
             - test-plugin-airtable

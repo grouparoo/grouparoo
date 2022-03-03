@@ -32,11 +32,8 @@
       - run:
           name: create test databases
           command: cd core && ./bin/create_test_databases
-      - run:
-          name: install playwright dependencies
-          command: cd {{{relative_path}}}/{{{test_section}}} && ./node_modules/.bin/playwright install && ./node_modules/.bin/playwright install-deps
-{{{custom_steps}}} 
+{{{custom_steps}}}
       - run:
           name: test
-          command: cd {{{relative_path}}}/{{{test_section}}} && ./node_modules/.bin/playwright test
+          command: cd {{{relative_path}}}/{{{test_section}}} && ./node_modules/.bin/jest --ci --maxWorkers 2 --passWithNoTests
 {{{custom_test}}}

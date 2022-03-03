@@ -25,7 +25,7 @@
     "start": "next start --port $PORT",
     "dev": "next dev",
     "pretest": "npm run lint && npm run prepare",
-    "test": "jest",
+    "test": "jest && playwright test",
     "lint": "prettier --check pages __tests__"
   },
   "dependencies": {
@@ -43,6 +43,7 @@
     "@grouparoo/core": "0.8.2-alpha.0",
     "@grouparoo/spec-helper": "0.8.2-alpha.0",
     "@grouparoo/ui-components": "0.8.2-alpha.0",
+    "@playwright/test": "1.19.0",
     "@types/jest": "*",
     "@types/react": "*",
     "@types/react-dom": "*",
@@ -51,7 +52,7 @@
     "eslint": "8.10.0",
     "eslint-config-next": "12.1.0",
     "jest": "27.5.1",
-    "jest-environment-webdriver": "grouparoo/jest-webdriver#jest-v27-webdriver",
+    "playwright": "1.19.0",
     "prettier": "2.5.1",
     "prop-types": "15.8.1",
     "ts-jest": "27.1.3",

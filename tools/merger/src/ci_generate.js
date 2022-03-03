@@ -5,7 +5,7 @@ const Mustache = require("mustache");
 const { allPackagePaths, allPluginPaths } = require("../../shared/packages");
 const execSync = require("../../shared/exec");
 
-const docker_image = "circleci/node:16.8.0";
+const docker_image = "cimg/node:16.8.0";
 
 module.exports.cmd = async function (vargs) {
   const instance = new Generator(vargs);
@@ -125,7 +125,7 @@ class Generator {
 
   addUiComponents() {
     this.jobList.push({
-      type: "ui",
+      type: "ui-jest",
       test_section: "ui-components",
       job_name: `test-ui-components`,
       relative_path: `ui`,
@@ -158,6 +158,14 @@ class Generator {
       type: "ui",
       test_section: "ui-config",
       job_name: `test-ui-config`,
+      relative_path: `ui`,
+      name: "ui",
+    });
+
+    this.jobList.push({
+      type: "ui-jest",
+      test_section: "ui-config",
+      job_name: `test-ui-config-fs`,
       relative_path: `ui`,
       name: "ui",
     });
