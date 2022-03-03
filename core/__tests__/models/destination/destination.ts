@@ -553,6 +553,26 @@ describe("models/destination", () => {
         );
       });
 
+      test("providing an invalid value for an option with set options will result in an error", async () => {
+        destination = new Destination({
+          name: "new destination - bad options",
+          type: "test-plugin-export",
+          appId: app.id,
+          modelId: model.id,
+        });
+        await destination.save();
+        expect(destination.id).toBeTruthy();
+
+        await expect(
+          destination.setOptions({
+            table: "users_out",
+            tableWithOptions: "bad_table_id",
+          })
+        ).rejects.toThrow(
+          '"bad_table_id" is not a valid value for test-plugin-export destination option "tableWithOptions"'
+        );
+      });
+
       test("required mappings must be included in the mappings", async () => {
         destination = await helper.factories.destination();
         await expect(
