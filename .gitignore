@@ -39,6 +39,7 @@ web/out
 core/public/client-js/*
 ui/*/public/client-js/*
 ui/*/__tests__/playwright-report/*
+ui/playwright-report/*
 
 # Builds
 *.tgz
