@@ -150,7 +150,7 @@ export function GrouparooErrorSerializer(error: Errors.GrouparooError) {
   }
 
   let message = "";
-  let code = error.code?.toString() ?? undefined;
+  let code = error.code?.toString();
   let fields: string[] = [];
   let sql = error.sql || null;
 

@@ -52,7 +52,7 @@ describe("models/mapping", () => {
     test("a source cannot have 2 mappings with the same remoteKey", async () => {
       await expect(
         source.setMapping({ email: "userId", accountId: "userId" })
-      ).rejects.toThrow(/already in use in table Mapping/);
+      ).rejects.toThrow(/Validation error/);
     });
 
     test("a source cannot have 2 mappings with the same recordId", async () => {
@@ -66,7 +66,7 @@ describe("models/mapping", () => {
           propertyId: userId.id,
           remoteKey: "bar",
         })
-      ).rejects.toThrow(/already in use in table Mapping/);
+      ).rejects.toThrow(/Validation error/);
     });
 
     test("a source cannot be mapped to a property of another model", async () => {
