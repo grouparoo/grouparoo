@@ -144,7 +144,7 @@ export abstract class CommonModel<T> extends Model {
       return;
     }
 
-    const whereOpts: PartialRecord<keyof T, WhereOperators | Where> = {
+    const whereOpts: WhereOptions<T> = {
       id: { [Op.ne]: instance.id },
     };
 
