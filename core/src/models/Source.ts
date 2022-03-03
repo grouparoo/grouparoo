@@ -145,14 +145,14 @@ export class Source extends CommonModel<Source> {
     return OptionHelper.getOptions(this, sourceFromEnvironment);
   }
 
-  async setOptions(options: SimpleSourceOptions, externallyValidate = true) {
-    return OptionHelper.setOptions(this, options, externallyValidate);
-  }
+  async setOptions(
+    options: SimpleSourceOptions,
+    externallyValidate = true,
+    validateProperties = true
+  ) {
+    await OptionHelper.setOptions(this, options, externallyValidate);
 
-  async afterSetOptions(hasChanges: boolean) {
-    if (hasChanges) {
-      await Source.invalidateCache();
-
+    if (validateProperties) {
       // check if properties are still valid
       const properties = await this.$get("properties");
       for (const property of properties) {
@@ -163,6 +163,10 @@ export class Source extends CommonModel<Source> {
         }
       }
     }
+  }
+
+  async afterSetOptions(hasChanges: boolean) {
+    if (hasChanges) await Source.invalidateCache();
   }
 
   async validateOptions(
