@@ -162,7 +162,7 @@ export class ApiKey extends CommonModel<ApiKey> {
   }
 
   @AfterDestroy
-  static async deletePermissions(instance: ApiKey, {}) {
+  static async deletePermissions(instance: ApiKey) {
     return Permission.destroy({
       where: { ownerId: instance.id },
     });

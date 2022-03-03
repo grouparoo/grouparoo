@@ -152,7 +152,7 @@ export function GrouparooErrorSerializer(error: Errors.GrouparooError) {
   let message = "";
   let code = error.code?.toString();
   let fields: string[] = [];
-  let sql = error.sql || null;
+  const sql = error.sql || null;
 
   if (error.errors) {
     // a Sequelize Error https://sequelize.org/master/identifiers.html#errors

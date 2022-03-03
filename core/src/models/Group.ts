@@ -198,7 +198,7 @@ export class Group extends CommonModel<Group> {
       rulesWithKey.push({
         key: property ? property.key : rule.recordColumn,
         topLevel: property ? false : true,
-        type: type,
+        type,
         operation: {
           op: rule.op,
           description: PropertyOpsDictionary[type].find(
@@ -592,7 +592,7 @@ export class Group extends CommonModel<Group> {
         property.isArray &&
         ["ne", "notLike", "notILike"].includes(operation.op)
       ) {
-        let reverseMatchWhere: {
+        const reverseMatchWhere: {
           [Op.and]: (Sequelize.Utils.Where | WhereAttributeHash)[];
         } = {
           [Op.and]: [{ propertyId: property.id }],

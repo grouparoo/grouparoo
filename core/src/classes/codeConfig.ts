@@ -312,7 +312,7 @@ export function validateConfigObjects(
   configObjects: AnyConfigurationObject[];
   errors: string[];
 } {
-  let errors: string[] = [];
+  const errors: string[] = [];
   const idTypes: { [type: string]: string[] } = {};
 
   for (const configObject of configObjects) {
@@ -402,7 +402,7 @@ export async function getParentIds(
   // @ts-ignore
   if (configObject["options"]) {
     // @ts-ignore
-    for (const [k, v] of Object.entries(configObject["options"])) {
+    for (const [, v] of Object.entries(configObject["options"])) {
       if (
         cleanClass(configObject) === "property" &&
         typeof v === "string" &&

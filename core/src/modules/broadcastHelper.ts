@@ -11,5 +11,7 @@ export async function broadcastModel<T>(
       model: await instance.apiData(),
       verb,
     });
-  } catch {}
+  } catch {
+    // Ignore error
+  }
 }

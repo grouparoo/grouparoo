@@ -78,7 +78,7 @@ export class DestinationConnectionApps extends AuthenticatedAction {
     const apps = await App.findAll();
     const existingAppTypes = apps.map((a) => a.type);
 
-    let importConnections: PluginConnection[] = [];
+    const importConnections: PluginConnection[] = [];
     api.plugins.plugins.forEach((plugin: GrouparooPlugin) => {
       if (plugin.connections) {
         plugin.connections

@@ -117,7 +117,7 @@ export class Permission extends CommonModel<Permission> {
       );
     } else {
       permission = await Permission.findOne({
-        where: { ownerId: instance.id, topic: topic },
+        where: { ownerId: instance.id, topic },
       });
     }
 

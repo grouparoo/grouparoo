@@ -265,7 +265,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
       { type: "link", title: "About", href: "/about" },
     ];
 
-    let platformItems: NavigationItem[] = [];
+    const platformItems: NavigationItem[] = [];
 
     let bottomMenuItems: NavigationItem[] = [];
     const teamsCount = await Team.count();

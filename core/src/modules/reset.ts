@@ -28,6 +28,7 @@ export namespace Reset {
    * * clears the redis cache
    * * clears resque
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   export async function cluster(callerId: string) {
     const counts: { [model: string]: number } = {};
 
@@ -74,6 +75,7 @@ export namespace Reset {
    * * clears the redis cache
    * * clears resque
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   export async function data(callerId: string) {
     await GrouparooRecord.truncate();
     await RecordProperty.truncate();
@@ -91,6 +93,7 @@ export namespace Reset {
    * * clears the redis cache
    * * clears resque
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   export async function cache(callerId: string) {
     await clearLocalCaches();
     await clearRedis();

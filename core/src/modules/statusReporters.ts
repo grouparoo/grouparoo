@@ -1,6 +1,5 @@
 import os from "os";
 import { api, config, task } from "actionhero";
-import Sequelize from "sequelize";
 import Moment from "moment";
 import { getCoreVersion, getPluginManifest } from "../modules/pluginDetails";
 import { Op } from "sequelize";
@@ -514,7 +513,7 @@ export namespace StatusReporters {
  * This is useful for when you have 2 sources using the same app, and you want to report on the app's totals
  */
 function mergeMetrics(metrics: StatusMetric[]) {
-  var mergedMetrics: StatusMetric[] = [];
+  const mergedMetrics: StatusMetric[] = [];
   metrics.forEach((item, idx) => {
     const found = mergedMetrics.some((el, i) => {
       if (i === idx) return false;
@@ -528,7 +527,7 @@ function mergeMetrics(metrics: StatusMetric[]) {
       mergedMetrics.push(item);
     } else if (idx !== null) {
       for (const k in Object.keys(item)) {
-        if (item.hasOwnProperty(k)) {
+        if (Object.prototype.hasOwnProperty.call(item, k)) {
           mergedMetrics[idx].count = +item.count;
         }
       }

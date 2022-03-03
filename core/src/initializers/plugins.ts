@@ -87,7 +87,7 @@ export class Plugins extends Initializer {
   }
 
   validatePlugin(plugin: GrouparooPlugin) {
-    let errors: string[] = [];
+    const errors: string[] = [];
 
     if (!plugin.name) {
       errors.push(`name is required for a Grouparoo Plugin`);

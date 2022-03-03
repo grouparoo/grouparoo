@@ -13,7 +13,7 @@ import {
   AfterCreate,
   ForeignKey,
 } from "sequelize-typescript";
-import { chatRoom, log } from "actionhero";
+import { log } from "actionhero";
 import { Schedule } from "./Schedule";
 import { Import } from "./Import";
 import { Group } from "./Group";
@@ -306,11 +306,11 @@ export class Run extends CommonModel<Run> {
 
     // properties are ok to enqueue if they are in draft at the time.  Options update before state
     if (instance.creatorType === "group") {
-      let creator = await Group.findById(instance.creatorId);
+      const creator = await Group.findById(instance.creatorId);
       if (creator.state === "draft") ready = false;
     }
     if (instance.creatorType === "schedule") {
-      let creator = await Schedule.findById(instance.creatorId);
+      const creator = await Schedule.findById(instance.creatorId);
       if (creator.state === "draft") ready = false;
     }
 

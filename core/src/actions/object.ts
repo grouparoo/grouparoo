@@ -33,7 +33,7 @@ export class ObjectFind extends AuthenticatedAction {
       "teamMembers",
     ];
 
-    const id = params.id.replace(/[^a-zA-Z0-9-_\/.]/g, "");
+    const id = params.id.replace(/[^a-zA-Z0-9-_/.]/g, "");
 
     const query =
       `SELECT id, "tableName" FROM (` +

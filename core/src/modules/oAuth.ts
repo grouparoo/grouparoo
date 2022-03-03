@@ -34,41 +34,37 @@ export class oAuthAccessTokenGetter {
   }
 
   private async requestAccessToken() {
-    try {
-      for (
-        let retries = 3;
-        retries > 0 && this.isAccessTokenExpired();
-        retries--
-      ) {
-        const url = `${config.oAuth.host}/api/v1/oauth/${this.providerName}/client/refresh`;
-        const response = await fetch(url, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ refreshToken: this.refreshToken }),
-        });
+    for (
+      let retries = 3;
+      retries > 0 && this.isAccessTokenExpired();
+      retries--
+    ) {
+      const url = `${config.oAuth.host}/api/v1/oauth/${this.providerName}/client/refresh`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ refreshToken: this.refreshToken }),
+      });
 
-        if (!response.ok) {
-          const authErrorResponse = await response.json();
-          if (authErrorResponse.error?.message) {
-            log(authErrorResponse.error?.message, "error");
-          }
-          // Try again
-          continue;
+      if (!response.ok) {
+        const authErrorResponse = await response.json();
+        if (authErrorResponse.error?.message) {
+          log(authErrorResponse.error?.message, "error");
         }
-
-        const {
-          token,
-          expirationSeconds = 0,
-        }: {
-          token: string;
-          expirationSeconds: number;
-        } = await response.json();
-
-        this.accessToken = token;
-        this.expirationDate = Date.now() + expirationSeconds * 1000;
+        // Try again
+        continue;
       }
-    } catch (e) {
-      throw e;
+
+      const {
+        token,
+        expirationSeconds = 0,
+      }: {
+        token: string;
+        expirationSeconds: number;
+      } = await response.json();
+
+      this.accessToken = token;
+      this.expirationDate = Date.now() + expirationSeconds * 1000;
     }
 
     if (this.isAccessTokenExpired()) {

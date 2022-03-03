@@ -254,7 +254,7 @@ export class PropertyFilterOptions extends AuthenticatedAction {
 
     const options = await FilterHelper.pluginFilterOptions(property);
     return {
-      options: options,
+      options,
       optionDescriptions: await buildPropertyFilterDictionary(options),
     };
   }

@@ -69,7 +69,9 @@ export namespace Status {
         let parsed: StatusObject;
         try {
           parsed = JSON.parse(v);
-        } catch {}
+        } catch {
+          // Ignore error
+        }
         return parsed;
       })
       .filter(

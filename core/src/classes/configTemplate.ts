@@ -103,7 +103,7 @@ export abstract class ConfigTemplate {
       .toLowerCase()
       .replace(/"/gi, "")
       .replace(/'/gi, "")
-      .replace(/[^a-zA-Z0-9-_\/.]/gi, "_");
+      .replace(/[^a-zA-Z0-9-_/.]/gi, "_");
   }
 
   formatId(s: string) {

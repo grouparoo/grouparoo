@@ -66,8 +66,8 @@ export namespace DestinationOps {
     collection: Destination["collection"],
     collectionId?: string
   ) {
-    let oldRun: Run;
-    let newRun: Run;
+    let oldRun: Run = undefined;
+    let newRun: Run = undefined;
 
     if (
       destination.collection === collection &&
@@ -355,7 +355,7 @@ export namespace DestinationOps {
 
     for (const record of records) {
       let mappedOldRecordProperties: ExportRecordPropertiesWithType = {};
-      let mappedNewRecordProperties: ExportRecordPropertiesWithType = {};
+      const mappedNewRecordProperties: ExportRecordPropertiesWithType = {};
       let oldGroupNames: string[] = [];
       let newGroupNames: string[] = [];
 
@@ -557,7 +557,7 @@ export namespace DestinationOps {
       for (const _export of _exports) {
         const { recordId } = _export;
         try {
-          let { success, retryDelay, error } = await method({
+          const { success, retryDelay, error } = await method({
             connection,
             app,
             appId,
@@ -695,7 +695,7 @@ export namespace DestinationOps {
       }
     }
     if (exportResult?.errors) {
-      for (const error of exportResult?.errors) {
+      for (const error of exportResult.errors) {
         logExportError(destination, error);
       }
     }
@@ -774,7 +774,7 @@ export namespace DestinationOps {
       recordsWithErrors[recordId] = errorWithId;
     }
 
-    const remainingRecordsWithErrors = Object.assign({}, recordsWithErrors);
+    const remainingRecordsWithErrors = { ...recordsWithErrors };
 
     const retryexportIds: string[] = [];
     for (const _export of _exports.filter(

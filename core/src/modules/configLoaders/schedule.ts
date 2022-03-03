@@ -20,7 +20,7 @@ export async function loadSchedule(
 ): Promise<IdsByClass> {
   let isNew = false;
 
-  if (configObject.hasOwnProperty("confirmProfiles")) {
+  if (Object.prototype.hasOwnProperty.call(configObject, "confirmProfiles")) {
     Deprecation.warnChanged(
       "config",
       "schedule.confirmProfiles",

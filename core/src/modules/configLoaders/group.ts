@@ -48,7 +48,7 @@ export async function loadGroup(
   await group.update({ state: "ready" });
 
   if (configObject.rules) {
-    let groupRulesWithKey: GroupRuleWithKey[] = [];
+    const groupRulesWithKey: GroupRuleWithKey[] = [];
 
     const rules = [...configObject.rules];
     const calculatesWithDate = ["lte", "gt", "lt", "gte", "eq", "ne"];
@@ -79,7 +79,7 @@ export async function loadGroup(
         }
       }
 
-      let ruleWithKey: GroupRuleWithKey = {
+      const ruleWithKey: GroupRuleWithKey = {
         key: rule.key,
         type: rule.type,
         operation: { op: rule.op },
@@ -100,7 +100,7 @@ export async function loadGroup(
   }
 
   //@ts-ignore
-  if (!!configObject["type"]) {
+  if (configObject["type"]) {
     //@ts-ignore
     if (configObject["type"] === "manual") {
       throw new Error(

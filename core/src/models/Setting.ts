@@ -32,10 +32,11 @@ export class Setting extends CommonModel<Setting> {
   get value(): string {
     const rawValue = this.getDataValue("value").toString();
     switch (this.type) {
-      case "boolean":
+      case "boolean": {
         // SQLite returns booleans as numbers
         const booleanValue = rawValue === "true" || rawValue === "1";
         return booleanValue ? "true" : "false";
+      }
       default:
         return rawValue;
     }

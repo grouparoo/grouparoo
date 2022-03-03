@@ -103,7 +103,7 @@ export async function loadConfigObjects(
   const globSearch = path.join(configDir, "**", "+(*.json|*.js)");
   const configFiles = glob.sync(globSearch);
   let configObjects: AnyConfigurationObject[] = [];
-  let errors: string[] = [];
+  const errors: string[] = [];
   for (const file of configFiles) {
     const objects = await loadConfigFile(file);
 
@@ -221,7 +221,7 @@ export async function processConfigObjects(
 
   for (const configObject of configObjects) {
     if (Object.keys(configObject).length === 0) continue;
-    let klass = configObject?.class?.toLowerCase();
+    const klass = configObject?.class?.toLowerCase();
     let ids: IdsByClass;
 
     const externallyValidate = await shouldExternallyValidate(

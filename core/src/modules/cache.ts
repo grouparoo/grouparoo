@@ -159,7 +159,7 @@ export const objectCache: ObjectCacheMethod = async (
   const valueKey = `${baseKey}:value`;
   const lockKey = `${baseKey}:lock`;
 
-  let { value, cached } = await getCacheValue({ valueKey, read });
+  const { value, cached } = await getCacheValue({ valueKey, read });
   if (cached) {
     return value;
   }
@@ -169,7 +169,7 @@ export const objectCache: ObjectCacheMethod = async (
     if (lock) {
       releaseLock = (await waitForLock(lockKey)).releaseLock;
 
-      let { value, cached } = await getCacheValue({ valueKey, read });
+      const { value, cached } = await getCacheValue({ valueKey, read });
       if (cached) {
         return value;
       }

@@ -134,7 +134,7 @@ export default {
     }
   },
 
-  down: async function () {
+  async down() {
     throw new Error("irreversible migration");
   },
 };

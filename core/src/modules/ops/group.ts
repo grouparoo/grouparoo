@@ -197,7 +197,6 @@ export namespace GroupOps {
     highWaterMark: number = null,
     destinationId?: string
   ) {
-    let records: RecordMultipleAssociationShim[];
     const rules = await group.getRules();
 
     // if there are no group rules, there's nothing to do
@@ -217,7 +216,7 @@ export namespace GroupOps {
       where.createdAt[Op.and].push({ [Op.gte]: highWaterMark });
     }
 
-    records = await RecordMultipleAssociationShim.findAll({
+    const records = await RecordMultipleAssociationShim.findAll({
       attributes: ["id", "createdAt"],
       where,
       include,
@@ -415,7 +414,7 @@ export namespace GroupOps {
       ],
       group: ["groupId"],
       order: [[Sequelize.col("newestMemberAdded"), "desc"]],
-      limit: limit,
+      limit,
     });
 
     const groupIds = newGroupMembers.map((mem) => mem.groupId);
@@ -439,7 +438,7 @@ export namespace GroupOps {
 
     return {
       groups,
-      newestMembersAdded: newestMembersAdded,
+      newestMembersAdded,
     };
   }
 }

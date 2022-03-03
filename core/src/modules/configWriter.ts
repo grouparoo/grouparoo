@@ -65,7 +65,7 @@ export namespace ConfigWriter {
       // replace spaces with underscore
       .replace(/[ ]/g, separator)
       // replace multiple word separators with an underscore
-      .replace(/[\-_ ][\-_ ]+/g, separator);
+      .replace(/[-_ ][-_ ]+/g, separator);
     if (id.length === 0) throw new Error("Could not generate ID from name.");
     return id;
   }
@@ -99,7 +99,7 @@ export namespace ConfigWriter {
   }
 
   export async function getConfigObjects(): Promise<WritableConfigObject[]> {
-    let objects: { filePath: string; object: any }[] = [];
+    const objects: { filePath: string; object: any }[] = [];
 
     const queryParams = { where: { locked: null as string } };
     const queries: {
@@ -128,9 +128,9 @@ export namespace ConfigWriter {
       queries["settings"] = [clusterNameSetting];
     }
 
-    for (let [type, instances] of Object.entries(queries)) {
+    for (const [type, instances] of Object.entries(queries)) {
       if (!instances) continue;
-      for (let instance of instances) {
+      for (const instance of instances) {
         const object = await instance.getConfigObject();
         // Don't process arrays that have objects missing id values.
         if (Array.isArray(object) && object.filter((o) => !o.id).length > 0) {
@@ -211,7 +211,7 @@ export namespace ConfigWriter {
   // ---------------------------------------- | File Writers
 
   async function deleteFiles() {
-    for (let { absFilePath } of CONFIG_FILE_CACHE) {
+    for (const { absFilePath } of CONFIG_FILE_CACHE) {
       if (fs.existsSync(absFilePath)) fs.unlinkSync(absFilePath);
     }
     resetConfigFileCache();
@@ -235,7 +235,7 @@ export namespace ConfigWriter {
   }
 
   async function writeFiles(configObjects: WritableConfigObject[]) {
-    for (let configObject of configObjects) {
+    for (const configObject of configObjects) {
       await writeFile(configObject);
     }
   }

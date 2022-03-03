@@ -15,7 +15,7 @@ export async function spawnPromise(
   }: { exitCode: number; stdout: string; stderr: string } = await new Promise(
     (resolve) => {
       let stdout = "";
-      let stderr = "";
+      const stderr = "";
 
       chatRoom.broadcast({}, "system:cli", {
         type: "stdout",

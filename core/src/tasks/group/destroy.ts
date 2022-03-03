@@ -31,7 +31,7 @@ export class GroupDestroy extends CLSTask {
       throw error;
     }
 
-    let run = await Run.findOne({
+    const run = await Run.findOne({
       where: { creatorId: group.id, creatorType: "group", state: "running" },
     });
 

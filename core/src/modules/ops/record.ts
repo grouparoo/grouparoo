@@ -258,6 +258,7 @@ export namespace RecordOps {
     recordProperties: {
       [key: string]: (string | number | boolean | Date)[] | any;
     }[],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     toLock = true,
     ignoreMissingProperties = false
   ) {
@@ -323,7 +324,7 @@ export namespace RecordOps {
 
         // add new GrouparooRecord Properties to batch
         let position = 0;
-        buildQueries: for (const value of h[key]) {
+        for (const value of h[key]) {
           if (position > 0 && !property.isArray) {
             throw new Error(
               "cannot set multiple record properties for a non-array property"
@@ -337,7 +338,7 @@ export namespace RecordOps {
               p.position === position
           );
 
-          let { rawValue, invalidValue, invalidReason } =
+          const { rawValue, invalidValue, invalidReason } =
             await RecordPropertyOps.buildRawValue(
               value,
               property.type,
@@ -464,7 +465,7 @@ export namespace RecordOps {
     });
 
     const clearRecordPropertyIds = [];
-    for (let recordProperty of pendingProperties) {
+    for (const recordProperty of pendingProperties) {
       const property = await PropertiesCache.findOneWithCache(
         recordProperty.propertyId,
         record.modelId,
@@ -980,8 +981,8 @@ export namespace RecordOps {
   export async function getRecordsToDestroy() {
     const limit: number = config.batchSize.imports;
     let recordsToDestroy: GrouparooRecord[] = [];
-    let models: GrouparooModel[] = await GrouparooModel.scope(null).findAll();
-    let modelIdsToClear: string[] = [];
+    const models: GrouparooModel[] = await GrouparooModel.scope(null).findAll();
+    const modelIdsToClear: string[] = [];
 
     for (const model of models) {
       const propertiesByModel: Property[] =
@@ -1001,7 +1002,7 @@ export namespace RecordOps {
       // It's safe to assume that if there are no Properties, we aren't exporting
       recordsToDestroy = await GrouparooRecord.findAll({
         attributes: ["id"],
-        where: { state: ["ready", "deleted"], modelId: modelId },
+        where: { state: ["ready", "deleted"], modelId },
         limit,
       });
     }

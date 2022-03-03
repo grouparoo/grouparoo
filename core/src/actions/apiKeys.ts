@@ -67,7 +67,7 @@ export class ApiKeyEdit extends AuthenticatedAction {
 
   async runWithinTransaction({ params }: { params: ParamsFrom<ApiKeyEdit> }) {
     const apiKey = await ApiKey.findById(params.id);
-    const updateParams = Object.assign({}, params);
+    const updateParams = { ...params };
     if (params.disabledPermissionAllRead) {
       updateParams.permissionAllRead = null;
     }

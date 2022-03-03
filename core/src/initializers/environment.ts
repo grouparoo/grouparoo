@@ -10,7 +10,7 @@ export class Environment extends Initializer {
   async initialize() {
     const { env } = process;
     // Are we missing any important environment variables?
-    let errors: string[] = [];
+    const errors: string[] = [];
     if (!env.DATABASE_URL && !env.DB_HOST) {
       errors.push(`DATABASE_URL (or DATABASE_HOST etc) is not set`);
     }

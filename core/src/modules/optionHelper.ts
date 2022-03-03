@@ -170,7 +170,7 @@ export namespace OptionHelper {
   export function getPluginByType(type: string) {
     const foundApps: string[] = [];
     const foundConnections: string[] = [];
-    let match: {
+    const match: {
       plugin: GrouparooPlugin;
       pluginConnection: PluginConnection;
       pluginApp: PluginApp;
@@ -378,7 +378,7 @@ export namespace OptionHelper {
   }
 
   export function filterEmptyOptions(options: SimpleOptions) {
-    const opts = Object.assign({}, options);
+    const opts = { ...options };
 
     Object.keys(opts).forEach((k) => {
       if (typeof opts[k] === "undefined" || opts[k] === null || opts[k] === "")
@@ -427,7 +427,7 @@ export namespace OptionHelper {
     options?: SimpleOptions,
     sourceFromEnvironment = true
   ) {
-    let sanitizedOptions: SimpleOptions = Object.assign({}, options);
+    let sanitizedOptions: SimpleOptions = { ...options };
 
     const optionsFromDatabase = await getOptions(
       instance,

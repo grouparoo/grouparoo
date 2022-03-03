@@ -12,7 +12,7 @@ export namespace LockableHelper {
     // because of the strange way that SQLite handles undefined values, we need to convert any `undefined` to `null`
     if (instance.locked === undefined) instance.locked = null;
 
-    if (!Boolean(instance.locked)) return;
+    if (!instance.locked) return;
     if (api?.codeConfig?.allowLockedModelChanges !== false) return;
     if (instance.isNewRecord) return;
 
@@ -42,7 +42,7 @@ export namespace LockableHelper {
     instance: LockableModel,
     hasChanges = true
   ) {
-    if (!Boolean(instance.locked)) return;
+    if (!instance.locked) return;
     if (api?.codeConfig?.allowLockedModelChanges !== false) return;
 
     if (hasChanges) {
@@ -55,7 +55,7 @@ export namespace LockableHelper {
   }
 
   export async function beforeDestroy(instance: LockableModel) {
-    if (!Boolean(instance.locked)) return;
+    if (!instance.locked) return;
     if (api?.codeConfig?.allowLockedModelChanges !== false) return;
 
     throw new Error(

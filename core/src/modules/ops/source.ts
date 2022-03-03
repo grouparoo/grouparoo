@@ -156,8 +156,6 @@ export namespace SourceOps {
       });
 
       return response;
-    } catch (error) {
-      throw error;
     } finally {
       await app.checkAndUpdateParallelism("decr");
     }
@@ -252,8 +250,6 @@ export namespace SourceOps {
       });
 
       return response;
-    } catch (error) {
-      throw error;
     } finally {
       await app.checkAndUpdateParallelism("decr");
     }

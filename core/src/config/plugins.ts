@@ -1,4 +1,3 @@
-import { PluginConfig } from "actionhero";
 import path from "path";
 import { getPluginManifest } from "../modules/pluginDetails";
 import InjectedPlugins from "./pluginInjection";
@@ -36,13 +35,11 @@ pluginManifest.missingPlugins.map((p) => {
 
 export const DEFAULT = {
   [namespace]: () => {
-    const plugins = Object.assign(
-      {
-        "ah-sequelize-plugin": { path: getPluginPath("ah-sequelize-plugin") },
-      },
-      parentPlugins,
-      InjectedPlugins
-    );
+    const plugins = {
+      "ah-sequelize-plugin": { path: getPluginPath("ah-sequelize-plugin") },
+      ...parentPlugins,
+      ...InjectedPlugins,
+    };
 
     return plugins;
   },
