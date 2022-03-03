@@ -489,7 +489,9 @@ export class Destination extends CommonModel<Destination> {
 
       Object.keys(mappings).forEach((mapping) => {
         if (!allowedProperties.includes(mapping)) {
-          throw new Error("bad");
+          throw new Error(
+            `Error with mapping ${mapping}. Destination of type ${this.type} can only use existing keys for mappings.`
+          );
         }
       });
     }
