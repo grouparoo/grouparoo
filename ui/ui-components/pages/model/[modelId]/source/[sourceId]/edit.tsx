@@ -39,6 +39,7 @@ import {
   SourcePreviewMethodResponseRow,
 } from "@grouparoo/core/src/classes/plugin";
 import { FormTypeahead } from "../../../../../components/Typeahead";
+import { ErrorHandler } from "../../../../../eventHandlers/errorHandler";
 export interface FormData {
   mapping?: {
     sourceColumn: string;
@@ -201,6 +202,8 @@ const Page: NextPage<Props> = ({
   const [loading, setLoading] = useState(false);
   const [loadingOptions, setLoadingOptions] = useState(false);
   const [previewLoading, setPreviewLoading] = useState(false);
+  const previewErrorHandler = useMemo(() => new ErrorHandler(), []);
+  const [previewError, setPreviewError] = useState<string>();
   const [properties, setProperties] = useState(props.properties);
   const [propertyExamples, setPropertyExamples] = useState<
     Record<string, string[]>
@@ -224,6 +227,25 @@ const Page: NextPage<Props> = ({
       }, [] as string[])
       .sort();
   }, [preview]);
+
+  useEffect(() => {
+    function subscription({ message }: { message: Error | string }) {
+      setPreviewError(String(message));
+      setPreview([]);
+    }
+
+    const subscriptionKey = "source-preview";
+
+    previewErrorHandler.subscribe(
+      subscriptionKey,
+      (messageObject: { message: string | Error }) =>
+        subscription(messageObject)
+    );
+
+    return () => {
+      previewErrorHandler.unsubscribe(subscriptionKey);
+    };
+  }, [previewErrorHandler]);
 
   const mappingColumn = useMemo(
     () => Object.keys(source.mapping)[0],
@@ -276,15 +298,16 @@ const Page: NextPage<Props> = ({
         {
           options: Object.keys(options).length > 0 ? options : null,
         },
-        { useCache: false }
+        { useCache: false, errorHandler: previewErrorHandler }
       );
       setPreviewLoading(false);
       if (response?.preview) {
         setPreview(response.preview);
+        setPreviewError(null);
         reset(resetFormData(source));
       }
     },
-    [client, resetFormData, reset, source, sourceId]
+    [client, resetFormData, reset, source, previewErrorHandler, sourceId]
   );
 
   const sourceBadges = useMemo(() => {
@@ -642,36 +665,42 @@ const Page: NextPage<Props> = ({
           <Col xl="7">
             <ManagedCard title="Example Data">
               <Card.Body>
-                {previewColumns.length === 0 && !loading ? (
-                  <>No preview</>
-                ) : null}
-                {previewColumns.length === 0 && loading ? <Loader /> : null}
-                <div style={{ overflow: "auto" }}>
-                  <LoadingTable loading={previewLoading} size="sm">
-                    <thead>
-                      <tr>
-                        {previewColumns.map((col) => (
-                          <th key={`head-${col}`}>{col}</th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {preview.map((row, i) => (
-                        <tr key={`row-${i}`}>
-                          {previewColumns.map((col, j) => (
-                            <td key={`table-${i}-${j}`}>
-                              {row[col] && typeof row[col] === "object" ? (
-                                <code>{JSON.stringify(row[col])}</code>
-                              ) : (
-                                row[col]?.toString()
-                              )}
-                            </td>
+                {previewError ? (
+                  <Alert variant="danger">{previewError}</Alert>
+                ) : (
+                  <>
+                    {previewColumns.length === 0 && !loading ? (
+                      <>No preview</>
+                    ) : null}
+                    {previewColumns.length === 0 && loading ? <Loader /> : null}
+                    <div style={{ overflow: "auto" }}>
+                      <LoadingTable loading={previewLoading} size="sm">
+                        <thead>
+                          <tr>
+                            {previewColumns.map((col) => (
+                              <th key={`head-${col}`}>{col}</th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {preview.map((row, i) => (
+                            <tr key={`row-${i}`}>
+                              {previewColumns.map((col, j) => (
+                                <td key={`table-${i}-${j}`}>
+                                  {row[col] && typeof row[col] === "object" ? (
+                                    <code>{JSON.stringify(row[col])}</code>
+                                  ) : (
+                                    row[col]?.toString()
+                                  )}
+                                </td>
+                              ))}
+                            </tr>
                           ))}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </LoadingTable>
-                </div>
+                        </tbody>
+                      </LoadingTable>
+                    </div>
+                  </>
+                )}
               </Card.Body>
             </ManagedCard>
           </Col>
