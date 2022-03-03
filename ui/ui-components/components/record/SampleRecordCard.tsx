@@ -139,7 +139,8 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
 
   const { destinationId } = router.query;
   const canExportRecord = useMemo(
-    () => !!destinations?.find(({ id }) => id === destinationId),
+    () =>
+      destinationId && !!destinations?.find(({ id }) => id === destinationId),
     [destinationId, destinations]
   );
   const prevReloadKey = usePrevious(reloadKey);
