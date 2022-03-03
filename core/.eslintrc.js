@@ -23,7 +23,7 @@ module.exports = {
   },
   ignorePatterns: ["__tests__", "dist", "public"],
   rules: {
-    "@typescript-eslint/consistent-indexed-object-style": ["warn", "record"], // TODO: Enable and fix
+    "@typescript-eslint/consistent-indexed-object-style": ["warn", "record"],
     "@typescript-eslint/array-type": "error",
     "@typescript-eslint/no-unused-vars": "warn",
     "no-inner-declarations": "off",
