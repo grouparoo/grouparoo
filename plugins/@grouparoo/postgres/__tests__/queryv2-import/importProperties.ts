@@ -5,7 +5,6 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 
 import { helper } from "@grouparoo/spec-helper";
 import {
-  AggregationMethod,
   GrouparooRecord,
   Property,
   SimplePropertyOptions,
@@ -144,8 +143,6 @@ describe("postgres/queryv2/recordProperties", () => {
   afterAll(async () => await afterData());
 
   describe("exact primary", () => {
-    const aggregationMethod = "exact";
-
     beforeAll(() => {
       sourceOptions = { query: usersSourceQuery };
     });

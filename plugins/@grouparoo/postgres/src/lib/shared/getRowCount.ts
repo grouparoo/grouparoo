@@ -1,7 +1,4 @@
-import {
-  GetRowCountMethod,
-  MatchCondition,
-} from "@grouparoo/app-templates/dist/source/table";
+import { GetRowCountMethod } from "@grouparoo/app-templates/dist/source/table";
 import { makeHighwaterWhereClause } from "./getRows";
 import { validateQuery } from "../validateQuery";
 import format from "pg-format";

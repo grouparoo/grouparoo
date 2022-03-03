@@ -1,9 +1,7 @@
 import {
   GetColumnDefinitionsMethod,
   ColumnDefinitionMap,
-  FilterOperation,
-  ColumnType,
-} from "@grouparoo/app-templates/dist/source/table";
+} from "@grouparoo/app-templates/dist/source/queryv2";
 import format from "pg-format";
 import { PostgresPoolClient } from "../connect";
 import { makeFromClause } from "../shared/util";
@@ -20,7 +18,7 @@ export const getColumns: GetColumnDefinitionsMethod<
   const map: ColumnDefinitionMap = {};
   if (rows.length > 0) {
     const cols = Object.keys(rows[0]);
-    for (let col of cols) {
+    for (const col of cols) {
       map[col] = {
         name: col,
         filterOperations: [],
