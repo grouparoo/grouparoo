@@ -8,6 +8,7 @@ import { afterData, beforeData, getConfig } from "../utils/data";
 const { appOptions, usersTableName } = getConfig();
 
 let client: PostgresPoolClient;
+let destinationOptions: any = { table: usersTableName, primaryKey: "id" };
 
 async function runDestinationMappingOptions() {
   return destinationMappingOptions({
@@ -17,7 +18,7 @@ async function runDestinationMappingOptions() {
     connection: client,
     destination: null,
     destinationId: null,
-    destinationOptions: { table: usersTableName, primaryKey: "id" },
+    destinationOptions,
   });
 }
 
@@ -47,5 +48,16 @@ describe("postgres/destinationMappingOptions", () => {
       expect(knownEntry.type).toBe("any");
       expect(knownEntry.important).toBe(true);
     }
+  });
+
+  test("will not load destinationMappingOptions if the groups destination options was incomplete", async () => {
+    destinationOptions = {
+      table: usersTableName,
+      primaryKey: "id",
+      groupsTable: "groups",
+    };
+    await expect(runDestinationMappingOptions()).rejects.toThrow(
+      /enable Group data syncing, all related options must be set/
+    );
   });
 });

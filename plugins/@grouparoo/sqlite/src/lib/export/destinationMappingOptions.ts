@@ -5,6 +5,11 @@ import {
 
 export const destinationMappingOptions: DestinationMappingOptionsMethod =
   async ({ connection, destinationOptions }) => {
+    checkOptionsIntegrity(destinationOptions);
+    const isGroupEnabled =
+      destinationOptions.groupsTable &&
+      destinationOptions.groupForeignKey &&
+      destinationOptions.groupColumnName;
     const query = `SELECT name from pragma_table_info("${destinationOptions.table}")`;
     const rows = await connection.asyncQuery(query);
 
@@ -25,10 +30,12 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod =
           singular: "Exported Property",
           plural: "Exported Properties",
         },
-        group: {
-          singular: "Exported Group",
-          plural: "Exported Groups",
-        },
+        group: isGroupEnabled
+          ? {
+              singular: "Exported Groups",
+              plural: "Exported Groups",
+            }
+          : undefined,
       },
       properties: {
         required: [
@@ -39,3 +46,23 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod =
       },
     };
   };
+
+export function checkOptionsIntegrity(options) {
+  const groupKeys = ["groupsTable", "groupForeignKey", "groupColumnName"];
+  // needs either zero or all keys
+  let count = 0;
+  for (const key of groupKeys) {
+    const value = (options[key] || "").toString().trim();
+    if (value.length > 0) {
+      options[key] = value;
+      count++;
+    } else {
+      options[key] = null;
+    }
+  }
+  if (count > 0 && groupKeys.length !== count) {
+    throw new Error(
+      `To enable Group data syncing, all related options must be set.`
+    );
+  }
+}

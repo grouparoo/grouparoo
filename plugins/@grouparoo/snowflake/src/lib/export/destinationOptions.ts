@@ -59,7 +59,9 @@ export const destinationOptions: DestinationOptionsMethod<any> = async ({
     response.groupColumnName.options = await getColumns(
       destinationOptions.groupsTable.toString()
     );
+  } else {
+    delete destinationOptions["groupForeignKey"];
+    delete destinationOptions["groupColumnName"];
   }
-
   return response;
 };

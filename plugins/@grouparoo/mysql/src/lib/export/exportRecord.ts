@@ -1,13 +1,21 @@
 import { ExportRecordPluginMethod } from "@grouparoo/core";
 import { MySQLConnection } from "../connect";
+import { checkOptionsIntegrity } from "./destinationMappingOptions";
 
 export const exportRecord: ExportRecordPluginMethod<MySQLConnection> = async ({
   connection,
   destination,
   export: { newRecordProperties, oldRecordProperties, newGroups, toDelete },
 }) => {
+  checkOptionsIntegrity(destinationOptions);
+  if (
+    !destinationOptions.groupsTable ||
+    !destinationOptions.groupForeignKey ||
+    !destinationOptions.groupColumnName
+  ) {
+    newGroups = [];
+  }
   let error;
-
   let { table, primaryKey, groupsTable, groupForeignKey, groupColumnName } =
     await destination.parameterizedOptions();
 

@@ -53,6 +53,13 @@ const nonexistentId = 3039;
 const ltv = 3039;
 
 const { appOptions, usersTableName, groupsDestinationTableName } = getConfig();
+const destinationOptions = {
+  table: usersTableName,
+  primaryKey: "id",
+  groupsTable: groupsDestinationTableName,
+  groupForeignKey: "userId",
+  groupColumnName: "group",
+};
 
 async function getRecordFromTable(
   tableName: string,
@@ -103,7 +110,7 @@ async function runExport({
     app: app,
     destination: toDestination,
     destinationId: null,
-    destinationOptions: null,
+    destinationOptions,
     syncOperations,
     export: {
       record: null,
@@ -133,13 +140,7 @@ describe("sqlite/exportRecord", () => {
 
     destination = await helper.factories.destination(app, {
       type: "sqlite-export-records",
-      options: {
-        table: usersTableName,
-        primaryKey: "id",
-        groupsTable: groupsDestinationTableName,
-        groupForeignKey: "userId",
-        groupColumnName: "group",
-      },
+      options: destinationOptions,
     });
   });
   afterAll(async () => await afterData());
