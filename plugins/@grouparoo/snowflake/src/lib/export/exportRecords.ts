@@ -95,7 +95,7 @@ const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async ({
   const valuesPlaceholders = Array.from(
     { length: values.length },
     () => `(${singleValuePlaceholder})`
-  );
+  ).join(", ");
   const query = `UPDATE ${table} SET ${columnsToSet} FROM (VALUES ${valuesPlaceholders}) newRecord(${columns}) WHERE ${table}.${primaryKey} = newRecord.CURRENT_PRIMARY_KEY`;
   await client.execute(query, values.flat());
 };
@@ -249,7 +249,10 @@ async function insertValues(
   columns: string[],
   values: string[]
 ) {
-  const valuesPlaceholders = Array.from({ length: columns.length }, () => "?");
+  const valuesPlaceholders = Array.from(
+    { length: columns.length },
+    () => "?"
+  ).join(", ");
   const query = `INSERT INTO ${table}(${columns}) VALUES(${valuesPlaceholders})`;
   return client.execute(query, values);
 }
@@ -440,7 +443,7 @@ const removeFromGroups: BatchMethodRemoveFromGroups = async ({
   const valuesPlaceholders = Array.from(
     { length: values.length },
     () => `(${singleValuePlaceholder})`
-  );
+  ).join(", ");
   const where1 = `${groupsTable}.${groupColumnName} = toDelete.${groupColumnName}`;
   const where2 = `${groupsTable}.${groupForeignKey} = toDelete.${groupForeignKey}`;
   let query = `DELETE FROM "${groupsTable}" USING (VALUES ${valuesPlaceholders}) toDelete(${columns}) WHERE ${where1} AND ${where2}`;
