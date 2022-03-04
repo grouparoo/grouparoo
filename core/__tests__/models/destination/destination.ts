@@ -67,6 +67,18 @@ describe("models/destination", () => {
       await destination.destroy();
     });
 
+    test("a new destination will have a default 'continual' delivery mode", async () => {
+      destination = await Destination.create({
+        type: "test-plugin-export",
+        appId: app.id,
+        modelId: model.id,
+      });
+
+      expect(destination.deliveryMode).toBe("continual");
+
+      await destination.destroy();
+    });
+
     test("draft destination can share the same name, but not with ready destination", async () => {
       const destinationOne = await Destination.create({
         type: "test-plugin-export",
