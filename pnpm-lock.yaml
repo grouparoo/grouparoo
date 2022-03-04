@@ -777,7 +777,7 @@ importers:
       glob: 7.2.0
       isomorphic-fetch: 3.0.0
       jest: 27.5.1
-      mongodb: 4.4.0
+      mongodb: 4.4.1
       mysql: 2.18.1
       pg: 8.7.3
       prettier: 2.5.1
@@ -793,7 +793,7 @@ importers:
       fs-extra: 10.0.1
       glob: 7.2.0
       isomorphic-fetch: 3.0.0
-      mongodb: 4.4.0
+      mongodb: 4.4.1
       mysql: 2.18.1
       pg: 8.7.3
       prettier: 2.5.1
@@ -1300,14 +1300,14 @@ importers:
       dotenv: 16.0.0
       fs-extra: 10.0.1
       jest: 27.5.1
-      mongodb: 4.4.0
+      mongodb: 4.4.1
       prettier: 2.5.1
       sequelize: 6.17.0
       ts-jest: 27.1.3
       typescript: 4.6.2
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      mongodb: 4.4.0
+      mongodb: 4.4.1
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -11464,20 +11464,20 @@ packages:
   /moment/2.29.1:
     resolution: {integrity: sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==}
 
-  /mongodb-connection-string-url/2.4.2:
-    resolution: {integrity: sha512-mZUXF6nUzRWk5J3h41MsPv13ukWlH4jOMSk6astVeoZ1EbdTJyF5I3wxKkvqBAOoVtzLgyEYUvDjrGdcPlKjAw==}
+  /mongodb-connection-string-url/2.5.2:
+    resolution: {integrity: sha512-tWDyIG8cQlI5k3skB6ywaEA5F9f5OntrKKsT/Lteub2zgwSUlhqEN2inGgBTm8bpYJf8QYBdA/5naz65XDpczA==}
     dependencies:
       '@types/whatwg-url': 8.2.1
       whatwg-url: 11.0.0
     dev: false
 
-  /mongodb/4.4.0:
-    resolution: {integrity: sha512-1hPhutJj6yxxu0ymwsO0uEimTo+QTh3oQP6YHxmLneBFBOGydYFdnmDDuLiGWimAlMdRN9WuDXY+JGp47aeOwA==}
+  /mongodb/4.4.1:
+    resolution: {integrity: sha512-IAD3nFtCR4s22vi5qjqkCBnuyDDrOW8WVSSmgHquOvGaP1iTD+XpC5tr8wAUbZ2EeZkaswwBKQFHDvl4qYcKqQ==}
     engines: {node: '>=12.9.0'}
     dependencies:
       bson: 4.6.1
       denque: 2.0.1
-      mongodb-connection-string-url: 2.4.2
+      mongodb-connection-string-url: 2.5.2
       socks: 2.6.2
     optionalDependencies:
       saslprep: 1.0.3
