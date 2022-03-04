@@ -56,7 +56,7 @@ export interface SimpleDestinationOptions extends OptionHelper.SimpleOptions {}
 const SYNC_MODES = ["sync", "additive", "enrich"] as const;
 export type DestinationSyncMode = typeof SYNC_MODES[number];
 
-const DELIVERY_MODES = ["continual", "once"];
+const DELIVERY_MODES = ["continual", "once"] as const;
 export type DestinationDeliveryMode = typeof DELIVERY_MODES[number];
 
 const DESTINATION_COLLECTIONS = ["none", "group", "model"] as const;
