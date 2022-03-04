@@ -5,6 +5,7 @@ import { checkOptionsIntegrity } from "./destinationMappingOptions";
 export const exportRecord: ExportRecordPluginMethod<MySQLConnection> = async ({
   connection,
   destination,
+  destinationOptions,
   export: { newRecordProperties, oldRecordProperties, newGroups, toDelete },
 }) => {
   checkOptionsIntegrity(destinationOptions);
