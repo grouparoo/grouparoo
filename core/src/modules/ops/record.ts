@@ -12,8 +12,6 @@ import Sequelize, {
   OrderItem,
   WhereAttributeHash,
   QueryTypes,
-  UniqueConstraintError,
-  Transaction,
 } from "sequelize";
 import { waitForLock } from "../locks";
 import { RecordPropertyOps } from "./recordProperty";
