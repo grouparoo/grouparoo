@@ -503,7 +503,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
       return (
         <Row>
           <Col>
-            <p>You need to map a property to see your sample record.</p>
+            <p>You need to map a Property to see your Sample Record.</p>
           </Col>
         </Row>
       );
