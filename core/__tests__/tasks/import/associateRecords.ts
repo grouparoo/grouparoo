@@ -275,6 +275,79 @@ describe("tasks/import:associateRecords", () => {
     await source.destroy();
   });
 
+  describe("with similar unique keys", () => {
+    let externalId: Property;
+
+    beforeAll(async () => {
+      externalId = await helper.factories.property(
+        primarySource,
+        {
+          type: "integer",
+          unique: true,
+          key: "externalId",
+        },
+        { column: "externalId" }
+      );
+      externalId.update({ state: "ready" });
+    });
+
+    afterAll(async () => {
+      await externalId.destroy();
+    });
+
+    beforeEach(async () => {
+      await api.resque.queue.connection.redis.flushdb();
+      await GrouparooRecord.truncate();
+      await RecordProperty.truncate();
+      await Import.truncate();
+    });
+
+    test("model selection works in batches when primary key values match", async () => {
+      const runA = await helper.factories.run(primarySchedule);
+
+      const _importA = await helper.factories.import(runA, {
+        userId: "1",
+        externalId: "2",
+      });
+      await specHelper.runTask("import:associateRecords", {});
+
+      const _importB = await helper.factories.import(runA, {
+        userId: "2",
+        externalId: "1",
+      });
+      await specHelper.runTask("import:associateRecords", {});
+
+      const records = await GrouparooRecord.findAll({
+        include: [RecordProperty],
+      });
+
+      expect(records.length).toBe(2);
+      let recordA: GrouparooRecord;
+      let recordB: GrouparooRecord;
+
+      for (const record of records) {
+        const properties = await record.simplifiedProperties();
+        if (properties["userId"][0] === 1) {
+          recordA = record;
+        } else {
+          recordB = record;
+        }
+      }
+
+      await _importA.reload();
+      await _importB.reload();
+      expect(_importA.recordId).toEqual(recordA.id);
+      expect(_importB.recordId).toEqual(recordB.id);
+
+      expect(await recordA.simplifiedProperties()).toEqual(
+        expect.objectContaining({ userId: [1], externalId: [2] })
+      );
+      expect(await recordB.simplifiedProperties()).toEqual(
+        expect.objectContaining({ userId: [2], externalId: [1] })
+      );
+    });
+  });
+
   describe("with another model", () => {
     let otherModel: GrouparooModel;
     let otherSource: Source;
@@ -325,9 +398,15 @@ describe("tasks/import:associateRecords", () => {
       const records = await GrouparooRecord.findAll({
         include: [RecordProperty],
       });
+      expect(records.length).toBe(2);
 
       const recordA = records.find((r) => r.modelId === "mod_profiles");
       const recordB = records.find((r) => r.modelId === "other_model");
+
+      await _importA.reload();
+      await _importB.reload();
+      expect(_importA.recordId).toEqual(recordA.id);
+      expect(_importB.recordId).toEqual(recordB.id);
 
       expect(await recordA.simplifiedProperties()).toEqual(
         expect.objectContaining({ userId: [1] })
