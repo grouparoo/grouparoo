@@ -963,19 +963,6 @@ describe("models/destination - with custom exportRecord plugin", () => {
         await record.addOrUpdateProperties({
           email: ["newEmail@example.com"],
         });
-        // const group = await helper.factories.group();
-        // await GroupMember.create({ recordId: record.id, groupId: group.id });
-        // await destination.updateTracking("group", group.id);
-
-        // await destination.setMapping({
-        //   customer_email: "email",
-        // });
-
-        // const destinationGroupMemberships: Record<string, any> = {};
-        // destinationGroupMemberships[group.id] = group.name;
-        // await destination.setDestinationGroupMemberships(
-        //   destinationGroupMemberships
-        // );
 
         await destination.exportRecord(record, true);
       });
