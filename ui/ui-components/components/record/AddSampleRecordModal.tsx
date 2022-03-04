@@ -5,11 +5,7 @@ import type { RecordType } from "./SampleRecordCard";
 
 interface Props {
   show: boolean;
-  onRecordCreated: (
-    record: RecordType,
-    groups: Models.GroupType[],
-    destinations: Models.DestinationType[]
-  ) => void;
+  onRecordCreated: (recordId: string) => void;
   onHide: () => void;
   properties: Models.PropertyType[];
 }
@@ -28,8 +24,8 @@ const AddSampleRecordModal: React.FC<Props> = ({
       <Modal.Body>
         <AddSampleRecordForm
           properties={properties}
-          onSubmitComplete={(record, groups, destinations) => {
-            onRecordCreated(record, groups, destinations);
+          onSubmitComplete={(recordId) => {
+            onRecordCreated(recordId);
             onHide();
           }}
         />

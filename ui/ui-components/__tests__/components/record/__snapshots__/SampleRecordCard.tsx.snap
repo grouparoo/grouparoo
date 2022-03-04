@@ -82,7 +82,7 @@ exports[`SampleRecordCard should render with 1 record 1`] = `
                 >
                   <span>
                     <a>
-                      asdf
+                      fakeProperty
                     </a>
                   </span>
                   <span
@@ -113,7 +113,12 @@ exports[`SampleRecordCard should render with 1 record 1`] = `
             Destinations
           </h6>
           <p>
-            None
+            <span>
+              <a>
+                test-destination-name
+              </a>
+            </span>
+            <br />
           </p>
         </div>
       </div>
@@ -144,6 +149,18 @@ exports[`SampleRecordCard should render with 1 record 1`] = `
               style="opacity: 1;"
             >
               Switch to random Record
+            </span>
+          </button>
+            
+          <button
+            class="btn btn-outline-success btn-sm"
+            style="display: inline-flex; align-items: center; justify-content: center;"
+            type="button"
+          >
+            <span
+              style="opacity: 1;"
+            >
+              Export Record Data
             </span>
           </button>
           
@@ -236,7 +253,7 @@ exports[`SampleRecordCard should render with 1 record in config mode 1`] = `
                 >
                   <span>
                     <a>
-                      asdf
+                      fakeProperty
                     </a>
                   </span>
                   <span
@@ -298,6 +315,19 @@ exports[`SampleRecordCard should render with 1 record in config mode 1`] = `
               style="opacity: 1;"
             >
               Switch to random Record
+            </span>
+          </button>
+            
+          <button
+            class="btn btn-outline-success btn-sm"
+            disabled=""
+            style="display: inline-flex; align-items: center; justify-content: center;"
+            type="button"
+          >
+            <span
+              style="opacity: 1;"
+            >
+              Export Record Data
             </span>
           </button>
             
@@ -402,7 +432,7 @@ exports[`SampleRecordCard should render with 1 record that has a group and desti
                 >
                   <span>
                     <a>
-                      asdf
+                      fakeProperty
                     </a>
                   </span>
                   <span
@@ -468,6 +498,18 @@ exports[`SampleRecordCard should render with 1 record that has a group and desti
               style="opacity: 1;"
             >
               Switch to random Record
+            </span>
+          </button>
+            
+          <button
+            class="btn btn-outline-success btn-sm"
+            style="display: inline-flex; align-items: center; justify-content: center;"
+            type="button"
+          >
+            <span
+              style="opacity: 1;"
+            >
+              Export Record Data
             </span>
           </button>
             
@@ -644,6 +686,19 @@ exports[`SampleRecordCard should render with no records in 'config mode' 1`] = `
               style="opacity: 1;"
             >
               Switch to random Record
+            </span>
+          </button>
+            
+          <button
+            class="btn btn-outline-success btn-sm"
+            disabled=""
+            style="display: inline-flex; align-items: center; justify-content: center;"
+            type="button"
+          >
+            <span
+              style="opacity: 1;"
+            >
+              Export Record Data
             </span>
           </button>
             

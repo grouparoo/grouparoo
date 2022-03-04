@@ -3,7 +3,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Row, Col, Form, Badge, Button, Table, Alert } from "react-bootstrap";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useState, useRef, FormEvent, useMemo, useEffect } from "react";
+import {
+  useState,
+  useRef,
+  FormEvent,
+  useMemo,
+  useEffect,
+  useCallback,
+  ChangeEvent,
+} from "react";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { successHandler } from "../../../../../eventHandlers";
 import DestinationTabs from "../../../../../components/tabs/Destination";
@@ -95,6 +103,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
   const taggedGroupRef = useRef(null);
   const [unlockedProperties, setUnlockedProperties] = useState({});
   const [unlockedGroups, setUnlockedGroups] = useState<string[]>([]);
+  const [destinationDirty, setDestinationDirty] = useState(false);
   const { destinationId } = router.query;
 
   const update = async (event: FormEvent<HTMLFormElement>) => {
@@ -121,6 +130,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
       triggerExport: true,
     });
 
+    setDestinationDirty(false);
     setLoading(false);
     successHandler.set({
       message:
@@ -238,6 +248,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
       setDisplayedDestinationProperties(_displayedDestinationProperties);
     }
 
+    setDestinationDirty(true);
     setDestination(_destination);
   }
 
@@ -276,6 +287,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
 
     setDestination(_destination);
   }
+
   function toggleUnlockedProperty(key) {
     const _unlockedProperties = { ...unlockedProperties };
     _unlockedProperties[destination.mapping[key]] = _unlockedProperties[
@@ -323,6 +335,31 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
       : true;
   }
 
+  const updateDestinationGroup = useCallback(
+    (e: ChangeEvent<HTMLSelectElement>) => {
+      switch (e.target.value) {
+        case "__none": {
+          setCollection("none");
+          setGroupId(null);
+          break;
+        }
+        case "__model": {
+          setCollection("model");
+          setGroupId(null);
+          break;
+        }
+        default: {
+          setCollection("group");
+          setGroupId(e.target.value);
+          break;
+        }
+      }
+
+      setDestinationDirty(true);
+    },
+    []
+  );
+
   return (
     <>
       <Head>
@@ -359,25 +396,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
                     required={true}
                     value={collection === "model" ? "__model" : groupId}
                     disabled={loading}
-                    onChange={(e) => {
-                      switch (e.target.value) {
-                        case "__none": {
-                          setCollection("none");
-                          setGroupId(null);
-                          break;
-                        }
-                        case "__model": {
-                          setCollection("model");
-                          setGroupId(null);
-                          break;
-                        }
-                        default: {
-                          setCollection("group");
-                          setGroupId(e.target.value);
-                          break;
-                        }
-                      }
-                    }}
+                    onChange={updateDestinationGroup}
                   >
                     <option value="__none">No Model or Group</option>
                     <option disabled>--- Models ---</option>
@@ -918,6 +937,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
             mappingOptions={mappingOptions}
             destination={destination}
             properties={properties}
+            destinationDirty={destinationDirty}
             hideViewAllRecords
           />
         </Col>
