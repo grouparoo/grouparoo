@@ -848,13 +848,12 @@ export namespace RecordOps {
       if (data.error) continue;
 
       // the record already exists in the DB and we can find it by property value
-      for (const [key, matchValues] of Object.entries(
+      for (const [propertyId, matchValues] of Object.entries(
         data.uniquePropertiesHash
       )) {
         const recordProperty = recordProperties.find(
           (rp) =>
-            matchValues.includes(rp.rawValue) &&
-            key === properties.find((p) => p.id === rp.propertyId).key
+            propertyId === rp.propertyId && matchValues.includes(rp.rawValue)
         );
         if (recordProperty) {
           data.record = recordProperty.record;
