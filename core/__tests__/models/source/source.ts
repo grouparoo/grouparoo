@@ -237,6 +237,39 @@ describe("models/source", () => {
       await sourceThree.destroy();
     });
 
+    test("sources can't share the same name, even if they belong to different apps", async () => {
+      const app2 = await helper.factories.app();
+      const sourceOne = await Source.create({
+        type: "test-plugin-import",
+        appId: app.id,
+        modelId: model.id,
+      });
+      const sourceTwo = await Source.create({
+        type: "test-plugin-import",
+        appId: app2.id,
+        modelId: model.id,
+      });
+
+      expect(sourceOne.name).toBe("");
+      expect(sourceTwo.name).toBe("");
+
+      await sourceOne.update({ name: "asdf" });
+      await sourceOne.setOptions({ table: "abc123" });
+      await sourceOne.setMapping({ id: "userId" });
+      await sourceOne.update({ state: "ready" });
+
+      await sourceTwo.setOptions({ table: "abc123" });
+      await sourceTwo.setMapping({ id: "userId" });
+      await sourceTwo.update({ state: "ready" });
+
+      await expect(sourceTwo.update({ name: "asdf" })).rejects.toThrow(
+        /name "asdf" is already in use/
+      );
+
+      await sourceOne.destroy();
+      await sourceTwo.destroy();
+    });
+
     test("a source cannot be changed to to the ready state if there are missing required options", async () => {
       const source = await helper.factories.source();
       await expect(source.update({ state: "ready" })).rejects.toThrow(
