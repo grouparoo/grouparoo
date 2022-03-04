@@ -238,7 +238,7 @@ describe("models/source", () => {
     });
 
     test("sources can't share the same name, even if they belong to different apps", async () => {
-      const app2 = await helper.factories.app();
+      const app2: App = await helper.factories.app();
       const sourceOne = await Source.create({
         type: "test-plugin-import",
         appId: app.id,
@@ -268,6 +268,7 @@ describe("models/source", () => {
 
       await sourceOne.destroy();
       await sourceTwo.destroy();
+      await app2.destroy();
     });
 
     test("a source cannot be changed to to the ready state if there are missing required options", async () => {
