@@ -504,7 +504,9 @@ describe("models/destination", () => {
           email: "email",
           "remote-id-that-is-bogus": "userId",
         })
-      ).rejects.toThrow(/bad job/);
+      ).rejects.toThrow(
+        "Error with mapping remote-id-that-is-bogus. Destination of type destinationMapping-test-connection can only use existing keys for mappings"
+      );
     });
 
     test("if a grouparoo type cannot be mapped to a matching destination type, an error is thrown", async () => {
@@ -551,6 +553,7 @@ describe("models/destination", () => {
       describe("record properties will be converted to the type requested by the plugin", () => {
         test("it converts int properties to number", async () => {
           required = [{ key: "remote-id", type: "number" }];
+          known = [{ key: "email", type: "string" }];
           await destination.setMapping({
             "remote-id": "userId",
             email: "email",
@@ -565,6 +568,7 @@ describe("models/destination", () => {
 
         test("it converts int properties to string", async () => {
           required = [{ key: "remote-id", type: "string" }];
+          known = [{ key: "email", type: "string" }];
           await destination.setMapping({
             "remote-id": "userId",
             email: "email",
