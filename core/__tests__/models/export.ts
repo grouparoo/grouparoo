@@ -854,11 +854,15 @@ describe("models/export", () => {
         state: "canceled",
         retryCount: 1,
         createdAt: new Date("2022-01-01T11:00:00Z"),
+        completedAt: new Date("2022-01-02T11:00:00Z"),
+        startedAt: new Date("2022-01-02T10:00:00Z"),
       });
 
       const count = await Export.retryById(canceled.id);
       await canceled.reload();
       expect(canceled.state).toBe("pending");
+      expect(canceled.startedAt).toBeNull();
+      expect(canceled.completedAt).toBeNull();
       expect(count).toBe(1);
     });
 

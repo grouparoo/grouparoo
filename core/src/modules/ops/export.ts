@@ -174,6 +174,7 @@ export namespace ExportOps {
           state: "pending",
           sendAt: new Date(),
           startedAt: null,
+          completedAt: null,
           errorMessage: null,
           errorLevel: null,
           retryCount: 0,
