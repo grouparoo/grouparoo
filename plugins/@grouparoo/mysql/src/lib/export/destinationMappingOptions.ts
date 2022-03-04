@@ -38,7 +38,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod =
         },
         group: isGroupEnabled
           ? {
-              singular: "Exported Groups",
+              singular: "Exported Group",
               plural: "Exported Groups",
             }
           : undefined,
