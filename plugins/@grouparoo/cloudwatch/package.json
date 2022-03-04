@@ -28,7 +28,7 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "aws-sdk": "2.1085.0",
+    "aws-sdk": "2.1087.0",
     "winston": "3.6.0",
     "winston-cloudwatch": "3.1.1"
   },
