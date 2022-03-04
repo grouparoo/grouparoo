@@ -203,7 +203,8 @@ export class Source extends CommonModel<Source> {
   }
 
   async setMapping(mappings: SourceMapping, externallyValidate = true) {
-    return MappingHelper.setMapping(this, mappings, externallyValidate);
+    if (externallyValidate) await this.validateRemoteKeys(this, mappings);
+    return MappingHelper.setMapping(this, mappings);
   }
 
   async afterSetMapping() {
@@ -383,6 +384,23 @@ export class Source extends CommonModel<Source> {
     await setSchedule();
 
     return configObject;
+  }
+
+  async validateRemoteKeys(instance: Source, mappings: any) {
+    const previewAvailable = await instance.previewAvailable();
+    if (!previewAvailable) return;
+
+    const sourcePreview = await instance.sourcePreview();
+    if (sourcePreview.length > 0) {
+      const validKeys = Object.keys(sourcePreview[0]);
+      for (const remoteKey of Object.keys(mappings)) {
+        if (!validKeys.includes(remoteKey)) {
+          throw new Error(
+            `"${remoteKey}" is not a valid remote mapping key for source ${instance.name}`
+          );
+        }
+      }
+    }
   }
 
   // --- Class Methods --- //
