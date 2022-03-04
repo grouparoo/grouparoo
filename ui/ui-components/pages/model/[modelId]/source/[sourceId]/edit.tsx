@@ -247,10 +247,7 @@ const Page: NextPage<Props> = ({
     };
   }, [previewErrorHandler]);
 
-  const mappingColumn = useMemo(
-    () => Object.keys(source.mapping)[0],
-    [source.mapping]
-  );
+  const mappingColumn = useMemo(() => Object.keys(source.mapping)[0], []);
   const mappingPropertyKey = useMemo(
     () => Object.values(source.mapping)[0],
     [source.mapping]
