@@ -14,7 +14,7 @@ const allTables = {
   [usersTableName]: `
 CREATE TABLE "SAMPLE_SOURCES"."PUBLIC".${usersTableName} (
     "ID" INTEGER NOT NULL, 
-    "ACCOUNT_ID" INTEGER NOT NULL, 
+    "ACCOUNT_ID" INTEGER, 
     "FIRST_NAME" STRING, 
     "LAST_NAME" STRING,
     "EMAIL" STRING, 
