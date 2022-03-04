@@ -1950,7 +1950,7 @@ importers:
       eslint: 8.10.0
       eslint-config-next: 12.1.0
       next: 12.1.0
-      playwright: 1.19.0
+      playwright: 1.19.2
       prettier: 2.5.1
       prop-types: 15.8.1
       react: 17.0.2
@@ -1977,7 +1977,7 @@ importers:
       enzyme: 3.11.0
       eslint: 8.10.0
       eslint-config-next: 12.1.0_91b99ef72d19920d7e6dded71447bf77
-      playwright: 1.19.0
+      playwright: 1.19.2
       prettier: 2.5.1
       prop-types: 15.8.1
       ts-jest: 27.1.3_typescript@4.6.2
@@ -2005,7 +2005,7 @@ importers:
       moment: 2.29.1
       next: 12.1.0
       nprogress: 0.2.0
-      playwright: 1.19.0
+      playwright: 1.19.2
       pluralize: 8.0.0
       prettier: 2.5.1
       prop-types: 15.8.1
@@ -2047,7 +2047,7 @@ importers:
       moment: 2.29.1
       next: 12.1.0_770cdee6eac9f5b17619eec686780a53
       nprogress: 0.2.0
-      playwright: 1.19.0
+      playwright: 1.19.2
       pluralize: 8.0.0
       prettier: 2.5.1
       prop-types: 15.8.1
@@ -2085,7 +2085,7 @@ importers:
       jest: 27.5.1
       next: 12.1.0
       open: 8.4.0
-      playwright: 1.19.0
+      playwright: 1.19.2
       prettier: 2.5.1
       prop-types: 15.8.1
       react: 17.0.2
@@ -2117,7 +2117,7 @@ importers:
       eslint: 8.10.0
       eslint-config-next: 12.1.0_91b99ef72d19920d7e6dded71447bf77
       jest: 27.5.1
-      playwright: 1.19.0
+      playwright: 1.19.2
       prettier: 2.5.1
       prop-types: 15.8.1
       ts-jest: 27.1.3_ac171f3d9f636bd8b4c3e7aa384f840e
@@ -2137,7 +2137,7 @@ importers:
       eslint: 8.10.0
       eslint-config-next: 12.1.0
       next: 12.1.0
-      playwright: 1.19.0
+      playwright: 1.19.2
       prettier: 2.5.1
       prop-types: 15.8.1
       react: 17.0.2
@@ -2163,7 +2163,7 @@ importers:
       enzyme: 3.11.0
       eslint: 8.10.0
       eslint-config-next: 12.1.0_91b99ef72d19920d7e6dded71447bf77
-      playwright: 1.19.0
+      playwright: 1.19.2
       prettier: 2.5.1
       prop-types: 15.8.1
       typescript: 4.6.2
@@ -5853,7 +5853,7 @@ packages:
   /axios/0.21.4:
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
     dependencies:
-      follow-redirects: 1.14.8_debug@4.3.3
+      follow-redirects: 1.14.8
     transitivePeerDependencies:
       - debug
     dev: false
@@ -5869,7 +5869,7 @@ packages:
   /axios/0.25.0_debug@4.3.3:
     resolution: {integrity: sha512-cD8FOb0tRH3uuEe6+evtAbgJtfxr7ly3fQjYcMcuPlgkwVS9xboaVIpcDV+cYQe+yGykgwZCs1pzjntcGa6l5g==}
     dependencies:
-      follow-redirects: 1.14.8_debug@4.3.3
+      follow-redirects: 1.14.8
     transitivePeerDependencies:
       - debug
     dev: false
@@ -5877,7 +5877,7 @@ packages:
   /axios/0.26.0:
     resolution: {integrity: sha512-lKoGLMYtHvFrPVt3r+RBMp9nh34N0M8zEfCWqdWZx6phynIEhQqAdydpyBAAG211zlhX9Rgu08cOamy6XjE5Og==}
     dependencies:
-      follow-redirects: 1.14.8_debug@4.3.3
+      follow-redirects: 1.14.8
     transitivePeerDependencies:
       - debug
 
@@ -8166,6 +8166,15 @@ packages:
   /fn.name/1.1.0:
     resolution: {integrity: sha512-GRnmB5gPyJpAhTQdSZTSp9uaPSvl09KoYcMQtsB9rQoOmzs9dH6ffeccH+Z+cv6P68Hu5bC6JjRh4Ah/mHSNRw==}
 
+  /follow-redirects/1.14.8:
+    resolution: {integrity: sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+
   /follow-redirects/1.14.8_debug@3.2.7:
     resolution: {integrity: sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==}
     engines: {node: '>=4.0'}
@@ -8177,17 +8186,6 @@ packages:
     dependencies:
       debug: 3.2.7
     dev: false
-
-  /follow-redirects/1.14.8_debug@4.3.3:
-    resolution: {integrity: sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dependencies:
-      debug: 4.3.3
 
   /follow-redirects/1.5.10:
     resolution: {integrity: sha512-0V5l4Cizzvqt5D44aTXbFZz+FtyXV1vrDN6qrelxtfYQKW0KO0W2T/hkE8xvGa/540LkZlkaUjO4ailYTFtHVQ==}
@@ -12982,13 +12980,40 @@ packages:
       - utf-8-validate
     dev: true
 
-  /playwright/1.19.0:
-    resolution: {integrity: sha512-wEhlkEx4QCzFgl5prkdPOjK5dLK9M3nKJuqZdNtpZirIzkDnbIbVZbEmo2Uh177ZbXTWnt184BkvM+hsIvUFVg==}
+  /playwright-core/1.19.2:
+    resolution: {integrity: sha512-OsL3sJZIo1UxKNWSP7zW7sk3FyUGG06YRHxHeBw51eIOxTCQRx5t+hXd0cvXashN2CHnd3hIZTs2aKa/im4hZQ==}
+    engines: {node: '>=12'}
+    hasBin: true
+    dependencies:
+      commander: 8.3.0
+      debug: 4.3.3
+      extract-zip: 2.0.1
+      https-proxy-agent: 5.0.0
+      jpeg-js: 0.4.3
+      mime: 3.0.0
+      pngjs: 6.0.0
+      progress: 2.0.3
+      proper-lockfile: 4.1.2
+      proxy-from-env: 1.1.0
+      rimraf: 3.0.2
+      socks-proxy-agent: 6.1.1
+      stack-utils: 2.0.5
+      ws: 8.4.2
+      yauzl: 2.10.0
+      yazl: 2.5.1
+    transitivePeerDependencies:
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+    dev: true
+
+  /playwright/1.19.2:
+    resolution: {integrity: sha512-2JmGWr/Iw/Uu27bZULeHgjn8doNrRVxIYdhspMuMlfKNpzwAe/sfm7wH8uey6jiZxnPL4bC5V4ACQcF4dAGWnw==}
     engines: {node: '>=12'}
     hasBin: true
     requiresBuild: true
     dependencies:
-      playwright-core: 1.19.0
+      playwright-core: 1.19.2
     transitivePeerDependencies:
       - bufferutil
       - supports-color
