@@ -830,13 +830,15 @@ export namespace RecordOps {
       i++;
     }
 
+    const uniquePropertyIds = uniqueProperties.map((p) => p.id);
+
     const recordProperties = await RecordProperty.findAll({
       where: { unique: true, rawValue: rawValues },
       include: [GrouparooRecord],
     });
 
     const properties = await PropertiesCache.findAllWithCache(
-      undefined,
+      source instanceof Source ? source.modelId : undefined,
       "ready"
     );
 
@@ -845,8 +847,10 @@ export namespace RecordOps {
 
       // the record already exists in the DB and we can find it by property value
       for (const matchValues of Object.values(data.uniquePropertiesHash)) {
-        const recordProperty = recordProperties.find((rp) =>
-          matchValues.includes(rp.rawValue)
+        const recordProperty = recordProperties.find(
+          (rp) =>
+            uniquePropertyIds.includes(rp.propertyId) &&
+            matchValues.includes(rp.rawValue)
         );
         if (recordProperty) {
           data.record = recordProperty.record;

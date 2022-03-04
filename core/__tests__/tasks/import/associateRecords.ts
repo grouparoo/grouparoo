@@ -1,7 +1,14 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-import { RecordProperty } from "../../../dist";
-import { Import, Source, Schedule, GrouparooRecord } from "../../../src";
+import {
+  Import,
+  Source,
+  Schedule,
+  GrouparooRecord,
+  RecordProperty,
+  GrouparooModel,
+  Property,
+} from "../../../src";
 
 describe("tasks/import:associateRecords", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -220,12 +227,7 @@ describe("tasks/import:associateRecords", () => {
     expect(_importA.state).toBe("associating");
     expect(_importB.state).toBe("associating");
 
-    try {
-      await specHelper.runTask("import:associateRecords", {});
-    } catch (e) {
-      console.error(e);
-      throw e;
-    }
+    await specHelper.runTask("import:associateRecords", {});
 
     expect(await GrouparooRecord.count()).toBe(1);
     const record = await GrouparooRecord.findOne();
@@ -247,13 +249,13 @@ describe("tasks/import:associateRecords", () => {
   // Prevent data in Secondary Sources from Creating Records that do not exist in the Primary Sources
   test("prevents import when unable to create record from secondary source", async () => {
     // make a new source and property
-    const source: Source = await helper.factories.source();
+    const source = await helper.factories.source();
     await source.setOptions({ table: "otherTable" });
     await source.setMapping({ user_id: "userId" });
     await source.update({ state: "ready" });
-    const schedule: Schedule = await helper.factories.schedule(source);
+    const schedule = await helper.factories.schedule(source);
     const run = await helper.factories.run(schedule);
-    const _import: Import = await helper.factories.import(run, {
+    const _import = await helper.factories.import(run, {
       thing: "stuff",
       userId: 99999999, // doesn't exist in source
     });
@@ -271,5 +273,68 @@ describe("tasks/import:associateRecords", () => {
     await run.destroy();
     await schedule.destroy();
     await source.destroy();
+  });
+
+  describe("with another model", () => {
+    let otherModel: GrouparooModel;
+    let otherSource: Source;
+    let otherSchedule: Schedule;
+    let otherProperty: Property;
+
+    beforeAll(async () => {
+      otherModel = await helper.factories.model({
+        id: "other_model",
+        name: "other model",
+      });
+      otherSource = await helper.factories.source(null, {
+        modelId: otherModel.id,
+      });
+      await otherSource.setOptions({ table: "admins" });
+      otherProperty = await helper.factories.property(
+        otherSource,
+        {
+          type: "integer",
+          unique: true,
+          key: "adminId",
+        },
+        { column: "adminId" }
+      );
+      otherProperty.update({ state: "ready" });
+      await otherSource.setMapping({ admin_id: otherProperty.key });
+      await otherSource.update({ state: "ready" });
+
+      otherSchedule = await helper.factories.schedule(otherSource);
+    });
+
+    beforeEach(async () => {
+      await api.resque.queue.connection.redis.flushdb();
+      await GrouparooRecord.truncate();
+      await RecordProperty.truncate();
+      await Import.truncate();
+    });
+
+    test("model selection works in batches when primary key values match", async () => {
+      const runA = await helper.factories.run(primarySchedule);
+      const runB = await helper.factories.run(otherSchedule);
+
+      const _importA = await helper.factories.import(runA, { userId: "1" });
+      const _importB = await helper.factories.import(runB, { adminId: "1" });
+
+      await specHelper.runTask("import:associateRecords", {});
+
+      const records = await GrouparooRecord.findAll({
+        include: [RecordProperty],
+      });
+
+      const recordA = records.find((r) => r.modelId === "mod_profiles");
+      const recordB = records.find((r) => r.modelId === "other_model");
+
+      expect(await recordA.simplifiedProperties()).toEqual(
+        expect.objectContaining({ userId: [1] })
+      );
+      expect(await recordB.simplifiedProperties()).toEqual(
+        expect.objectContaining({ adminId: [1] })
+      );
+    });
   });
 });
