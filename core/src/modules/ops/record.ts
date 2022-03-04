@@ -12,8 +12,6 @@ import Sequelize, {
   OrderItem,
   WhereAttributeHash,
   QueryTypes,
-  UniqueConstraintError,
-  Transaction,
 } from "sequelize";
 import { waitForLock } from "../locks";
 import { RecordPropertyOps } from "./recordProperty";
@@ -831,12 +829,16 @@ export namespace RecordOps {
     }
 
     const recordProperties = await RecordProperty.findAll({
-      where: { unique: true, rawValue: rawValues },
+      where: {
+        propertyId: uniqueProperties.map((p) => p.id),
+        unique: true,
+        rawValue: rawValues,
+      },
       include: [GrouparooRecord],
     });
 
     const properties = await PropertiesCache.findAllWithCache(
-      undefined,
+      source instanceof Source ? source.modelId : undefined,
       "ready"
     );
 
@@ -844,9 +846,12 @@ export namespace RecordOps {
       if (data.error) continue;
 
       // the record already exists in the DB and we can find it by property value
-      for (const matchValues of Object.values(data.uniquePropertiesHash)) {
-        const recordProperty = recordProperties.find((rp) =>
-          matchValues.includes(rp.rawValue)
+      for (const [propertyId, matchValues] of Object.entries(
+        data.uniquePropertiesHash
+      )) {
+        const recordProperty = recordProperties.find(
+          (rp) =>
+            propertyId === rp.propertyId && matchValues.includes(rp.rawValue)
         );
         if (recordProperty) {
           data.record = recordProperty.record;
