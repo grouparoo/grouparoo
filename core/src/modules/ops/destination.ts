@@ -124,9 +124,7 @@ export namespace DestinationOps {
     destination: Destination,
     record: GrouparooRecord,
     mapping: MappingHelper.Mappings,
-    destinationGroupMemberships: {
-      [groupId: string]: string;
-    }
+    destinationGroupMemberships: Record<string, string>
   ) {
     const recordProperties = await record.getProperties();
     const mappingKeys = Object.keys(mapping);
@@ -763,7 +761,7 @@ export namespace DestinationOps {
     }
 
     // known specific records where there were errors
-    const recordsWithErrors: { [id: string]: ErrorWithRecordId } = {};
+    const recordsWithErrors: Record<string, ErrorWithRecordId> = {};
     for (const errorWithId of combinedError.errors) {
       const recordId = errorWithId.recordId;
       if (!recordId) {
@@ -1110,7 +1108,7 @@ WHERE
     destinationMappingOptions: DestinationMappingOptionsMethodResponse,
     key: "oldRecordProperties" | "newRecordProperties"
   ) {
-    const response: { [key: string]: any } = {};
+    const response: Record<string, any> = {};
     const rawProperties: Record<string, any> = JSON.parse(
       //@ts-ignore
       _export["dataValues"][key]

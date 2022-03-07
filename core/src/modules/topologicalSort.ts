@@ -1,7 +1,7 @@
 // From https://jeremyckahn.github.io/javascript-algorithms/graphs_others_topological-sort.js.html (with modifications)
 // Learn more @ https://en.wikipedia.org/wiki/Topological_sorting
 
-export type Graph = { [key: string]: string[] };
+export type Graph = Record<string, string[]>;
 
 /**
  * Topological sort algorithm of a directed acyclic graph.<br><br>

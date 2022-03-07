@@ -255,9 +255,10 @@ export namespace RecordOps {
    */
   export async function addOrUpdateProperties(
     records: GrouparooRecord[],
-    recordProperties: {
-      [key: string]: (string | number | boolean | Date)[] | any;
-    }[],
+    recordProperties: Record<
+      string,
+      (string | number | boolean | Date)[] | any
+    >[],
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     toLock = true,
     ignoreMissingProperties = false
@@ -308,7 +309,7 @@ export namespace RecordOps {
         // this special, internal-ony key is used to send extra information though an Import.  `_meta` is prevented from being a valid Property key
         if (key === "_meta") continue checkKeys;
 
-        const h: { [key: string]: (string | number | boolean | Date)[] } = {};
+        const h: Record<string, (string | number | boolean | Date)[]> = {};
         h[key] = Array.isArray(recordProperties[recordOffset][key])
           ? recordProperties[recordOffset][key]
           : [recordProperties[recordOffset][key]];
@@ -557,7 +558,7 @@ export namespace RecordOps {
   }
 
   export async function updateGroupMemberships(records: GrouparooRecord[]) {
-    const results: { [recordId: string]: { [groupId: string]: boolean } } = {};
+    const results: Record<string, Record<string, boolean>> = {};
     const groups = await Group.scope("notDraft").findAll({
       include: [GroupRule],
     });
@@ -764,9 +765,7 @@ export namespace RecordOps {
    * This method today always returns a record by finding it or making a a new one... unless it throws because the source isn't allowed to make new records.
    */
   export async function findOrCreateByUniqueRecordProperties(
-    hashes: {
-      [key: string]: (string | number | boolean | Date)[];
-    }[],
+    hashes: Record<string, (string | number | boolean | Date)[]>[],
     referenceIds: string[],
     source?: boolean | Source,
     includeAllProperties = false

@@ -1,7 +1,7 @@
 import Sequelize from "sequelize";
 import { MigrationUtils } from "../utils/migration";
 
-const renames: { [table: string]: [string, string][] } = {
+const renames: Record<string, [string, string][]> = {
   exports: [
     ["profileId", "recordId"],
     ["oldProfileProperties", "oldRecordProperties"],

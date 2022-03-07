@@ -119,7 +119,7 @@ export namespace CLS {
    */
   export async function enqueueTask(
     taskName: string,
-    args: { [key: string]: any },
+    args: Record<string, any>,
     queue?: string
   ) {
     await afterCommit(async () => task.enqueue(taskName, args, queue));
@@ -131,7 +131,7 @@ export namespace CLS {
   export async function enqueueTaskIn(
     delay: number,
     taskName: string,
-    args: { [key: string]: any },
+    args: Record<string, any>,
     queue?: string
   ) {
     await afterCommit(async () => task.enqueueIn(delay, taskName, args, queue));

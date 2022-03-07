@@ -17,13 +17,9 @@ import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
 import { StateMachine } from "../modules/stateMachine";
 
-export interface ImportData {
-  [key: string]: any;
-}
+export type ImportData = Record<string, any>;
 
-export interface ImportRecordProperties {
-  [key: string]: any;
-}
+export type ImportRecordProperties = Record<string, any>;
 
 const IMPORT_CREATORS = ["run", "group"] as const;
 

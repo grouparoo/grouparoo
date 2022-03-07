@@ -21,9 +21,7 @@ export const ObfuscatedOptionString = "__ObfuscatedOption";
 type ModelWithOptions = Source | Destination | Schedule | Property | App;
 
 export namespace OptionHelper {
-  export interface SimpleOptions {
-    [key: string]: string | number | boolean;
-  }
+  export type SimpleOptions = Record<string, string | number | boolean>;
 
   export async function getOptions(
     instance: ModelWithOptions,

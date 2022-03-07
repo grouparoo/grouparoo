@@ -51,7 +51,7 @@ export namespace GroupOps {
     group: Group,
     records: GrouparooRecord[]
   ) {
-    const response: { [recordId: string]: boolean } = {};
+    const response: Record<string, boolean> = {};
     records.forEach((p) => (response[p.id] = false));
     const existingMemberships = await GroupMember.findAll({
       where: {
@@ -428,7 +428,7 @@ export namespace GroupOps {
       })
       .slice(0, limit);
 
-    const newestMembersAdded: { [id: string]: number } = {};
+    const newestMembersAdded: Record<string, number> = {};
     newGroupMembers.forEach((g) => {
       // @ts-ignore
       const value: Date | string = g.getDataValue("newestMemberAdded"); // this may be a string if SQLite is used

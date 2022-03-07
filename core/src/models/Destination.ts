@@ -306,9 +306,9 @@ export class Destination extends CommonModel<Destination> {
     });
   }
 
-  async setDestinationGroupMemberships(newDestinationGroupMemberships: {
-    [groupId: string]: string;
-  }) {
+  async setDestinationGroupMemberships(
+    newDestinationGroupMemberships: Record<string, string>
+  ) {
     for (const groupId in newDestinationGroupMemberships) {
       const group = await Group.findById(groupId);
       if (group.state === "draft" || group.state === "deleted") {
@@ -415,10 +415,7 @@ export class Destination extends CommonModel<Destination> {
     }
   }
 
-  async validateMappings(
-    mappings: { [key: string]: string },
-    saveCache = true
-  ) {
+  async validateMappings(mappings: Record<string, string>, saveCache = true) {
     if (Object.keys(mappings).length === 0) return;
 
     const destinationMappingOptions = await this.destinationMappingOptions(
@@ -514,9 +511,7 @@ export class Destination extends CommonModel<Destination> {
   async recordPreview(
     record: GrouparooRecord,
     mapping: MappingHelper.Mappings,
-    destinationGroupMemberships: {
-      [groupId: string]: string;
-    }
+    destinationGroupMemberships: Record<string, string>
   ) {
     return DestinationOps.recordPreview(
       this,

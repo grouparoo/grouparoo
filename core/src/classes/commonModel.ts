@@ -83,7 +83,7 @@ export abstract class CommonModel<T> extends Model {
     return this.id.startsWith(`${this.idPrefix()}_`) && validator.isUUID(uuid);
   }
 
-  abstract apiData(): Promise<{ [key: string]: any }>;
+  abstract apiData(): Promise<Record<string, any>>;
 
   // --- Class Methods --- //
 

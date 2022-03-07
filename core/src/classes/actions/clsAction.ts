@@ -4,9 +4,7 @@ import { CLS } from "../../modules/cls";
 import { AsyncReturnType } from "type-fest";
 import { ActionPermission } from "../../models/Permission";
 
-export interface ActionData {
-  [key: string]: any;
-}
+export type ActionData = Record<string, any>;
 
 export abstract class CLSAction extends Action {
   permission: ActionPermission;

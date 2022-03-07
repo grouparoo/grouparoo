@@ -555,7 +555,7 @@ export namespace FinalSummaryReporters {
         },
       });
 
-      const sources: { [id: string]: SourceData } = {};
+      const sources: Record<string, SourceData> = {};
       for (const run of runs) {
         let source = null;
         await run.updateTotals();

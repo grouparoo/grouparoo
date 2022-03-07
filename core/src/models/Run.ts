@@ -27,9 +27,7 @@ import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
 import { GrouparooModel } from "./GrouparooModel";
 
-export interface HighWaterMark {
-  [key: string]: string | number | Date;
-}
+export type HighWaterMark = Record<string, string | number | Date>;
 
 const RUN_CREATORS = [
   "schedule",

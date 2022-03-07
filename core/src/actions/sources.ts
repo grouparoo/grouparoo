@@ -321,13 +321,14 @@ export class SourcePreview extends AuthenticatedAction {
     const preview = await source.sourcePreview(params.options);
     const existingProperties: Property[] = await Property.findAll();
 
-    const columnSpeculation: {
-      [column: string]: {
+    const columnSpeculation: Record<
+      string,
+      {
         suggestedPropertyKey?: string;
         type: typeof PropertyTypes[number];
         isUnique: boolean;
-      };
-    } = {};
+      }
+    > = {};
     if (preview.length > 0) {
       const keys = Object.keys(preview[0]);
       for (const key of keys) {

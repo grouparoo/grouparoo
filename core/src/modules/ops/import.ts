@@ -68,7 +68,7 @@ export namespace ImportOps {
       updatedAt: Import["updatedAt"];
     }[] = [];
 
-    const importCollections: { [sourceId: string]: Import[] } = {};
+    const importCollections: Record<string, Import[]> = {};
     for (const _import of imports) {
       let source: Source;
       if (runIds.includes(_import.creatorId)) {

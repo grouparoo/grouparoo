@@ -13,9 +13,7 @@ declare module "actionhero" {
       validate: (plugin: GrouparooPlugin) => boolean;
       register: (plugin: GrouparooPlugin, validate: boolean) => void;
       announcePlugins: () => void;
-      persistentConnections: {
-        [id: string]: any;
-      };
+      persistentConnections: Record<string, any>;
     };
   }
 }

@@ -314,8 +314,8 @@ export class Source extends CommonModel<Source> {
   async importRecordProperties(
     records: GrouparooRecord[],
     properties: Property[],
-    propertyOptionsOverride?: { [key: string]: SimplePropertyOptions },
-    propertyFiltersOverride?: { [key: string]: PropertyFiltersWithKey[] }
+    propertyOptionsOverride?: Record<string, SimplePropertyOptions>,
+    propertyFiltersOverride?: Record<string, PropertyFiltersWithKey[]>
   ) {
     return SourceOps.importRecordProperties(
       this,

@@ -30,7 +30,7 @@ export namespace Reset {
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   export async function cluster(callerId: string) {
-    const counts: { [model: string]: number } = {};
+    const counts: Record<string, number> = {};
 
     const models: any[] = [
       App,

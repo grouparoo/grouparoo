@@ -52,7 +52,7 @@ export interface AppConfigurationObject extends ConfigurationObject {
   name: string;
   type: string;
   refresh?: { query: string; recurringFrequency: number };
-  options?: { [key: string]: any };
+  options?: Record<string, any>;
 }
 
 export interface DestinationConfigurationObject extends ConfigurationObject {
@@ -63,9 +63,9 @@ export interface DestinationConfigurationObject extends ConfigurationObject {
   syncMode: DestinationSyncMode;
   collection: DestinationCollection;
   groupId?: string;
-  options?: { [key: string]: any };
-  mapping?: { [key: string]: any };
-  destinationGroupMemberships?: { [key: string]: string };
+  options?: Record<string, any>;
+  mapping?: Record<string, any>;
+  destinationGroupMemberships?: Record<string, string>;
 }
 
 export interface GroupRuleConfigurationObject {
@@ -87,7 +87,7 @@ export interface GroupConfigurationObject extends ConfigurationObject {
 
 export interface RecordConfigurationObject extends ConfigurationObject {
   modelId: string;
-  properties?: { [key: string]: (string | boolean | number | Date)[] };
+  properties?: Record<string, (string | boolean | number | Date)[]>;
 }
 
 export interface PropertyConfigurationObject extends ConfigurationObject {
@@ -96,7 +96,7 @@ export interface PropertyConfigurationObject extends ConfigurationObject {
   sourceId: string;
   unique?: boolean;
   isArray?: boolean;
-  options?: { [key: string]: any };
+  options?: Record<string, any>;
   filters?: PropertyFiltersWithKey[];
 }
 
@@ -107,7 +107,7 @@ export interface ScheduleConfigurationObject extends ConfigurationObject {
   incremental?: boolean;
   recurringFrequency?: number;
   confirmRecords?: boolean;
-  options?: { [key: string]: any };
+  options?: Record<string, any>;
   filters?: PropertyFiltersWithKey[];
   refreshEnabled?: boolean;
 }
@@ -123,8 +123,8 @@ export interface SourceConfigurationObject extends ConfigurationObject {
   name: string;
   modelId: string;
   type: string;
-  options?: { [key: string]: any };
-  mapping?: { [key: string]: any };
+  options?: Record<string, any>;
+  mapping?: Record<string, any>;
 }
 
 export interface TeamConfigurationObject extends ConfigurationObject {
@@ -313,7 +313,7 @@ export function validateConfigObjects(
   errors: string[];
 } {
   const errors: string[] = [];
-  const idTypes: { [type: string]: string[] } = {};
+  const idTypes: Record<string, string[]> = {};
 
   for (const configObject of configObjects) {
     if (!configObject.id) {

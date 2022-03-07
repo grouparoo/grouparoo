@@ -80,7 +80,7 @@ export class PropertiesList extends AuthenticatedAction {
     );
 
     const responseProperties: AsyncReturnType<Property["apiData"]>[] = [];
-    const responseExamples: { [id: string]: string[] } = {};
+    const responseExamples: Record<string, string[]> = {};
 
     for (const property of properties) {
       const apiData = await property.apiData();

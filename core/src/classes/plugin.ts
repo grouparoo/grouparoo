@@ -219,18 +219,17 @@ export interface RecordPropertiesPluginMethod<AppConnection = any> {
     sourceMapping: SourceMapping;
     properties: Property[];
     propertyIds: string[];
-    propertyOptions: { [key: string]: SimplePropertyOptions };
-    propertyFilters: { [key: string]: PropertyFiltersWithKey[] };
+    propertyOptions: Record<string, SimplePropertyOptions>;
+    propertyFilters: Record<string, PropertyFiltersWithKey[]>;
     records: GrouparooRecord[];
     recordIds: string[];
   }): Promise<RecordPropertiesPluginMethodResponse>;
 }
 
-export type RecordPropertiesPluginMethodResponse = {
-  [recordId: string]: {
-    [key: string]: RecordPropertyPluginMethodResponse;
-  };
-};
+export type RecordPropertiesPluginMethodResponse = Record<
+  string,
+  Record<string, RecordPropertyPluginMethodResponse>
+>;
 
 /**
  * The record data that a Destination will receive.
@@ -239,8 +238,8 @@ export type RecordPropertiesPluginMethodResponse = {
 export interface ExportedRecord {
   record: GrouparooRecord;
   recordId: string;
-  oldRecordProperties: { [key: string]: any };
-  newRecordProperties: { [key: string]: any };
+  oldRecordProperties: Record<string, any>;
+  newRecordProperties: Record<string, any>;
   oldGroups: string[];
   newGroups: string[];
   toDelete: boolean;
@@ -330,13 +329,16 @@ export interface ErrorWithRecordId extends Error {
  * Returns a collection of data to display to the user.
  */
 export interface AppOptionsMethod {
-  (): Promise<{
-    [optionName: string]: {
-      type: PluginOptionType;
-      options?: string[];
-      descriptions?: string[];
-    };
-  }>;
+  (): Promise<
+    Record<
+      string,
+      {
+        type: PluginOptionType;
+        options?: string[];
+        descriptions?: string[];
+      }
+    >
+  >;
 }
 
 /**
@@ -411,13 +413,14 @@ export interface SourceOptionsMethod<AppConnection = any> {
   }): Promise<SourceOptionsMethodResponse>;
 }
 
-export interface SourceOptionsMethodResponse {
-  [optionName: string]: {
+export type SourceOptionsMethodResponse = Record<
+  string,
+  {
     type: PluginOptionType;
     options?: string[];
     descriptions?: string[];
-  };
-}
+  }
+>;
 
 /**
  * Render a preview of the data present in the source.
@@ -436,9 +439,7 @@ export interface SourcePreviewMethod<AppConnection = any> {
   }): Promise<SourcePreviewMethodResponseRow[]>;
 }
 
-export interface SourcePreviewMethodResponseRow {
-  [column: string]: any;
-}
+export type SourcePreviewMethodResponseRow = Record<string, any>;
 
 /**
  * Return a list of things that this property can be filtered by
@@ -576,13 +577,14 @@ export interface DestinationOptionsMethod<AppConnection = any> {
   }): Promise<DestinationOptionsMethodResponse>;
 }
 
-export interface DestinationOptionsMethodResponse {
-  [optionName: string]: {
+export type DestinationOptionsMethodResponse = Record<
+  string,
+  {
     type: PluginOptionType;
     options?: string[];
     descriptions?: string[];
-  };
-}
+  }
+>;
 
 /**
  * Method to return the details of how this destination wants to map it's property

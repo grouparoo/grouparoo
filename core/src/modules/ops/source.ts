@@ -168,8 +168,8 @@ export namespace SourceOps {
     source: Source,
     records: GrouparooRecord[],
     properties: Property[],
-    propertyOptionsOverride?: { [key: string]: SimplePropertyOptions },
-    propertyFiltersOverride?: { [key: string]: PropertyFiltersWithKey[] }
+    propertyOptionsOverride?: Record<string, SimplePropertyOptions>,
+    propertyFiltersOverride?: Record<string, PropertyFiltersWithKey[]>
   ) {
     if (
       properties.find((p) => p.state !== "ready") &&
@@ -208,9 +208,8 @@ export namespace SourceOps {
       utils.sleep(100);
     }
 
-    const propertyOptions: { [key: string]: SimplePropertyOptions } = {};
-    const propertyFilters: { [key: string]: FilterHelper.FiltersWithKey[] } =
-      {};
+    const propertyOptions: Record<string, SimplePropertyOptions> = {};
+    const propertyFilters: Record<string, FilterHelper.FiltersWithKey[]> = {};
     for (const property of properties) {
       if (propertyOptionsOverride && propertyOptionsOverride[property.id]) {
         propertyOptions[property.id] = propertyOptionsOverride[property.id];
@@ -276,8 +275,7 @@ export namespace SourceOps {
     if (!mappedProperty) return;
     if (mappedProperty.unique) return;
 
-    const valueMap: { [mappedPropertyId: string]: { [match: string]: any } } =
-      {};
+    const valueMap: Record<string, Record<string, any>> = {};
 
     // load up the values
     for (const recordId of Object.keys(response)) {
@@ -375,7 +373,7 @@ export namespace SourceOps {
   export function sortByDependencies(sources: Source[]) {
     const sortedSources: Source[] = [];
 
-    const graph: { [id: string]: string[] } = {};
+    const graph: Record<string, string[]> = {};
     for (const source of sources) {
       const provides = source.properties.map((p) => p.id);
       const dependsOn = source.mappings.map((p) => p.propertyId);
@@ -610,7 +608,7 @@ export namespace SourceOps {
       raw: true,
     });
 
-    const counts: { [sourceId: string]: number } = {};
+    const counts: Record<string, number> = {};
     countsBySource.forEach((record) => {
       //@ts-ignore
       counts[record.sourceId] = record["count"];

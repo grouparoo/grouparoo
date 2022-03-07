@@ -30,19 +30,18 @@ import { getParentPath } from "../modules/pluginDetails";
 /**
  * The GrouparooRecord Properties in their normal data types (string, boolean, date, etc)
  */
-export interface ExportRecordProperties {
-  [key: string]: any | any[];
-}
+export type ExportRecordProperties = Record<string, any | any[]>;
 
 /**
  * The GrouparooRecord Properties as stringified rawValues + types
  */
-export interface ExportRecordPropertiesWithType {
-  [key: string]: {
+export type ExportRecordPropertiesWithType = Record<
+  string,
+  {
     type: typeof PropertyTypes[number];
     rawValue: string | string[];
-  };
-}
+  }
+>;
 
 export const ExportStates = [
   "draft", // not ready to send, needs manual review
