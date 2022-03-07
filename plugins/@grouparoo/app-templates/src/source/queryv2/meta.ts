@@ -62,6 +62,7 @@ export const buildConnection: BuildConnectionMethod = ({
   getPropertyValues,
   getRowCount,
 }) => {
+  const defaultAggregationMethod = AggregationMethod.Exact;
   const useAggregations = false;
   const propertyOptions: PropertyOptionsMethod = async (args) =>
     getPropertyOptions(args, {
@@ -88,13 +89,13 @@ export const buildConnection: BuildConnectionMethod = ({
   });
   const recordProperty: RecordPropertyPluginMethod = getPropertyValue
     ? getRecordProperty({
-        useAggregations,
+        defaultAggregationMethod,
         getPropertyValue,
       })
     : null;
   const recordProperties: RecordPropertiesPluginMethod = getPropertyValues
     ? getRecordProperties({
-        useAggregations,
+        defaultAggregationMethod,
         getPropertyValues,
       })
     : null;
@@ -118,6 +119,7 @@ export const buildConnection: BuildConnectionMethod = ({
     direction: "import",
     description,
     supportIncrementalSchedule: true,
+    defaultAggregationMethod,
     groupAggregations: [AggregationMethod.Exact],
     apps,
     options,

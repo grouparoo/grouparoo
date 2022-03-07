@@ -16,13 +16,13 @@ import { getFilterOperation } from "./getFilterOperation";
 
 export interface GetRecordPropertiesMethod {
   (argument: {
-    useAggregations: boolean;
+    defaultAggregationMethod?: AggregationMethod;
     getPropertyValues: GetPropertyValuesMethod;
   }): RecordPropertiesPluginMethod;
 }
 
 export const getRecordProperties: GetRecordPropertiesMethod = ({
-  useAggregations,
+  defaultAggregationMethod,
   getPropertyValues,
 }) => {
   const recordProperties: RecordPropertiesPluginMethod = async ({
@@ -43,11 +43,10 @@ export const getRecordProperties: GetRecordPropertiesMethod = ({
       propertyOptions[p.id][columnNameKey]?.toString()
     );
     const columnNames = [...new Set(rawColumnNames)];
-    const aggregationMethod = useAggregations
-      ? <AggregationMethod>(
-          propertyOptions[Object.keys(propertyOptions)[0]][aggregationMethodKey]
-        )
-      : AggregationMethod.Exact;
+    const aggregationMethod =
+      <AggregationMethod>(
+        propertyOptions[Object.keys(propertyOptions)[0]][aggregationMethodKey]
+      ) ?? defaultAggregationMethod;
     const sortColumn =
       propertyOptions[Object.keys(propertyOptions)[0]][
         sortColumnKey

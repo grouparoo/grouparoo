@@ -130,7 +130,7 @@ export namespace RecordPropertyOps {
       const filters = await property.getFilters();
       const aggregationMethod =
         (options.aggregationMethod as AggregationMethod) ??
-        AggregationMethod.Exact;
+        pluginConnection.defaultAggregationMethod;
 
       if (
         pluginConnection.groupAggregations?.includes(aggregationMethod) &&
