@@ -2071,6 +2071,8 @@ importers:
   ui/ui-config:
     specifiers:
       '@grouparoo/core': 0.8.2-alpha.1
+      '@grouparoo/csv': 0.8.2-alpha.1
+      '@grouparoo/logger': 0.8.2-alpha.1
       '@grouparoo/spec-helper': 0.8.2-alpha.1
       '@grouparoo/ui-components': 0.8.2-alpha.1
       '@playwright/test': 1.19.2
@@ -2108,6 +2110,8 @@ importers:
       react-hook-form: 7.27.1_react@17.0.2
     devDependencies:
       '@grouparoo/core': link:../../core
+      '@grouparoo/csv': link:../../plugins/@grouparoo/csv
+      '@grouparoo/logger': link:../../plugins/@grouparoo/logger
       '@grouparoo/spec-helper': link:../../plugins/@grouparoo/spec-helper
       '@grouparoo/ui-components': link:../ui-components
       '@playwright/test': 1.19.2

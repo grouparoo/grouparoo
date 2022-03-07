@@ -1,9 +1,16 @@
+import path from "path";
 import { PlaywrightTestConfig } from "@playwright/test";
 
 import "@grouparoo/spec-helper/dist/lib/environment";
 
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/ui-config": { path: __dirname },
+  "@grouparoo/ui-enterprise": { path: __dirname },
+  "@grouparoo/csv": {
+    path: path.join(__dirname, "node_modules/@grouparoo/csv"),
+  },
+  "@grouparoo/logger": {
+    path: path.join(__dirname, "node_modules/@grouparoo/logger"),
+  },
 });
 
 // @ts-ignore
