@@ -98,13 +98,11 @@ export const buildConnection: BuildConnectionMethod = ({
   });
   const recordProperty: RecordPropertyPluginMethod = getPropertyValue
     ? getRecordProperty({
-        useAggregations,
         getPropertyValue,
       })
     : null;
   const recordProperties: RecordPropertiesPluginMethod = getPropertyValues
     ? getRecordProperties({
-        useAggregations,
         getPropertyValues,
       })
     : null;
