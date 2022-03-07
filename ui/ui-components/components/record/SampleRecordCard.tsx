@@ -594,7 +594,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   if (destinationId) {
     actions.push(
       <LoadingButton
-      id="sample_record__export_record_button"
+        id="sample_record__export_record_button"
         disabled={
           disabled || !record || loading || !!warning || !canExportRecord
         }
