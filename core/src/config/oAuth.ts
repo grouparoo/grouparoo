@@ -8,7 +8,7 @@ declare module "actionhero" {
 export const DEFAULT = {
   [namespace]: () => {
     return {
-      host: process.env.GROUPAROO_AUTH_URL || "",
+      host: process.env.GROUPAROO_AUTH_URL,
     };
   },
 };
