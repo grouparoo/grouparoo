@@ -19,6 +19,8 @@ export class OAuthListProviders extends Action {
   outputExample = {};
 
   async run({ params }: { params: ParamsFrom<OAuthListProviders> }) {
+    if (!config.oAuth.host) return { providers: [] };
+
     let fullUrl = `${config.oAuth.host}/api/v1/oauth/providers`;
     if (params.type) fullUrl += `?type=${params.type}`;
 

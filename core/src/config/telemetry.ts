@@ -8,12 +8,11 @@ declare module "actionhero" {
 export const DEFAULT = {
   [namespace]: () => {
     return {
-      enabled:
-        ["false", "FALSE", "0", "off"].includes(
-          process.env.GROUPAROO_TELEMETRY_ENABLED
-        ) || process.env.NODE_ENV === "test"
-          ? false
-          : true,
+      enabled: ["true", "TRUE", "1", "on"].includes(
+        process.env.GROUPAROO_TELEMETRY_ENABLED
+      )
+        ? true
+        : false,
       host:
         process.env.GROUPAROO_TELEMETRY_URL ||
         "https://telemetry.grouparoo.com",
