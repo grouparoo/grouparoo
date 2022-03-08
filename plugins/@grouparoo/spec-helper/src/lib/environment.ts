@@ -35,3 +35,7 @@ if (!process.env.NEXT_DISABLED) {
   const { URL } = require("url");
   globalThis.URL = URL;
 }
+
+if (!process.env.GROUPAROO_AUTH_URL) {
+  process.env.GROUPAROO_AUTH_URL = "https://auth.grouparoo.com";
+}
