@@ -1,11 +1,10 @@
 import { helper } from "@grouparoo/spec-helper";
-import { test, expect } from "@playwright/test";
+import { test } from "@playwright/test";
 import { ChildProcessWithoutNullStreams } from "child_process";
 import fs from "fs";
 import path from "path";
 import { BrowserContext, Page } from "playwright";
 
-// import SampleRecordPageObject from "@grouparoo/ui-components/__tests__/__pageObjects__/sampleRecord";
 import InitializeTeamPageObject from "@grouparoo/ui-components/__tests__/__pageObjects__/team/initialize";
 import NewModelPageObject from "@grouparoo/ui-components/__tests__/__pageObjects__/model/new";
 import ModelOverviewPageObject from "@grouparoo/ui-components/__tests__/__pageObjects__/model/overview";
@@ -312,18 +311,7 @@ test.describe("Model Creation", () => {
         primary_id: { label: "user_id" },
       });
 
-      const { destination } = await destinationData.clickSave();
+      await destinationData.clickSave();
     });
   });
-
-  // test.describe("Sample Record", () => {
-  //   test("can navigate to sample record", async () => {
-  //     await modelOverview.navigate("#sample-record");
-
-  //     const sampleRecord = new SampleRecordPageObject(page);
-  //     await sampleRecord.clickImportRecord();
-
-  //     await expect(sampleRecord.getProperties()).toHaveCount(2);
-  //   });
-  // });
 });
