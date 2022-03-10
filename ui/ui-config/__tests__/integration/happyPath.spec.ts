@@ -41,8 +41,8 @@ test.describe("login and initialization flow", () => {
     page = await context.newPage();
   });
 
-  test.afterAll(async ({ browser }) => {
-    await browser.close();
+  test.afterAll(async () => {
+    await page.context().close();
   });
 
   test("it renders the homepage", async () => {
