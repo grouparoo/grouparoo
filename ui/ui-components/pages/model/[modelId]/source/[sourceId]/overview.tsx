@@ -52,7 +52,7 @@ export const getServerSideProps = withServerErrorHandler(async (ctx) => {
       id: source.schedule.id,
       limit: 1,
     });
-    run = runs[0];
+    run = runs?.[0] ?? null;
   }
 
   return { props: { source, totalSources, run, properties } };

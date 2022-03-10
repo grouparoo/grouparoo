@@ -57,6 +57,7 @@ export const getServerSideProps = withServerErrorHandler(async (ctx) => {
     id: source.schedule.id,
     limit: 1,
   });
+  const run = runs?.[0] ?? null;
 
   const { total: totalSources } = await client.request<Actions.SourcesList>(
     "get",
@@ -77,7 +78,7 @@ export const getServerSideProps = withServerErrorHandler(async (ctx) => {
       pluginOptions,
       filterOptions,
       filterOptionDescriptions,
-      run: runs ? runs[0] : null,
+      run,
       totalSources,
       totalProperties,
     },
