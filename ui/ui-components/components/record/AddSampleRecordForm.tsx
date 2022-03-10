@@ -81,7 +81,7 @@ const AddSampleRecordForm: React.FC<Props> = ({
 
   return (
     <Form id="form" onSubmit={handleSubmit(onSubmit)}>
-      <Form.Group>
+      <Form.Group controlId="sample_record_form__unique_property">
         <Form.Label>Unique Property</Form.Label>
         <Form.Control
           name="uniqueProperty"
@@ -99,7 +99,7 @@ const AddSampleRecordForm: React.FC<Props> = ({
           ))}
         </Form.Control>
       </Form.Group>
-      <Form.Group>
+      <Form.Group controlId="sample_record_form__value">
         <Form.Label>Value</Form.Label>
         <Form.Control
           name="value"

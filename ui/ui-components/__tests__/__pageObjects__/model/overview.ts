@@ -18,6 +18,10 @@ export default class ModelOverviewPageObject extends PageObject {
     await this.clickButton({ text: "Add new Destination" });
   }
 
+  getRunAllSchedulesButton() {
+    return this.buttonLocator({ text: "Run all Schedules" });
+  }
+
   async clickRunAllSchedules() {
     return await this.clickAsyncButton<void>(
       { text: "Run all Schedules" },

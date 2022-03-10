@@ -33,6 +33,27 @@ export default class SampleRecordPageObject extends PageObject {
     });
   }
 
+  async fillAndSubmitAddRecordModal({
+    uniqueProperty,
+    value,
+  }: {
+    uniqueProperty: string;
+    value: string;
+  }) {
+    await this.selectOptions(
+      { sample_record_form__unique_property: uniqueProperty },
+      "id"
+    );
+    await this.fillTextInputs(
+      {
+        sample_record_form__value: value,
+      },
+      "id"
+    );
+
+    return await this.clickAsyncButton({ text: "Submit" }, "**/record");
+  }
+
   async clickViewRecord() {
     await this.clickButton({ id: "sample_record__view_record_button" });
   }

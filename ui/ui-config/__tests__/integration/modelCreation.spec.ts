@@ -5,7 +5,7 @@ import fs from "fs";
 import path from "path";
 import { BrowserContext, Page } from "playwright";
 
-// import SampleRecordPageObject from "@grouparoo/ui-components/__tests__/__pageObjects__/sampleRecord";
+import SampleRecordPageObject from "@grouparoo/ui-components/__tests__/__pageObjects__/sampleRecord";
 import NewModelPageObject from "@grouparoo/ui-components/__tests__/__pageObjects__/model/new";
 import ModelOverviewPageObject from "@grouparoo/ui-components/__tests__/__pageObjects__/model/overview";
 import SourceOverviewPageObject from "@grouparoo/ui-components/__tests__/__pageObjects__/source/overview";
@@ -208,6 +208,11 @@ test.describe("Model Creation", () => {
     });
   });
 
+  test("it does not have Run All Schedules button", async () => {
+    await modelOverview.navigate();
+    await expect(modelOverview.getRunAllSchedulesButton()).toHaveCount(0);
+  });
+
   test.describe("Group", () => {
     test("creates group", async () => {
       await modelOverview.navigate();
@@ -232,6 +237,36 @@ test.describe("Model Creation", () => {
 
       await groupRules.fillRule(0, { property, operation, match });
       await groupRules.clickSave();
+    });
+  });
+
+  test.describe("Sample Record", () => {
+    test("has sample record", async () => {
+      await modelOverview.navigate("#sample-record");
+      const sampleRecord = new SampleRecordPageObject(page);
+
+      await expect(sampleRecord.getProperties()).toHaveCount(2);
+      await expect(sampleRecord.getPropertyValue("user_id")).not.toContainText(
+        "null"
+      );
+      await expect(sampleRecord.getPropertyValue("language")).toContainText(
+        "null"
+      );
+    });
+
+    test("can add sample record", async () => {
+      const sampleRecord = new SampleRecordPageObject(page);
+      await sampleRecord.clickAddRecord();
+      await sampleRecord.fillAndSubmitAddRecordModal({
+        uniqueProperty: "user_id",
+        value: "5",
+      });
+
+      await expect(sampleRecord.getProperties()).toHaveCount(2);
+      await expect(sampleRecord.getPropertyValue("user_id")).toContainText("5");
+      await expect(sampleRecord.getPropertyValue("language")).toContainText(
+        "English"
+      );
     });
   });
 
@@ -304,15 +339,4 @@ test.describe("Model Creation", () => {
       const { destination } = await destinationData.clickSave();
     });
   });
-
-  // test.describe("Sample Record", () => {
-  //   test("can navigate to sample record", async () => {
-  //     await modelOverview.navigate("#sample-record");
-
-  //     const sampleRecord = new SampleRecordPageObject(page);
-  //     await sampleRecord.clickImportRecord();
-
-  //     await expect(sampleRecord.getProperties()).toHaveCount(2);
-  //   });
-  // });
 });

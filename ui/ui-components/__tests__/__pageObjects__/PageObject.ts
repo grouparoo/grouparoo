@@ -56,9 +56,13 @@ export default class PageObject {
     await this.page.locator(`#${id}`).click();
   }
 
-  protected async clickButton({ text, id }: { text?: string; id?: string }) {
+  protected buttonLocator({ text, id }: { text?: string; id?: string }) {
     const selector = id ? `#${id}` : `button:has-text("${text}")`;
-    await this.page.locator(selector).click();
+    return this.page.locator(selector);
+  }
+
+  protected async clickButton(params: { text?: string; id?: string }) {
+    await this.buttonLocator(params).click();
   }
 
   protected async clickAsyncButton<T>(
