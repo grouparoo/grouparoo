@@ -34,11 +34,11 @@ core/bin/static_refs
 .next
 !ui/*/*/log
 !ui/ui-config/dist
+ui/*/*.log
 web/out
 core/public/client-js/*
 ui/*/public/client-js/*
-ui/*/__tests__/playwright-report/*
-ui/*/__tests__/playwright-report/*
+ui/*/playwright-report/*
 
 # Builds
 *.tgz

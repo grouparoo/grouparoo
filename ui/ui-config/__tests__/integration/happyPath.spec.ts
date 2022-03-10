@@ -2,16 +2,13 @@ import { test, expect } from "@playwright/test";
 import { BrowserContext, Page } from "playwright";
 import { helper } from "@grouparoo/spec-helper";
 
-import AccountPageObject from "@grouparoo/ui-components/__tests__/__pageObjects__/account";
-import InitializePageObject from "@grouparoo/ui-components/__tests__/__pageObjects__/team/initialize";
 import SignInPageObject from "@grouparoo/ui-components/__tests__/__pageObjects__/session/sign-in";
 
 import fs from "fs";
 import os from "os";
-import { Button } from "react-bootstrap";
 
 const projectDir = `${os.tmpdir()}/test/${
-  process.env.JEST_WORKER_ID ?? 1
+  process.env.TEST_WORKER_INDEX ?? 1
 }/uiConfig/config`;
 process.env.GROUPAROO_RUN_MODE = "cli:config";
 process.env.GROUPAROO_CONFIG_DIR = `${projectDir}/config`;
@@ -44,8 +41,8 @@ test.describe("login and initialization flow", () => {
     page = await context.newPage();
   });
 
-  test.afterAll(async ({ browser }) => {
-    await browser.close();
+  test.afterAll(async () => {
+    await page.context().close();
   });
 
   test("it renders the homepage", async () => {
@@ -63,9 +60,10 @@ test.describe("login and initialization flow", () => {
   test("it signs in a configUser", async () => {
     const signInPage = new SignInPageObject(page);
     await signInPage.navigate();
-    await signInPage.fill({ email, companyName });
+    await signInPage.fillAndSubmit({ email, companyName });
     await page.waitForNavigation({ url: "/setup" });
   });
+
   test("visiting '/' after login displays a link to the setup steps", async () => {
     await page.goto("/");
     await expect(page.locator(".btn-primary")).toHaveText("Set Up Grouparoo");

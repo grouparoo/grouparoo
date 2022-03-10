@@ -6,8 +6,24 @@ export interface BadgeProp {
   variant?: string;
 }
 
-export default function Selector({
+interface Props {
+  src: string;
+  title: string;
+  className: string;
+  id?: string;
+  size?: number;
+  iconClassName?: string;
+  subheading?: string;
+  description?: string;
+  disabled?: boolean;
+  badges: BadgeProp[];
+  metaBadge?: BadgeProp;
+  onClick?: any;
+}
+
+const Selector: React.FC<Props> = ({
   src = "",
+  id,
   title = "",
   size = 50,
   iconClassName = "",
@@ -18,22 +34,11 @@ export default function Selector({
   metaBadge,
   className = "",
   onClick = () => {},
-}: {
-  src: string;
-  title: string;
-  className: string;
-  size?: number;
-  iconClassName?: string;
-  subheading?: string;
-  description?: string;
-  disabled?: boolean;
-  badges: BadgeProp[];
-  metaBadge?: BadgeProp;
-  onClick?: any;
-}) {
+}) => {
   const clickProp = disabled ? undefined : { onClick };
   return (
     <div
+      id={id}
       style={{
         width: 200,
         borderRadius: 4,
@@ -104,4 +109,6 @@ export default function Selector({
       </div>
     </div>
   );
-}
+};
+
+export default Selector;

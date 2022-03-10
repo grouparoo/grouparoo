@@ -27,7 +27,8 @@ export default function AppSelectorList({
 
   return (
     <CardDeck>
-      {items.map((item: SelectablePlugin | SelectableApp, idx: number) => {
+      {items.map((item: SelectablePlugin | SelectableApp) => {
+        let id: string;
         let src: string;
         let title: string;
         let subheading: string;
@@ -39,10 +40,11 @@ export default function AppSelectorList({
         let disabled: boolean;
 
         if (isSelectableApp(item)) {
-          disabled = disabledAppIds.includes(item.id);
           // these items are apps
+          disabled = disabledAppIds.includes(item.id);
           src = item.icon;
           title = item.name.replace("@grouparoo/", "");
+          id = `applist__${item.pluginApp.name}_${item.id}_card`;
           selected = item.name === selectedItem.type;
 
           if (item.provides.source) {
@@ -62,8 +64,10 @@ export default function AppSelectorList({
           }
         } else {
           // these items are plugins
+          id = item.name;
           src = item.icon;
           title = item.name.replace("@grouparoo/", "");
+          id = `applist__${title}_card`;
 
           if (item.source) {
             badges.push({ message: "source", variant: "primary" });
@@ -88,6 +92,8 @@ export default function AppSelectorList({
 
         return (
           <Selector
+            id={id}
+            key={id}
             src={src}
             title={title}
             subheading={subheading}
@@ -99,7 +105,6 @@ export default function AppSelectorList({
             badges={badges}
             metaBadge={metaBadge}
             onClick={() => onClick(item)}
-            key={`card-${idx}`}
           />
         );
       })}
@@ -116,6 +121,7 @@ export default function AppSelectorList({
             padding: "20px",
             cursor: "pointer",
           }}
+          id="applist__new_app_card"
           onClick={() => router.push("/app/new")}
         >
           <div className="d-flex flex-column">

@@ -309,6 +309,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
     if (record) {
       result.push(
         <LinkButton
+          id="sample_record__view_record_button"
           key={modelId + (record?.id || "")}
           disabled={!record?.id || disabled}
           href={`/model/${modelId}/record${
@@ -324,6 +325,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
     if (!hideViewAllRecords) {
       result.push(
         <LinkButton
+          id="sample_record__view_all_records_button"
           disabled={disabled}
           href={`/model/${modelId}/records`}
           size="sm"
@@ -373,7 +375,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
         <Row>
           <Col style={{ minWidth: "75%" }}>
             {propertiesTitle && <h6>{propertiesTitle}</h6>}
-            <Table bordered>
+            <Table bordered id="sample_record__properties">
               <colgroup>
                 <col span={1} style={{ width: "35%" }} />
                 <col span={1} style={{ width: "65%" }} />
@@ -393,12 +395,15 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
                       ? "Draft"
                       : key;
 
+                  const id = !key ? `draft${index}` : key;
+
                   return (
                     <tr
-                      key={`property-${!key ? `draft-${index}` : key}`}
+                      key={`property-${id}`}
+                      id={`sample_record__property_row_${id}`}
                       className={trClassName}
                     >
-                      <th scope="row">
+                      <th scope="row" id={`sample_record__property_name_${id}`}>
                         {isHighlightedProperty || propertyLinkDisabled ? (
                           name
                         ) : (
@@ -412,7 +417,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
                           <StateBadge state={property.state} marginBottom={0} />
                         )}
                       </th>
-                      <td>
+                      <td id={`sample_record__property_value_${id}`}>
                         {isHighlightedProperty &&
                         (property.values.length === 0 ||
                           highlightPropertyError) ? (
@@ -445,7 +450,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
               <RecordImageFromEmail email={email} width={72} className="mb-4" />
             )}
             <h6>{groupsTitle}</h6>
-            <p>
+            <p id="sample_record__groups">
               {groups?.length
                 ? groups.map((group) => {
                     return (
@@ -474,7 +479,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
             {destinations && (
               <>
                 <h6>Destinations</h6>
-                <p>
+                <p id="sample_record__destinations">
                   {destinations?.length
                     ? destinations.map((destination) => {
                         return (
@@ -555,6 +560,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
 
   const actions = [
     <LoadingButton
+      id="samplerecord__switch_random_record_button"
       key="clear-record-id"
       disabled={
         disabled || !hasRecords || loading || importing || randomRecordDisabled
@@ -573,6 +579,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   if (!importDisabled) {
     actions.unshift(
       <LoadingButton
+        id="sample_record__import_record_button"
         disabled={disabled || !record || loading}
         loading={importing}
         onClick={importRecord}
@@ -587,6 +594,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   if (destinationId) {
     actions.push(
       <LoadingButton
+        id="sample_record__export_record_button"
         disabled={
           disabled || !record || loading || !!warning || !canExportRecord
         }
@@ -603,6 +611,7 @@ const SampleRecordCard: React.FC<SampleRecordCardProps> = ({
   if (isConfigUI) {
     actions.push(
       <LoadingButton
+        id="sample_record__add_record_button"
         disabled={disabled || loading}
         size="sm"
         variant="outline-primary"

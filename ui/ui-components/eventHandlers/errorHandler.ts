@@ -10,6 +10,7 @@ export class ErrorHandler extends EventDispatcher<{ message: string | Error }> {
 
     this.subscribe("_internal", (e) => {
       this.message = e.message;
+      console.error(this.message);
     });
   }
 }

@@ -268,7 +268,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
                       </h5>
                     </td>
                     <td>
-                      <Form.Group controlId={`${rule.key}-key-${idx}`}>
+                      <Form.Group controlId={`rule_key_${idx}`}>
                         <Form.Control
                           as="select"
                           value={rule.key}
@@ -306,7 +306,10 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
                     </td>
 
                     <td>
-                      <Form.Group controlId={`${rule.key}-op-${idx}`}>
+                      <Form.Group
+                        id={`rule_operation_group_${idx}`}
+                        controlId={`rule_operation_${idx}`}
+                      >
                         <Form.Control
                           as="select"
                           value={opValue}

@@ -30,6 +30,7 @@ import { grouparooUiEdition } from "../../../../../../../utils/uiEdition";
 import { generateClient } from "../../../../../../../client/client";
 import { withServerErrorHandler } from "../../../../../../../utils/withServerErrorHandler";
 import { NextPageWithInferredProps } from "../../../../../../../utils/pageHelper";
+import { snakeCase } from "../../../../../../../utils/languageHelper";
 
 export const getServerSideProps = withServerErrorHandler(async (ctx) => {
   const { propertyId, modelId } = ctx.query;
@@ -392,13 +393,17 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
                       {opt.type === "typeahead" ? (
                         <>
                           <Typeahead
-                            id="typeahead"
+                            id={opt.key}
+                            className={`input-${opt.key}`}
                             labelKey="key"
                             disabled={loading}
                             onChange={(selected) => {
                               if (selected.length === 1 && selected[0].key) {
                                 updateOption(opt.key, selected[0].key);
                               }
+                            }}
+                            onInputChange={(text) => {
+                              updateOption(opt.key, text);
                             }}
                             options={opt?.options}
                             placeholder={`Select ${opt.key}`}
@@ -464,6 +469,9 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
                                   <td>
                                     <Form.Check
                                       inline
+                                      id={`${snakeCase(
+                                        opt.key
+                                      )}_option_${snakeCase(col.key)}`}
                                       type="radio"
                                       name={opt.key}
                                       disabled={loading}

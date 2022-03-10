@@ -63,11 +63,11 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
 
       <PageHeader
         icon={plugin.icon}
-        title={[
+        title={
           <span>
             Add new <code>{plugin.name}</code> App
-          </span>,
-        ]}
+          </span>
+        }
         badges={[
           plugin.source ? <Badge variant="primary">Source</Badge> : null,
           plugin.destination ? (
@@ -105,6 +105,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
                   ))}
               </Card.Text>
               <LoadingButton
+                id={`app__${app.name}_create_button`}
                 loading={loading}
                 variant="primary"
                 onClick={() => create(app)}
