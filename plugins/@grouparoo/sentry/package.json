@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/sentry",
   "description": "Performance and error tracking with Sentry",
-  "version": "0.8.2-alpha.1",
+  "version": "0.8.2-alpha.2",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -32,8 +32,8 @@
     "@sentry/tracing": "6.18.1"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.8.2-alpha.1",
-    "@grouparoo/spec-helper": "0.8.2-alpha.1",
+    "@grouparoo/core": "0.8.2-alpha.2",
+    "@grouparoo/spec-helper": "0.8.2-alpha.2",
     "@types/jest": "*",
     "@types/node": "16.*.*",
     "actionhero": "28.1.8",
