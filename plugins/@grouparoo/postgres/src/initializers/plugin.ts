@@ -8,6 +8,7 @@ import { exportRecord } from "../lib/export/exportRecord";
 import { exportArrayProperties } from "../lib/export/exportArrayProperties";
 import { getConnection as getTableConnection } from "../lib/table-import/connection";
 import { getConnection as getQueryConnection } from "../lib/query-import/connection";
+import { getConnection as getQueryV2Connection } from "../lib/queryv2-import/connection";
 import { destinationOptions } from "../lib/export/destinationOptions";
 import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
 
@@ -103,6 +104,7 @@ export class Plugins extends Initializer {
       connections: [
         getTableConnection(),
         getQueryConnection(),
+        getQueryV2Connection(),
         {
           name: "postgres-export-records",
           displayName: "Postgres Export Record",

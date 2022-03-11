@@ -5,18 +5,20 @@ import {
 import { aggregationMethodKey } from "./pluginMethods";
 
 export interface GetUniquePropertyBootstrapOptionsMethod {
-  (): UniquePropertyBootstrapOptions;
+  ({}: { useAggregations?: boolean }): UniquePropertyBootstrapOptions;
 }
 
 export const getUniquePropertyBootstrapOptions: GetUniquePropertyBootstrapOptionsMethod =
-  () => {
+  ({ useAggregations }) => {
     const uniquePropertyBootstrapOptions: UniquePropertyBootstrapOptions =
       async ({ mappedColumn }) => {
         const columnName = mappedColumn;
         const options = {
-          [aggregationMethodKey]: AggregationMethod.Exact,
           column: columnName,
         };
+
+        if (useAggregations)
+          options[aggregationMethodKey] = AggregationMethod.Exact;
 
         return options;
       };

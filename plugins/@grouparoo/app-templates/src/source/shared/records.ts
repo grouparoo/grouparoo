@@ -1,6 +1,7 @@
 import {
   columnNameKey,
   tableNameKey,
+  sourceQueryKey,
   MatchCondition,
   GetRowsMethod,
 } from "./pluginMethods";
@@ -25,6 +26,7 @@ export const getRecords: GetRecordsMethod = ({ getRows }) => {
     appId,
     run,
     sourceMapping,
+    sourceOptions,
     scheduleOptions,
     source,
     limit,
@@ -33,7 +35,7 @@ export const getRecords: GetRecordsMethod = ({ getRows }) => {
     scheduleFilters,
     schedule,
   }) => {
-    const { tableName, highWaterMarkCondition } = await getChangeVariables({
+    const { highWaterMarkCondition } = await getChangeVariables({
       run,
       source,
       highWaterMark,
@@ -55,11 +57,15 @@ export const getRecords: GetRecordsMethod = ({ getRows }) => {
       });
     }
 
+    const tableName = sourceOptions[tableNameKey]?.toString();
+    const sourceQuery = sourceOptions[sourceQueryKey]?.toString();
+
     const results = await getRows({
       connection,
       appOptions,
       appId,
       tableName,
+      sourceQuery,
       highWaterMarkAndSortColumnASC,
       secondarySortColumnASC,
       limit,
@@ -106,7 +112,6 @@ export const getRecords: GetRecordsMethod = ({ getRows }) => {
 };
 
 export interface ChangeVariablesMin {
-  tableName: string;
   highWaterMarkCondition: MatchCondition;
 }
 export interface Get {
@@ -121,13 +126,8 @@ export interface GetChangeVariablesMethod {
 }
 
 export const getChangeVariables: GetChangeVariablesMethod = async ({
-  run,
-  source,
   highWaterMark,
 }) => {
-  const runOptions = await source.parameterizedOptions(run);
-  const tableName = runOptions[tableNameKey]?.toString();
-
   const hasHighWaterMark = Object.keys(highWaterMark).length === 1;
   let highWaterMarkCondition: MatchCondition = null;
 
@@ -140,5 +140,5 @@ export const getChangeVariables: GetChangeVariablesMethod = async ({
       filterOperation: FilterOperation.GreaterThanOrEqual,
     };
   }
-  return { tableName, highWaterMarkCondition };
+  return { highWaterMarkCondition };
 };

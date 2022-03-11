@@ -6,7 +6,7 @@ import {
   GetColumnDefinitionsMethod,
   ColumnDefinitionMap,
   tableNameKey,
-} from "./pluginMethods";
+} from "../shared/pluginMethods";
 
 export interface GetSourceFiltersMethod {
   (argument: { getColumns: GetColumnDefinitionsMethod }): SourceFilterMethod;

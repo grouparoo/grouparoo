@@ -4,12 +4,16 @@ import {
 } from "@grouparoo/app-templates/dist/source/table";
 import format from "pg-format";
 import { PostgresPoolClient } from "../connect";
+import { makeFromClause } from "./util";
 
 export const getSampleRows: GetSampleRowsMethod<PostgresPoolClient> = async ({
   connection,
   tableName,
+  sourceQuery,
 }) => {
   const out: DataResponseRow[] = [];
+  const params: string[] = [];
+  const from = makeFromClause({ tableName, sourceQuery }, params);
 
   // For large datasets, `order by RANDOM()` is actually very slow in Postgres
   // To that end, we would need to pick numbers at random in the Offset as a multiple of the number of rows.
@@ -18,7 +22,7 @@ export const getSampleRows: GetSampleRowsMethod<PostgresPoolClient> = async ({
   // https://stackoverflow.com/questions/8674718/best-way-to-select-random-rows-postgresql
   // ... But for now we will just show the first 10 rows of the table
   const { rows } = await connection.query<DataResponseRow>(
-    format(`SELECT * FROM %I LIMIT 10`, tableName)
+    format(`SELECT * ${from} LIMIT 10`, params)
   );
   rows.forEach((row) => out.push(row));
 

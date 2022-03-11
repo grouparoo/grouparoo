@@ -9,6 +9,7 @@ import {
   sortColumnKey,
   columnNameKey,
   tableNameKey,
+  sourceQueryKey,
 } from "./pluginMethods";
 import { getColumnExamples } from "./getExamples";
 import { GetPropertyOptionsMethodInputs } from "../shared/types";
@@ -17,6 +18,7 @@ export interface GetPropertyOptionsMethod {
   (
     args: GetPropertyOptionsMethodInputs,
     argument: {
+      useAggregations: boolean;
       getSampleRows: GetSampleRowsMethod;
       getColumns: GetColumnDefinitionsMethod;
     }
@@ -40,7 +42,7 @@ const aggregationOptions = {
 
 export const getPropertyOptions: GetPropertyOptionsMethod = async (
   { propertyOptions },
-  { getSampleRows, getColumns }
+  { useAggregations, getSampleRows, getColumns }
 ) => {
   const propertyOptionOptions: PluginConnectionPropertyOption[] = [];
 
@@ -53,62 +55,68 @@ export const getPropertyOptions: GetPropertyOptionsMethod = async (
     type: "typeahead",
     options: async ({ connection, appOptions, appId, sourceOptions }) => {
       const tableName = sourceOptions[tableNameKey]?.toString();
+      const sourceQuery = sourceOptions[sourceQueryKey]?.toString();
       return getColumnExamples({
         connection,
         appOptions,
         sourceOptions,
         appId,
         tableName,
+        sourceQuery,
         getSampleRows,
         getColumns,
       });
     },
   });
 
-  propertyOptionOptions.push({
-    key: aggregationMethodKey,
-    displayName: "Aggregation Method",
-    required: true,
-    description: "how we combine the data",
-    type: "list",
-    options: async () => {
-      const out: PluginConnectionPropertyOption[] = [];
-      for (const key in aggregationOptions) {
-        const isDefault = key === AggregationMethod.Exact ? true : false;
-        out.push(
-          Object.assign({ key, default: isDefault }, aggregationOptions[key])
-        );
-      }
-      return out;
-    },
-  });
-
-  if (
-    [
-      AggregationMethod.MostRecentValue as string,
-      AggregationMethod.LeastRecentValue as string,
-    ].includes(propertyOptions[aggregationMethodKey]?.toString())
-  ) {
+  if (useAggregations) {
     propertyOptionOptions.push({
-      key: sortColumnKey,
-      displayName: "Sort Column",
+      key: aggregationMethodKey,
+      displayName: "Aggregation Method",
       required: true,
-      description:
-        "which column to sort by for most and least recent properties",
-      type: "typeahead",
-      options: async ({ connection, appOptions, appId, sourceOptions }) => {
-        const tableName = sourceOptions[tableNameKey]?.toString();
-        return getColumnExamples({
-          connection,
-          appOptions,
-          sourceOptions,
-          appId,
-          tableName,
-          getSampleRows,
-          getColumns,
-        });
+      description: "how we combine the data",
+      type: "list",
+      options: async () => {
+        const out: PluginConnectionPropertyOption[] = [];
+        for (const key in aggregationOptions) {
+          const isDefault = key === AggregationMethod.Exact ? true : false;
+          out.push(
+            Object.assign({ key, default: isDefault }, aggregationOptions[key])
+          );
+        }
+        return out;
       },
     });
+
+    if (
+      [
+        AggregationMethod.MostRecentValue as string,
+        AggregationMethod.LeastRecentValue as string,
+      ].includes(propertyOptions[aggregationMethodKey]?.toString())
+    ) {
+      propertyOptionOptions.push({
+        key: sortColumnKey,
+        displayName: "Sort Column",
+        required: true,
+        description:
+          "which column to sort by for most and least recent properties",
+        type: "typeahead",
+        options: async ({ connection, appOptions, appId, sourceOptions }) => {
+          const tableName = sourceOptions[tableNameKey]?.toString();
+          const sourceQuery = sourceOptions[sourceQueryKey]?.toString();
+          return getColumnExamples({
+            connection,
+            appOptions,
+            sourceOptions,
+            appId,
+            tableName,
+            sourceQuery,
+            getSampleRows,
+            getColumns,
+          });
+        },
+      });
+    }
   }
 
   return propertyOptionOptions;

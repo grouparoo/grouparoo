@@ -15,6 +15,7 @@ export const aggregationMethodKey = "aggregationMethod";
 export const sortColumnKey = "sortColumn";
 export const columnNameKey = "column";
 export const tableNameKey = "table";
+export const sourceQueryKey = "query";
 
 export interface MatchCondition {
   columnName: string;
@@ -47,7 +48,8 @@ export interface GetColumnDefinitionsMethod<AppConnection = any> {
     appOptions: SimpleAppOptions;
     sourceOptions?: SimpleSourceOptions;
     appId: string;
-    tableName: string;
+    tableName?: string;
+    sourceQuery?: string;
   }): Promise<ColumnDefinitionMap>;
 }
 
@@ -57,7 +59,8 @@ export interface GetSampleRowsMethod<AppConnection = any> {
     appOptions: SimpleAppOptions;
     sourceOptions?: SimpleSourceOptions;
     appId: string;
-    tableName: string;
+    tableName?: string;
+    sourceQuery?: string;
   }): Promise<DataResponseRow[]>;
 }
 export interface GetPropertyValueMethod<AppConnection = any> {
@@ -66,7 +69,8 @@ export interface GetPropertyValueMethod<AppConnection = any> {
     appOptions: SimpleAppOptions;
     sourceOptions?: SimpleSourceOptions;
     appId: string;
-    tableName: string;
+    tableName?: string;
+    sourceQuery?: string;
     columnName: string;
     sortColumn: string;
     matchConditions: MatchCondition[];
@@ -80,7 +84,8 @@ export interface GetPropertyValuesMethod<Connection = any> {
     appOptions: SimpleAppOptions;
     sourceOptions?: SimpleSourceOptions;
     appId: string;
-    tableName: string;
+    tableName?: string;
+    sourceQuery?: string;
     columnNames: string[];
     tablePrimaryKeyCol: string;
     tableMappingCol: string;
@@ -115,7 +120,8 @@ export interface GetRowsMethod<AppConnection = any> {
     appOptions: SimpleAppOptions;
     sourceOptions?: SimpleSourceOptions;
     appId: string;
-    tableName: string;
+    tableName?: string;
+    sourceQuery?: string;
     highWaterMarkCondition: MatchCondition;
     limit: number;
     sourceOffset: number | string;
@@ -134,7 +140,8 @@ export interface GetRowCountMethod<AppConnection = any> {
     sourceOptions?: SimpleSourceOptions;
     appId: string;
     incremental: boolean;
-    tableName: string;
+    tableName?: string;
+    sourceQuery?: string;
     highWaterMarkCondition: MatchCondition;
     matchConditions: MatchCondition[];
   }): Promise<number>;

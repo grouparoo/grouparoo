@@ -1,4 +1,4 @@
-import { makeWhereClause } from "./util";
+import { makeFromClause, makeWhereClause } from "./util";
 import { validateQuery } from "../validateQuery";
 import {
   GetPropertyValueMethod,
@@ -13,6 +13,7 @@ export const getPropertyValue: GetPropertyValueMethod<
 > = async ({
   connection,
   tableName,
+  sourceQuery,
   columnName,
   sortColumn,
   matchConditions,
@@ -58,8 +59,9 @@ export const getPropertyValue: GetPropertyValueMethod<
       throw new Error(`${aggregationMethod} is not a known aggregation method`);
   }
 
-  const params = [tableName];
-  let query = `SELECT ${aggSelect} as __result FROM %I WHERE`;
+  const params: string[] = [];
+  const from = makeFromClause({ tableName, sourceQuery }, params);
+  let query = `SELECT ${aggSelect} as __result ${from} WHERE`;
   let addAnd = false;
 
   for (const condition of matchConditions) {

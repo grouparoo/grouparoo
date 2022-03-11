@@ -9,17 +9,20 @@ import {
   GetPropertyValueMethod,
   columnNameKey,
   tableNameKey,
+  sourceQueryKey,
   aggregationMethodKey,
   sortColumnKey,
 } from "./pluginMethods";
 
 export interface GetRecordPropertyMethod {
   (argument: {
+    defaultAggregationMethod?: AggregationMethod;
     getPropertyValue: GetPropertyValueMethod;
   }): RecordPropertyPluginMethod;
 }
 
 export const getRecordProperty: GetRecordPropertyMethod = ({
+  defaultAggregationMethod,
   getPropertyValue,
 }) => {
   const recordProperty: RecordPropertyPluginMethod = async ({
@@ -33,13 +36,14 @@ export const getRecordProperty: GetRecordPropertyMethod = ({
     propertyOptions,
     propertyFilters,
   }) => {
+    const sourceQuery = sourceOptions[sourceQueryKey]?.toString();
     const tableName = sourceOptions[tableNameKey]?.toString();
     const matchName = Object.keys(sourceMapping)[0]; // tableCol
     const recordPropertyMatch = Object.values(sourceMapping)[0];
     const columnName = propertyOptions[columnNameKey]?.toString();
-    const aggregationMethod = <AggregationMethod>(
-      propertyOptions[aggregationMethodKey]
-    );
+    const aggregationMethod =
+      <AggregationMethod>propertyOptions[aggregationMethodKey] ??
+      defaultAggregationMethod;
     const sortColumn = propertyOptions[sortColumnKey]?.toString();
 
     if (!aggregationMethod || !columnName) {
@@ -92,6 +96,7 @@ export const getRecordProperty: GetRecordPropertyMethod = ({
       appOptions,
       appId,
       tableName,
+      sourceQuery,
       columnName,
       sortColumn,
       matchConditions,

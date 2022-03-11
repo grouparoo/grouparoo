@@ -1,7 +1,5 @@
 import {
-  tableNameKey,
   GetSampleRowsMethod,
-  GetTablesMethod,
   GetColumnDefinitionsMethod,
   getScheduleOptions,
   getSourceOptions,
@@ -12,7 +10,6 @@ import {
   PluginConnection,
   SourcePreviewMethod,
   getSourcePreview,
-  SourceFilterMethod,
   UniquePropertyBootstrapOptions,
   getUniquePropertyBootstrapOptions,
   RecordsPluginMethod,
@@ -29,9 +26,8 @@ import {
   GetRowCountMethod,
   SourceOptionsExtra,
   AggregationMethod,
+  sourceQueryKey,
 } from "../shared/options";
-
-import { getSourceFilters } from "./sourceFilters";
 
 export interface BuildConnectionMethod {
   (argument: {
@@ -39,12 +35,11 @@ export interface BuildConnectionMethod {
     displayName: string;
     description: string;
     apps: string[];
-    tableOptionDescription?: string;
-    tableOptionDisplayName?: string;
+    queryOptionDescription?: string;
+    queryOptionDisplayName?: string;
     sourceOptions?: SourceOptionsExtra;
     getSampleRows: GetSampleRowsMethod;
     getColumns: GetColumnDefinitionsMethod;
-    getTables: GetTablesMethod;
     getRows: GetRowsMethod;
     getPropertyValue: GetPropertyValueMethod;
     getPropertyValues?: GetPropertyValuesMethod;
@@ -57,18 +52,18 @@ export const buildConnection: BuildConnectionMethod = ({
   displayName,
   description,
   apps,
-  tableOptionDescription = null,
-  tableOptionDisplayName = null,
+  queryOptionDescription = null,
+  queryOptionDisplayName = null,
   sourceOptions: additionalOptions,
   getSampleRows,
   getColumns,
-  getTables,
   getRows,
   getPropertyValue,
   getPropertyValues,
   getRowCount,
 }) => {
-  const useAggregations = true;
+  const defaultAggregationMethod = AggregationMethod.Exact;
+  const useAggregations = false;
   const propertyOptions: PropertyOptionsMethod = async (args) =>
     getPropertyOptions(args, {
       useAggregations,
@@ -81,14 +76,10 @@ export const buildConnection: BuildConnectionMethod = ({
       getColumns,
     });
   const sourceOptions: SourceOptionsMethod = getSourceOptions({
-    getTables,
     sourceOptions: additionalOptions,
   });
   const sourcePreview: SourcePreviewMethod = getSourcePreview({
     getSampleRows,
-    getColumns,
-  });
-  const sourceFilters: SourceFilterMethod = getSourceFilters({
     getColumns,
   });
   const uniquePropertyBootstrapOptions: UniquePropertyBootstrapOptions =
@@ -98,11 +89,13 @@ export const buildConnection: BuildConnectionMethod = ({
   });
   const recordProperty: RecordPropertyPluginMethod = getPropertyValue
     ? getRecordProperty({
+        defaultAggregationMethod,
         getPropertyValue,
       })
     : null;
   const recordProperties: RecordPropertiesPluginMethod = getPropertyValues
     ? getRecordProperties({
+        defaultAggregationMethod,
         getPropertyValues,
       })
     : null;
@@ -112,10 +105,12 @@ export const buildConnection: BuildConnectionMethod = ({
     });
 
   const options = (additionalOptions?.options || []).concat({
-    key: tableNameKey,
-    displayName: tableOptionDisplayName || "Table",
+    key: sourceQueryKey,
+    type: "textarea",
     required: true,
-    description: tableOptionDescription || "The table to scan",
+    displayName: queryOptionDisplayName || "Query",
+    description: queryOptionDescription || "The query to run",
+    placeholder: "SELECT statement returning property values",
   });
 
   const plugin: PluginConnection = {
@@ -124,13 +119,13 @@ export const buildConnection: BuildConnectionMethod = ({
     direction: "import",
     description,
     supportIncrementalSchedule: true,
+    defaultAggregationMethod,
+    groupAggregations: [AggregationMethod.Exact],
     apps,
     options,
-    groupAggregations: [AggregationMethod.Exact],
     methods: {
       sourceOptions,
       sourcePreview,
-      sourceFilters,
       propertyOptions,
       scheduleOptions,
       uniquePropertyBootstrapOptions,

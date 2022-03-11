@@ -5,15 +5,15 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 
 import { App, Source, Schedule } from "@grouparoo/core";
 import { helper } from "@grouparoo/spec-helper";
-import { FilterOperation } from "@grouparoo/app-templates/dist/source/table";
+import { FilterOperation } from "@grouparoo/app-templates/dist/source/queryv2";
 import { PostgresPoolClient } from "../../src/lib/connect";
 import { getRowCount } from "../../src/lib/shared/getRowCount";
 import { beforeData, afterData, getConfig } from "../utils/data";
-const { appOptions, usersTableName } = getConfig();
+const { appOptions, usersSourceQuery } = getConfig();
 
 let client: PostgresPoolClient;
 
-describe("postgres/table/scheduleOptions", () => {
+describe("postgres/queryv2/getRowCount", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
 
@@ -37,9 +37,9 @@ describe("postgres/table/scheduleOptions", () => {
 
     source = await helper.factories.source(app, {
       name: "Importer",
-      type: "postgres-import-table",
+      type: "postgres-import-queryv2",
     });
-    await source.setOptions({ table: usersTableName });
+    await source.setOptions({ query: usersSourceQuery });
     await source.setMapping({ id: "userId" });
     await source.update({ state: "ready" });
 
@@ -53,7 +53,7 @@ describe("postgres/table/scheduleOptions", () => {
       connection: client,
       appOptions,
       appId: app.id,
-      tableName: usersTableName,
+      sourceQuery: usersSourceQuery,
       incremental: true,
       matchConditions: [],
       highWaterMarkCondition: {
@@ -66,41 +66,12 @@ describe("postgres/table/scheduleOptions", () => {
     expect(rowCount).toBe(10);
   });
 
-  test("it can be filtered", async () => {
-    const rowCount = await getRowCount({
-      connection: client,
-      appOptions,
-      appId: app.id,
-      tableName: usersTableName,
-      incremental: true,
-      matchConditions: [
-        {
-          columnName: "id",
-          filterOperation: FilterOperation.GreaterThan,
-          value: 4,
-        },
-        {
-          columnName: "id",
-          filterOperation: FilterOperation.LessThan,
-          value: 7,
-        },
-      ],
-      highWaterMarkCondition: {
-        columnName: "stamp",
-        value: new Date(0),
-        filterOperation: FilterOperation.GreaterThan,
-      },
-    });
-
-    expect(rowCount).toBe(2);
-  });
-
   test("highwatermark is ignored when not incremental", async () => {
     const rowCount = await getRowCount({
       connection: client,
       appOptions,
       appId: app.id,
-      tableName: usersTableName,
+      sourceQuery: usersSourceQuery,
       incremental: false,
       matchConditions: [],
       highWaterMarkCondition: {

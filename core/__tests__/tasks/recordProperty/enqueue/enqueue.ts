@@ -22,6 +22,7 @@ describe("tasks/recordProperties:enqueue", () => {
   let testPluginConnection: PluginConnection;
   let prevRecordPropertyMethod: RecordPropertyPluginMethod;
   let prevRecordPropertiesMethod: RecordPropertiesPluginMethod;
+
   beforeAll(async () => {
     const testPlugin: GrouparooPlugin = api.plugins.plugins.find(
       (a) => a.name === "@grouparoo/test-plugin"

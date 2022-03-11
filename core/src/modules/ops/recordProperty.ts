@@ -128,7 +128,9 @@ export namespace RecordPropertyOps {
     for (const property of properties) {
       const options = await property.getOptions();
       const filters = await property.getFilters();
-      const aggregationMethod = options.aggregationMethod as AggregationMethod;
+      const aggregationMethod =
+        (options.aggregationMethod as AggregationMethod) ??
+        pluginConnection.defaultAggregationMethod;
 
       if (
         pluginConnection.groupAggregations?.includes(aggregationMethod) &&

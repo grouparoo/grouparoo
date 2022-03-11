@@ -39,6 +39,7 @@ import {
   SourcePreviewMethodResponseRow,
 } from "@grouparoo/core/src/classes/plugin";
 import { FormTypeahead } from "../../../../../components/Typeahead";
+import { ErrorHandler } from "../../../../../eventHandlers/errorHandler";
 export interface FormData {
   mapping?: {
     sourceColumn: string;
@@ -78,7 +79,8 @@ const FormFieldGenerator = ({
   updateOption,
   register,
 }: FormFieldProps) => {
-  if (connectionOptions[opt.key]?.type === "typeahead") {
+  const optionType = connectionOptions[opt.key]?.type ?? opt.type;
+  if (optionType === "typeahead") {
     return (
       <>
         <FormTypeahead<FormData>
@@ -97,7 +99,7 @@ const FormFieldGenerator = ({
         <Form.Text className="text-muted">{opt.description}</Form.Text>
       </>
     );
-  } else if (connectionOptions[opt.key]?.type === "list") {
+  } else if (optionType === "list") {
     return (
       <>
         <Form.Control
@@ -127,7 +129,7 @@ const FormFieldGenerator = ({
         <Form.Text className="text-muted">{opt.description}</Form.Text>
       </>
     );
-  } else if (connectionOptions[opt.key]?.type === "pending") {
+  } else if (optionType === "pending") {
     return (
       <>
         <Form.Control
@@ -136,6 +138,30 @@ const FormFieldGenerator = ({
           type="text"
           value="pending another selection"
         ></Form.Control>
+      </>
+    );
+  } else if (optionType === "textarea") {
+    return (
+      <>
+        <Form.Control
+          required={opt.required}
+          as="textarea"
+          disabled={loading || loadingOptions}
+          rows={5}
+          defaultValue={source.options[opt.key]?.toString()}
+          placeholder={opt.placeholder}
+          style={{
+            fontFamily:
+              'SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+            color: "#e83e8c",
+          }}
+          name={`source.options.${opt.key}`}
+          {...register(`source.options.${opt.key}`, {
+            onChange: (e) =>
+              updateOption(e.target.id.replace("_opt~", ""), e.target.value),
+          })}
+        />
+        <Form.Text className="text-muted">{opt.description}</Form.Text>
       </>
     );
   } else {
@@ -176,6 +202,8 @@ const Page: NextPage<Props> = ({
   const [loading, setLoading] = useState(false);
   const [loadingOptions, setLoadingOptions] = useState(false);
   const [previewLoading, setPreviewLoading] = useState(false);
+  const previewErrorHandler = useMemo(() => new ErrorHandler(), []);
+  const [previewError, setPreviewError] = useState<string>();
   const [properties, setProperties] = useState(props.properties);
   const [propertyExamples, setPropertyExamples] = useState<
     Record<string, string[]>
@@ -200,10 +228,26 @@ const Page: NextPage<Props> = ({
       .sort();
   }, [preview]);
 
-  const mappingColumn = useMemo(
-    () => Object.keys(source.mapping)[0],
-    [source.mapping]
-  );
+  useEffect(() => {
+    function subscription({ message }: { message: Error | string }) {
+      setPreviewError(String(message));
+      setPreview([]);
+    }
+
+    const subscriptionKey = "source-preview";
+
+    previewErrorHandler.subscribe(
+      subscriptionKey,
+      (messageObject: { message: string | Error }) =>
+        subscription(messageObject)
+    );
+
+    return () => {
+      previewErrorHandler.unsubscribe(subscriptionKey);
+    };
+  }, [previewErrorHandler]);
+
+  const mappingColumn = useMemo(() => Object.keys(source.mapping)[0], []);
   const mappingPropertyKey = useMemo(
     () => Object.values(source.mapping)[0],
     [source.mapping]
@@ -232,9 +276,10 @@ const Page: NextPage<Props> = ({
     [mappingColumn, mappingPropertyKey]
   );
 
-  const { handleSubmit, register, reset, watch, control } = useForm<FormData>({
-    defaultValues: resetFormData(source),
-  });
+  const { handleSubmit, register, reset, watch, control, getValues } =
+    useForm<FormData>({
+      defaultValues: resetFormData(source),
+    });
 
   const loadPreview = useCallback(
     async (previewAvailable = source.previewAvailable) => {
@@ -243,22 +288,23 @@ const Page: NextPage<Props> = ({
       }
 
       setPreviewLoading(true);
+      const options = getValues("source.options");
       const response = await client.request<Actions.SourcePreview>(
         "get",
         `/source/${sourceId}/preview`,
         {
-          options:
-            Object.keys(source.options).length > 0 ? source.options : null,
+          options: Object.keys(options).length > 0 ? options : null,
         },
-        { useCache: false }
+        { useCache: false, errorHandler: previewErrorHandler }
       );
       setPreviewLoading(false);
       if (response?.preview) {
         setPreview(response.preview);
+        setPreviewError(null);
         reset(resetFormData(source));
       }
     },
-    [client, resetFormData, reset, source, sourceId]
+    [client, resetFormData, reset, source, previewErrorHandler, sourceId]
   );
 
   const sourceBadges = useMemo(() => {
@@ -616,36 +662,42 @@ const Page: NextPage<Props> = ({
           <Col xl="7">
             <ManagedCard title="Example Data">
               <Card.Body>
-                {previewColumns.length === 0 && !loading ? (
-                  <>No preview</>
-                ) : null}
-                {previewColumns.length === 0 && loading ? <Loader /> : null}
-                <div style={{ overflow: "auto" }}>
-                  <LoadingTable loading={previewLoading} size="sm">
-                    <thead>
-                      <tr>
-                        {previewColumns.map((col) => (
-                          <th key={`head-${col}`}>{col}</th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {preview.map((row, i) => (
-                        <tr key={`row-${i}`}>
-                          {previewColumns.map((col, j) => (
-                            <td key={`table-${i}-${j}`}>
-                              {row[col] && typeof row[col] === "object" ? (
-                                <code>{JSON.stringify(row[col])}</code>
-                              ) : (
-                                row[col]?.toString()
-                              )}
-                            </td>
+                {previewError ? (
+                  <Alert variant="danger">{previewError}</Alert>
+                ) : (
+                  <>
+                    {previewColumns.length === 0 && !loading ? (
+                      <>No preview</>
+                    ) : null}
+                    {previewColumns.length === 0 && loading ? <Loader /> : null}
+                    <div style={{ overflow: "auto" }}>
+                      <LoadingTable loading={previewLoading} size="sm">
+                        <thead>
+                          <tr>
+                            {previewColumns.map((col) => (
+                              <th key={`head-${col}`}>{col}</th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {preview.map((row, i) => (
+                            <tr key={`row-${i}`}>
+                              {previewColumns.map((col, j) => (
+                                <td key={`table-${i}-${j}`}>
+                                  {row[col] && typeof row[col] === "object" ? (
+                                    <code>{JSON.stringify(row[col])}</code>
+                                  ) : (
+                                    row[col]?.toString()
+                                  )}
+                                </td>
+                              ))}
+                            </tr>
                           ))}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </LoadingTable>
-                </div>
+                        </tbody>
+                      </LoadingTable>
+                    </div>
+                  </>
+                )}
               </Card.Body>
             </ManagedCard>
           </Col>

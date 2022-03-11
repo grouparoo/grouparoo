@@ -55,7 +55,8 @@ export async function loadSource(
 
   await source.setOptions(
     extractNonNullParts(configObject, "options"),
-    externallyValidate
+    externallyValidate,
+    false // properties will be validated on their own later
   );
 
   // a form of testing the options

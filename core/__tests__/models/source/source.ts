@@ -443,6 +443,36 @@ describe("models/source", () => {
       await source.destroy();
     });
 
+    test("providing options that would invalidate the properties will result in an error", async () => {
+      const source = await Source.create({
+        type: "test-plugin-import",
+        name: "test source",
+        appId: app.id,
+        modelId: model.id,
+      });
+      await source.setOptions({ table: "users", tableWithOptions: "users" });
+      await source.setMapping({ id: "userId" });
+      await source.update({ state: "ready" });
+
+      const property = await helper.factories.property(
+        source,
+        { key: "my_email" },
+        { column: "email" }
+      );
+
+      await expect(
+        source.setOptions({
+          table: "admins",
+          tableWithOptions: "admins",
+        })
+      ).rejects.toThrow(
+        /Error when validating properties: Error: "email" is not a valid value/
+      );
+
+      await property.destroy();
+      await source.destroy();
+    });
+
     test("deleting a source deleted the options", async () => {
       const model: GrouparooModel = await helper.factories.model({
         name: "Users",

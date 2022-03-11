@@ -5,8 +5,6 @@ import { helper } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
 import {
   PluginConnection,
-  RecordPropertyPluginMethod,
-  RecordPropertiesPluginMethod,
   Property,
   GrouparooPlugin,
   Source,
@@ -19,8 +17,6 @@ describe("tasks/recordProperties:enqueue", () => {
 
   let propertiesCount: number;
   let testPluginConnection: PluginConnection;
-  let prevRecordPropertyMethod: RecordPropertyPluginMethod;
-  let prevRecordPropertiesMethod: RecordPropertiesPluginMethod;
 
   beforeAll(async () => {
     const testPlugin: GrouparooPlugin = api.plugins.plugins.find(
@@ -30,9 +26,6 @@ describe("tasks/recordProperties:enqueue", () => {
     testPluginConnection = testPlugin.connections.find(
       (c) => c.name === "test-plugin-import"
     );
-
-    prevRecordPropertyMethod = testPluginConnection.methods.recordProperty;
-    prevRecordPropertiesMethod = testPluginConnection.methods.recordProperties;
   });
 
   describe("recordProperties:enqueue", () => {

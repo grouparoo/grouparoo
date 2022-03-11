@@ -71,7 +71,7 @@ async function runIt({
     scheduleId: null,
     app: null,
     appId: null,
-    sourceOptions: null,
+    sourceOptions: await source.getOptions(),
     properties: [],
   });
   return {

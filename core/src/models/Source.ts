@@ -145,8 +145,24 @@ export class Source extends CommonModel<Source> {
     return OptionHelper.getOptions(this, sourceFromEnvironment);
   }
 
-  async setOptions(options: SimpleSourceOptions, externallyValidate = true) {
-    return OptionHelper.setOptions(this, options, externallyValidate);
+  async setOptions(
+    options: SimpleSourceOptions,
+    externallyValidate = true,
+    validateProperties = true
+  ) {
+    await OptionHelper.setOptions(this, options, externallyValidate);
+
+    if (validateProperties) {
+      // check if properties are still valid
+      const properties = await this.$get("properties");
+      for (const property of properties) {
+        try {
+          await property.validateOptions();
+        } catch (err) {
+          throw new Error(`Error when validating properties: ${err}`);
+        }
+      }
+    }
   }
 
   async afterSetOptions(hasChanges: boolean) {

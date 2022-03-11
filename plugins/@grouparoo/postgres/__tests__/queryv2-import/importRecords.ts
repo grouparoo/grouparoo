@@ -1,45 +1,58 @@
 import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/snowflake": { path: path.join(__dirname, "..", "..") },
+  "@grouparoo/postgres": { path: path.join(__dirname, "..", "..") },
 });
-
-import "../utils/mock";
-import "@grouparoo/spec-helper";
-
 import { helper } from "@grouparoo/spec-helper";
-import { connect } from "../../src/lib/connect";
 
-import { loadAppOptions, updater } from "../utils/nockHelper";
-import { SimpleAppOptions, Import, plugin, Run } from "@grouparoo/core";
+import { beforeData, afterData, getConfig } from "../utils/data";
+import {
+  HighWaterMark,
+  Import,
+  plugin,
+  Run,
+  Schedule,
+  Source,
+  SourceMapping,
+} from "@grouparoo/core";
 
-import { getConnection } from "../../src/lib/table-import/connection";
+import { getConnection } from "../../src/lib/queryv2-import/connection";
+import { PostgresPoolClient } from "../../src/lib/connect";
 const importRecords = getConnection().methods.importRecords;
 
-const { newNock } = helper.useNock(__filename, updater);
-const appOptions: SimpleAppOptions = loadAppOptions(newNock);
+const { appOptions, usersSourceQuery } = getConfig();
+let client: PostgresPoolClient;
 
-let source;
-let run;
-let schedule;
-let sourceMapping;
+let source: Source;
+let run: Run;
+let schedule: Schedule;
+let sourceMapping: SourceMapping;
 
-async function runIt({ highWaterMark, sourceOffset, limit, scheduleFilters }) {
-  const imports = [];
-  plugin.createImports = jest.fn(async function (
-    mapping: { [remoteKey: string]: string },
-    run: Run,
-    rows: { [remoteKey: string]: any }[]
-  ): Promise<Import[]> {
-    rows.forEach((r) => imports.push(r));
-    return null;
-  });
-  const connection = await connect({ appOptions, app: null, appId: null });
+async function runIt({
+  highWaterMark,
+  sourceOffset,
+  limit,
+}: {
+  highWaterMark: HighWaterMark;
+  sourceOffset: string | number;
+  limit: number;
+}) {
+  const imports: Record<string, unknown>[] = [];
+  plugin.createImports = jest.fn(
+    async (
+      _: Record<string, string>,
+      __: Run,
+      rows: Record<string, unknown>[]
+    ): Promise<Import[]> => {
+      rows.forEach((r) => imports.push(r));
+      return null;
+    }
+  );
   const {
     highWaterMark: nextHighWaterMark,
     importsCount,
     sourceOffset: nextSourceOffset,
   } = await importRecords({
-    connection,
+    connection: client,
     run,
     appOptions,
     sourceMapping,
@@ -49,10 +62,10 @@ async function runIt({ highWaterMark, sourceOffset, limit, scheduleFilters }) {
     sourceOffset,
     schedule,
     scheduleOptions: await schedule.getOptions(),
-    scheduleFilters,
+    scheduleFilters: [],
     runId: null,
-    scheduleId: null,
     sourceId: null,
+    scheduleId: null,
     app: null,
     appId: null,
     sourceOptions: await source.getOptions(),
@@ -66,98 +79,96 @@ async function runIt({ highWaterMark, sourceOffset, limit, scheduleFilters }) {
   };
 }
 
-describe("snowflake/table/importRecords", () => {
+describe("postgres/queryv2/importRecords", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
 
   beforeAll(async () => {
+    ({ client } = await beforeData());
+  });
+
+  afterAll(async () => await afterData());
+
+  beforeAll(async () => {
     // setup the world
     const app = await helper.factories.app({
-      name: "SF",
-      type: "snowflake",
+      name: "App",
+      type: "postgres",
       options: appOptions,
     });
 
     source = await helper.factories.source(app, {
-      name: "SFS",
-      type: "snowflake-import-table",
+      name: "Importer",
+      type: "postgres-import-queryv2",
     });
-    sourceMapping = { ID: "userId" };
-    await source.setOptions({ table: "PROFILES" });
+    sourceMapping = { id: "userId" };
+    await source.setOptions({ query: usersSourceQuery });
     await source.setMapping(sourceMapping);
     await source.update({ state: "ready" });
 
-    const options = { column: "STAMP" };
+    const options = { column: "stamp" };
     schedule = await helper.factories.schedule(source, { options });
     run = await helper.factories.run(schedule, { state: "running" });
   });
 
   test("imports all records when no highWaterMark", async () => {
-    let limit = 100;
-    let highWaterMark = {};
-    let sourceOffset = 0;
-    let scheduleFilters = [];
+    const limit = 100;
+    const highWaterMark = {};
+    const sourceOffset = 0;
     const { imports, importsCount } = await runIt({
       limit,
       highWaterMark,
       sourceOffset,
-      scheduleFilters,
     });
     expect(importsCount).toBe(10);
-    const importedIds = imports.map((r) => r.ID);
+    const importedIds = imports.map((r) => r.id);
     expect(importedIds).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
   });
 
   test("imports all records when there is a highWaterMark", async () => {
-    let limit = 100;
-    let highWaterMark = { STAMP: "2020-02-07T12:13:14.000Z" };
-    let sourceOffset = 0;
-    let scheduleFilters = [];
+    const limit = 100;
+    const highWaterMark = { stamp: "2020-02-07T12:13:14.000Z" };
+    const sourceOffset = 0;
     const { imports, importsCount } = await runIt({
       limit,
       highWaterMark,
       sourceOffset,
-      scheduleFilters,
     });
     expect(importsCount).toBe(4);
-    const importedIds = imports.map((r) => r.ID);
+    const importedIds = imports.map((r) => r.id);
     expect(importedIds).toEqual([7, 8, 9, 10]);
   });
 
   test("handles getting no results", async () => {
-    let limit = 100;
-    let sourceOffset = 0;
-    let highWaterMark = { STAMP: "2020-02-11T12:13:14.000Z" }; // past the last one
-    let scheduleFilters = [];
+    const limit = 100;
+    const sourceOffset = 0;
+    const highWaterMark = { stamp: "2020-02-11T12:13:14.000Z" }; // past the last one
     const { imports, importsCount } = await runIt({
       limit,
       highWaterMark,
       sourceOffset,
-      scheduleFilters,
     });
     expect(importsCount).toBe(0);
-    const importedIds = imports.map((r) => r.ID);
+    const importedIds = imports.map((r) => r.id);
     expect(importedIds).toEqual([]);
   });
 
   test(
     "imports a page at a time",
     async () => {
-      let limit = 4;
-      let highWaterMark = {};
-      let scheduleFilters = [];
+      const limit = 4;
+      const highWaterMark = {};
       let importedIds;
 
       const page1 = await runIt({
         limit,
         sourceOffset: 0,
         highWaterMark,
-        scheduleFilters,
       });
       expect(page1.importsCount).toBe(4);
       expect(page1.sourceOffset).toBe(0);
       expect(Object.values(page1.highWaterMark)[0]).toMatch("2020-02-04"); // the times changes based on the TZ of the test server, but the date seems to be OK...
-      importedIds = page1.imports.map((r) => r.ID);
+      importedIds = page1.imports.map((r) => r.id);
       expect(importedIds).toEqual([1, 2, 3, 4]);
 
       // do the next page
@@ -165,12 +176,11 @@ describe("snowflake/table/importRecords", () => {
         limit,
         highWaterMark: page1.highWaterMark,
         sourceOffset: page1.sourceOffset,
-        scheduleFilters,
       });
       expect(page2.importsCount).toBe(4);
       expect(page2.sourceOffset).toBe(0);
       expect(Object.values(page1.highWaterMark)[0]).toMatch("2020-02-07");
-      importedIds = page2.imports.map((r) => r.ID);
+      importedIds = page2.imports.map((r) => r.id);
       expect(importedIds).toEqual([4, 5, 6, 7]);
 
       // do the next page
@@ -178,35 +188,15 @@ describe("snowflake/table/importRecords", () => {
         limit,
         highWaterMark: page2.highWaterMark,
         sourceOffset: page2.sourceOffset,
-        scheduleFilters,
       });
       expect(page3.importsCount).toBe(4);
       expect(page3.sourceOffset).toBe(0);
       expect(Object.values(page1.highWaterMark)[0]).toMatch("2020-02-10");
-      importedIds = page3.imports.map((r) => r.ID);
+      importedIds = page3.imports.map((r) => r.id);
       expect(importedIds).toEqual([7, 8, 9, 10]);
     },
-    helper.setupTime
+    helper.longTime
   );
-
-  test("can be filtered", async () => {
-    let limit = 100;
-    let highWaterMark = {};
-    let sourceOffset = 0;
-    let scheduleFilters = [
-      { key: "ID", op: "gt", match: 4 },
-      { key: "ID", op: "lt", match: 7 },
-    ];
-    const { imports, importsCount } = await runIt({
-      limit,
-      highWaterMark,
-      sourceOffset,
-      scheduleFilters,
-    });
-    expect(importsCount).toBe(2);
-    const importedIds = imports.map((r) => r.ID);
-    expect(importedIds).toEqual([5, 6]);
-  });
 
   describe("not incremental", () => {
     beforeAll(async () => await schedule.update({ incremental: false }));
@@ -220,11 +210,10 @@ describe("snowflake/table/importRecords", () => {
         limit,
         sourceOffset: 0,
         highWaterMark: {},
-        scheduleFilters: [],
       });
       expect(page1.importsCount).toBe(4);
       expect(page1.sourceOffset).toBe(4);
-      importedIds = page1.imports.map((r) => r.ID);
+      importedIds = page1.imports.map((r) => r.id as number);
       expect(importedIds).toEqual([1, 2, 3, 4]);
 
       // do the next page
@@ -232,11 +221,10 @@ describe("snowflake/table/importRecords", () => {
         limit,
         highWaterMark: {},
         sourceOffset: page1.sourceOffset,
-        scheduleFilters: [],
       });
       expect(page2.importsCount).toBe(4);
       expect(page2.sourceOffset).toBe(8);
-      importedIds = page2.imports.map((r) => r.ID);
+      importedIds = page2.imports.map((r) => r.id as number);
       expect(importedIds).toEqual([5, 6, 7, 8]);
 
       // do the next page
@@ -244,31 +232,11 @@ describe("snowflake/table/importRecords", () => {
         limit,
         highWaterMark: {},
         sourceOffset: page2.sourceOffset,
-        scheduleFilters: [],
       });
       expect(page3.importsCount).toBe(2);
       expect(page3.sourceOffset).toBe(12);
-      importedIds = page3.imports.map((r) => r.ID);
+      importedIds = page3.imports.map((r) => r.id as number);
       expect(importedIds).toEqual([9, 10]);
-    });
-
-    test("can be filtered", async () => {
-      let limit = 100;
-      let highWaterMark = {};
-      let sourceOffset = 0;
-      let scheduleFilters = [
-        { key: "ID", op: "gt", match: 4 },
-        { key: "ID", op: "lt", match: 7 },
-      ];
-      const { imports, importsCount } = await runIt({
-        limit,
-        highWaterMark,
-        sourceOffset,
-        scheduleFilters,
-      });
-      expect(importsCount).toBe(2);
-      const importedIds = imports.map((r) => r.ID);
-      expect(importedIds).toEqual([5, 6]);
     });
   });
 });
