@@ -237,8 +237,8 @@ const Page: NextPage<Props> = ({
   });
 
   const loadPreview = useCallback(
-    async (previewAvailable = source.previewAvailable) => {
-      if (!previewAvailable) {
+    async (source: Models.SourceType) => {
+      if (!source.previewAvailable) {
         return;
       }
 
@@ -258,7 +258,7 @@ const Page: NextPage<Props> = ({
         reset(resetFormData(source));
       }
     },
-    [client, resetFormData, reset, source, sourceId]
+    [client, resetFormData, reset, sourceId]
   );
 
   const sourceBadges = useMemo(() => {
@@ -292,8 +292,8 @@ const Page: NextPage<Props> = ({
   }, [client, source.options, sourceId]);
 
   useEffect(() => {
-    loadPreview();
-  }, [loadPreview]);
+    loadPreview(source);
+  }, [loadPreview, source]);
 
   useEffect(() => {
     loadOptions();
@@ -452,9 +452,11 @@ const Page: NextPage<Props> = ({
       setSource((src) => {
         src.options[optKey] = optValue;
         src.mapping = {};
+
+        loadPreview(src);
+
         return src;
       });
-      loadPreview();
     },
     [loadPreview]
   );
