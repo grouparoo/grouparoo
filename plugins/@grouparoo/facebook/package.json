@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/facebook",
   "description": "The Grouparoo Facebook Plugin",
-  "version": "0.8.2-alpha.2",
+  "version": "0.8.2-alpha.3",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -28,15 +28,15 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@grouparoo/app-templates": "0.8.2-alpha.2",
+    "@grouparoo/app-templates": "0.8.2-alpha.3",
     "currency-codes": "2.1.0",
     "facebook-nodejs-business-sdk": "12.0.1",
     "iso-3166-1-alpha-2": "1.0.0",
     "js-sha256": "0.9.0"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.8.2-alpha.2",
-    "@grouparoo/spec-helper": "0.8.2-alpha.2",
+    "@grouparoo/core": "0.8.2-alpha.3",
+    "@grouparoo/spec-helper": "0.8.2-alpha.3",
     "@types/jest": "*",
     "@types/node": "16.*.*",
     "actionhero": "28.1.8",

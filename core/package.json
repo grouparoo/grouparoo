@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/core",
   "description": "The Grouparoo Core",
-  "version": "0.8.2-alpha.2",
+  "version": "0.8.2-alpha.3",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -46,7 +46,7 @@
     "form-data": "4.0.0",
     "fs-extra": "10.0.1",
     "glob": "7.2.0",
-    "grouparoo": "0.8.2-alpha.2",
+    "grouparoo": "0.8.2-alpha.3",
     "ioredis": "4.28.5",
     "ioredis-mock": "7.1.0",
     "isomorphic-fetch": "3.0.0",
@@ -75,7 +75,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "6.0.0-alpha.7",
-    "@grouparoo/spec-helper": "0.8.2-alpha.2",
+    "@grouparoo/spec-helper": "0.8.2-alpha.3",
     "@types/bcryptjs": "2.4.2",
     "@types/cls-hooked": "4.3.3",
     "@types/isomorphic-fetch": "0.0.35",
