@@ -2,23 +2,23 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/app-staging-config",
   "description": "A simple app to demonstrate working with the Config UI",
-  "version": "0.8.2-alpha.3",
+  "version": "0.8.2",
   "license": "MPL-2.0",
   "private": true,
   "engines": {
     "node": ">=12.0.0 <17.0.0"
   },
   "dependencies": {
-    "@grouparoo/calculated-property": "0.8.2-alpha.3",
-    "@grouparoo/core": "0.8.2-alpha.3",
-    "@grouparoo/demo": "0.8.2-alpha.3",
-    "@grouparoo/postgres": "0.8.2-alpha.3",
-    "@grouparoo/sqlite": "0.8.2-alpha.3"
+    "@grouparoo/calculated-property": "0.8.2",
+    "@grouparoo/core": "0.8.2",
+    "@grouparoo/demo": "0.8.2",
+    "@grouparoo/postgres": "0.8.2",
+    "@grouparoo/sqlite": "0.8.2"
   },
   "devDependencies": {
-    "@grouparoo/spec-helper": "0.8.2-alpha.3",
-    "@grouparoo/ui-config": "0.8.2-alpha.3",
-    "grouparoo": "0.8.2-alpha.3",
+    "@grouparoo/spec-helper": "0.8.2",
+    "@grouparoo/ui-config": "0.8.2",
+    "grouparoo": "0.8.2",
     "jest": "27.5.1"
   },
   "scripts": {
