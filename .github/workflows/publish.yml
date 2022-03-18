@@ -1,8 +1,6 @@
 name: publish
 
 on:
-  schedule:
-    - cron: "0 0 * * 5"
   workflow_dispatch:
     inputs:
       release_type:
