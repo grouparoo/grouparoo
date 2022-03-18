@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/airtable",
   "description": "The Grouparoo airtable Plugin",
-  "version": "0.8.2",
+  "version": "0.8.3-alpha.0",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -29,13 +29,13 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@grouparoo/app-templates": "0.8.2",
+    "@grouparoo/app-templates": "0.8.3-alpha.0",
     "airtable": "0.11.2",
     "axios": "0.26.0"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.8.2",
-    "@grouparoo/spec-helper": "0.8.2",
+    "@grouparoo/core": "0.8.3-alpha.0",
+    "@grouparoo/spec-helper": "0.8.3-alpha.0",
     "@types/jest": "*",
     "@types/node": "16.*.*",
     "actionhero": "28.1.8",
