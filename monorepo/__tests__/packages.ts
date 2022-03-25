@@ -67,8 +67,6 @@ describe("package.json validation", () => {
         pkgJson.name === "@grouparoo/grouparoo" ||
         pkgJson.name === "@grouparoo/monorepo"
           ? genericSchema
-          : pkgJson.name === "@grouparoo/ui-enterprise"
-          ? restrictedSchema
           : publicSchema;
 
       expect(pkgJson).toMatchSchema(schema);
