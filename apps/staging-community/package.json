@@ -3,7 +3,7 @@
   "name": "@grouparoo/app-staging-community",
   "description": "The Grouparoo Staging Application",
   "version": "0.8.3-alpha.0",
-  "license": "MPL-2.0",
+  "license": "MIT",
   "private": true,
   "engines": {
     "node": ">=12.0.0 <17.0.0"
