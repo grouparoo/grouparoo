@@ -3,7 +3,7 @@
   "name": "@grouparoo/bigquery",
   "description": "The Grouparoo BigQuery Plugin",
   "version": "0.8.3-alpha.0",
-  "license": "MPL-2.0",
+  "license": "MIT",
   "private": false,
   "publishConfig": {
     "access": "public"

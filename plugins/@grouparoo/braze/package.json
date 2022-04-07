@@ -3,7 +3,7 @@
   "name": "@grouparoo/braze",
   "description": "The Grouparoo braze Plugin",
   "version": "0.8.3-alpha.0",
-  "license": "MPL-2.0",
+  "license": "MIT",
   "private": false,
   "publishConfig": {
     "access": "public"

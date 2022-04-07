@@ -3,7 +3,7 @@
   "name": "@grouparoo/app-staging-config",
   "description": "A simple app to demonstrate working with the Config UI",
   "version": "0.8.3-alpha.0",
-  "license": "MPL-2.0",
+  "license": "MIT",
   "private": true,
   "engines": {
     "node": ">=12.0.0 <17.0.0"

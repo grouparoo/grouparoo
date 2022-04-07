@@ -3,10 +3,10 @@
   "name": "@grouparoo/ui-enterprise",
   "description": "The Grouparoo Enterprise Web UI",
   "version": "0.8.3-alpha.0",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "private": false,
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   },
   "engines": {
     "node": ">=12.0.0 <17.0.0"
