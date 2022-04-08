@@ -1,0 +1,4244 @@
+# THIS FILE IS AUTO-GENERATED. DO NOT CHANGE IT DIRECTLY.
+# SEE tools/merger TO MAKE CHANGES.
+#
+version: 2
+#
+# Define common steps all parts of the test workflow use
+references:
+  ignored-branches: &ignored-branches
+    branches:
+      ignore:
+        - gh-pages
+  module-other-cache: &module-other-cache
+    key: module-other-cache-{{ .Branch }}-{{ .Revision }}
+  plugin-1-cache: &plugin-1-cache
+    key: plugin-1-cache-{{ .Branch }}-{{ .Revision }}
+  plugin-2-cache: &plugin-2-cache
+    key: plugin-2-cache-{{ .Branch }}-{{ .Revision }}
+  plugin-3-cache: &plugin-3-cache
+    key: plugin-3-cache-{{ .Branch }}-{{ .Revision }}
+  plugin-4-cache: &plugin-4-cache
+    key: plugin-4-cache-{{ .Branch }}-{{ .Revision }}
+  dist-1-cache: &dist-1-cache
+    key: dist-1-cache-{{ .Branch }}-{{ .Revision }}
+  dist-2-cache: &dist-2-cache
+    key: dist-2-cache-{{ .Branch }}-{{ .Revision }}
+  dist-3-cache: &dist-3-cache
+    key: dist-3-cache-{{ .Branch }}-{{ .Revision }}
+  dist-4-cache: &dist-4-cache
+    key: dist-4-cache-{{ .Branch }}-{{ .Revision }}
+  core-cache: &core-cache
+    key: core-cache-{{ .Branch }}-{{ .Revision }}
+#
+# Define Jobs to run
+jobs:
+  build:
+    resource_class: "medium+"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
+          name: pnpm-install
+          command: pnpm install --prefer-frozen-lockfile
+      - save_cache:
+          <<: *module-other-cache
+          paths:
+            - apps/staging-community/node_modules
+            - apps/staging-config/node_modules
+            - apps/staging-enterprise/node_modules
+            - cli/node_modules
+            - core/node_modules
+            - monorepo/node_modules
+            - node_modules
+            - tools/log-parser/node_modules
+            - tools/merger/node_modules
+            - tools/screenshots/node_modules
+            - ui/ui-community/node_modules
+            - ui/ui-components/node_modules
+            - ui/ui-config/node_modules
+            - ui/ui-enterprise/node_modules
+      - save_cache:
+          <<: *plugin-1-cache
+          paths:
+            - plugins/@grouparoo/airtable/node_modules
+            - plugins/@grouparoo/app-templates/node_modules
+            - plugins/@grouparoo/bigquery/node_modules
+            - plugins/@grouparoo/braze/node_modules
+            - plugins/@grouparoo/calculated-property/node_modules
+            - plugins/@grouparoo/clickhouse/node_modules
+            - plugins/@grouparoo/closeio/node_modules
+            - plugins/@grouparoo/cloudwatch/node_modules
+            - plugins/@grouparoo/csv/node_modules
+            - plugins/@grouparoo/customerio/node_modules
+            - plugins/@grouparoo/dbt/node_modules
+            - plugins/@grouparoo/demo/node_modules
+            - plugins/@grouparoo/eloqua/node_modules
+            - plugins/@grouparoo/facebook/node_modules
+            - plugins/@grouparoo/freshdesk/node_modules
+      - save_cache:
+          <<: *plugin-2-cache
+          paths:
+            - plugins/@grouparoo/google-sheets/node_modules
+            - plugins/@grouparoo/hubspot/node_modules
+            - plugins/@grouparoo/intercom/node_modules
+            - plugins/@grouparoo/iterable/node_modules
+            - plugins/@grouparoo/klaviyo/node_modules
+            - plugins/@grouparoo/logger/node_modules
+            - plugins/@grouparoo/mailchimp/node_modules
+            - plugins/@grouparoo/mailjet/node_modules
+            - plugins/@grouparoo/marketo/node_modules
+            - plugins/@grouparoo/mixpanel/node_modules
+            - plugins/@grouparoo/mongo/node_modules
+            - plugins/@grouparoo/mysql/node_modules
+      - save_cache:
+          <<: *plugin-3-cache
+          paths:
+            - plugins/@grouparoo/newrelic/node_modules
+            - plugins/@grouparoo/onesignal/node_modules
+            - plugins/@grouparoo/pardot/node_modules
+            - plugins/@grouparoo/pipedrive/node_modules
+            - plugins/@grouparoo/postgres/node_modules
+            - plugins/@grouparoo/prometheus/node_modules
+            - plugins/@grouparoo/redshift/node_modules
+            - plugins/@grouparoo/rollbar/node_modules
+      - save_cache:
+          <<: *plugin-4-cache
+          paths:
+            - plugins/@grouparoo/sailthru/node_modules
+            - plugins/@grouparoo/salesforce/node_modules
+            - plugins/@grouparoo/sendgrid/node_modules
+            - plugins/@grouparoo/sentry/node_modules
+            - plugins/@grouparoo/snowflake/node_modules
+            - plugins/@grouparoo/spec-helper/node_modules
+            - plugins/@grouparoo/sqlite/node_modules
+            - plugins/@grouparoo/vero/node_modules
+            - plugins/@grouparoo/zendesk/node_modules
+      - save_cache:
+          <<: *dist-1-cache
+          paths:
+            - cli/dist
+            - plugins/@grouparoo/airtable/dist
+            - plugins/@grouparoo/app-templates/dist
+            - plugins/@grouparoo/bigquery/dist
+            - plugins/@grouparoo/braze/dist
+            - plugins/@grouparoo/calculated-property/dist
+            - plugins/@grouparoo/clickhouse/dist
+            - plugins/@grouparoo/closeio/dist
+            - plugins/@grouparoo/cloudwatch/dist
+            - plugins/@grouparoo/csv/dist
+            - plugins/@grouparoo/customerio/dist
+            - plugins/@grouparoo/dbt/dist
+            - plugins/@grouparoo/demo/dist
+            - plugins/@grouparoo/eloqua/dist
+      - save_cache:
+          <<: *dist-2-cache
+          paths:
+            - plugins/@grouparoo/facebook/dist
+            - plugins/@grouparoo/freshdesk/dist
+            - plugins/@grouparoo/google-sheets/dist
+            - plugins/@grouparoo/hubspot/dist
+            - plugins/@grouparoo/intercom/dist
+            - plugins/@grouparoo/iterable/dist
+            - plugins/@grouparoo/klaviyo/dist
+            - plugins/@grouparoo/logger/dist
+      - save_cache:
+          <<: *dist-3-cache
+          paths:
+            - plugins/@grouparoo/mailchimp/dist
+            - plugins/@grouparoo/mailjet/dist
+            - plugins/@grouparoo/marketo/dist
+            - plugins/@grouparoo/mixpanel/dist
+            - plugins/@grouparoo/mongo/dist
+            - plugins/@grouparoo/mysql/dist
+            - plugins/@grouparoo/newrelic/dist
+            - plugins/@grouparoo/onesignal/dist
+            - plugins/@grouparoo/pardot/dist
+            - plugins/@grouparoo/pipedrive/dist
+            - plugins/@grouparoo/postgres/dist
+            - plugins/@grouparoo/prometheus/dist
+      - save_cache:
+          <<: *dist-4-cache
+          paths:
+            - plugins/@grouparoo/redshift/dist
+            - plugins/@grouparoo/rollbar/dist
+            - plugins/@grouparoo/sailthru/dist
+            - plugins/@grouparoo/salesforce/dist
+            - plugins/@grouparoo/sendgrid/dist
+            - plugins/@grouparoo/sentry/dist
+            - plugins/@grouparoo/snowflake/dist
+            - plugins/@grouparoo/spec-helper/dist
+            - plugins/@grouparoo/sqlite/dist
+            - plugins/@grouparoo/vero/dist
+            - plugins/@grouparoo/zendesk/dist
+      - save_cache:
+          <<: *core-cache
+          paths:
+            - core/dist
+            - ui/ui-community/.next
+            - ui/ui-config/.next
+            - ui/ui-enterprise/.next
+  linter:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
+          name: linter
+          command: cd monorepo && pnpm run lint
+  test-core-actions:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd core && ./node_modules/.bin/jest __tests__/actions --ci --maxWorkers 2
+  test-core-bin:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd core && ./node_modules/.bin/jest __tests__/bin --ci --maxWorkers 2
+  test-core-classes:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd core && ./node_modules/.bin/jest __tests__/classes --ci --maxWorkers 2
+  test-core-initializers:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd core && ./node_modules/.bin/jest __tests__/initializers --ci --maxWorkers 2
+  test-core-integration:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd core && ./node_modules/.bin/jest __tests__/integration --ci --maxWorkers 2
+  test-core-models:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd core && ./node_modules/.bin/jest __tests__/models --ci --maxWorkers 2
+  test-core-modules:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd core && ./node_modules/.bin/jest __tests__/modules --ci --maxWorkers 2
+  test-core-notifiers:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd core && ./node_modules/.bin/jest __tests__/notifiers --ci --maxWorkers 2
+  test-core-snapshots:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd core && ./node_modules/.bin/jest __tests__/snapshots --ci --maxWorkers 2
+  test-core-tasks:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd core && ./node_modules/.bin/jest __tests__/tasks --ci --maxWorkers 2
+  test-monorepo:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: test-monorepo
+          command: cd monorepo && ./node_modules/.bin/jest ./__tests__/packages --ci --runInBand
+  test-core-local-models:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: test
+          command: cd core/ && ./node_modules/.bin/jest __tests__/models --ci --maxWorkers 2
+          environment:
+            DB_DIALECT: sqlite
+  test-core-local-actions:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: test
+          command: cd core/ && ./node_modules/.bin/jest __tests__/actions --ci --maxWorkers 2
+          environment:
+            DB_DIALECT: sqlite
+  test-core-local-tasks:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: test
+          command: cd core/ && ./node_modules/.bin/jest __tests__/tasks --ci --maxWorkers 2
+          environment:
+            DB_DIALECT: sqlite
+  test-ui-components:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd ui/ui-components && ./node_modules/.bin/jest --ci --maxWorkers 2 --passWithNoTests
+  test-ui-community:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: install playwright dependencies
+          command: cd ui/ui-community && ./node_modules/.bin/playwright install && ./node_modules/.bin/playwright install-deps
+      - run:
+          name: test
+          command: cd ui/ui-community && ./node_modules/.bin/playwright test
+  test-ui-enterprise:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: install playwright dependencies
+          command: cd ui/ui-enterprise && ./node_modules/.bin/playwright install && ./node_modules/.bin/playwright install-deps
+      - run:
+          name: test
+          command: cd ui/ui-enterprise && ./node_modules/.bin/playwright test
+  test-ui-config:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: install playwright dependencies
+          command: cd ui/ui-config && ./node_modules/.bin/playwright install && ./node_modules/.bin/playwright install-deps
+      - run:
+          name: test
+          command: cd ui/ui-config && ./node_modules/.bin/playwright test
+  test-ui-config-fs:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd ui/ui-config && ./node_modules/.bin/jest --ci --maxWorkers 2 --passWithNoTests
+  test-staging-community:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: createdb grouparoo_development --host localhost --user postgres
+      - run:
+          name: test-staging-community-cli
+          command: cd apps/staging-community && ./__tests__/cli
+      - run:
+          name: test-staging-community-app
+          command: cd apps/staging-community && ./__tests__/integration
+          environment:
+            PORT: 3000
+            WEB_SERVER: "true"
+            WORKERS: 1
+  test-staging-enterprise:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: createdb grouparoo_development --host localhost --user postgres
+      - run:
+          name: test-staging-enterprise-cli
+          command: cd apps/staging-enterprise && ./__tests__/cli
+      - run:
+          name: test-staging-enterprise-app
+          command: cd apps/staging-enterprise && ./__tests__/integration
+          environment:
+            PORT: 3000
+            WEB_SERVER: "true"
+            WORKERS: 1
+  test-plugin-airtable:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/airtable && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-app-templates:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/app-templates && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-bigquery:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/bigquery && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-braze:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/braze && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-calculated-property:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/calculated-property && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-clickhouse:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+      - image: yandex/clickhouse-server
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: install ClickHouse client
+          command: sudo apt install -y clickhouse-client
+      - run:
+          name: create ClickHouse test database
+          command: clickhouse-client --query "CREATE DATABASE IF NOT EXISTS grouparoo_test"
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/clickhouse && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-closeio:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/closeio && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-cloudwatch:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/cloudwatch && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-csv:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/csv && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-customerio:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/customerio && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-dbt:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/dbt && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-demo:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/demo && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-eloqua:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/eloqua && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-facebook:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/facebook && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-freshdesk:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/freshdesk && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-google-sheets:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/google-sheets && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-hubspot:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/hubspot && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-intercom:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/intercom && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-iterable:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/iterable && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-klaviyo:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/klaviyo && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-logger:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/logger && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-mailchimp:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/mailchimp && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-mailjet:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/mailjet && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-marketo:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/marketo && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-mixpanel:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/mixpanel && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-mongo:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+      - image: mongo:4.2
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/mongo && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-mysql:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+      - image: circleci/mysql:5
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: install mysql client
+          command: sudo apt install -y mariadb-client
+      - run:
+          name: create mysql databases
+          command: mysql -e "create database grouparoo_test" -u root -h 127.0.0.1
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/mysql && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-newrelic:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/newrelic && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-onesignal:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/onesignal && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-pardot:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/pardot && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-pipedrive:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/pipedrive && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-postgres:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/postgres && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-prometheus:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/prometheus && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-redshift:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run: |
+          if [ -z "$REDSHIFT_URL" ]; then
+            echo "No REDSHIFT_URL is set! Skipping tests..."
+            exit 0;
+          else
+            cd plugins/@grouparoo/redshift && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+          fi
+  test-plugin-rollbar:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/rollbar && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-sailthru:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/sailthru && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-salesforce:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/salesforce && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-sendgrid:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/sendgrid && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-sentry:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/sentry && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-snowflake:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/snowflake && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-spec-helper:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/spec-helper && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-sqlite:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/sqlite && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-vero:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/vero && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-zendesk:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/zendesk && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-cli:
+    environment:
+      GROUPAROO_TELEMETRY_ENABLED: "false"
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache
+      - restore_cache:
+          <<: *plugin-1-cache
+      - restore_cache:
+          <<: *plugin-2-cache
+      - restore_cache:
+          <<: *plugin-3-cache
+      - restore_cache:
+          <<: *plugin-4-cache
+      - restore_cache:
+          <<: *dist-1-cache
+      - restore_cache:
+          <<: *dist-2-cache
+      - restore_cache:
+          <<: *dist-3-cache
+      - restore_cache:
+          <<: *dist-4-cache
+      - restore_cache:
+          <<: *core-cache
+      - run:
+          name: install pnpm
+          command: sudo npm install -g pnpm
+      - run:
+          name: test
+          command: cd cli && pnpm test
+  complete:
+    docker:
+      - image: cimg/node:16.8.0
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - run:
+          name: complete
+          command: echo "Tests Complete!"
+workflows:
+  version: 2
+  #
+  # Run the tests on push
+  test-grouparoo-push:
+    jobs:
+      - build:
+          filters:
+            <<: *ignored-branches
+      - linter:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-actions:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-bin:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-classes:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-initializers:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-integration:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-models:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-modules:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-notifiers:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-snapshots:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-tasks:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-monorepo:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-local-models:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-local-actions:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-local-tasks:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-ui-components:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-ui-community:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-ui-enterprise:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-ui-config:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-ui-config-fs:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-staging-community:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-staging-enterprise:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-airtable:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-app-templates:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-bigquery:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-braze:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-calculated-property:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-clickhouse:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-closeio:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-cloudwatch:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-csv:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-customerio:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-dbt:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-demo:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-eloqua:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-facebook:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-freshdesk:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-google-sheets:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-hubspot:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-intercom:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-iterable:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-klaviyo:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-logger:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-mailchimp:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-mailjet:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-marketo:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-mixpanel:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-mongo:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-mysql:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-newrelic:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-onesignal:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-pardot:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-pipedrive:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-postgres:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-prometheus:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-redshift:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-rollbar:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-sailthru:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-salesforce:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-sendgrid:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-sentry:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-snowflake:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-spec-helper:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-sqlite:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-vero:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-zendesk:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-cli:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - complete:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - linter
+            - test-core-actions
+            - test-core-bin
+            - test-core-classes
+            - test-core-initializers
+            - test-core-integration
+            - test-core-models
+            - test-core-modules
+            - test-core-notifiers
+            - test-core-snapshots
+            - test-core-tasks
+            - test-monorepo
+            - test-core-local-models
+            - test-core-local-actions
+            - test-core-local-tasks
+            - test-ui-components
+            - test-ui-community
+            - test-ui-enterprise
+            - test-ui-config
+            - test-ui-config-fs
+            - test-staging-community
+            - test-staging-enterprise
+            - test-plugin-airtable
+            - test-plugin-app-templates
+            - test-plugin-bigquery
+            - test-plugin-braze
+            - test-plugin-calculated-property
+            - test-plugin-clickhouse
+            - test-plugin-closeio
+            - test-plugin-cloudwatch
+            - test-plugin-csv
+            - test-plugin-customerio
+            - test-plugin-dbt
+            - test-plugin-demo
+            - test-plugin-eloqua
+            - test-plugin-facebook
+            - test-plugin-freshdesk
+            - test-plugin-google-sheets
+            - test-plugin-hubspot
+            - test-plugin-intercom
+            - test-plugin-iterable
+            - test-plugin-klaviyo
+            - test-plugin-logger
+            - test-plugin-mailchimp
+            - test-plugin-mailjet
+            - test-plugin-marketo
+            - test-plugin-mixpanel
+            - test-plugin-mongo
+            - test-plugin-mysql
+            - test-plugin-newrelic
+            - test-plugin-onesignal
+            - test-plugin-pardot
+            - test-plugin-pipedrive
+            - test-plugin-postgres
+            - test-plugin-prometheus
+            - test-plugin-redshift
+            - test-plugin-rollbar
+            - test-plugin-sailthru
+            - test-plugin-salesforce
+            - test-plugin-sendgrid
+            - test-plugin-sentry
+            - test-plugin-snowflake
+            - test-plugin-spec-helper
+            - test-plugin-sqlite
+            - test-plugin-vero
+            - test-plugin-zendesk
+            - test-cli
