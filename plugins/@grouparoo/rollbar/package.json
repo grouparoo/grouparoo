@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/rollbar",
   "description": "Performance and error tracking with Rollbar",
-  "version": "0.8.3-alpha.0",
+  "version": "0.9.0",
   "license": "MIT",
   "private": false,
   "publishConfig": {
@@ -31,8 +31,8 @@
     "rollbar": "2.24.0"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.8.3-alpha.0",
-    "@grouparoo/spec-helper": "0.8.3-alpha.0",
+    "@grouparoo/core": "0.9.0",
+    "@grouparoo/spec-helper": "0.9.0",
     "@types/jest": "*",
     "@types/node": "16.*.*",
     "actionhero": "28.1.8",
