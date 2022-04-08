@@ -1,8 +1,6 @@
 name: timed-run
 
 on:
-  schedule:
-    - cron: "0 2 * * 5"
   workflow_dispatch:
     inputs:
       app:
