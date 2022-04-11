@@ -20,8 +20,8 @@ export const destinationOptions: DestinationOptionsMethod = async ({
 
   const response: DestinationOptionsMethodResponse = {
     table: { type: "typeahead", options: [] },
-    groupsTable: { type: "typeahead", options: [] },
     primaryKey: { type: "pending", options: [] },
+    groupsTable: { type: "typeahead", options: [] },
     groupForeignKey: { type: "pending", options: [] },
     groupColumnName: { type: "pending", options: [] },
   };
@@ -59,7 +59,9 @@ export const destinationOptions: DestinationOptionsMethod = async ({
     response.groupColumnName.options = await getColumns(
       destinationOptions.groupsTable?.toString()
     );
+  } else {
+    delete destinationOptions["groupForeignKey"];
+    delete destinationOptions["groupColumnName"];
   }
-
   return response;
 };

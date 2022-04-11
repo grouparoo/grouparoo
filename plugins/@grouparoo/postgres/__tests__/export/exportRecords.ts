@@ -47,6 +47,14 @@ const ltv = 3039;
 
 const { appOptions, usersTableName, groupsDestinationTableName } = getConfig();
 
+const destinationOptions = {
+  table: usersTableName,
+  primaryKey: "id",
+  groupsTable: groupsDestinationTableName,
+  groupForeignKey: "userId",
+  groupColumnName: "group",
+};
+
 async function getUser(userId: number) {
   const result = await client.query(
     `SELECT * FROM ${usersTableName} WHERE "id" = ${userId}`
@@ -88,7 +96,7 @@ async function runExport({
     app,
     destination,
     destinationId: null,
-    destinationOptions: null,
+    destinationOptions,
     syncOperations,
     export: {
       record: null,
@@ -118,13 +126,7 @@ describe("postgres/exportRecord", () => {
 
     destination = await helper.factories.destination(app, {
       type: "postgres-export-records",
-      options: {
-        table: usersTableName,
-        primaryKey: "id",
-        groupsTable: groupsDestinationTableName,
-        groupForeignKey: "userId",
-        groupColumnName: "group",
-      },
+      options: destinationOptions,
     });
   });
   afterAll(async () => await afterData());

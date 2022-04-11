@@ -21,7 +21,7 @@ async function runDestinationMappingOptions() {
   });
 }
 
-describe("sqlite/destinationMappingOptions", () => {
+describe("mysql/destinationMappingOptions", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   beforeAll(async () => {
@@ -41,7 +41,7 @@ describe("sqlite/destinationMappingOptions", () => {
     expect(id.key).toBe("id");
     expect(id.type).toBe("any");
 
-    expect(known.length).toBe(11);
+    expect(known.length).toBe(12);
     // check if all are important and have the type any.
     for (const knownEntry of known) {
       expect(knownEntry.type).toBe("any");

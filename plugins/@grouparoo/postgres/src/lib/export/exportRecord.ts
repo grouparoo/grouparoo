@@ -6,15 +6,25 @@ import {
 import { validateQuery } from "../validateQuery";
 import format from "pg-format";
 import { PostgresPoolClient } from "../connect";
+import { checkOptionsIntegrity } from "./destinationMappingOptions";
 
 export const exportRecord: ExportRecordPluginMethod<
   PostgresPoolClient
 > = async ({
   connection,
   destination,
+  destinationOptions,
   syncOperations,
   export: { newRecordProperties, oldRecordProperties, newGroups, toDelete },
 }) => {
+  checkOptionsIntegrity(destinationOptions);
+  if (
+    !destinationOptions.groupsTable ||
+    !destinationOptions.groupForeignKey ||
+    !destinationOptions.groupColumnName
+  ) {
+    newGroups = [];
+  }
   let { table, primaryKey, groupsTable, groupForeignKey, groupColumnName } =
     await destination.parameterizedOptions();
 

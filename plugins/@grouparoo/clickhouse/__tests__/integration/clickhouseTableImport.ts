@@ -334,7 +334,7 @@ describe("integration/runs/clickhouse", () => {
           singular: "Exported Property",
           plural: "Exported Properties",
         },
-        group: { singular: "Exported Groups", plural: "Exported Groups" },
+        group: { singular: "Exported Group", plural: "Exported Groups" },
       },
       properties: {
         required: [{ key: "id", type: "any" }],

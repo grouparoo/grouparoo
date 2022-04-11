@@ -3,15 +3,24 @@ import { DestinationSyncOperations } from "@grouparoo/core/src/models/Destinatio
 import SQLiteQueryBuilder from "../queryBuilder";
 import { SQLiteConnection } from "../sqlite";
 import { buildKeyList, toValuePlaceholders, toValuesArray } from "../util";
+import { checkOptionsIntegrity } from "./destinationMappingOptions";
 
 export const exportRecord: ExportRecordPluginMethod<SQLiteConnection> = async ({
   connection,
   destination,
+  destinationOptions,
   syncOperations,
   export: { newRecordProperties, oldRecordProperties, newGroups, toDelete },
 }) => {
+  checkOptionsIntegrity(destinationOptions);
+  if (
+    !destinationOptions.groupsTable ||
+    !destinationOptions.groupForeignKey ||
+    !destinationOptions.groupColumnName
+  ) {
+    newGroups = [];
+  }
   let error: Error;
-
   let { table, primaryKey, groupsTable, groupForeignKey, groupColumnName } =
     await destination.parameterizedOptions();
 

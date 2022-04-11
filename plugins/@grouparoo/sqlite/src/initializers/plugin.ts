@@ -69,20 +69,20 @@ export class Plugins extends Initializer {
             {
               key: "groupsTable",
               displayName: "Groups Table",
-              required: true,
+              required: false,
               description: "The table used to export groups.",
             },
             {
               key: "groupForeignKey",
               displayName: "Group Foreign Key",
-              required: true,
+              required: false,
               description:
                 "The foreign key that the groups table uses to reference the records table.",
             },
             {
               key: "groupColumnName",
               displayName: "Group Column Name",
-              required: true,
+              required: false,
               description: "The column name used to store group names.",
             },
           ],
