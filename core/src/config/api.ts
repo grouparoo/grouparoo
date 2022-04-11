@@ -43,7 +43,7 @@ export const DEFAULT = {
       // enable action response to logger
       enableResponseLogging: false,
       // params you would like hidden from any logs. Can be an array of strings or a method that returns an array of strings.
-      filteredParams: function () {
+      filteredParams() {
         const filteredParams = [
           "password",
           "passwordHash",

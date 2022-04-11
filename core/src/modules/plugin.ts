@@ -176,9 +176,9 @@ export namespace plugin {
    * row: {email: 'abc@company.com', vip: true}
    */
   export async function createImport(
-    mapping: { [remoteKey: string]: string },
+    mapping: Record<string, string>,
     run: Run,
-    row: { [remoteKey: string]: any }
+    row: Record<string, any>
   ) {
     const mappingKeys = Object.keys(mapping);
     const mappedRecordProperties: Record<string, any[]> = {};
@@ -204,9 +204,9 @@ export namespace plugin {
    * rows: {email: 'abc@company.com', vip: true}[]
    */
   export async function createImports(
-    mapping: { [remoteKey: string]: string },
+    mapping: Record<string, string>,
     run: Run,
-    rows: { [remoteKey: string]: any }[]
+    rows: Record<string, any>[]
   ) {
     const bulkParams = [];
     const mappingKeys = Object.keys(mapping);

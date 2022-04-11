@@ -80,7 +80,7 @@ export class PropertiesList extends AuthenticatedAction {
     );
 
     const responseProperties: AsyncReturnType<Property["apiData"]>[] = [];
-    const responseExamples: { [id: string]: string[] } = {};
+    const responseExamples: Record<string, string[]> = {};
 
     for (const property of properties) {
       const apiData = await property.apiData();
@@ -254,7 +254,7 @@ export class PropertyFilterOptions extends AuthenticatedAction {
 
     const options = await FilterHelper.pluginFilterOptions(property);
     return {
-      options: options,
+      options,
       optionDescriptions: await buildPropertyFilterDictionary(options),
     };
   }

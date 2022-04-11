@@ -66,8 +66,8 @@ export namespace DestinationOps {
     collection: Destination["collection"],
     collectionId?: string
   ) {
-    let oldRun: Run;
-    let newRun: Run;
+    let oldRun: Run = undefined;
+    let newRun: Run = undefined;
 
     if (
       destination.collection === collection &&
@@ -124,9 +124,7 @@ export namespace DestinationOps {
     destination: Destination,
     record: GrouparooRecord,
     mapping: MappingHelper.Mappings,
-    destinationGroupMemberships: {
-      [groupId: string]: string;
-    }
+    destinationGroupMemberships: Record<string, string>
   ) {
     const recordProperties = await record.getProperties();
     const mappingKeys = Object.keys(mapping);
@@ -355,7 +353,7 @@ export namespace DestinationOps {
 
     for (const record of records) {
       let mappedOldRecordProperties: ExportRecordPropertiesWithType = {};
-      let mappedNewRecordProperties: ExportRecordPropertiesWithType = {};
+      const mappedNewRecordProperties: ExportRecordPropertiesWithType = {};
       let oldGroupNames: string[] = [];
       let newGroupNames: string[] = [];
 
@@ -557,7 +555,7 @@ export namespace DestinationOps {
       for (const _export of _exports) {
         const { recordId } = _export;
         try {
-          let { success, retryDelay, error } = await method({
+          const { success, retryDelay, error } = await method({
             connection,
             app,
             appId,
@@ -695,7 +693,7 @@ export namespace DestinationOps {
       }
     }
     if (exportResult?.errors) {
-      for (const error of exportResult?.errors) {
+      for (const error of exportResult.errors) {
         logExportError(destination, error);
       }
     }
@@ -763,7 +761,7 @@ export namespace DestinationOps {
     }
 
     // known specific records where there were errors
-    const recordsWithErrors: { [id: string]: ErrorWithRecordId } = {};
+    const recordsWithErrors: Record<string, ErrorWithRecordId> = {};
     for (const errorWithId of combinedError.errors) {
       const recordId = errorWithId.recordId;
       if (!recordId) {
@@ -774,7 +772,7 @@ export namespace DestinationOps {
       recordsWithErrors[recordId] = errorWithId;
     }
 
-    const remainingRecordsWithErrors = Object.assign({}, recordsWithErrors);
+    const remainingRecordsWithErrors = { ...recordsWithErrors };
 
     const retryexportIds: string[] = [];
     for (const _export of _exports.filter(
@@ -1110,7 +1108,7 @@ WHERE
     destinationMappingOptions: DestinationMappingOptionsMethodResponse,
     key: "oldRecordProperties" | "newRecordProperties"
   ) {
-    const response: { [key: string]: any } = {};
+    const response: Record<string, any> = {};
     const rawProperties: Record<string, any> = JSON.parse(
       //@ts-ignore
       _export["dataValues"][key]

@@ -24,9 +24,7 @@ export namespace ExportProcessorOps {
       delayMs = defaultExportProcessingDelay;
     }
 
-    let exportProcessors: ExportProcessor[];
-
-    exportProcessors = await ExportProcessor.findAll({
+    const exportProcessors = await ExportProcessor.findAll({
       where: {
         state: "pending",
         destinationId: destination.id,

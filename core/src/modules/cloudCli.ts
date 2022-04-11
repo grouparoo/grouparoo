@@ -74,7 +74,7 @@ export namespace CloudCLI {
       );
 
       let lastState: string;
-      while (true) {
+      for (;;) {
         const config = await cloud.getConfiguration(configId);
         if (config.errorMessage) {
           await logJob(cloud, config.applyJobId ?? config.validateJobId);

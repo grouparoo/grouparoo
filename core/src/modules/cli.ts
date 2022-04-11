@@ -5,9 +5,7 @@ import { FinalSummaryReporters } from "../../../core/src/modules/statusReporters
 
 export namespace GrouparooCLI {
   /** Types */
-  export interface LogStatus {
-    [key: string]: number[] | string[];
-  }
+  export type LogStatus = Record<string, number[] | string[]>;
 
   export type LogStatusArray = { header: string; status: LogStatus }[];
 

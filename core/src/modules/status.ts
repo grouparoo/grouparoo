@@ -18,11 +18,10 @@ export namespace Status {
     metric: StatusMetric;
   }
 
-  export type StatusGetResponse = {
-    [topic: string]: {
-      [collection: string]: StatusObject[];
-    };
-  };
+  export type StatusGetResponse = Record<
+    string,
+    Record<string, StatusObject[]>
+  >;
 
   export const statusSampleReporters = [
     // information about how Grouparoo is being operated
@@ -69,7 +68,9 @@ export namespace Status {
         let parsed: StatusObject;
         try {
           parsed = JSON.parse(v);
-        } catch {}
+        } catch {
+          // Ignore error
+        }
         return parsed;
       })
       .filter(

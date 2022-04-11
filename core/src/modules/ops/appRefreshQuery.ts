@@ -62,7 +62,7 @@ export namespace AppRefreshQueryOps {
       );
     }
 
-    let runs: Run[] = [];
+    const runs: Run[] = [];
     for (const schedule of schedulesToRun) {
       if (stopRuns === true) {
         const runningRun = await Run.findOne({

@@ -5,30 +5,21 @@ import {
   ForeignKey,
   BelongsTo,
   DataType,
-  AfterCreate,
   Default,
-  AfterBulkCreate,
   BeforeSave,
 } from "sequelize-typescript";
-import { config } from "actionhero";
 import Moment from "moment";
 import { Op } from "sequelize";
-import { CLS } from "../modules/cls";
 import { GrouparooRecord } from "./GrouparooRecord";
 import { Run } from "./Run";
 import { plugin } from "../modules/plugin";
-import { ImportOps } from "../modules/ops/import";
 import { APIData } from "../modules/apiData";
 import { CommonModel } from "../classes/commonModel";
 import { StateMachine } from "../modules/stateMachine";
 
-export interface ImportData {
-  [key: string]: any;
-}
+export type ImportData = Record<string, any>;
 
-export interface ImportRecordProperties {
-  [key: string]: any;
-}
+export type ImportRecordProperties = Record<string, any>;
 
 const IMPORT_CREATORS = ["run", "group"] as const;
 

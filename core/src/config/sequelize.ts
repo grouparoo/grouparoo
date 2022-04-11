@@ -33,11 +33,11 @@ export const DEFAULT = {
     let username = process.env.DB_USER;
     let password = process.env.DB_PASS || undefined;
     let schema = process.env.DB_SCHEMA || undefined;
-    let ssl: boolean | { [key: string]: any } = false;
+    let ssl: boolean | Record<string, any> = false;
 
     // if your environment provides database information via a single JDBC-style URL
     // like mysql://username:password@hostname:port/default_schema
-    let parsed: { [key: string]: any } = {};
+    let parsed: Record<string, any> = {};
     const connectionURL =
       process.env.DATABASE_URL || process.env.MYSQL_URL || process.env.PG_URL;
     if (connectionURL) parsed = new URL(connectionURL);
@@ -139,13 +139,13 @@ export const DEFAULT = {
       logging,
       benchmark: true,
       autoMigrate: shouldAutoMigrate(),
-      dialect: dialect,
+      dialect,
       port: parseInt(port),
-      database: database,
-      host: host,
-      username: username,
-      password: password,
-      schema: schema,
+      database,
+      host,
+      username,
+      password,
+      schema,
       searchPath: schema,
       models: [join(__dirname, "..", "models")],
       migrations: [join(__dirname, "..", "migrations"), ...pluginMigrations],

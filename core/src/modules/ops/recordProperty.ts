@@ -121,9 +121,7 @@ export namespace RecordPropertyOps {
 
     const pendingRecordPropertyIds: string[] = [];
     const unGroupedProperties: Property[] = [];
-    const propertyGroups: {
-      [aggregationMethod: string]: Property[];
-    } = {};
+    const propertyGroups: Record<string, Property[]> = {};
 
     for (const property of properties) {
       const options = await property.getOptions();

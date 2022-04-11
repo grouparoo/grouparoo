@@ -153,7 +153,7 @@ export function getPluginManifest() {
     parentPkg?.devDependencies || []
   ).concat(Object.keys(parentPkg?.dependencies || []));
 
-  for (let availableUiPlugin of availableUiPlugins) {
+  for (const availableUiPlugin of availableUiPlugins) {
     if (installedPackages.includes(availableUiPlugin)) {
       pluginNames.push(availableUiPlugin);
     }

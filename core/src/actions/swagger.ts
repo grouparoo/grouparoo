@@ -1,4 +1,4 @@
-import { Action, config, api, RouteType } from "actionhero";
+import { Action, api, RouteType } from "actionhero";
 import * as fs from "fs";
 import * as path from "path";
 import { PackageJson } from "type-fest";
@@ -53,9 +53,11 @@ export class Swagger extends Action {
   }
 
   buildSwaggerPaths() {
-    const swaggerPaths: {
-      [path: string]: {
-        [method: string]: {
+    const swaggerPaths: Record<
+      string,
+      Record<
+        string,
+        {
           tags: string[];
           summary: string;
           consumes: string[];
@@ -69,9 +71,9 @@ export class Swagger extends Action {
           }[];
           responses: typeof responses;
           security: Record<string, any>;
-        };
-      };
-    } = {};
+        }
+      >
+    > = {};
     const tags: string[] = [];
 
     for (const [method, routes] of Object.entries(api.routes.routes)) {
@@ -134,7 +136,7 @@ export class Swagger extends Action {
   }
 
   async run() {
-    const { swaggerPaths, tags } = this.buildSwaggerPaths();
+    const { swaggerPaths } = this.buildSwaggerPaths();
 
     return {
       swagger: SWAGGER_VERSION,

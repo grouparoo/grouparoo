@@ -75,7 +75,7 @@ export class SourceConnectionApps extends AuthenticatedAction {
       connection: PluginConnectionApiData;
     }[] = [];
 
-    let importConnections: PluginConnection[] = [];
+    const importConnections: PluginConnection[] = [];
     api.plugins.plugins.forEach((plugin: GrouparooPlugin) => {
       if (plugin.connections) {
         plugin.connections
@@ -212,7 +212,7 @@ export class SourceGenerateSampleRecords extends AuthenticatedAction {
       throw new Error(`source does not provide a preview`);
 
     let attempt = 0;
-    let records: GrouparooRecord[] = [];
+    const records: GrouparooRecord[] = [];
     const mapping = await source.getMapping();
     const mappingKey = Object.keys(mapping)[0];
     const mappingValue = Object.values(mapping)[0];
@@ -321,13 +321,14 @@ export class SourcePreview extends AuthenticatedAction {
     const preview = await source.sourcePreview(params.options);
     const existingProperties: Property[] = await Property.findAll();
 
-    const columnSpeculation: {
-      [column: string]: {
+    const columnSpeculation: Record<
+      string,
+      {
         suggestedPropertyKey?: string;
         type: typeof PropertyTypes[number];
         isUnique: boolean;
-      };
-    } = {};
+      }
+    > = {};
     if (preview.length > 0) {
       const keys = Object.keys(preview[0]);
       for (const key of keys) {

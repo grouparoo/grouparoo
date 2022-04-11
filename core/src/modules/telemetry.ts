@@ -107,7 +107,7 @@ export namespace Telemetry {
       name: clusterName,
       id: customerId,
       trigger,
-      metrics: metrics,
+      metrics,
     };
   }
 

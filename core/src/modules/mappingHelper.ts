@@ -100,7 +100,7 @@ export namespace MappingHelper {
           })
         : undefined;
 
-    let newMappings: Mapping[] = [];
+    const newMappings: Mapping[] = [];
     const keys = Object.keys(mappings);
     for (const i in keys) {
       const remoteKey = keys[i];

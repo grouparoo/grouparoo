@@ -82,7 +82,7 @@ export async function loadProperty(
   }
 
   //@ts-ignore
-  if (!!configObject["identifying"]) {
+  if (configObject["identifying"]) {
     Deprecation.warnRemoved("config", "Property", "identifying");
   }
 

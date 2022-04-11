@@ -21,9 +21,7 @@ export const ObfuscatedOptionString = "__ObfuscatedOption";
 type ModelWithOptions = Source | Destination | Schedule | Property | App;
 
 export namespace OptionHelper {
-  export interface SimpleOptions {
-    [key: string]: string | number | boolean;
-  }
+  export type SimpleOptions = Record<string, string | number | boolean>;
 
   export async function getOptions(
     instance: ModelWithOptions,
@@ -170,7 +168,7 @@ export namespace OptionHelper {
   export function getPluginByType(type: string) {
     const foundApps: string[] = [];
     const foundConnections: string[] = [];
-    let match: {
+    const match: {
       plugin: GrouparooPlugin;
       pluginConnection: PluginConnection;
       pluginApp: PluginApp;
@@ -378,7 +376,7 @@ export namespace OptionHelper {
   }
 
   export function filterEmptyOptions(options: SimpleOptions) {
-    const opts = Object.assign({}, options);
+    const opts = { ...options };
 
     Object.keys(opts).forEach((k) => {
       if (typeof opts[k] === "undefined" || opts[k] === null || opts[k] === "")
@@ -427,7 +425,7 @@ export namespace OptionHelper {
     options?: SimpleOptions,
     sourceFromEnvironment = true
   ) {
-    let sanitizedOptions: SimpleOptions = Object.assign({}, options);
+    let sanitizedOptions: SimpleOptions = { ...options };
 
     const optionsFromDatabase = await getOptions(
       instance,

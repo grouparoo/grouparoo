@@ -4,9 +4,7 @@ import { AnyConfigurationObject } from "../classes/codeConfig";
 import { api } from "actionhero";
 
 export namespace MustacheUtils {
-  export interface MustacheArgs {
-    [key: string]: any;
-  }
+  export type MustacheArgs = Record<string, any>;
 
   export function strictlyRender(
     string: string,

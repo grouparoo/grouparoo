@@ -72,7 +72,7 @@ export namespace CLS {
       if (priority) {
         // this will retry based on the default in the config, but for a priority case,
         // we can say to sleep less each time and retry much more often
-        const retry = Object.assign({}, config.sequelize.retry);
+        const retry = { ...config.sequelize.retry };
         retry.backoffBase = betweenTries;
         retry.backoffExponent = 1; // don't backoff
         retry.max = Math.round(retryLength / betweenTries);
@@ -119,7 +119,7 @@ export namespace CLS {
    */
   export async function enqueueTask(
     taskName: string,
-    args: { [key: string]: any },
+    args: Record<string, any>,
     queue?: string
   ) {
     await afterCommit(async () => task.enqueue(taskName, args, queue));
@@ -131,7 +131,7 @@ export namespace CLS {
   export async function enqueueTaskIn(
     delay: number,
     taskName: string,
-    args: { [key: string]: any },
+    args: Record<string, any>,
     queue?: string
   ) {
     await afterCommit(async () => task.enqueueIn(delay, taskName, args, queue));

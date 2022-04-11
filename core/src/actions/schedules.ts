@@ -268,7 +268,7 @@ export class ScheduleFilterOptions extends AuthenticatedAction {
     const schedule = await Schedule.findById(params.id);
     const options = await FilterHelper.pluginFilterOptions(schedule);
     return {
-      options: options,
+      options,
       optionDescriptions: await buildPropertyFilterDictionary(options),
     };
   }

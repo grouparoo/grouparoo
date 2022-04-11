@@ -50,7 +50,7 @@ export class ImportRecordProperties extends RetryableTask {
     const source = await SourcesCache.findOneWithCache(properties[0].sourceId);
     const recordsToImport: GrouparooRecord[] = [];
     const recordsNotReady: GrouparooRecord[] = [];
-    const dependencies: { [key: string]: Property[] } = {};
+    const dependencies: Record<string, Property[]> = {};
     for (const property of properties) {
       dependencies[property.id] = await PropertyOps.dependencies(property);
     }

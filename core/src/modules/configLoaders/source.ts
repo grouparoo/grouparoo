@@ -65,7 +65,7 @@ export async function loadSource(
 
   let bootstrappedProperty: Property;
   let mappedRecordProperty: Property;
-  let mapping: Record<string, string> = {};
+  const mapping: Record<string, string> = {};
 
   async function setMapping() {
     if (configObject.mapping) {

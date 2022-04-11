@@ -51,7 +51,7 @@ export namespace GroupOps {
     group: Group,
     records: GrouparooRecord[]
   ) {
-    const response: { [recordId: string]: boolean } = {};
+    const response: Record<string, boolean> = {};
     records.forEach((p) => (response[p.id] = false));
     const existingMemberships = await GroupMember.findAll({
       where: {
@@ -197,7 +197,6 @@ export namespace GroupOps {
     highWaterMark: number = null,
     destinationId?: string
   ) {
-    let records: RecordMultipleAssociationShim[];
     const rules = await group.getRules();
 
     // if there are no group rules, there's nothing to do
@@ -217,7 +216,7 @@ export namespace GroupOps {
       where.createdAt[Op.and].push({ [Op.gte]: highWaterMark });
     }
 
-    records = await RecordMultipleAssociationShim.findAll({
+    const records = await RecordMultipleAssociationShim.findAll({
       attributes: ["id", "createdAt"],
       where,
       include,
@@ -415,7 +414,7 @@ export namespace GroupOps {
       ],
       group: ["groupId"],
       order: [[Sequelize.col("newestMemberAdded"), "desc"]],
-      limit: limit,
+      limit,
     });
 
     const groupIds = newGroupMembers.map((mem) => mem.groupId);
@@ -429,7 +428,7 @@ export namespace GroupOps {
       })
       .slice(0, limit);
 
-    const newestMembersAdded: { [id: string]: number } = {};
+    const newestMembersAdded: Record<string, number> = {};
     newGroupMembers.forEach((g) => {
       // @ts-ignore
       const value: Date | string = g.getDataValue("newestMemberAdded"); // this may be a string if SQLite is used
@@ -439,7 +438,7 @@ export namespace GroupOps {
 
     return {
       groups,
-      newestMembersAdded: newestMembersAdded,
+      newestMembersAdded,
     };
   }
 }

@@ -27,7 +27,7 @@ export namespace ExportOps {
 
     for (const state of ExportStates) {
       totals[state] = await Export.count({
-        where: Object.assign({}, where, { state }),
+        where: { ...where, state },
       });
     }
 
@@ -84,9 +84,7 @@ export namespace ExportOps {
     });
     const { pluginConnection } = await destination.getPlugin();
 
-    let _exports: Export[];
-
-    _exports = await Export.findAll({
+    const _exports = await Export.findAll({
       where: {
         state: "pending",
         destinationId: destination.id,

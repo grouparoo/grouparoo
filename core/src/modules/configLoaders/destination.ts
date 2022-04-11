@@ -49,11 +49,6 @@ export async function loadDestination(
     });
   }
 
-  let group: Group;
-  if (configObject.groupId) {
-    group = await getParentByName(Group, configObject.groupId);
-  }
-
   // do not set groupId or collection here, that's handled within the updateTracking method
   await destination.update({
     name: configObject.name,
@@ -66,8 +61,8 @@ export async function loadDestination(
   const options = extractNonNullParts(configObject, "options");
   if (options) await destination.setOptions(options, externallyValidate);
 
-  let mapping: Record<string, string> = {};
-  let destinationGroupMemberships: Record<string, string> = {};
+  const mapping: Record<string, string> = {};
+  const destinationGroupMemberships: Record<string, string> = {};
 
   const sanitizedMappings = extractNonNullParts(configObject, "mapping");
   for (const key in sanitizedMappings) {

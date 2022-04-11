@@ -357,7 +357,7 @@ export class Property extends CommonModel<Property> {
       if (valueCounts.length > 0) {
         throw new Error(
           //@ts-ignore
-          `cannot make this property unique as there are ${valueCounts[0]["count"]} records with the value \'${valueCounts[0]["rawValue"]}\'`
+          `cannot make this property unique as there are ${valueCounts[0]["count"]} records with the value '${valueCounts[0]["rawValue"]}'`
         );
       }
     }

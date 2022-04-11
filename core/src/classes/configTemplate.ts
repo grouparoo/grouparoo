@@ -12,23 +12,22 @@ export interface ConfigTemplateParams {
 /**
  * This will then be used to write the files (and deciding if we overwrite or not)
  */
-export interface ConfigTemplateRunResponse {
-  [relativeFileName: string]: string;
-}
+export type ConfigTemplateRunResponse = Record<string, string>;
 
 export abstract class ConfigTemplate {
   name: string;
   description: string;
   params: ConfigTemplateParams;
-  inputs?: {
-    [name: string]: {
+  inputs?: Record<
+    string,
+    {
       required: boolean;
       default?: string | number | boolean;
       description: string;
       copyDefaultFrom?: string;
       formatter?: (param: string) => any;
-    };
-  };
+    }
+  >;
   files: string[]; // a list of files or a glob of files
   destinationDir: string;
   parentId?: string;
@@ -103,7 +102,7 @@ export abstract class ConfigTemplate {
       .toLowerCase()
       .replace(/"/gi, "")
       .replace(/'/gi, "")
-      .replace(/[^a-zA-Z0-9-_\/.]/gi, "_");
+      .replace(/[^a-zA-Z0-9-_/.]/gi, "_");
   }
 
   formatId(s: string) {

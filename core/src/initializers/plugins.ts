@@ -13,9 +13,7 @@ declare module "actionhero" {
       validate: (plugin: GrouparooPlugin) => boolean;
       register: (plugin: GrouparooPlugin, validate: boolean) => void;
       announcePlugins: () => void;
-      persistentConnections: {
-        [id: string]: any;
-      };
+      persistentConnections: Record<string, any>;
     };
   }
 }
@@ -87,7 +85,7 @@ export class Plugins extends Initializer {
   }
 
   validatePlugin(plugin: GrouparooPlugin) {
-    let errors: string[] = [];
+    const errors: string[] = [];
 
     if (!plugin.name) {
       errors.push(`name is required for a Grouparoo Plugin`);

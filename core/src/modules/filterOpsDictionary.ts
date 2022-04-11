@@ -16,7 +16,7 @@ export const FilterOpsDescriptions = {
 export function buildPropertyFilterDictionary(
   options: SourceFilterMethodResponseRow[]
 ) {
-  const propertyFilterDictionary: { [key: string]: string } = {};
+  const propertyFilterDictionary: Record<string, string> = {};
 
   for (const option of options) {
     for (const op of option.ops) {

@@ -1,22 +1,16 @@
 import { Api } from "actionhero";
 
 export namespace APIData {
-  export function ensureArray(
-    param: { [key: string]: any } | string,
-    api?: Api
-  ) {
+  export function ensureArray(param: Record<string, any> | string, api?: Api) {
     return ensureObjectOrArray<"array">(param, api);
   }
 
-  export function ensureObject(
-    param: { [key: string]: any } | string,
-    api?: Api
-  ) {
+  export function ensureObject(param: Record<string, any> | string, api?: Api) {
     return ensureObjectOrArray<"object">(param, api);
   }
 
   function ensureObjectOrArray<t extends "array" | "object">(
-    param: { [key: string]: any } | string,
+    param: Record<string, any> | string,
     api?: Api,
     recursing = false
   ): t extends "array" ? any[] : Record<string, any> {

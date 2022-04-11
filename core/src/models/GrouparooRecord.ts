@@ -110,18 +110,17 @@ export class GrouparooRecord extends CommonModel<GrouparooRecord> {
 
   async simplifiedProperties() {
     const properties = await this.getProperties();
-    const simpleProperties: {
-      [key: string]: (string | boolean | number | Date)[];
-    } = {};
+    const simpleProperties: Record<
+      string,
+      (string | boolean | number | Date)[]
+    > = {};
 
     for (const k in properties) simpleProperties[k] = properties[k].values;
     return simpleProperties;
   }
 
   async addOrUpdateProperties(
-    properties: {
-      [key: string]: (string | number | boolean | Date)[];
-    },
+    properties: Record<string, (string | number | boolean | Date)[]>,
     toLock = true,
     ignoreMissingProperties = false
   ) {
@@ -244,9 +243,7 @@ export class GrouparooRecord extends CommonModel<GrouparooRecord> {
   // --- Class Methods --- //
 
   static async findOrCreateByUniqueRecordProperties(
-    hash: {
-      [key: string]: (string | number | boolean | Date)[];
-    },
+    hash: Record<string, (string | number | boolean | Date)[]>,
     source?: boolean | Source
   ) {
     const response = await RecordOps.findOrCreateByUniqueRecordProperties(

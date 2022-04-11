@@ -81,6 +81,7 @@ export class StatusTask extends CLSTask {
     if (!toStop) return false;
 
     // do not await so the promise can end so the server can shut down
+    // eslint-disable-next-line no-async-promise-executor
     new Promise(async () => {
       await api.process.stop();
 

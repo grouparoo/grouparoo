@@ -21,7 +21,7 @@ export class RecordDestroy extends CLSTask {
 
     const pendingExports = await Export.count({
       where: {
-        recordId: recordId,
+        recordId,
         state: ["pending", "processing"],
       },
     });

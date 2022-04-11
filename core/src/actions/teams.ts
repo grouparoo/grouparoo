@@ -32,21 +32,18 @@ export class TeamInitialize extends CLSAction {
   }: {
     params: ParamsFrom<TeamInitialize>;
   }) {
-    let team: Team;
-    let teamMember: TeamMember;
-
     if ((await Team.count()) > 0) {
       throw new Error("an administration team already exists, please sign in");
     }
 
-    team = await Team.create({
+    const team = await Team.create({
       name: "Administrators",
       locked: "team:initialize",
       permissionAllRead: true,
       permissionAllWrite: true,
     });
 
-    teamMember = await TeamMember.create({
+    const teamMember = await TeamMember.create({
       teamId: team.id,
       email: params.email,
       firstName: params.firstName,
@@ -125,7 +122,7 @@ export class TeamEdit extends AuthenticatedAction {
 
   async runWithinTransaction({ params }: { params: ParamsFrom<TeamEdit> }) {
     const team = await Team.findById(params.id);
-    const updateParams = Object.assign({}, params);
+    const updateParams = { ...params };
     if (params.disabledPermissionAllRead) updateParams.permissionAllRead = null;
 
     if (params.disabledPermissionAllWrite) {

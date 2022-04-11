@@ -9,7 +9,7 @@ export default {
     );
   },
 
-  down: async function () {
+  async down() {
     // nothing to do
   },
 };
