@@ -1,3 +1,4 @@
+import { DestinationDeliveryMode } from "@grouparoo/core/src/models/Destination";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -24,6 +25,25 @@ import { NextPageWithInferredProps } from "../../../../../utils/pageHelper";
 import { grouparooUiEdition } from "../../../../../utils/uiEdition";
 import { withServerErrorHandler } from "../../../../../utils/withServerErrorHandler";
 
+export const DestinationDeliveryModeData: Record<
+  DestinationDeliveryMode,
+  {
+    key: DestinationDeliveryMode;
+    displayName: string;
+    description: string;
+  }
+> = {
+  continual: {
+    key: "continual",
+    displayName: "Continual",
+    description: "Can deliver the same record multiple times",
+  },
+  once: {
+    key: "once",
+    displayName: "Once",
+    description: "Guaranteed to only deliver a record at-most-once",
+  },
+};
 export const getServerSideProps = withServerErrorHandler(async (ctx) => {
   const client = generateClient(ctx);
   const { destinationId, modelId } = ctx.query;
@@ -82,6 +102,7 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
         state: "ready",
         name: destination.name,
         syncMode: destination.syncMode,
+        deliveryMode: destination.deliveryMode,
         options: destination.options,
       }
     );
@@ -191,6 +212,29 @@ const Page: NextPageWithInferredProps<typeof getServerSideProps> = ({
                 <Form.Control.Feedback type="invalid">
                   Name is required
                 </Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group controlId="deliveryMode">
+                <Form.Label>Delivery Mode</Form.Label>
+                <Form.Control
+                  as="select"
+                  required={true}
+                  disabled={loading}
+                  defaultValue={destination.deliveryMode?.toString() || ""}
+                  onChange={(e) => update(e)}
+                >
+                  <option value={""} disabled>
+                    Select an option
+                  </option>
+                  {Object.values(DestinationDeliveryModeData).map((mode) => (
+                    <option key={mode.key} value={mode.key}>
+                      {mode.displayName} | {mode.description}
+                    </option>
+                  ))}
+                </Form.Control>
+                <Form.Text className="text-muted">
+                  How should this destination sync records?
+                </Form.Text>
               </Form.Group>
 
               {destination.syncModes.length > 0 ? (

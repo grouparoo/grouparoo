@@ -955,6 +955,72 @@ describe("models/destination - with custom exportRecord plugin", () => {
       });
     });
 
+    describe("when destination delivery mode is", () => {
+      let record: GrouparooRecord = null;
+
+      beforeEach(async () => {
+        record = await helper.factories.record();
+        await record.addOrUpdateProperties({
+          email: ["newEmail@example.com"],
+        });
+
+        await destination.exportRecord(record, true);
+      });
+
+      afterEach(async () => {
+        await record.destroy();
+      });
+
+      test("continual, we can export a record multiple times", async () => {
+        destination.deliveryMode = "continual";
+
+        await destination.exportRecord(record, true);
+
+        const _exports = await Export.findAll({
+          where: { destinationId: destination.id },
+        });
+        expect(_exports).toHaveLength(2);
+
+        expect(_exports[0].state).toBe("complete");
+        expect(_exports[1].state).toBe("complete");
+      });
+
+      test("once, we can only export a record once", async () => {
+        destination.deliveryMode = "once";
+
+        await destination.exportRecord(record, true);
+
+        const _exports = await Export.findAll({
+          where: { destinationId: destination.id },
+        });
+        expect(_exports).toHaveLength(2);
+        expect(_exports[0].state).toBe("complete");
+        expect(_exports[1].state).toBe("canceled");
+        expect(_exports[1].errorMessage).toBe(
+          "Destination is only delivering records once"
+        );
+      });
+
+      test("changed, new exports will use updated delivery mode", async () => {
+        destination.deliveryMode = "once";
+        await destination.exportRecord(record, true);
+
+        destination.deliveryMode = "continual";
+        await destination.exportRecord(record, true);
+
+        const _exports = await Export.findAll({
+          where: { destinationId: destination.id },
+        });
+        expect(_exports).toHaveLength(3);
+        expect(_exports[0].state).toBe("complete");
+        expect(_exports[1].state).toBe("canceled");
+        expect(_exports[1].errorMessage).toBe(
+          "Destination is only delivering records once"
+        );
+        expect(_exports[2].state).toBe("complete");
+      });
+    });
+
     test("exportRecord can return that it is rate limited and the export will have a sendAt in the future", async () => {
       // when the parallelism is not OK
       parallelismResponse = 0;
